@@ -72,11 +72,11 @@ class AssetConsumerInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    AssetHandler<AssetElement> getAssetHandler(String userId,
-                                               String serverName,
-                                               String serviceOperationName) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+    AssetHandler<OpenMetadataAPIDummyBean> getAssetHandler(String userId,
+                                                           String serverName,
+                                                           String serviceOperationName) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
 
         AssetConsumerServicesInstance instance = (AssetConsumerServicesInstance)super.getServerServiceInstance(userId,
@@ -103,11 +103,11 @@ class AssetConsumerInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    CommentHandler<CommentElement> getCommentHandler(String userId,
-                                                     String serverName,
-                                                     String serviceOperationName) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    CommentHandler<OpenMetadataAPIDummyBean> getCommentHandler(String userId,
+                                                               String serverName,
+                                                               String serviceOperationName) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
     {
 
         AssetConsumerServicesInstance instance = (AssetConsumerServicesInstance)super.getServerServiceInstance(userId,
@@ -137,8 +137,8 @@ class AssetConsumerInstanceHandler extends OMASServiceInstanceHandler
     ConnectionHandler<OpenMetadataAPIDummyBean> getConnectionHandler(String userId,
                                                                      String serverName,
                                                                      String serviceOperationName) throws InvalidParameterException,
-                                                                                                                UserNotAuthorizedException,
-                                                                                                                PropertyServerException
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
     {
         AssetConsumerServicesInstance instance = (AssetConsumerServicesInstance)super.getServerServiceInstance(userId,
                                                                                                                serverName,
@@ -224,11 +224,11 @@ class AssetConsumerInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    LikeHandler<LikeElement> getLikeHandler(String userId,
-                                                   String serverName,
-                                                   String serviceOperationName) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException
+    LikeHandler<OpenMetadataAPIDummyBean> getLikeHandler(String userId,
+                                                         String serverName,
+                                                         String serviceOperationName) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
         AssetConsumerServicesInstance instance = (AssetConsumerServicesInstance)super.getServerServiceInstance(userId,
                                                                                                                serverName,
@@ -254,11 +254,11 @@ class AssetConsumerInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    RatingHandler<RatingElement> getRatingHandler(String userId,
-                                                  String serverName,
-                                                  String serviceOperationName) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    RatingHandler<OpenMetadataAPIDummyBean> getRatingHandler(String userId,
+                                                             String serverName,
+                                                             String serviceOperationName) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
     {
         AssetConsumerServicesInstance instance = (AssetConsumerServicesInstance)super.getServerServiceInstance(userId,
                                                                                                                serverName,

@@ -3,7 +3,8 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.connectors.outtopic.AssetConsumerOutTopicClientProvider;
-import org.odpi.openmetadata.accessservices.assetconsumer.converters.*;
+import org.odpi.openmetadata.accessservices.assetconsumer.converters.InformalTagConverter;
+import org.odpi.openmetadata.accessservices.assetconsumer.converters.MeaningConverter;
 import org.odpi.openmetadata.accessservices.assetconsumer.elements.*;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.handlers.LoggingHandler;
@@ -24,18 +25,18 @@ import java.util.List;
  */
 public class AssetConsumerServicesInstance extends OMASServiceInstance
 {
-    private static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_CONSUMER_OMAS;
+    private final static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_CONSUMER_OMAS;
 
-    private AssetHandler<AssetElement>                     assetHandler;
-    private CommentHandler<CommentElement>                 commentHandler;
-    private ConnectionHandler<OpenMetadataAPIDummyBean>    connectionHandler;
-    private ConnectorTypeHandler<OpenMetadataAPIDummyBean> connectorTypeHandler;
-    private EndpointHandler<OpenMetadataAPIDummyBean>      endpointHandler;
-    private GlossaryTermHandler<MeaningElement>            glossaryTermHandler;
-    private InformalTagHandler<InformalTagElement>         informalTagHandler;
-    private LikeHandler<LikeElement>                       likeHandler;
-    private RatingHandler<RatingElement>                   ratingHandler;
-    private LoggingHandler                                 loggingHandler;
+    private final AssetHandler<OpenMetadataAPIDummyBean>         assetHandler;
+    private final CommentHandler<OpenMetadataAPIDummyBean>       commentHandler;
+    private final ConnectionHandler<OpenMetadataAPIDummyBean>    connectionHandler;
+    private final ConnectorTypeHandler<OpenMetadataAPIDummyBean> connectorTypeHandler;
+    private final EndpointHandler<OpenMetadataAPIDummyBean>      endpointHandler;
+    private final GlossaryTermHandler<MeaningElement>            glossaryTermHandler;
+    private final InformalTagHandler<InformalTagElement>         informalTagHandler;
+    private final LikeHandler<OpenMetadataAPIDummyBean>          likeHandler;
+    private final RatingHandler<OpenMetadataAPIDummyBean>        ratingHandler;
+    private final LoggingHandler                                 loggingHandler;
 
     /**
      * Set up the handlers for this server.
@@ -78,8 +79,8 @@ public class AssetConsumerServicesInstance extends OMASServiceInstance
             OpenMetadataAPIDummyBeanConverter<OpenMetadataAPIDummyBean> dummyConverter =
                     new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName);
 
-            this.assetHandler = new AssetHandler<>(new AssetConverter<>(repositoryHelper, serviceName, serverName),
-                                                   AssetElement.class,
+            this.assetHandler = new AssetHandler<>(dummyConverter,
+                                                   OpenMetadataAPIDummyBean.class,
                                                    serviceName,
                                                    serverName,
                                                    invalidParameterHandler,
@@ -92,8 +93,8 @@ public class AssetConsumerServicesInstance extends OMASServiceInstance
                                                    publishZones,
                                                    auditLog);
 
-            this.commentHandler = new CommentHandler<>(new CommentConverter<>(repositoryHelper, serviceName, serverName),
-                                                       CommentElement.class,
+            this.commentHandler = new CommentHandler<>(dummyConverter,
+                                                       OpenMetadataAPIDummyBean.class,
                                                        serviceName,
                                                        serverName,
                                                        invalidParameterHandler,
@@ -176,8 +177,8 @@ public class AssetConsumerServicesInstance extends OMASServiceInstance
                                                                publishZones,
                                                                auditLog);
 
-            this.likeHandler = new LikeHandler<>(new LikeConverter<>(repositoryHelper, serviceName, serverName),
-                                                 LikeElement.class,
+            this.likeHandler = new LikeHandler<>(dummyConverter,
+                                                 OpenMetadataAPIDummyBean.class,
                                                  serviceName,
                                                  serverName,
                                                  invalidParameterHandler,
@@ -190,8 +191,8 @@ public class AssetConsumerServicesInstance extends OMASServiceInstance
                                                  publishZones,
                                                  auditLog);
 
-            this.ratingHandler = new RatingHandler<>(new RatingConverter<>(repositoryHelper, serviceName, serverName),
-                                                     RatingElement.class,
+            this.ratingHandler = new RatingHandler<>(dummyConverter,
+                                                     OpenMetadataAPIDummyBean.class,
                                                      serviceName,
                                                      serverName,
                                                      invalidParameterHandler,
@@ -231,7 +232,7 @@ public class AssetConsumerServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    public AssetHandler<AssetElement> getAssetHandler() throws PropertyServerException
+    public AssetHandler<OpenMetadataAPIDummyBean> getAssetHandler() throws PropertyServerException
     {
         final String methodName = "getAssetHandler";
 
@@ -247,7 +248,7 @@ public class AssetConsumerServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    CommentHandler<CommentElement> getCommentHandler() throws PropertyServerException
+    CommentHandler<OpenMetadataAPIDummyBean> getCommentHandler() throws PropertyServerException
     {
         final String methodName = "getCommentHandler";
 
@@ -343,7 +344,7 @@ public class AssetConsumerServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    LikeHandler<LikeElement> getLikeHandler() throws PropertyServerException
+    LikeHandler<OpenMetadataAPIDummyBean> getLikeHandler() throws PropertyServerException
     {
         final String methodName = "getLikeHandler";
 
@@ -359,7 +360,7 @@ public class AssetConsumerServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    RatingHandler<RatingElement> getRatingHandler() throws PropertyServerException
+    RatingHandler<OpenMetadataAPIDummyBean> getRatingHandler() throws PropertyServerException
     {
         final String methodName = "getRatingHandler";
 

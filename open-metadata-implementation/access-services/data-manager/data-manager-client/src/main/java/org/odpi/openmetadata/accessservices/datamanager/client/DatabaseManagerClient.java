@@ -1181,6 +1181,7 @@ public class DatabaseManagerClient extends DataManagerBaseClient implements Data
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
+    @Deprecated
     public List<DatabaseTableElement>    getTablesForDatabaseSchema(String userId,
                                                                     String databaseSchemaGUID,
                                                                     int    startFrom,
@@ -1561,6 +1562,7 @@ public class DatabaseManagerClient extends DataManagerBaseClient implements Data
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
+    @Deprecated
     public List<DatabaseViewElement>    getViewsForDatabaseSchema(String userId,
                                                                   String databaseSchemaGUID,
                                                                   int    startFrom,

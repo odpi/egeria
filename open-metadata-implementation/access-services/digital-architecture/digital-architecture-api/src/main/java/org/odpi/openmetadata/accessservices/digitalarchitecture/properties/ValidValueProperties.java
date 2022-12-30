@@ -198,18 +198,19 @@ public class ValidValueProperties extends ReferenceableProperties
     public String toString()
     {
         return "ValidValueProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", usage='" + usage + '\'' +
-                ", scope='" + scope + '\'' +
-                ", preferredValue='" + preferredValue + '\'' +
-                ", isDeprecated=" + isDeprecated +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", classifications=" + getClassifications() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", displayName='" + displayName + '\'' +
+                       ", description='" + description + '\'' +
+                       ", usage='" + usage + '\'' +
+                       ", scope='" + scope + '\'' +
+                       ", preferredValue='" + preferredValue + '\'' +
+                       ", isDeprecated=" + isDeprecated +
+                       '}';
     }
 
 

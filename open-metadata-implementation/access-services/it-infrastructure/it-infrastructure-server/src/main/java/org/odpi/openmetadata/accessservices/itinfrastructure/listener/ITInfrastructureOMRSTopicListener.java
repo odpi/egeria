@@ -13,12 +13,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -35,6 +34,7 @@ public class ITInfrastructureOMRSTopicListener extends OMRSTopicListenerBase
     private final AssetHandler<AssetElement>        assetHandler;
     private final String                            localServerUserId;
     private final List<String>                      supportedZones;
+    private final OMRSRepositoryHelper              repositoryHelper;
 
     /**
      * Initialize the topic listener.
@@ -56,6 +56,7 @@ public class ITInfrastructureOMRSTopicListener extends OMRSTopicListenerBase
         super(serviceName, auditLog);
 
         this.assetHandler = assetHandler;
+        this.repositoryHelper = assetHandler.getRepositoryHelper();
         this.supportedZones = supportedZones;
         this.localServerUserId = localServerUserId;
         this.eventPublisher = eventPublisher;
@@ -488,7 +489,7 @@ public class ITInfrastructureOMRSTopicListener extends OMRSTopicListenerBase
 
 
     /**
-     * An existing entity has been deleted.  This is a soft delete. This means it is still in the repository
+     * An existing entity has been deleted.  This is a soft delete. This means it is still in the repository,
      * but it is no longer returned on queries.
      * <p>
      * All relationships to the entity are also soft-deleted and will no longer be usable.  These deleted relationships
@@ -636,7 +637,7 @@ public class ITInfrastructureOMRSTopicListener extends OMRSTopicListenerBase
 
 
     /**
-     * An existing entity has had its type changed.  Typically this action is taken to move an entity's
+     * An existing entity has had its type changed.  Typically, this action is taken to move an entity's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *
@@ -749,7 +750,7 @@ public class ITInfrastructureOMRSTopicListener extends OMRSTopicListenerBase
      * @param userId callers userId
      * @param entity entity to test
      * @param entityProxy entity proxy when entity is not available
-     * @return entity detail if it is to be send.
+     * @return entity detail if it is to be sent.
      */
     private EntityDetail entityOfInterest(String       userId,
                                           EntityDetail entity,
@@ -774,7 +775,7 @@ public class ITInfrastructureOMRSTopicListener extends OMRSTopicListenerBase
 
                     assetHandler.validateAnchorEntity(userId,
                                                       fullEntity.getGUID(),
-                                                      OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                       fullEntity,
                                                       guidParameterName,
                                                       false,
@@ -823,33 +824,11 @@ public class ITInfrastructureOMRSTopicListener extends OMRSTopicListenerBase
     /**
      * At this point not sure which elements provide useful events so restricting to Referenceables.
      *
-     * @param entityHeader entity element
+     * @param entityHeader  element header
      * @return flag to say whether to publish the event.
      */
     private boolean isTypeOfInterest(InstanceHeader entityHeader)
     {
-        final String referenceableTypeName = "Referenceable";
-
-        if (entityHeader != null)
-        {
-            List<String> typeNames = new ArrayList<>();
-
-            typeNames.add(entityHeader.getType().getTypeDefName());
-
-            if (entityHeader.getType().getTypeDefSuperTypes() != null)
-            {
-                for (TypeDefLink superType : entityHeader.getType().getTypeDefSuperTypes())
-                {
-                    if (superType != null)
-                    {
-                        typeNames.add(superType.getName());
-                    }
-                }
-            }
-
-            return typeNames.contains(referenceableTypeName);
-        }
-
-        return false;
+        return repositoryHelper.isTypeOf(serviceName, entityHeader.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME);
     }
 }

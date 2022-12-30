@@ -24,13 +24,13 @@ public class AssetConsumerEventClient implements AssetConsumerEventInterface
 {
     private static final String  serviceName = "Asset Consumer OMAS";
 
-    private String                 serverName;               /* Initialized in constructor */
-    private String                 serverPlatformURLRoot;    /* Initialized in constructor */
-    private OCFRESTClient          restClient;               /* Initialized in constructor */
-    private AuditLog               auditLog;                 /* Initialized in constructor */
-    private String                 callerId;                 /* Initialized in constructor */
+    private final String                 serverName;               /* Initialized in constructor */
+    private final String                 serverPlatformURLRoot;    /* Initialized in constructor */
+    private final OCFRESTClient          restClient;               /* Initialized in constructor */
+    private final AuditLog               auditLog;                 /* Initialized in constructor */
+    private final String                 callerId;                 /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     private AssetConsumerOutTopicClientConnector configurationEventTopicConnector = null;
 

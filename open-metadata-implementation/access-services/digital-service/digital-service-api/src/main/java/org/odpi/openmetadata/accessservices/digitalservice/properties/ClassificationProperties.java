@@ -30,7 +30,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = DigitalProductProperties.class, name = "DigitalProductProperties"),
-                @JsonSubTypes.Type(value = SubjectAreaClassificationProperties.class, name = "SubjectAreaClassificationProperties"),
         })
 public class ClassificationProperties implements Serializable
 {

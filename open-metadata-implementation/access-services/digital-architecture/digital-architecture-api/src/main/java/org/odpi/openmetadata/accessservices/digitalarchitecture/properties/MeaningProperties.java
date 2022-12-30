@@ -209,18 +209,19 @@ public class MeaningProperties extends ReferenceableProperties
     public String toString()
     {
         return "MeaningProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", summary='" + summary + '\'' +
-                ", description='" + description + '\'' +
-                ", examples='" + examples + '\'' +
-                ", abbreviation='" + abbreviation + '\'' +
-                ", usage='" + usage + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", type=" + getTypeName() +
-                ", classifications=" + getClassifications() +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "displayName='" + displayName + '\'' +
+                       ", description='" + description + '\'' +
+                       ", summary='" + summary + '\'' +
+                       ", examples='" + examples + '\'' +
+                       ", abbreviation='" + abbreviation + '\'' +
+                       ", usage='" + usage + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 

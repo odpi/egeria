@@ -10,11 +10,15 @@ import org.odpi.openmetadata.accessservices.assetconsumer.properties.*;
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -243,7 +247,19 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
     {
         final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-name?startFrom={2}&pageSize={3}";
 
-        return retrieveAssets(userId, name, startFrom, pageSize, urlTemplate, methodName);
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+
+        GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
+                                                                          urlTemplate,
+                                                                          requestBody,
+                                                                          serverName,
+                                                                          userId,
+                                                                          startFrom,
+                                                                          pageSize);
+
+        return restResult.getGUIDs();
     }
 
 
@@ -272,38 +288,19 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
     {
         final String methodName = "findAssets";
         final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-search-string?startFrom={2}&pageSize={3}";
+        final String nameParameter = "searchString";
 
-        return retrieveAssets(userId, searchString, startFrom, pageSize, urlTemplate, methodName);
-    }
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, nameParameter, methodName);
 
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
 
-    /**
-     * Return a list of assets with the requested search string in their name, qualified name
-     * or description.  The search string is interpreted as a regular expression (RegEx).
-     *
-     * @param userId calling user
-     * @param searchString string to search for in text
-     * @param startFrom starting element (used in paging through large result sets)
-     * @param pageSize maximum number of results to return
-     *
-     * @return list of assets that match the search string.
-     *
-     * @throws InvalidParameterException the searchString is invalid
-     * @throws PropertyServerException there is a problem access in the property server
-     * @throws UserNotAuthorizedException the user does not have access to the properties
-     */
-    private List<String>  retrieveAssets(String   userId,
-                                         String   searchString,
-                                         int      startFrom,
-                                         int      pageSize,
-                                         String   urlTemplate,
-                                         String   methodName) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
-    {
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(nameParameter);
+
         GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
                                                                           urlTemplate,
-                                                                          searchString,
+                                                                          requestBody,
                                                                           serverName,
                                                                           userId,
                                                                           startFrom,
@@ -311,6 +308,8 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
 
         return restResult.getGUIDs();
     }
+
+
 
 
     /**
@@ -459,10 +458,10 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
 
-        RatingProperties requestBody = new RatingProperties();
+        RatingRequestBody requestBody = new RatingRequestBody();
         requestBody.setStarRating(starRating);
         requestBody.setReview(review);
-        requestBody.setPublic(isPublic);
+        requestBody.setIsPublic(isPublic);
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -608,7 +607,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
 
-        CommentProperties requestBody = new CommentProperties();
+        CommentRequestBody requestBody = new CommentRequestBody();
         requestBody.setCommentType(commentType);
         requestBody.setCommentText(commentText);
         requestBody.setIsPublic(isPublic);
@@ -657,7 +656,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(commentGUID, commentGUIDParameter, methodName);
 
-        CommentProperties  requestBody = new CommentProperties();
+        CommentRequestBody requestBody = new CommentRequestBody();
         requestBody.setCommentType(commentType);
         requestBody.setCommentText(commentText);
         requestBody.setIsPublic(isPublic);
@@ -706,7 +705,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(commentGUID, commentGUIDParameter, methodName);
 
-        CommentProperties  requestBody = new CommentProperties();
+        CommentRequestBody requestBody = new CommentRequestBody();
         requestBody.setCommentType(commentType);
         requestBody.setCommentText(commentText);
         requestBody.setIsPublic(isPublic);
@@ -824,8 +823,25 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
     {
         final String   methodName = "getMeaningByName";
         final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/meanings/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String   nameParameter = "term";
 
-        return retrieveMeanings(userId, term, startFrom, pageSize, urlTemplate, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(term, nameParameter, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(term);
+        requestBody.setNameParameterName(nameParameter);
+
+        GlossaryTermListResponse restResult = restClient.callGlossaryTermListPostRESTCall(methodName,
+                                                                                          urlTemplate,
+                                                                                          requestBody,
+                                                                                          serverName,
+                                                                                          userId,
+                                                                                          startFrom,
+                                                                                          pageSize);
+
+        return restResult.getMeanings();
     }
 
 
@@ -852,43 +868,19 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
     {
         final String   methodName = "findMeanings";
         final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/meanings/by-search-string/{2}?startFrom={3}&pageSize={4}";
-
-        return retrieveMeanings(userId, term, startFrom, pageSize, urlTemplate, methodName);
-    }
-
-
-    /**
-     * Return the full definition (meaning) of the terms matching the supplied name.
-     *
-     * @param userId the name of the calling user.
-     * @param term name of term.  This may include wild card characters.
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param urlTemplate url template in which the parameters are plugged into
-     * @param methodName calling method
-     *
-     * @return meaning list response or
-     * @throws InvalidParameterException the userId is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    private List<MeaningElement> retrieveMeanings(String userId,
-                                                  String term,
-                                                  int    startFrom,
-                                                  int    pageSize,
-                                                  String urlTemplate,
-                                                  String methodName) throws InvalidParameterException,
-                                                                            PropertyServerException,
-                                                                            UserNotAuthorizedException
-    {
         final String   nameParameter = "term";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(term, nameParameter, methodName);
+        invalidParameterHandler.validateSearchString(term, nameParameter, methodName);
+
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(term);
+        requestBody.setSearchStringParameterName(nameParameter);
 
         GlossaryTermListResponse restResult = restClient.callGlossaryTermListPostRESTCall(methodName,
                                                                                           urlTemplate,
-                                                                                          term,
+                                                                                          requestBody,
                                                                                           serverName,
                                                                                           userId,
                                                                                           startFrom,
@@ -1030,7 +1022,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
-        InformalTagProperties  tagRequestBody = new InformalTagProperties();
+        TagRequestBody  tagRequestBody = new TagRequestBody();
         tagRequestBody.setIsPrivateTag(! isPublic);
         tagRequestBody.setName(tagName);
         tagRequestBody.setDescription(tagDescription);
@@ -1126,7 +1118,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(tagGUID, guidParameter, methodName);
 
-        InformalTagProperties  tagRequestBody = new InformalTagProperties();
+        TagUpdateRequestBody  tagRequestBody = new TagUpdateRequestBody();
         tagRequestBody.setDescription(tagDescription);
 
         restClient.callVoidPostRESTCall(methodName,
@@ -1230,8 +1222,25 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
     {
         final String   methodName = "getTagsByName";
         final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/by-name?startFrom={2}&pageSize={3}";
+        final String   nameParameter = "tag";
 
-        return retrieveTags(userId, tag, startFrom, pageSize, urlTemplate, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(tag, nameParameter, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(tag);
+        requestBody.setNameParameterName(nameParameter);
+
+        TagsResponse restResult = restClient.callInformalTagListPostRESTCall(methodName,
+                                                                             urlTemplate,
+                                                                             requestBody,
+                                                                             serverName,
+                                                                             userId,
+                                                                             startFrom,
+                                                                             pageSize);
+
+        return restResult.getTags();
     }
 
 
@@ -1258,8 +1267,25 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
     {
         final String   methodName = "getTagsByName";
         final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/private/by-name?startFrom={2}&pageSize={3}";
+        final String   nameParameter = "tag";
 
-        return retrieveTags(userId, tag, startFrom, pageSize, urlTemplate, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(tag, nameParameter, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(tag);
+        requestBody.setNameParameterName(nameParameter);
+
+        TagsResponse restResult = restClient.callInformalTagListPostRESTCall(methodName,
+                                                                             urlTemplate,
+                                                                             requestBody,
+                                                                             serverName,
+                                                                             userId,
+                                                                             startFrom,
+                                                                             pageSize);
+
+        return restResult.getTags();
     }
 
 
@@ -1286,8 +1312,25 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
     {
         final String   methodName = "findTags";
         final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/by-search-string?startFrom={2}&pageSize={3}";
+        final String   nameParameter = "tag";
 
-        return retrieveTags(userId, tag, startFrom, pageSize, urlTemplate, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(tag, nameParameter, methodName);
+
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(tag);
+        requestBody.setSearchStringParameterName(nameParameter);
+
+        TagsResponse restResult = restClient.callInformalTagListPostRESTCall(methodName,
+                                                                             urlTemplate,
+                                                                             requestBody,
+                                                                             serverName,
+                                                                             userId,
+                                                                             startFrom,
+                                                                             pageSize);
+
+        return restResult.getTags();
     }
 
 
@@ -1314,43 +1357,19 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
     {
         final String   methodName = "findTags";
         final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/private/by-search-string?startFrom={2}&pageSize={3}";
-
-        return retrieveTags(userId, tag, startFrom, pageSize, urlTemplate, methodName);
-    }
-
-
-    /**
-     * Return the list of tags matching the supplied name.
-     *
-     * @param userId the name of the calling user.
-     * @param tag name of tag or search string.
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param urlTemplate url template in which the parameters are plugged into
-     * @param methodName calling method
-     *
-     * @return meaning list response or
-     * @throws InvalidParameterException the userId is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    private List<InformalTagElement> retrieveTags(String userId,
-                                                  String tag,
-                                                  int    startFrom,
-                                                  int    pageSize,
-                                                  String urlTemplate,
-                                                  String methodName) throws InvalidParameterException,
-                                                                            PropertyServerException,
-                                                                            UserNotAuthorizedException
-    {
         final String   nameParameter = "tag";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(tag, nameParameter, methodName);
 
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(tag);
+        requestBody.setSearchStringParameterName(nameParameter);
+
         TagsResponse restResult = restClient.callInformalTagListPostRESTCall(methodName,
                                                                              urlTemplate,
-                                                                             tag,
+                                                                             requestBody,
                                                                              serverName,
                                                                              userId,
                                                                              startFrom,
@@ -1544,9 +1563,9 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                                PropertyServerException,
                                                                UserNotAuthorizedException
     {
-        final String   methodName = "getAssetsByTag";
-        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-tag/{2}?startFrom={3}&pageSize={4}";
-        final String   tagGUIDParameterName = "tagGUID";
+        final String methodName = "getAssetsByTag";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-tag/{2}?startFrom={3}&pageSize={4}";
+        final String tagGUIDParameterName = "tagGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(tagGUID, tagGUIDParameterName, methodName);

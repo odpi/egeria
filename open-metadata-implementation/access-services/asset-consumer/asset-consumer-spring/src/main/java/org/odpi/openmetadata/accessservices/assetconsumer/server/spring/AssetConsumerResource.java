@@ -5,9 +5,9 @@ package org.odpi.openmetadata.accessservices.assetconsumer.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.CommentProperties;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.CommentRequestBody;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.InformalTagProperties;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.RatingProperties;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.RatingRequestBody;
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
 import org.odpi.openmetadata.accessservices.assetconsumer.server.AssetConsumerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
@@ -87,11 +87,11 @@ public class AssetConsumerResource
                externalDocs=@ExternalDocumentation(description="Asset Feedback",
                                                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
-    public GUIDResponse addCommentReply(@PathVariable String            serverName,
-                                        @PathVariable String            userId,
-                                        @PathVariable String            assetGUID,
-                                        @PathVariable String            commentGUID,
-                                        @RequestBody  CommentProperties requestBody)
+    public GUIDResponse addCommentReply(@PathVariable String             serverName,
+                                        @PathVariable String             userId,
+                                        @PathVariable String             assetGUID,
+                                        @PathVariable String             commentGUID,
+                                        @RequestBody  CommentRequestBody requestBody)
     {
         return restAPI.addCommentReply(serverName, userId, assetGUID, commentGUID, requestBody);
     }
@@ -118,10 +118,10 @@ public class AssetConsumerResource
                externalDocs=@ExternalDocumentation(description="Asset Feedback",
                                                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
-    public GUIDResponse addCommentToAsset(@PathVariable String            serverName,
-                                          @PathVariable String            userId,
-                                          @PathVariable String            assetGUID,
-                                          @RequestBody  CommentProperties requestBody)
+    public GUIDResponse addCommentToAsset(@PathVariable String             serverName,
+                                          @PathVariable String             userId,
+                                          @PathVariable String             assetGUID,
+                                          @RequestBody  CommentRequestBody requestBody)
     {
         return restAPI.addCommentToAsset(serverName, userId, assetGUID, requestBody);
     }
@@ -211,10 +211,10 @@ public class AssetConsumerResource
                externalDocs=@ExternalDocumentation(description="Asset Feedback",
                                                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
-    public VoidResponse addRatingToAsset(@PathVariable String           serverName,
-                                         @PathVariable String           userId,
-                                         @PathVariable String           assetGUID,
-                                         @RequestBody  RatingProperties requestBody)
+    public VoidResponse addRatingToAsset(@PathVariable String            serverName,
+                                         @PathVariable String            userId,
+                                         @PathVariable String            assetGUID,
+                                         @RequestBody  RatingRequestBody requestBody)
     {
         return restAPI.addRatingToAsset(serverName, userId, assetGUID, requestBody);
     }
@@ -301,9 +301,9 @@ public class AssetConsumerResource
                externalDocs=@ExternalDocumentation(description="Informal Tag",
                                                    url="https://egeria-project.org/concepts/informal-tag/"))
 
-    public GUIDResponse createTag(@PathVariable String                serverName,
-                                  @PathVariable String                userId,
-                                  @RequestBody  InformalTagProperties requestBody)
+    public GUIDResponse createTag(@PathVariable String         serverName,
+                                  @PathVariable String         userId,
+                                  @RequestBody  TagRequestBody requestBody)
     {
         return restAPI.createTag(serverName, userId, requestBody);
     }
@@ -374,7 +374,7 @@ public class AssetConsumerResource
      *
      * @param serverName name of the server instances for this request
      * @param userId calling user
-     * @param searchString string to search for in text
+     * @param requestBody string to search for in text
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
      *
@@ -390,13 +390,13 @@ public class AssetConsumerResource
                externalDocs=@ExternalDocumentation(description="Assets",
                                                    url="https://egeria-project.org/concepts/asset/"))
 
-    public GUIDListResponse findAssets(@PathVariable String   serverName,
-                                       @PathVariable String   userId,
-                                       @RequestParam int      startFrom,
-                                       @RequestParam int      pageSize,
-                                       @RequestBody  String   searchString)
+    public GUIDListResponse findAssets(@PathVariable String                  serverName,
+                                       @PathVariable String                  userId,
+                                       @RequestParam int                     startFrom,
+                                       @RequestParam int                     pageSize,
+                                       @RequestBody  SearchStringRequestBody requestBody)
     {
-        return restAPI.findAssets(serverName, userId, searchString, startFrom, pageSize);
+        return restAPI.findAssets(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -436,7 +436,7 @@ public class AssetConsumerResource
      *
      * @param serverName name of the server instances for this request
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
      *
@@ -452,13 +452,13 @@ public class AssetConsumerResource
                externalDocs=@ExternalDocumentation(description="Assets",
                                                    url="https://egeria-project.org/concepts/asset/"))
 
-    public GUIDListResponse getAssetsByName(@PathVariable String   serverName,
-                                            @PathVariable String   userId,
-                                            @RequestParam int      startFrom,
-                                            @RequestParam int      pageSize,
-                                            @RequestBody  String   name)
+    public GUIDListResponse getAssetsByName(@PathVariable String          serverName,
+                                            @PathVariable String          userId,
+                                            @RequestParam int             startFrom,
+                                            @RequestParam int             pageSize,
+                                            @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getAssetsByName(serverName, userId, name, startFrom, pageSize);
+        return restAPI.getAssetsByName(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -499,7 +499,7 @@ public class AssetConsumerResource
      *
      * @param serverName name of the server instances for this request.
      * @param userId the name of the calling user.
-     * @param name name of term.
+     * @param requestBody name of term.
      * @param startFrom  index of the list to start from (0 for start).
      * @param pageSize   maximum number of elements to return.
      * @return list of meaning objects or
@@ -514,13 +514,13 @@ public class AssetConsumerResource
                externalDocs=@ExternalDocumentation(description="Glossaries",
                                                    url="https://egeria-project.org/practices/common-data-definitions/anatomy-of-a-glossary/"))
 
-    public GlossaryTermListResponse getMeaningByName(@PathVariable String   serverName,
-                                                     @PathVariable String   userId,
-                                                     @RequestParam int      startFrom,
-                                                     @RequestParam int      pageSize,
-                                                     @RequestBody  String   name)
+    public GlossaryTermListResponse getMeaningByName(@PathVariable String          serverName,
+                                                     @PathVariable String          userId,
+                                                     @RequestParam int             startFrom,
+                                                     @RequestParam int             pageSize,
+                                                     @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getMeaningByName(serverName, userId, name, startFrom, pageSize);
+        return restAPI.getMeaningByName(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -529,7 +529,7 @@ public class AssetConsumerResource
      *
      * @param serverName name of the server instances for this request.
      * @param userId the name of the calling user.
-     * @param name name of term.  This may include wild card characters.
+     * @param requestBody name of term.  This may include wild card characters.
      * @param startFrom  index of the list to start from (0 for start).
      * @param pageSize   maximum number of elements to return.
      * @return list of meaning objects or
@@ -544,13 +544,13 @@ public class AssetConsumerResource
                externalDocs=@ExternalDocumentation(description="Glossaries",
                                                    url="https://egeria-project.org/practices/common-data-definitions/anatomy-of-a-glossary/"))
 
-    public GlossaryTermListResponse findMeanings(@PathVariable String   serverName,
-                                                 @PathVariable String   userId,
-                                                 @RequestParam int      startFrom,
-                                                 @RequestParam int      pageSize,
-                                                 @RequestBody  String   name)
+    public GlossaryTermListResponse findMeanings(@PathVariable String                  serverName,
+                                                 @PathVariable String                  userId,
+                                                 @RequestParam int                     startFrom,
+                                                 @RequestParam int                     pageSize,
+                                                 @RequestBody  SearchStringRequestBody requestBody)
     {
-        return restAPI.findMeanings(serverName, userId, name, startFrom, pageSize);
+        return restAPI.findMeanings(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -613,7 +613,7 @@ public class AssetConsumerResource
      *
      * @param serverName name of the server instances for this request.
      * @param userId the name of the calling user.
-     * @param tagName name of tag.
+     * @param requestBody name of tag.
      * @param startFrom  index of the list to start from (0 for start).
      * @param pageSize   maximum number of elements to return.
      * @return list of tag objects or
@@ -628,13 +628,13 @@ public class AssetConsumerResource
                externalDocs=@ExternalDocumentation(description="Informal Tag",
                                                    url="https://egeria-project.org/concepts/informal-tag/"))
 
-    public TagsResponse getTagsByName(@PathVariable String  serverName,
-                                      @PathVariable String  userId,
-                                      @RequestParam int     startFrom,
-                                      @RequestParam int     pageSize,
-                                      @RequestBody  String  tagName)
+    public TagsResponse getTagsByName(@PathVariable String          serverName,
+                                      @PathVariable String          userId,
+                                      @RequestParam int             startFrom,
+                                      @RequestParam int             pageSize,
+                                      @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getTagsByName(serverName, userId, tagName, startFrom, pageSize);
+        return restAPI.getTagsByName(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -643,7 +643,7 @@ public class AssetConsumerResource
      *
      * @param serverName name of the server instances for this request.
      * @param userId the name of the calling user.
-     * @param tagName name of tag.
+     * @param requestBody name of tag.
      * @param startFrom  index of the list to start from (0 for start).
      * @param pageSize   maximum number of elements to return.
      * @return list of tag objects or
@@ -658,13 +658,13 @@ public class AssetConsumerResource
                externalDocs=@ExternalDocumentation(description="Informal Tag",
                                                    url="https://egeria-project.org/concepts/informal-tag/"))
 
-    public TagsResponse getMyTagsByName(@PathVariable String  serverName,
-                                        @PathVariable String  userId,
-                                        @RequestParam int     startFrom,
-                                        @RequestParam int     pageSize,
-                                        @RequestBody  String  tagName)
+    public TagsResponse getMyTagsByName(@PathVariable String          serverName,
+                                        @PathVariable String          userId,
+                                        @RequestParam int             startFrom,
+                                        @RequestParam int             pageSize,
+                                        @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getMyTagsByName(serverName, userId, tagName, startFrom, pageSize);
+        return restAPI.getMyTagsByName(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -673,7 +673,7 @@ public class AssetConsumerResource
      *
      * @param serverName name of the server instances for this request.
      * @param userId the name of the calling user.
-     * @param tagName name of tag.  This may include wild card characters.
+     * @param requestBody name of tag.  This may include wild card characters.
      * @param startFrom  index of the list to start from (0 for start).
      * @param pageSize   maximum number of elements to return.
      * @return list of tag objects or
@@ -688,13 +688,13 @@ public class AssetConsumerResource
                externalDocs=@ExternalDocumentation(description="Informal Tag",
                                                    url="https://egeria-project.org/concepts/informal-tag/"))
 
-    public TagsResponse findTags(@PathVariable String  serverName,
-                                 @PathVariable String  userId,
-                                 @RequestParam int     startFrom,
-                                 @RequestParam int     pageSize,
-                                 @RequestBody  String  tagName)
+    public TagsResponse findTags(@PathVariable String                  serverName,
+                                 @PathVariable String                  userId,
+                                 @RequestParam int                     startFrom,
+                                 @RequestParam int                     pageSize,
+                                 @RequestBody  SearchStringRequestBody requestBody)
     {
-        return restAPI.findTags(serverName, userId, tagName, startFrom, pageSize);
+        return restAPI.findTags(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -703,7 +703,7 @@ public class AssetConsumerResource
      *
      * @param serverName name of the server instances for this request.
      * @param userId the name of the calling user.
-     * @param tagName name of tag.  This may include wild card characters.
+     * @param requestBody name of tag.  This may include wild card characters.
      * @param startFrom  index of the list to start from (0 for start).
      * @param pageSize   maximum number of elements to return.
      * @return list of tag objects or
@@ -718,13 +718,13 @@ public class AssetConsumerResource
                externalDocs=@ExternalDocumentation(description="Informal Tag",
                                                    url="https://egeria-project.org/concepts/informal-tag/"))
 
-    public TagsResponse findMyTags(@PathVariable String  serverName,
-                                   @PathVariable String  userId,
-                                   @RequestParam int     startFrom,
-                                   @RequestParam int     pageSize,
-                                   @RequestBody  String  tagName)
+    public TagsResponse findMyTags(@PathVariable String                  serverName,
+                                   @PathVariable String                  userId,
+                                   @RequestParam int                     startFrom,
+                                   @RequestParam int                     pageSize,
+                                   @RequestBody  SearchStringRequestBody requestBody)
     {
-        return restAPI.findMyTags(serverName, userId, tagName, startFrom, pageSize);
+        return restAPI.findMyTags(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -900,11 +900,11 @@ public class AssetConsumerResource
                externalDocs=@ExternalDocumentation(description="Asset Feedback",
                                                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
-    public VoidResponse   updateComment(@PathVariable String            serverName,
-                                        @PathVariable String            userId,
-                                        @PathVariable String            assetGUID,
-                                        @PathVariable String            commentGUID,
-                                        @RequestBody  CommentProperties requestBody)
+    public VoidResponse   updateComment(@PathVariable String             serverName,
+                                        @PathVariable String             userId,
+                                        @PathVariable String             assetGUID,
+                                        @PathVariable String             commentGUID,
+                                        @RequestBody  CommentRequestBody requestBody)
     {
         return restAPI.updateComment(serverName, userId, assetGUID, commentGUID, requestBody);
     }
@@ -933,7 +933,7 @@ public class AssetConsumerResource
     public VoidResponse   updateTagDescription(@PathVariable String                serverName,
                                                @PathVariable String                userId,
                                                @PathVariable String                tagGUID,
-                                               @RequestBody  InformalTagProperties requestBody)
+                                               @RequestBody  TagUpdateRequestBody  requestBody)
     {
         return restAPI.updateTagDescription(serverName, userId, tagGUID, requestBody);
     }

@@ -9,10 +9,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.InformalTagProperties;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 /**
@@ -27,6 +27,7 @@ public class InformalTagElement implements MetadataElement, Serializable
 
     private ElementHeader         elementHeader = null;
     private InformalTagProperties informalTagProperties = null;
+    private TaggedElement         taggedElement = null;
 
 
     /**
@@ -49,6 +50,7 @@ public class InformalTagElement implements MetadataElement, Serializable
         {
             elementHeader = template.getElementHeader();
             informalTagProperties = template.getInformalTagProperties();
+            taggedElement = template.getTaggedElement();
         }
     }
 
@@ -92,11 +94,34 @@ public class InformalTagElement implements MetadataElement, Serializable
      * Set up the properties of the informal tag.
      *
      * @param informalTagProperties properties bean
-     *
      */
     public void setInformalTagProperties(InformalTagProperties informalTagProperties)
     {
         this.informalTagProperties = informalTagProperties;
+    }
+
+
+    /**
+     * Return details of the relationship from the element in the request to the tag.  This value is null if the tag was retrieved independently
+     * of any tagged element.
+     *
+     * @return associated relationship
+     */
+    public TaggedElement getTaggedElement()
+    {
+        return taggedElement;
+    }
+
+
+    /**
+     * Set up details of the relationship from the element in the request to the tag.  This value is null if the tag was retrieved independently
+     * of any tagged element.
+     *
+     * @param taggedElement associated relationship
+     */
+    public void setTaggedElement(TaggedElement taggedElement)
+    {
+        this.taggedElement = taggedElement;
     }
 
 
@@ -109,9 +134,10 @@ public class InformalTagElement implements MetadataElement, Serializable
     public String toString()
     {
         return "InformalTagElement{" +
-                "elementHeader=" + elementHeader +
-                ", informalTagProperties=" + informalTagProperties +
-                '}';
+                       "elementHeader=" + elementHeader +
+                       ", informalTagProperties=" + informalTagProperties +
+                       ", taggedElement=" + taggedElement +
+                       '}';
     }
 
 
@@ -128,17 +154,22 @@ public class InformalTagElement implements MetadataElement, Serializable
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof InformalTagElement))
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
+
         InformalTagElement that = (InformalTagElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(informalTagProperties, that.informalTagProperties);
+
+        if (elementHeader != null ? ! elementHeader.equals(that.elementHeader) : that.elementHeader != null)
+        {
+            return false;
+        }
+        if (informalTagProperties != null ? ! informalTagProperties.equals(that.informalTagProperties) : that.informalTagProperties != null)
+        {
+            return false;
+        }
+        return taggedElement != null ? taggedElement.equals(that.taggedElement) : that.taggedElement == null;
     }
 
 
@@ -150,6 +181,9 @@ public class InformalTagElement implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, informalTagProperties);
+        int result = elementHeader != null ? elementHeader.hashCode() : 0;
+        result = 31 * result + (informalTagProperties != null ? informalTagProperties.hashCode() : 0);
+        result = 31 * result + (taggedElement != null ? taggedElement.hashCode() : 0);
+        return result;
     }
 }
