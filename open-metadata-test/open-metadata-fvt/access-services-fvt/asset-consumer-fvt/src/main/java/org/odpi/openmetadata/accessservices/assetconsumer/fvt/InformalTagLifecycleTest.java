@@ -18,12 +18,12 @@ import java.util.List;
 
 
 /**
- * CreateTagTest calls the AssetConsumerClient to create a tag and attach it to assets and schemas
+ * InformalTagLifecycleTest calls the AssetConsumerClient to create a tag and attach it to assets and schemas
  * and then retrieve the results.
  */
-public class CreateTagTest
+public class InformalTagLifecycleTest
 {
-    private final static String testCaseName       = "CreateTagTest";
+    private final static String testCaseName       = "InformalTagLifecycleTest";
 
     private final static int    maxPageSize        = 100;
 
@@ -66,7 +66,7 @@ public class CreateTagTest
         results.incrementNumberOfTests();
         try
         {
-            CreateTagTest.runIt(serverPlatformRootURL, serverName, userId, results.getAuditLogDestination());
+            InformalTagLifecycleTest.runIt(serverPlatformRootURL, serverName, userId, results.getAuditLogDestination());
             results.incrementNumberOfSuccesses();
         }
         catch (Exception error)
@@ -74,7 +74,7 @@ public class CreateTagTest
             results.addCapturedError(error);
         }
 
-        System.out.println(results.toString());
+        System.out.println(results);
         return results;
     }
 
@@ -93,7 +93,7 @@ public class CreateTagTest
                               String                 userId,
                               FVTAuditLogDestination auditLogDestination) throws FVTUnexpectedCondition
     {
-        CreateTagTest thisTest = new CreateTagTest();
+        InformalTagLifecycleTest thisTest = new InformalTagLifecycleTest();
 
         AuditLog auditLog = new AuditLog(auditLogDestination,
                                          AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceCode(),

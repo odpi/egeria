@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.assetconsumer.fvt.setup;
+package org.odpi.openmetadata.accessservices.assetconsumer.fvt;
 
 import org.odpi.openmetadata.accessservices.assetowner.client.AssetOwner;
 import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
@@ -37,8 +37,8 @@ public class AssetOwnerFactory
     private final static String schemaTypeType         = "SchemaType type";
     private final static String schemaTypeDefaultValue = "SchemaType defaultValue";
 
-    private String testCaseName;
-    private AssetOwner client;
+    private final String testCaseName;
+    private final AssetOwner client;
 
     /**
      * Simple constructor
@@ -108,7 +108,7 @@ public class AssetOwnerFactory
             AssetProperties properties = new AssetProperties();
 
             properties.setTypeName("Asset");
-            properties.setQualifiedName(assetName);
+            properties.setQualifiedName(testCaseName + ":" + assetName);
             properties.setDisplayName(assetDisplayName);
             properties.setDescription(assetDescription);
             properties.setAdditionalProperties(additionalProperties);
@@ -153,7 +153,7 @@ public class AssetOwnerFactory
 
             TemplateProperties properties = new TemplateProperties();
 
-            properties.setQualifiedName(assetName + "-2");
+            properties.setQualifiedName(testCaseName + ":" + assetName + "-2");
             properties.setDisplayName(assetDisplayName + "-2");
             properties.setDescription(assetDescription + "-2");
 
@@ -194,7 +194,7 @@ public class AssetOwnerFactory
         {
             PrimitiveSchemaTypeProperties properties = new PrimitiveSchemaTypeProperties();
 
-            properties.setQualifiedName(schemaTypeName);
+            properties.setQualifiedName(testCaseName + ":" + schemaTypeName);
             properties.setDisplayName(schemaTypeDisplayName);
             properties.setDescription(schemaTypeDescription);
             properties.setDataType(schemaTypeType);

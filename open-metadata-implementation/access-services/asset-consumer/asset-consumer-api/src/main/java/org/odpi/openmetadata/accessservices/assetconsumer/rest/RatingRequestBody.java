@@ -1,12 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetconsumer.properties;
+package org.odpi.openmetadata.accessservices.assetconsumer.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 import java.util.Objects;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
 
@@ -14,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * RatingProperties stores information about a rating connected to an asset.  Ratings provide informal feedback on the quality of assets
+ * RatingRequestBody stores information about a rating connected to an asset.  Ratings provide informal feedback on the quality of assets
  * and can be added at any time.
  *
  * Ratings have the userId of the person who added it, a star rating and an optional review comment.
@@ -26,22 +25,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RatingProperties implements Serializable
+public class RatingRequestBody extends FeedbackRequestBody
 {
     private static final long     serialVersionUID = 1L;
 
-    /*
-     * Attributes of a RatingProperties
-     */
     private StarRating starRating = null;
     private String     review     = null;
     private String     user       = null;
-    private boolean    isPublic   = false;
 
     /**
      * Default constructor
      */
-    public RatingProperties()
+    public RatingRequestBody()
     {
         super();
     }
@@ -52,14 +47,15 @@ public class RatingProperties implements Serializable
      *
      * @param template element to copy
      */
-    public RatingProperties(RatingProperties template)
+    public RatingRequestBody(RatingRequestBody template)
     {
+        super(template);
+
         if (template != null)
         {
             user = template.getUser();
             starRating = template.getStarRating();
             review = template.getReview();
-            isPublic = template.isPublic;
         }
     }
 
@@ -129,28 +125,6 @@ public class RatingProperties implements Serializable
 
 
     /**
-     * Return if this rating is private ot the creating user.
-     *
-     * @return boolean
-     */
-    public boolean isPublic()
-    {
-        return isPublic;
-    }
-
-
-    /**
-     * Set up whether the rating is private to the creating user or not.
-     *
-     * @param aPublic boolean
-     */
-    public void setPublic(boolean aPublic)
-    {
-        isPublic = aPublic;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -158,11 +132,11 @@ public class RatingProperties implements Serializable
     @Override
     public String toString()
     {
-        return "RatingProperties{" +
+        return "RatingRequestBody{" +
                 "starRating=" + starRating +
                 ", review='" + review + '\'' +
                 ", user='" + user + '\'' +
-                ", isPublic='" + isPublic + '\'' +
+                ", isPublic='" + getIsPublic() + '\'' +
                 '}';
     }
 
@@ -188,9 +162,8 @@ public class RatingProperties implements Serializable
         {
             return false;
         }
-        RatingProperties rating = (RatingProperties) objectToCompare;
-        return isPublic() == rating.isPublic() &&
-                getStarRating() == rating.getStarRating() &&
+        RatingRequestBody rating = (RatingRequestBody) objectToCompare;
+        return getStarRating() == rating.getStarRating() &&
                 Objects.equals(getReview(), rating.getReview()) &&
                 Objects.equals(getUser(), rating.getUser());
     }
@@ -204,6 +177,10 @@ public class RatingProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(starRating, review, user, isPublic);
+        int result = super.hashCode();
+        result = 31 * result + (starRating != null ? starRating.hashCode() : 0);
+        result = 31 * result + (review != null ? review.hashCode() : 0);
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+        return result;
     }
 }

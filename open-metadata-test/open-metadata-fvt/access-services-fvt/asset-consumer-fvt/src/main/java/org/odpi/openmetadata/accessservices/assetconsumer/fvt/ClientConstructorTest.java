@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.assetconsumer.fvt.clientconstructors;
+package org.odpi.openmetadata.accessservices.assetconsumer.fvt;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.client.AssetConsumer;
 import org.odpi.openmetadata.accessservices.assetconsumer.client.rest.AssetConsumerRESTClient;
@@ -13,8 +13,7 @@ import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 
 
 /**
- * ClientConstructorTest provides the methods to verify that all of the clients can be constructed with
- * or without security
+ * ClientConstructorTest provides the methods to verify that all the clients can be constructed with or without security.
  */
 public class ClientConstructorTest
 {

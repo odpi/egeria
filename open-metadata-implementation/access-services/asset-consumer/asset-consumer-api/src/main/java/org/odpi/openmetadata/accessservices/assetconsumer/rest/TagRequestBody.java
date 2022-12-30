@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetconsumer.properties;
+package org.odpi.openmetadata.accessservices.assetconsumer.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -29,20 +29,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class InformalTagProperties implements Serializable
+public class TagRequestBody implements Serializable
 {
     private static final long     serialVersionUID = 1L;
 
     private boolean isPrivateTag = false;
     private String  name         = null;
     private String  description  = null;
-    private String  user         = null;
 
 
     /**
      * Default constructor
      */
-    public InformalTagProperties()
+    public TagRequestBody()
     {
         super();
     }
@@ -53,12 +52,11 @@ public class InformalTagProperties implements Serializable
      *
      * @param template element to copy
      */
-    public InformalTagProperties(InformalTagProperties template)
+    public TagRequestBody(TagRequestBody template)
     {
         if (template != null)
         {
             isPrivateTag = template.getIsPrivateTag();
-            user = template.getUser();
             name = template.getName();
             description = template.getDescription();
         }
@@ -85,27 +83,6 @@ public class InformalTagProperties implements Serializable
     public void setIsPrivateTag(boolean privateTag)
     {
         isPrivateTag = privateTag;
-    }
-
-
-    /**
-     * Return the user id of the person who created the tag.  Null means the user id is not known.
-     *
-     * @return String tagging user
-     */
-    public String getUser() {
-        return user;
-    }
-
-
-    /**
-     * Set up the user id of the person who created the tag.  Null means the user id is not known.
-     *
-     * @param user String identifier of the creator of the tag.
-     */
-    public void setUser(String user)
-    {
-        this.user = user;
     }
 
 
@@ -161,12 +138,11 @@ public class InformalTagProperties implements Serializable
     @Override
     public String toString()
     {
-        return "InformalTagProperties{" +
-                ", isPrivateTag=" + isPrivateTag +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", user='" + user + '\'' +
-                '}';
+        return "TagRequestBody{" +
+                       "isPrivateTag=" + isPrivateTag +
+                       ", name='" + name + '\'' +
+                       ", description='" + description + '\'' +
+                       '}';
     }
 
 
@@ -183,19 +159,22 @@ public class InformalTagProperties implements Serializable
         {
             return true;
         }
-        if (!(objectToCompare instanceof InformalTagProperties))
+        if (! (objectToCompare instanceof TagRequestBody))
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+
+        TagRequestBody that = (TagRequestBody) objectToCompare;
+
+        if (isPrivateTag != that.isPrivateTag)
         {
             return false;
         }
-        InformalTagProperties that = (InformalTagProperties) objectToCompare;
-        return getIsPrivateTag() == that.getIsPrivateTag() &&
-                Objects.equals(getName(), that.getName()) &&
-                Objects.equals(getDescription(), that.getDescription()) &&
-                Objects.equals(getUser(), that.getUser());
+        if (name != null ? ! name.equals(that.name) : that.name != null)
+        {
+            return false;
+        }
+        return description != null ? description.equals(that.description) : that.description == null;
     }
 
 
@@ -207,6 +186,9 @@ public class InformalTagProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(isPrivateTag, name, description, user);
+        int result = (isPrivateTag ? 1 : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        return result;
     }
 }

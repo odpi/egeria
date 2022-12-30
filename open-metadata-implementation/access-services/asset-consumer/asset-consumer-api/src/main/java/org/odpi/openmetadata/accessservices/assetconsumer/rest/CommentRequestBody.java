@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetconsumer.properties;
+package org.odpi.openmetadata.accessservices.assetconsumer.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Objects;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.FeedbackRequestBody;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
