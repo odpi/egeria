@@ -23,7 +23,7 @@ import java.util.Date;
 @RequestMapping("/servers/{serverName}/open-metadata/view-services/glossary-author/users/{userId}")
 @Tag(name="Subject Area OMAS", description="The Subject Area OMAS supports subject matter experts who are documenting their knowledge about a particular subject. This includes glossary terms, reference data, validation rules.",
      externalDocs=@ExternalDocumentation(description="Glossary Author Open Metadata View Service (OMVS)",
-                                         url="https://egeria-project.org/services/omvs/glossary-view/overview/"))
+                                         url="https://egeria-project.org/services/omvs/glossary-author/overview/"))
 public class GlossaryAuthorGraphRESTResource {
     private final GlossaryAuthorViewGraphRESTServices restAPI = new GlossaryAuthorViewGraphRESTServices();
     /**
