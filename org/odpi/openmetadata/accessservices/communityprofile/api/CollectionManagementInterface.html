@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6};
+var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -124,10 +124,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <hr>
 <pre>public interface <span class="typeNameLabel">CollectionManagementInterface</span></pre>
-<div class="block">The Community Profile Open Metadata Access Service (OMAS) is used by tools and administrators to
- maintain information associated with individuals and communities.
- The MyFavouriteCollectionsInterface manages three standard collections of favourite assets, projects and communities.
- The CollectionManagementInterface adds methods for managing additional collections that can be attached to communities
+<div class="block">The CollectionManagementInterface adds methods for managing collections that can be attached to communities
  and personal profiles.</div>
 </li>
 </ul>
@@ -151,6 +148,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addToCollection(java.lang.String,java.lang.String,java.lang.String)">addToCollection</a></span>&#8203;(java.lang.String&nbsp;userId,
+               java.lang.String&nbsp;collectionGUID,
+               java.lang.String&nbsp;elementGUID)</code></th>
+<td class="colLast">
+<div class="block">Add an element to a collection.</div>
+</td>
+</tr>
+<tr id="i1" class="rowColor">
+<td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#attachCollection(java.lang.String,java.lang.String,java.lang.String,boolean)">attachCollection</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;collectionGUID,
                 java.lang.String&nbsp;parentGUID,
@@ -159,7 +165,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Connect an existing collection to an anchor point.</div>
 </td>
 </tr>
-<tr id="i1" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createCollection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">createCollection</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;qualifiedName,
@@ -171,7 +177,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Create a new generic collection.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createFolder(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionOrder,java.util.Map)">createFolder</a></span>&#8203;(java.lang.String&nbsp;userId,
             java.lang.String&nbsp;qualifiedName,
@@ -184,7 +190,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Create a collection that acts like a folder with an order.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createSet(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">createSet</a></span>&#8203;(java.lang.String&nbsp;userId,
          java.lang.String&nbsp;qualifiedName,
@@ -196,7 +202,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Create a collection that acts like a set (this does not allow duplicate entries).</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deleteCollection(java.lang.String,java.lang.String)">deleteCollection</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;collectionGUID)</code></th>
@@ -204,7 +210,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Delete a collection.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#detachCollection(java.lang.String,java.lang.String,java.lang.String)">detachCollection</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;collectionGUID,
@@ -213,7 +219,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Detach an existing collection from an element.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="../metadataelements/CollectionElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">CollectionElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCollection(java.lang.String,java.lang.String)">getCollection</a></span>&#8203;(java.lang.String&nbsp;userId,
              java.lang.String&nbsp;collectionGUID)</code></th>
@@ -221,7 +227,17 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Return the properties of a specific collection.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/CollectionMember.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">CollectionMember</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCollectionMembers(java.lang.String,java.lang.String,int,int)">getCollectionMembers</a></span>&#8203;(java.lang.String&nbsp;userId,
+                    java.lang.String&nbsp;collectionGUID,
+                    int&nbsp;startFrom,
+                    int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Return a list of elements that are a member of a collection.</div>
+</td>
+</tr>
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/CollectionElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">CollectionElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCollections(java.lang.String,java.lang.String,int,int)">getCollections</a></span>&#8203;(java.lang.String&nbsp;userId,
               java.lang.String&nbsp;parentGUID,
@@ -229,6 +245,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
               int&nbsp;pageSize)</code></th>
 <td class="colLast">
 <div class="block">Returns the list of collections that are linked off of the supplied element.</div>
+</td>
+</tr>
+<tr id="i10" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeFromCollection(java.lang.String,java.lang.String,java.lang.String)">removeFromCollection</a></span>&#8203;(java.lang.String&nbsp;userId,
+                    java.lang.String&nbsp;collectionGUID,
+                    java.lang.String&nbsp;elementGUID)</code></th>
+<td class="colLast">
+<div class="block">Remove an element from a collection.</div>
 </td>
 </tr>
 </table>
@@ -459,7 +484,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <a id="deleteCollection(java.lang.String,java.lang.String)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>deleteCollection</h4>
 <pre class="methodSignature">void&nbsp;deleteCollection&#8203;(java.lang.String&nbsp;userId,
@@ -476,6 +501,85 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+</dl>
+</li>
+</ul>
+<a id="getCollectionMembers(java.lang.String,java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getCollectionMembers</h4>
+<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/CollectionMember.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">CollectionMember</a>&gt;&nbsp;getCollectionMembers&#8203;(java.lang.String&nbsp;userId,
+                                                      java.lang.String&nbsp;collectionGUID,
+                                                      int&nbsp;startFrom,
+                                                      int&nbsp;pageSize)
+                                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
+<div class="block">Return a list of elements that are a member of a collection.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>collectionGUID</code> - unique identifier of the collection.</dd>
+<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
+<dd><code>pageSize</code> - maximum number of elements to return.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of asset details</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+</dl>
+</li>
+</ul>
+<a id="addToCollection(java.lang.String,java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>addToCollection</h4>
+<pre class="methodSignature">void&nbsp;addToCollection&#8203;(java.lang.String&nbsp;userId,
+                     java.lang.String&nbsp;collectionGUID,
+                     java.lang.String&nbsp;elementGUID)
+              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
+<div class="block">Add an element to a collection.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>collectionGUID</code> - unique identifier of the collection.</dd>
+<dd><code>elementGUID</code> - unique identifier of the element.</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem updating information in the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+</dl>
+</li>
+</ul>
+<a id="removeFromCollection(java.lang.String,java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>removeFromCollection</h4>
+<pre class="methodSignature">void&nbsp;removeFromCollection&#8203;(java.lang.String&nbsp;userId,
+                          java.lang.String&nbsp;collectionGUID,
+                          java.lang.String&nbsp;elementGUID)
+                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                          <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                          <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
+<div class="block">Remove an element from a collection.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>collectionGUID</code> - unique identifier of the collection.</dd>
+<dd><code>elementGUID</code> - unique identifier of the element.</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem updating information in the property server(s).</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>

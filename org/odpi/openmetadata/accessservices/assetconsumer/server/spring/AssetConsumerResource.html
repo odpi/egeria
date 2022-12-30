@@ -183,21 +183,21 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addCommentReply(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.properties.CommentProperties)">addCommentReply</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addCommentReply(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.rest.CommentRequestBody)">addCommentReply</a></span>&#8203;(java.lang.String&nbsp;serverName,
                java.lang.String&nbsp;userId,
                java.lang.String&nbsp;assetGUID,
                java.lang.String&nbsp;commentGUID,
-               <a href="../../properties/CommentProperties.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.properties">CommentProperties</a>&nbsp;requestBody)</code></th>
+               <a href="../../rest/CommentRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">CommentRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Adds a reply to a comment.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addCommentToAsset(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.properties.CommentProperties)">addCommentToAsset</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addCommentToAsset(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.rest.CommentRequestBody)">addCommentToAsset</a></span>&#8203;(java.lang.String&nbsp;serverName,
                  java.lang.String&nbsp;userId,
                  java.lang.String&nbsp;assetGUID,
-                 <a href="../../properties/CommentProperties.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.properties">CommentProperties</a>&nbsp;requestBody)</code></th>
+                 <a href="../../rest/CommentRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">CommentRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Creates a comment and attaches it to an asset.</div>
 </td>
@@ -224,10 +224,10 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addRatingToAsset(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.properties.RatingProperties)">addRatingToAsset</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addRatingToAsset(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.rest.RatingRequestBody)">addRatingToAsset</a></span>&#8203;(java.lang.String&nbsp;serverName,
                 java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;assetGUID,
-                <a href="../../properties/RatingProperties.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.properties">RatingProperties</a>&nbsp;requestBody)</code></th>
+                <a href="../../rest/RatingRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">RatingRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Adds a star rating and optional review text to the asset.</div>
 </td>
@@ -256,9 +256,9 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createTag(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.properties.InformalTagProperties)">createTag</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createTag(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.rest.TagRequestBody)">createTag</a></span>&#8203;(java.lang.String&nbsp;serverName,
          java.lang.String&nbsp;userId,
-         <a href="../../properties/InformalTagProperties.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.properties">InformalTagProperties</a>&nbsp;requestBody)</code></th>
+         <a href="../../rest/TagRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">TagRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Creates a new informal tag and returns the unique identifier for it.</div>
 </td>
@@ -275,44 +275,44 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDListResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDListResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findAssets(java.lang.String,java.lang.String,int,int,java.lang.String)">findAssets</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findAssets(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">findAssets</a></span>&#8203;(java.lang.String&nbsp;serverName,
           java.lang.String&nbsp;userId,
           int&nbsp;startFrom,
           int&nbsp;pageSize,
-          java.lang.String&nbsp;searchString)</code></th>
+          <a href="../../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Return a list of assets with the requested search string in their name, qualified name or description.</div>
 </td>
 </tr>
 <tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="../../rest/GlossaryTermListResponse.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">GlossaryTermListResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findMeanings(java.lang.String,java.lang.String,int,int,java.lang.String)">findMeanings</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findMeanings(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">findMeanings</a></span>&#8203;(java.lang.String&nbsp;serverName,
             java.lang.String&nbsp;userId,
             int&nbsp;startFrom,
             int&nbsp;pageSize,
-            java.lang.String&nbsp;name)</code></th>
+            <a href="../../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Return the full definition (meaning) of the terms matching the supplied name.</div>
 </td>
 </tr>
 <tr id="i11" class="rowColor">
 <td class="colFirst"><code><a href="../../rest/TagsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">TagsResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findMyTags(java.lang.String,java.lang.String,int,int,java.lang.String)">findMyTags</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findMyTags(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">findMyTags</a></span>&#8203;(java.lang.String&nbsp;serverName,
           java.lang.String&nbsp;userId,
           int&nbsp;startFrom,
           int&nbsp;pageSize,
-          java.lang.String&nbsp;tagName)</code></th>
+          <a href="../../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Return the list of the calling user's private tags containing the supplied string in either the name or description.</div>
 </td>
 </tr>
 <tr id="i12" class="altColor">
 <td class="colFirst"><code><a href="../../rest/TagsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">TagsResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findTags(java.lang.String,java.lang.String,int,int,java.lang.String)">findTags</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findTags(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">findTags</a></span>&#8203;(java.lang.String&nbsp;serverName,
         java.lang.String&nbsp;userId,
         int&nbsp;startFrom,
         int&nbsp;pageSize,
-        java.lang.String&nbsp;tagName)</code></th>
+        <a href="../../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Return the list of informal tags containing the supplied string in either the name or description.</div>
 </td>
@@ -339,11 +339,11 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i15" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDListResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDListResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAssetsByName(java.lang.String,java.lang.String,int,int,java.lang.String)">getAssetsByName</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAssetsByName(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">getAssetsByName</a></span>&#8203;(java.lang.String&nbsp;serverName,
                java.lang.String&nbsp;userId,
                int&nbsp;startFrom,
                int&nbsp;pageSize,
-               java.lang.String&nbsp;name)</code></th>
+               <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Return a list of assets with the requested name either qualifiedName or name property.</div>
 </td>
@@ -370,22 +370,22 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i18" class="altColor">
 <td class="colFirst"><code><a href="../../rest/GlossaryTermListResponse.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">GlossaryTermListResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMeaningByName(java.lang.String,java.lang.String,int,int,java.lang.String)">getMeaningByName</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMeaningByName(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">getMeaningByName</a></span>&#8203;(java.lang.String&nbsp;serverName,
                 java.lang.String&nbsp;userId,
                 int&nbsp;startFrom,
                 int&nbsp;pageSize,
-                java.lang.String&nbsp;name)</code></th>
+                <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Return the full definition (meaning) of the terms exactly matching the supplied name.</div>
 </td>
 </tr>
 <tr id="i19" class="rowColor">
 <td class="colFirst"><code><a href="../../rest/TagsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">TagsResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMyTagsByName(java.lang.String,java.lang.String,int,int,java.lang.String)">getMyTagsByName</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMyTagsByName(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">getMyTagsByName</a></span>&#8203;(java.lang.String&nbsp;serverName,
                java.lang.String&nbsp;userId,
                int&nbsp;startFrom,
                int&nbsp;pageSize,
-               java.lang.String&nbsp;tagName)</code></th>
+               <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Return the list of the calling user's private informal tags exactly matching the supplied name.</div>
 </td>
@@ -410,11 +410,11 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i22" class="altColor">
 <td class="colFirst"><code><a href="../../rest/TagsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">TagsResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTagsByName(java.lang.String,java.lang.String,int,int,java.lang.String)">getTagsByName</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTagsByName(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">getTagsByName</a></span>&#8203;(java.lang.String&nbsp;serverName,
              java.lang.String&nbsp;userId,
              int&nbsp;startFrom,
              int&nbsp;pageSize,
-             java.lang.String&nbsp;tagName)</code></th>
+             <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Return the tags exactly matching the supplied name.</div>
 </td>
@@ -474,21 +474,21 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i28" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateComment(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.properties.CommentProperties)">updateComment</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateComment(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.rest.CommentRequestBody)">updateComment</a></span>&#8203;(java.lang.String&nbsp;serverName,
              java.lang.String&nbsp;userId,
              java.lang.String&nbsp;assetGUID,
              java.lang.String&nbsp;commentGUID,
-             <a href="../../properties/CommentProperties.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.properties">CommentProperties</a>&nbsp;requestBody)</code></th>
+             <a href="../../rest/CommentRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">CommentRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Update an existing comment.</div>
 </td>
 </tr>
 <tr id="i29" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateTagDescription(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.properties.InformalTagProperties)">updateTagDescription</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateTagDescription(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.rest.TagUpdateRequestBody)">updateTagDescription</a></span>&#8203;(java.lang.String&nbsp;serverName,
                     java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;tagGUID,
-                    <a href="../../properties/InformalTagProperties.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.properties">InformalTagProperties</a>&nbsp;requestBody)</code></th>
+                    <a href="../../rest/TagUpdateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">TagUpdateRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Updates the description of an existing tag (either private or public).</div>
 </td>
@@ -564,7 +564,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/ConnectionResponse.htm
 </dl>
 </li>
 </ul>
-<a id="addCommentReply(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.properties.CommentProperties)">
+<a id="addCommentReply(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.rest.CommentRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -580,7 +580,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" tit
                                     @PathVariable
                                     java.lang.String&nbsp;commentGUID,
                                     @RequestBody
-                                    <a href="../../properties/CommentProperties.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.properties">CommentProperties</a>&nbsp;requestBody)</pre>
+                                    <a href="../../rest/CommentRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">CommentRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Adds a reply to a comment.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -598,7 +598,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="addCommentToAsset(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.properties.CommentProperties)">
+<a id="addCommentToAsset(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.rest.CommentRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -612,7 +612,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" tit
                                       @PathVariable
                                       java.lang.String&nbsp;assetGUID,
                                       @RequestBody
-                                      <a href="../../properties/CommentProperties.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.properties">CommentProperties</a>&nbsp;requestBody)</pre>
+                                      <a href="../../rest/CommentRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">CommentRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Creates a comment and attaches it to an asset.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -695,7 +695,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="addRatingToAsset(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.properties.RatingProperties)">
+<a id="addRatingToAsset(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.rest.RatingRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -709,7 +709,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
                                      @PathVariable
                                      java.lang.String&nbsp;assetGUID,
                                      @RequestBody
-                                     <a href="../../properties/RatingProperties.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.properties">RatingProperties</a>&nbsp;requestBody)</pre>
+                                     <a href="../../rest/RatingRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">RatingRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Adds a star rating and optional review text to the asset.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -791,7 +791,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="createTag(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.properties.InformalTagProperties)">
+<a id="createTag(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.rest.TagRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -803,7 +803,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" tit
                               @PathVariable
                               java.lang.String&nbsp;userId,
                               @RequestBody
-                              <a href="../../properties/InformalTagProperties.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.properties">InformalTagProperties</a>&nbsp;requestBody)</pre>
+                              <a href="../../rest/TagRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">TagRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Creates a new informal tag and returns the unique identifier for it.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -879,7 +879,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="findAssets(java.lang.String,java.lang.String,int,int,java.lang.String)">
+<a id="findAssets(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -895,13 +895,13 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDListResponse.html"
                                    @RequestParam
                                    int&nbsp;pageSize,
                                    @RequestBody
-                                   java.lang.String&nbsp;searchString)</pre>
+                                   <a href="../../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Return a list of assets with the requested search string in their name, qualified name or description.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>searchString</code> - string to search for in text</dd>
+<dd><code>requestBody</code> - string to search for in text</dd>
 <dd><code>startFrom</code> - starting element (used in paging through large result sets)</dd>
 <dd><code>pageSize</code> - maximum number of results to return</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -945,7 +945,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDListResponse.html"
 </dl>
 </li>
 </ul>
-<a id="getAssetsByName(java.lang.String,java.lang.String,int,int,java.lang.String)">
+<a id="getAssetsByName(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -961,13 +961,13 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDListResponse.html"
                                         @RequestParam
                                         int&nbsp;pageSize,
                                         @RequestBody
-                                        java.lang.String&nbsp;name)</pre>
+                                        <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Return a list of assets with the requested name either qualifiedName or name property.  There are no wildcards supported in this request.  The name must match exactly.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>name</code> - name to search for</dd>
+<dd><code>requestBody</code> - name to search for</dd>
 <dd><code>startFrom</code> - starting element (used in paging through large result sets)</dd>
 <dd><code>pageSize</code> - maximum number of results to return</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -1011,7 +1011,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDListResponse.html"
 </dl>
 </li>
 </ul>
-<a id="getMeaningByName(java.lang.String,java.lang.String,int,int,java.lang.String)">
+<a id="getMeaningByName(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1027,13 +1027,13 @@ public&nbsp;<a href="../../rest/GlossaryTermListResponse.html" title="class in o
                                                  @RequestParam
                                                  int&nbsp;pageSize,
                                                  @RequestBody
-                                                 java.lang.String&nbsp;name)</pre>
+                                                 <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Return the full definition (meaning) of the terms exactly matching the supplied name.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instances for this request.</dd>
 <dd><code>userId</code> - the name of the calling user.</dd>
-<dd><code>name</code> - name of term.</dd>
+<dd><code>requestBody</code> - name of term.</dd>
 <dd><code>startFrom</code> - index of the list to start from (0 for start).</dd>
 <dd><code>pageSize</code> - maximum number of elements to return.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -1044,7 +1044,7 @@ public&nbsp;<a href="../../rest/GlossaryTermListResponse.html" title="class in o
 </dl>
 </li>
 </ul>
-<a id="findMeanings(java.lang.String,java.lang.String,int,int,java.lang.String)">
+<a id="findMeanings(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1060,13 +1060,13 @@ public&nbsp;<a href="../../rest/GlossaryTermListResponse.html" title="class in o
                                              @RequestParam
                                              int&nbsp;pageSize,
                                              @RequestBody
-                                             java.lang.String&nbsp;name)</pre>
+                                             <a href="../../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Return the full definition (meaning) of the terms matching the supplied name.  The search string is a regular expression (regEx).</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instances for this request.</dd>
 <dd><code>userId</code> - the name of the calling user.</dd>
-<dd><code>name</code> - name of term.  This may include wild card characters.</dd>
+<dd><code>requestBody</code> - name of term.  This may include wild card characters.</dd>
 <dd><code>startFrom</code> - index of the list to start from (0 for start).</dd>
 <dd><code>pageSize</code> - maximum number of elements to return.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -1131,7 +1131,7 @@ public&nbsp;<a href="../../rest/TagResponse.html" title="class in org.odpi.openm
 </dl>
 </li>
 </ul>
-<a id="getTagsByName(java.lang.String,java.lang.String,int,int,java.lang.String)">
+<a id="getTagsByName(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1147,13 +1147,13 @@ public&nbsp;<a href="../../rest/TagsResponse.html" title="class in org.odpi.open
                                   @RequestParam
                                   int&nbsp;pageSize,
                                   @RequestBody
-                                  java.lang.String&nbsp;tagName)</pre>
+                                  <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Return the tags exactly matching the supplied name.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instances for this request.</dd>
 <dd><code>userId</code> - the name of the calling user.</dd>
-<dd><code>tagName</code> - name of tag.</dd>
+<dd><code>requestBody</code> - name of tag.</dd>
 <dd><code>startFrom</code> - index of the list to start from (0 for start).</dd>
 <dd><code>pageSize</code> - maximum number of elements to return.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -1164,7 +1164,7 @@ public&nbsp;<a href="../../rest/TagsResponse.html" title="class in org.odpi.open
 </dl>
 </li>
 </ul>
-<a id="getMyTagsByName(java.lang.String,java.lang.String,int,int,java.lang.String)">
+<a id="getMyTagsByName(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1180,13 +1180,13 @@ public&nbsp;<a href="../../rest/TagsResponse.html" title="class in org.odpi.open
                                     @RequestParam
                                     int&nbsp;pageSize,
                                     @RequestBody
-                                    java.lang.String&nbsp;tagName)</pre>
+                                    <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Return the list of the calling user's private informal tags exactly matching the supplied name.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instances for this request.</dd>
 <dd><code>userId</code> - the name of the calling user.</dd>
-<dd><code>tagName</code> - name of tag.</dd>
+<dd><code>requestBody</code> - name of tag.</dd>
 <dd><code>startFrom</code> - index of the list to start from (0 for start).</dd>
 <dd><code>pageSize</code> - maximum number of elements to return.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -1197,7 +1197,7 @@ public&nbsp;<a href="../../rest/TagsResponse.html" title="class in org.odpi.open
 </dl>
 </li>
 </ul>
-<a id="findTags(java.lang.String,java.lang.String,int,int,java.lang.String)">
+<a id="findTags(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1213,13 +1213,13 @@ public&nbsp;<a href="../../rest/TagsResponse.html" title="class in org.odpi.open
                              @RequestParam
                              int&nbsp;pageSize,
                              @RequestBody
-                             java.lang.String&nbsp;tagName)</pre>
+                             <a href="../../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Return the list of informal tags containing the supplied string in either the name or description. The search string is a regular expression (RegEx).</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instances for this request.</dd>
 <dd><code>userId</code> - the name of the calling user.</dd>
-<dd><code>tagName</code> - name of tag.  This may include wild card characters.</dd>
+<dd><code>requestBody</code> - name of tag.  This may include wild card characters.</dd>
 <dd><code>startFrom</code> - index of the list to start from (0 for start).</dd>
 <dd><code>pageSize</code> - maximum number of elements to return.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -1230,7 +1230,7 @@ public&nbsp;<a href="../../rest/TagsResponse.html" title="class in org.odpi.open
 </dl>
 </li>
 </ul>
-<a id="findMyTags(java.lang.String,java.lang.String,int,int,java.lang.String)">
+<a id="findMyTags(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1246,13 +1246,13 @@ public&nbsp;<a href="../../rest/TagsResponse.html" title="class in org.odpi.open
                                @RequestParam
                                int&nbsp;pageSize,
                                @RequestBody
-                               java.lang.String&nbsp;tagName)</pre>
+                               <a href="../../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Return the list of the calling user's private tags containing the supplied string in either the name or description.  The search string is a regular expression (RegEx).</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instances for this request.</dd>
 <dd><code>userId</code> - the name of the calling user.</dd>
-<dd><code>tagName</code> - name of tag.  This may include wild card characters.</dd>
+<dd><code>requestBody</code> - name of tag.  This may include wild card characters.</dd>
 <dd><code>startFrom</code> - index of the list to start from (0 for start).</dd>
 <dd><code>pageSize</code> - maximum number of elements to return.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -1422,7 +1422,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="updateComment(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.properties.CommentProperties)">
+<a id="updateComment(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.rest.CommentRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1438,7 +1438,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
                                   @PathVariable
                                   java.lang.String&nbsp;commentGUID,
                                   @RequestBody
-                                  <a href="../../properties/CommentProperties.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.properties">CommentProperties</a>&nbsp;requestBody)</pre>
+                                  <a href="../../rest/CommentRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">CommentRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Update an existing comment.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1455,7 +1455,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="updateTagDescription(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.properties.InformalTagProperties)">
+<a id="updateTagDescription(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.rest.TagUpdateRequestBody)">
 <!--   -->
 </a>
 <ul class="blockListLast">
@@ -1469,7 +1469,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
                                          @PathVariable
                                          java.lang.String&nbsp;tagGUID,
                                          @RequestBody
-                                         <a href="../../properties/InformalTagProperties.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.properties">InformalTagProperties</a>&nbsp;requestBody)</pre>
+                                         <a href="../../rest/TagUpdateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">TagUpdateRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Updates the description of an existing tag (either private or public).</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>

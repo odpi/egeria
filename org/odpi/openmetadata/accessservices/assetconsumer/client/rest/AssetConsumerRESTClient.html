@@ -248,9 +248,9 @@ extends <a href="../../../../commonservices/ocf/metadatamanagement/client/OCFRES
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../../rest/GlossaryTermListResponse.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">GlossaryTermListResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callGlossaryTermListPostRESTCall(java.lang.String,java.lang.String,java.lang.String,java.lang.Object...)">callGlossaryTermListPostRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callGlossaryTermListPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callGlossaryTermListPostRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                                 java.lang.String&nbsp;urlTemplate,
-                                java.lang.String&nbsp;searchString,
+                                java.lang.Object&nbsp;requestBody,
                                 java.lang.Object...&nbsp;params)</code></th>
 <td class="colLast">
 <div class="block">Issue a GET REST call that returns a GlossaryTermListResponse object.</div>
@@ -458,7 +458,7 @@ extends <a href="../../../../commonservices/ocf/metadatamanagement/client/OCFRES
 </dl>
 </li>
 </ul>
-<a id="callGlossaryTermListPostRESTCall(java.lang.String,java.lang.String,java.lang.String,java.lang.Object...)">
+<a id="callGlossaryTermListPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -466,7 +466,7 @@ extends <a href="../../../../commonservices/ocf/metadatamanagement/client/OCFRES
 <h4>callGlossaryTermListPostRESTCall</h4>
 <pre class="methodSignature">public&nbsp;<a href="../../rest/GlossaryTermListResponse.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">GlossaryTermListResponse</a>&nbsp;callGlossaryTermListPostRESTCall&#8203;(java.lang.String&nbsp;methodName,
                                                                  java.lang.String&nbsp;urlTemplate,
-                                                                 java.lang.String&nbsp;searchString,
+                                                                 java.lang.Object&nbsp;requestBody,
                                                                  java.lang.Object...&nbsp;params)
                                                           throws <a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                                  <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -476,7 +476,7 @@ extends <a href="../../../../commonservices/ocf/metadatamanagement/client/OCFRES
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>methodName</code> - name of the method being called.</dd>
 <dd><code>urlTemplate</code> - template of the URL for the REST API call with place-holders for the parameters.</dd>
-<dd><code>searchString</code> - request body describing the value to search for</dd>
+<dd><code>requestBody</code> - request body describing the value to search for</dd>
 <dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>GlossaryTermListResponse</dd>

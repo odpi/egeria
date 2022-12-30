@@ -27,8 +27,8 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10,"i45":10,"i46":10,"i47":10,"i48":10,"i49":10,"i50":10,"i51":10,"i52":10,"i53":10};
-var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":42,"i35":10,"i36":42,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10,"i45":10,"i46":10,"i47":10,"i48":10,"i49":10,"i50":10,"i51":10,"i52":10,"i53":10};
+var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
 var tableTab = "tableTab";
@@ -218,7 +218,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 </a>
 <h3>Method Summary</h3>
 <table class="memberSummary">
-<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
+<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t6" class="tableTab"><span><a href="javascript:show(32);">Deprecated Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
 <tr>
 <th class="colFirst" scope="col">Modifier and Type</th>
 <th class="colSecond" scope="col">Method</th>
@@ -580,7 +580,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
                           int&nbsp;startFrom,
                           int&nbsp;pageSize)</code></th>
 <td class="colLast">
-<div class="block">Retrieve the list of database tables associated with a database schema.</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
 </td>
 </tr>
 <tr id="i35" class="rowColor">
@@ -600,7 +600,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
                          int&nbsp;startFrom,
                          int&nbsp;pageSize)</code></th>
 <td class="colLast">
-<div class="block">Retrieve the list of database views associated with a database schema.</div>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
 </td>
 </tr>
 <tr id="i37" class="rowColor">
@@ -1810,13 +1810,15 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <ul class="blockList">
 <li class="blockList">
 <h4>getTablesForDatabaseSchema</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/DatabaseTableElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseTableElement</a>&gt;&nbsp;getTablesForDatabaseSchema&#8203;(java.lang.String&nbsp;userId,
+<pre class="methodSignature">@Deprecated
+public&nbsp;java.util.List&lt;<a href="../metadataelements/DatabaseTableElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseTableElement</a>&gt;&nbsp;getTablesForDatabaseSchema&#8203;(java.lang.String&nbsp;userId,
                                                                        java.lang.String&nbsp;databaseSchemaGUID,
                                                                        int&nbsp;startFrom,
                                                                        int&nbsp;pageSize)
                                                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span></div>
 <div class="block">Retrieve the list of database tables associated with a database schema.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -2126,13 +2128,15 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <ul class="blockList">
 <li class="blockList">
 <h4>getViewsForDatabaseSchema</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/DatabaseViewElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseViewElement</a>&gt;&nbsp;getViewsForDatabaseSchema&#8203;(java.lang.String&nbsp;userId,
+<pre class="methodSignature">@Deprecated
+public&nbsp;java.util.List&lt;<a href="../metadataelements/DatabaseViewElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseViewElement</a>&gt;&nbsp;getViewsForDatabaseSchema&#8203;(java.lang.String&nbsp;userId,
                                                                      java.lang.String&nbsp;databaseSchemaGUID,
                                                                      int&nbsp;startFrom,
                                                                      int&nbsp;pageSize)
                                                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span></div>
 <div class="block">Retrieve the list of database views associated with a database schema.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>

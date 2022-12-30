@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -214,27 +214,41 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 </td>
 </tr>
 <tr id="i3" class="rowColor">
+<td class="colFirst"><code><a href="TaggedElement.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.elements">TaggedElement</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTaggedElement()">getTaggedElement</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return details of the relationship from the element in the request to the tag.</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return hash code for this object</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setElementHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">setElementHeader</a></span>&#8203;(<a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a>&nbsp;elementHeader)</code></th>
 <td class="colLast">
 <div class="block">Set up the element header associated with the properties.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setInformalTagProperties(org.odpi.openmetadata.accessservices.assetconsumer.properties.InformalTagProperties)">setInformalTagProperties</a></span>&#8203;(<a href="../properties/InformalTagProperties.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.properties">InformalTagProperties</a>&nbsp;informalTagProperties)</code></th>
 <td class="colLast">
 <div class="block">Set up the properties of the informal tag.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTaggedElement(org.odpi.openmetadata.accessservices.assetconsumer.elements.TaggedElement)">setTaggedElement</a></span>&#8203;(<a href="TaggedElement.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.elements">TaggedElement</a>&nbsp;taggedElement)</code></th>
+<td class="colLast">
+<div class="block">Set up details of the relationship from the element in the request to the tag.</div>
+</td>
+</tr>
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -356,6 +370,36 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>informalTagProperties</code> - properties bean</dd>
+</dl>
+</li>
+</ul>
+<a id="getTaggedElement()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getTaggedElement</h4>
+<pre class="methodSignature">public&nbsp;<a href="TaggedElement.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.elements">TaggedElement</a>&nbsp;getTaggedElement()</pre>
+<div class="block">Return details of the relationship from the element in the request to the tag.  This value is null if the tag was retrieved independently
+ of any tagged element.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>associated relationship</dd>
+</dl>
+</li>
+</ul>
+<a id="setTaggedElement(org.odpi.openmetadata.accessservices.assetconsumer.elements.TaggedElement)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setTaggedElement</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setTaggedElement&#8203;(<a href="TaggedElement.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.elements">TaggedElement</a>&nbsp;taggedElement)</pre>
+<div class="block">Set up details of the relationship from the element in the request to the tag.  This value is null if the tag was retrieved independently
+ of any tagged element.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>taggedElement</code> - associated relationship</dd>
 </dl>
 </li>
 </ul>

@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -136,7 +136,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 <dl>
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="ConnectionProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.properties">ConnectionProperties</a></code>, <code><a href="ConnectorTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.properties">ConnectorTypeProperties</a></code>, <code><a href="EndpointProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.properties">EndpointProperties</a></code>, <code><a href="LocationProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.properties">LocationProperties</a></code>, <code><a href="MeaningProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.properties">MeaningProperties</a></code>, <code><a href="ReferenceDataAssetProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.properties">ReferenceDataAssetProperties</a></code>, <code><a href="ValidValueProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.properties">ValidValueProperties</a></code></dd>
+<dd><code><a href="CollectionProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.properties">CollectionProperties</a></code>, <code><a href="ConnectionProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.properties">ConnectionProperties</a></code>, <code><a href="ConnectorTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.properties">ConnectorTypeProperties</a></code>, <code><a href="EndpointProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.properties">EndpointProperties</a></code>, <code><a href="LocationProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.properties">LocationProperties</a></code>, <code><a href="MeaningProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.properties">MeaningProperties</a></code>, <code><a href="ReferenceDataAssetProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.properties">ReferenceDataAssetProperties</a></code>, <code><a href="SubjectAreaProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.properties">SubjectAreaProperties</a></code>, <code><a href="ValidValueProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.properties">ValidValueProperties</a></code></dd>
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">ReferenceableProperties</span>
@@ -212,13 +212,20 @@ implements java.io.Serializable</pre>
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;<a href="../../../frameworks/connectors/properties/beans/ElementClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementClassification</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getClassifications()">getClassifications</a></span>()</code></th>
+<td class="colFirst"><code>java.util.Date</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEffectiveFrom()">getEffectiveFrom</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Return the list of classifications associated with the asset.</div>
+<div class="block">Return the date/time that this element is effective from (null means effective from the epoch).</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
+<td class="colFirst"><code>java.util.Date</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEffectiveTo()">getEffectiveTo</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the date/time that element is effective to (null means that it is effective indefinitely into the future).</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExtendedProperties()">getExtendedProperties</a></span>()</code></th>
 <td class="colLast">
@@ -226,42 +233,49 @@ implements java.io.Serializable</pre>
  by this bean.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getQualifiedName()">getQualifiedName</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the stored qualified name property for the metadata entity.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTypeName()">getTypeName</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Return the name of the open metadata type for this element.</div>
+<div class="block">Return the name of the open metadata type for this metadata element.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return hash code based on properties.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a></span>&#8203;(java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;additionalProperties)</code></th>
 <td class="colLast">
 <div class="block">Set up additional properties.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setClassifications(java.util.List)">setClassifications</a></span>&#8203;(java.util.List&lt;<a href="../../../frameworks/connectors/properties/beans/ElementClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementClassification</a>&gt;&nbsp;classifications)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setEffectiveFrom(java.util.Date)">setEffectiveFrom</a></span>&#8203;(java.util.Date&nbsp;effectiveFrom)</code></th>
 <td class="colLast">
-<div class="block">Set up the classifications associated with this connection.</div>
+<div class="block">Set up the date/time that this element is effective from (null means effective from the epoch).</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setEffectiveTo(java.util.Date)">setEffectiveTo</a></span>&#8203;(java.util.Date&nbsp;effectiveTo)</code></th>
+<td class="colLast">
+<div class="block">Set the date/time that element is effective to (null means that it is effective indefinitely into the future).</div>
+</td>
+</tr>
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setExtendedProperties(java.util.Map)">setExtendedProperties</a></span>&#8203;(java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;extendedProperties)</code></th>
 <td class="colLast">
@@ -269,21 +283,21 @@ implements java.io.Serializable</pre>
  by this bean.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setQualifiedName(java.lang.String)">setQualifiedName</a></span>&#8203;(java.lang.String&nbsp;qualifiedName)</code></th>
 <td class="colLast">
 <div class="block">Set up the fully qualified name.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTypeName(java.lang.String)">setTypeName</a></span>&#8203;(java.lang.String&nbsp;typeName)</code></th>
 <td class="colLast">
 <div class="block">Set up the name of the open metadata type for this element.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -331,7 +345,7 @@ implements java.io.Serializable</pre>
 <li class="blockList">
 <h4>ReferenceableProperties</h4>
 <pre>public&nbsp;ReferenceableProperties&#8203;(<a href="ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.properties">ReferenceableProperties</a>&nbsp;template)</pre>
-<div class="block">Copy/clone constructor.  Retrieves values from the supplied template</div>
+<div class="block">Copy/clone constructor.  Retrieves the values from the supplied template</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>template</code> - element to copy</dd>
@@ -405,32 +419,59 @@ implements java.io.Serializable</pre>
 </dl>
 </li>
 </ul>
-<a id="getClassifications()">
+<a id="getEffectiveFrom()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getClassifications</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../frameworks/connectors/properties/beans/ElementClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementClassification</a>&gt;&nbsp;getClassifications()</pre>
-<div class="block">Return the list of classifications associated with the asset.   This is an  list and the
- pointers are set to the start of the list of classifications</div>
+<h4>getEffectiveFrom</h4>
+<pre class="methodSignature">public&nbsp;java.util.Date&nbsp;getEffectiveFrom()</pre>
+<div class="block">Return the date/time that this element is effective from (null means effective from the epoch).</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>Classifications  list of classifications</dd>
+<dd>date object</dd>
 </dl>
 </li>
 </ul>
-<a id="setClassifications(java.util.List)">
+<a id="setEffectiveFrom(java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>setClassifications</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setClassifications&#8203;(java.util.List&lt;<a href="../../../frameworks/connectors/properties/beans/ElementClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementClassification</a>&gt;&nbsp;classifications)</pre>
-<div class="block">Set up the classifications associated with this connection.</div>
+<h4>setEffectiveFrom</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setEffectiveFrom&#8203;(java.util.Date&nbsp;effectiveFrom)</pre>
+<div class="block">Set up the date/time that this element is effective from (null means effective from the epoch).</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>classifications</code> - list of classifications</dd>
+<dd><code>effectiveFrom</code> - date object</dd>
+</dl>
+</li>
+</ul>
+<a id="getEffectiveTo()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getEffectiveTo</h4>
+<pre class="methodSignature">public&nbsp;java.util.Date&nbsp;getEffectiveTo()</pre>
+<div class="block">Return the date/time that element is effective to (null means that it is effective indefinitely into the future).</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>date object</dd>
+</dl>
+</li>
+</ul>
+<a id="setEffectiveTo(java.util.Date)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setEffectiveTo</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setEffectiveTo&#8203;(java.util.Date&nbsp;effectiveTo)</pre>
+<div class="block">Set the date/time that element is effective to (null means that it is effective indefinitely into the future).</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>effectiveTo</code> - date object</dd>
 </dl>
 </li>
 </ul>
@@ -441,7 +482,7 @@ implements java.io.Serializable</pre>
 <li class="blockList">
 <h4>getTypeName</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getTypeName()</pre>
-<div class="block">Return the name of the open metadata type for this element.</div>
+<div class="block">Return the name of the open metadata type for this metadata element.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>string name</dd>

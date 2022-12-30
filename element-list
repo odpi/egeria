@@ -53,10 +53,6 @@ org.odpi.openmetadata.accessservices.assetconsumer.elements
 org.odpi.openmetadata.accessservices.assetconsumer.events
 org.odpi.openmetadata.accessservices.assetconsumer.ffdc
 org.odpi.openmetadata.accessservices.assetconsumer.fvt
-org.odpi.openmetadata.accessservices.assetconsumer.fvt.clientconstructors
-org.odpi.openmetadata.accessservices.assetconsumer.fvt.errorhandling
-org.odpi.openmetadata.accessservices.assetconsumer.fvt.setup
-org.odpi.openmetadata.accessservices.assetconsumer.fvt.tagging
 org.odpi.openmetadata.accessservices.assetconsumer.handlers
 org.odpi.openmetadata.accessservices.assetconsumer.outtopic
 org.odpi.openmetadata.accessservices.assetconsumer.properties
@@ -508,7 +504,6 @@ org.odpi.openmetadata.commonservices.multitenant.ffdc
 org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions
 org.odpi.openmetadata.commonservices.ocf.metadatamanagement.admin
 org.odpi.openmetadata.commonservices.ocf.metadatamanagement.api
-org.odpi.openmetadata.commonservices.ocf.metadatamanagement.auditlog
 org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders
 org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client
 org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters
@@ -518,7 +513,6 @@ org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers
 org.odpi.openmetadata.commonservices.ocf.metadatamanagement.properties
 org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest
 org.odpi.openmetadata.commonservices.ocf.metadatamanagement.server
-org.odpi.openmetadata.commonservices.ocf.metadatamanagement.server.converters
 org.odpi.openmetadata.commonservices.ocf.metadatamanagement.server.spring
 org.odpi.openmetadata.commonservices.repositoryhandler
 org.odpi.openmetadata.conformance.auditlog

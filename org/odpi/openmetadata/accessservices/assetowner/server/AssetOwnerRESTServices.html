@@ -380,9 +380,9 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i19" class="rowColor">
 <td class="colFirst"><code><a href="../rest/AssetElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetowner.rest">AssetElementsResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findAssets(java.lang.String,java.lang.String,java.lang.String,int,int)">findAssets</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findAssets(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody,int,int)">findAssets</a></span>&#8203;(java.lang.String&nbsp;serverName,
           java.lang.String&nbsp;userId,
-          java.lang.String&nbsp;searchString,
+          <a href="../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody,
           int&nbsp;startFrom,
           int&nbsp;pageSize)</code></th>
 <td class="colLast">
@@ -392,9 +392,9 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i20" class="altColor">
 <td class="colFirst"><code><a href="../rest/AssetElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetowner.rest">AssetElementsResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAssetsByName(java.lang.String,java.lang.String,java.lang.String,int,int)">getAssetsByName</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAssetsByName(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody,int,int)">getAssetsByName</a></span>&#8203;(java.lang.String&nbsp;serverName,
                java.lang.String&nbsp;userId,
-               java.lang.String&nbsp;name,
+               <a href="../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody,
                int&nbsp;startFrom,
                int&nbsp;pageSize)</code></th>
 <td class="colLast">
@@ -1420,7 +1420,7 @@ public&nbsp;<a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title=
 </dl>
 </li>
 </ul>
-<a id="getAssetsByName(java.lang.String,java.lang.String,java.lang.String,int,int)">
+<a id="getAssetsByName(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody,int,int)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1428,7 +1428,7 @@ public&nbsp;<a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title=
 <h4>getAssetsByName</h4>
 <pre class="methodSignature">public&nbsp;<a href="../rest/AssetElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetowner.rest">AssetElementsResponse</a>&nbsp;getAssetsByName&#8203;(java.lang.String&nbsp;serverName,
                                              java.lang.String&nbsp;userId,
-                                             java.lang.String&nbsp;name,
+                                             <a href="../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody,
                                              int&nbsp;startFrom,
                                              int&nbsp;pageSize)</pre>
 <div class="block">Return a list of assets with the requested name.</div>
@@ -1436,7 +1436,7 @@ public&nbsp;<a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title=
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>name</code> - name to search for</dd>
+<dd><code>requestBody</code> - name to search for</dd>
 <dd><code>startFrom</code> - starting element (used in paging through large result sets)</dd>
 <dd><code>pageSize</code> - maximum number of results to return</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -1447,7 +1447,7 @@ public&nbsp;<a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title=
 </dl>
 </li>
 </ul>
-<a id="findAssets(java.lang.String,java.lang.String,java.lang.String,int,int)">
+<a id="findAssets(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody,int,int)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1455,7 +1455,7 @@ public&nbsp;<a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title=
 <h4>findAssets</h4>
 <pre class="methodSignature">public&nbsp;<a href="../rest/AssetElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetowner.rest">AssetElementsResponse</a>&nbsp;findAssets&#8203;(java.lang.String&nbsp;serverName,
                                         java.lang.String&nbsp;userId,
-                                        java.lang.String&nbsp;searchString,
+                                        <a href="../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody,
                                         int&nbsp;startFrom,
                                         int&nbsp;pageSize)</pre>
 <div class="block">Return a list of assets with the requested search string in their name, qualified name
@@ -1464,7 +1464,7 @@ public&nbsp;<a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title=
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>searchString</code> - string to search for in text</dd>
+<dd><code>requestBody</code> - string to search for in text</dd>
 <dd><code>startFrom</code> - starting element (used in paging through large result sets)</dd>
 <dd><code>pageSize</code> - maximum number of results to return</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
