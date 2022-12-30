@@ -1,11 +1,11 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.communityprofile.api;
+package org.odpi.openmetadata.accessservices.digitalservice.api;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionMember;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionOrder;
+import org.odpi.openmetadata.accessservices.digitalservice.metadataelements.CollectionElement;
+import org.odpi.openmetadata.accessservices.digitalservice.metadataelements.CollectionMember;
+import org.odpi.openmetadata.accessservices.digitalservice.properties.CollectionOrder;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -14,10 +14,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The CollectionManagementInterface adds methods for managing collections that can be attached to communities
- * and personal profiles.
+ * The CollectionsInterface adds methods for managing collections.
  */
-public interface CollectionManagementInterface
+public interface CollectionsInterface
 {
     /**
      * Returns the list of collections that are linked off of the supplied element.

@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.digitalarchitecture.properties;
 
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -12,22 +13,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ValidValueAssignmentProperties describes the properties between a referenceable and its valid values.
+ * ValidValueMembershipProperties provides a flag to indicate if this value is the default value for the set.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ValidValueAssignmentProperties extends RelationshipProperties
+public class ValidValueMembershipProperties extends RelationshipProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private boolean              strictRequirement = true;
-
+    boolean isDefaultValue = false;
 
     /**
      * Default constructor
      */
-    public ValidValueAssignmentProperties()
+    public ValidValueMembershipProperties()
     {
         super();
     }
@@ -38,36 +38,36 @@ public class ValidValueAssignmentProperties extends RelationshipProperties
      *
      * @param template object to copy
      */
-    public ValidValueAssignmentProperties(ValidValueAssignmentProperties template)
+    public ValidValueMembershipProperties(ValidValueMembershipProperties template)
     {
         super(template);
 
         if (template != null)
         {
-            strictRequirement = template.getStrictRequirement();
+            this.isDefaultValue = template.getDefaultValue();
         }
     }
 
 
     /**
-     * Return the strict requirement flag.
+     * Return whether it is a default value.
      *
-     * @return boolean
+     * @return flag
      */
-    public boolean getStrictRequirement()
+    public boolean getDefaultValue()
     {
-        return strictRequirement;
+        return isDefaultValue;
     }
 
 
     /**
-     * Set up the strict requirement flag.
+     * Set up whether it is a default value.
      *
-     * @param strictRequirement string type name
+     * @param defaultValue flag
      */
-    public void setStrictRequirement(boolean strictRequirement)
+    public void setDefaultValue(boolean defaultValue)
     {
-        this.strictRequirement = strictRequirement;
+        this.isDefaultValue = defaultValue;
     }
 
 
@@ -76,24 +76,24 @@ public class ValidValueAssignmentProperties extends RelationshipProperties
      *
      * @return return string containing the property names and values
      */
-
     @Override
     public String toString()
     {
-        return "ValidValueAssignmentProperties{" +
+        return "ValidValueMembershipProperties{" +
                        "effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +
                        ", extendedProperties=" + getExtendedProperties() +
-                       ", strictRequirement=" + strictRequirement +
+                       ", isDefaultValue=" + isDefaultValue +
+                       ", defaultValue=" + getDefaultValue() +
                        '}';
     }
 
 
     /**
-     * Return comparison result based on the content of the properties.
+     * Compare the values of the supplied object with those stored in the current object.
      *
-     * @param objectToCompare test object
-     * @return result of comparison
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -106,18 +106,23 @@ public class ValidValueAssignmentProperties extends RelationshipProperties
         {
             return false;
         }
-        ValidValueAssignmentProperties that = (ValidValueAssignmentProperties) objectToCompare;
-        return strictRequirement == that.strictRequirement;
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
+        ValidValueMembershipProperties that = (ValidValueMembershipProperties) objectToCompare;
+        return isDefaultValue == that.isDefaultValue;
     }
 
+
     /**
-     * Return hash code for this object
+     * Return hash code based on properties.
      *
-     * @return int hash code
+     * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(strictRequirement);
+        return Objects.hash(super.hashCode(), isDefaultValue);
     }
 }

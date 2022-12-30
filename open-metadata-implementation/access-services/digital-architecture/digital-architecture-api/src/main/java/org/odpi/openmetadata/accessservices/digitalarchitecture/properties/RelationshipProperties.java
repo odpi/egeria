@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.digitalservice.properties;
+package org.odpi.openmetadata.accessservices.digitalarchitecture.properties;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -18,20 +18,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ClassificationProperties provides the base class for classification items.  This provides extended properties with the ability to
+ * RelationshipProperties provides the base class for relationships items.  This provides extended properties with the ability to
  * set effectivity dates.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-              include = JsonTypeInfo.As.PROPERTY,
-              property = "class")
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = DigitalProductProperties.class, name = "DigitalProductProperties"),
+                @JsonSubTypes.Type(value = ReferenceValueAssignmentProperties.class, name = "ReferenceValueAssignmentProperties"),
+                @JsonSubTypes.Type(value = ValidValueAssignmentProperties.class, name = "ValidValueAssignmentProperties"),
+                @JsonSubTypes.Type(value = ValidValueMembershipProperties.class, name = "ValidValueMembershipProperties"),
+                @JsonSubTypes.Type(value = ValidValuesMappingProperties.class, name = "ValidValuesMappingProperties"),
+                @JsonSubTypes.Type(value = ValidValuesImplProperties.class, name = "ValidValuesImplProperties"),
         })
-public class ClassificationProperties implements Serializable
+public class RelationshipProperties implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
@@ -44,7 +48,7 @@ public class ClassificationProperties implements Serializable
     /**
      * Default constructor
      */
-    public ClassificationProperties()
+    public RelationshipProperties()
     {
         super();
     }
@@ -55,7 +59,7 @@ public class ClassificationProperties implements Serializable
      *
      * @param template element to copy
      */
-    public ClassificationProperties(ClassificationProperties template)
+    public RelationshipProperties(RelationshipProperties template)
     {
         if (template != null)
         {
@@ -153,7 +157,7 @@ public class ClassificationProperties implements Serializable
     @Override
     public String toString()
     {
-        return "ClassificationProperties{" +
+        return "RelationshipProperties{" +
                        "effectiveFrom=" + effectiveFrom +
                        ", effectiveTo=" + effectiveTo +
                        ", extendedProperties=" + extendedProperties +
@@ -178,7 +182,7 @@ public class ClassificationProperties implements Serializable
         {
             return false;
         }
-        ClassificationProperties that = (ClassificationProperties) objectToCompare;
+        RelationshipProperties that = (RelationshipProperties) objectToCompare;
         return Objects.equals(effectiveFrom, that.effectiveFrom) &&
                        Objects.equals(effectiveTo, that.effectiveTo);
     }

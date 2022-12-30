@@ -1,10 +1,11 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.digitalarchitecture.properties;
+package org.odpi.openmetadata.accessservices.communityprofile.metadataelements;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.ReferenceableProperties;
 
 import java.util.Objects;
 
@@ -12,22 +13,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ValidValueAssignmentProperties describes the properties between a referenceable and its valid values.
+ * CollectionMember describes a member of a collection.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ValidValueAssignmentProperties extends RelationshipProperties
+public class CollectionMember extends CollectionMemberHeader
 {
     private static final long    serialVersionUID = 1L;
 
-    private boolean              strictRequirement = true;
+    private ReferenceableProperties properties = null;
 
 
     /**
      * Default constructor
      */
-    public ValidValueAssignmentProperties()
+    public CollectionMember()
     {
         super();
     }
@@ -38,37 +39,38 @@ public class ValidValueAssignmentProperties extends RelationshipProperties
      *
      * @param template object to copy
      */
-    public ValidValueAssignmentProperties(ValidValueAssignmentProperties template)
+    public CollectionMember(CollectionMember template)
     {
         super(template);
 
         if (template != null)
         {
-            strictRequirement = template.getStrictRequirement();
+            properties = template.getProperties();
         }
     }
 
 
     /**
-     * Return the strict requirement flag.
+     * Return the properties of the element.
      *
-     * @return boolean
+     * @return properties
      */
-    public boolean getStrictRequirement()
+    public ReferenceableProperties getProperties()
     {
-        return strictRequirement;
+        return properties;
     }
 
 
     /**
-     * Set up the strict requirement flag.
+     * Set up the properties of the element.
      *
-     * @param strictRequirement string type name
+     * @param properties  properties
      */
-    public void setStrictRequirement(boolean strictRequirement)
+    public void setProperties(ReferenceableProperties properties)
     {
-        this.strictRequirement = strictRequirement;
+        this.properties = properties;
     }
+
 
 
     /**
@@ -76,15 +78,14 @@ public class ValidValueAssignmentProperties extends RelationshipProperties
      *
      * @return return string containing the property names and values
      */
-
     @Override
     public String toString()
     {
-        return "ValidValueAssignmentProperties{" +
-                       "effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       ", strictRequirement=" + strictRequirement +
+        return "CollectionMember{" +
+                       "properties=" + properties +
+                       ", elementHeader=" + getElementHeader() +
+                       ", dateAddedToCollection=" + getDateAddedToCollection() +
+                       ", membershipRationale='" + getMembershipRationale() + '\'' +
                        '}';
     }
 
@@ -106,9 +107,14 @@ public class ValidValueAssignmentProperties extends RelationshipProperties
         {
             return false;
         }
-        ValidValueAssignmentProperties that = (ValidValueAssignmentProperties) objectToCompare;
-        return strictRequirement == that.strictRequirement;
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        CollectionMember that = (CollectionMember) objectToCompare;
+        return Objects.equals(properties, that.properties);
     }
+
 
     /**
      * Return hash code for this object
@@ -118,6 +124,6 @@ public class ValidValueAssignmentProperties extends RelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(strictRequirement);
+        return Objects.hash(super.hashCode(), properties);
     }
 }

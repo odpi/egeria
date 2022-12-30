@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.digitalservice.properties;
+package org.odpi.openmetadata.accessservices.digitalarchitecture.properties;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -29,7 +29,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
               property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = DigitalProductProperties.class, name = "DigitalProductProperties"),
+                @JsonSubTypes.Type(value = SubjectAreaClassificationProperties.class, name = "SubjectAreaClassificationProperties"),
         })
 public class ClassificationProperties implements Serializable
 {

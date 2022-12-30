@@ -134,7 +134,7 @@ public class ConnectionProperties extends ReferenceableProperties
 
     /**
      * Returns the stored display name property for the connection.
-     * Null means no displayName is available.
+     * Null means that no displayName is available.
      *
      * @return displayName
      */
@@ -326,6 +326,8 @@ public class ConnectionProperties extends ReferenceableProperties
                        ", securedProperties=" + securedProperties +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        '}';

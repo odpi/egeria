@@ -532,6 +532,8 @@ public class ConnectorTypeProperties extends ReferenceableProperties
      *
      * @return print out of variables in a JSON-style
      */
+
+
     @Override
     public String toString()
     {
@@ -553,7 +555,8 @@ public class ConnectorTypeProperties extends ReferenceableProperties
                        ", recognizedSecuredProperties=" + recognizedSecuredProperties +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
-                       ", classifications=" + getClassifications() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        '}';

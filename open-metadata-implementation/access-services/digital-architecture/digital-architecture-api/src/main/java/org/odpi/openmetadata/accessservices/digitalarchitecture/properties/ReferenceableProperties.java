@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.digitalarchitecture.properties;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
 
 import java.io.Serializable;
 import java.util.*;
@@ -25,6 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = ValidValueProperties.class, name = "ValidValueProperties"),
                 @JsonSubTypes.Type(value = ReferenceDataAssetProperties.class, name = "ReferenceDataAssetProperties"),
+                @JsonSubTypes.Type(value = CollectionProperties.class, name = "CollectionProperties"),
                 @JsonSubTypes.Type(value = ConnectionProperties.class, name = "ConnectionProperties"),
                 @JsonSubTypes.Type(value = ConnectorTypeProperties.class, name = "ConnectorTypeProperties"),
                 @JsonSubTypes.Type(value = LocationProperties.class, name = "LocationProperties"),
@@ -38,7 +38,8 @@ public class ReferenceableProperties implements Serializable
     private String               qualifiedName        = null;
     private Map<String, String>  additionalProperties = null;
 
-    private List<ElementClassification> classifications = null;
+    private Date                 effectiveFrom        = null;
+    private Date                 effectiveTo          = null;
 
     private String               typeName             = null;
     private Map<String, Object>  extendedProperties   = null;
@@ -53,7 +54,7 @@ public class ReferenceableProperties implements Serializable
 
 
     /**
-     * Copy/clone constructor.  Retrieves values from the supplied template
+     * Copy/clone constructor.  Retrieves the values from the supplied template
      *
      * @param template element to copy
      */
@@ -63,7 +64,10 @@ public class ReferenceableProperties implements Serializable
         {
             qualifiedName        = template.getQualifiedName();
             additionalProperties = template.getAdditionalProperties();
-            classifications      = template.getClassifications();
+
+            effectiveFrom        = template.getEffectiveFrom();
+            effectiveTo          = template.getEffectiveTo();
+
             typeName             = template.getTypeName();
             extendedProperties   = template.getExtendedProperties();
         }
@@ -121,47 +125,57 @@ public class ReferenceableProperties implements Serializable
         }
         else
         {
-            return additionalProperties;
+            return new HashMap<>(additionalProperties);
         }
     }
 
 
     /**
-     * Return the list of classifications associated with the asset.   This is an  list and the
-     * pointers are set to the start of the list of classifications
+     * Return the date/time that this element is effective from (null means effective from the epoch).
      *
-     * @return Classifications  list of classifications
+     * @return date object
      */
-    public List<ElementClassification> getClassifications()
+    public Date getEffectiveFrom()
     {
-        if (classifications == null)
-        {
-            return null;
-        }
-        else if (classifications.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(classifications);
-        }
+        return effectiveFrom;
     }
 
 
     /**
-     * Set up the classifications associated with this connection.
+     * Set up the date/time that this element is effective from (null means effective from the epoch).
      *
-     * @param classifications list of classifications
+     * @param effectiveFrom date object
      */
-    public void setClassifications(List<ElementClassification> classifications)
+    public void setEffectiveFrom(Date effectiveFrom)
     {
-        this.classifications = classifications;
+        this.effectiveFrom = effectiveFrom;
     }
 
 
     /**
-     * Return the name of the open metadata type for this element.
+     * Return the date/time that element is effective to (null means that it is effective indefinitely into the future).
+     *
+     * @return date object
+     */
+    public Date getEffectiveTo()
+    {
+        return effectiveTo;
+    }
+
+
+    /**
+     * Set the date/time that element is effective to (null means that it is effective indefinitely into the future).
+     *
+     * @param effectiveTo date object
+     */
+    public void setEffectiveTo(Date effectiveTo)
+    {
+        this.effectiveTo = effectiveTo;
+    }
+
+
+    /**
+     * Return the name of the open metadata type for this metadata element.
      *
      * @return string name
      */
@@ -200,7 +214,7 @@ public class ReferenceableProperties implements Serializable
         }
         else
         {
-            return extendedProperties;
+            return new HashMap<>(extendedProperties);
         }
     }
 
@@ -225,13 +239,14 @@ public class ReferenceableProperties implements Serializable
     @Override
     public String toString()
     {
-        return "Referenceable{" +
-                "qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", typeName=" + typeName +
-                ", extendedProperties=" + getExtendedProperties() +
-                ", classifications=" + getClassifications() +
-                '}';
+        return "ReferenceableProperties{" +
+                       "qualifiedName='" + qualifiedName + '\'' +
+                       ", additionalProperties=" + additionalProperties +
+                       ", effectiveFrom=" + effectiveFrom +
+                       ", effectiveTo=" + effectiveTo +
+                       ", typeName='" + typeName + '\'' +
+                       ", extendedProperties=" + extendedProperties +
+                       '}';
     }
 
 
@@ -254,10 +269,11 @@ public class ReferenceableProperties implements Serializable
         }
         ReferenceableProperties that = (ReferenceableProperties) objectToCompare;
         return Objects.equals(qualifiedName, that.qualifiedName) &&
-                Objects.equals(additionalProperties, that.additionalProperties) &&
-                Objects.equals(classifications, that.classifications) &&
-                Objects.equals(typeName, that.typeName) &&
-                Objects.equals(extendedProperties, that.extendedProperties);
+                       Objects.equals(additionalProperties, that.additionalProperties) &&
+                       Objects.equals(effectiveFrom, that.effectiveFrom) &&
+                       Objects.equals(effectiveTo, that.effectiveTo) &&
+                       Objects.equals(typeName, that.typeName) &&
+                       Objects.equals(extendedProperties, that.extendedProperties);
     }
 
 
@@ -269,6 +285,6 @@ public class ReferenceableProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, additionalProperties, classifications, typeName, extendedProperties);
+        return Objects.hash(qualifiedName, additionalProperties, effectiveFrom, effectiveTo, typeName, extendedProperties);
     }
 }
