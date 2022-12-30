@@ -21,20 +21,17 @@
         <url>http://github.com/odpi/egeria/tree/main</url>
     </scm>
 
-    <name>Common Services</name>
+    <name>Framework Services</name>
     <description>
-        The common services support common functions for OMAG Clients and Servers.
+        The framework services provide REST API support for the open metadata frameworks.
     </description>
 
-    <artifactId>common-services</artifactId>
+    <artifactId>framework-services</artifactId>
 
     <packaging>pom</packaging>
     <modules>
-        <module>ffdc-services</module>
-        <module>metadata-security</module>
-        <module>multi-tenant</module>
-        <module>generic-handlers</module>
-        <module>repository-handler</module>
+        <module>gaf-metadata-management</module>
+        <module>ocf-metadata-management</module>
     </modules>
 
     <dependencies>

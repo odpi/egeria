@@ -8,7 +8,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>open-metadata-implementation</artifactId>
+        <artifactId>framework-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>3.15-SNAPSHOT</version>
     </parent>
@@ -18,27 +18,24 @@
     <scm>
         <connection>scm:git:git://github.com/odpi/egeria.git</connection>
         <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
-        <url>http://github.com/odpi/egeria/tree/main</url>
+        <url>https://github.com/odpi/egeria/tree/main</url>
     </scm>
 
-    <name>Common Services</name>
+    <name>OCF Metadata Management</name>
     <description>
-        The common services support common functions for OMAG Clients and Servers.
+        The common functions for OMAG Clients and Servers supporting Open Connector Framework (OCF)
+        metadata management.
     </description>
 
-    <artifactId>common-services</artifactId>
+    <artifactId>ocf-metadata-management</artifactId>
 
     <packaging>pom</packaging>
     <modules>
-        <module>ffdc-services</module>
-        <module>metadata-security</module>
-        <module>multi-tenant</module>
-        <module>generic-handlers</module>
-        <module>repository-handler</module>
+        <module>ocf-metadata-api</module>
+        <module>ocf-metadata-client</module>
+        <module>ocf-metadata-handlers</module>
+        <module>ocf-metadata-server</module>
+        <module>ocf-metadata-spring</module>
     </modules>
-
-    <dependencies>
-
-    </dependencies>
 
 </project>

@@ -33,6 +33,7 @@
         <module>frameworks</module>
         <module>adapters</module>
         <module>common-services</module>
+        <module>framework-services</module>
         <module>repository-services</module>
         <module>access-services</module>
         <module>engine-services</module>
