@@ -7,7 +7,7 @@
 dependencies {
     implementation 'org.slf4j:slf4j-api'
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
-    implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-api')
+    implementation project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-api')
     implementation project(':open-metadata-implementation:common-services:generic-handlers')
     implementation project(':open-metadata-implementation:common-services:repository-handler')
     implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-server')
