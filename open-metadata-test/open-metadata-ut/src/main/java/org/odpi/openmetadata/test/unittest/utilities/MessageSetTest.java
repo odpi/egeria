@@ -13,15 +13,15 @@ import static org.testng.Assert.*;
 
 /**
  * MessageSetTest is a base class for unit test cases that are validating exception message sets.
- * It contains utilities the validate the message set enum contains unique message ids, non-null names
+ * It contains utilities that validate the message set enum contains unique message ids, non-null names
  * and descriptions and can be serialized to JSON and back again.
  */
 abstract class MessageSetTest
 {
-    private List<String> existingMessageIds       = new ArrayList<>();
-    private List<String> existingMessageTemplates = new ArrayList<>();
-    private List<String> existingSystemActions    = new ArrayList<>();
-    private List<String> existingUserActions      = new ArrayList<>();
+    private final List<String> existingMessageIds       = new ArrayList<>();
+    private final List<String> existingMessageTemplates = new ArrayList<>();
+    private final List<String> existingSystemActions    = new ArrayList<>();
+    private final List<String> existingUserActions      = new ArrayList<>();
 
     /**
      * Validate that a supplied ordinal is unique.
