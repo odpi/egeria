@@ -67,7 +67,7 @@ allprojects {
         commonsloggingVersion = '1.2'
         commonstextVersion = '1.10.0'
         commonscliVersion = '1.5.0'
-        elasticsearchVersion = '8.5.2'
+        elasticsearchVersion = '8.5.3'
         findbugsVersion = '3.0.2'
         glassfishVersion = '1.1.4'
         gremlinVersion = '3.5.2'
