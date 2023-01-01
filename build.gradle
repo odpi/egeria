@@ -97,7 +97,7 @@ allprojects {
         kafkaVersion = '3.3.1'
         lang3Version = '3.12.0'
         logbackVersion = '1.2.11'
-        lettuceVersion = '6.2.1.RELEASE'
+        lettuceVersion = '6.2.2.RELEASE'
         luceneVersion = '8.11.1'
         openlineageVersion = '0.18.0'
         ossVersion = '4.15.0'
