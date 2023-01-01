@@ -263,7 +263,7 @@
         <cassandra.version>4.0.7</cassandra.version>
         <ant.version>1.10.12</ant.version>
         <gson.version>2.10</gson.version>
-        <protobuf.version>3.21.10</protobuf.version>
+        <protobuf.version>3.21.12</protobuf.version>
         <jnr.version>3.1.16</jnr.version>
         <osgi.version>8.0.0</osgi.version>
         <jacksonjdk8.version>2.14.1</jacksonjdk8.version>
