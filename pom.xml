@@ -159,8 +159,8 @@
         <jackson.databind.version>2.14.1</jackson.databind.version>
         <logback.version>1.2.11</logback.version>
         <kafka.version>3.3.1</kafka.version>
-        <tomcat.version>9.0.69</tomcat.version>
         <netty.version>4.1.86.Final</netty.version>
+        <tomcat.version>9.0.70</tomcat.version>
         <spring.ldap.core>2.4.1</spring.ldap.core>
         <janus.version>0.6.1</janus.version>
         <spring-boot.version>2.7.7</spring-boot.version>
