@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: check stale issues and prs
         if: startsWith(github.repository,'odpi/')
-        uses: actions/stale@v7
+        uses: actions/stale@v6
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           stale-issue-message: >
