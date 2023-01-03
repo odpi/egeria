@@ -891,7 +891,7 @@ public class AssetOwnerResource
      *
      * @param serverName name of the server instances for this request
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
      *
@@ -902,13 +902,13 @@ public class AssetOwnerResource
      */
     @PostMapping(path = "/assets/by-name")
 
-    public AssetElementsResponse getAssetsByName(@PathVariable String   serverName,
-                                                 @PathVariable String   userId,
-                                                 @RequestParam int      startFrom,
-                                                 @RequestParam int      pageSize,
-                                                 @RequestBody  String   name)
+    public AssetElementsResponse getAssetsByName(@PathVariable String          serverName,
+                                                 @PathVariable String          userId,
+                                                 @RequestParam int             startFrom,
+                                                 @RequestParam int             pageSize,
+                                                 @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getAssetsByName(serverName, userId, name, startFrom, pageSize);
+        return restAPI.getAssetsByName(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -918,7 +918,7 @@ public class AssetOwnerResource
      *
      * @param serverName name of the server instances for this request
      * @param userId calling user
-     * @param searchString string to search for in text
+     * @param requestBody string to search for in text
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
      *
@@ -929,13 +929,13 @@ public class AssetOwnerResource
      */
     @PostMapping(path = "/assets/by-search-string")
 
-    public AssetElementsResponse findAssets(@PathVariable String   serverName,
-                                            @PathVariable String   userId,
-                                            @RequestParam int      startFrom,
-                                            @RequestParam int      pageSize,
-                                            @RequestBody  String   searchString)
+    public AssetElementsResponse findAssets(@PathVariable String                  serverName,
+                                            @PathVariable String                  userId,
+                                            @RequestParam int                     startFrom,
+                                            @RequestParam int                     pageSize,
+                                            @RequestBody  SearchStringRequestBody requestBody)
     {
-        return restAPI.findAssets(serverName, userId, searchString, startFrom, pageSize);
+        return restAPI.findAssets(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 

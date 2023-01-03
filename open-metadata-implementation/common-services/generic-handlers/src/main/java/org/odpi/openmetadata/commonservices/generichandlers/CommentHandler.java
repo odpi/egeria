@@ -9,6 +9,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.Date;
@@ -253,6 +255,15 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
 
         invalidParameterHandler.validateText(commentText, textParameter, methodName);
 
+        EntityDetail startingEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                        commentGUID,
+                                                                        commentGUIDParameterName,
+                                                                        OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
+                                                                        effectiveTime,
+                                                                        methodName);
+
         CommentBuilder builder = new CommentBuilder(null,
                                                     commentType,
                                                     commentText,
@@ -266,7 +277,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
         this.updateBeanInRepository(userId,
                                     externalSourceGUID,
                                     externalSourceName,
-                                    commentGUID,
+                                    startingEntity,
                                     commentGUIDParameterName,
                                     OpenMetadataAPIMapper.COMMENT_TYPE_GUID,
                                     OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
@@ -277,6 +288,50 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     effectiveTime,
                                     methodName);
+
+        List<Relationship> relationships = this.getAttachmentLinks(userId,
+                                                                   startingEntity,
+                                                                   commentGUIDParameterName,
+                                                                   OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
+                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
+                                                                   null,
+                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                   1,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   supportedZones,
+                                                                   0,
+                                                                   0,
+                                                                   effectiveTime,
+                                                                   methodName);
+
+
+        if ((relationships == null) || (relationships.isEmpty()))
+        {
+            errorHandler.handleNoRelationship(commentGUID,
+                                              OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                              OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
+                                              methodName);
+        }
+        else if (relationships.size() == 1)
+        {
+            repositoryHandler.updateRelationshipProperties(userId,
+                                                           externalSourceGUID,
+                                                           externalSourceName,
+                                                           relationships.get(0),
+                                                           builder.getRelationshipInstanceProperties(methodName),
+                                                           methodName);
+        }
+        else
+        {
+            errorHandler.handleAmbiguousRelationships(commentGUID,
+                                                      OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
+                                                      relationships,
+                                                      methodName);
+        }
+
     }
 
 

@@ -6,8 +6,7 @@
 # Governance Action Open Metadata Engine Services (OMES)
 
 Governance Action Open Metadata Engine Service (OMES) runs [Governance Action Engines](https://egeria-project.org/concepts/governance-action-engine).
-
-* [Documentation](https://egeria-project.org/services/omes/governance-action/overview)
+Detailed design documentation is found on the [egeria website](https://egeria-project.org/services/omes/governance-action/overview).
 
 
 ----

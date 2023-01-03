@@ -2338,9 +2338,14 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameter, methodName);
 
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(name);
+        requestBody.setNamePropertyName(nameParameter);
+
         AssetElementsResponse restResult = restClient.callAssetElementsPostRESTCall(methodName,
                                                                                     urlTemplate,
-                                                                                    name,
+                                                                                    requestBody,
                                                                                     serverName,
                                                                                     userId,
                                                                                     startFrom,
@@ -2380,9 +2385,14 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, searchParameter, methodName);
 
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchParameter);
+
         AssetElementsResponse restResult = restClient.callAssetElementsPostRESTCall(methodName,
                                                                                     urlTemplate,
-                                                                                    searchString,
+                                                                                    requestBody,
                                                                                     serverName,
                                                                                     userId,
                                                                                     startFrom,

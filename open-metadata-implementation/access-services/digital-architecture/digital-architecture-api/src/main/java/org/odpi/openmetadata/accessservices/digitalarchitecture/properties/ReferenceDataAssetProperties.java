@@ -22,7 +22,7 @@ public class ReferenceDataAssetProperties extends ReferenceableProperties
 {
     private static final long     serialVersionUID = 1L;
 
-    private String displayName = null;
+    private String name        = null;
     private String description = null;
 
 
@@ -45,7 +45,7 @@ public class ReferenceDataAssetProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            displayName = template.getDisplayName();
+            name = template.getName();
             description = template.getDescription();
         }
     }
@@ -57,20 +57,20 @@ public class ReferenceDataAssetProperties extends ReferenceableProperties
      *
      * @return String name
      */
-    public String getDisplayName()
+    public String getName()
     {
-        return displayName;
+        return name;
     }
 
 
     /**
      * Set up the stored display name property for the asset.
      *
-     * @param displayName String name
+     * @param name String name
      */
-    public void setDisplayName(String displayName)
+    public void setName(String name)
     {
-        this.displayName = displayName;
+        this.name = name;
     }
 
 
@@ -106,15 +106,17 @@ public class ReferenceDataAssetProperties extends ReferenceableProperties
     public String toString()
     {
         return "ReferenceDataAssetProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", classifications=" + getClassifications() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "displayName='" + name + '\'' +
+                       ", description='" + description + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
+
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -138,7 +140,7 @@ public class ReferenceDataAssetProperties extends ReferenceableProperties
             return false;
         }
         ReferenceDataAssetProperties that = (ReferenceDataAssetProperties) objectToCompare;
-        return Objects.equals(displayName, that.displayName) &&
+        return Objects.equals(name, that.name) &&
                 Objects.equals(description, that.description);
     }
 
@@ -152,6 +154,6 @@ public class ReferenceDataAssetProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description);
+        return Objects.hash(super.hashCode(), name, description);
     }
 }

@@ -27,7 +27,6 @@ platform and clients.
 
 The packages are as follows:
 
-
 * **[access-services](access-services)** - the access services provide domain-specific services for data tools, engines
 and platforms that for maintaining and retrieving metadata.  The access services run in either the metadata access
 point server or metadata server on the OMAG Server Platform.  They call the repository services
@@ -52,6 +51,9 @@ governance engines that can be hosted in the engine host governance server on th
 as connectors, discovery services and governance actions.  These
 components provide much of the customization offered by the open metadata and governance
 implementation.
+
+* **[framework-services](framework-services)** - the framework services provide REST APIs to support the interfaces
+defined in the frameworks.  they are incorporated into the [access services](access-services).
 
 * **[governance-servers](governance-servers)** - the governance server services provide the 
 server frameworks that support the different types of governance servers that can run in the OMAG Server Platform.

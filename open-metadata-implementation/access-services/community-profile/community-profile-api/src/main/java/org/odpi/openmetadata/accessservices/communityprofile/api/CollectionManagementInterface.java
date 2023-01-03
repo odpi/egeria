@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.api;
 
 
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionMember;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionOrder;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -13,10 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The Community Profile Open Metadata Access Service (OMAS) is used by tools and administrators to
- * maintain information associated with individuals and communities.
- * The MyFavouriteCollectionsInterface manages three standard collections of favourite assets, projects and communities.
- * The CollectionManagementInterface adds methods for managing additional collections that can be attached to communities
+ * The CollectionManagementInterface adds methods for managing collections that can be attached to communities
  * and personal profiles.
  */
 public interface CollectionManagementInterface
@@ -193,4 +191,62 @@ public interface CollectionManagementInterface
                           String collectionGUID) throws InvalidParameterException,
                                                         PropertyServerException,
                                                         UserNotAuthorizedException;
+
+
+    /**
+     * Return a list of elements that are a member of a collection.
+     *
+     * @param userId     userId of user making request.
+     * @param collectionGUID  unique identifier of the collection.
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of asset details
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    List<CollectionMember> getCollectionMembers(String userId,
+                                                String collectionGUID,
+                                                int    startFrom,
+                                                int    pageSize) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException;
+
+
+    /**
+     * Add an element to a collection.
+     *
+     * @param userId     userId of user making request.
+     * @param collectionGUID  unique identifier of the collection.
+     * @param elementGUID  unique identifier of the element.
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws PropertyServerException there is a problem updating information in the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    void  addToCollection(String userId,
+                          String collectionGUID,
+                          String elementGUID) throws InvalidParameterException,
+                                                     PropertyServerException,
+                                                     UserNotAuthorizedException;
+
+
+    /**
+     * Remove an element from a collection.
+     *
+     * @param userId     userId of user making request.
+     * @param collectionGUID  unique identifier of the collection.
+     * @param elementGUID  unique identifier of the element.
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws PropertyServerException there is a problem updating information in the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    void  removeFromCollection(String userId,
+                               String collectionGUID,
+                               String elementGUID) throws InvalidParameterException,
+                                                          PropertyServerException,
+                                                          UserNotAuthorizedException;
 }

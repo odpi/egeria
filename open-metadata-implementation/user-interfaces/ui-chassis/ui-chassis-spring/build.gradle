@@ -69,8 +69,8 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:access-services:glossary-view:glossary-view-client')
     implementation project(':open-metadata-implementation:access-services:glossary-view:glossary-view-api')
-    testCompileOnly project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
-    compileOnly project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
+    testCompileOnly project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-client')
+    compileOnly project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-client')
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine'
     testImplementation 'org.mockito:mockito-junit-jupiter'

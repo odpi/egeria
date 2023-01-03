@@ -35,8 +35,6 @@
         <module>multi-tenant</module>
         <module>generic-handlers</module>
         <module>repository-handler</module>
-        <module>gaf-metadata-management</module>
-        <module>ocf-metadata-management</module>
     </modules>
 
     <dependencies>

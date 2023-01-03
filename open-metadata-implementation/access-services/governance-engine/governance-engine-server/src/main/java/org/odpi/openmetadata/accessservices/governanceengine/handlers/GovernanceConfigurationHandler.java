@@ -885,6 +885,7 @@ public class GovernanceConfigurationHandler
      * @param governanceEngineGUID unique identifier of the governance engine.
      * @param governanceServiceGUID unique identifier of the governance service.
      * @param governanceRequestType list of governance request types that this governance service is able to process.
+     * @param serviceRequestType request type supported by the service
      * @param defaultAnalysisParameters list of analysis parameters that are passed to the governance service (via
      *                                  the governance context).  These values can be overridden on the actual governance request.
      *

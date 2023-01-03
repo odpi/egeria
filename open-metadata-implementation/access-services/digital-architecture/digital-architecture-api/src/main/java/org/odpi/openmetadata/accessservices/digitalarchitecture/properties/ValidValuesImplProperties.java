@@ -15,12 +15,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ValidValuesImplProperties is a java bean used to associate a reference data asset with a value value.
+ * ValidValuesImplProperties is a java bean used to associate a reference data asset with a valid value.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ValidValuesImplProperties implements Serializable
+public class ValidValuesImplProperties extends RelationshipProperties
 {
     private static final long     serialVersionUID = 1L;
 
@@ -44,6 +44,8 @@ public class ValidValuesImplProperties implements Serializable
      */
     public ValidValuesImplProperties(ValidValuesImplProperties template)
     {
+        super(template);
+
         if (template != null)
         {
             symbolicName            = template.getSymbolicName();
@@ -139,12 +141,14 @@ public class ValidValuesImplProperties implements Serializable
     public String toString()
     {
         return "ValidValuesImplProperties{" +
-                "displayName='" + symbolicName + '\'' +
-                ", description='" + implementationValue + '\'' +
-                ", additionalValues=" + additionalValues +
-                '}';
+                       "effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", symbolicName='" + symbolicName + '\'' +
+                       ", implementationValue='" + implementationValue + '\'' +
+                       ", additionalValues=" + additionalValues +
+                       '}';
     }
-
 
 
     /**

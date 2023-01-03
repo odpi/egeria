@@ -206,6 +206,8 @@ public class OpenMetadataTypesArchiveAccessor
     public InstanceType createTemplateFromTypeDef(TypeDef typeDef)
     {
         InstanceType template = new InstanceType();
+
+        template.setHeaderVersion(InstanceType.CURRENT_INSTANCE_TYPE_HEADER_VERSION);
         template.setTypeDefName(typeDef.getName());
         template.setTypeDefCategory(typeDef.getCategory());
         template.setTypeDefDescription(typeDef.getDescription());

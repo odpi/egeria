@@ -7,7 +7,7 @@
 
 The Repository Governance Open Metadata Engine services provide support for repository governance engines that run, for examples archive services that dynamically maintain open metadata archives.
 
-* [Documentation](https://egeria-project.org/services/omes/repository-governance/overview)
+Detailed design documentation is found on the [egeria website](https://egeria-project.org/services/omes/repository-governance/overview).
 
 ----
 * Return to [engine services](..).

@@ -914,7 +914,7 @@ public class CreateDatabaseTest
                 /*
                  * Only one table created so nothing should be tied to the schema.
                  */
-                List<DatabaseTableElement> databaseTableList = client.getTablesForDatabaseSchema(userId, databaseSchemaGUID, 0, maxPageSize);
+                List<DatabaseTableElement> databaseTableList = client.getTablesForDatabaseAsset(userId, databaseSchemaGUID, 0, maxPageSize);
 
                 if (databaseTableList != null)
                 {

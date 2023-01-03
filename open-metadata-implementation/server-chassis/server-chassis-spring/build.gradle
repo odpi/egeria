@@ -44,7 +44,7 @@ dependencies {
     runtimeOnly 'org.hibernate:hibernate-validator'
     runtimeOnly project(':open-metadata-implementation:platform-services:platform-services-spring')
     runtimeOnly project(':open-metadata-implementation:admin-services:admin-services-spring')
-    runtimeOnly project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-spring')
+    runtimeOnly project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-spring')
     runtimeOnly project(':open-metadata-implementation:repository-services:repository-services-spring')
     runtimeOnly project(':open-metadata-conformance-suite:open-metadata-conformance-suite-spring')
     runtimeOnly project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-spring')

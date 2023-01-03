@@ -9,7 +9,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:data-engine:data-engine-server')
     implementation project(':open-metadata-implementation:access-services:data-engine:data-engine-api')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
-    implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-api')
+    implementation project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-api')
     implementation 'io.swagger.core.v3:swagger-annotations'
     testImplementation 'org.mockito:mockito-core'
     testImplementation 'org.mockito:mockito-junit-jupiter'
