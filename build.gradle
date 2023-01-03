@@ -8,10 +8,10 @@
  * Plugins for this parent module only - so just high level project related
  */
 plugins {
-    id "io.freefair.lombok" version "6.5.1"
-    id "io.freefair.aggregate-javadoc" version "6.5.1"
+    id "io.freefair.aggregate-javadoc" version "6.6.1"
+    id "io.freefair.lombok" version "6.6.1"
     // Checks for unnecessary dependencies
-    id 'com.autonomousapps.dependency-analysis' version "1.17.0"
+    id 'com.autonomousapps.dependency-analysis' version "1.18.0"
     // helps resolve log implementation clashes
     id 'dev.jacomet.logging-capabilities' version "0.10.0"
     // This plugin helps resolve jakarta/javax dev.jacomet.logging-capabilities
@@ -57,7 +57,7 @@ allprojects {
         antlrVersion = '3.5.3'
         ST4Version = '4.3.4'
         avroVersion = '1.11.1'
-        classgraphVersion = '4.8.151'
+        classgraphVersion = '4.8.153'
         classmateVersion = '1.5.1'
         collections4Version = '4.4'
         commonscodecVersion = '1.15'
@@ -67,7 +67,7 @@ allprojects {
         commonsloggingVersion = '1.2'
         commonstextVersion = '1.10.0'
         commonscliVersion = '1.5.0'
-        elasticsearchVersion = '8.5.2'
+        elasticsearchVersion = '8.5.3'
         findbugsVersion = '3.0.2'
         glassfishVersion = '1.1.4'
         gremlinVersion = '3.5.2'
@@ -76,7 +76,7 @@ allprojects {
         hamcrestVersion = '2.2'
         hdrhistogramVersion = '2.1.12'
         hibernatevalidatorVersion = '8.0.0.Final'
-        httpclientVersion = '4.5.13'
+        httpclientVersion = '4.5.14'
         httpcoreVersion = '4.4.16'
         jacksonVersion = '2.14.1'
         jacksonDatabindVersion = '2.14.1'
@@ -88,7 +88,7 @@ allprojects {
         javassistVersion = '3.29.2-GA'
         jaxbVersion = '2.3.1'
         jenaVersion = '4.2.0'
-        jodatimeVersion = '2.12.1'
+        jodatimeVersion = '2.12.2'
         jsonldVersion = '0.13.4'
         junitVersion = '4.13.2'
         junitjupiterVersion = '5.9.1'
@@ -97,14 +97,14 @@ allprojects {
         kafkaVersion = '3.3.1'
         lang3Version = '3.12.0'
         logbackVersion = '1.2.11'
-        lettuceVersion = '6.2.1.RELEASE'
+        lettuceVersion = '6.2.2.RELEASE'
         luceneVersion = '8.11.1'
-        openlineageVersion = '0.17.0'
+        openlineageVersion = '0.18.0'
         ossVersion = '4.15.0'
-        mockitoVersion = '4.9.0'
+        mockitoVersion = '4.11.0'
         plexusVersion = '3.5.0'
         prometheusVersion = '1.10.2'
-        nettyVersion = '4.1.85.Final'
+        nettyVersion = '4.1.86.Final'
         quartzVersion = '2.3.2'
         reflectionsVersion = '0.10.2'
         sanitizerVersion = '1.2.3'
@@ -113,24 +113,24 @@ allprojects {
         snakeyamlVersion = '1.33'
         slf4jVersion = '1.7.36'
         snappyVersion = '1.1.8.4'
-        springbootVersion = '2.7.6'
-        springdocVersion = '1.6.13'
+        springbootVersion = '2.7.7'
+        springdocVersion = '1.6.12'
         spotbugsVersion = '4.7.3'
         springdataVersion = '2.7.6'
         springldapVersion = '2.4.1'
-        springsecurityVersion = '5.8.0'
+        springsecurityVersion = '5.8.1'
         swaggerVersion = '2.2.7'
-        testngVersion = '7.6.1'
+        testngVersion = '7.7.1'
         thriftVersion = '0.17.0'
         springwebVersion = '5.3.24'
         tinkVersion = '1.7.0'
-        tomcatVersion = '9.0.69'
+        tomcatVersion = '9.0.70'
         validationVersion = '2.0.1.Final'
         antVersion = '1.10.12'
         gsonVersion = '2.10'
         jnrVersion = '3.1.16'
-        protobufVersion = '3.21.10'
-        cassandraVersion = '4.0.7'
+        cassandraVersion = '4.1.0'
+        protobufVersion = '3.21.12'
         osgiVersion = '8.0.0'
         log4jVersion = '2.19.0'
         jacksonjdk8Version = '2.14.1'
@@ -301,7 +301,7 @@ allprojects {
             runtimeOnly("org.antlr:antlr4:4.11.1")
             runtimeOnly("org.apache.ivy:ivy:2.5.1")
         }
-        implementation platform('net.openhft:chronicle-bom:2.24ea16')
+        implementation platform('net.openhft:chronicle-bom:2.24ea25')
     }
 
     /*
