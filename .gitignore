@@ -72,6 +72,7 @@ maven-eclipse.xml
 
 # Mac OS
 __MACOSX
+*.dylib
 
 # specific Egeria config files
 omag.server.*.config
