@@ -3,10 +3,10 @@
 package org.odpi.openmetadata.engineservices.assetanalysis.server;
 
 
+import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceRegistrationEntry;
 import org.odpi.openmetadata.engineservices.assetanalysis.admin.AssetAnalysisAdmin;
 import org.odpi.openmetadata.governanceservers.enginehostservices.registration.OMAGEngineServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 
 /**
@@ -24,9 +24,9 @@ class AssetAnalysisRegistration
     {
         EngineServiceDescription myDescription = EngineServiceDescription.ASSET_ANALYSIS_OMES;
 
-        EngineServiceRegistration myRegistration = new EngineServiceRegistration(myDescription,
-                                                                                 ServiceOperationalStatus.ENABLED,
-                                                                                 AssetAnalysisAdmin.class.getName());
+        EngineServiceRegistrationEntry myRegistration = new EngineServiceRegistrationEntry(myDescription,
+                                                                                           ServiceOperationalStatus.ENABLED,
+                                                                                           AssetAnalysisAdmin.class.getName());
         OMAGEngineServiceRegistration.registerEngineService(myRegistration);
     }
 }

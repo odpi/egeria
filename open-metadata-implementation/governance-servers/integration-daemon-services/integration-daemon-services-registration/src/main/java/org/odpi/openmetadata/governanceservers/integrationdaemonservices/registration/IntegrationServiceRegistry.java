@@ -15,8 +15,8 @@ import java.util.*;
  */
 public class IntegrationServiceRegistry
 {
-    private static Map<String, IntegrationServiceDescription>  serviceDescriptions = new HashMap<>();
-    private static Map<String, String>                         serviceContextManagers = new HashMap<>();
+    private static final Map<String, IntegrationServiceDescription> serviceDescriptions    = new HashMap<>();
+    private static final Map<String, String>                        serviceContextManagers = new HashMap<>();
 
     public static void registerIntegrationService(IntegrationServiceDescription  serviceDescription,
                                                   String                         contextManagerClass)
@@ -33,7 +33,7 @@ public class IntegrationServiceRegistry
      * @param serviceURLMarker URL marker to identify the service
      * @param serverName and of server being configured
      * @param methodName calling method
-     * @return partially filled configuration for the names integration service
+     * @return partially filled configuration for the named integration service
      * @throws InvalidParameterException the service URL marker is not recognized
      */
     public static IntegrationServiceConfig getIntegrationServiceConfig(String serviceURLMarker,

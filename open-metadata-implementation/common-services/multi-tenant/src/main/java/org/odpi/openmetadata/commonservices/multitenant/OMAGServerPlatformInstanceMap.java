@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.multitenant;
 
-import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
-import org.odpi.openmetadata.adminservices.configuration.OMAGViewServiceRegistration;
+import org.odpi.openmetadata.adminservices.registration.OMAGAccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.registration.OMAGViewServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.*;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
@@ -101,14 +101,14 @@ public class OMAGServerPlatformInstanceMap
         /*
          * Get the list of Access Services implemented in this server.
          */
-        List<AccessServiceRegistration> accessServiceRegistrationList = OMAGAccessServiceRegistration.getAccessServiceRegistrationList();
+        List<AccessServiceRegistrationEntry> accessServiceRegistrationList = OMAGAccessServiceRegistration.getAccessServiceRegistrationList();
 
         /*
          * Set up the available access services.
          */
         if ((accessServiceRegistrationList != null) && (! accessServiceRegistrationList.isEmpty()))
         {
-            for (AccessServiceRegistration registration : accessServiceRegistrationList)
+            for (AccessServiceRegistrationEntry registration : accessServiceRegistrationList)
             {
                 if (registration != null)
                 {
@@ -152,14 +152,14 @@ public class OMAGServerPlatformInstanceMap
         /*
          * Get the list of Engine Services implemented in this server.
          */
-        List<EngineServiceRegistration> engineServiceRegistrationList = OMAGEngineServiceRegistration.getEngineServiceRegistrationList();
+        List<EngineServiceRegistrationEntry> engineServiceRegistrationList = OMAGEngineServiceRegistration.getEngineServiceRegistrationList();
 
         /*
          * Set up the available engine services.
          */
         if ((engineServiceRegistrationList != null) && (! engineServiceRegistrationList.isEmpty()))
         {
-            for (EngineServiceRegistration registration : engineServiceRegistrationList)
+            for (EngineServiceRegistrationEntry registration : engineServiceRegistrationList)
             {
                 if (registration != null)
                 {
@@ -219,14 +219,14 @@ public class OMAGServerPlatformInstanceMap
         /*
          * Get the list of View Services implemented in this server.
          */
-        List<ViewServiceRegistration> viewServiceRegistrationList = OMAGViewServiceRegistration.getViewServiceRegistrationList();
+        List<ViewServiceRegistrationEntry> viewServiceRegistrationList = OMAGViewServiceRegistration.getViewServiceRegistrationList();
 
         /*
          * Set up the available view services.
          */
         if ((viewServiceRegistrationList != null) && (! viewServiceRegistrationList.isEmpty()))
         {
-            for (ViewServiceRegistration registration : viewServiceRegistrationList)
+            for (ViewServiceRegistrationEntry registration : viewServiceRegistrationList)
             {
                 if (registration != null)
                 {
