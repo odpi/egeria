@@ -442,6 +442,7 @@ org.odpi.openmetadata.adapters.connectors.integration.openapis.properties
 org.odpi.openmetadata.adapters.connectors.integration.openlineage
 org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc
 org.odpi.openmetadata.adapters.connectors.restclients
+org.odpi.openmetadata.adapters.connectors.restclients.factory
 org.odpi.openmetadata.adapters.connectors.restclients.ffdc
 org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions
 org.odpi.openmetadata.adapters.connectors.restclients.spring
@@ -465,14 +466,15 @@ org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector
 org.odpi.openmetadata.adminservices
 org.odpi.openmetadata.adminservices.classifier
 org.odpi.openmetadata.adminservices.client
-org.odpi.openmetadata.adminservices.configuration
 org.odpi.openmetadata.adminservices.configuration.properties
 org.odpi.openmetadata.adminservices.configuration.registration
 org.odpi.openmetadata.adminservices.ffdc
 org.odpi.openmetadata.adminservices.ffdc.exception
 org.odpi.openmetadata.adminservices.properties
+org.odpi.openmetadata.adminservices.registration
 org.odpi.openmetadata.adminservices.rest
 org.odpi.openmetadata.adminservices.samples.configure
+org.odpi.openmetadata.adminservices.server
 org.odpi.openmetadata.adminservices.spring
 org.odpi.openmetadata.adminservices.store
 org.odpi.openmetadata.archiveutilities.designmodels.base
@@ -818,6 +820,7 @@ org.odpi.openmetadata.viewservices.dino.api.properties
 org.odpi.openmetadata.viewservices.dino.api.rest
 org.odpi.openmetadata.viewservices.dino.handlers
 org.odpi.openmetadata.viewservices.dino.server
+org.odpi.openmetadata.viewservices.dino.server.spring
 org.odpi.openmetadata.viewservices.glossaryauthor.admin
 org.odpi.openmetadata.viewservices.glossaryauthor.admin.serviceinstances
 org.odpi.openmetadata.viewservices.glossaryauthor.auditlog
@@ -843,6 +846,7 @@ org.odpi.openmetadata.viewservices.rex.api.properties
 org.odpi.openmetadata.viewservices.rex.api.rest
 org.odpi.openmetadata.viewservices.rex.handlers
 org.odpi.openmetadata.viewservices.rex.server
+org.odpi.openmetadata.viewservices.rex.server.spring
 org.odpi.openmetadata.viewservices.serverauthor.admin
 org.odpi.openmetadata.viewservices.serverauthor.api.ffdc
 org.odpi.openmetadata.viewservices.serverauthor.api.properties
@@ -857,3 +861,4 @@ org.odpi.openmetadata.viewservices.tex.api.properties
 org.odpi.openmetadata.viewservices.tex.api.rest
 org.odpi.openmetadata.viewservices.tex.handlers
 org.odpi.openmetadata.viewservices.tex.server
+org.odpi.openmetadata.viewservices.tex.server.spring
