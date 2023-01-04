@@ -4,10 +4,10 @@ package org.odpi.openmetadata.accessservices.governanceprogram.server;
 
 
 import org.odpi.openmetadata.accessservices.governanceprogram.admin.GovernanceProgramAdmin;
-import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.registration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistrationEntry;
 
 /**
  * GovernanceProgramRegistration registers the access service with the OMAG Server administration services.
@@ -24,9 +24,9 @@ class GovernanceProgramRegistration
     {
         AccessServiceDescription myDescription = AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS;
 
-        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
-                                                                                 ServiceOperationalStatus.ENABLED,
-                                                                                 GovernanceProgramAdmin.class.getName());
+        AccessServiceRegistrationEntry myRegistration = new AccessServiceRegistrationEntry(myDescription,
+                                                                                           ServiceOperationalStatus.ENABLED,
+                                                                                           GovernanceProgramAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }
 }

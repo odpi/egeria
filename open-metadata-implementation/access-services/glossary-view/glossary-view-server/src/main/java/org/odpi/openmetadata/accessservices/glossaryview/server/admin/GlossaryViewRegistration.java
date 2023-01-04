@@ -3,9 +3,9 @@
 
 package org.odpi.openmetadata.accessservices.glossaryview.server.admin;
 
-import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.registration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistrationEntry;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 
 public class GlossaryViewRegistration {
@@ -18,9 +18,9 @@ public class GlossaryViewRegistration {
     public static void registerAccessService() {
         AccessServiceDescription myDescription = AccessServiceDescription.GLOSSARY_VIEW_OMAS;
 
-        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
-                                                                                 ServiceOperationalStatus.ENABLED,
-                                                                                 GlossaryViewAdmin.class.getName());
+        AccessServiceRegistrationEntry myRegistration = new AccessServiceRegistrationEntry(myDescription,
+                                                                                           ServiceOperationalStatus.ENABLED,
+                                                                                           GlossaryViewAdmin.class.getName());
 
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }
