@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.digitalservice.client;
+package org.odpi.openmetadata.accessservices.assetmanager.client;
 
 import org.odpi.openmetadata.commonservices.gaf.client.OpenMetadataStoreClientBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -12,7 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
  */
 public class OpenMetadataStoreClient extends OpenMetadataStoreClientBase
 {
-    private final static String serviceURLMarker = "digital-service";
+    private final static String serviceURLMarker = "asset-manager";
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.

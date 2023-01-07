@@ -207,7 +207,9 @@ public class NewRelatedElementsRequestBody extends UpdateRequestBody
     public String toString()
     {
         return "NewRelatedElementsRequestBody{" +
-                       "typeName='" + typeName + '\'' +
+                       "externalSourceGUID='" + getExternalSourceGUID() + '\'' +
+                       ", externalSourceName='" + getExternalSourceName() + '\'' +
+                       ", typeName='" + typeName + '\'' +
                        ", metadataElement1GUID='" + metadataElement1GUID + '\'' +
                        ", metadataElement2GUID='" + metadataElement2GUID + '\'' +
                        ", effectiveFrom=" + effectiveFrom +
