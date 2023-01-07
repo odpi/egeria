@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -20,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DeleteRequestBody implements Serializable
+public class DeleteRequestBody extends MetadataSourceRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
@@ -43,6 +42,8 @@ public class DeleteRequestBody implements Serializable
      */
     public DeleteRequestBody(DeleteRequestBody template)
     {
+        super(template);
+
         if (template != null)
         {
             qualifiedName = template.getQualifiedName();
@@ -82,8 +83,10 @@ public class DeleteRequestBody implements Serializable
     public String toString()
     {
         return "DeleteRequestBody{" +
-                "qualifiedName='" + qualifiedName + '\'' +
-                '}';
+                       "qualifiedName='" + qualifiedName + '\'' +
+                       ", externalSourceGUID='" + getExternalSourceGUID() + '\'' +
+                       ", externalSourceName='" + getExternalSourceName() + '\'' +
+                       '}';
     }
 
 
@@ -104,6 +107,10 @@ public class DeleteRequestBody implements Serializable
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
         DeleteRequestBody that = (DeleteRequestBody) objectToCompare;
         return Objects.equals(getQualifiedName(), that.getQualifiedName());
     }
@@ -117,6 +124,6 @@ public class DeleteRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(getQualifiedName());
+        return Objects.hash(super.hashCode(), getQualifiedName());
     }
 }

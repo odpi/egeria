@@ -619,6 +619,8 @@ public class OpenMetadataStoreRESTServices
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createMetadataElementInStore(userId,
+                                                                      requestBody.getExternalSourceGUID(),
+                                                                      requestBody.getExternalSourceName(),
                                                                       requestBody.getTypeName(),
                                                                       requestBody.getInitialStatus(),
                                                                       requestBody.getEffectiveFrom(),
@@ -683,6 +685,8 @@ public class OpenMetadataStoreRESTServices
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
                 handler.updateMetadataElementInStore(userId,
+                                                     requestBody.getExternalSourceGUID(),
+                                                     requestBody.getExternalSourceName(),
                                                      metadataElementGUID,
                                                      requestBody.getReplaceProperties(),
                                                      requestBody.getForLineage(),
@@ -745,6 +749,8 @@ public class OpenMetadataStoreRESTServices
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
                 handler.updateMetadataElementStatusInStore(userId,
+                                                           requestBody.getExternalSourceGUID(),
+                                                           requestBody.getExternalSourceName(),
                                                            metadataElementGUID,
                                                            requestBody.getNewStatus(),
                                                            requestBody.getForLineage(),
@@ -805,6 +811,8 @@ public class OpenMetadataStoreRESTServices
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
                 handler.updateMetadataElementEffectivityInStore(userId,
+                                                                requestBody.getExternalSourceGUID(),
+                                                                requestBody.getExternalSourceName(),
                                                                 metadataElementGUID,
                                                                 requestBody.getForLineage(),
                                                                 requestBody.getForDuplicateProcessing(),
@@ -867,6 +875,8 @@ public class OpenMetadataStoreRESTServices
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
                 handler.deleteMetadataElementInStore(userId,
+                                                     requestBody.getExternalSourceGUID(),
+                                                     requestBody.getExternalSourceName(),
                                                      metadataElementGUID,
                                                      requestBody.getForLineage(),
                                                      requestBody.getForDuplicateProcessing(),
@@ -931,6 +941,8 @@ public class OpenMetadataStoreRESTServices
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
                 handler.classifyMetadataElementInStore(userId,
+                                                       requestBody.getExternalSourceGUID(),
+                                                       requestBody.getExternalSourceName(),
                                                        metadataElementGUID,
                                                        classificationName,
                                                        requestBody.getForLineage(),
@@ -997,6 +1009,8 @@ public class OpenMetadataStoreRESTServices
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
                 handler.reclassifyMetadataElementInStore(userId,
+                                                         requestBody.getExternalSourceGUID(),
+                                                         requestBody.getExternalSourceName(),
                                                          metadataElementGUID,
                                                          classificationName,
                                                          requestBody.getReplaceProperties(),
@@ -1062,6 +1076,8 @@ public class OpenMetadataStoreRESTServices
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
                 handler.updateClassificationStatusInStore(userId,
+                                                          requestBody.getExternalSourceGUID(),
+                                                          requestBody.getExternalSourceName(),
                                                           metadataElementGUID,
                                                           classificationName,
                                                           requestBody.getForLineage(),
@@ -1127,6 +1143,8 @@ public class OpenMetadataStoreRESTServices
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
                 handler.unclassifyMetadataElementInStore(userId,
+                                                         requestBody.getExternalSourceGUID(),
+                                                         requestBody.getExternalSourceName(),
                                                          metadataElementGUID,
                                                          metadataElementGUIDParameterName,
                                                          OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
@@ -1189,6 +1207,8 @@ public class OpenMetadataStoreRESTServices
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createRelatedElementsInStore(userId,
+                                                                      requestBody.getExternalSourceGUID(),
+                                                                      requestBody.getExternalSourceName(),
                                                                       requestBody.getTypeName(),
                                                                       requestBody.getMetadataElement1GUID(),
                                                                       requestBody.getMetadataElement2GUID(),
@@ -1254,6 +1274,8 @@ public class OpenMetadataStoreRESTServices
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
                 handler.updateRelatedElementsInStore(userId,
+                                                     requestBody.getExternalSourceGUID(),
+                                                     requestBody.getExternalSourceName(),
                                                      relationshipGUID,
                                                      requestBody.getReplaceProperties(),
                                                      requestBody.getForLineage(),
@@ -1316,6 +1338,8 @@ public class OpenMetadataStoreRESTServices
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
                 handler.updateRelatedElementsStatusInStore(userId,
+                                                           requestBody.getExternalSourceGUID(),
+                                                           requestBody.getExternalSourceName(),
                                                            relationshipGUID,
                                                            requestBody.getEffectiveFrom(),
                                                            requestBody.getEffectiveTo(),
@@ -1377,6 +1401,8 @@ public class OpenMetadataStoreRESTServices
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
                 handler.deleteRelatedElementsInStore(userId,
+                                                     requestBody.getExternalSourceGUID(),
+                                                     requestBody.getExternalSourceName(),
                                                      relationshipGUID,
                                                      requestBody.getForLineage(),
                                                      requestBody.getForDuplicateProcessing(),

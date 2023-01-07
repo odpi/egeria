@@ -131,7 +131,9 @@ public class NewClassificationRequestBody extends UpdateRequestBody
     public String toString()
     {
         return "NewClassificationRequestBody{" +
-                       "effectiveFrom=" + effectiveFrom +
+                       "externalSourceGUID='" + getExternalSourceGUID() + '\'' +
+                       ", externalSourceName='" + getExternalSourceName() + '\'' +
+                       ", effectiveFrom=" + effectiveFrom +
                        ", effectiveTo=" + effectiveTo +
                        ", properties=" + properties +
                        ", forLineage=" + getForLineage() +

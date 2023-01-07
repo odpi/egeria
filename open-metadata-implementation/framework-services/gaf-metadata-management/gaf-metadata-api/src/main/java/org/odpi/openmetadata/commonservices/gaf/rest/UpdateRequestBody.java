@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -20,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class UpdateRequestBody implements Serializable
+public class UpdateRequestBody extends MetadataSourceRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
@@ -45,6 +44,8 @@ public class UpdateRequestBody implements Serializable
      */
     public UpdateRequestBody(UpdateRequestBody template)
     {
+        super(template);
+
         if (template != null)
         {
             forLineage = template.getForLineage();
@@ -153,6 +154,10 @@ public class UpdateRequestBody implements Serializable
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
         UpdateRequestBody that = (UpdateRequestBody) objectToCompare;
         return forLineage == that.forLineage &&
                        forDuplicateProcessing == that.forDuplicateProcessing &&
@@ -168,6 +173,6 @@ public class UpdateRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(forLineage, forDuplicateProcessing, effectiveTime);
+        return Objects.hash(super.hashCode(), forLineage, forDuplicateProcessing, effectiveTime);
     }
 }
