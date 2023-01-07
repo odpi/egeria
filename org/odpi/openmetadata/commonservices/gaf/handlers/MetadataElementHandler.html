@@ -219,7 +219,9 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#classifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.List,java.util.Date,java.lang.String)">classifyMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#classifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.List,java.util.Date,java.lang.String)">classifyMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+                              java.lang.String&nbsp;externalSourceGUID,
+                              java.lang.String&nbsp;externalSourceName,
                               java.lang.String&nbsp;metadataElementGUID,
                               java.lang.String&nbsp;classificationName,
                               boolean&nbsp;forLineage,
@@ -236,7 +238,9 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createMetadataElementInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.util.List,java.util.Date,java.lang.String)">createMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.util.List,java.util.Date,java.lang.String)">createMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+                            java.lang.String&nbsp;externalSourceGUID,
+                            java.lang.String&nbsp;externalSourceName,
                             java.lang.String&nbsp;metadataElementTypeName,
                             <a href="../../../frameworks/connectors/properties/beans/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStatus</a>&nbsp;initialStatus,
                             java.util.Date&nbsp;effectiveFrom,
@@ -252,7 +256,9 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.List,java.util.Date,java.lang.String)">createRelatedElementsInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.List,java.util.Date,java.lang.String)">createRelatedElementsInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+                            java.lang.String&nbsp;externalSourceGUID,
+                            java.lang.String&nbsp;externalSourceName,
                             java.lang.String&nbsp;relationshipTypeName,
                             java.lang.String&nbsp;metadataElement1GUID,
                             java.lang.String&nbsp;metadataElement2GUID,
@@ -270,7 +276,9 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deleteMetadataElementInStore(java.lang.String,java.lang.String,boolean,boolean,java.util.List,java.util.Date,java.lang.String)">deleteMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deleteMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.List,java.util.Date,java.lang.String)">deleteMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+                            java.lang.String&nbsp;externalSourceGUID,
+                            java.lang.String&nbsp;externalSourceName,
                             java.lang.String&nbsp;metadataElementGUID,
                             boolean&nbsp;forLineage,
                             boolean&nbsp;forDuplicateProcessing,
@@ -283,7 +291,9 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deleteRelatedElementsInStore(java.lang.String,java.lang.String,boolean,boolean,java.util.List,java.util.Date,java.lang.String)">deleteRelatedElementsInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deleteRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.List,java.util.Date,java.lang.String)">deleteRelatedElementsInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+                            java.lang.String&nbsp;externalSourceGUID,
+                            java.lang.String&nbsp;externalSourceName,
                             java.lang.String&nbsp;relationshipGUID,
                             boolean&nbsp;forLineage,
                             boolean&nbsp;forDuplicateProcessing,
@@ -420,7 +430,9 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 </tr>
 <tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#reclassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.List,java.util.Date,java.lang.String)">reclassifyMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#reclassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.List,java.util.Date,java.lang.String)">reclassifyMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+                                java.lang.String&nbsp;externalSourceGUID,
+                                java.lang.String&nbsp;externalSourceName,
                                 java.lang.String&nbsp;metadataElementGUID,
                                 java.lang.String&nbsp;classificationName,
                                 boolean&nbsp;replaceProperties,
@@ -436,7 +448,9 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 </tr>
 <tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unclassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.List,java.util.Date,java.lang.String)">unclassifyMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unclassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.List,java.util.Date,java.lang.String)">unclassifyMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+                                java.lang.String&nbsp;externalSourceGUID,
+                                java.lang.String&nbsp;externalSourceName,
                                 java.lang.String&nbsp;metadataElementGUID,
                                 java.lang.String&nbsp;metadataElementGUIDParameterName,
                                 java.lang.String&nbsp;metadataElementTypeName,
@@ -452,7 +466,9 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 </tr>
 <tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateClassificationStatusInStore(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.List,java.util.Date,java.lang.String)">updateClassificationStatusInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateClassificationStatusInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.List,java.util.Date,java.lang.String)">updateClassificationStatusInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+                                 java.lang.String&nbsp;externalSourceGUID,
+                                 java.lang.String&nbsp;externalSourceName,
                                  java.lang.String&nbsp;metadataElementGUID,
                                  java.lang.String&nbsp;classificationName,
                                  boolean&nbsp;forLineage,
@@ -468,7 +484,9 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 </tr>
 <tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateMetadataElementEffectivityInStore(java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.List,java.util.Date,java.lang.String)">updateMetadataElementEffectivityInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateMetadataElementEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.List,java.util.Date,java.lang.String)">updateMetadataElementEffectivityInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+                                       java.lang.String&nbsp;externalSourceGUID,
+                                       java.lang.String&nbsp;externalSourceName,
                                        java.lang.String&nbsp;metadataElementGUID,
                                        boolean&nbsp;forLineage,
                                        boolean&nbsp;forDuplicateProcessing,
@@ -483,7 +501,9 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 </tr>
 <tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateMetadataElementInStore(java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.List,java.util.Date,java.lang.String)">updateMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.List,java.util.Date,java.lang.String)">updateMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+                            java.lang.String&nbsp;externalSourceGUID,
+                            java.lang.String&nbsp;externalSourceName,
                             java.lang.String&nbsp;metadataElementGUID,
                             boolean&nbsp;replaceProperties,
                             boolean&nbsp;forLineage,
@@ -498,7 +518,9 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 </tr>
 <tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateMetadataElementStatusInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,boolean,boolean,java.util.List,java.util.Date,java.lang.String)">updateMetadataElementStatusInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateMetadataElementStatusInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,boolean,boolean,java.util.List,java.util.Date,java.lang.String)">updateMetadataElementStatusInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+                                  java.lang.String&nbsp;externalSourceGUID,
+                                  java.lang.String&nbsp;externalSourceName,
                                   java.lang.String&nbsp;metadataElementGUID,
                                   <a href="../../../frameworks/connectors/properties/beans/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStatus</a>&nbsp;newElementStatus,
                                   boolean&nbsp;forLineage,
@@ -512,7 +534,9 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 </tr>
 <tr id="i19" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateRelatedElementsInStore(java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.List,java.util.Date,java.lang.String)">updateRelatedElementsInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.List,java.util.Date,java.lang.String)">updateRelatedElementsInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+                            java.lang.String&nbsp;externalSourceGUID,
+                            java.lang.String&nbsp;externalSourceName,
                             java.lang.String&nbsp;relationshipGUID,
                             boolean&nbsp;replaceProperties,
                             boolean&nbsp;forLineage,
@@ -527,7 +551,9 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 </tr>
 <tr id="i20" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateRelatedElementsStatusInStore(java.lang.String,java.lang.String,java.util.Date,java.util.Date,boolean,boolean,java.util.List,java.util.Date,java.lang.String)">updateRelatedElementsStatusInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateRelatedElementsStatusInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date,boolean,boolean,java.util.List,java.util.Date,java.lang.String)">updateRelatedElementsStatusInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+                                  java.lang.String&nbsp;externalSourceGUID,
+                                  java.lang.String&nbsp;externalSourceName,
                                   java.lang.String&nbsp;relationshipGUID,
                                   java.util.Date&nbsp;effectiveFrom,
                                   java.util.Date&nbsp;effectiveTo,
@@ -929,13 +955,15 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 </dl>
 </li>
 </ul>
-<a id="createMetadataElementInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.util.List,java.util.Date,java.lang.String)">
+<a id="createMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.util.List,java.util.Date,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>createMetadataElementInStore</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createMetadataElementInStore&#8203;(java.lang.String&nbsp;userId,
+                                                     java.lang.String&nbsp;externalSourceGUID,
+                                                     java.lang.String&nbsp;externalSourceName,
                                                      java.lang.String&nbsp;metadataElementTypeName,
                                                      <a href="../../../frameworks/connectors/properties/beans/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStatus</a>&nbsp;initialStatus,
                                                      java.util.Date&nbsp;effectiveFrom,
@@ -955,6 +983,8 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - caller's userId</dd>
+<dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalSourceName</code> - unique name of the software capability that owns this collection</dd>
 <dd><code>metadataElementTypeName</code> - type name of the new metadata element</dd>
 <dd><code>initialStatus</code> - initial status of the metadata element</dd>
 <dd><code>effectiveFrom</code> - the date when this element is active - null for active on creation</dd>
@@ -974,13 +1004,15 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 </dl>
 </li>
 </ul>
-<a id="updateMetadataElementInStore(java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.List,java.util.Date,java.lang.String)">
+<a id="updateMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.List,java.util.Date,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>updateMetadataElementInStore</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;updateMetadataElementInStore&#8203;(java.lang.String&nbsp;userId,
+                                         java.lang.String&nbsp;externalSourceGUID,
+                                         java.lang.String&nbsp;externalSourceName,
                                          java.lang.String&nbsp;metadataElementGUID,
                                          boolean&nbsp;replaceProperties,
                                          boolean&nbsp;forLineage,
@@ -998,6 +1030,8 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - caller's userId</dd>
+<dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalSourceName</code> - unique name of the software capability that owns this collection</dd>
 <dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
 <dd><code>replaceProperties</code> - flag to indicate whether to completely replace the existing properties with the new properties, or just update
                           the individual properties specified on the request.</dd>
@@ -1014,13 +1048,15 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 </dl>
 </li>
 </ul>
-<a id="updateMetadataElementStatusInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,boolean,boolean,java.util.List,java.util.Date,java.lang.String)">
+<a id="updateMetadataElementStatusInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,boolean,boolean,java.util.List,java.util.Date,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>updateMetadataElementStatusInStore</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;updateMetadataElementStatusInStore&#8203;(java.lang.String&nbsp;userId,
+                                               java.lang.String&nbsp;externalSourceGUID,
+                                               java.lang.String&nbsp;externalSourceName,
                                                java.lang.String&nbsp;metadataElementGUID,
                                                <a href="../../../frameworks/connectors/properties/beans/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStatus</a>&nbsp;newElementStatus,
                                                boolean&nbsp;forLineage,
@@ -1036,6 +1072,8 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - caller's userId</dd>
+<dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalSourceName</code> - unique name of the software capability that owns this collection</dd>
 <dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
 <dd><code>newElementStatus</code> - new status value - or null to leave as is</dd>
 <dd><code>forLineage</code> - the request is to support lineage retrieval this means entities with the Memento classification can be returned</dd>
@@ -1050,13 +1088,15 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 </dl>
 </li>
 </ul>
-<a id="updateMetadataElementEffectivityInStore(java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.List,java.util.Date,java.lang.String)">
+<a id="updateMetadataElementEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.List,java.util.Date,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>updateMetadataElementEffectivityInStore</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;updateMetadataElementEffectivityInStore&#8203;(java.lang.String&nbsp;userId,
+                                                    java.lang.String&nbsp;externalSourceGUID,
+                                                    java.lang.String&nbsp;externalSourceName,
                                                     java.lang.String&nbsp;metadataElementGUID,
                                                     boolean&nbsp;forLineage,
                                                     boolean&nbsp;forDuplicateProcessing,
@@ -1072,6 +1112,8 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - caller's userId</dd>
+<dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalSourceName</code> - unique name of the software capability that owns this collection</dd>
 <dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
 <dd><code>forLineage</code> - the request is to support lineage retrieval this means entities with the Memento classification can be returned</dd>
 <dd><code>forDuplicateProcessing</code> - the request is for duplicate processing and so must not deduplicate</dd>
@@ -1087,13 +1129,15 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 </dl>
 </li>
 </ul>
-<a id="deleteMetadataElementInStore(java.lang.String,java.lang.String,boolean,boolean,java.util.List,java.util.Date,java.lang.String)">
+<a id="deleteMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.List,java.util.Date,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>deleteMetadataElementInStore</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;deleteMetadataElementInStore&#8203;(java.lang.String&nbsp;userId,
+                                         java.lang.String&nbsp;externalSourceGUID,
+                                         java.lang.String&nbsp;externalSourceName,
                                          java.lang.String&nbsp;metadataElementGUID,
                                          boolean&nbsp;forLineage,
                                          boolean&nbsp;forDuplicateProcessing,
@@ -1107,6 +1151,8 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - caller's userId</dd>
+<dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalSourceName</code> - unique name of the software capability that owns this collection</dd>
 <dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
 <dd><code>forLineage</code> - the request is to support lineage retrieval this means entities with the Memento classification can be returned</dd>
 <dd><code>forDuplicateProcessing</code> - the request is for duplicate processing and so must not deduplicate</dd>
@@ -1120,13 +1166,15 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 </dl>
 </li>
 </ul>
-<a id="classifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.List,java.util.Date,java.lang.String)">
+<a id="classifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.List,java.util.Date,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>classifyMetadataElementInStore</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;classifyMetadataElementInStore&#8203;(java.lang.String&nbsp;userId,
+                                           java.lang.String&nbsp;externalSourceGUID,
+                                           java.lang.String&nbsp;externalSourceName,
                                            java.lang.String&nbsp;metadataElementGUID,
                                            java.lang.String&nbsp;classificationName,
                                            boolean&nbsp;forLineage,
@@ -1145,6 +1193,8 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - caller's userId</dd>
+<dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalSourceName</code> - unique name of the software capability that owns this collection</dd>
 <dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
 <dd><code>classificationName</code> - name of the classification to add (if the classification is already present then use reclassify)</dd>
 <dd><code>effectiveFrom</code> - the date when this classification is active - null for active now</dd>
@@ -1164,13 +1214,15 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 </dl>
 </li>
 </ul>
-<a id="reclassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.List,java.util.Date,java.lang.String)">
+<a id="reclassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.List,java.util.Date,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>reclassifyMetadataElementInStore</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;reclassifyMetadataElementInStore&#8203;(java.lang.String&nbsp;userId,
+                                             java.lang.String&nbsp;externalSourceGUID,
+                                             java.lang.String&nbsp;externalSourceName,
                                              java.lang.String&nbsp;metadataElementGUID,
                                              java.lang.String&nbsp;classificationName,
                                              boolean&nbsp;replaceProperties,
@@ -1187,6 +1239,8 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - caller's userId</dd>
+<dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalSourceName</code> - unique name of the software capability that owns this collection</dd>
 <dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
 <dd><code>classificationName</code> - unique name of the classification to update</dd>
 <dd><code>replaceProperties</code> - flag to indicate whether to completely replace the existing properties with the new properties, or just update
@@ -1205,13 +1259,15 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 </dl>
 </li>
 </ul>
-<a id="updateClassificationStatusInStore(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.List,java.util.Date,java.lang.String)">
+<a id="updateClassificationStatusInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.List,java.util.Date,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>updateClassificationStatusInStore</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;updateClassificationStatusInStore&#8203;(java.lang.String&nbsp;userId,
+                                              java.lang.String&nbsp;externalSourceGUID,
+                                              java.lang.String&nbsp;externalSourceName,
                                               java.lang.String&nbsp;metadataElementGUID,
                                               java.lang.String&nbsp;classificationName,
                                               boolean&nbsp;forLineage,
@@ -1229,6 +1285,8 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - caller's userId</dd>
+<dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalSourceName</code> - unique name of the software capability that owns this collection</dd>
 <dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
 <dd><code>classificationName</code> - unique name of the classification to update</dd>
 <dd><code>forLineage</code> - the query is to support lineage retrieval</dd>
@@ -1245,13 +1303,15 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 </dl>
 </li>
 </ul>
-<a id="unclassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.List,java.util.Date,java.lang.String)">
+<a id="unclassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.List,java.util.Date,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>unclassifyMetadataElementInStore</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;unclassifyMetadataElementInStore&#8203;(java.lang.String&nbsp;userId,
+                                             java.lang.String&nbsp;externalSourceGUID,
+                                             java.lang.String&nbsp;externalSourceName,
                                              java.lang.String&nbsp;metadataElementGUID,
                                              java.lang.String&nbsp;metadataElementGUIDParameterName,
                                              java.lang.String&nbsp;metadataElementTypeName,
@@ -1268,6 +1328,8 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - caller's userId</dd>
+<dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalSourceName</code> - unique name of the software capability that owns this collection</dd>
 <dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
 <dd><code>metadataElementGUIDParameterName</code> - name of parameter for GUID</dd>
 <dd><code>metadataElementTypeName</code> - type of the metadata element</dd>
@@ -1284,13 +1346,15 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 </dl>
 </li>
 </ul>
-<a id="createRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.List,java.util.Date,java.lang.String)">
+<a id="createRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.List,java.util.Date,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>createRelatedElementsInStore</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createRelatedElementsInStore&#8203;(java.lang.String&nbsp;userId,
+                                                     java.lang.String&nbsp;externalSourceGUID,
+                                                     java.lang.String&nbsp;externalSourceName,
                                                      java.lang.String&nbsp;relationshipTypeName,
                                                      java.lang.String&nbsp;metadataElement1GUID,
                                                      java.lang.String&nbsp;metadataElement2GUID,
@@ -1310,6 +1374,8 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - caller's userId</dd>
+<dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalSourceName</code> - unique name of the software capability that owns this collection</dd>
 <dd><code>relationshipTypeName</code> - name of the type of relationship to create.  This will determine the types of metadata elements that can be
                              related and the properties that can be associated with this relationship.</dd>
 <dd><code>metadataElement1GUID</code> - unique identifier of the metadata element at end 1 of the relationship</dd>
@@ -1351,13 +1417,15 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 </dl>
 </li>
 </ul>
-<a id="updateRelatedElementsInStore(java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.List,java.util.Date,java.lang.String)">
+<a id="updateRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.List,java.util.Date,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>updateRelatedElementsInStore</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;updateRelatedElementsInStore&#8203;(java.lang.String&nbsp;userId,
+                                         java.lang.String&nbsp;externalSourceGUID,
+                                         java.lang.String&nbsp;externalSourceName,
                                          java.lang.String&nbsp;relationshipGUID,
                                          boolean&nbsp;replaceProperties,
                                          boolean&nbsp;forLineage,
@@ -1373,6 +1441,8 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - caller's userId</dd>
+<dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalSourceName</code> - unique name of the software capability that owns this collection</dd>
 <dd><code>relationshipGUID</code> - unique identifier of the relationship to update</dd>
 <dd><code>replaceProperties</code> - flag to indicate whether to completely replace the existing properties with the new properties, or just update
                           the individual properties specified on the request.</dd>
@@ -1390,13 +1460,15 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 </dl>
 </li>
 </ul>
-<a id="updateRelatedElementsStatusInStore(java.lang.String,java.lang.String,java.util.Date,java.util.Date,boolean,boolean,java.util.List,java.util.Date,java.lang.String)">
+<a id="updateRelatedElementsStatusInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date,boolean,boolean,java.util.List,java.util.Date,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>updateRelatedElementsStatusInStore</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;updateRelatedElementsStatusInStore&#8203;(java.lang.String&nbsp;userId,
+                                               java.lang.String&nbsp;externalSourceGUID,
+                                               java.lang.String&nbsp;externalSourceName,
                                                java.lang.String&nbsp;relationshipGUID,
                                                java.util.Date&nbsp;effectiveFrom,
                                                java.util.Date&nbsp;effectiveTo,
@@ -1413,6 +1485,8 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - caller's userId</dd>
+<dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalSourceName</code> - unique name of the software capability that owns this collection</dd>
 <dd><code>relationshipGUID</code> - unique identifier of the relationship to update</dd>
 <dd><code>effectiveFrom</code> - the date when this element is active - null for active now</dd>
 <dd><code>effectiveTo</code> - the date when this element becomes inactive - null for active until deleted</dd>
@@ -1428,13 +1502,15 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 </dl>
 </li>
 </ul>
-<a id="deleteRelatedElementsInStore(java.lang.String,java.lang.String,boolean,boolean,java.util.List,java.util.Date,java.lang.String)">
+<a id="deleteRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.List,java.util.Date,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>deleteRelatedElementsInStore</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;deleteRelatedElementsInStore&#8203;(java.lang.String&nbsp;userId,
+                                         java.lang.String&nbsp;externalSourceGUID,
+                                         java.lang.String&nbsp;externalSourceName,
                                          java.lang.String&nbsp;relationshipGUID,
                                          boolean&nbsp;forLineage,
                                          boolean&nbsp;forDuplicateProcessing,
@@ -1448,6 +1524,8 @@ extends <a href="../../generichandlers/ReferenceableHandler.html" title="class i
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - caller's userId</dd>
+<dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalSourceName</code> - unique name of the software capability that owns this collection</dd>
 <dd><code>relationshipGUID</code> - unique identifier of the relationship to delete</dd>
 <dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
 <dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
