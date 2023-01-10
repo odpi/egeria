@@ -2,9 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.fvt;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.fvt.clientconstructors.ClientConstructorTest;
-import org.odpi.openmetadata.accessservices.assetconsumer.fvt.errorhandling.InvalidParameterTest;
-import org.odpi.openmetadata.accessservices.assetconsumer.fvt.tagging.CreateTagTest;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.FVTSuiteBase;
 import org.odpi.openmetadata.http.HttpHelper;
@@ -82,7 +79,14 @@ public class AssetConsumerOMASFVTSuite extends FVTSuiteBase
         }
         results.printResults(serverName);
 
-        results = CreateTagTest.performFVT(serverName, serverPlatformRootURL, userId);
+        results = InformalTagLifecycleTest.performFVT(serverName, serverPlatformRootURL, userId);
+        if (! results.isSuccessful())
+        {
+            returnCode --;
+        }
+        results.printResults(serverName);
+
+        results = CommentLifecycleTest.performFVT(serverName, serverPlatformRootURL, userId);
         if (! results.isSuccessful())
         {
             returnCode --;

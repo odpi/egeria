@@ -4,7 +4,7 @@ package org.odpi.openmetadata.adminservices.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.adminservices.OMAGConformanceSuiteConfigServices;
+import org.odpi.openmetadata.adminservices.server.OMAGConformanceSuiteConfigServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryConformanceWorkbenchConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryPerformanceWorkbenchConfig;
 import org.odpi.openmetadata.adminservices.rest.URLRequestBody;

@@ -9,7 +9,7 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.listener.ITInfrastr
 import org.odpi.openmetadata.accessservices.itinfrastructure.outtopic.ITInfrastructureOutTopicPublisher;
 import org.odpi.openmetadata.accessservices.itinfrastructure.server.ITInfrastructureServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;

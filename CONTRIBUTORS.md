@@ -23,8 +23,8 @@ This file recognizes the people who have make an important contribution to Egeri
 | Sachin Naik |  sachin.naik@ibm.com |
 | Liz McIntosh | liz.mcintosh@sas.com |
 | Dan Wolfson | dan.wolfson@pdr-associates.com |
-| Juergen Helmelt | juergenhemelt |
-| Cristian-Mihai Iliescu  |  cristianmihaiiliescu@gmail.com  |
+| Juergen Hemelt | juergenhemelt |
+| Cristian-Mihai Iliescu |  cristianmihaiiliescu@gmail.com  |
 
 
 

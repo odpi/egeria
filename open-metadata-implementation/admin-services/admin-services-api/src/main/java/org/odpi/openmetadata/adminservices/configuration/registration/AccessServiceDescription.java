@@ -121,7 +121,7 @@ public enum AccessServiceDescription implements Serializable
                                       "Digital Service",
                                       "Digital Service OMAS",
                                       "digital-service",
-                                      "Manage a digital service's lifecycle",
+                                      "Manage a digital service through its lifecycle",
                                       "https://egeria-project.org/services/omas/digital-service/overview/"),
     DISCOVERY_ENGINE_OMAS            (217,
                                       ComponentDevelopmentStatus.TECHNICAL_PREVIEW,

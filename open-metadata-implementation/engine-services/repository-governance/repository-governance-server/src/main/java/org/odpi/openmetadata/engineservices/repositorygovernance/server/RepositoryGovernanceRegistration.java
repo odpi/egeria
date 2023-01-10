@@ -3,10 +3,10 @@
 package org.odpi.openmetadata.engineservices.repositorygovernance.server;
 
 
+import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceRegistrationEntry;
 import org.odpi.openmetadata.engineservices.repositorygovernance.admin.RepositoryGovernanceAdmin;
 import org.odpi.openmetadata.governanceservers.enginehostservices.registration.OMAGEngineServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 
 /**
@@ -24,9 +24,9 @@ class RepositoryGovernanceRegistration
     {
         EngineServiceDescription myDescription = EngineServiceDescription.REPOSITORY_GOVERNANCE_OMES;
 
-        EngineServiceRegistration myRegistration = new EngineServiceRegistration(myDescription,
-                                                                                 ServiceOperationalStatus.ENABLED,
-                                                                                 RepositoryGovernanceAdmin.class.getName());
+        EngineServiceRegistrationEntry myRegistration = new EngineServiceRegistrationEntry(myDescription,
+                                                                                           ServiceOperationalStatus.ENABLED,
+                                                                                           RepositoryGovernanceAdmin.class.getName());
         OMAGEngineServiceRegistration.registerEngineService(myRegistration);
     }
 }

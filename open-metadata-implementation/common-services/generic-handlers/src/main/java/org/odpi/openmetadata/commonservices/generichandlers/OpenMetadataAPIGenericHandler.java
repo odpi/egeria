@@ -14516,7 +14516,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                         effectiveTime,
                                                                         methodName);
 
-        List<Relationship> links = this.getAttachmentLinks(userId,
+        List<Relationship> relationships = this.getAttachmentLinks(userId,
                                                            startingEntity,
                                                            startingGUIDParameterName,
                                                            startingElementTypeName,
@@ -14533,9 +14533,35 @@ public class OpenMetadataAPIGenericHandler<B>
                                                            effectiveTime,
                                                            methodName);
 
-        if (links == null)
+        if (relationships == null)
         {
             return null;
+        }
+
+        List<Relationship> links;
+
+        /*
+         * If this is a relationship that is dedicated to a specific user then the returned links are filtered for the specific user's relationship.
+         */
+        if (onlyCreatorPermitted)
+        {
+            links = new ArrayList<>();
+
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    if (userId.equals(relationship.getCreatedBy()))
+                    {
+                        links.add(relationship);
+                    }
+                }
+            }
+
+        }
+        else
+        {
+            links = relationships;
         }
 
         if (links.size() > 1)

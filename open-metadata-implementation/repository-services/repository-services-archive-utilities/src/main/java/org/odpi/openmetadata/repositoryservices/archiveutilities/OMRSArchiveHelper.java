@@ -1172,7 +1172,7 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         {
             instanceType = new InstanceType();
 
-            instanceType.setHeaderVersion(InstanceElementHeader.CURRENT_INSTANCE_HEADER_VERSION);
+            instanceType.setHeaderVersion(InstanceType.CURRENT_INSTANCE_TYPE_HEADER_VERSION);
             instanceType.setTypeDefCategory(typeDef.getCategory());
             instanceType.setTypeDefGUID(typeDef.getGUID());
             instanceType.setTypeDefName(typeDef.getName());
@@ -1419,7 +1419,7 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
     {
         ClassificationEntityExtension classificationEntityExtension = new ClassificationEntityExtension();
 
-        classificationEntityExtension.setHeaderVersion(InstanceElementHeader.CURRENT_INSTANCE_HEADER_VERSION);
+        classificationEntityExtension.setHeaderVersion(ClassificationEntityExtension.CURRENT_CLASSIFICATION_EXT_HEADER_VERSION);
         classificationEntityExtension.setEntityToClassify(entity);
         classificationEntityExtension.setClassification(classification);
 

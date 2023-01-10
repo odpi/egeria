@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.configuration.properties;
 
-import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistrationEntry;
 
 import java.util.Objects;
 
@@ -36,7 +36,7 @@ public class SolutionViewServiceConfig extends ViewServiceConfig {
      *
      * @param viewRegistration fixed properties about the view service
      */
-    public SolutionViewServiceConfig(ViewServiceRegistration viewRegistration)
+    public SolutionViewServiceConfig(ViewServiceRegistrationEntry viewRegistration)
     {
         super(viewRegistration);
     }

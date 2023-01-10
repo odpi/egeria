@@ -33,10 +33,6 @@ public class InformalTagProperties implements Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    /*
-     * Attributes of a InformalTagProperties
-     */
-    private boolean isPublic     = false;
     private boolean isPrivateTag = false;
     private String  name         = null;
     private String  description  = null;
@@ -61,34 +57,11 @@ public class InformalTagProperties implements Serializable
     {
         if (template != null)
         {
-            isPublic = template.getIsPublic();
             isPrivateTag = template.getIsPrivateTag();
             user = template.getUser();
             name = template.getName();
             description = template.getDescription();
         }
-    }
-
-
-    /**
-     * Return if the link to the tag is private to the creating user.
-     *
-     * @return boolean
-     */
-    public boolean getIsPublic()
-    {
-        return isPublic;
-    }
-
-
-    /**
-     * Set up whether the link to the tag is private to the creating user or not.
-     *
-     * @param aPublic boolean
-     */
-    public void setIsPublic(boolean aPublic)
-    {
-        isPublic = aPublic;
     }
 
 
@@ -189,7 +162,6 @@ public class InformalTagProperties implements Serializable
     public String toString()
     {
         return "InformalTagProperties{" +
-                "public=" + isPublic +
                 ", isPrivateTag=" + isPrivateTag +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
@@ -220,8 +192,7 @@ public class InformalTagProperties implements Serializable
             return false;
         }
         InformalTagProperties that = (InformalTagProperties) objectToCompare;
-        return getIsPublic() == that.getIsPublic() &&
-                getIsPrivateTag() == that.getIsPrivateTag() &&
+        return getIsPrivateTag() == that.getIsPrivateTag() &&
                 Objects.equals(getName(), that.getName()) &&
                 Objects.equals(getDescription(), that.getDescription()) &&
                 Objects.equals(getUser(), that.getUser());
@@ -236,6 +207,6 @@ public class InformalTagProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(isPublic, isPrivateTag, name, description, user);
+        return Objects.hash(isPrivateTag, name, description, user);
     }
 }

@@ -189,7 +189,6 @@ public class EnumPropertyValue extends InstancePropertyValue
     @Override
     public int hashCode()
     {
-
         return Objects.hash(super.hashCode(), getOrdinal(), getSymbolicName(), getDescription());
     }
 }

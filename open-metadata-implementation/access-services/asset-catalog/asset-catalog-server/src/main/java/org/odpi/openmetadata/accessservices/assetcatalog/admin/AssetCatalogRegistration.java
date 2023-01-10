@@ -4,9 +4,9 @@ package org.odpi.openmetadata.accessservices.assetcatalog.admin;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistrationEntry;
+import org.odpi.openmetadata.adminservices.registration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 
 /**
@@ -24,9 +24,9 @@ class AssetCatalogRegistration {
     static void registerAccessService() {
         AccessServiceDescription myDescription = AccessServiceDescription.ASSET_CATALOG_OMAS;
 
-        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
-                                                                                 ServiceOperationalStatus.ENABLED,
-                                                                                 AssetCatalogAdmin.class.getName());
+        AccessServiceRegistrationEntry myRegistration = new AccessServiceRegistrationEntry(myDescription,
+                                                                                           ServiceOperationalStatus.ENABLED,
+                                                                                           AssetCatalogAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }
 }

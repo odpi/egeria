@@ -2,11 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.api;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.CommentType;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.StarRating;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+
 
 /**
  * AssetConsumerFeedbackInterface supports the ability to add and remove feedback for an asset.
