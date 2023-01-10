@@ -2776,7 +2776,7 @@ public class OMAGServerAdminServices
                 {
                     OMRSConfigurationFactory configurationFactory = new OMRSConfigurationFactory();
 
-                    repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig();
+                    repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig(false);
                 }
 
                 List<Connection>  auditLogDestinations = repositoryServicesConfig.getAuditLogConnections();
