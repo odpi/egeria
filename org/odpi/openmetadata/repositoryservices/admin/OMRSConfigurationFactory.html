@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -209,6 +209,13 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
+<td class="colFirst"><code><a href="../../adminservices/configuration/properties/RepositoryServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">RepositoryServicesConfig</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDefaultRepositoryServicesConfig(boolean)">getDefaultRepositoryServicesConfig</a></span>&#8203;(boolean&nbsp;addDefaultAuditLog)</code></th>
+<td class="colLast">
+<div class="block">Returns a repository services config with the audit log set up.</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../../adminservices/configuration/properties/LocalRepositoryConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">LocalRepositoryConfig</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getInMemoryLocalRepositoryConfig(java.lang.String,java.lang.String)">getInMemoryLocalRepositoryConfig</a></span>&#8203;(java.lang.String&nbsp;localServerName,
                                 java.lang.String&nbsp;localServerURL)</code></th>
@@ -216,7 +223,7 @@ extends java.lang.Object</pre>
 <div class="block">Return the configuration for an in-memory local repository.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="../../adminservices/configuration/properties/LocalRepositoryConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">LocalRepositoryConfig</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLocalGraphLocalRepositoryConfig(java.lang.String,java.lang.String,java.util.Map)">getLocalGraphLocalRepositoryConfig</a></span>&#8203;(java.lang.String&nbsp;localServerName,
                                   java.lang.String&nbsp;localServerURL,
@@ -225,7 +232,7 @@ extends java.lang.Object</pre>
 <div class="block">Return the configuration for a local repository that is using the built-in graph repository.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="../../adminservices/configuration/properties/LocalRepositoryConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">LocalRepositoryConfig</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getPluginRepositoryLocalRepositoryConfig(java.lang.String,java.lang.String)">getPluginRepositoryLocalRepositoryConfig</a></span>&#8203;(java.lang.String&nbsp;localServerName,
                                         java.lang.String&nbsp;localServerURL)</code></th>
@@ -233,7 +240,7 @@ extends java.lang.Object</pre>
 <div class="block">Return the local repository configuration for a plugin repository.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="../../adminservices/configuration/properties/LocalRepositoryConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">LocalRepositoryConfig</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getReadOnlyLocalRepositoryConfig(java.lang.String,java.lang.String)">getReadOnlyLocalRepositoryConfig</a></span>&#8203;(java.lang.String&nbsp;localServerName,
                                 java.lang.String&nbsp;localServerURL)</code></th>
@@ -241,7 +248,7 @@ extends java.lang.Object</pre>
 <div class="block">Return the configuration for an in-memory local repository.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="../../adminservices/configuration/properties/LocalRepositoryConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">LocalRepositoryConfig</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRepositoryProxyLocalRepositoryConfig(java.lang.String,java.lang.String)">getRepositoryProxyLocalRepositoryConfig</a></span>&#8203;(java.lang.String&nbsp;localServerName,
                                        java.lang.String&nbsp;localServerURL)</code></th>
@@ -431,6 +438,22 @@ extends java.lang.Object</pre>
 <dd><code>eventBusConfigurationProperties</code> - name value property pairs for the event bus connection</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>default values in a CohortConfig object</dd>
+</dl>
+</li>
+</ul>
+<a id="getDefaultRepositoryServicesConfig(boolean)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getDefaultRepositoryServicesConfig</h4>
+<pre class="methodSignature">public&nbsp;<a href="../../adminservices/configuration/properties/RepositoryServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">RepositoryServicesConfig</a>&nbsp;getDefaultRepositoryServicesConfig&#8203;(boolean&nbsp;addDefaultAuditLog)</pre>
+<div class="block">Returns a repository services config with the audit log set up.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>addDefaultAuditLog</code> - when set add a default audit log.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>minimally configured repository services config</dd>
 </dl>
 </li>
 </ul>
