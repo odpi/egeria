@@ -3,9 +3,9 @@
 package org.odpi.openmetadata.accessservices.securitymanager.server;
 
 import org.odpi.openmetadata.accessservices.securitymanager.admin.SecurityManagerAdmin;
-import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.registration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistrationEntry;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 
 
@@ -23,9 +23,9 @@ public class SecurityManagerOMASRegistration
     static void registerAccessService()
     {
         AccessServiceDescription myDescription = AccessServiceDescription.SECURITY_MANAGER_OMAS;
-        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
-                                                                                 ServiceOperationalStatus.ENABLED,
-                                                                                 SecurityManagerAdmin.class.getName());
+        AccessServiceRegistrationEntry myRegistration = new AccessServiceRegistrationEntry(myDescription,
+                                                                                           ServiceOperationalStatus.ENABLED,
+                                                                                           SecurityManagerAdmin.class.getName());
 
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }

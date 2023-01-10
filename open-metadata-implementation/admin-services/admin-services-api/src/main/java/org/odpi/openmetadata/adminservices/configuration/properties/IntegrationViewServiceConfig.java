@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistrationEntry;
 
 import java.util.List;
 import java.util.Objects;
@@ -55,7 +55,7 @@ public class IntegrationViewServiceConfig extends ViewServiceConfig {
      *
      * @param viewRegistration fixed properties about the view service
      */
-    public IntegrationViewServiceConfig(ViewServiceRegistration viewRegistration)
+    public IntegrationViewServiceConfig(ViewServiceRegistrationEntry viewRegistration)
     {
         super(viewRegistration);
     }

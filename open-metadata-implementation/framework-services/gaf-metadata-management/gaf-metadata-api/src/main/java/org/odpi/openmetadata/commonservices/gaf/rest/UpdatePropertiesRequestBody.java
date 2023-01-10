@@ -109,7 +109,9 @@ public class UpdatePropertiesRequestBody extends UpdateRequestBody
     public String toString()
     {
         return "UpdatePropertiesRequestBody{" +
-                       "replaceProperties=" + replaceProperties +
+                       "externalSourceGUID='" + getExternalSourceGUID() + '\'' +
+                       ", externalSourceName='" + getExternalSourceName() + '\'' +
+                       ", replaceProperties=" + replaceProperties +
                        ", properties=" + properties +
                        ", forLineage=" + getForLineage() +
                        ", forDuplicateProcessing=" + getForDuplicateProcessing() +

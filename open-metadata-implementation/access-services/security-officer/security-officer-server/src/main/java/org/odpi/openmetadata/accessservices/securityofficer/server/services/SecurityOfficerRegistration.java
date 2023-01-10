@@ -5,10 +5,10 @@
 package org.odpi.openmetadata.accessservices.securityofficer.server.services;
 
 import org.odpi.openmetadata.accessservices.securityofficer.server.admin.SecurityOfficerAdmin;
-import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.registration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistrationEntry;
 
 /**
  * SecurityOfficerRegistration registers the access service with the OMAG Server administration services.
@@ -23,9 +23,9 @@ public class SecurityOfficerRegistration {
     public static void registerAccessService() {
         AccessServiceDescription myDescription = AccessServiceDescription.SECURITY_OFFICER_OMAS;
 
-        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
-                                                                                 ServiceOperationalStatus.ENABLED,
-                                                                                 SecurityOfficerAdmin.class.getName());
+        AccessServiceRegistrationEntry myRegistration = new AccessServiceRegistrationEntry(myDescription,
+                                                                                           ServiceOperationalStatus.ENABLED,
+                                                                                           SecurityOfficerAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }
 }

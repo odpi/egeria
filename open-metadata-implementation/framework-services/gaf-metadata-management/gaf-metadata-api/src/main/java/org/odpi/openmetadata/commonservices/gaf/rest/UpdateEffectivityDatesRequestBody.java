@@ -106,7 +106,9 @@ public class UpdateEffectivityDatesRequestBody extends UpdateRequestBody
     public String toString()
     {
         return "UpdateEffectivityDatesRequestBody{" +
-                       "effectiveFrom=" + effectiveFrom +
+                       "externalSourceGUID='" + getExternalSourceGUID() + '\'' +
+                       ", externalSourceName='" + getExternalSourceName() + '\'' +
+                       ", effectiveFrom=" + effectiveFrom +
                        ", effectiveTo=" + effectiveTo +
                        ", forLineage=" + getForLineage() +
                        ", forDuplicateProcessing=" + getForDuplicateProcessing() +

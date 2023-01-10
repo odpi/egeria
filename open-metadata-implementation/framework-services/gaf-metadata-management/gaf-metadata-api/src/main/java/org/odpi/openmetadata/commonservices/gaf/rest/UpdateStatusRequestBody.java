@@ -82,10 +82,12 @@ public class UpdateStatusRequestBody extends UpdateRequestBody
     public String toString()
     {
         return "UpdateStatusRequestBody{" +
-                       "newStatus=" + newStatus +
+                       "externalSourceGUID='" + getExternalSourceGUID() + '\'' +
+                       ", externalSourceName='" + getExternalSourceName() + '\'' +
                        ", forLineage=" + getForLineage() +
                        ", forDuplicateProcessing=" + getForDuplicateProcessing() +
                        ", effectiveTime=" + getEffectiveTime() +
+                       ", newStatus=" + newStatus +
                        '}';
     }
 

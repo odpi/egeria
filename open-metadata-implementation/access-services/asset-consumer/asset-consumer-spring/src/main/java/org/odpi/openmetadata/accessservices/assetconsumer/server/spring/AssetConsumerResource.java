@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.CommentRequestBody;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.InformalTagProperties;
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.RatingRequestBody;
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
 import org.odpi.openmetadata.accessservices.assetconsumer.server.AssetConsumerRESTServices;
