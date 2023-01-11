@@ -353,31 +353,18 @@ public class OMRSConfigurationFactory
     /**
      * Returns a repository services config with the audit log set up.
      *
-     * @param addDefaultAuditLog when set add a default audit log.
-     * @return minimally configured repository services config
-     */
-    public RepositoryServicesConfig getDefaultRepositoryServicesConfig(boolean addDefaultAuditLog)
-    {
-        RepositoryServicesConfig repositoryServicesConfig = new RepositoryServicesConfig();
-
-        if (addDefaultAuditLog)
-        {
-            List<Connection>   auditLogStoreConnections = new ArrayList<>();
-            auditLogStoreConnections.add(connectorConfigurationFactory.getDefaultAuditLogConnection());
-            repositoryServicesConfig.setAuditLogConnections(auditLogStoreConnections);
-        }
-
-        return repositoryServicesConfig;
-    }
-
-
-    /**
-     * Returns a repository services config with the audit log set up.
-     *
      * @return minimally configured repository services config
      */
     public RepositoryServicesConfig getDefaultRepositoryServicesConfig()
     {
-       return getDefaultRepositoryServicesConfig(true);
+        RepositoryServicesConfig repositoryServicesConfig = new RepositoryServicesConfig();
+
+        List<Connection>   auditLogStoreConnections = new ArrayList<>();
+
+        auditLogStoreConnections.add(connectorConfigurationFactory.getDefaultAuditLogConnection());
+
+        repositoryServicesConfig.setAuditLogConnections(auditLogStoreConnections);
+
+        return repositoryServicesConfig;
     }
 }
