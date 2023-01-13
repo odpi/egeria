@@ -23,6 +23,7 @@ import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -246,8 +247,8 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @param userId calling user (assumed to be the owner)
      * @param typeName specific type of the asset - this must match a defined subtype
      * @param qualifiedName unique name for the asset in the catalog
-     * @param displayName display name for the asset in the catalog
-     * @param description description of the asset in the catalog
+     * @param name resource name for the asset in the catalog
+     * @param description resource description for the asset in the catalog
      *
      * @return unique identifier (guid) of the asset
      *
@@ -259,7 +260,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
     public String  addAssetToCatalog(String               userId,
                                      String               typeName,
                                      String               qualifiedName,
-                                     String               displayName,
+                                     String               name,
                                      String               description,
                                      Map<String, String>  additionalProperties,
                                      Map<String, Object>  extendedProperties) throws InvalidParameterException,
@@ -276,7 +277,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
 
         assetProperties.setTypeName(typeName);
         assetProperties.setQualifiedName(qualifiedName);
-        assetProperties.setDisplayName(displayName);
+        assetProperties.setName(name);
         assetProperties.setDescription(description);
         assetProperties.setAdditionalProperties(additionalProperties);
         assetProperties.setExtendedProperties(extendedProperties);
@@ -305,7 +306,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
     {
         final String methodName                   = "addAssetToCatalog";
         final String assetPropertiesParameterName = "assetProperties";
-        final String qualifiedNameParameter       = "assetProperties.getQualifiedName()";
+        final String qualifiedNameParameter       = "assetProperties.qualifiedName";
         final String urlTemplate                  = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -351,7 +352,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
         final String methodName                  = "createDatabaseFromTemplate";
         final String templateGUIDParameterName   = "templateGUID";
         final String propertiesParameterName     = "templateProperties";
-        final String qualifiedNameParameterName  = "qualifiedName";
+        final String qualifiedNameParameterName  = "templateProperties.qualifiedName";
         final String urlTemplate                 = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/from-template/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -369,6 +370,50 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
         return restResult.getGUID();
     }
 
+
+    /**
+     * Update the metadata element representing an asset.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param assetProperties new properties for this element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void updateAsset(String              userId,
+                            String              assetGUID,
+                            boolean             isMergeUpdate,
+                            AssetProperties     assetProperties) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        final String methodName                  = "updateAsset";
+        final String assetGUIDParameterName      = "assetGUID";
+        final String propertiesParameterName     = "assetProperties";
+        final String qualifiedNameParameterName  = "assetProperties.qualifiedName";
+        final String urlTemplate                 = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/update?isMergeUpdate={3}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(assetProperties, propertiesParameterName, methodName);
+
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(assetProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        assetProperties,
+                                        serverName,
+                                        userId,
+                                        assetGUID,
+                                        isMergeUpdate);
+    }
 
 
     /**

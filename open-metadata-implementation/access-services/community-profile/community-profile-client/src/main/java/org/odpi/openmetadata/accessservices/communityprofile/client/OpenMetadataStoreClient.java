@@ -6,9 +6,10 @@ import org.odpi.openmetadata.commonservices.gaf.client.OpenMetadataStoreClientBa
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 
 /**
- * OpenMetadataStoreClientBase sits in the governance context of a governance action service when it is running in the engine host OMAG server.
- * It is however shared by all the governance action services running in an engine service so that we only need one connector to the topic
- * listener for the watchdog governance services.
+ * OpenMetadataStoreClientBase provides an interface to the open metadata store.  This is part of the Governance Action Framework (GAF)
+ * and provides a comprehensive interface for working with all types of metadata, subject to the user's (and this OMAS's) security permissions.
+ * the interface supports search, maintenance of metadata elements, classifications and relationships plus the ability to raise incident reports
+ * and todos along with the ability to work with metadata valid values and translations.
  */
 public class OpenMetadataStoreClient extends OpenMetadataStoreClientBase
 {

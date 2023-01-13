@@ -20,7 +20,7 @@ import java.util.Map;
 
 
 /**
- * CreateAssetTest calls the AssetOwnerClient to create an asset with with attachments
+ * CreateAssetTest calls the AssetOwnerClient to create an asset with attachments
  * and then retrieve the results.
  */
 public class CreateAssetTest
@@ -32,10 +32,17 @@ public class CreateAssetTest
     /*
      * The asset name is constant - the guid is created as part of the test.
      */
-    private final static String assetName            = "TestAsset qualifiedName";
-    private final static String assetDisplayName     = "Asset displayName";
-    private final static String assetDescription     = "Asset description";
-    private final static String assetAdditionalPropertyName  = "TestAsset additionalPropertyName";
+    private final static String assetQualifiedName = "TestAsset qualifiedName";
+    private final static String assetFullQualifiedName = "TestAsset qualifiedName-full";
+    private final static String assetResourceName   = "Asset resourceName";
+    private final static String assetVersionIdentifier   = "Asset versionIdentifier";
+    private final static String assetResourceDescription = "Asset resourceDescription";
+    private final static String assetDisplayName            = "Asset displayName";
+    private final static String assetDisplayDescription     = "Asset displayDescription";
+    private final static String assetDisplaySummary     = "Asset displaySummary";
+    private final static String assetAbbreviation     = "Asset abbreviation";
+    private final static String assetUsage     = "Asset usage";
+    private final static String assetAdditionalPropertyName = "TestAsset additionalPropertyName";
     private final static String assetAdditionalPropertyValue = "TestAsset additionalPropertyValue";
 
     /*
@@ -49,7 +56,7 @@ public class CreateAssetTest
 
 
     /**
-     * Run all of the defined tests and capture the results.
+     * Run all the defined tests and capture the results.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
@@ -102,6 +109,7 @@ public class CreateAssetTest
 
         AssetOwner client = thisTest.getAssetOwnerClient(serverName, serverPlatformRootURL, auditLog);
         String assetGUID = thisTest.getAsset(client, userId);
+        String fullAssetGUID = thisTest.getFullAsset(client, userId);
         String schemaTypeGUID = thisTest.getSchemaType(client, assetGUID, userId);
     }
 
@@ -146,7 +154,7 @@ public class CreateAssetTest
     private String getAsset(AssetOwner client,
                             String     userId) throws FVTUnexpectedCondition
     {
-        final String activityName = "getAsset";
+        String activityName = "getAsset - create";
 
         try
         {
@@ -156,13 +164,168 @@ public class CreateAssetTest
             AssetProperties properties = new AssetProperties();
 
             properties.setTypeName("Asset");
-            properties.setQualifiedName(assetName);
-            properties.setDisplayName(assetDisplayName);
-            properties.setDescription(assetDescription);
+            properties.setQualifiedName(assetQualifiedName);
+            properties.setName(assetResourceName);
+            properties.setDescription(assetResourceDescription);
             properties.setAdditionalProperties(additionalProperties);
 
             String assetGUID = client.addAssetToCatalog(userId, properties);
 
+            this.validateAsset(client,
+                               userId,
+                               assetGUID,
+                               assetQualifiedName,
+                               assetResourceName,
+                               null,
+                               assetResourceDescription,
+                               additionalProperties,
+                               activityName);
+
+            activityName = "getAsset - update";
+
+            properties = new AssetProperties();
+
+            properties.setVersionIdentifier(assetVersionIdentifier);
+            properties.setDisplayName(assetDisplayName);
+            properties.setDisplaySummary(assetDisplaySummary);
+            properties.setDisplayDescription(assetDisplayDescription);
+            properties.setAbbreviation(assetAbbreviation);
+            properties.setUsage(assetUsage);
+
+            client.updateAsset(userId, assetGUID, true, properties);
+
+            this.validateAsset(client,
+                               userId,
+                               assetGUID,
+                               assetQualifiedName,
+                               assetResourceName,
+                               assetVersionIdentifier,
+                               assetResourceDescription,
+                               assetDisplayName,
+                               assetDisplaySummary,
+                               assetDisplayDescription,
+                               assetAbbreviation,
+                               assetUsage,
+                               additionalProperties,
+                               activityName);
+
+            activityName = "getAsset - update 2";
+
+            properties = new AssetProperties();
+
+            properties.setTypeName("Asset");
+            properties.setQualifiedName(assetQualifiedName);
+            properties.setName(assetResourceName + " - 2");
+            properties.setDescription(assetResourceDescription + " - 2");
+            properties.setDisplayName(assetDisplayName + " - 2");
+            properties.setDisplaySummary(assetDisplaySummary + " - 2");
+            properties.setDisplayDescription(assetDisplayDescription + " - 2");
+            properties.setAbbreviation(assetAbbreviation + " - 2");
+            properties.setUsage(assetUsage + " - 2");
+            client.updateAsset(userId, assetGUID, false, properties);
+
+            this.validateAsset(client,
+                               userId,
+                               assetGUID,
+                               assetQualifiedName,
+                               assetResourceName + " - 2",
+                               null,
+                               assetResourceDescription + " - 2",
+                               assetDisplayName + " - 2",
+                               assetDisplaySummary + " - 2",
+                               assetDisplayDescription + " - 2",
+                               assetAbbreviation + " - 2",
+                               assetUsage + " - 2",
+                               null,
+                               activityName);
+
+            return assetGUID;
+        }
+        catch (FVTUnexpectedCondition testCaseError)
+        {
+            throw testCaseError;
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+    }
+
+
+
+    /**
+     * Create an asset with supplementary properties and return its GUID.
+     *
+     * @param client interface to Asset Owner OMAS
+     * @param userId calling user
+     * @return GUID of asset
+     * @throws FVTUnexpectedCondition the test case failed
+     */
+    private String getFullAsset(AssetOwner client,
+                                String     userId) throws FVTUnexpectedCondition
+    {
+        final String activityName = "getFullAsset";
+
+        try
+        {
+            Map<String, String> additionalProperties = new HashMap<>();
+            additionalProperties.put(assetAdditionalPropertyName, assetAdditionalPropertyValue);
+
+            AssetProperties properties = new AssetProperties();
+
+            properties.setTypeName("Asset");
+            properties.setQualifiedName(assetFullQualifiedName);
+            properties.setName(assetResourceName);
+            properties.setVersionIdentifier(assetVersionIdentifier);
+            properties.setDescription(assetResourceDescription);
+            properties.setDisplayName(assetDisplayName);
+            properties.setDisplaySummary(assetDisplaySummary);
+            properties.setDisplayDescription(assetDisplayDescription);
+            properties.setAbbreviation(assetAbbreviation);
+            properties.setUsage(assetUsage);
+            properties.setAdditionalProperties(additionalProperties);
+
+            String assetGUID = client.addAssetToCatalog(userId, properties);
+
+            this.validateAsset(client,
+                               userId,
+                               assetGUID,
+                               assetFullQualifiedName,
+                               assetResourceName,
+                               assetVersionIdentifier,
+                               assetResourceDescription,
+                               assetDisplayName,
+                               assetDisplaySummary,
+                               assetDisplayDescription,
+                               assetAbbreviation,
+                               assetUsage,
+                               additionalProperties,
+                               activityName);
+
+            return assetGUID;
+        }
+        catch (FVTUnexpectedCondition testCaseError)
+        {
+            throw testCaseError;
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+    }
+
+    private void validateAsset(AssetOwner          client,
+                               String              userId,
+                               String              assetGUID,
+                               String              qualifiedName,
+                               String              name,
+                               String              versionIdentifier,
+                               String              description,
+                               Map<String, String> additionalProperties,
+                               String              activityName) throws FVTUnexpectedCondition
+    {
+        try
+        {
             if (assetGUID == null)
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for Create)");
@@ -173,31 +336,52 @@ public class CreateAssetTest
 
             if (retrievedAsset == null)
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no SchemaType from Retrieve)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no asset from Retrieve)");
             }
 
-            if (! assetName.equals(retrievedAsset.getQualifiedName()))
+            if (! qualifiedName.equals(retrievedAsset.getQualifiedName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from Retrieve)");
             }
-            if (! assetDisplayName.equals(retrievedAsset.getDisplayName()))
+            if (! name.equals(retrievedAsset.getName()))
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad name from Retrieve)");
             }
-            if (! assetDescription.equals(retrievedAsset.getDescription()))
+            if (versionIdentifier == null)
+            {
+                if (retrievedAsset.getVersionIdentifier() != null)
+                {
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(Non-null versionIdentifier from Retrieve)");
+                }
+            }
+            else if (! versionIdentifier.equals(retrievedAsset.getVersionIdentifier()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad versionIdentifier from Retrieve)");
+            }
+            if (! description.equals(retrievedAsset.getDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
-            if (retrievedAsset.getAdditionalProperties() == null)
+            if (additionalProperties == null)
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(null additionalProperties from Retrieve)");
+                if (retrievedAsset.getAdditionalProperties() != null)
+                {
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(non-null additionalProperties from Retrieve)");
+                }
             }
-            else if (! assetAdditionalPropertyValue.equals(retrievedAsset.getAdditionalProperties().get(assetAdditionalPropertyName)))
+            else
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(bad additionalProperties from Retrieve)");
+                if (retrievedAsset.getAdditionalProperties() == null)
+                {
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(null additionalProperties from Retrieve)");
+                }
+                else if (! assetAdditionalPropertyValue.equals(retrievedAsset.getAdditionalProperties().get(assetAdditionalPropertyName)))
+                {
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(bad additionalProperties from Retrieve)");
+                }
             }
 
-            List<AssetElement> assetList = client.getAssetsByName(userId, assetName, 0, maxPageSize);
+            List<AssetElement> assetList = client.getAssetsByName(userId, qualifiedName, 0, maxPageSize);
 
             if (assetList == null)
             {
@@ -217,28 +401,47 @@ public class CreateAssetTest
             retrievedElement = assetList.get(0);
             retrievedAsset = retrievedElement.getAssetProperties();
 
-            if (! assetName.equals(retrievedAsset.getQualifiedName()))
+            if (! qualifiedName.equals(retrievedAsset.getQualifiedName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from RetrieveByName)");
             }
-            if (! assetDisplayName.equals(retrievedAsset.getDisplayName()))
+            if (! name.equals(retrievedAsset.getName()))
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad name from RetrieveByName)");
             }
-            if (! assetDescription.equals(retrievedAsset.getDescription()))
+            if (versionIdentifier == null)
+            {
+                if (retrievedAsset.getVersionIdentifier() != null)
+                {
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(Non-null versionIdentifier from RetrieveByName)");
+                }
+            }
+            else if (! versionIdentifier.equals(retrievedAsset.getVersionIdentifier()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad versionIdentifier from RetrieveByName)");
+            }
+            if (! description.equals(retrievedAsset.getDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
-            if (retrievedAsset.getAdditionalProperties() == null)
+            if (additionalProperties == null)
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(null additionalProperties from Retrieve)");
+                if (retrievedAsset.getAdditionalProperties() != null)
+                {
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(non-null additionalProperties from RetrieveByName)");
+                }
             }
-            else if (! assetAdditionalPropertyValue.equals(retrievedAsset.getAdditionalProperties().get(assetAdditionalPropertyName)))
+            else
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(bad additionalProperties from Retrieve)");
+                if (retrievedAsset.getAdditionalProperties() == null)
+                {
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(null additionalProperties from RetrieveByName)");
+                }
+                else if (! assetAdditionalPropertyValue.equals(retrievedAsset.getAdditionalProperties().get(assetAdditionalPropertyName)))
+                {
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(bad additionalProperties from RetrieveByName)");
+                }
             }
-
-            return assetGUID;
         }
         catch (FVTUnexpectedCondition testCaseError)
         {
@@ -249,6 +452,192 @@ public class CreateAssetTest
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
     }
+
+
+    private void validateAsset(AssetOwner          client,
+                               String              userId,
+                               String              assetGUID,
+                               String              qualifiedName,
+                               String              name,
+                               String              versionIdentifier,
+                               String              description,
+                               String              displayName,
+                               String              displaySummary,
+                               String              displayDescription,
+                               String              abbreviation,
+                               String              usage,
+                               Map<String, String> additionalProperties,
+                               String              activityName) throws FVTUnexpectedCondition
+    {
+        try
+        {
+            if (assetGUID == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for Create)");
+            }
+
+            AssetElement    retrievedElement    = client.getAssetSummary(userId, assetGUID);
+            AssetProperties retrievedAsset = retrievedElement.getAssetProperties();
+
+            if (retrievedAsset == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no asset from Retrieve)");
+            }
+
+            if (! qualifiedName.equals(retrievedAsset.getQualifiedName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from Retrieve)");
+            }
+            if (! name.equals(retrievedAsset.getName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad name from Retrieve)");
+            }
+            if (versionIdentifier == null)
+            {
+                if (retrievedAsset.getVersionIdentifier() != null)
+                {
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(Non-null versionIdentifier from Retrieve)");
+                }
+            }
+            else if (! versionIdentifier.equals(retrievedAsset.getVersionIdentifier()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad versionIdentifier from Retrieve)");
+            }
+            if (! description.equals(retrievedAsset.getDescription()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
+            }
+            if (! displayName.equals(retrievedAsset.getDisplayName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName <" + retrievedAsset.getDisplayName() + "> from Retrieve)");
+            }
+            if (! displaySummary.equals(retrievedAsset.getDisplaySummary()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displaySummary from Retrieve)");
+            }
+            if (! displayDescription.equals(retrievedAsset.getDisplayDescription()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayDescription from Retrieve)");
+            }
+            if (! abbreviation.equals(retrievedAsset.getAbbreviation()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad abbreviation from Retrieve)");
+            }
+            if (! usage.equals(retrievedAsset.getUsage()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad usage from Retrieve)");
+            }
+            if (additionalProperties == null)
+            {
+                if (retrievedAsset.getAdditionalProperties() != null)
+                {
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(non-null additionalProperties from Retrieve)");
+                }
+            }
+            else
+            {
+                if (retrievedAsset.getAdditionalProperties() == null)
+                {
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(null additionalProperties from Retrieve)");
+                }
+                else if (! assetAdditionalPropertyValue.equals(retrievedAsset.getAdditionalProperties().get(assetAdditionalPropertyName)))
+                {
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(bad additionalProperties from Retrieve)");
+                }
+            }
+
+            List<AssetElement> assetList = client.getAssetsByName(userId, qualifiedName, 0, maxPageSize);
+
+            if (assetList == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no Asset for RetrieveByName)");
+            }
+            else if (assetList.isEmpty())
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Empty Asset list for RetrieveByName)");
+            }
+            else if (assetList.size() != 1)
+            {
+                throw new FVTUnexpectedCondition(testCaseName,
+                                                 activityName + "(Asset list for RetrieveByName contains" + assetList.size() +
+                                                         " elements)");
+            }
+
+            retrievedElement = assetList.get(0);
+            retrievedAsset = retrievedElement.getAssetProperties();
+
+            if (! qualifiedName.equals(retrievedAsset.getQualifiedName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from RetrieveByName)");
+            }
+            if (! name.equals(retrievedAsset.getName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad name from RetrieveByName)");
+            }
+            if (versionIdentifier == null)
+            {
+                if (retrievedAsset.getVersionIdentifier() != null)
+                {
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(Non-null versionIdentifier from RetrieveByName)");
+                }
+            }
+            else if (! versionIdentifier.equals(retrievedAsset.getVersionIdentifier()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad versionIdentifier from RetrieveByName)");
+            }
+            if (! description.equals(retrievedAsset.getDescription()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
+            }
+            if (! displayName.equals(retrievedAsset.getDisplayName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName)");
+            }
+            if (! displaySummary.equals(retrievedAsset.getDisplaySummary()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displaySummary from RetrieveByName)");
+            }
+            if (! displayDescription.equals(retrievedAsset.getDisplayDescription()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayDescription from RetrieveByName)");
+            }
+            if (! abbreviation.equals(retrievedAsset.getAbbreviation()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad abbreviation from RetrieveByName)");
+            }
+            if (! usage.equals(retrievedAsset.getUsage()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad usage from RetrieveByName)");
+            }
+            if (additionalProperties == null)
+            {
+                if (retrievedAsset.getAdditionalProperties() != null)
+                {
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(non-null additionalProperties from RetrieveByName)");
+                }
+            }
+            else
+            {
+                if (retrievedAsset.getAdditionalProperties() == null)
+                {
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(null additionalProperties from RetrieveByName)");
+                }
+                else if (! assetAdditionalPropertyValue.equals(retrievedAsset.getAdditionalProperties().get(assetAdditionalPropertyName)))
+                {
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(bad additionalProperties from RetrieveByName)");
+                }
+            }
+        }
+        catch (FVTUnexpectedCondition testCaseError)
+        {
+            throw testCaseError;
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+    }
+
 
 
     /**

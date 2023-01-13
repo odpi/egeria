@@ -169,10 +169,10 @@ public class AssetConverter extends ReferenceableConverter
 
                 if (instanceProperties != null)
                 {
-                    bean.setShortDescription(repositoryHelper.getStringProperty(serviceName,
-                                                                                AssetMapper.SHORT_DESCRIPTION_PROPERTY_NAME,
-                                                                                instanceProperties,
-                                                                                methodName));
+                    bean.setConnectionDescription(repositoryHelper.getStringProperty(serviceName,
+                                                                                     AssetMapper.SHORT_DESCRIPTION_PROPERTY_NAME,
+                                                                                     instanceProperties,
+                                                                                     methodName));
                 }
             }
 
