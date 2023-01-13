@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.assetowner.api;
 
 /**
  * AssetAttachmentManagementInterface defines the operations to manage the different types of attachments
- * that can be made to an Asset.  These attachments are used to define how th asset is to be governed.
+ * that can be made to an Asset.  These attachments are used to define how the asset is to be governed.
  */
 public interface AssetAttachmentManagementInterface
 {

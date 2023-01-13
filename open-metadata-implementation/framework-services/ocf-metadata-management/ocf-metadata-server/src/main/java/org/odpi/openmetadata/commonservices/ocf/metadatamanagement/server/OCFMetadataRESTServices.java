@@ -10,6 +10,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.LoggerFactory;
@@ -316,12 +317,13 @@ public class OCFMetadataRESTServices
             LicenseHandler<License>                     licenseHandler      = instanceHandler.getLicenseHandler(userId, serverName,
                                                                                                                        methodName);
             LikeHandler<Like>                           likeHandler         = instanceHandler.getLikeHandler(userId, serverName, methodName);
-            LocationHandler<Location>     locationHandler = instanceHandler.getLocationHandler(userId, serverName, methodName);
-            NoteLogHandler<NoteLogHeader> noteLogHandler  = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
-            RatingHandler<Rating>         ratingHandler   = instanceHandler.getRatingHandler(userId, serverName, methodName);
+            LocationHandler<Location>                   locationHandler     = instanceHandler.getLocationHandler(userId, serverName, methodName);
+            NoteLogHandler<NoteLogHeader>               noteLogHandler      = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
+            RatingHandler<Rating>                       ratingHandler       = instanceHandler.getRatingHandler(userId, serverName, methodName);
             RelatedMediaHandler<RelatedMediaReference>  relatedMediaHandler = instanceHandler.getRelatedMediaHandler(userId, serverName, methodName);
             SearchKeywordHandler<SearchKeyword>         keywordHandler      = instanceHandler.getKeywordHandler(userId, serverName, methodName);
             SchemaTypeHandler<SchemaType>               schemaTypeHandler   = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
+            OMRSRepositoryHelper                        repositoryHelper    = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
 
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
@@ -347,7 +349,6 @@ public class OCFMetadataRESTServices
 
                 if (relationship != null)
                 {
-                    OMRSRepositoryHelper repositoryHelper = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
                     assetSummary = repositoryHelper.getStringProperty(instanceHandler.getServiceName(serviceURLName),
                                                                       OpenMetadataAPIMapper.ASSET_SUMMARY_PROPERTY_NAME,
                                                                       relationship.getProperties(),
@@ -365,7 +366,39 @@ public class OCFMetadataRESTServices
                                                              methodName);
             if (asset != null)
             {
-                asset.setShortDescription(assetSummary);
+                asset.setConnectionDescription(assetSummary);
+                EntityDetail glossaryEntity = assetHandler.getSupplementaryProperties(assetGUID,
+                                                                                      assetGUIDParameterName,
+                                                                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                      false,
+                                                                                      false,
+                                                                                      effectiveTime,
+                                                                                      methodName);
+
+                if ((glossaryEntity != null) && (glossaryEntity.getProperties() != null))
+                {
+                    asset.setDisplayName(repositoryHelper.getStringProperty(instanceHandler.getServiceName(serviceURLName),
+                                                                            OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                            glossaryEntity.getProperties(),
+                                                                            methodName));
+
+                    asset.setDisplaySummary(repositoryHelper.getStringProperty(instanceHandler.getServiceName(serviceURLName),
+                                                                        OpenMetadataAPIMapper.SUMMARY_PROPERTY_NAME,
+                                                                        glossaryEntity.getProperties(),
+                                                                        methodName));
+                    asset.setDisplayDescription(repositoryHelper.getStringProperty(instanceHandler.getServiceName(serviceURLName),
+                                                                            OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                            glossaryEntity.getProperties(),
+                                                                            methodName));
+                    asset.setAbbreviation(repositoryHelper.getStringProperty(instanceHandler.getServiceName(serviceURLName),
+                                                                             OpenMetadataAPIMapper.ABBREVIATION_PROPERTY_NAME,
+                                                                             glossaryEntity.getProperties(),
+                                                                             methodName));
+                    asset.setUsage(repositoryHelper.getStringProperty(instanceHandler.getServiceName(serviceURLName),
+                                                                      OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
+                                                                      glossaryEntity.getProperties(),
+                                                                      methodName));
+                }
                 response.setAsset(asset);
                 response.setCertificationCount(certificationHandler.countCertifications(userId, assetGUID, false, false, effectiveTime, methodName));
                 response.setCommentCount(commentHandler.countAttachedComments(userId, assetGUID, false, false,effectiveTime, methodName));

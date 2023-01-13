@@ -70,6 +70,11 @@
             <artifactId>ocf-metadata-client</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>gaf-metadata-client</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

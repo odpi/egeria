@@ -59,7 +59,7 @@ public class TestAssetDetail
         testObject.setQualifiedName("TestQualifiedName");
         testObject.setDisplayName("TestDisplayName");
         testObject.setOwner("TestOwner");
-        testObject.setShortDescription("TestShortDescription");
+        testObject.setConnectionDescription("TestShortDescription");
         testObject.setDescription("TestDescription");
         testObject.setExtendedProperties(assetProperties);
 
@@ -92,7 +92,7 @@ public class TestAssetDetail
         testObject.setQualifiedName("TestQualifiedName");
         testObject.setDisplayName("TestDisplayName");
         testObject.setOwner("TestOwner");
-        testObject.setShortDescription("TestShortDescription");
+        testObject.setConnectionDescription("TestShortDescription");
         testObject.setExtendedProperties(assetProperties);
 
         return new AssetDetail(testObject,
@@ -124,7 +124,7 @@ public class TestAssetDetail
         testObject.setQualifiedName("TestDifferentQualifiedName");
         testObject.setDisplayName("TestDisplayName");
         testObject.setOwner("TestOwner");
-        testObject.setShortDescription("TestShortDescription");
+        testObject.setConnectionDescription("TestShortDescription");
         testObject.setDescription("TestDescription");
         testObject.setExtendedProperties(assetProperties);
 

@@ -1,11 +1,15 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.assetmanager.properties;
+package org.odpi.openmetadata.accessservices.assetowner.properties;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import java.util.*;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -23,18 +27,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = AssetProperties.class, name = "AssetProperties"),
-                @JsonSubTypes.Type(value = EndpointProperties.class, name = "EndpointProperties"),
-                @JsonSubTypes.Type(value = SoftwareCapabilitiesProperties.class, name = "SoftwareCapabilitiesProperties"),
         })
 public class SupplementaryProperties extends ReferenceableProperties
 {
     private static final long     serialVersionUID = 1L;
 
-    private String displayName  = null;
-    private String summary      = null;
-    private String description  = null;
-    private String abbreviation = null;
-    private String usage        = null;
+    private String displayName        = null;
+    private String displaySummary     = null;
+    private String displayDescription = null;
+    private String abbreviation       = null;
+    private String usage              = null;
 
 
     /**
@@ -57,8 +59,8 @@ public class SupplementaryProperties extends ReferenceableProperties
         if (template != null)
         {
             displayName = template.getDisplayName();
-            summary = template.getSummary();
-            description = template.getDescription();
+            displaySummary = template.getDisplaySummary();
+            displayDescription = template.getDisplayDescription();
             abbreviation = template.getAbbreviation();
             usage = template.getUsage();
         }
@@ -93,20 +95,20 @@ public class SupplementaryProperties extends ReferenceableProperties
      *
      * @return string text
      */
-    public String getSummary()
+    public String getDisplaySummary()
     {
-        return summary;
+        return displaySummary;
     }
 
 
     /**
      * Set up the short (1-2 sentence) description of the technical element.
      *
-     * @param summary string text
+     * @param displaySummary string text
      */
-    public void setSummary(String summary)
+    public void setDisplaySummary(String displaySummary)
     {
-        this.summary = summary;
+        this.displaySummary = displaySummary;
     }
 
 
@@ -116,20 +118,20 @@ public class SupplementaryProperties extends ReferenceableProperties
      *
      * @return  String text
      */
-    public String getDescription()
+    public String getDisplayDescription()
     {
-        return description;
+        return displayDescription;
     }
 
 
     /**
      * Set up the stored description property for the technical element.
      *
-     * @param description String text
+     * @param displayDescription String text
      */
-    public void setDescription(String description)
+    public void setDisplayDescription(String displayDescription)
     {
-        this.description = description;
+        this.displayDescription = displayDescription;
     }
 
 
@@ -186,16 +188,15 @@ public class SupplementaryProperties extends ReferenceableProperties
     public String toString()
     {
         return "SupplementaryProperties{" +
-                       "displayName='" + displayName + '\'' +
-                       ", summary='" + summary + '\'' +
-                       ", description='" + description + '\'' +
-                       ", abbreviation='" + abbreviation + '\'' +
-                       ", usage='" + usage + '\'' +
+                       "typeName='" + getTypeName() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
+                       ", displayName='" + displayName + '\'' +
+                       ", displaySummary='" + displaySummary + '\'' +
+                       ", displayDescription='" + displayDescription + '\'' +
+                       ", abbreviation='" + abbreviation + '\'' +
+                       ", usage='" + usage + '\'' +
                        '}';
     }
 
@@ -223,8 +224,8 @@ public class SupplementaryProperties extends ReferenceableProperties
         }
         SupplementaryProperties that = (SupplementaryProperties) objectToCompare;
         return Objects.equals(getDisplayName(), that.getDisplayName()) &&
-                       Objects.equals(getSummary(), that.getSummary()) &&
-                       Objects.equals(getDescription(), that.getDescription()) &&
+                       Objects.equals(getDisplaySummary(), that.getDisplaySummary()) &&
+                       Objects.equals(getDisplayDescription(), that.getDisplayDescription()) &&
                        Objects.equals(getAbbreviation(), that.getAbbreviation()) &&
                        Objects.equals(getUsage(), that.getUsage());
     }
@@ -239,6 +240,6 @@ public class SupplementaryProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getDisplayName(), getSummary(), getDescription(), getAbbreviation(), getUsage());
+        return Objects.hash(super.hashCode(), getDisplayName(), getDisplaySummary(), getDisplayDescription(), getAbbreviation(), getUsage());
     }
 }

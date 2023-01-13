@@ -59,7 +59,7 @@ public class TestAssetSummary
         testObject.setDisplayName("TestDisplayName");
         testObject.setOwner("TestOwner");
         testObject.setOwnerType(OwnerType.PROFILE_ID);
-        testObject.setShortDescription("TestShortDescription");
+        testObject.setConnectionDescription("TestShortDescription");
         testObject.setDescription("TestDescription");
         testObject.setExtendedProperties(assetProperties);
         testObject.setZoneMembership(zoneMembership);
@@ -85,7 +85,7 @@ public class TestAssetSummary
         testObject.setQualifiedName("TestQualifiedName");
         testObject.setDisplayName("TestDisplayName");
         testObject.setOwner("TestOwner");
-        testObject.setShortDescription("TestShortDescription");
+        testObject.setConnectionDescription("TestShortDescription");
         testObject.setDescription("TestDescription");
         testObject.setExtendedProperties(assetProperties);
 
@@ -111,7 +111,7 @@ public class TestAssetSummary
         testObject.setDisplayName("TestDisplayName");
         testObject.setOwner("TestOwner");
         testObject.setOwnerType(OwnerType.PROFILE_ID);
-        testObject.setShortDescription("TestShortDescription");
+        testObject.setConnectionDescription("TestShortDescription");
         testObject.setDescription("TestDescription");
         testObject.setExtendedProperties(assetProperties);
 
@@ -134,7 +134,7 @@ public class TestAssetSummary
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
         assertTrue(resultObject.getDisplayName().equals("TestDisplayName"));
         assertTrue(resultObject.getDescription().equals("TestDescription"));
-        assertTrue(resultObject.getShortDescription().equals("TestShortDescription"));
+        assertTrue(resultObject.getConnectionDescription().equals("TestShortDescription"));
         assertTrue(resultObject.getOwner().equals("TestOwner"));
         assertTrue(resultObject.getZoneMembership() != null);
         assertTrue(resultObject.getExtendedProperties() == null);
@@ -157,7 +157,7 @@ public class TestAssetSummary
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getDisplayName() == null);
         assertTrue(nullObject.getDescription() == null);
-        assertTrue(nullObject.getShortDescription() == null);
+        assertTrue(nullObject.getConnectionDescription() == null);
         assertTrue(nullObject.getOwner() == null);
         assertTrue(nullObject.getExtendedProperties() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
