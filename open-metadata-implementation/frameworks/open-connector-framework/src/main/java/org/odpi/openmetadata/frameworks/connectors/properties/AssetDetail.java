@@ -10,7 +10,6 @@ import java.util.Objects;
 /**
  * AssetDetail extends AssetSummary to provide all the properties related to this asset.  It includes:
  * <ul>
- *     <li>AssetProperties - properties unique to the particular type of asset including any vendor-specific facets.</li>
  *     <li>ExternalIdentifiers - list of identifiers for this asset that are used in other systems.</li>
  *     <li>RelatedMediaReferences - list of links to external media (images, audio, video) about this asset.</li>
  *     <li>NoteLogs - list of NoteLogs for this asset, often providing more detail on how to use the asset and
@@ -19,7 +18,7 @@ import java.util.Objects;
  *     <li>Connections - list of connections defined to access this asset.</li>
  *     <li>Licenses - list of licenses associated with the asset.</li>
  *     <li>Certifications - list of certifications that have been awarded to this asset.</li>
- *     <li>schema - details of the schema type associated with the asset.</li>
+ *     <li>Schema - details of the schema type associated with the asset.</li>
  * </ul>
  */
 public class AssetDetail extends AssetSummary
@@ -291,7 +290,7 @@ public class AssetDetail extends AssetSummary
                        ", certifications=" + certifications +
                        ", schema=" + schema +
                        ", displayName='" + getDisplayName() + '\'' +
-                       ", shortDescription='" + getShortDescription() + '\'' +
+                       ", shortDescription='" + getConnectionDescription() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", owner='" + getOwner() + '\'' +
                        ", ownerTypeName='" + getOwnerTypeName() + '\'' +
