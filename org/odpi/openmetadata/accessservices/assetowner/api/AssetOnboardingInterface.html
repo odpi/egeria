@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":38,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6};
+var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":38,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -256,6 +256,16 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Unlinks the schema from the asset but does not delete it.</div>
 </td>
 </tr>
+<tr id="i11" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateAsset(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties)">updateAsset</a></span>&#8203;(java.lang.String&nbsp;userId,
+           java.lang.String&nbsp;assetGUID,
+           boolean&nbsp;isMergeUpdate,
+           <a href="../properties/AssetProperties.html" title="class in org.odpi.openmetadata.accessservices.assetowner.properties">AssetProperties</a>&nbsp;assetProperties)</code></th>
+<td class="colLast">
+<div class="block">Update the metadata element representing an asset.</div>
+</td>
+</tr>
 </table>
 </li>
 </ul>
@@ -353,6 +363,33 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>templateProperties</code> - properties that override the template</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new metadata element</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="updateAsset(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>updateAsset</h4>
+<pre class="methodSignature">void&nbsp;updateAsset&#8203;(java.lang.String&nbsp;userId,
+                 java.lang.String&nbsp;assetGUID,
+                 boolean&nbsp;isMergeUpdate,
+                 <a href="../properties/AssetProperties.html" title="class in org.odpi.openmetadata.accessservices.assetowner.properties">AssetProperties</a>&nbsp;assetProperties)
+          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Update the metadata element representing an asset.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>assetGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
+<dd><code>assetProperties</code> - new properties for this element</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>

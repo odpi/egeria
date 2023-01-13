@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":42,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10,"i45":10,"i46":10,"i47":10,"i48":10,"i49":10,"i50":10,"i51":10,"i52":10,"i53":10,"i54":10,"i55":10,"i56":10,"i57":10,"i58":42,"i59":10,"i60":10,"i61":10,"i62":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":42,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10,"i45":10,"i46":10,"i47":10,"i48":10,"i49":10,"i50":10,"i51":10,"i52":10,"i53":10,"i54":10,"i55":10,"i56":10,"i57":10,"i58":10,"i59":42,"i60":10,"i61":10,"i62":10,"i63":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -279,7 +279,7 @@ implements <a href="../api/AssetKnowledgeInterface.html" title="interface in org
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addAssetToCatalog(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.util.Map)">addAssetToCatalog</a></span>&#8203;(java.lang.String&nbsp;userId,
                  java.lang.String&nbsp;typeName,
                  java.lang.String&nbsp;qualifiedName,
-                 java.lang.String&nbsp;displayName,
+                 java.lang.String&nbsp;name,
                  java.lang.String&nbsp;description,
                  java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;additionalProperties,
                  java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;extendedProperties)</code></th>
@@ -792,6 +792,16 @@ implements <a href="../api/AssetKnowledgeInterface.html" title="interface in org
 </tr>
 <tr id="i57" class="rowColor">
 <td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateAsset(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties)">updateAsset</a></span>&#8203;(java.lang.String&nbsp;userId,
+           java.lang.String&nbsp;assetGUID,
+           boolean&nbsp;isMergeUpdate,
+           <a href="../properties/AssetProperties.html" title="class in org.odpi.openmetadata.accessservices.assetowner.properties">AssetProperties</a>&nbsp;assetProperties)</code></th>
+<td class="colLast">
+<div class="block">Update the metadata element representing an asset.</div>
+</td>
+</tr>
+<tr id="i58" class="altColor">
+<td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateAssetOwner(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">updateAssetOwner</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;assetGUID,
                 java.lang.String&nbsp;ownerId,
@@ -801,7 +811,7 @@ implements <a href="../api/AssetKnowledgeInterface.html" title="interface in org
 <div class="block">Update the owner information for a specific asset.</div>
 </td>
 </tr>
-<tr id="i58" class="altColor">
+<tr id="i59" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateAssetOwner(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType)">updateAssetOwner</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;assetGUID,
@@ -811,7 +821,7 @@ implements <a href="../api/AssetKnowledgeInterface.html" title="interface in org
 <div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
 </td>
 </tr>
-<tr id="i59" class="rowColor">
+<tr id="i60" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateAssetZones(java.lang.String,java.lang.String,java.util.List)">updateAssetZones</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;assetGUID,
@@ -820,7 +830,7 @@ implements <a href="../api/AssetKnowledgeInterface.html" title="interface in org
 <div class="block">Update the zones for a specific asset.</div>
 </td>
 </tr>
-<tr id="i60" class="altColor">
+<tr id="i61" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateConnection(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetowner.properties.ConnectionProperties)">updateConnection</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;connectionGUID,
@@ -830,7 +840,7 @@ implements <a href="../api/AssetKnowledgeInterface.html" title="interface in org
 <div class="block">Update the metadata element representing a connection.</div>
 </td>
 </tr>
-<tr id="i61" class="rowColor">
+<tr id="i62" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateEndpoint(java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetowner.properties.EndpointProperties)">updateEndpoint</a></span>&#8203;(java.lang.String&nbsp;userId,
               boolean&nbsp;isMergeUpdate,
@@ -840,7 +850,7 @@ implements <a href="../api/AssetKnowledgeInterface.html" title="interface in org
 <div class="block">Update the metadata element representing a endpoint.</div>
 </td>
 </tr>
-<tr id="i62" class="altColor">
+<tr id="i63" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#withdrawAsset(java.lang.String,java.lang.String)">withdrawAsset</a></span>&#8203;(java.lang.String&nbsp;userId,
              java.lang.String&nbsp;assetGUID)</code></th>
@@ -1114,7 +1124,7 @@ implements <a href="../api/AssetKnowledgeInterface.html" title="interface in org
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;addAssetToCatalog&#8203;(java.lang.String&nbsp;userId,
                                           java.lang.String&nbsp;typeName,
                                           java.lang.String&nbsp;qualifiedName,
-                                          java.lang.String&nbsp;displayName,
+                                          java.lang.String&nbsp;name,
                                           java.lang.String&nbsp;description,
                                           java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;additionalProperties,
                                           java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;extendedProperties)
@@ -1129,8 +1139,8 @@ implements <a href="../api/AssetKnowledgeInterface.html" title="interface in org
 <dd><code>userId</code> - calling user (assumed to be the owner)</dd>
 <dd><code>typeName</code> - specific type of the asset - this must match a defined subtype</dd>
 <dd><code>qualifiedName</code> - unique name for the asset in the catalog</dd>
-<dd><code>displayName</code> - display name for the asset in the catalog</dd>
-<dd><code>description</code> - description of the asset in the catalog</dd>
+<dd><code>name</code> - resource name for the asset in the catalog</dd>
+<dd><code>description</code> - resource description for the asset in the catalog</dd>
 <dd><code>additionalProperties</code> - additional properties added by the caller</dd>
 <dd><code>extendedProperties</code> - properties from the subtypes</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -1191,6 +1201,35 @@ implements <a href="../api/AssetKnowledgeInterface.html" title="interface in org
 <dd><code>templateProperties</code> - properties that override the template</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new metadata element</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="updateAsset(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>updateAsset</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;updateAsset&#8203;(java.lang.String&nbsp;userId,
+                        java.lang.String&nbsp;assetGUID,
+                        boolean&nbsp;isMergeUpdate,
+                        <a href="../properties/AssetProperties.html" title="class in org.odpi.openmetadata.accessservices.assetowner.properties">AssetProperties</a>&nbsp;assetProperties)
+                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Update the metadata element representing an asset.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/AssetOnboardingInterface.html#updateAsset(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties)">updateAsset</a></code>&nbsp;in interface&nbsp;<code><a href="../api/AssetOnboardingInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.api">AssetOnboardingInterface</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>assetGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
+<dd><code>assetProperties</code> - new properties for this element</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>

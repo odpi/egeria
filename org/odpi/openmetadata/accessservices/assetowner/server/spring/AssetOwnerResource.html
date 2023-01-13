@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":42,"i4":10,"i5":10,"i6":10,"i7":42,"i8":10,"i9":10,"i10":10,"i11":42,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":42,"i4":10,"i5":10,"i6":10,"i7":42,"i8":10,"i9":10,"i10":10,"i11":42,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -585,6 +585,17 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i38" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateAsset(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties)">updateAsset</a></span>&#8203;(java.lang.String&nbsp;serverName,
+           java.lang.String&nbsp;userId,
+           java.lang.String&nbsp;assetGUID,
+           boolean&nbsp;isMergeUpdate,
+           <a href="../../properties/AssetProperties.html" title="class in org.odpi.openmetadata.accessservices.assetowner.properties">AssetProperties</a>&nbsp;requestBody)</code></th>
+<td class="colLast">
+<div class="block">Update a simple asset description to the catalog.</div>
+</td>
+</tr>
+<tr id="i39" class="rowColor">
+<td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateAssetOwner(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetowner.rest.OwnerRequestBody)">updateAssetOwner</a></span>&#8203;(java.lang.String&nbsp;serverName,
                 java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;assetGUID,
@@ -593,7 +604,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the owner information for a specific asset.</div>
 </td>
 </tr>
-<tr id="i39" class="rowColor">
+<tr id="i40" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateAssetZones(java.lang.String,java.lang.String,java.lang.String,java.util.List)">updateAssetZones</a></span>&#8203;(java.lang.String&nbsp;serverName,
                 java.lang.String&nbsp;userId,
@@ -603,7 +614,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the zones for a specific asset.</div>
 </td>
 </tr>
-<tr id="i40" class="altColor">
+<tr id="i41" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#withdrawAsset(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">withdrawAsset</a></span>&#8203;(java.lang.String&nbsp;serverName,
              java.lang.String&nbsp;userId,
@@ -757,6 +768,39 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" tit
 <dd><code>userId</code> - calling user</dd>
 <dd><code>templateGUID</code> - unique identifier of the metadata element to copy</dd>
 <dd><code>requestBody</code> - properties that override the template</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>unique identifier (guid) of the asset or
+ InvalidParameterException full path or userId is null or
+ PropertyServerException problem accessing property server or
+ UserNotAuthorizedException security access problem</dd>
+</dl>
+</li>
+</ul>
+<a id="updateAsset(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>updateAsset</h4>
+<pre class="methodSignature">@PostMapping(path="/assets/{assetGUID}/update")
+public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;updateAsset&#8203;(@PathVariable
+                                java.lang.String&nbsp;serverName,
+                                @PathVariable
+                                java.lang.String&nbsp;userId,
+                                @PathVariable
+                                java.lang.String&nbsp;assetGUID,
+                                @RequestParam
+                                boolean&nbsp;isMergeUpdate,
+                                @RequestBody
+                                <a href="../../properties/AssetProperties.html" title="class in org.odpi.openmetadata.accessservices.assetowner.properties">AssetProperties</a>&nbsp;requestBody)</pre>
+<div class="block">Update a simple asset description to the catalog.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>serverName</code> - name of the server instance to connect to</dd>
+<dd><code>userId</code> - calling user (assumed to be the owner)</dd>
+<dd><code>assetGUID</code> - unique identifier of the asset</dd>
+<dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
+<dd><code>requestBody</code> - other properties for asset</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier (guid) of the asset or
  InvalidParameterException full path or userId is null or
@@ -945,7 +989,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" tit
                                               java.lang.String&nbsp;assetGUID,
                                               @RequestBody(required=false)
                                               <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Unlinks the schema from the asset but does not delete it.  This means it can be be reattached to a different asset.</div>
+<div class="block">Unlinks the schema from the asset but does not delete it.  This means it can be reattached to a different asset.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instance to connect to</dd>
@@ -1283,7 +1327,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
                                              java.lang.String&nbsp;glossaryTermGUID,
                                              @PathVariable
                                              java.lang.String&nbsp;assetElementGUID,
-                                             @PathVariable(required=false)
+                                             @RequestBody(required=false)
                                              <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Remove the relationship between a glossary term and an element in an Asset description (typically
  a field in the schema).</div>
@@ -1788,7 +1832,7 @@ public&nbsp;<a href="../../rest/DiscoveryAnalysisReportListResponse.html" title=
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetGUID</code> - unique identifier of the asset</dd>
 <dd><code>startingFrom</code> - position in the list (used when there are so many reports that paging is needed</dd>
-<dd><code>maximumResults</code> - maximum number of elements to return an this call</dd>
+<dd><code>maximumResults</code> - maximum number of elements to return on this call</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of discovery analysis reports or
  InvalidParameterException full path or userId is null or
@@ -1887,12 +1931,12 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
 <div class="block">Deletes an asset and all of its associated elements such as schema, connections (unless they are linked to
  another asset), discovery reports and associated feedback.
 
- Given the depth of the delete performed by this call, it should be used with care.</div>
+ Given the depth of the elements deleted by this call, it should be used with care.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server instance to connect to</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>assetGUID</code> - unique identifier of the attest to attach the connection to</dd>
+<dd><code>assetGUID</code> - unique identifier of the asset to attach the connection to</dd>
 <dd><code>requestBody</code> - dummy request body to satisfy POST protocol.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>void or
