@@ -47,7 +47,7 @@ public class DataFlow implements Serializable {
      * @return the data consumer
      * -- SETTER --
      * Sets data consumer
-     * @param data consumer the data consumer
+     * @param dataConsumer the data consumer
      */
     private String dataConsumer;
 
