@@ -1657,7 +1657,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
         FederationControl       federationControl = new SequentialFederationControl(userId, cohortConnectors, auditLog, methodName);
-        GetRelationshipExecutor executor          = new GetRelationshipExecutor(userId, guid, false, auditLog, methodName);
+        GetRelationshipExecutor executor          = new GetRelationshipExecutor(userId, guid, auditLog, methodName);
 
         /*
          * Ready to process the request.  Create requests occur in the first repository that accepts the call.
@@ -1706,7 +1706,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
         FederationControl       federationControl = new SequentialFederationControl(userId, cohortConnectors, auditLog, methodName);
-        GetRelationshipExecutor executor          = new GetRelationshipExecutor(userId, guid, true, auditLog, methodName);
+        GetRelationshipExecutor executor          = new GetRelationshipExecutor(userId, guid, auditLog, methodName);
 
         /*
          * Ready to process the request.  Create requests occur in the first repository that accepts the call.

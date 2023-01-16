@@ -241,8 +241,6 @@ public class GetEntityDetailExecutor extends GetEntityExecutor
                                                  EntityProxyOnlyException,
                                                  UserNotAuthorizedException
     {
-        final String repositoryName = "Enterprise";
-
         EntityDetail entity = this.isEntityKnown(false);
 
         if (entity != null)
