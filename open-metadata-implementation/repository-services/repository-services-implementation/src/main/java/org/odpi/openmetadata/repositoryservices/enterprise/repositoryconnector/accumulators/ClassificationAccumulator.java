@@ -5,6 +5,7 @@ package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -120,17 +121,31 @@ public abstract class ClassificationAccumulator extends MaintenanceAccumulator
     /**
      * Return the accumulated classifications to the caller.
      *
+     * @param returnDeletedClassifications should classifications in deleted status be returned?
      * @return null or list of classifications
      */
-    List<Classification> getClassifications()
+    List<Classification> getClassifications(boolean returnDeletedClassifications)
     {
         if (allClassifications.isEmpty())
         {
             return null;
         }
-        else
+        else if (returnDeletedClassifications)
         {
             return new ArrayList<>(allClassifications.values());
+        }
+        else
+        {
+            List<Classification> activeClassifications = new ArrayList<>();
+
+            for (Classification accumulatedClassification : allClassifications.values())
+            {
+                if (accumulatedClassification.getStatus() != InstanceStatus.DELETED)
+                {
+                    activeClassifications.add(accumulatedClassification);
+                }
+            }
+            return activeClassifications;
         }
     }
 

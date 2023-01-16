@@ -6,7 +6,9 @@ package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.EntityDetailAccumulator;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 import java.util.Date;
@@ -27,7 +29,6 @@ import java.util.Date;
  */
 public class GetEntityDetailExecutor extends GetEntityExecutor
 {
-    private boolean      allExceptions = true;
     private Date         asOfTime      = null;
 
     private final EntityDetailAccumulator accumulator;
@@ -38,17 +39,15 @@ public class GetEntityDetailExecutor extends GetEntityExecutor
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID unique identifier (guid) for the entity.
-     * @param allExceptions is the a isEntityKnown or getEntityDetail request.
      * @param auditLog logging destination
      * @param methodName calling method
      */
     public GetEntityDetailExecutor(String   userId,
                                    String   entityGUID,
-                                   boolean  allExceptions,
                                    AuditLog auditLog,
                                    String   methodName)
     {
-        this(userId, entityGUID, allExceptions, new EntityDetailAccumulator(auditLog), methodName);
+        this(userId, entityGUID, new EntityDetailAccumulator(auditLog), methodName);
     }
 
 
@@ -57,19 +56,15 @@ public class GetEntityDetailExecutor extends GetEntityExecutor
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID unique identifier (guid) for the entity.
-     * @param allExceptions is the a isEntityKnown or getEntityDetail request.
      * @param accumulator to use
      * @param methodName calling method
      */
     private GetEntityDetailExecutor(String                  userId,
                                     String                  entityGUID,
-                                    boolean                 allExceptions,
                                     EntityDetailAccumulator accumulator,
                                     String                  methodName)
     {
         super(userId, entityGUID, accumulator, methodName);
-
-        this.allExceptions = allExceptions;
         this.accumulator = accumulator;
     }
 
@@ -147,14 +142,7 @@ public class GetEntityDetailExecutor extends GetEntityExecutor
                 EntityDetail retrievedEntity;
                 if (asOfTime == null)
                 {
-                    if (allExceptions)
-                    {
-                        retrievedEntity = metadataCollection.getEntityDetail(userId, entityGUID);
-                    }
-                    else
-                    {
-                        retrievedEntity = metadataCollection.isEntityKnown(userId, entityGUID);
-                    }
+                    retrievedEntity = metadataCollection.isEntityKnown(userId, entityGUID);
                 }
                 else
                 {
@@ -211,17 +199,18 @@ public class GetEntityDetailExecutor extends GetEntityExecutor
     /**
      * Returns the entity if the entity is stored in the metadata collection, otherwise null.
      *
+     * @param returnDeletedClassifications should classifications in deleted status be returned?
      * @return the entity details if the entity is found in the metadata collection; otherwise return null
      * @throws InvalidParameterException the guid is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetail isEntityKnown() throws InvalidParameterException,
-                                               RepositoryErrorException,
-                                               UserNotAuthorizedException
+    public EntityDetail isEntityKnown(boolean returnDeletedClassifications) throws InvalidParameterException,
+                                                                                   RepositoryErrorException,
+                                                                                   UserNotAuthorizedException
     {
-        EntityDetail result = accumulator.getResult();
+        EntityDetail result = accumulator.getResult(returnDeletedClassifications);
         if (result != null)
         {
             return result;
@@ -252,17 +241,33 @@ public class GetEntityDetailExecutor extends GetEntityExecutor
                                                  EntityProxyOnlyException,
                                                  UserNotAuthorizedException
     {
-        EntityDetail entity = this.isEntityKnown();
+        final String repositoryName = "Enterprise";
+
+        EntityDetail entity = this.isEntityKnown(false);
 
         if (entity != null)
         {
+            if (entity.getStatus() == InstanceStatus.DELETED)
+            {
+                throw new EntityNotKnownException(OMRSErrorCode.ENTITY_SOFT_DELETED.getMessageDefinition(entity.getType().getTypeDefName(),
+                                                                                                         entity.getGUID(),
+                                                                                                         methodName,
+                                                                                                         repositoryName),
+                                                  this.getClass().getName(),
+                                                  methodName);
+            }
+
             return entity;
         }
 
         accumulator.throwCapturedEntityProxyOnlyException();
         accumulator.throwCapturedEntityNotKnownException();
 
-        return null;
+        throw new EntityNotKnownException(OMRSErrorCode.ENTITY_NOT_KNOWN.getMessageDefinition(entityGUID,
+                                                                                              methodName,
+                                                                                              repositoryName),
+                                          this.getClass().getName(),
+                                          methodName);
     }
 
 

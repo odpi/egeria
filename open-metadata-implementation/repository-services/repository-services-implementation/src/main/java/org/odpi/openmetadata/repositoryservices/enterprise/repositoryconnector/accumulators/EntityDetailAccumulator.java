@@ -99,13 +99,14 @@ public class EntityDetailAccumulator extends ClassificationAccumulator
      * Extract the resulting entity and accumulated classifications.  It should be called once all the executors have completed processing
      * their request(s).
      *
-     * @return list of entities
+     * @param returnDeletedClassifications should classifications in deleted status be returned?
+     * @return consolidated entity
      */
-    public  EntityDetail getResult()
+    public  EntityDetail getResult(boolean returnDeletedClassifications)
     {
         if (currentSavedEntity != null)
         {
-            currentSavedEntity.setClassifications(super.getClassifications());
+            currentSavedEntity.setClassifications(super.getClassifications(returnDeletedClassifications));
 
             return currentSavedEntity;
         }
