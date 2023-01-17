@@ -63,6 +63,16 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>governance-action-framework</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>gaf-metadata-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>ffdc-services</artifactId>
         </dependency>
 

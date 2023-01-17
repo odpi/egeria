@@ -43,12 +43,13 @@ public abstract class RelationshipMapper<R extends Relationship> implements IRel
             if (guid1 != null) {
                 end1.setNodeGuid(guid1);
             }
-            Map<String, InstancePropertyValue> map = proxy1.getUniqueProperties().getInstanceProperties();
-            PrimitivePropertyValue qualifiedNamePropertyValue = (PrimitivePropertyValue) map.get("qualifiedName");
-            if (qualifiedNamePropertyValue != null) {
-                end1.setNodeQualifiedName(qualifiedNamePropertyValue.getPrimitiveValue().toString());
+            if (proxy1.getUniqueProperties() != null) {
+                Map<String, InstancePropertyValue> map = proxy1.getUniqueProperties().getInstanceProperties();
+                PrimitivePropertyValue qualifiedNamePropertyValue = (PrimitivePropertyValue) map.get("qualifiedName");
+                if (qualifiedNamePropertyValue != null) {
+                    end1.setNodeQualifiedName(qualifiedNamePropertyValue.getPrimitiveValue().toString());
+                }
             }
-
         }
         EntityProxy proxy2 = omrsRelationship.getEntityTwoProxy();
         if (proxy2 != null) {
@@ -57,10 +58,12 @@ public abstract class RelationshipMapper<R extends Relationship> implements IRel
             if (guid2 != null) {
                 end2.setNodeGuid(guid2);
             }
-            Map<String, InstancePropertyValue> map = proxy2.getUniqueProperties().getInstanceProperties();
-            PrimitivePropertyValue qualifiedNamePropertyValue = (PrimitivePropertyValue) map.get("qualifiedName");
-            if (qualifiedNamePropertyValue != null) {
-                end2.setNodeQualifiedName(qualifiedNamePropertyValue.getPrimitiveValue().toString());
+            if (proxy2.getUniqueProperties() != null) {
+                Map<String, InstancePropertyValue> map  = proxy2.getUniqueProperties().getInstanceProperties();
+                PrimitivePropertyValue qualifiedNamePropertyValue = (PrimitivePropertyValue) map.get("qualifiedName");
+                if (qualifiedNamePropertyValue != null) {
+                    end2.setNodeQualifiedName(qualifiedNamePropertyValue.getPrimitiveValue().toString());
+                }
             }
         }
         // set readonly

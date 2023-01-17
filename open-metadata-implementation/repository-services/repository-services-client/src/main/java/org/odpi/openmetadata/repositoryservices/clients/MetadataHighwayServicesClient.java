@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.clients;
 
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
-import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientFactory;
+import org.odpi.openmetadata.adapters.connectors.restclients.factory.RESTClientFactory;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;

@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ValidValuesMappingProperties implements Serializable
+public class ValidValuesMappingProperties extends RelationshipProperties
 {
     private static final long     serialVersionUID = 1L;
 
@@ -203,7 +203,10 @@ public class ValidValuesMappingProperties implements Serializable
     public String toString()
     {
         return "ValidValuesMappingProperties{" +
-                       "associationDescription='" + associationDescription + '\'' +
+                       "effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", associationDescription='" + associationDescription + '\'' +
                        ", confidence=" + confidence +
                        ", steward='" + steward + '\'' +
                        ", stewardTypeName='" + stewardTypeName + '\'' +

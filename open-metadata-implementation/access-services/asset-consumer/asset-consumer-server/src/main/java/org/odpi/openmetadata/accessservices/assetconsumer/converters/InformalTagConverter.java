@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.assetconsumer.converters;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.elements.InformalTagElement;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.InformalTagProperties;
+import org.odpi.openmetadata.accessservices.assetconsumer.elements.TaggedElement;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -85,14 +86,21 @@ public class InformalTagConverter<B> extends AssetConsumerOMASConverter<B>
                     handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
                 }
 
+                bean.setInformalTagProperties(informalTagProperties);
+
                 if (relationship != null)
                 {
+                    TaggedElement taggedElement = new TaggedElement();
+
                     instanceProperties = new InstanceProperties(relationship.getProperties());
 
-                    informalTagProperties.setIsPublic(this.getIsPublic(instanceProperties));
+                    taggedElement.setRelationshipHeader(super.getMetadataElementHeader(beanClass, relationship, null, methodName));
+                    taggedElement.setRelatedElement(super.getElementStub(beanClass, relationship.getEntityOneProxy(), methodName));
+                    taggedElement.setIsPublic(this.getIsPublic(instanceProperties));
+
+                    bean.setTaggedElement(taggedElement);
                 }
 
-                bean.setInformalTagProperties(informalTagProperties);
             }
 
             return returnBean;

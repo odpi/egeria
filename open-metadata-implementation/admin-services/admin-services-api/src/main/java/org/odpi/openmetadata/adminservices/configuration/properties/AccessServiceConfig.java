@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistrationEntry;
 
 import java.util.Map;
 import java.util.Objects;
@@ -82,7 +82,7 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
      *
      * @param accessServiceRegistration fixed properties about the access service
      */
-    public AccessServiceConfig(AccessServiceRegistration accessServiceRegistration)
+    public AccessServiceConfig(AccessServiceRegistrationEntry accessServiceRegistration)
     {
         this.accessServiceId = accessServiceRegistration.getAccessServiceCode();
         this.accessServiceDevelopmentStatus = accessServiceRegistration.getAccessServiceDevelopmentStatus();

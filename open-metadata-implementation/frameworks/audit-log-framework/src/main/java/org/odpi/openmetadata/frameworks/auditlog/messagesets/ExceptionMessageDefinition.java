@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ExceptionMessageDefinition extends MessageDefinition
 {
-    private int    httpErrorCode;
+    private final int    httpErrorCode;
 
 
     /**

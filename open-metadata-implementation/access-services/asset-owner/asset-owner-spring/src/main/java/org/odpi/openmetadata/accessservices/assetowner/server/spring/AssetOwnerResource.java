@@ -142,6 +142,32 @@ public class AssetOwnerResource
 
 
     /**
+     * Update a simple asset description to the catalog.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user (assumed to be the owner)
+     * @param assetGUID unique identifier of the asset
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param requestBody other properties for asset
+     *
+     * @return unique identifier (guid) of the asset or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/assets/{assetGUID}/update")
+
+    public VoidResponse  updateAsset(@PathVariable String           serverName,
+                                     @PathVariable String           userId,
+                                     @PathVariable String           assetGUID,
+                                     @RequestParam boolean          isMergeUpdate,
+                                     @RequestBody  AssetProperties  requestBody)
+    {
+        return restAPI.updateAsset(serverName, userId, assetGUID, isMergeUpdate, requestBody);
+    }
+
+
+    /**
      * Stores the supplied schema details in the catalog and attaches it to the asset.  If another schema is currently
      * attached to the asset, it is unlinked and deleted.  If more attributes need to be added in addition to the
      * ones supplied then this can be done with addSchemaAttributesToSchemaType().
@@ -273,7 +299,7 @@ public class AssetOwnerResource
 
 
     /**
-     * Unlinks the schema from the asset but does not delete it.  This means it can be be reattached to a different asset.
+     * Unlinks the schema from the asset but does not delete it.  This means it can be reattached to a different asset.
      *
      * @param serverName name of the server instance to connect to
      * @param userId calling user
@@ -579,7 +605,7 @@ public class AssetOwnerResource
                                                   @PathVariable                   String          assetGUID,
                                                   @PathVariable                   String          glossaryTermGUID,
                                                   @PathVariable                   String          assetElementGUID,
-                                                  @PathVariable(required = false) NullRequestBody requestBody)
+                                                  @RequestBody(required = false)  NullRequestBody requestBody)
     {
         return restAPI.removeSemanticAssignment(serverName, userId, assetGUID, glossaryTermGUID, assetElementGUID, requestBody);
     }
@@ -891,7 +917,7 @@ public class AssetOwnerResource
      *
      * @param serverName name of the server instances for this request
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
      *
@@ -902,13 +928,13 @@ public class AssetOwnerResource
      */
     @PostMapping(path = "/assets/by-name")
 
-    public AssetElementsResponse getAssetsByName(@PathVariable String   serverName,
-                                                 @PathVariable String   userId,
-                                                 @RequestParam int      startFrom,
-                                                 @RequestParam int      pageSize,
-                                                 @RequestBody  String   name)
+    public AssetElementsResponse getAssetsByName(@PathVariable String          serverName,
+                                                 @PathVariable String          userId,
+                                                 @RequestParam int             startFrom,
+                                                 @RequestParam int             pageSize,
+                                                 @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getAssetsByName(serverName, userId, name, startFrom, pageSize);
+        return restAPI.getAssetsByName(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -918,7 +944,7 @@ public class AssetOwnerResource
      *
      * @param serverName name of the server instances for this request
      * @param userId calling user
-     * @param searchString string to search for in text
+     * @param requestBody string to search for in text
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
      *
@@ -929,13 +955,13 @@ public class AssetOwnerResource
      */
     @PostMapping(path = "/assets/by-search-string")
 
-    public AssetElementsResponse findAssets(@PathVariable String   serverName,
-                                            @PathVariable String   userId,
-                                            @RequestParam int      startFrom,
-                                            @RequestParam int      pageSize,
-                                            @RequestBody  String   searchString)
+    public AssetElementsResponse findAssets(@PathVariable String                  serverName,
+                                            @PathVariable String                  userId,
+                                            @RequestParam int                     startFrom,
+                                            @RequestParam int                     pageSize,
+                                            @RequestBody  SearchStringRequestBody requestBody)
     {
-        return restAPI.findAssets(serverName, userId, searchString, startFrom, pageSize);
+        return restAPI.findAssets(serverName, userId, requestBody, startFrom, pageSize);
     }
 
 
@@ -967,7 +993,7 @@ public class AssetOwnerResource
      * @param userId calling user
      * @param assetGUID unique identifier of the asset
      * @param startingFrom position in the list (used when there are so many reports that paging is needed
-     * @param maximumResults maximum number of elements to return an this call
+     * @param maximumResults maximum number of elements to return on this call
      *
      * @return list of discovery analysis reports or
      * InvalidParameterException full path or userId is null or
@@ -1070,11 +1096,11 @@ public class AssetOwnerResource
      * Deletes an asset and all of its associated elements such as schema, connections (unless they are linked to
      * another asset), discovery reports and associated feedback.
      *
-     * Given the depth of the delete performed by this call, it should be used with care.
+     * Given the depth of the elements deleted by this call, it should be used with care.
      *
      * @param serverName name of the server instance to connect to
      * @param userId calling user
-     * @param assetGUID unique identifier of the attest to attach the connection to
+     * @param assetGUID unique identifier of the asset to attach the connection to
      * @param requestBody dummy request body to satisfy POST protocol.
      *
      * @return void or

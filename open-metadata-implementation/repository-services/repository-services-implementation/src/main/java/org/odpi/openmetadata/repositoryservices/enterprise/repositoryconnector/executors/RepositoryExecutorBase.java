@@ -6,6 +6,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 public abstract class RepositoryExecutorBase implements RepositoryExecutor
 {
+    final String repositoryName = "Enterprise";
+
     protected String methodName;
     protected String userId;
 

@@ -281,7 +281,10 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(assetProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(assetProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(assetProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
         DataAssetRequestBody requestBody = new DataAssetRequestBody();
         requestBody.setElementProperties(assetProperties);

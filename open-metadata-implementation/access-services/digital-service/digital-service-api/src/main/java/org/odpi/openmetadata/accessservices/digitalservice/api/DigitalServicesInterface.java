@@ -303,7 +303,7 @@ public interface DigitalServicesInterface
 
 
     /**
-     * Return information about the data products supported by a digital service.
+     * Return information about the digital products supported by a digital service.
      *
      * @param userId calling user
      * @param digitalServiceGUID unique identifier for the digital service
@@ -316,12 +316,12 @@ public interface DigitalServicesInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<RelatedElement> getSupportedDataProducts(String userId,
-                                                  String digitalServiceGUID,
-                                                  int    startFrom,
-                                                  int    pageSize) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException;
+    List<RelatedElement> getSupportedDigitalProducts(String userId,
+                                                     String digitalServiceGUID,
+                                                     int    startFrom,
+                                                     int    pageSize) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException;
 
 
     /**

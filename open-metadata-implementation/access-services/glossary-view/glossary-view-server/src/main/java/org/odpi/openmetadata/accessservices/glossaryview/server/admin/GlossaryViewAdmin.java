@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.accessservices.glossaryview.server.admin;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;

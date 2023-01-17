@@ -4,10 +4,10 @@ package org.odpi.openmetadata.accessservices.stewardshipaction.server;
 
 
 import org.odpi.openmetadata.accessservices.stewardshipaction.admin.StewardshipActionAdmin;
-import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.registration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistrationEntry;
 
 /**
  * StewardshipActionRegistration registers the access service with the OMAG Server administration services.
@@ -24,9 +24,9 @@ public class StewardshipActionRegistration
     {
         AccessServiceDescription myDescription = AccessServiceDescription.STEWARDSHIP_ACTION_OMAS;
 
-        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
-                                                                                 ServiceOperationalStatus.ENABLED,
-                                                                                 StewardshipActionAdmin.class.getName());
+        AccessServiceRegistrationEntry myRegistration = new AccessServiceRegistrationEntry(myDescription,
+                                                                                           ServiceOperationalStatus.ENABLED,
+                                                                                           StewardshipActionAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }
 }

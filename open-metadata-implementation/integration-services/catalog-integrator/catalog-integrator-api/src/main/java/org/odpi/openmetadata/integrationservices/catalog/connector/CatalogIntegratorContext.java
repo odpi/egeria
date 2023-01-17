@@ -21,20 +21,25 @@ import java.util.List;
  */
 public class CatalogIntegratorContext
 {
-    private final static String collaborationExchangeServiceName     = "CollaborationExchangeService";
-    private final static String connectionExchangeServiceName        = "ConnectionExchangeService";
-    private final static String dataAssetExchangeServiceName         = "DataAssetExchangeService";
-    private final static String externalReferenceExchangeServiceName = "ExternalReferenceExchangeService";
-    private final static String glossaryExchangeServiceName          = "GlossaryExchangeService";
-    private final static String governanceExchangeServiceName        = "GovernanceExchangeService";
-    private final static String infrastructureExchangeServiceName    = "InfrastructureExchangeService";
-    private final static String lineageExchangeServiceName           = "LineageExchangeService";
-    private final static String stewardshipExchangeServiceName       = "StewardshipExchangeService";
-    private final static String validValuesExchangeServiceName       = "ValidValuesExchangeService";
+    public final static String openMetadataExchangeServiceName      = "OpenMetadataExchangeService";
+    public final static String connectorFactoryServiceName          = "ConnectorFactoryExchangeService";
+    public final static String collaborationExchangeServiceName     = "CollaborationExchangeService";
+    public final static String connectionExchangeServiceName        = "ConnectionExchangeService";
+    public final static String dataAssetExchangeServiceName         = "DataAssetExchangeService";
+    public final static String externalReferenceExchangeServiceName = "ExternalReferenceExchangeService";
+    public final static String glossaryExchangeServiceName          = "GlossaryExchangeService";
+    public final static String governanceExchangeServiceName        = "GovernanceExchangeService";
+    public final static String infrastructureExchangeServiceName    = "InfrastructureExchangeService";
+    public final static String lineageExchangeServiceName           = "LineageExchangeService";
+    public final static String stewardshipExchangeServiceName       = "StewardshipExchangeService";
+    public final static String validValuesExchangeServiceName       = "ValidValuesExchangeService";
 
 
     private final ExternalAssetManagerClient       assetManagerClient;
     private final AssetManagerEventClient          eventClient;
+    private final OpenMetadataGovernanceService    openMetadataGovernanceService;
+    private final ConnectorFactoryService          connectorFactoryService;
+    private final OpenMetadataExchangeService      openMetadataExchangeService;
     private final CollaborationExchangeService     collaborationExchangeService;
     private final ConnectionExchangeService        connectionExchangeService;
     private final DataAssetExchangeService         dataAssetExchangeService;
@@ -50,8 +55,9 @@ public class CatalogIntegratorContext
     private final String                           assetManagerName;
     private final String                           connectorName;
     private final String                           integrationServiceName;
-    private final SynchronizationDirection         synchronizationDirection;
 
+    private boolean connectorFactoryActive          = true;
+    private boolean openMetadataStoreActive         = true;
     private boolean glossaryExchangeActive          = true;
     private boolean externalReferenceExchangeActive = true;
     private boolean dataAssetExchangeActive         = true;
@@ -69,6 +75,8 @@ public class CatalogIntegratorContext
      *
      * @param assetManagerClient common client to map requests to
      * @param eventClient client to register for events
+     * @param connectedAssetClient client for connectors
+     * @param openMetadataStoreClient generic client
      * @param collaborationExchangeClient client for collaboration requests
      * @param connectionExchangeClient client for connection requests
      * @param dataAssetExchangeClient client for asset requests
@@ -90,6 +98,8 @@ public class CatalogIntegratorContext
      */
     public CatalogIntegratorContext(ExternalAssetManagerClient      assetManagerClient,
                                     AssetManagerEventClient         eventClient,
+                                    ConnectedAssetClient            connectedAssetClient,
+                                    OpenMetadataStoreClient         openMetadataStoreClient,
                                     CollaborationExchangeClient     collaborationExchangeClient,
                                     ConnectionExchangeClient        connectionExchangeClient,
                                     DataAssetExchangeClient         dataAssetExchangeClient,
@@ -113,6 +123,15 @@ public class CatalogIntegratorContext
 
         this.assetManagerClient       = assetManagerClient;
         this.eventClient              = eventClient;
+
+        this.openMetadataGovernanceService = new OpenMetadataGovernanceService(openMetadataStoreClient, userId, connectorName);
+        this.openMetadataExchangeService   = new OpenMetadataExchangeService(openMetadataStoreClient,
+                                                                             synchronizationDirection,
+                                                                             userId,
+                                                                             assetManagerGUID,
+                                                                             assetManagerName,
+                                                                             connectorName);
+        this.connectorFactoryService       = new ConnectorFactoryService(connectedAssetClient, userId);
         this.collaborationExchangeService  = new CollaborationExchangeService(collaborationExchangeClient,
                                                                               synchronizationDirection,
                                                                               userId,
@@ -188,7 +207,6 @@ public class CatalogIntegratorContext
         this.assetManagerName         = assetManagerName;
         this.connectorName            = connectorName;
         this.integrationServiceName   = integrationServiceName;
-        this.synchronizationDirection = synchronizationDirection;
 
         auditLog.logMessage(methodName,
                             CatalogIntegratorAuditCode.PERMITTED_SYNCHRONIZATION.getMessageDefinition(connectorName,
@@ -198,7 +216,15 @@ public class CatalogIntegratorContext
         {
             for (String exchangeServiceName : disabledExchangeServices)
             {
-                if (collaborationExchangeServiceName.equals(exchangeServiceName))
+                if (openMetadataExchangeServiceName.equals(exchangeServiceName))
+                {
+                    openMetadataStoreActive = false;
+                }
+                else if (connectorFactoryServiceName.equals(exchangeServiceName))
+                {
+                    connectorFactoryActive = false;
+                }
+                else if (collaborationExchangeServiceName.equals(exchangeServiceName))
                 {
                     collaborationExchangeActive = false;
                 }
@@ -426,6 +452,70 @@ public class CatalogIntegratorContext
 
 
     /**
+     * Return the interface for working with connectors to digital resources.
+     *
+     * @return collaboration exchange service
+     * @throws UserNotAuthorizedException this option is not enabled in the configuration
+     */
+    public OpenMetadataGovernanceService getOpenMetadataGovernanceService() throws UserNotAuthorizedException
+    {
+        return openMetadataGovernanceService;
+    }
+
+
+    /**
+     * Return the interface for working with native metadata elements.
+     *
+     * @return collaboration exchange service
+     * @throws UserNotAuthorizedException this option is not enabled in the configuration
+     */
+    public OpenMetadataExchangeService getOpenMetadataExchangeService() throws UserNotAuthorizedException
+    {
+        final String methodName = "getOpenMetadataExchangeService";
+
+        if (openMetadataStoreActive)
+        {
+            return openMetadataExchangeService;
+        }
+        else
+        {
+            throw new UserNotAuthorizedException(
+                    CatalogIntegratorErrorCode.DISABLED_EXCHANGE_SERVICE.getMessageDefinition(openMetadataExchangeServiceName,
+                                                                                              integrationServiceName),
+                    this.getClass().getName(),
+                    methodName,
+                    userId);
+        }
+    }
+
+
+    /**
+     * Return the interface for working with connectors to digital resources.
+     *
+     * @return collaboration exchange service
+     * @throws UserNotAuthorizedException this option is not enabled in the configuration
+     */
+    public ConnectorFactoryService getConnectorFactoryService() throws UserNotAuthorizedException
+    {
+        final String methodName = "getConnectorFactoryService";
+
+        if (connectorFactoryActive)
+        {
+            return connectorFactoryService;
+        }
+        else
+        {
+            throw new UserNotAuthorizedException(
+                    CatalogIntegratorErrorCode.DISABLED_EXCHANGE_SERVICE.getMessageDefinition(connectorFactoryServiceName,
+                                                                                              integrationServiceName),
+                    this.getClass().getName(),
+                    methodName,
+                    userId);
+        }
+    }
+
+
+    /**
      * Return the interface for exchanging collaboration information (comments, likes, reviews, tags).
      *
      * @return collaboration exchange service
@@ -449,6 +539,7 @@ public class CatalogIntegratorContext
                     userId);
         }
     }
+
 
     /**
      * Return the interface for exchanging connection information (connections, connector types, endpoints).

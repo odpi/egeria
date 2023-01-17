@@ -3,16 +3,12 @@
 package org.odpi.openmetadata.userinterface.uichassis.springboot.service.view;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationViewServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndpointConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceAdmin;
+import org.odpi.openmetadata.adminservices.registration.ViewServiceAdmin;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class IntegrationViewServiceConfigComponent extends IntegrationViewServiceConfig implements InitializingBean {

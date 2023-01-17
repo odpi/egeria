@@ -181,8 +181,8 @@ distributions {
                     include 'NOTICE'
                     include 'LICENSE'
                     include 'truststore.p12'
-                    include 'content-packs'
-                    include 'sample-data'
+                    include 'content-packs/*'
+                    include 'sample-data/*/*'
                 }
 //               copy key to root of targz file
                 from (keyDir) {

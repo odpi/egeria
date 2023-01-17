@@ -6,7 +6,7 @@ package org.odpi.openmetadata.adminservices.configuration.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceRegistrationEntry;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 
@@ -84,7 +84,7 @@ public class EngineServiceConfig extends OMAGServerClientConfig
      *
      * @param template object to copy
      */
-    public EngineServiceConfig(EngineServiceRegistration template)
+    public EngineServiceConfig(EngineServiceRegistrationEntry template)
     {
         super();
 

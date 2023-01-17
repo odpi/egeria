@@ -51,9 +51,14 @@ public class TestAsset
         testObject.setQualifiedName("TestQualifiedName");
         testObject.setAdditionalProperties(additionalProperties);
 
+        testObject.setResourceName("TestResourceName");
+        testObject.setResourceDescription("TestResourceDescription");
         testObject.setDisplayName("TestDisplayName");
-        testObject.setDescription("TestDescription");
-        testObject.setShortDescription("TestShortDescription");
+        testObject.setDisplayDescription("TestDisplayDescription");
+        testObject.setDisplaySummary("TestDisplaySummary");
+        testObject.setAbbreviation("TestAbbreviation");
+        testObject.setUsage("TestUsage");
+        testObject.setConnectionDescription("TestConnectionDescription");
         testObject.setOwner("TestOwner");
         testObject.setOwnerType(OwnerType.USER_ID);
         testObject.setZoneMembership(zoneMembership);
@@ -78,9 +83,16 @@ public class TestAsset
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
         assertTrue(resultObject.getAdditionalProperties() == null);
 
+        assertTrue(resultObject.getResourceName().equals("TestResourceName"));
+        assertTrue(resultObject.getResourceDescription().equals("TestResourceDescription"));
         assertTrue(resultObject.getDisplayName().equals("TestDisplayName"));
-        assertTrue(resultObject.getDescription().equals("TestDescription"));
-        assertTrue(resultObject.getShortDescription().equals("TestShortDescription"));
+        assertTrue(resultObject.getDisplayDescription().equals("TestDisplayDescription"));
+        assertTrue(resultObject.getDisplaySummary().equals("TestDisplaySummary"));
+        assertTrue(resultObject.getAbbreviation().equals("TestAbbreviation"));
+        assertTrue(resultObject.getUsage().equals("TestUsage"));
+        assertTrue(resultObject.getName().equals("TestResourceName"));
+        assertTrue(resultObject.getDescription().equals("TestResourceDescription"));
+        assertTrue(resultObject.getConnectionDescription().equals("TestConnectionDescription"));
         assertTrue(resultObject.getOwner().equals("TestOwner"));
         assertTrue(resultObject.getOwnerType() == OwnerType.USER_ID);
         assertTrue(resultObject.getZoneMembership() != null);
@@ -105,7 +117,7 @@ public class TestAsset
 
         assertTrue(nullObject.getDisplayName() == null);
         assertTrue(nullObject.getDescription() == null);
-        assertTrue(nullObject.getShortDescription() == null);
+        assertTrue(nullObject.getConnectionDescription() == null);
         assertTrue(nullObject.getOwner() == null);
         assertTrue(nullObject.getZoneMembership() == null);
         assertTrue(nullObject.getExtendedProperties() == null);
@@ -122,7 +134,7 @@ public class TestAsset
 
         assertTrue(nullObject.getDisplayName() == null);
         assertTrue(nullObject.getDescription() == null);
-        assertTrue(nullObject.getShortDescription() == null);
+        assertTrue(nullObject.getConnectionDescription() == null);
         assertTrue(nullObject.getOwner() == null);
         assertTrue(nullObject.getZoneMembership() == null);
         assertTrue(nullObject.getExtendedProperties() == null);
