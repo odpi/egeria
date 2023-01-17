@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class RelationshipsAccumulator extends QueryInstanceAccumulatorBase
 {
-    private volatile Map<String, Relationship> accumulatedRelationships   = new HashMap<>();
+    private final Map<String, Relationship> accumulatedRelationships   = new HashMap<>();
 
 
     /**
@@ -108,7 +108,7 @@ public class RelationshipsAccumulator extends QueryInstanceAccumulatorBase
 
 
     /**
-     * Extract the results - this will the a unique list of relationships selected from the instances
+     * Extract the results - this will a list of unique relationships selected from the instances
      * supplied to this accumulator.  It should be called once all the executors have completed processing
      * their request(s).
      *
