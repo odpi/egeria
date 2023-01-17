@@ -203,9 +203,9 @@ extends <a href="GetEntityExecutor.html" title="class in org.odpi.openmetadata.r
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr class="altColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)">GetEntityDetailExecutor</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.util.Date,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)">GetEntityDetailExecutor</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;entityGUID,
-                       boolean&nbsp;allExceptions,
+                       java.util.Date&nbsp;asOfTime,
                        <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
                        java.lang.String&nbsp;methodName)</code></th>
 <td class="colLast">
@@ -213,9 +213,8 @@ extends <a href="GetEntityExecutor.html" title="class in org.odpi.openmetadata.r
 </td>
 </tr>
 <tr class="rowColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.util.Date,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)">GetEntityDetailExecutor</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)">GetEntityDetailExecutor</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;entityGUID,
-                       java.util.Date&nbsp;asOfTime,
                        <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
                        java.lang.String&nbsp;methodName)</code></th>
 <td class="colLast">
@@ -256,7 +255,7 @@ extends <a href="GetEntityExecutor.html" title="class in org.odpi.openmetadata.r
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../../../connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEntityKnown()">isEntityKnown</a></span>()</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isEntityKnown(boolean)">isEntityKnown</a></span>&#8203;(boolean&nbsp;returnDeletedClassifications)</code></th>
 <td class="colLast">
 <div class="block">Returns the entity if the entity is stored in the metadata collection, otherwise null.</div>
 </td>
@@ -307,7 +306,7 @@ extends <a href="GetEntityExecutor.html" title="class in org.odpi.openmetadata.r
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a id="&lt;init&gt;(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)">
+<a id="&lt;init&gt;(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -315,7 +314,6 @@ extends <a href="GetEntityExecutor.html" title="class in org.odpi.openmetadata.r
 <h4>GetEntityDetailExecutor</h4>
 <pre>public&nbsp;GetEntityDetailExecutor&#8203;(java.lang.String&nbsp;userId,
                                java.lang.String&nbsp;entityGUID,
-                               boolean&nbsp;allExceptions,
                                <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
                                java.lang.String&nbsp;methodName)</pre>
 <div class="block">Constructor takes the parameters for the request.</div>
@@ -323,7 +321,6 @@ extends <a href="GetEntityExecutor.html" title="class in org.odpi.openmetadata.r
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
 <dd><code>entityGUID</code> - unique identifier (guid) for the entity.</dd>
-<dd><code>allExceptions</code> - is the a isEntityKnown or getEntityDetail request.</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dd><code>methodName</code> - calling method</dd>
 </dl>
@@ -386,18 +383,20 @@ extends <a href="GetEntityExecutor.html" title="class in org.odpi.openmetadata.r
 </dl>
 </li>
 </ul>
-<a id="isEntityKnown()">
+<a id="isEntityKnown(boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>isEntityKnown</h4>
-<pre class="methodSignature">public&nbsp;<a href="../../../connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;isEntityKnown()
+<pre class="methodSignature">public&nbsp;<a href="../../../connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;isEntityKnown&#8203;(boolean&nbsp;returnDeletedClassifications)
                            throws <a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
                                   <a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a>,
                                   <a href="../../../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></pre>
 <div class="block">Returns the entity if the entity is stored in the metadata collection, otherwise null.</div>
 <dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>returnDeletedClassifications</code> - should classifications in deleted status be returned?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>the entity details if the entity is found in the metadata collection; otherwise return null</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>

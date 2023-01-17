@@ -205,7 +205,7 @@ extends <a href="ClassificationAccumulator.html" title="class in org.odpi.openme
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../../../connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getResult()">getResult</a></span>()</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getResult(boolean)">getResult</a></span>&#8203;(boolean&nbsp;returnDeletedClassifications)</code></th>
 <td class="colLast">
 <div class="block">Extract the resulting entity and accumulated classifications.</div>
 </td>
@@ -320,18 +320,20 @@ extends <a href="ClassificationAccumulator.html" title="class in org.odpi.openme
 </dl>
 </li>
 </ul>
-<a id="getResult()">
+<a id="getResult(boolean)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getResult</h4>
-<pre class="methodSignature">public&nbsp;<a href="../../../connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;getResult()</pre>
+<pre class="methodSignature">public&nbsp;<a href="../../../connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;getResult&#8203;(boolean&nbsp;returnDeletedClassifications)</pre>
 <div class="block">Extract the resulting entity and accumulated classifications.  It should be called once all the executors have completed processing
  their request(s).</div>
 <dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>returnDeletedClassifications</code> - should classifications in deleted status be returned?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of entities</dd>
+<dd>consolidated entity</dd>
 </dl>
 </li>
 </ul>

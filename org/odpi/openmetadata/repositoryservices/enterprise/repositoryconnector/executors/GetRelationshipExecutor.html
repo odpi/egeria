@@ -180,9 +180,9 @@ extends <a href="RepositoryExecutorBase.html" title="class in org.odpi.openmetad
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr class="altColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)">GetRelationshipExecutor</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.util.Date,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)">GetRelationshipExecutor</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;relationshipGUID,
-                       boolean&nbsp;allExceptions,
+                       java.util.Date&nbsp;asOfTime,
                        <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
                        java.lang.String&nbsp;methodName)</code></th>
 <td class="colLast">
@@ -190,9 +190,8 @@ extends <a href="RepositoryExecutorBase.html" title="class in org.odpi.openmetad
 </td>
 </tr>
 <tr class="rowColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.util.Date,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)">GetRelationshipExecutor</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)">GetRelationshipExecutor</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;relationshipGUID,
-                       java.util.Date&nbsp;asOfTime,
                        <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
                        java.lang.String&nbsp;methodName)</code></th>
 <td class="colLast">
@@ -284,7 +283,7 @@ extends <a href="RepositoryExecutorBase.html" title="class in org.odpi.openmetad
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a id="&lt;init&gt;(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)">
+<a id="&lt;init&gt;(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -292,7 +291,6 @@ extends <a href="RepositoryExecutorBase.html" title="class in org.odpi.openmetad
 <h4>GetRelationshipExecutor</h4>
 <pre>public&nbsp;GetRelationshipExecutor&#8203;(java.lang.String&nbsp;userId,
                                java.lang.String&nbsp;relationshipGUID,
-                               boolean&nbsp;allExceptions,
                                <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
                                java.lang.String&nbsp;methodName)</pre>
 <div class="block">Constructor takes the parameters for the request.</div>
@@ -300,7 +298,6 @@ extends <a href="RepositoryExecutorBase.html" title="class in org.odpi.openmetad
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - unique identifier for requesting user</dd>
 <dd><code>relationshipGUID</code> - unique identifier (guid) for the relationship</dd>
-<dd><code>allExceptions</code> - is the a isRelationshipKnown or getRelationship request</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dd><code>methodName</code> - calling method</dd>
 </dl>
