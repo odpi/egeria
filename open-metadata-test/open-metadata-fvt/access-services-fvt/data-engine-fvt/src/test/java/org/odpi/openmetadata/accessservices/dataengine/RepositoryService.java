@@ -37,7 +37,7 @@ public class RepositoryService {
     private static final String QUALIFIED_NAME = "qualifiedName";
 
     private static final String TABULAR_COLUMN_TYPE_GUID = "d81a0425-4e9b-4f31-bc1c-e18c3566da10";
-    private static final String DATA_FLOW_TYPE_GUID = "a5991bB2-660D-A3a1-2955-fAcDA2d5F4Ff";
+    private static final String DATA_FLOW_TYPE_GUID = "d2490c0c-06cc-458a-add2-33cf2f5dd724";
 
     private static final int PAGE_SIZE = 100;
 
