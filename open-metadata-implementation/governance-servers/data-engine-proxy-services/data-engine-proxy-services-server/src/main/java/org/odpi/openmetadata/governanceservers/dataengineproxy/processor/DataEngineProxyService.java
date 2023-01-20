@@ -316,8 +316,8 @@ public class DataEngineProxyService implements Runnable {
             PropertyServerException,
             UserNotAuthorizedException,
             ConnectorCheckedException {
-        final String methodName = "upsertDataFlows";
-        final String type = "DataFlows";
+        String methodName = "upsertDataFlows";
+        String type = "DataFlows";
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
         List<DataFlow> changedDataFlows = connector.getChangedDataFlows(changesLastSynced, changesCutoff);
         if (CollectionUtils.isNotEmpty(changedDataFlows)) {
