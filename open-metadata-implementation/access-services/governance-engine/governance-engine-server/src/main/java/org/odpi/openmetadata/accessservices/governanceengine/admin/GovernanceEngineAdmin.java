@@ -10,7 +10,7 @@ import org.odpi.openmetadata.accessservices.governanceengine.outtopic.Governance
 import org.odpi.openmetadata.accessservices.governanceengine.outtopic.GovernanceEngineOutTopicPublisher;
 import org.odpi.openmetadata.accessservices.governanceengine.server.GovernanceEngineInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;

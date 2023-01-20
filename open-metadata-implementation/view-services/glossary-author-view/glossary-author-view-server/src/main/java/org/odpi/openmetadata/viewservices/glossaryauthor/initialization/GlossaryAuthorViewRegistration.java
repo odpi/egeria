@@ -2,10 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.initialization;
 
-import org.odpi.openmetadata.adminservices.configuration.OMAGViewServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistrationEntry;
+import org.odpi.openmetadata.adminservices.registration.OMAGViewServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistration;
 import org.odpi.openmetadata.viewservices.glossaryauthor.admin.GlossaryAuthorViewAdmin;
 
 /**
@@ -22,9 +22,9 @@ public class GlossaryAuthorViewRegistration
     public static void registerViewService()
     {
         ViewServiceDescription myDescription = ViewServiceDescription.GLOSSARY_AUTHOR;
-        ViewServiceRegistration myRegistration = new ViewServiceRegistration(myDescription,
-                                                                             ServiceOperationalStatus.ENABLED,
-                                                                             GlossaryAuthorViewAdmin.class.getName());
+        ViewServiceRegistrationEntry myRegistration = new ViewServiceRegistrationEntry(myDescription,
+                                                                                       ServiceOperationalStatus.ENABLED,
+                                                                                       GlossaryAuthorViewAdmin.class.getName());
         OMAGViewServiceRegistration.registerViewService(myRegistration);
     }
 }

@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.dataprivacy.ffdc.DataPrivacyAuditCod
 import org.odpi.openmetadata.accessservices.dataprivacy.listener.DataPrivacyOMRSTopicListener;
 import org.odpi.openmetadata.accessservices.dataprivacy.server.DataPrivacyServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistrationEntry;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 
 import java.util.Map;
@@ -87,7 +87,7 @@ public class ViewServiceConfig extends OMAGServerClientConfig
      *
      * @param viewRegistration fixed properties about the view service
      */
-    public ViewServiceConfig(ViewServiceRegistration viewRegistration)
+    public ViewServiceConfig(ViewServiceRegistrationEntry viewRegistration)
     {
         this.viewServiceId = viewRegistration.getViewServiceCode();
         this.viewServiceDevelopmentStatus = viewRegistration.getViewServiceDevelopmentStatus();

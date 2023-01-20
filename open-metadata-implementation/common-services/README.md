@@ -3,7 +3,7 @@
 
 # OMAG Common Services (common-services)
 
-This module provides common services to clients and the specialized services that
+This module provides common java functions to clients and the specialized services that
 run in the OMAG Server.
 
 * **[First-Failure Data Capture (FFDC) Services](ffdc-services)** - supports common exceptions
@@ -25,12 +25,6 @@ to the repository services (through the repository handler).
 translates [repository services (OMRS)](../repository-services) exceptions into 
 [Open Connector Framework (OCF)](../frameworks/open-connector-framework) exceptions that are
 used extensively across the [access services (OMASs)](../access-services).
-
-In addition, there is a shared metadata management module for
-server-side services that make use of the beans defined in the [frameworks](../frameworks) that underpin Egeria.
-
-* **[OCF Metadata Management](ocf-metadata-management)** - managing metadata about assets, connections and all the
-different types of metadata defined in the asset properties in the [Open Connector Framework (OCF)](../frameworks/open-connector-framework).
 
 ----
 Return to [open-metadata-implementation](..).

@@ -104,9 +104,15 @@ public class RelatedAsset extends Asset
     public String toString()
     {
         return "RelatedAsset{" +
-                       "displayName='" + getDisplayName() + '\'' +
-                       ", shortDescription='" + getShortDescription() + '\'' +
-                       ", description='" + getDescription() + '\'' +
+                       "resourceName='" + getResourceName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", displaySummary='" + getDisplaySummary() + '\'' +
+                       ", displayDescription='" + getDisplayDescription() + '\'' +
+                       ", abbreviation='" + getAbbreviation() + '\'' +
+                       ", usage='" + getUsage() + '\'' +
+                       ", connectionDescription='" + getConnectionDescription() + '\'' +
+                       ", resourceDescription='" + getResourceDescription() + '\'' +
                        ", owner='" + getOwner() + '\'' +
                        ", ownerTypeName='" + getOwnerTypeName() + '\'' +
                        ", ownerPropertyName='" + getOwnerPropertyName() + '\'' +
@@ -127,8 +133,6 @@ public class RelatedAsset extends Asset
                        ", headerVersion=" + getHeaderVersion() +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
-                       ", relationshipName='" + relationshipName + '\'' +
-                       ", attributeName='" + attributeName + '\'' +
                        '}';
     }
 

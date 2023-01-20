@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -21,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ReferenceValueAssignmentProperties implements Serializable
+public class ReferenceValueAssignmentProperties extends RelationshipProperties
 {
     private static final long     serialVersionUID = 1L;
 
@@ -47,6 +46,8 @@ public class ReferenceValueAssignmentProperties implements Serializable
      */
     public ReferenceValueAssignmentProperties(ReferenceValueAssignmentProperties template)
     {
+        super (template);
+
         if (template != null)
         {
             confidence             = template.getConfidence();
@@ -182,6 +183,9 @@ public class ReferenceValueAssignmentProperties implements Serializable
                        ", stewardTypeName='" + stewardTypeName + '\'' +
                        ", stewardPropertyName='" + stewardPropertyName + '\'' +
                        ", notes='" + notes + '\'' +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", extendedProperties=" + getExtendedProperties() +
                        '}';
     }
 
@@ -203,12 +207,14 @@ public class ReferenceValueAssignmentProperties implements Serializable
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
         ReferenceValueAssignmentProperties that = (ReferenceValueAssignmentProperties) objectToCompare;
-        return confidence == that.confidence &&
-                       Objects.equals(steward, that.steward) &&
-                       Objects.equals(stewardTypeName, that.stewardTypeName) &&
-                       Objects.equals(stewardPropertyName, that.stewardPropertyName) &&
-                Objects.equals(notes, that.notes);
+        return confidence == that.confidence && Objects.equals(steward, that.steward) && Objects.equals(stewardTypeName,
+                                                                                                        that.stewardTypeName) && Objects.equals(
+                stewardPropertyName, that.stewardPropertyName) && Objects.equals(notes, that.notes);
     }
 
 
@@ -220,6 +226,6 @@ public class ReferenceValueAssignmentProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(confidence, steward, stewardTypeName, stewardPropertyName, notes);
+        return Objects.hash(super.hashCode(), confidence, steward, stewardTypeName, stewardPropertyName, notes);
     }
 }

@@ -143,7 +143,7 @@ public class ReferenceDataAssetConverter<B> extends DigitalArchitectureOMASConve
 
             referenceDataAssetProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
             referenceDataAssetProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-            referenceDataAssetProperties.setDisplayName(this.removeName(instanceProperties));
+            referenceDataAssetProperties.setName(this.removeName(instanceProperties));
             referenceDataAssetProperties.setDescription(this.removeDescription(instanceProperties));
 
             /*

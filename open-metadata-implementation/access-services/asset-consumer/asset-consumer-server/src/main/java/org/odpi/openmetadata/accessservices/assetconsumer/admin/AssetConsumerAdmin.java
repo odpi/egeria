@@ -9,7 +9,7 @@ import org.odpi.openmetadata.accessservices.assetconsumer.outtopic.AssetConsumer
 import org.odpi.openmetadata.accessservices.assetconsumer.outtopic.AssetConsumerOutTopicPublisher;
 import org.odpi.openmetadata.accessservices.assetconsumer.server.AssetConsumerServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -22,7 +22,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import java.util.List;
 
 /**
- * AssetConsumerAdmin manages the start up and shutdown of the Asset Consumer OMAS.   During start up,
+ * AssetConsumerAdmin manages the startup and shutdown of the Asset Consumer OMAS.   During start up,
  * it validates the parameters and options it receives and sets up the service as requested.
  */
 public class AssetConsumerAdmin extends AccessServiceAdmin
@@ -103,11 +103,11 @@ public class AssetConsumerAdmin extends AccessServiceAdmin
                                                  serverName,
                                                  omrsTopicConnector,
                                                  new AssetConsumerOMRSTopicListener(AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceFullName(),
-                                                                                       serverUserName,
-                                                                                       eventPublisher,
-                                                                                       instance.getAssetHandler(),
-                                                                                       supportedZones,
-                                                                                       outTopicAuditLog),
+                                                                                    serverUserName,
+                                                                                    eventPublisher,
+                                                                                    instance.getAssetHandler(),
+                                                                                    supportedZones,
+                                                                                    outTopicAuditLog),
                                                  auditLog);
             }
 

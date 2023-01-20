@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.properties;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.CommentRequestBody;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -24,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = CommentProperties.class, name = "CommentProperties"),
+                @JsonSubTypes.Type(value = CommentRequestBody.class, name = "CommentRequestBody"),
                 @JsonSubTypes.Type(value = MeaningProperties.class, name = "MeaningProperties"),
         })
 public abstract class ReferenceableProperties implements Serializable

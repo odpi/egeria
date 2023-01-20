@@ -2,10 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.tex.server;
 
-import org.odpi.openmetadata.adminservices.configuration.OMAGViewServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistrationEntry;
+import org.odpi.openmetadata.adminservices.registration.OMAGViewServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistration;
 import org.odpi.openmetadata.viewservices.tex.admin.TexViewAdmin;
 
 /**
@@ -22,9 +22,9 @@ public class TexViewRegistration
     public static void registerViewService()
     {
         ViewServiceDescription myDescription = ViewServiceDescription.TYPE_EXPLORER;
-        ViewServiceRegistration myRegistration = new ViewServiceRegistration(myDescription,
-                                                                             ServiceOperationalStatus.ENABLED,
-                                                                             TexViewAdmin.class.getName());
+        ViewServiceRegistrationEntry myRegistration = new ViewServiceRegistrationEntry(myDescription,
+                                                                                       ServiceOperationalStatus.ENABLED,
+                                                                                       TexViewAdmin.class.getName());
         OMAGViewServiceRegistration.registerViewService(myRegistration);
     }
 }

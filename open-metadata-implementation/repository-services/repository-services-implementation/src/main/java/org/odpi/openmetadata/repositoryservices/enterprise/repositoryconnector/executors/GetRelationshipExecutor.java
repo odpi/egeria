@@ -5,8 +5,10 @@ package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.MaintenanceAccumulator;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 import java.util.Date;
@@ -19,7 +21,7 @@ public class GetRelationshipExecutor extends RepositoryExecutorBase
     private final MaintenanceAccumulator accumulator;
     private final String                 relationshipGUID;
 
-    private boolean                allExceptions         = true;
+
     private Date                   asOfTime              = null;
     private Relationship           retrievedRelationship = null;
 
@@ -30,13 +32,11 @@ public class GetRelationshipExecutor extends RepositoryExecutorBase
      *
      * @param userId unique identifier for requesting user
      * @param relationshipGUID unique identifier (guid) for the relationship
-     * @param allExceptions is the a isRelationshipKnown or getRelationship request
      * @param auditLog logging destination
      * @param methodName calling method
      */
     public GetRelationshipExecutor(String    userId,
                                    String    relationshipGUID,
-                                   boolean   allExceptions,
                                    AuditLog auditLog,
                                    String    methodName)
     {
@@ -45,7 +45,6 @@ public class GetRelationshipExecutor extends RepositoryExecutorBase
         this.accumulator = new MaintenanceAccumulator(auditLog);
 
         this.relationshipGUID = relationshipGUID;
-        this.allExceptions = allExceptions;
     }
 
 
@@ -96,22 +95,11 @@ public class GetRelationshipExecutor extends RepositoryExecutorBase
              */
             if (asOfTime == null)
             {
-                if (allExceptions)
-                {
-                    retrievedRelationship = metadataCollection.getRelationship(userId,
-                                                                               relationshipGUID);
-                }
-                else
-                {
-                    retrievedRelationship = metadataCollection.isRelationshipKnown(userId,
-                                                                                   relationshipGUID);
-                }
+                retrievedRelationship = metadataCollection.isRelationshipKnown(userId, relationshipGUID);
             }
             else
             {
-                retrievedRelationship = metadataCollection.getRelationship(userId,
-                                                                           relationshipGUID,
-                                                                           asOfTime);
+                retrievedRelationship = metadataCollection.getRelationship(userId, relationshipGUID, asOfTime);
             }
             if (retrievedRelationship != null)
             {
@@ -191,12 +179,26 @@ public class GetRelationshipExecutor extends RepositoryExecutorBase
 
         if (relationship != null)
         {
+            if (relationship.getStatus() == InstanceStatus.DELETED)
+            {
+                throw new RelationshipNotKnownException(OMRSErrorCode.RELATIONSHIP_SOFT_DELETED.getMessageDefinition(relationship.getType().getTypeDefName(),
+                                                                                                                     relationship.getGUID(),
+                                                                                                                     methodName,
+                                                                                                                     repositoryName),
+                                                        this.getClass().getName(),
+                                                        methodName);
+            }
+
             return relationship;
         }
 
         accumulator.throwCapturedRelationshipNotKnownException();
 
-        return null;
+        throw new RelationshipNotKnownException(OMRSErrorCode.RELATIONSHIP_NOT_KNOWN.getMessageDefinition(relationshipGUID,
+                                                                                                          methodName,
+                                                                                                          repositoryName),
+                                                this.getClass().getName(),
+                                                methodName);
     }
 
 

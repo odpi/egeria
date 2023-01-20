@@ -21,11 +21,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     <li>qualifiedName - The official (unique) name for the asset. This is often defined by the IT systems
  *     management organization and should be used (when available) on audit logs and error messages.
  *     (qualifiedName from Referenceable - model 0010)</li>
- *     <li>displayName - A consumable name for the asset.  Often a shortened form of the assetQualifiedName
- *     for use on user interfaces and messages.   The assetDisplayName should only be used for audit logs and error
- *     messages if the assetQualifiedName is not set. (Sourced from attribute name within Asset - model 0010)</li>
- *     <li>shortDescription - short description about the asset.
- *     (Sourced from assetSummary within ConnectionsToAsset - model 0205)</li>
+ *     <li>resourceName - name extracted from the resource.   (Sourced from attribute name within Asset - model 0010)</li>
+ *     <li>resourceDescription - description extracted from the resource.   (Sourced from attribute description within Asset - model 0010)</li>
+ *     <li>displayName - A consumable name for the resource for use on user interfaces and messages.
+ *     (Sourced from attribute displayName within GlossaryTerm - model 0330)</li>
+ *     <li>displaySummary - A short description of the resource for use on user interfaces and messages.
+ *     (Sourced from attribute summary within GlossaryTerm - model 0330)</li>
+ *     <li>displayDescription - A full description of the resource in business terminology for use on user interfaces.
+ *     (Sourced from attribute description within GlossaryTerm - model 0330)</li>
+ *     <li>abbreviation - A short name or acronym for the resource.
+ *     (Sourced from attribute abbreviation within GlossaryTerm - model 0330)</li>
+ *     <li>usage - A description of how the resource is used by the business.
+ *     (Sourced from attribute usage within GlossaryTerm - model 0330)</li>
+ *     <li>connectionDescription - short description about the asset.
+ *     (Sourced from assetSummary within ConnectionsToAsset relationship - model 0205)</li>
  *     <li>description - full description of the asset.
  *     (Sourced from attribute description within Asset - model 0010)</li>
  *     <li>owner - name of the person or organization that owns the asset.
@@ -38,7 +47,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     (Sourced from classification AssetOwnership attached to Asset - model 0445)</li>
  *     <li>zoneMembership - name of the person or organization that owns the asset.
  *     (Sourced from classification AssetZoneMemberShip attached to Asset - model 0424)</li>
- *     <li>origin - origin identifiers describing the source of the asset.
+ *     <li>assetOrigin - origin identifiers describing the source of the asset.
  *     (Sourced from classification AssetOrigin attached to Asset - model 0440)</li>
  *     <li>latestChange - description of last update to the asset.
  *     (Sourced from classification LatestChange attached to Asset - model 0010)</li>
@@ -56,18 +65,28 @@ public class Asset extends GovernedReferenceable
 {
     private static final long     serialVersionUID = 1L;
 
-    protected String              name              = null;
-    protected String              versionIdentifier = null;
-    protected String              displayName       = null;
-    protected String              shortDescription  = null;
-    protected String              description       = null;
-    protected String              owner             = null;
-    protected String              ownerTypeName     = null;
-    protected String              ownerPropertyName = null;
-    protected OwnerType           ownerType         = null;
-    protected List<String>        zoneMembership    = null;
-    protected Map<String, String> origin            = null;
-    protected boolean             isReferenceData   = false;
+    protected String              resourceName          = null;
+    protected String              resourceDescription   = null;
+    protected String              versionIdentifier     = null;
+    protected String              displayName           = null;
+    protected String              displaySummary        = null;
+    protected String              displayDescription    = null;
+    protected String              abbreviation          = null;
+    protected String              usage                 = null;
+    protected String              connectionDescription = null;
+    protected String              owner                 = null;
+    protected String              ownerTypeName         = null;
+    protected String              ownerPropertyName     = null;
+    protected OwnerType           ownerType             = null;
+    protected List<String>        zoneMembership        = null;
+    protected Map<String, String> origin                = null;
+    protected boolean             isReferenceData       = false;
+
+    /*
+     * Deprecated properties
+     */
+    protected String name        = null;
+    protected String description = null;
 
 
     /**
@@ -89,11 +108,15 @@ public class Asset extends GovernedReferenceable
 
         if (template != null)
         {
-            name                   = template.getName();
+            resourceName           = template.getResourceName();
+            resourceDescription    = template.getResourceDescription();
             versionIdentifier      = template.getVersionIdentifier();
             displayName            = template.getDisplayName();
-            shortDescription       = template.getShortDescription();
-            description            = template.getDescription();
+            displaySummary         = template.getDisplaySummary();
+            displayDescription     = template.getDisplayDescription();
+            abbreviation           = template.getAbbreviation();
+            usage                  = template.getUsage();
+            connectionDescription  = template.getConnectionDescription();
             owner                  = template.getOwner();
             ownerTypeName          = template.getOwnerTypeName();
             ownerPropertyName      = template.getOwnerPropertyName();
@@ -101,6 +124,9 @@ public class Asset extends GovernedReferenceable
             zoneMembership         = template.getZoneMembership();
             origin                 = template.getAssetOrigin();
             isReferenceData        = template.isReferenceData();
+
+            description            = template.getDescription();
+            name                   = template.getName();
         }
     }
 
@@ -110,9 +136,9 @@ public class Asset extends GovernedReferenceable
      *
      * @return string resource name
      */
-    public String getName()
+    public String getResourceName()
     {
-        return name;
+        return resourceName;
     }
 
 
@@ -121,9 +147,9 @@ public class Asset extends GovernedReferenceable
      *
      * @param name string resource name
      */
-    public void setName(String name)
+    public void setResourceName(String name)
     {
-        this.name = name;
+        this.resourceName = name;
     }
 
 
@@ -151,7 +177,7 @@ public class Asset extends GovernedReferenceable
 
     /**
      * Returns the stored display name property for the asset.
-     * If no display name is available then name is returned.
+     * If no display name is available then resource name is returned.
      *
      * @return String name
      */
@@ -159,7 +185,7 @@ public class Asset extends GovernedReferenceable
     {
         if (displayName == null)
         {
-            return name;
+            return resourceName;
         }
 
         return displayName;
@@ -178,24 +204,112 @@ public class Asset extends GovernedReferenceable
 
 
     /**
+     * Return the short display description for tables and summaries.
+     *
+     * @return string description
+     */
+    public String getDisplaySummary()
+    {
+        return displaySummary;
+    }
+
+
+    /**
+     * Set up the short display description for tables and summaries.
+     *
+     * @param displaySummary string description
+     */
+    public void setDisplaySummary(String displaySummary)
+    {
+        this.displaySummary = displaySummary;
+    }
+
+
+    /**
+     * Return the full business description.
+     *
+     * @return string description
+     */
+    public String getDisplayDescription()
+    {
+        return displayDescription;
+    }
+
+
+    /**
+     * Set up the full business description.
+     *
+     * @param displayDescription string description
+     */
+    public void setDisplayDescription(String displayDescription)
+    {
+        this.displayDescription = displayDescription;
+    }
+
+
+    /**
+     * Return the abbreviation or acronym associated with the resources display name.
+     *
+     * @return string name
+     */
+    public String getAbbreviation()
+    {
+        return abbreviation;
+    }
+
+
+    /**
+     * Set up the abbreviation or acronym associated with the resources display name.
+     *
+     * @param abbreviation string name
+     */
+    public void setAbbreviation(String abbreviation)
+    {
+        this.abbreviation = abbreviation;
+    }
+
+
+    /**
+     * Return the usage information for the resource.  This typically describes how the organization uses the resource.
+     *
+     * @return string description
+     */
+    public String getUsage()
+    {
+        return usage;
+    }
+
+
+    /**
+     * Set up the usage information for the resource.  This typically describes how the organization uses the resource.
+     *
+     * @param usage string description
+     */
+    public void setUsage(String usage)
+    {
+        this.usage = usage;
+    }
+
+
+    /**
      * Returns the short description of the asset from relationship with Connection.
      *
      * @return shortDescription String
      */
-    public String getShortDescription()
+    public String getConnectionDescription()
     {
-        return shortDescription;
+        return connectionDescription;
     }
 
 
     /**
      * Set up the short description of the asset from relationship with Connection.
      *
-     * @param shortDescription String text
+     * @param connectionDescription String text
      */
-    public void setShortDescription(String shortDescription)
+    public void setConnectionDescription(String connectionDescription)
     {
-        this.shortDescription = shortDescription;
+        this.connectionDescription = connectionDescription;
     }
 
 
@@ -205,9 +319,9 @@ public class Asset extends GovernedReferenceable
      *
      * @return description String text
      */
-    public String getDescription()
+    public String getResourceDescription()
     {
-        return description;
+        return resourceDescription;
     }
 
 
@@ -216,9 +330,9 @@ public class Asset extends GovernedReferenceable
      *
      * @param description String text
      */
-    public void setDescription(String description)
+    public void setResourceDescription(String description)
     {
-        this.description = description;
+        this.resourceDescription = description;
     }
 
 
@@ -398,6 +512,75 @@ public class Asset extends GovernedReferenceable
 
 
     /**
+     * Return the name of the resource that this asset represents.
+     *
+     * @return string resource name
+     */
+    @Deprecated
+    public String getName()
+    {
+        if (name == null)
+        {
+            if (resourceName != null)
+            {
+                return resourceName;
+            }
+
+            return displayName;
+        }
+
+        return name;
+    }
+
+
+    /**
+     * Set up the name of the resource that this asset represents.
+     *
+     * @param name string resource name
+     */
+    @Deprecated
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+
+    /**
+     * Returns the stored description property for the asset.
+     * If no description is provided then null is returned.
+     *
+     * @return description String text
+     */
+    @Deprecated
+    public String getDescription()
+    {
+        if (description == null)
+        {
+            if (resourceDescription != null)
+            {
+                return resourceDescription;
+            }
+
+            return displayDescription;
+        }
+
+        return description;
+    }
+
+
+    /**
+     * Set up the stored description property associated with the asset.
+     *
+     * @param description String text
+     */
+    @Deprecated
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -406,11 +589,15 @@ public class Asset extends GovernedReferenceable
     public String toString()
     {
         return "Asset{" +
-                       "name='" + name + '\'' +
+                       "resourceName='" + resourceName + '\'' +
+                       ", resourceDescription='" + resourceDescription + '\'' +
                        ", versionIdentifier='" + versionIdentifier + '\'' +
                        ", displayName='" + displayName + '\'' +
-                       ", shortDescription='" + shortDescription + '\'' +
-                       ", description='" + description + '\'' +
+                       ", displaySummary='" + displaySummary + '\'' +
+                       ", displayDescription='" + displayDescription + '\'' +
+                       ", abbreviation='" + abbreviation + '\'' +
+                       ", usage='" + usage + '\'' +
+                       ", connectionDescription='" + connectionDescription + '\'' +
                        ", owner='" + owner + '\'' +
                        ", ownerTypeName='" + ownerTypeName + '\'' +
                        ", ownerPropertyName='" + ownerPropertyName + '\'' +
@@ -418,6 +605,10 @@ public class Asset extends GovernedReferenceable
                        ", zoneMembership=" + zoneMembership +
                        ", origin=" + origin +
                        ", isReferenceData=" + isReferenceData +
+                       ", name='" + name + '\'' +
+                       ", description='" + description + '\'' +
+                       ", assetOrigin=" + getAssetOrigin() +
+                       ", referenceData=" + isReferenceData() +
                        ", URL='" + getURL() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
@@ -456,11 +647,18 @@ public class Asset extends GovernedReferenceable
             return false;
         }
         Asset asset = (Asset) objectToCompare;
-        return isReferenceData == asset.isReferenceData && Objects.equals(name, asset.name) && Objects.equals(versionIdentifier, asset.versionIdentifier) && Objects.equals(
-                displayName, asset.displayName) && Objects.equals(shortDescription, asset.shortDescription) && Objects.equals(
-                description, asset.description) && Objects.equals(owner, asset.owner) && Objects.equals(ownerTypeName, asset.ownerTypeName) && Objects.equals(
-                ownerPropertyName, asset.ownerPropertyName) && ownerType == asset.ownerType && Objects.equals(zoneMembership, asset.zoneMembership) && Objects.equals(
-                origin, asset.origin);
+        return isReferenceData == asset.isReferenceData && Objects.equals(resourceName, asset.resourceName) && Objects.equals(
+                resourceDescription, asset.resourceDescription) && Objects.equals(versionIdentifier,
+                                                                                  asset.versionIdentifier) && Objects.equals(
+                displayName, asset.displayName) && Objects.equals(displaySummary, asset.displaySummary) && Objects.equals(
+                displayDescription, asset.displayDescription) && Objects.equals(abbreviation, asset.abbreviation) && Objects.equals(
+                usage, asset.usage) && Objects.equals(connectionDescription, asset.connectionDescription) && Objects.equals(owner,
+                                                                                                                            asset.owner) && Objects.equals(
+                ownerTypeName, asset.ownerTypeName) && Objects.equals(ownerPropertyName,
+                                                                      asset.ownerPropertyName) && ownerType == asset.ownerType && Objects.equals(
+                zoneMembership, asset.zoneMembership) && Objects.equals(origin, asset.origin) && Objects.equals(name,
+                                                                                                                asset.name) && Objects.equals(
+                description, asset.description);
     }
 
 
@@ -472,7 +670,8 @@ public class Asset extends GovernedReferenceable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), name, versionIdentifier, displayName, shortDescription, description, owner, ownerTypeName,
-                            ownerPropertyName, ownerType, zoneMembership, origin, isReferenceData);
+        return Objects.hash(super.hashCode(), resourceName, resourceDescription, versionIdentifier, displayName, displaySummary, displayDescription,
+                            abbreviation, usage, connectionDescription, owner, ownerTypeName, ownerPropertyName, ownerType, zoneMembership, origin,
+                            isReferenceData, name, description);
     }
 }

@@ -271,7 +271,7 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                         PropertyServerException,
                                                         UserNotAuthorizedException
     {
-        String ratingGUID = this.unlinkConnectedElement(userId,
+        String likeGUID = this.unlinkConnectedElement(userId,
                                                         true,
                                                         externalSourceGUID,
                                                         externalSourceName,
@@ -287,14 +287,14 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                         effectiveTime,
                                                         methodName);
 
-        if (ratingGUID != null)
+        if (likeGUID != null)
         {
-            final String ratingGUIDParameterName = "ratingGUID";
+            final String ratingGUIDParameterName = "likeGUID";
 
             this.deleteBeanInRepository(userId,
                                         externalSourceGUID,
                                         externalSourceName,
-                                        ratingGUID,
+                                        likeGUID,
                                         ratingGUIDParameterName,
                                         OpenMetadataAPIMapper.LIKE_TYPE_GUID,
                                         OpenMetadataAPIMapper.LIKE_TYPE_NAME,
