@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.frameworks.auditlog;
 
 /**
- * ComponentDescription is an interface implemented by a enum that describes the components using the audit log
+ * ComponentDescription is an interface implemented by an enum that describes the components using the audit log
  */
 public interface ComponentDescription
 {
@@ -43,7 +43,7 @@ public interface ComponentDescription
     String getComponentDescription();
 
     /**
-     * URL link to the wiki page that describes this component.  This provides more information to the log reader
+     * URL to the wiki page that describes this component.  This provides more information to the log reader
      * on the operation of the component.
      *
      * @return String URL

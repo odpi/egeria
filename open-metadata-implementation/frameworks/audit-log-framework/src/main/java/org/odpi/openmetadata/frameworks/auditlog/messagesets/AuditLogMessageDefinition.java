@@ -21,14 +21,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AuditLogMessageDefinition extends MessageDefinition
 {
-    private AuditLogRecordSeverity severity;
+    private final AuditLogRecordSeverity severity;
 
     /**
      * Constructor to save all the fixed values of a message.  This is typically populated
      * from an Enum message set.  The constructor passes most values to the super class and just retains
      * the additional value for the audit log.
      *
-     * @param messageId unique Id for the message
+     * @param messageId unique id for the message
      * @param severity severity of the message
      * @param messageTemplate text for the message
      * @param systemAction description of the action taken by the system when the condition happened
