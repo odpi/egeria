@@ -42,6 +42,11 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>gaf-metadata-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>ffdc-services</artifactId>
         </dependency>
 

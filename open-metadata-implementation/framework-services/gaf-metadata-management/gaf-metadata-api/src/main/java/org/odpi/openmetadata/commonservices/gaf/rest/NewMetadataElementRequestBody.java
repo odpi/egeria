@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -22,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class NewMetadataElementRequestBody implements Serializable
+public class NewMetadataElementRequestBody extends MetadataSourceRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
@@ -51,6 +50,8 @@ public class NewMetadataElementRequestBody implements Serializable
      */
     public NewMetadataElementRequestBody(NewMetadataElementRequestBody template)
     {
+        super(template);
+
         if (template != null)
         {
             typeName = template.getTypeName();
@@ -226,12 +227,15 @@ public class NewMetadataElementRequestBody implements Serializable
     public String toString()
     {
         return "NewMetadataElementRequestBody{" +
-                       "typeName='" + typeName + '\'' +
+                       "externalSourceGUID='" + getExternalSourceGUID() + '\'' +
+                       ", externalSourceName='" + getExternalSourceName() + '\'' +
+                       ", typeName='" + typeName + '\'' +
                        ", initialStatus=" + initialStatus +
                        ", effectiveFrom=" + effectiveFrom +
                        ", effectiveTo=" + effectiveTo +
                        ", properties=" + properties +
                        ", templateGUID='" + templateGUID + '\'' +
+                       ", effectiveTime=" + effectiveTime +
                        '}';
     }
 
@@ -249,17 +253,19 @@ public class NewMetadataElementRequestBody implements Serializable
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof NewMetadataElementRequestBody))
+        {
+            return false;
+        }
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         NewMetadataElementRequestBody that = (NewMetadataElementRequestBody) objectToCompare;
-        return Objects.equals(typeName, that.typeName) &&
-                       initialStatus == that.initialStatus &&
-                       Objects.equals(effectiveFrom, that.effectiveFrom) &&
-                       Objects.equals(effectiveTo, that.effectiveTo) &&
-                       Objects.equals(properties, that.properties) &&
-                       Objects.equals(templateGUID, that.templateGUID);
+        return Objects.equals(typeName, that.typeName) && initialStatus == that.initialStatus &&
+                       Objects.equals(effectiveFrom, that.effectiveFrom) && Objects.equals(effectiveTo, that.effectiveTo) &&
+                       Objects.equals(properties, that.properties) && Objects.equals(templateGUID, that.templateGUID) &&
+                       Objects.equals(effectiveTime, that.effectiveTime);
     }
 
 
@@ -271,6 +277,6 @@ public class NewMetadataElementRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(typeName, initialStatus, effectiveFrom, effectiveTo, properties, templateGUID);
+        return Objects.hash(super.hashCode(), typeName, initialStatus, effectiveFrom, effectiveTo, properties, templateGUID, effectiveTime);
     }
 }

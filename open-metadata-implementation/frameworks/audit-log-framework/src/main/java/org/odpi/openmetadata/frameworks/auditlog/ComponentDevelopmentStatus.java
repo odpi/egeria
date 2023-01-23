@@ -13,9 +13,9 @@ public enum ComponentDevelopmentStatus
     SAMPLE            (3,  "Sample",            "This component is supplied as a sample.  It can be used 'as is' or may be modified as desired."),
     DEPRECATED        (99, "Deprecated",        "This component is deprecated an may be removed in a later release.");
 
-    private int    ordinal;
-    private String name;
-    private String description;
+    private final int    ordinal;
+    private final String name;
+    private final String description;
 
     private static final long     serialVersionUID = 1L;
 

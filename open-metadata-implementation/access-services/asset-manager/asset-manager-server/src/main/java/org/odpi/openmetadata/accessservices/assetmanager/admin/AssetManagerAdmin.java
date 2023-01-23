@@ -9,7 +9,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.listener.AssetManagerOM
 import org.odpi.openmetadata.accessservices.assetmanager.outtopic.AssetManagerOutTopicPublisher;
 import org.odpi.openmetadata.accessservices.assetmanager.server.AssetManagerServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;

@@ -23,10 +23,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public abstract class MessageDefinition
 {
-    private String messageId;
-    private String messageTemplate;
-    private String systemAction;
-    private String userAction;
+    private final String messageId;
+    private final String messageTemplate;
+    private final String systemAction;
+    private final String userAction;
 
     private String[] params;
 
@@ -93,7 +93,7 @@ public abstract class MessageDefinition
 
 
     /**
-     * Returns instructions on what to do next given that this situation has occurred.
+     * Returns instructions on what to do next, given that this situation has occurred.
      *
      * @return userAction String
      */
@@ -117,7 +117,6 @@ public abstract class MessageDefinition
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
                        ", params=" + Arrays.toString(params) +
-                       ", messageParams=" + Arrays.toString(getMessageParams()) +
                        '}';
     }
 }

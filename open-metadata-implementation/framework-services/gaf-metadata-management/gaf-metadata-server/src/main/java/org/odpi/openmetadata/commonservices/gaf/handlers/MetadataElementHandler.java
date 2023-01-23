@@ -1267,6 +1267,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * effectivity dates.
      *
      * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
      * @param metadataElementTypeName type name of the new metadata element
      * @param initialStatus initial status of the metadata element
      * @param effectiveFrom the date when this element is active - null for active on creation
@@ -1285,6 +1287,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public String createMetadataElementInStore(String            userId,
+                                               String            externalSourceGUID,
+                                               String            externalSourceName,
                                                String            metadataElementTypeName,
                                                ElementStatus     initialStatus,
                                                Date              effectiveFrom,
@@ -1322,8 +1326,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         if (templateGUID == null)
         {
             return this.createBeanInRepository(userId,
-                                               null,
-                                               null,
+                                               externalSourceGUID,
+                                               externalSourceName,
                                                metadataElementTypeGUID,
                                                metadataElementTypeName,
                                                builder,
@@ -1333,8 +1337,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         else
         {
             return this.createBeanFromTemplate(userId,
-                                               null,
-                                               null,
+                                               externalSourceGUID,
+                                               externalSourceName,
                                                templateGUID,
                                                templateGUIDParameterName,
                                                metadataElementTypeGUID,
@@ -1355,6 +1359,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * the value used in the replaceProperties flag.
      *
      * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                          the individual properties specified on the request.
@@ -1370,6 +1376,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public void updateMetadataElementInStore(String            userId,
+                                             String            externalSourceGUID,
+                                             String            externalSourceName,
                                              String            metadataElementGUID,
                                              boolean           replaceProperties,
                                              boolean           forLineage,
@@ -1392,8 +1400,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                     serverName);
 
         this.updateBeanInRepository(userId,
-                                    null,
-                                    null,
+                                    externalSourceGUID,
+                                    externalSourceName,
                                     metadataElementGUID,
                                     guidParameterName,
                                     OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
@@ -1413,6 +1421,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * assigned when it was created.
      *
      * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param newElementStatus new status value - or null to leave as is
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
@@ -1426,6 +1436,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public void updateMetadataElementStatusInStore(String        userId,
+                                                   String        externalSourceGUID,
+                                                   String        externalSourceName,
                                                    String        metadataElementGUID,
                                                    ElementStatus newElementStatus,
                                                    boolean       forLineage,
@@ -1443,8 +1455,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
 
         super.updateBeanStatusInRepository(userId,
-                                           null,
-                                           null,
+                                           externalSourceGUID,
+                                           externalSourceName,
                                            metadataElementGUID,
                                            guidParameterName,
                                            OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
@@ -1463,6 +1475,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * Update the effectivity dates control the visibility of the element through specific APIs.
      *
      * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
@@ -1477,6 +1491,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public void updateMetadataElementEffectivityInStore(String        userId,
+                                                        String        externalSourceGUID,
+                                                        String        externalSourceName,
                                                         String        metadataElementGUID,
                                                         boolean       forLineage,
                                                         boolean       forDuplicateProcessing,
@@ -1494,8 +1510,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
 
         super.updateBeanEffectivityDates(userId,
-                                         null,
-                                         null,
+                                         externalSourceGUID,
+                                         externalSourceName,
                                          metadataElementGUID,
                                          guidParameterName,
                                          OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
@@ -1514,6 +1530,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * Delete a specific metadata element.
      *
      * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
@@ -1526,6 +1544,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public  void deleteMetadataElementInStore(String       userId,
+                                              String       externalSourceGUID,
+                                              String       externalSourceName,
                                               String       metadataElementGUID,
                                               boolean      forLineage,
                                               boolean      forDuplicateProcessing,
@@ -1541,8 +1561,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
 
         super.deleteBeanInRepository(userId,
-                                     null,
-                                     null,
+                                     externalSourceGUID,
+                                     externalSourceName,
                                      metadataElementGUID,
                                      guidParameterName,
                                      OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
@@ -1562,6 +1582,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * a metadata element.
      *
      * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param classificationName name of the classification to add (if the classification is already present then use reclassify)
      * @param effectiveFrom the date when this classification is active - null for active now
@@ -1580,6 +1602,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public void classifyMetadataElementInStore(String            userId,
+                                               String            externalSourceGUID,
+                                               String            externalSourceName,
                                                String            metadataElementGUID,
                                                String            classificationName,
                                                boolean           forLineage,
@@ -1613,8 +1637,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                                     effectiveTo);
 
         this.setClassificationInRepository(userId,
-                                           null,
-                                           null,
+                                           externalSourceGUID,
+                                           externalSourceName,
                                            metadataElementGUID,
                                            guidParameterName,
                                            OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
@@ -1634,6 +1658,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * Update the properties of a classification that is currently attached to a specific metadata element.
      *
      * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param classificationName unique name of the classification to update
      * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
@@ -1651,6 +1677,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public  void reclassifyMetadataElementInStore(String            userId,
+                                                  String            externalSourceGUID,
+                                                  String            externalSourceName,
                                                   String            metadataElementGUID,
                                                   String            classificationName,
                                                   boolean           replaceProperties,
@@ -1683,8 +1711,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                                     null);
 
         this.setClassificationInRepository(userId,
-                                           null,
-                                           null,
+                                           externalSourceGUID,
+                                           externalSourceName,
                                            metadataElementGUID,
                                            guidParameterName,
                                            OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
@@ -1705,6 +1733,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * The effectivity dates control the visibility of the classification through specific APIs.
      *
      * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param classificationName unique name of the classification to update
      * @param forLineage the query is to support lineage retrieval
@@ -1720,6 +1750,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public void updateClassificationStatusInStore(String       userId,
+                                                  String       externalSourceGUID,
+                                                  String       externalSourceName,
                                                   String       metadataElementGUID,
                                                   String       classificationName,
                                                   boolean      forLineage,
@@ -1746,8 +1778,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                                  repositoryHelper);
 
         super.updateClassificationEffectivityDates(userId,
-                                                   null,
-                                                   null,
+                                                   externalSourceGUID,
+                                                   externalSourceName,
                                                    metadataElementGUID,
                                                    guidParameterName,
                                                    OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
@@ -1767,6 +1799,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * Remove the named classification from a specific metadata element.
      *
      * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
      * @param metadataElementGUID unique identifier of the metadata element to update
      * @param metadataElementGUIDParameterName name of parameter for GUID
      * @param metadataElementTypeName type of the metadata element
@@ -1782,6 +1816,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public  void unclassifyMetadataElementInStore(String       userId,
+                                                  String       externalSourceGUID,
+                                                  String       externalSourceName,
                                                   String       metadataElementGUID,
                                                   String       metadataElementGUIDParameterName,
                                                   String       metadataElementTypeName,
@@ -1806,8 +1842,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                                  methodName,
                                                                                  repositoryHelper);
         super.removeClassificationFromRepository(userId,
-                                                 null,
-                                                 null,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
                                                  metadataElementGUID,
                                                  metadataElementGUIDParameterName,
                                                  metadataElementTypeName,
@@ -1827,6 +1863,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * according to the type definition since this will affect how the relationship is interpreted.
      *
      * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
      * @param relationshipTypeName name of the type of relationship to create.  This will determine the types of metadata elements that can be
      *                             related and the properties that can be associated with this relationship.
      * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
@@ -1848,6 +1886,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public String createRelatedElementsInStore(String            userId,
+                                               String            externalSourceGUID,
+                                               String            externalSourceName,
                                                String            relationshipTypeName,
                                                String            metadataElement1GUID,
                                                String            metadataElement2GUID,
@@ -1883,8 +1923,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                                   effectiveFrom,
                                                                                   effectiveTo);
         super.linkElementToElement(userId,
-                                   null,
-                                   null,
+                                   externalSourceGUID,
+                                   externalSourceName,
                                    metadataElement1GUID,
                                    end1ParameterName,
                                    OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
@@ -1942,6 +1982,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * Update the properties associated with a relationship.
      *
      * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
      * @param relationshipGUID unique identifier of the relationship to update
      * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                          the individual properties specified on the request.
@@ -1958,6 +2000,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public void updateRelatedElementsInStore(String            userId,
+                                             String            externalSourceGUID,
+                                             String            externalSourceName,
                                              String            relationshipGUID,
                                              boolean           replaceProperties,
                                              boolean           forLineage,
@@ -1980,8 +2024,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                                   null,
                                                                                   null);
         this.updateRelationshipProperties(userId,
-                                          null,
-                                          null,
+                                          externalSourceGUID,
+                                          externalSourceName,
                                           relationshipGUID,
                                           guidParameterName,
                                           null,
@@ -2000,6 +2044,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * The effectivity dates control the visibility of the classification through specific APIs.
      *
      * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
      * @param relationshipGUID unique identifier of the relationship to update
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
@@ -2014,6 +2060,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public  void updateRelatedElementsStatusInStore(String       userId,
+                                                    String       externalSourceGUID,
+                                                    String       externalSourceName,
                                                     String       relationshipGUID,
                                                     Date         effectiveFrom,
                                                     Date         effectiveTo,
@@ -2031,8 +2079,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateGUID(relationshipGUID, guidParameterName, methodName);
 
         super.updateRelationshipEffectivityDates(userId,
-                                                 null,
-                                                 null,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
                                                  relationshipGUID,
                                                  guidParameterName,
                                                  null,
@@ -2050,6 +2098,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * Delete a relationship between two metadata elements.
      *
      * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
      * @param relationshipGUID unique identifier of the relationship to delete
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2063,6 +2113,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      */
     @SuppressWarnings(value = "unused")
     public void deleteRelatedElementsInStore(String       userId,
+                                             String       externalSourceGUID,
+                                             String       externalSourceName,
                                              String       relationshipGUID,
                                              boolean      forLineage,
                                              boolean      forDuplicateProcessing,
@@ -2078,8 +2130,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateGUID(relationshipGUID, guidParameterName, methodName);
 
         repositoryHandler.removeRelationship(userId,
-                                             null,
-                                             null,
+                                             externalSourceGUID,
+                                             externalSourceName,
                                              null,
                                              relationshipGUID,
                                              methodName);

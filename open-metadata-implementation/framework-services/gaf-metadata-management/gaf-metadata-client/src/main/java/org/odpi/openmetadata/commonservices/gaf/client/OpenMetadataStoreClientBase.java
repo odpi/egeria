@@ -33,9 +33,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * OpenMetadataStoreClientBase sits in the governance context of a governance action service when it is running in the engine host OMAG server.
- * It is however shared by all the governance action services running in an engine service so that we only need one connector to the topic
- * listener for the watchdog governance services.
+ * OpenMetadataStoreClientBase provides an interface to the open metadata store.  This is part of the Governance Action Framework (GAF)
+ * and provides a comprehensive interface for working with all types of metadata, subject to the user's (and this OMAS's) security permissions.
+ * the interface supports search, maintenance of metadata elements, classifications and relationships plus the ability to raise incident reports
+ * and todos along with the ability to work with metadata valid values and translations.
  */
 public abstract class OpenMetadataStoreClientBase implements MetadataElementInterface,
                                                              StewardshipActionInterface,
@@ -85,7 +86,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
      * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param serverUserId          caller's userId embedded in all HTTP requests
-     * @param serverPassword        caller's userId embedded in all HTTP requests
+     * @param serverPassword        caller's password embedded in all HTTP requests
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
@@ -162,6 +163,9 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
      *
      * @param userId      caller's userId
      * @param elementGUID unique identifier for the metadata element
+     * @param forLineage             the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime          only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties
      *
@@ -625,6 +629,53 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
+        return this.createMetadataElementInStore(userId,
+                                                 null,
+                                                 null,
+                                                 metadataElementTypeName,
+                                                 initialStatus,
+                                                 effectiveFrom,
+                                                 effectiveTo,
+                                                 properties,
+                                                 templateGUID);
+    }
+
+
+    /**
+     * Create a new metadata element in the metadata store.  The type name comes from the open metadata types.
+     * The selected type also controls the names and types of the properties that are allowed.
+     * This version of the method allows access to advanced features such as multiple states and
+     * effectivity dates.
+     *
+     * @param userId                  caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param metadataElementTypeName type name of the new metadata element
+     * @param initialStatus           initial status of the metadata element
+     * @param effectiveFrom           the date when this element is active - null for active on creation
+     * @param effectiveTo             the date when this element becomes inactive - null for active until deleted
+     * @param properties              properties of the new metadata element
+     * @param templateGUID            the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+     *                                connection etc)
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  the type name, status or one of the properties is invalid
+     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
+     * @throws PropertyServerException    there is a problem with the metadata store
+     */
+    public String createMetadataElementInStore(String            userId,
+                                               String            externalSourceGUID,
+                                               String            externalSourceName,
+                                               String            metadataElementTypeName,
+                                               ElementStatus     initialStatus,
+                                               Date              effectiveFrom,
+                                               Date              effectiveTo,
+                                               ElementProperties properties,
+                                               String            templateGUID) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
         final String methodName               = "createMetadataElementInStore";
         final String elementTypeParameterName = "metadataElementTypeName";
         final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/new";
@@ -634,6 +685,8 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
 
         NewMetadataElementRequestBody requestBody = new NewMetadataElementRequestBody();
 
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
         requestBody.setTypeName(metadataElementTypeName);
         requestBody.setInitialStatus(initialStatus);
         requestBody.setEffectiveFrom(effectiveFrom);
@@ -681,6 +734,50 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
+        this.updateMetadataElementInStore(userId,
+                                          null,
+                                          null,
+                                          metadataElementGUID,
+                                          replaceProperties,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          properties,
+                                          effectiveTime);
+    }
+
+
+    /**
+     * Update the properties of a specific metadata element.  The properties must match the type definition associated with the
+     * metadata element when it was created.  However, it is possible to update a few properties, or replace all them by
+     * the value used in the replaceProperties flag.
+     *
+     * @param userId                 caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param metadataElementGUID    unique identifier of the metadata element to update
+     * @param replaceProperties      flag to indicate whether to completely replace the existing properties with the new properties, or just update
+     *                               the individual properties specified on the request.
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param properties             new properties for the metadata element
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException  either the unique identifier or the properties are invalid in some way
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws PropertyServerException    there is a problem with the metadata store
+     */
+    public void updateMetadataElementInStore(String            userId,
+                                             String            externalSourceGUID,
+                                             String            externalSourceName,
+                                             String            metadataElementGUID,
+                                             boolean           replaceProperties,
+                                             boolean           forLineage,
+                                             boolean           forDuplicateProcessing,
+                                             ElementProperties properties,
+                                             Date              effectiveTime) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
         final String methodName        = "updateMetadataElementInStore";
         final String guidParameterName = "metadataElementGUID";
         final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/update-properties";
@@ -690,6 +787,8 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
 
         UpdatePropertiesRequestBody requestBody = new UpdatePropertiesRequestBody();
 
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
         requestBody.setReplaceProperties(replaceProperties);
         requestBody.setForLineage(forLineage);
         requestBody.setForDuplicateProcessing(forDuplicateProcessing);
@@ -732,6 +831,46 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
+        this.updateMetadataElementStatusInStore(userId,
+                                                null,
+                                                null,
+                                                metadataElementGUID,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                newElementStatus,
+                                                effectiveTime);
+    }
+
+
+    /**
+     * Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
+     * assigned when it was created.  The effectivity dates control the visibility of the element
+     * through specific APIs.
+     *
+     * @param userId                 caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param metadataElementGUID    unique identifier of the metadata element to update
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param newElementStatus       new status value - or null to leave as is
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException  either the unique identifier or the status are invalid in some way
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws PropertyServerException    there is a problem with the metadata store
+     */
+    public void updateMetadataElementStatusInStore(String        userId,
+                                                   String        externalSourceGUID,
+                                                   String        externalSourceName,
+                                                   String        metadataElementGUID,
+                                                   boolean       forLineage,
+                                                   boolean       forDuplicateProcessing,
+                                                   ElementStatus newElementStatus,
+                                                   Date          effectiveTime) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
         final String methodName        = "updateMetadataElementStatusInStore";
         final String guidParameterName = "metadataElementGUID";
         final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/update-status";
@@ -741,6 +880,8 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
 
         UpdateStatusRequestBody requestBody = new UpdateStatusRequestBody();
 
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
         requestBody.setForLineage(forLineage);
         requestBody.setForDuplicateProcessing(forDuplicateProcessing);
         requestBody.setNewStatus(newElementStatus);
@@ -784,6 +925,49 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
+        this.updateMetadataElementEffectivityInStore(userId,
+                                                     null,
+                                                     null,
+                                                     metadataElementGUID,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     effectiveFrom,
+                                                     effectiveTo,
+                                                     effectiveTime);
+    }
+
+
+    /**
+     * Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
+     * assigned when it was created.  The effectivity dates control the visibility of the element
+     * through specific APIs.
+     *
+     * @param userId                 caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param metadataElementGUID    unique identifier of the metadata element to update
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveFrom          the date when this element is active - null for active now
+     * @param effectiveTo            the date when this element becomes inactive - null for active until deleted
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException  either the unique identifier or the status are invalid in some way
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws PropertyServerException    there is a problem with the metadata store
+     */
+    public void updateMetadataElementEffectivityInStore(String        userId,
+                                                        String        externalSourceGUID,
+                                                        String        externalSourceName,
+                                                        String        metadataElementGUID,
+                                                        boolean       forLineage,
+                                                        boolean       forDuplicateProcessing,
+                                                        Date          effectiveFrom,
+                                                        Date          effectiveTo,
+                                                        Date          effectiveTime) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
         final String methodName        = "updateMetadataElementEffectivityInStore";
         final String guidParameterName = "metadataElementGUID";
         final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/update-effectivity";
@@ -793,6 +977,8 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
 
         UpdateEffectivityDatesRequestBody requestBody = new UpdateEffectivityDatesRequestBody();
 
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
         requestBody.setForLineage(forLineage);
         requestBody.setForDuplicateProcessing(forDuplicateProcessing);
         requestBody.setEffectiveFrom(effectiveFrom);
@@ -831,6 +1017,41 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
     {
+        this.deleteMetadataElementInStore(userId,
+                                          null,
+                                          null,
+                                          metadataElementGUID,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          effectiveTime);
+    }
+
+
+    /**
+     * Delete a specific metadata element.
+     *
+     * @param userId                 caller's userId
+     * @param externalSourceGUID     unique identifier of the software capability that owns this collection
+     * @param externalSourceName     unique name of the software capability that owns this collection
+     * @param metadataElementGUID    unique identifier of the metadata element to update
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException  the unique identifier is null or invalid in some way
+     * @throws UserNotAuthorizedException the governance action service is not authorized to delete this element
+     * @throws PropertyServerException    there is a problem with the metadata store
+     */
+    public void deleteMetadataElementInStore(String  userId,
+                                             String  externalSourceGUID,
+                                             String  externalSourceName,
+                                             String  metadataElementGUID,
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing,
+                                             Date    effectiveTime) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
         final String methodName        = "deleteMetadataElementInStore";
         final String guidParameterName = "metadataElementGUID";
         final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/delete";
@@ -840,6 +1061,8 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
 
         UpdateRequestBody requestBody = new UpdateRequestBody();
 
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
         requestBody.setForLineage(forLineage);
         requestBody.setForDuplicateProcessing(forDuplicateProcessing);
         requestBody.setEffectiveTime(effectiveTime);
@@ -887,6 +1110,56 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
+        this.classifyMetadataElementInStore(userId,
+                                            null,
+                                            null,
+                                            metadataElementGUID,
+                                            classificationName,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            effectiveFrom,
+                                            effectiveTo,
+                                            properties,
+                                            effectiveTime);
+    }
+
+
+    /**
+     * Add a new classification to the metadata element.  Note that only one classification with the same name can be attached to
+     * a metadata element.
+     *
+     * @param userId                 caller's userId
+     * @param externalSourceGUID     unique identifier of the software capability that owns this collection
+     * @param externalSourceName     unique name of the software capability that owns this collection
+     * @param metadataElementGUID    unique identifier of the metadata element to update
+     * @param classificationName     name of the classification to add (if the classification is already present then use reclassify)
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveFrom          the date when this classification is active - null for active now
+     * @param effectiveTo            the date when this classification becomes inactive - null for active until deleted
+     * @param properties             properties to store in the new classification.  These must conform to the valid properties associated with the
+     *                               classification name
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException  the unique identifier or classification name is null or invalid in some way; properties do not match the
+     *                                    valid properties associated with the classification's type definition
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws PropertyServerException    there is a problem with the metadata store
+     */
+    public void classifyMetadataElementInStore(String            userId,
+                                               String            externalSourceGUID,
+                                               String            externalSourceName,
+                                               String            metadataElementGUID,
+                                               String            classificationName,
+                                               boolean           forLineage,
+                                               boolean           forDuplicateProcessing,
+                                               Date              effectiveFrom,
+                                               Date              effectiveTo,
+                                               ElementProperties properties,
+                                               Date              effectiveTime) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
         final String methodName                  = "classifyMetadataElementInStore";
         final String guidParameterName           = "metadataElementGUID";
         final String classificationParameterName = "classificationName";
@@ -898,6 +1171,8 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
 
         NewClassificationRequestBody requestBody = new NewClassificationRequestBody();
 
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
         requestBody.setEffectiveFrom(effectiveFrom);
         requestBody.setEffectiveTo(effectiveTo);
         requestBody.setProperties(properties);
@@ -946,6 +1221,52 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
+        this.reclassifyMetadataElementInStore(userId,
+                                              null,
+                                              null,
+                                              metadataElementGUID,
+                                              classificationName,
+                                              replaceProperties,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              properties,
+                                              effectiveTime);
+    }
+
+
+    /**
+     * Update the properties of a classification that is currently attached to a specific metadata element.
+     *
+     * @param userId                 caller's userId
+     * @param externalSourceGUID     unique identifier of the software capability that owns this collection
+     * @param externalSourceName     unique name of the software capability that owns this collection
+     * @param metadataElementGUID    unique identifier of the metadata element to update
+     * @param classificationName     unique name of the classification to update
+     * @param replaceProperties      flag to indicate whether to completely replace the existing properties with the new properties, or just update
+     *                               the individual properties specified on the request.
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param properties             new properties for the classification
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException  the unique identifier or classification name is null or invalid in some way; properties do not match the
+     *                                    valid properties associated with the classification's type definition
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element/classification
+     * @throws PropertyServerException    there is a problem with the metadata store
+     */
+    public void reclassifyMetadataElementInStore(String            userId,
+                                                 String            externalSourceGUID,
+                                                 String            externalSourceName,
+                                                 String            metadataElementGUID,
+                                                 String            classificationName,
+                                                 boolean           replaceProperties,
+                                                 boolean           forLineage,
+                                                 boolean           forDuplicateProcessing,
+                                                 ElementProperties properties,
+                                                 Date              effectiveTime) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
         final String methodName                  = "reclassifyMetadataElementInStore";
         final String guidParameterName           = "metadataElementGUID";
         final String classificationParameterName = "classificationName";
@@ -957,6 +1278,8 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
 
         UpdatePropertiesRequestBody requestBody = new UpdatePropertiesRequestBody();
 
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
         requestBody.setReplaceProperties(replaceProperties);
         requestBody.setForLineage(forLineage);
         requestBody.setForDuplicateProcessing(forDuplicateProcessing);
@@ -1003,6 +1326,51 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
+        this.updateClassificationEffectivityInStore(userId,
+                                                    null,
+                                                    null,
+                                                    metadataElementGUID,
+                                                    classificationName,
+                                                    forLineage,
+                                                    forDuplicateProcessing,
+                                                    effectiveFrom,
+                                                    effectiveTo,
+                                                    effectiveTime);
+    }
+
+
+    /**
+     * Update the effectivity dates of a specific classification attached to a metadata element.
+     * The effectivity dates control the visibility of the classification through specific APIs.
+     *
+     * @param userId                 caller's userId
+     * @param externalSourceGUID     unique identifier of the software capability that owns this collection
+     * @param externalSourceName     unique name of the software capability that owns this collection
+     * @param metadataElementGUID    unique identifier of the metadata element to update
+     * @param classificationName     unique name of the classification to update
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveFrom          the date when this element is active - null for active now
+     * @param effectiveTo            the date when this element becomes inactive - null for active until deleted
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException  either the unique identifier or the status are invalid in some way
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws PropertyServerException    there is a problem with the metadata store
+     */
+    public void updateClassificationEffectivityInStore(String  userId,
+                                                       String  externalSourceGUID,
+                                                       String  externalSourceName,
+                                                       String  metadataElementGUID,
+                                                       String  classificationName,
+                                                       boolean forLineage,
+                                                       boolean forDuplicateProcessing,
+                                                       Date    effectiveFrom,
+                                                       Date    effectiveTo,
+                                                       Date    effectiveTime) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
         final String methodName                  = "updateClassificationEffectivityInStore";
         final String guidParameterName           = "metadataElementGUID";
         final String classificationParameterName = "classificationName";
@@ -1014,6 +1382,8 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
 
         UpdateEffectivityDatesRequestBody requestBody = new UpdateEffectivityDatesRequestBody();
 
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
         requestBody.setForLineage(forLineage);
         requestBody.setForDuplicateProcessing(forDuplicateProcessing);
         requestBody.setEffectiveFrom(effectiveFrom);
@@ -1055,6 +1425,44 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
+        this.unclassifyMetadataElementInStore(userId,
+                                              null,
+                                              null,
+                                              metadataElementGUID,
+                                              classificationName,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              effectiveTime);
+    }
+
+
+    /**
+     * Remove the named classification from a specific metadata element.
+     *
+     * @param userId                 caller's userId
+     * @param externalSourceGUID     unique identifier of the software capability that owns this collection
+     * @param externalSourceName     unique name of the software capability that owns this collection
+     * @param metadataElementGUID    unique identifier of the metadata element to update
+     * @param classificationName     unique name of the classification to remove
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException  the unique identifier or classification name is null or invalid in some way
+     * @throws UserNotAuthorizedException the governance action service is not authorized to remove this classification
+     * @throws PropertyServerException    there is a problem with the metadata store
+     */
+    public void unclassifyMetadataElementInStore(String  userId,
+                                                 String  externalSourceGUID,
+                                                 String  externalSourceName,
+                                                 String  metadataElementGUID,
+                                                 String  classificationName,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing,
+                                                 Date    effectiveTime) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
         final String methodName                  = "unclassifyMetadataElementInStore";
         final String guidParameterName           = "metadataElementGUID";
         final String classificationParameterName = "classificationName";
@@ -1066,6 +1474,8 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
 
         UpdateRequestBody requestBody = new UpdateRequestBody();
 
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
         requestBody.setForLineage(forLineage);
         requestBody.setForDuplicateProcessing(forDuplicateProcessing);
         requestBody.setEffectiveTime(effectiveTime);
@@ -1118,6 +1528,61 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
+        return this.createRelatedElementsInStore(userId,
+                                                 null,
+                                                 null,
+                                                 relationshipTypeName,
+                                                 metadataElement1GUID,
+                                                 metadataElement2GUID,
+                                                 forLineage,
+                                                 forDuplicateProcessing,
+                                                 effectiveFrom,
+                                                 effectiveTo,
+                                                 properties,
+                                                 effectiveTime);
+    }
+
+
+    /**
+     * Create a relationship between two metadata elements.  It is important to put the right element at each end of the relationship
+     * according to the type definition since this will affect how the relationship is interpreted.
+     *
+     * @param userId                 caller's userId
+     * @param externalSourceGUID     unique identifier of the software capability that owns this collection
+     * @param externalSourceName     unique name of the software capability that owns this collection
+     * @param relationshipTypeName   name of the type of relationship to create.  This will determine the types of metadata elements that can be
+     *                               related and the properties that can be associated with this relationship.
+     * @param metadataElement1GUID   unique identifier of the metadata element at end 1 of the relationship
+     * @param metadataElement2GUID   unique identifier of the metadata element at end 2 of the relationship
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveFrom          the date when this element is active - null for active now
+     * @param effectiveTo            the date when this element becomes inactive - null for active until deleted
+     * @param properties             the properties of the relationship
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @return unique identifier of the new relationship
+     *
+     * @throws InvalidParameterException  the unique identifier's of the metadata elements are null or invalid in some way; the properties are
+     *                                    not valid for this type of relationship
+     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
+     * @throws PropertyServerException    there is a problem with the metadata store
+     */
+    public String createRelatedElementsInStore(String            userId,
+                                               String            externalSourceGUID,
+                                               String            externalSourceName,
+                                               String            relationshipTypeName,
+                                               String            metadataElement1GUID,
+                                               String            metadataElement2GUID,
+                                               boolean           forLineage,
+                                               boolean           forDuplicateProcessing,
+                                               Date              effectiveFrom,
+                                               Date              effectiveTo,
+                                               ElementProperties properties,
+                                               Date              effectiveTime) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
         final String methodName               = "createRelatedElementsInStore";
         final String elementTypeParameterName = "relationshipTypeName";
         final String end1ParameterName        = "metadataElement1GUID";
@@ -1131,6 +1596,8 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
 
         NewRelatedElementsRequestBody requestBody = new NewRelatedElementsRequestBody();
 
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
         requestBody.setTypeName(relationshipTypeName);
         requestBody.setMetadataElement1GUID(metadataElement1GUID);
         requestBody.setMetadataElement2GUID(metadataElement2GUID);
@@ -1180,6 +1647,49 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
+        this.updateRelatedElementsInStore(userId,
+                                          null,
+                                          null,
+                                          relationshipGUID,
+                                          replaceProperties,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          properties,
+                                          effectiveTime);
+    }
+
+
+    /**
+     * Update the properties associated with a relationship.
+     *
+     * @param userId caller's userId
+     * @param externalSourceGUID     unique identifier of the software capability that owns this collection
+     * @param externalSourceName     unique name of the software capability that owns this collection
+     * @param relationshipGUID unique identifier of the relationship to update
+     * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
+     *                          the individual properties specified on the request.
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param properties new properties for the relationship
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
+     *                                    not valid for this type of relationship
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update this relationship
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    public void updateRelatedElementsInStore(String            userId,
+                                             String            externalSourceGUID,
+                                             String            externalSourceName,
+                                             String            relationshipGUID,
+                                             boolean           replaceProperties,
+                                             boolean           forLineage,
+                                             boolean           forDuplicateProcessing,
+                                             ElementProperties properties,
+                                             Date              effectiveTime) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
         final String methodName = "updateRelatedElementsInStore";
         final String guidParameterName = "relationshipGUID";
         final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/{3}/update-properties";
@@ -1189,6 +1699,8 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
 
         UpdatePropertiesRequestBody requestBody = new UpdatePropertiesRequestBody();
 
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
         requestBody.setReplaceProperties(replaceProperties);
         requestBody.setProperties(properties);
         requestBody.setForLineage(forLineage);
@@ -1232,6 +1744,48 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
+        this.updateRelatedElementsEffectivityInStore(userId,
+                                                     null,
+                                                     null,
+                                                     relationshipGUID,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     effectiveFrom,
+                                                     effectiveTo,
+                                                     effectiveTime);
+    }
+
+
+    /**
+     * Update the effectivity dates of a specific relationship between metadata elements.
+     * The effectivity dates control the visibility of the classification through specific APIs.
+     *
+     * @param userId caller's userId
+     * @param externalSourceGUID     unique identifier of the software capability that owns this collection
+     * @param externalSourceName     unique name of the software capability that owns this collection
+     * @param relationshipGUID unique identifier of the relationship to update
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    public  void updateRelatedElementsEffectivityInStore(String  userId,
+                                                         String  externalSourceGUID,
+                                                         String  externalSourceName,
+                                                         String  relationshipGUID,
+                                                         boolean forLineage,
+                                                         boolean forDuplicateProcessing,
+                                                         Date    effectiveFrom,
+                                                         Date    effectiveTo,
+                                                         Date    effectiveTime) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
         final String methodName = "updateRelatedElementsEffectivityInStore";
         final String guidParameterName = "relationshipGUID";
         final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/{3}/update-effectivity";
@@ -1241,6 +1795,8 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
 
         UpdateEffectivityDatesRequestBody requestBody = new UpdateEffectivityDatesRequestBody();
 
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
         requestBody.setForLineage(forLineage);
         requestBody.setForDuplicateProcessing(forDuplicateProcessing);
         requestBody.setEffectiveFrom(effectiveFrom);
@@ -1279,6 +1835,41 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
+        this.deleteRelatedElementsInStore(userId,
+                                          null,
+                                          null,
+                                          relationshipGUID,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          effectiveTime);
+    }
+
+
+    /**
+     * Delete a relationship between two metadata elements.
+     *
+     * @param userId caller's userId
+     * @param externalSourceGUID     unique identifier of the software capability that owns this collection
+     * @param externalSourceName     unique name of the software capability that owns this collection
+     * @param relationshipGUID unique identifier of the relationship to delete
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
+     * @throws UserNotAuthorizedException the governance action service is not authorized to delete this relationship
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    public void deleteRelatedElementsInStore(String  userId,
+                                             String  externalSourceGUID,
+                                             String  externalSourceName,
+                                             String  relationshipGUID,
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing,
+                                             Date    effectiveTime) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
         final String methodName = "deleteRelatedElementsInStore";
         final String guidParameterName = "relationshipGUID";
         final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/{3}/delete";
@@ -1288,6 +1879,8 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
 
         UpdateRequestBody requestBody = new UpdateRequestBody();
 
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
         requestBody.setForLineage(forLineage);
         requestBody.setForDuplicateProcessing(forDuplicateProcessing);
         requestBody.setEffectiveTime(effectiveTime);
@@ -1300,7 +1893,6 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
                                         userId,
                                         relationshipGUID);
     }
-
 
 
     /**

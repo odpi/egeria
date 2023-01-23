@@ -70,6 +70,7 @@ public class RelatedAssetConverter<B> extends OCFConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @SuppressWarnings(value="deprecation")
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         Relationship relationship,
@@ -99,9 +100,11 @@ public class RelatedAssetConverter<B> extends OCFConverter<B>
 
                 bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
                 bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                bean.setName(this.removeName(instanceProperties));
+                bean.setResourceName(this.removeName(instanceProperties));
+                bean.setName(bean.getResourceName());
                 bean.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
-                bean.setDescription(this.removeDescription(instanceProperties));
+                bean.setResourceDescription(this.removeDescription(instanceProperties));
+                bean.setDescription(bean.getResourceDescription());
 
                 /* Note this value should be in the classification */
                 bean.setOwner(this.removeOwner(instanceProperties));

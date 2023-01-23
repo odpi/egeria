@@ -13,6 +13,8 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-api')
     implementation project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-client')
+    implementation project(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-api')
+    implementation project(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-client')
     implementation 'org.springframework:spring-core'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 
