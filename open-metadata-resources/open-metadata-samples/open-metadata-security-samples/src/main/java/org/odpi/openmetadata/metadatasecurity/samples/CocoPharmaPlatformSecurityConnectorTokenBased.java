@@ -37,7 +37,7 @@ public class CocoPharmaPlatformSecurityConnectorTokenBased extends OpenMetadataP
 
     private final byte[] secret = Base64.getDecoder().decode("d14uaEwsGU3cXopmxaEDqhQTow81zixFWbFUuu3budQ");
 
-    private static final Logger log = LoggerFactory.getLogger(CocoPharmaServerSecurityConnectorTokenBased.class);
+    private static final Logger log = LoggerFactory.getLogger(CocoPharmaPlatformSecurityConnectorTokenBased.class);
 
 
     /**
@@ -87,7 +87,7 @@ public class CocoPharmaPlatformSecurityConnectorTokenBased extends OpenMetadataP
     {
         final String methodName = "validateUserAsInvestigatorForPlatform";
 
-        if (! getUserActions(userId).contains(PlatformRoles.PLATFORM_INVESTIGATOR.getName()))
+        if (  getUserActions(userId) != null && !getUserActions(userId).contains(PlatformRoles.PLATFORM_INVESTIGATOR.getName()))
         {
             super.throwUnauthorizedPlatformAccess(userId, methodName);
         }
