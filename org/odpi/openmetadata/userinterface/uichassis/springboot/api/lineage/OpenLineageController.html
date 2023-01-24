@@ -317,7 +317,7 @@ public&nbsp;<a href="../../beans/Graph.html" title="class in org.odpi.openmetada
 <ul class="blockList">
 <li class="blockList">
 <h4>endToEndLineage</h4>
-<pre class="methodSignature">@GetMapping("/entities/{guid}/end-to-end")
+<pre class="methodSignature">@GetMapping({"/entities/{guid}/end-to-end","/entities/{guid}/end2end"})
 @ResponseBody
 public&nbsp;<a href="../../beans/Graph.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.beans">Graph</a>&nbsp;endToEndLineage&#8203;(@PathVariable("guid")
                              java.lang.String&nbsp;guid,
@@ -335,7 +335,9 @@ public&nbsp;<a href="../../beans/Graph.html" title="class in org.odpi.openmetada
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - from the underlying service</dd>
 <dd><code><a href="../../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - from the underlying service</dd>
-<dd><code><a href="../../../../../governanceservers/openlineage/ffdc/OpenLineageException.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.ffdc">OpenLineageException</a></code> - from the underlying service</dd>
+<dd><code><a href="../../../../../governanceservers/openlineage/ffdc/OpenLineageException.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.ffdc">OpenLineageException</a></code> - from the underlying service
+
+ TODO: Remove api request mapping /entities/{guid}/end2end in major release (i.e. v4.x.x)</dd>
 </dl>
 </li>
 </ul>
