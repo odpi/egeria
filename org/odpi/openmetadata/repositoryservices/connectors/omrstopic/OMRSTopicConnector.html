@@ -324,14 +324,14 @@ implements <a href="OMRSTopic.html" title="interface in org.odpi.openmetadata.re
 </td>
 </tr>
 <tr id="i8" class="altColor">
-<td class="colFirst"><code>void</code></td>
+<td class="colFirst"><code>java.util.concurrent.CompletableFuture&lt;java.lang.Boolean&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#sendRegistryEvent(org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEvent)">sendRegistryEvent</a></span>&#8203;(<a href="../../events/OMRSRegistryEvent.html" title="class in org.odpi.openmetadata.repositoryservices.events">OMRSRegistryEvent</a>&nbsp;registryEvent)</code></th>
 <td class="colLast">
 <div class="block">Send the registry event to the OMRS Topic connector and manage errors</div>
 </td>
 </tr>
 <tr id="i9" class="rowColor">
-<td class="colFirst"><code>void</code></td>
+<td class="colFirst"><code>java.util.concurrent.CompletableFuture&lt;java.lang.Boolean&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#sendTypeDefEvent(org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent)">sendTypeDefEvent</a></span>&#8203;(<a href="../../events/OMRSTypeDefEvent.html" title="class in org.odpi.openmetadata.repositoryservices.events">OMRSTypeDefEvent</a>&nbsp;typeDefEvent)</code></th>
 <td class="colLast">
 <div class="block">Send the TypeDef event to the OMRS Topic connector (providing TypeDef Events are enabled).</div>
@@ -582,14 +582,16 @@ public&nbsp;void&nbsp;registerListener&#8203;(<a href="OMRSTopicListener.html" t
 <ul class="blockList">
 <li class="blockList">
 <h4>sendRegistryEvent</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;sendRegistryEvent&#8203;(<a href="../../events/OMRSRegistryEvent.html" title="class in org.odpi.openmetadata.repositoryservices.events">OMRSRegistryEvent</a>&nbsp;registryEvent)
-                       throws <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
+<pre class="methodSignature">public&nbsp;java.util.concurrent.CompletableFuture&lt;java.lang.Boolean&gt;&nbsp;sendRegistryEvent&#8203;(<a href="../../events/OMRSRegistryEvent.html" title="class in org.odpi.openmetadata.repositoryservices.events">OMRSRegistryEvent</a>&nbsp;registryEvent)
+                                                                            throws <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Send the registry event to the OMRS Topic connector and manage errors</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="OMRSTopic.html#sendRegistryEvent(org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEvent)">sendRegistryEvent</a></code>&nbsp;in interface&nbsp;<code><a href="OMRSTopic.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.omrstopic">OMRSTopic</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>registryEvent</code> - properties of the event to send</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>a future that contains the result of send event</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - the connector is not able to communicate with the event bus</dd>
 </dl>
@@ -601,14 +603,16 @@ public&nbsp;void&nbsp;registerListener&#8203;(<a href="OMRSTopicListener.html" t
 <ul class="blockList">
 <li class="blockList">
 <h4>sendTypeDefEvent</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;sendTypeDefEvent&#8203;(<a href="../../events/OMRSTypeDefEvent.html" title="class in org.odpi.openmetadata.repositoryservices.events">OMRSTypeDefEvent</a>&nbsp;typeDefEvent)
-                      throws <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
+<pre class="methodSignature">public&nbsp;java.util.concurrent.CompletableFuture&lt;java.lang.Boolean&gt;&nbsp;sendTypeDefEvent&#8203;(<a href="../../events/OMRSTypeDefEvent.html" title="class in org.odpi.openmetadata.repositoryservices.events">OMRSTypeDefEvent</a>&nbsp;typeDefEvent)
+                                                                           throws <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Send the TypeDef event to the OMRS Topic connector (providing TypeDef Events are enabled).</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="OMRSTopic.html#sendTypeDefEvent(org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent)">sendTypeDefEvent</a></code>&nbsp;in interface&nbsp;<code><a href="OMRSTopic.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.omrstopic">OMRSTopic</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>typeDefEvent</code> - properties of the event to send</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>a future that contains the result of sendEvent</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - the connector is not able to communicate with the event bus</dd>
 </dl>

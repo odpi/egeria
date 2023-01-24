@@ -241,7 +241,7 @@ extends <a href="OpenMetadataTopicConsumerBase.html" title="class in org.odpi.op
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>protected void</code></td>
+<td class="colFirst"><code>protected java.util.concurrent.CompletableFuture&lt;java.lang.Void&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#sendEvent(java.lang.String)">sendEvent</a></span>&#8203;(java.lang.String&nbsp;event)</code></th>
 <td class="colLast">
 <div class="block">Send the request to the embedded event bus connector(s).</div>
@@ -317,13 +317,15 @@ extends <a href="OpenMetadataTopicConsumerBase.html" title="class in org.odpi.op
 <ul class="blockListLast">
 <li class="blockList">
 <h4>sendEvent</h4>
-<pre class="methodSignature">protected&nbsp;void&nbsp;sendEvent&#8203;(java.lang.String&nbsp;event)
-                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                         <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
+<pre class="methodSignature">protected&nbsp;java.util.concurrent.CompletableFuture&lt;java.lang.Void&gt;&nbsp;sendEvent&#8203;(java.lang.String&nbsp;event)
+                                                                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                           <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Send the request to the embedded event bus connector(s).</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>event</code> - event as a string</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>a completable future with the sendEvent result</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the event is null</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem with the embedded event bus connector(s).</dd>
