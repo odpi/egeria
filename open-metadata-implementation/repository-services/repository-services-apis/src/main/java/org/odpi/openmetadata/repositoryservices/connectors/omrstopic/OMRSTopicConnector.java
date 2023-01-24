@@ -10,7 +10,6 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
@@ -20,6 +19,7 @@ import org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent;
 import org.odpi.openmetadata.repositoryservices.events.beans.OMRSEventBean;
 import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 import org.slf4j.Logger;
@@ -27,6 +27,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 
 /**
@@ -335,44 +337,48 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
     /**
      * Send the registry event to the OMRS Topic connector and manage errors
      *
-     * @param registryEvent  properties of the event to send
+     * @param registryEvent properties of the event to send
+     * @return a future that contains the result of send event
      * @throws ConnectorCheckedException the connector is not able to communicate with the event bus
      */
     @Override
-    public void sendRegistryEvent(OMRSRegistryEvent registryEvent) throws ConnectorCheckedException
+    public CompletableFuture<Boolean> sendRegistryEvent(OMRSRegistryEvent registryEvent) throws ConnectorCheckedException
     {
         final String methodName = "sendRegistryEvent";
 
         if (eventProtocolVersion == OMRSEventProtocolVersion.V1)
         {
-            this.sendEvent(registryEvent.getOMRSEventV1(), true);
+            return this.sendEvent(registryEvent.getOMRSEventV1(), true);
         }
         else
         {
             this.handleUnsupportedEventVersion(methodName);
         }
+        return CompletableFuture.completedFuture(false);
     }
 
 
     /**
      * Send the TypeDef event to the OMRS Topic connector (providing TypeDef Events are enabled).
      *
-     * @param typeDefEvent  properties of the event to send
+     * @param typeDefEvent properties of the event to send
+     * @return a future that contains the result of sendEvent
      * @throws ConnectorCheckedException the connector is not able to communicate with the event bus
      */
     @Override
-    public void sendTypeDefEvent(OMRSTypeDefEvent typeDefEvent) throws ConnectorCheckedException
+    public CompletableFuture<Boolean> sendTypeDefEvent(OMRSTypeDefEvent typeDefEvent) throws ConnectorCheckedException
     {
         final String methodName = "sendTypeDefEvent";
 
         if (eventProtocolVersion == OMRSEventProtocolVersion.V1)
         {
-            this.sendEvent(typeDefEvent.getOMRSEventV1(), false);
+            return this.sendEvent(typeDefEvent.getOMRSEventV1(), false);
         }
         else
         {
             this.handleUnsupportedEventVersion(methodName);
         }
+        return CompletableFuture.completedFuture(false);
     }
 
 
@@ -402,65 +408,64 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
     /**
      * Sends the supplied event outbound to the OMRSTopicListeners using the event bus connectors.
      *
-     * @param event OMRSEvent object containing the event properties
+     * @param event    OMRSEvent object containing the event properties
      * @param logEvent should an audit log message be created?
-     * @throws ConnectorCheckedException the connector is not able to communicate with the event bus
      */
-    private void sendEvent(OMRSEventV1 event,
-                           boolean     logEvent) throws ConnectorCheckedException
+    private CompletableFuture<Boolean> sendEvent(OMRSEventV1 event,
+                                                 boolean     logEvent)
     {
-        final String methodName = "send";
-
+        final String methodName = "sendEvent";
         if (event != null)
         {
-            try
-            {
-                ObjectMapper objectMapper = new ObjectMapper();
-
-                String eventString = objectMapper.writeValueAsString(event);
-
-                if ((auditLog != null) && (logEvent))
-                {
-                    auditLog.logMessage(methodName,
-                                        OMRSAuditCode.OUTBOUND_TOPIC_EVENT.getMessageDefinition(event.getEventCategory().getName(),
-                                                                                                topicName),
-                                        eventString);
-                }
-
-                for (OpenMetadataTopicConnector eventBusConnector : eventBusConnectors)
-                {
-                    if (eventBusConnector != null)
-                    {
-                        eventBusConnector.sendEvent(eventString);
-                    }
-                }
-            }
-            catch (ConnectorCheckedException exc)
-            {
-                log.debug("Unable to send event: " + exc.getMessage());
-
-                throw exc;
-            }
-            catch (Exception exc)
-            {
-                log.debug("Unexpected error sending event: " + exc.getMessage());
-
-                throw new ConnectorCheckedException(OMRSErrorCode.OMRS_TOPIC_SEND_EVENT_FAILED.getMessageDefinition(connectionName,
-                                                                                                                    event.toString(),
-                                                                                                                    exc.getMessage()),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    exc);
-            }
+            return CompletableFuture.supplyAsync(() -> sendEventTask(event, logEvent));
         }
         else
         {
             log.debug("Unable to send null events");
 
             throw new OMRSLogicErrorException(OMRSErrorCode.OMRS_TOPIC_SEND_NULL_EVENT.getMessageDefinition(connectionName),
-                                              this.getClass().getName(),
-                                              methodName);
+                    this.getClass().getName(),
+                    methodName);
         }
+    }
+
+    private boolean sendEventTask(OMRSEventV1 event,
+                                  boolean logEvent)
+    {
+        final String methodName = "sendEventTask";
+        try
+        {
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            String eventString = objectMapper.writeValueAsString(event);
+
+            if ((auditLog != null) && logEvent)
+            {
+                auditLog.logMessage(methodName,
+                        OMRSAuditCode.OUTBOUND_TOPIC_EVENT.getMessageDefinition(event.getEventCategory().getName(),
+                                topicName),
+                        eventString);
+            }
+
+            for (OpenMetadataTopicConnector eventBusConnector : eventBusConnectors)
+            {
+                if (eventBusConnector != null)
+                {
+                    eventBusConnector.sendEvent(eventString);
+                }
+            }
+        }
+        catch (ConnectorCheckedException exc)
+        {
+            log.debug("Unable to send event: " + exc.getMessage());
+            throw new CompletionException(exc);
+        }
+        catch (Exception exc)
+        {
+            log.debug("Unexpected error sending event: " + exc.getMessage());
+            throw new CompletionException(exc);
+        }
+        return true;
     }
 
 
