@@ -441,8 +441,6 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
         final String methodName = "sendEventTask";
         try
         {
-            ObjectMapper objectMapper = new ObjectMapper();
-
             String eventString = OBJECT_WRITER.writeValueAsString(event);
 
             if ((auditLog != null) && logEvent)
