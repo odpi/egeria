@@ -21,20 +21,18 @@ import java.util.Map;
  * to allow requests the Coco Pharmaceutical's server administrator APIs.  In this example,
  * only Gary Geeke is allowed to issue these requests.
  */
-public class CocoPharmaPlatformSecurityConnectorTokenBased extends OpenMetadataPlatformSecurityConnector
-{
-    final static String  platformAdministrator = "garygeeke";
-
-    private enum PlatformRoles{
+public class CocoPharmaPlatformSecurityConnectorTokenBased extends OpenMetadataPlatformSecurityConnector {
+    private enum PlatformRoles {
         PLATFORM_ADMINISTRATOR,
         PLATFORM_OPERATOR,
         PLATFORM_INVESTIGATOR;
 
-        private String getName(){
+        private String getName() {
             return this.toString().toLowerCase();
         }
     }
 
+    //secret used to decrypt the given token
     private final byte[] secret = Base64.getDecoder().decode("d14uaEwsGU3cXopmxaEDqhQTow81zixFWbFUuu3budQ");
 
     private static final Logger log = LoggerFactory.getLogger(CocoPharmaPlatformSecurityConnectorTokenBased.class);
@@ -44,15 +42,12 @@ public class CocoPharmaPlatformSecurityConnectorTokenBased extends OpenMetadataP
      * Check that the calling user is authorized to create new servers.
      *
      * @param userId calling user
-     *
      * @throws UserNotAuthorizedException the user is not authorized to access this platform
      */
-    public void  validateUserForNewServer(String   userId) throws UserNotAuthorizedException
-    {
+    public void validateUserForNewServer(String userId) throws UserNotAuthorizedException {
         final String methodName = "validateUserForNewServer";
 
-        if (! getUserActions(userId).contains(PlatformRoles.PLATFORM_ADMINISTRATOR.getName()))
-        {
+        if (!isAllowedToPerformAction(userId, PlatformRoles.PLATFORM_ADMINISTRATOR)) {
             super.throwUnauthorizedPlatformAccess(userId, methodName);
         }
     }
@@ -62,15 +57,12 @@ public class CocoPharmaPlatformSecurityConnectorTokenBased extends OpenMetadataP
      * Check that the calling user is authorized to issue operator requests to the OMAG Server Platform.
      *
      * @param userId calling user
-     *
      * @throws UserNotAuthorizedException the user is not authorized to issue operator commands to this platform
      */
-    public void  validateUserAsOperatorForPlatform(String   userId) throws UserNotAuthorizedException
-    {
+    public void validateUserAsOperatorForPlatform(String userId) throws UserNotAuthorizedException {
         final String methodName = "validateUserAsOperatorForPlatform";
 
-        if (! getUserActions(userId).contains(PlatformRoles.PLATFORM_OPERATOR.getName()))
-        {
+        if (!isAllowedToPerformAction(userId, PlatformRoles.PLATFORM_OPERATOR)) {
             super.throwUnauthorizedPlatformAccess(userId, methodName);
         }
     }
@@ -80,20 +72,17 @@ public class CocoPharmaPlatformSecurityConnectorTokenBased extends OpenMetadataP
      * Check that the calling user is authorized to issue operator requests to the OMAG Server Platform.
      *
      * @param userId calling user
-     *
      * @throws UserNotAuthorizedException the user is not authorized to issue diagnostic commands to this platform
      */
-    public void  validateUserAsInvestigatorForPlatform(String   userId) throws UserNotAuthorizedException
-    {
+    public void validateUserAsInvestigatorForPlatform(String userId) throws UserNotAuthorizedException {
         final String methodName = "validateUserAsInvestigatorForPlatform";
 
-        if (  getUserActions(userId) != null && !getUserActions(userId).contains(PlatformRoles.PLATFORM_INVESTIGATOR.getName()))
-        {
+        if (!isAllowedToPerformAction(userId, PlatformRoles.PLATFORM_INVESTIGATOR)) {
             super.throwUnauthorizedPlatformAccess(userId, methodName);
         }
     }
 
-    private List<String> getUserActions(String userId){
+    private List<String> getUserActionsFromToken(String userId) {
         Map<String, String> headersMap = HttpHeadersThreadLocal.getHeadersThreadLocal().get();
         if (headersMap != null && !headersMap.isEmpty()) {
             Jws<Claims> jwtClaims = Jwts.parserBuilder()
@@ -102,11 +91,20 @@ public class CocoPharmaPlatformSecurityConnectorTokenBased extends OpenMetadataP
 
             String username = jwtClaims.getBody().getSubject();
             List<String> actions = jwtClaims.getBody().get("actions", List.class);
-            if (username.equals(userId)  && !actions.isEmpty()) {
+            if (username.equals(userId) && actions != null && !actions.isEmpty()) {
                 log.info("User {} validated for issuing requests.", username);
                 return actions;
             }
         }
         return null;
+    }
+
+    private Boolean isAllowedToPerformAction(String userId, PlatformRoles role) {
+        List<String> userActions = getUserActionsFromToken(userId);
+
+        if (userActions != null && !userActions.isEmpty() && userActions.contains(role.getName())) {
+            return true;
+        }
+        return false;
     }
 }
