@@ -14,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
@@ -39,20 +40,25 @@ public class SecurityOfficerHandler {
 
     private static final Logger log = LoggerFactory.getLogger(SecurityOfficerHandler.class);
     private OMRSMetadataCollection metadataCollection;
+    private OMRSRepositoryHelper repositoryHelper;
+    private String sourceName;
 
     /**
      * Construct the connection handler with a link to the property handlers's connector and this access service's
      * official name.
      *
      * @param repositoryConnector - connector to the property handlers.
+     * @param sourceName source name
      * @throws PropertyServerException - there is a problem retrieving information from the metadata server
      */
-    public SecurityOfficerHandler(OMRSRepositoryConnector repositoryConnector) throws PropertyServerException {
+    public SecurityOfficerHandler(OMRSRepositoryConnector repositoryConnector, String sourceName) throws PropertyServerException {
         final String methodName = "SecurityOfficerHandler";
 
+        this.sourceName = sourceName;
         if (repositoryConnector != null) {
             try {
                 this.metadataCollection = repositoryConnector.getMetadataCollection();
+                this.repositoryHelper = repositoryConnector.getRepositoryHelper();
             } catch (RepositoryErrorException e) {
                 throw new PropertyServerException(SecurityOfficerErrorCode.NO_METADATA_COLLECTION.getMessageDefinition(repositoryConnector.getRepositoryName()),
                                                   this.getClass().getName(), methodName, e);
@@ -126,13 +132,13 @@ public class SecurityOfficerHandler {
     }
 
     private boolean isSchemaElement(InstanceType instanceType) throws UserNotAuthorizedException, RepositoryErrorException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, TypeDefNotKnownException {
-        List<TypeDefLink> typeDefSuperTypes =instanceType.getTypeDefSuperTypes();
+        List<TypeDefLink> typeDefSuperTypes = repositoryHelper.getSuperTypes(sourceName, instanceType.getTypeDefName());
         if (typeDefSuperTypes.stream().anyMatch(typeDefLink -> typeDefLink.getName().equals(SCHEMA_ATTRIBUTE))) {
             return true;
         }
 
-        for(TypeDefLink typeDefLink : typeDefSuperTypes){
-            if(metadataCollection.getTypeDefByName(SECURITY_OFFICER, typeDefLink.getName()).getSuperType().getName().equals(SCHEMA_ATTRIBUTE)){
+        for (TypeDefLink typeDefLink : typeDefSuperTypes) {
+            if(metadataCollection.getTypeDefByName(SECURITY_OFFICER, typeDefLink.getName()).getSuperType().getName().equals(SCHEMA_ATTRIBUTE)) {
                 return true;
             }
         }
