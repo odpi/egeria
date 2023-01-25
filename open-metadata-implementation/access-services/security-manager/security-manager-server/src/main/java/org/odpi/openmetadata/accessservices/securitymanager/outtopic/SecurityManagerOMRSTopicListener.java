@@ -842,22 +842,21 @@ public class SecurityManagerOMRSTopicListener extends OMRSTopicListenerBase
 
             InstanceType type = entityHeader.getType();
 
-            typeNames.add(type.getTypeDefName());
+            if (type != null) {
+                typeNames.add(type.getTypeDefName());
 
-            List<TypeDefLink> superTypes = repositoryHelper.getSuperTypes(serviceName, type.getTypeDefName());
+                List<TypeDefLink> superTypes = repositoryHelper.getSuperTypes(serviceName, type.getTypeDefName());
 
-            if (superTypes != null)
-            {
-                for (TypeDefLink superType : superTypes)
-                {
-                    if (superType != null)
-                    {
-                        typeNames.add(superType.getName());
+                if (superTypes != null) {
+                    for (TypeDefLink superType : superTypes) {
+                        if (superType != null) {
+                            typeNames.add(superType.getName());
+                        }
                     }
                 }
-            }
 
-            return typeNames.contains(interestingTypeName);
+                return typeNames.contains(interestingTypeName);
+            }
         }
 
         return false;
