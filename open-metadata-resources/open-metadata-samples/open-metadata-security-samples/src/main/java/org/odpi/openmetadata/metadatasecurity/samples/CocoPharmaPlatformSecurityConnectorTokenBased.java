@@ -44,6 +44,7 @@ public class CocoPharmaPlatformSecurityConnectorTokenBased extends OpenMetadataP
      * @param userId calling user
      * @throws UserNotAuthorizedException the user is not authorized to access this platform
      */
+    @Override
     public void validateUserForNewServer(String userId) throws UserNotAuthorizedException {
         final String methodName = "validateUserForNewServer";
 
@@ -59,6 +60,7 @@ public class CocoPharmaPlatformSecurityConnectorTokenBased extends OpenMetadataP
      * @param userId calling user
      * @throws UserNotAuthorizedException the user is not authorized to issue operator commands to this platform
      */
+    @Override
     public void validateUserAsOperatorForPlatform(String userId) throws UserNotAuthorizedException {
         final String methodName = "validateUserAsOperatorForPlatform";
 
@@ -74,6 +76,7 @@ public class CocoPharmaPlatformSecurityConnectorTokenBased extends OpenMetadataP
      * @param userId calling user
      * @throws UserNotAuthorizedException the user is not authorized to issue diagnostic commands to this platform
      */
+    @Override
     public void validateUserAsInvestigatorForPlatform(String userId) throws UserNotAuthorizedException {
         final String methodName = "validateUserAsInvestigatorForPlatform";
 
