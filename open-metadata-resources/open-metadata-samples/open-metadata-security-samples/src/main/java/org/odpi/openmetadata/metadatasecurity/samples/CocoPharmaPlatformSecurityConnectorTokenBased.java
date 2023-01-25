@@ -20,6 +20,15 @@ import java.util.Map;
  * CocoPharmaPlatformSecurityConnector overrides the default behavior for the security connector
  * to allow requests the Coco Pharmaceutical's server administrator APIs.  In this example,
  * only Gary Geeke is allowed to issue these requests.
+ *
+ * To generate a JWT for this example, we used the following payload:
+ *  {
+ *      "sub": "garygeeke",
+ *      "name": "Gary Geeke",
+ *      "actions":["platform-administrator","platform-operator","platform-investigator"],
+ *      "iat": {Epoch timestamp},
+ *      "exp": {Epoch timestamp}
+ *  }
  */
 public class CocoPharmaPlatformSecurityConnectorTokenBased extends OpenMetadataPlatformSecurityConnector {
     private enum PlatformRoles {
