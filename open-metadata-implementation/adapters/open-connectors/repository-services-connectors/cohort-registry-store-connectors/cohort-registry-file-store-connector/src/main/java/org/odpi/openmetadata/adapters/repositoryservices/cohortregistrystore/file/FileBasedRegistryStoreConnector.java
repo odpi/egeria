@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.ffdc.FileBasedRegistryStoreConnectorAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
@@ -44,6 +46,12 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
      * Variables used for logging and debug.
      */
     private static final Logger log = LoggerFactory.getLogger(FileBasedRegistryStoreConnector.class);
+
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+    private static final ObjectReader OBJECT_READER = OBJECT_MAPPER.reader();
+
+    private static final ObjectWriter OBJECT_WRITER = OBJECT_MAPPER.writer();
 
     /**
      * Initialize the connector.
@@ -401,8 +409,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
 
             String registryStoreFileContents = FileUtils.readFileToString(registryStoreFile, "UTF-8");
 
-            ObjectMapper objectMapper = new ObjectMapper();
-            newRegistryStoreProperties = objectMapper.readValue(registryStoreFileContents, CohortMembership.class);
+            newRegistryStoreProperties = OBJECT_READER.readValue(registryStoreFileContents, CohortMembership.class);
         }
         catch (IOException   ioException)
         {
@@ -602,9 +609,8 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
             }
             else
             {
-                ObjectMapper objectMapper = new ObjectMapper();
 
-                String registryStoreFileContents = objectMapper.writeValueAsString(newRegistryStoreProperties);
+                String registryStoreFileContents = OBJECT_WRITER.writeValueAsString(newRegistryStoreProperties);
 
                 FileUtils.writeStringToFile(registryStoreFile, registryStoreFileContents, (String)null,false);
             }

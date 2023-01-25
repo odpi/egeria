@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.ffdc.FileBasedOpenMetadataArchiveStoreConnectorAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
@@ -32,6 +34,9 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
      * Variables used for logging and debug.
      */
     private static final Logger log = LoggerFactory.getLogger(FileBasedOpenMetadataArchiveStoreConnector.class);
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectWriter OBJECT_WRITER = OBJECT_MAPPER.writer();
+    private static final ObjectReader OBJECT_READER = OBJECT_MAPPER.reader();
 
 
     /**
@@ -92,9 +97,7 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
 
             String configStoreFileContents = FileUtils.readFileToString(archiveStoreFile, "UTF-8");
 
-            ObjectMapper objectMapper = new ObjectMapper();
-
-            newOpenMetadataArchive = objectMapper.readValue(configStoreFileContents, OpenMetadataArchive.class);
+            newOpenMetadataArchive = OBJECT_READER.readValue(configStoreFileContents, OpenMetadataArchive.class);
         }
         catch (IOException ioException)
         {
@@ -142,9 +145,7 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
             }
             else
             {
-                ObjectMapper objectMapper = new ObjectMapper();
-
-                String archiveStoreFileContents = objectMapper.writeValueAsString(archiveContents);
+                String archiveStoreFileContents = OBJECT_WRITER.writeValueAsString(archiveContents);
 
                 FileUtils.writeStringToFile(archiveStoreFile, archiveStoreFileContents, (String)null,false);
             }
