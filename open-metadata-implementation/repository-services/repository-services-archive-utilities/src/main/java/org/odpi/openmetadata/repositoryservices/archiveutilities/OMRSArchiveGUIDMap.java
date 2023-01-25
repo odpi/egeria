@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.repositoryservices.archiveutilities;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +22,10 @@ import java.util.UUID;
 public class OMRSArchiveGUIDMap
 {
     private static final Logger log = LoggerFactory.getLogger(OMRSArchiveGUIDMap.class);
+
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectWriter OBJECT_WRITER = OBJECT_MAPPER.writer();
+    private static final ObjectReader OBJECT_READER = OBJECT_MAPPER.reader();
 
     private final String              guidMapFileName;
     private Map<String, String> idToGUIDMap;
@@ -45,7 +51,6 @@ public class OMRSArchiveGUIDMap
     private void loadGUIDs()
     {
         File         idFile = new File(guidMapFileName);
-        ObjectMapper objectMapper = new ObjectMapper();
 
         try
         {
@@ -53,7 +58,7 @@ public class OMRSArchiveGUIDMap
 
             String idFileContents = FileUtils.readFileToString(idFile, "UTF-8");
 
-            idToGUIDMap = objectMapper.readValue(idFileContents, Map.class);
+            idToGUIDMap = OBJECT_READER.readValue(idFileContents, Map.class);
         }
         catch (Exception   error)
         {
@@ -116,7 +121,6 @@ public class OMRSArchiveGUIDMap
     public void  saveGUIDs()
     {
         File         idFile = new File(guidMapFileName);
-        ObjectMapper objectMapper = new ObjectMapper();
 
         try
         {
@@ -130,7 +134,7 @@ public class OMRSArchiveGUIDMap
             {
                 log.debug("Writing id file " + guidMapFileName);
 
-                String mapContents = objectMapper.writeValueAsString(idToGUIDMap);
+                String mapContents = OBJECT_WRITER.writeValueAsString(idToGUIDMap);
 
                 FileUtils.writeStringToFile(idFile, mapContents, (String)null,false);
             }

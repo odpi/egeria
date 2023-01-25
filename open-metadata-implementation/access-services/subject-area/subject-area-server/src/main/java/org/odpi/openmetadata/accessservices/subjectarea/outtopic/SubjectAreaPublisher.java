@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.subjectarea.outtopic;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.accessservices.subjectarea.events.SubjectAreaEvent;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
@@ -23,6 +24,8 @@ import org.slf4j.LoggerFactory;
 public class SubjectAreaPublisher
 {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaPublisher.class);
+
+    private static final ObjectWriter OBJECT_WRITER = new ObjectMapper().writer();
 
     private OpenMetadataTopicConnector connector = null;
 
@@ -181,7 +184,6 @@ public class SubjectAreaPublisher
      */
     private String getJSONPayload(SubjectAreaEvent event)
     {
-        ObjectMapper objectMapper = new ObjectMapper();
         String       jsonString   = null;
 
         /*
@@ -189,7 +191,7 @@ public class SubjectAreaPublisher
          */
         try
         {
-            jsonString = objectMapper.writeValueAsString(event);
+            jsonString = OBJECT_WRITER.writeValueAsString(event);
         }
         catch (Exception  error)
         {

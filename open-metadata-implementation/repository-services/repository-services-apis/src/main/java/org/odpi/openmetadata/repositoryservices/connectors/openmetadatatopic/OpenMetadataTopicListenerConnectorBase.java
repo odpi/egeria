@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -20,6 +21,8 @@ import java.util.List;
 public abstract class OpenMetadataTopicListenerConnectorBase extends OpenMetadataTopicConsumerBase implements OpenMetadataTopicListener,
                                                                                                               VirtualConnectorExtension
 {
+
+    private static final ObjectReader OBJECT_READER = new ObjectMapper().reader();
 
     /**
      * Set up the list of connectors that this virtual connector will use to support its interface.
@@ -72,9 +75,8 @@ public abstract class OpenMetadataTopicListenerConnectorBase extends OpenMetadat
         /*
          * Parse the string (JSON) event into a bean.
          */
-        ObjectMapper objectMapper = new ObjectMapper();
 
-        return objectMapper.readValue(event, eventClass);
+        return OBJECT_READER.readValue(event, eventClass);
     }
 
 

@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.accessservices.stewardshipaction.connectors.outtopic;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.accessservices.stewardshipaction.events.StewardshipActionOutTopicEvent;
 import org.odpi.openmetadata.accessservices.stewardshipaction.ffdc.StewardshipActionAuditCode;
 import org.odpi.openmetadata.accessservices.stewardshipaction.ffdc.StewardshipActionErrorCode;
@@ -20,6 +21,9 @@ import java.util.concurrent.CompletionException;
  */
 public class StewardshipActionOutTopicServerConnector extends OpenMetadataTopicSenderConnectorBase
 {
+
+    private static final ObjectWriter OBJECT_WRITER = new ObjectMapper().writer();
+
     /**
      * Send the request to the embedded event bus connector(s).
      *
@@ -30,11 +34,10 @@ public class StewardshipActionOutTopicServerConnector extends OpenMetadataTopicS
     public void sendEvent(StewardshipActionOutTopicEvent event) throws InvalidParameterException, ConnectorCheckedException
     {
         final String methodName = "sendEvent";
-        ObjectMapper objectMapper = new ObjectMapper();
 
         try
         {
-            String eventString = objectMapper.writeValueAsString(event);
+            String eventString = OBJECT_WRITER.writeValueAsString(event);
             super.sendEvent(eventString).join();
 
             if (super.auditLog != null)

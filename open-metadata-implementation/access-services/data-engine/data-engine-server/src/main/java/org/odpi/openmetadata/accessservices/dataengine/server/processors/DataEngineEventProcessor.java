@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.processors;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.odpi.openmetadata.accessservices.dataengine.event.DataEngineRegistrationEvent;
@@ -37,6 +37,8 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_TYPE_NAME;
@@ -48,7 +50,7 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
  */
 
 public class DataEngineEventProcessor {
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectReader OBJECT_READER = new ObjectMapper().reader();
     private static final Logger log = LoggerFactory.getLogger(DataEngineEventProcessor.class);
     private static final String DEBUG_MESSAGE_METHOD = "Calling method: {}";
 
@@ -81,11 +83,11 @@ public class DataEngineEventProcessor {
 
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            DataEngineRegistrationEvent dataEngineRegistrationEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DataEngineRegistrationEvent.class);
+            DataEngineRegistrationEvent dataEngineRegistrationEvent = OBJECT_READER.readValue(dataEngineEvent, DataEngineRegistrationEvent.class);
             dataEngineRESTServices.createExternalDataEngine(dataEngineRegistrationEvent.getUserId(), serverName,
                     dataEngineRegistrationEvent.getEngine());
 
-        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
+        } catch (IOException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
@@ -100,7 +102,7 @@ public class DataEngineEventProcessor {
 
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            PortAliasEvent portAliasEvent = OBJECT_MAPPER.readValue(dataEngineEvent, PortAliasEvent.class);
+            PortAliasEvent portAliasEvent = OBJECT_READER.readValue(dataEngineEvent, PortAliasEvent.class);
 
             String userId = portAliasEvent.getUserId();
             String externalSourceName = portAliasEvent.getExternalSourceName();
@@ -113,7 +115,7 @@ public class DataEngineEventProcessor {
                     processGUID, externalSourceName);
             dataEngineRESTServices.updateProcessStatus(userId, serverName, processGUID, InstanceStatus.ACTIVE, externalSourceName);
 
-        } catch (JsonProcessingException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
+        } catch (IOException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
@@ -128,13 +130,13 @@ public class DataEngineEventProcessor {
 
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            ProcessHierarchyEvent processHierarchyEvent = OBJECT_MAPPER.readValue(dataEngineEvent, ProcessHierarchyEvent.class);
+            ProcessHierarchyEvent processHierarchyEvent = OBJECT_READER.readValue(dataEngineEvent, ProcessHierarchyEvent.class);
 
             dataEngineRESTServices.addProcessHierarchyToProcess(processHierarchyEvent.getUserId(), serverName,
                     processHierarchyEvent.getProcessHierarchy(),
                     processHierarchyEvent.getExternalSourceName());
 
-        } catch (JsonProcessingException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
+        } catch (IOException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
@@ -149,7 +151,7 @@ public class DataEngineEventProcessor {
 
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            PortImplementationEvent portImplementationEvent = OBJECT_MAPPER.readValue(dataEngineEvent, PortImplementationEvent.class);
+            PortImplementationEvent portImplementationEvent = OBJECT_READER.readValue(dataEngineEvent, PortImplementationEvent.class);
             String externalSourceName = portImplementationEvent.getExternalSourceName();
             String userId = portImplementationEvent.getUserId();
             PortImplementation portImplementation = portImplementationEvent.getPortImplementation();
@@ -165,7 +167,7 @@ public class DataEngineEventProcessor {
                     externalSourceName);
 
             dataEngineRESTServices.updateProcessStatus(userId, serverName, processGUID, InstanceStatus.ACTIVE, externalSourceName);
-        } catch (JsonProcessingException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException | FunctionNotSupportedException e) {
+        } catch (IOException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException | FunctionNotSupportedException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
@@ -181,7 +183,7 @@ public class DataEngineEventProcessor {
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
 
         try {
-            LineageMappingsEvent lineageMappingsEvent = OBJECT_MAPPER.readValue(dataEngineEvent, LineageMappingsEvent.class);
+            LineageMappingsEvent lineageMappingsEvent = OBJECT_READER.readValue(dataEngineEvent, LineageMappingsEvent.class);
 
             if (CollectionUtils.isEmpty(lineageMappingsEvent.getLineageMappings())) {
                 return;
@@ -190,7 +192,7 @@ public class DataEngineEventProcessor {
             FFDCResponseBase response = new FFDCResponseBase();
             dataEngineRESTServices.addLineageMappings(lineageMappingsEvent.getUserId(), serverName, lineageMappingsEvent.getLineageMappings(),
                     response, lineageMappingsEvent.getExternalSourceName());
-        } catch (JsonProcessingException | UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+        } catch (IOException | UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
@@ -205,11 +207,11 @@ public class DataEngineEventProcessor {
 
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            ProcessEvent processesEvent = OBJECT_MAPPER.readValue(dataEngineEvent, ProcessEvent.class);
+            ProcessEvent processesEvent = OBJECT_READER.readValue(dataEngineEvent, ProcessEvent.class);
 
             dataEngineRESTServices.upsertProcess(processesEvent.getUserId(), serverName, processesEvent.getProcess(),
                     processesEvent.getExternalSourceName());
-        } catch (JsonProcessingException e) {
+        } catch (IOException e) {
             log.debug("Exception in parsing event from in Data Engine In Topic", e);
             logException(dataEngineEvent, methodName, e);
         }
@@ -224,7 +226,7 @@ public class DataEngineEventProcessor {
         final String methodName = "processSchemaTypeEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            SchemaTypeEvent schemaEvent = OBJECT_MAPPER.readValue(schemaTypeEvent, SchemaTypeEvent.class);
+            SchemaTypeEvent schemaEvent = OBJECT_READER.readValue(schemaTypeEvent, SchemaTypeEvent.class);
 
             String portGUID = null;
             if (StringUtils.isNotEmpty(schemaEvent.getPortQualifiedName())) {
@@ -233,7 +235,7 @@ public class DataEngineEventProcessor {
             }
             dataEngineRESTServices.upsertSchemaType(schemaEvent.getUserId(), serverName, portGUID, schemaEvent.getSchemaType(),
                     schemaEvent.getExternalSourceName());
-        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
+        } catch (IOException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
             logException(schemaTypeEvent, methodName, e);
         }
     }
@@ -247,11 +249,11 @@ public class DataEngineEventProcessor {
         final String methodName = "processDeleteSchemaTypeEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            DeleteEvent deleteEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DeleteEvent.class);
+            DeleteEvent deleteEvent = OBJECT_READER.readValue(dataEngineEvent, DeleteEvent.class);
 
             dataEngineRESTServices.deleteSchemaType(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
                     deleteEvent.getGuid(), deleteEvent.getQualifiedName(), deleteEvent.getDeleteSemantic());
-        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
+        } catch (IOException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
@@ -265,11 +267,11 @@ public class DataEngineEventProcessor {
         final String methodName = "processDeleteDataEngineEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            DeleteEvent deleteEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DeleteEvent.class);
+            DeleteEvent deleteEvent = OBJECT_READER.readValue(dataEngineEvent, DeleteEvent.class);
 
             dataEngineRESTServices.deleteExternalDataEngine(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
                     deleteEvent.getGuid(), deleteEvent.getQualifiedName(), deleteEvent.getDeleteSemantic());
-        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException e) {
+        } catch (IOException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
@@ -283,11 +285,11 @@ public class DataEngineEventProcessor {
         final String methodName = "processDeleteProcessEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            DeleteEvent deleteEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DeleteEvent.class);
+            DeleteEvent deleteEvent = OBJECT_READER.readValue(dataEngineEvent, DeleteEvent.class);
 
             dataEngineRESTServices.deleteProcess(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
                     deleteEvent.getGuid(), deleteEvent.getQualifiedName(), deleteEvent.getDeleteSemantic());
-        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
+        } catch (IOException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
@@ -316,11 +318,11 @@ public class DataEngineEventProcessor {
         final String methodName = "processDatabaseEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            DatabaseEvent databaseEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DatabaseEvent.class);
+            DatabaseEvent databaseEvent = OBJECT_READER.readValue(dataEngineEvent, DatabaseEvent.class);
 
             dataEngineRESTServices.upsertDatabase(databaseEvent.getUserId(), serverName, databaseEvent.getDatabase(),
                     databaseEvent.getExternalSourceName());
-        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
+        } catch (IOException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
@@ -334,13 +336,13 @@ public class DataEngineEventProcessor {
         final String methodName = "processDatabaseSchemaEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            DatabaseSchemaEvent databaseSchemaEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DatabaseSchemaEvent.class);
+            DatabaseSchemaEvent databaseSchemaEvent = OBJECT_READER.readValue(dataEngineEvent, DatabaseSchemaEvent.class);
 
             dataEngineRESTServices.upsertDatabaseSchema(databaseSchemaEvent.getUserId(), serverName,
                     databaseSchemaEvent.getDatabaseQualifiedName(), databaseSchemaEvent.getDatabaseSchema(),
                     databaseSchemaEvent.getExternalSourceName());
 
-        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
+        } catch (IOException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
@@ -354,12 +356,12 @@ public class DataEngineEventProcessor {
         final String methodName = "processRelationalTableEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            RelationalTableEvent relationalTableEvent = OBJECT_MAPPER.readValue(dataEngineEvent, RelationalTableEvent.class);
+            RelationalTableEvent relationalTableEvent = OBJECT_READER.readValue(dataEngineEvent, RelationalTableEvent.class);
 
             dataEngineRESTServices.upsertRelationalTable(relationalTableEvent.getUserId(), serverName,
                     relationalTableEvent.getDatabaseSchemaQualifiedName(), relationalTableEvent.getRelationalTable(),
                     relationalTableEvent.getExternalSourceName());
-        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
+        } catch (IOException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
@@ -373,11 +375,11 @@ public class DataEngineEventProcessor {
         final String methodName = "processDataFileEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            DataFileEvent dataFileEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DataFileEvent.class);
+            DataFileEvent dataFileEvent = OBJECT_READER.readValue(dataEngineEvent, DataFileEvent.class);
 
             dataEngineRESTServices.upsertDataFile(dataFileEvent.getUserId(), serverName, dataFileEvent.getDataFile(),
                     dataFileEvent.getExternalSourceName());
-        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
+        } catch (IOException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
@@ -391,11 +393,11 @@ public class DataEngineEventProcessor {
         final String methodName = "processDeleteDatabaseEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            DeleteEvent deleteEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DeleteEvent.class);
+            DeleteEvent deleteEvent = OBJECT_READER.readValue(dataEngineEvent, DeleteEvent.class);
 
             dataEngineRESTServices.deleteDatabase(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
                     deleteEvent.getGuid(), deleteEvent.getQualifiedName(), deleteEvent.getDeleteSemantic());
-        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
+        } catch (IOException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
@@ -409,11 +411,11 @@ public class DataEngineEventProcessor {
         final String methodName = "processDeleteDatabaseSchemaEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            DeleteEvent deleteEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DeleteEvent.class);
+            DeleteEvent deleteEvent = OBJECT_READER.readValue(dataEngineEvent, DeleteEvent.class);
 
             dataEngineRESTServices.deleteDatabaseSchema(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
                     deleteEvent.getGuid(), deleteEvent.getQualifiedName(), deleteEvent.getDeleteSemantic());
-        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
+        } catch (IOException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
@@ -427,11 +429,11 @@ public class DataEngineEventProcessor {
         final String methodName = "processDeleteRelationalTableEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            DeleteEvent deleteEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DeleteEvent.class);
+            DeleteEvent deleteEvent = OBJECT_READER.readValue(dataEngineEvent, DeleteEvent.class);
 
             dataEngineRESTServices.deleteRelationalTable(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
                     deleteEvent.getGuid(), deleteEvent.getQualifiedName(), deleteEvent.getDeleteSemantic());
-        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
+        } catch (IOException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
@@ -445,11 +447,11 @@ public class DataEngineEventProcessor {
         final String methodName = "processDeleteDataFileEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            DeleteEvent deleteEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DeleteEvent.class);
+            DeleteEvent deleteEvent = OBJECT_READER.readValue(dataEngineEvent, DeleteEvent.class);
 
             dataEngineRESTServices.deleteDataFile(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
                     deleteEvent.getGuid(), deleteEvent.getQualifiedName(), deleteEvent.getDeleteSemantic());
-        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
+        } catch (IOException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
@@ -463,11 +465,11 @@ public class DataEngineEventProcessor {
         final String methodName = "processDeleteFolderEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            DeleteEvent deleteEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DeleteEvent.class);
+            DeleteEvent deleteEvent = OBJECT_READER.readValue(dataEngineEvent, DeleteEvent.class);
 
             dataEngineRESTServices.deleteFolder(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
                     deleteEvent.getGuid(), deleteEvent.getQualifiedName(), deleteEvent.getDeleteSemantic());
-        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
+        } catch (IOException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
@@ -481,11 +483,11 @@ public class DataEngineEventProcessor {
         final String methodName = "processDeleteConnectionEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            DeleteEvent deleteEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DeleteEvent.class);
+            DeleteEvent deleteEvent = OBJECT_READER.readValue(dataEngineEvent, DeleteEvent.class);
 
             dataEngineRESTServices.deleteConnection(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
                     deleteEvent.getGuid(), deleteEvent.getQualifiedName(), deleteEvent.getDeleteSemantic());
-        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
+        } catch (IOException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
@@ -499,11 +501,11 @@ public class DataEngineEventProcessor {
         final String methodName = "processDeleteEndpointEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            DeleteEvent deleteEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DeleteEvent.class);
+            DeleteEvent deleteEvent = OBJECT_READER.readValue(dataEngineEvent, DeleteEvent.class);
 
             dataEngineRESTServices.deleteEndpoint(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
                     deleteEvent.getGuid(), deleteEvent.getQualifiedName(), deleteEvent.getDeleteSemantic());
-        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
+        } catch (IOException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
@@ -517,10 +519,10 @@ public class DataEngineEventProcessor {
         final String methodName = "processTopicEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            TopicEvent topicEvent = OBJECT_MAPPER.readValue(dataEngineEvent, TopicEvent.class);
+            TopicEvent topicEvent = OBJECT_READER.readValue(dataEngineEvent, TopicEvent.class);
 
             dataEngineRESTServices.upsertTopic(topicEvent.getUserId(), serverName, topicEvent.getTopic(), topicEvent.getExternalSourceName());
-        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
+        } catch (IOException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
@@ -534,13 +536,13 @@ public class DataEngineEventProcessor {
         final String methodName = "processEventTypeEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            EventTypeEvent eventTypeEvent = OBJECT_MAPPER.readValue(dataEngineEvent, EventTypeEvent.class);
+            EventTypeEvent eventTypeEvent = OBJECT_READER.readValue(dataEngineEvent, EventTypeEvent.class);
             String topicGUID = dataEngineRESTServices.getTopicGUID(eventTypeEvent.getUserId(), serverName, eventTypeEvent.getTopicQualifiedName(),
                     methodName);
 
             dataEngineRESTServices.upsertEventType(eventTypeEvent.getUserId(), serverName, eventTypeEvent.getEventType(), topicGUID,
                     eventTypeEvent.getExternalSourceName());
-        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
+        } catch (IOException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
@@ -554,11 +556,11 @@ public class DataEngineEventProcessor {
         final String methodName = "processDeleteTopicEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            DeleteEvent deleteEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DeleteEvent.class);
+            DeleteEvent deleteEvent = OBJECT_READER.readValue(dataEngineEvent, DeleteEvent.class);
 
             dataEngineRESTServices.deleteTopic(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
                     deleteEvent.getGuid(), deleteEvent.getQualifiedName(), deleteEvent.getDeleteSemantic());
-        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
+        } catch (IOException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
@@ -572,11 +574,11 @@ public class DataEngineEventProcessor {
         final String methodName = "processDeleteEventTypeEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            DeleteEvent deleteEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DeleteEvent.class);
+            DeleteEvent deleteEvent = OBJECT_READER.readValue(dataEngineEvent, DeleteEvent.class);
 
             dataEngineRESTServices.deleteEventType(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
                     deleteEvent.getGuid(), deleteEvent.getQualifiedName(), deleteEvent.getDeleteSemantic());
-        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
+        } catch (IOException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
@@ -590,11 +592,11 @@ public class DataEngineEventProcessor {
         final String methodName = "processProcessingStateEvent";
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            ProcessingStateEvent event = OBJECT_MAPPER.readValue(dataEngineEvent, ProcessingStateEvent.class);
+            ProcessingStateEvent event = OBJECT_READER.readValue(dataEngineEvent, ProcessingStateEvent.class);
 
             dataEngineRESTServices.upsertProcessingState(event.getUserId(), serverName, event.getProcessingState(),
                     event.getExternalSourceName());
-        } catch (JsonProcessingException e) {
+        } catch (IOException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
@@ -602,11 +604,11 @@ public class DataEngineEventProcessor {
     private void deletePort(String dataEngineEvent, String methodName, String portType) {
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
         try {
-            DeleteEvent deleteEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DeleteEvent.class);
+            DeleteEvent deleteEvent = OBJECT_READER.readValue(dataEngineEvent, DeleteEvent.class);
 
             dataEngineRESTServices.deletePort(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
                     deleteEvent.getGuid(), deleteEvent.getQualifiedName(), portType, deleteEvent.getDeleteSemantic());
-        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
+        } catch (IOException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
