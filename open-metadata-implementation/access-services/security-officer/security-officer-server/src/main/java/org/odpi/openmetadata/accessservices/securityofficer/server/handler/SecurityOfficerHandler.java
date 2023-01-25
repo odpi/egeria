@@ -4,6 +4,7 @@
  */
 package org.odpi.openmetadata.accessservices.securityofficer.server.handler;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.SecurityOfficerErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
@@ -41,7 +42,7 @@ public class SecurityOfficerHandler {
     private static final Logger log = LoggerFactory.getLogger(SecurityOfficerHandler.class);
     private OMRSMetadataCollection metadataCollection;
     private OMRSRepositoryHelper repositoryHelper;
-    private String sourceName;
+    private final String sourceName;
 
     /**
      * Construct the connection handler with a link to the property handlers's connector and this access service's
@@ -133,15 +134,21 @@ public class SecurityOfficerHandler {
 
     private boolean isSchemaElement(InstanceType instanceType) throws UserNotAuthorizedException, RepositoryErrorException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, TypeDefNotKnownException {
         List<TypeDefLink> typeDefSuperTypes = repositoryHelper.getSuperTypes(sourceName, instanceType.getTypeDefName());
-        if (typeDefSuperTypes.stream().anyMatch(typeDefLink -> typeDefLink.getName().equals(SCHEMA_ATTRIBUTE))) {
+        if (CollectionUtils.isEmpty(typeDefSuperTypes)) {
+            return false;
+        }
+
+        if (typeDefSuperTypes.stream().anyMatch(typeDefLink -> SCHEMA_ATTRIBUTE.equals(typeDefLink.getName()))) {
             return true;
         }
 
         for (TypeDefLink typeDefLink : typeDefSuperTypes) {
-            if(metadataCollection.getTypeDefByName(SECURITY_OFFICER, typeDefLink.getName()).getSuperType().getName().equals(SCHEMA_ATTRIBUTE)) {
+            TypeDefLink superType = metadataCollection.getTypeDefByName(SECURITY_OFFICER, typeDefLink.getName()).getSuperType();
+            if (superType != null && SCHEMA_ATTRIBUTE.equals(superType.getName())) {
                 return true;
             }
         }
+
         return false;
     }
 
