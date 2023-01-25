@@ -469,7 +469,6 @@ public class AssetCatalogHandlerTest {
     private Type convertInstanceType(InstanceType instanceType) {
         Type type = new Type();
         type.setName(instanceType.getTypeDefName());
-        type.setDescription(instanceType.getTypeDefDescription());
         type.setVersion(instanceType.getTypeDefVersion());
         return type;
     }

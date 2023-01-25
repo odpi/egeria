@@ -6,10 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -28,11 +24,6 @@ public class InstanceType extends InstanceElementHeader
     private String                    typeDefGUID             = null;
     private String                    typeDefName             = null;
     private long                      typeDefVersion          = 0L;
-    private String                    typeDefDescription      = null;
-    private String                    typeDefDescriptionGUID  = null;
-    private List<TypeDefLink>         typeDefSuperTypes       = null;
-    private List<InstanceStatus>      validStatusList         = null;
-    private List<String>              validInstanceProperties = null;
 
     public static final long CURRENT_INSTANCE_TYPE_HEADER_VERSION = 1;
 
@@ -52,32 +43,16 @@ public class InstanceType extends InstanceElementHeader
      * @param typeDefGUID unique identifier of the type
      * @param typeDefName unique name of the type
      * @param typeDefVersion version number of the type
-     * @param typeDefDescription short description of the type
-     * @param typeDefDescriptionGUID unique identifier of the glossary term describing this type.
-     * @param typeDefSuperTypes full list of super types for this type
-     * @param validStatusList list of statuses that this instance can have
-     * @param validInstanceProperties full list of valid property names that can be put in the instance (including
-     *                                properties from the super types)
      */
     public InstanceType(TypeDefCategory           typeDefCategory,
                         String                    typeDefGUID,
                         String                    typeDefName,
-                        long                      typeDefVersion,
-                        String                    typeDefDescription,
-                        String                    typeDefDescriptionGUID,
-                        List<TypeDefLink>         typeDefSuperTypes,
-                        List<InstanceStatus>      validStatusList,
-                        List<String>              validInstanceProperties)
+                        long                      typeDefVersion)
     {
         this.typeDefCategory = typeDefCategory;
         this.typeDefGUID = typeDefGUID;
         this.typeDefName = typeDefName;
         this.typeDefVersion = typeDefVersion;
-        this.typeDefDescription = typeDefDescription;
-        this.typeDefDescriptionGUID = typeDefDescriptionGUID;
-        this.typeDefSuperTypes = typeDefSuperTypes;
-        this.validStatusList = validStatusList;
-        this.validInstanceProperties = validInstanceProperties;
     }
 
 
@@ -96,11 +71,6 @@ public class InstanceType extends InstanceElementHeader
             this.typeDefGUID = template.getTypeDefGUID();
             this.typeDefName = template.getTypeDefName();
             this.typeDefVersion = template.getTypeDefVersion();
-            this.typeDefDescription = template.getTypeDefDescription();
-            this.typeDefDescriptionGUID = template.getTypeDefDescriptionGUID();
-            this.typeDefSuperTypes = template.getTypeDefSuperTypes();
-            this.validStatusList = template.getValidStatusList();
-            this.validInstanceProperties = template.getValidInstanceProperties();
         }
     }
 
@@ -179,159 +149,6 @@ public class InstanceType extends InstanceElementHeader
 
 
     /**
-     * Return the full list of defined super-types for this TypeDef working up the type hierarchy.
-     *
-     * @return list of types
-     */
-    public List<TypeDefLink> getTypeDefSuperTypes()
-    {
-        if (typeDefSuperTypes == null)
-        {
-            return null;
-        }
-        else if (typeDefSuperTypes.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            /*
-             * Ensure the exported typeDefLinks are not instances of a subclass.
-             */
-            List<TypeDefLink>  superTypes = new ArrayList<>();
-
-            for (TypeDefLink  typeDefLink: typeDefSuperTypes)
-            {
-                superTypes.add(new TypeDefLink(typeDefLink));
-            }
-
-            return superTypes;
-        }
-    }
-
-
-    /**
-     * Set up the full list of defined super-types for this TypeDef working up the type hierarchy.
-     *
-     * @param typeDefSuperTypes list of type names
-     */
-    public void setTypeDefSuperTypes(List<TypeDefLink> typeDefSuperTypes)
-    {
-        this.typeDefSuperTypes = typeDefSuperTypes;
-    }
-
-
-    /**
-     * Return the description for the TypeDef.
-     *
-     * @return String description
-     */
-    public String getTypeDefDescription()
-    {
-        return typeDefDescription;
-    }
-
-
-    /**
-     * Set up the description for the TypeDef.
-     *
-     * @param typeDefDescription String description
-     */
-    public void setTypeDefDescription(String typeDefDescription)
-    {
-        this.typeDefDescription = typeDefDescription;
-    }
-
-
-    /**
-     * Return the unique identifier of the glossary term that describes this TypeDef (null if no term defined).
-     *
-     * @return String unique identifier
-     */
-    public String getTypeDefDescriptionGUID()
-    {
-        return typeDefDescriptionGUID;
-    }
-
-
-    /**
-     * Set up the unique identifier of the glossary term that describes this TypeDef (null if no term defined).
-     *
-     * @param typeDefDescriptionGUID String unique identifier
-     */
-    public void setTypeDefDescriptionGUID(String typeDefDescriptionGUID)
-    {
-        this.typeDefDescriptionGUID = typeDefDescriptionGUID;
-    }
-
-
-    /**
-     * Return the list of valid instance statuses supported by this instance.
-     *
-     * @return InstanceStatus array of supported status.
-     */
-    public List<InstanceStatus> getValidStatusList()
-    {
-        if (validStatusList == null)
-        {
-            return null;
-        }
-        else if (validStatusList.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(validStatusList);
-        }
-    }
-
-
-    /**
-     * Set up the list of valid instance statuses supported by this instance.
-     *
-     * @param validStatusList InstanceStatus Array
-     */
-    public void setValidStatusList(List<InstanceStatus> validStatusList)
-    {
-        this.validStatusList = validStatusList;
-    }
-
-
-    /**
-     * Return the list of valid property names that can be stored in this instance.
-     *
-     * @return array of property names.
-     */
-    public List<String> getValidInstanceProperties()
-    {
-        if (validInstanceProperties == null)
-        {
-            return null;
-        }
-        else if (validInstanceProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(validInstanceProperties);
-        }
-    }
-
-
-    /**
-     * Set up the set of valid property names that can be stored in this instance.
-     *
-     * @param validInstanceProperties array of property names.
-     */
-    public void setValidInstanceProperties(List<String> validInstanceProperties)
-    {
-        this.validInstanceProperties = validInstanceProperties;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
@@ -344,11 +161,6 @@ public class InstanceType extends InstanceElementHeader
                 ", typeDefCategory=" + typeDefCategory +
                 ", typeDefGUID='" + typeDefGUID + '\'' +
                 ", typeDefVersion=" + typeDefVersion +
-                ", typeDefDescription='" + typeDefDescription + '\'' +
-                ", typeDefDescriptionGUID='" + typeDefDescriptionGUID + '\'' +
-                ", typeDefSuperTypes=" + getTypeDefSuperTypes() +
-                ", validStatusList=" + getValidStatusList() +
-                ", validInstanceProperties=" + getValidInstanceProperties() +
                 '}';
     }
 
@@ -392,23 +204,7 @@ public class InstanceType extends InstanceElementHeader
         {
             return false;
         }
-        if (typeDefDescription != null ? ! typeDefDescription.equals(that.typeDefDescription) : that.typeDefDescription != null)
-        {
-            return false;
-        }
-        if (typeDefDescriptionGUID != null ? ! typeDefDescriptionGUID.equals(that.typeDefDescriptionGUID) : that.typeDefDescriptionGUID != null)
-        {
-            return false;
-        }
-        if (typeDefSuperTypes != null ? ! typeDefSuperTypes.equals(that.typeDefSuperTypes) : that.typeDefSuperTypes != null)
-        {
-            return false;
-        }
-        if (validStatusList != null ? ! validStatusList.equals(that.validStatusList) : that.validStatusList != null)
-        {
-            return false;
-        }
-        return validInstanceProperties != null ? validInstanceProperties.equals(that.validInstanceProperties) : that.validInstanceProperties == null;
+        return true;
     }
 
 
@@ -425,11 +221,6 @@ public class InstanceType extends InstanceElementHeader
         result = 31 * result + (typeDefGUID != null ? typeDefGUID.hashCode() : 0);
         result = 31 * result + (typeDefName != null ? typeDefName.hashCode() : 0);
         result = 31 * result + (int) (typeDefVersion ^ (typeDefVersion >>> 32));
-        result = 31 * result + (typeDefDescription != null ? typeDefDescription.hashCode() : 0);
-        result = 31 * result + (typeDefDescriptionGUID != null ? typeDefDescriptionGUID.hashCode() : 0);
-        result = 31 * result + (typeDefSuperTypes != null ? typeDefSuperTypes.hashCode() : 0);
-        result = 31 * result + (validStatusList != null ? validStatusList.hashCode() : 0);
-        result = 31 * result + (validInstanceProperties != null ? validInstanceProperties.hashCode() : 0);
         return result;
     }
 }

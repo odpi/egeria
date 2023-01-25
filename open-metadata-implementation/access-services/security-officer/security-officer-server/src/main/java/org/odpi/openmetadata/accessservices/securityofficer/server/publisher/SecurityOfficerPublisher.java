@@ -6,9 +6,9 @@ package org.odpi.openmetadata.accessservices.securityofficer.server.publisher;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.SecurityOfficerAuditCode;
 import org.odpi.openmetadata.accessservices.securityofficer.api.events.SecurityOfficerEvent;
 import org.odpi.openmetadata.accessservices.securityofficer.api.events.SecurityOfficerTagEvent;
+import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.SecurityOfficerAuditCode;
 import org.odpi.openmetadata.accessservices.securityofficer.server.processors.SecurityOfficerEventProcessor;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -19,7 +19,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
 import org.slf4j.Logger;
@@ -38,16 +40,20 @@ public class SecurityOfficerPublisher extends OMRSInstanceEventProcessor {
     private static final Logger log = LoggerFactory.getLogger(SecurityOfficerPublisher.class);
     private static final String eventPublisherName = "Security Officer OMAS Event Publisher";
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    private SecurityOfficerEventProcessor securityOfficerEventProcessor;
-    private OpenMetadataTopicConnector openMetadataTopicConnector;
-    private AuditLog auditLog;
+    private final SecurityOfficerEventProcessor securityOfficerEventProcessor;
+    private final OpenMetadataTopicConnector openMetadataTopicConnector;
+    private final OMRSRepositoryHelper repositoryHelper;
+    private final AuditLog auditLog;
+    private final String serviceName;
 
-    public SecurityOfficerPublisher(SecurityOfficerEventProcessor securityOfficerEventProcessor, OpenMetadataTopicConnector openMetadataTopicConnector, AuditLog auditLog) {
+    public SecurityOfficerPublisher(SecurityOfficerEventProcessor securityOfficerEventProcessor, OpenMetadataTopicConnector openMetadataTopicConnector, OMRSRepositoryHelper repositoryHelper, String serviceName, AuditLog auditLog) {
         super(eventPublisherName);
 
         this.securityOfficerEventProcessor = securityOfficerEventProcessor;
         this.openMetadataTopicConnector = openMetadataTopicConnector;
+        this.repositoryHelper = repositoryHelper;
         this.auditLog = auditLog;
+        this.serviceName = serviceName;
     }
 
     @Override
@@ -233,7 +239,8 @@ public class SecurityOfficerPublisher extends OMRSInstanceEventProcessor {
 
     private boolean isSchemaElement(InstanceType type) {
         if (type != null) {
-            return type.getTypeDefSuperTypes().stream()
+            List<TypeDefLink> superTypes = repositoryHelper.getSuperTypes(serviceName, type.getTypeDefName());
+            return superTypes.stream()
                     .filter(Objects::nonNull)
                     .anyMatch(typeDefLink -> SCHEMA_ELEMENT.equals(typeDefLink.getName()));
         } else {
