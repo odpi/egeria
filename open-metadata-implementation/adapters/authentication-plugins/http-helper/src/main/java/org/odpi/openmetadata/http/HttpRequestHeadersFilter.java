@@ -42,7 +42,10 @@ public class HttpRequestHeadersFilter implements Filter {
 
         for (String headerName : headerNames) {
             String headerValue = req.getHeader(headerName);
-            threadLocalHeaders.put(headerName, headerValue);
+
+            if (headerValue != null && !headerValue.isEmpty()) {
+                threadLocalHeaders.put(headerName, headerValue);
+            }
         }
 
         HttpHeadersThreadLocal.getHeadersThreadLocal().set(threadLocalHeaders);
