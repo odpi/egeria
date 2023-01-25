@@ -2622,12 +2622,33 @@ public class OpenMetadataAPIMapper
     /* Area 7 - Lineage                                                                                                            */
     /* ============================================================================================================================*/
 
+    public static final String DIGITAL_SERVICE_TYPE_GUID = "f671e1fc-b204-4ee6-a4e2-da1633ecf50e";
+    public static final String DIGITAL_SERVICE_TYPE_NAME = "DigitalService";
+
+    public static final String DIGITAL_PRODUCT_CLASSIFICATION_TYPE_GUID = "4aaaa7ca-6b4b-4c4b-997f-d5dfd42917b0";
+    public static final String DIGITAL_PRODUCT_CLASSIFICATION_TYPE_NAME = "DigitalProduct";
+    public static final String PRODUCT_NAME_PROPERTY_NAME = "productName";
+    public static final String PRODUCT_TYPE_PROPERTY_NAME = "productType";
+    public static final String INTRODUCTION_DATE_PROPERTY_NAME = "introductionDate";
+    public static final String MATURITY_PROPERTY_NAME = "maturity";
+    public static final String SERVICE_LIFE_PROPERTY_NAME = "serviceLife";
+    public static final String CURRENT_VERSION_PROPERTY_NAME = "currentVersion";
+    public static final String NEXT_VERSION_PROPERTY_NAME = "nextVersion";
+    public static final String WITHDRAW_DATE_PROPERTY_NAME = "withdrawDate";
+
+    public static final String DIGITAL_SERVICE_DEPENDENCY_RELATIONSHIP_TYPE_GUID = "e8303911-ba1c-4640-974e-c4d57ee1b310";
+    public static final String DIGITAL_SERVICE_DEPENDENCY_RELATIONSHIP_TYPE_NAME = "DigitalServiceDependency";
+
+    public static final String DIGITAL_SERVICE_PRODUCT_RELATIONSHIP_TYPE_GUID = "51465a59-c785-406d-929c-def34596e9af";
+    public static final String DIGITAL_SERVICE_PRODUCT_RELATIONSHIP_TYPE_NAME = "DigitalServiceProduct";
+
     public static final String IMPLEMENTED_BY_RELATIONSHIP_TYPE_GUID = "28f63c94-aaef-4c84-98f7-d77aa605272e";
     public static final String IMPLEMENTED_BY_RELATIONSHIP_TYPE_NAME = "ImplementedBy";
-    /* End1 = SolutionPort; End 2 = SchemaType */
+    /* End1 = Referenceable; End 2 = Referenceable */
 
     public static final String DESIGN_STEP_PROPERTY_NAME = "designStep";
     public static final String ROLE_PROPERTY_NAME = "role";
+    public static final String TRANSFORMATION_PROPERTY_NAME = "transformation";
 
     public static final String SOLUTION_PORT_SCHEMA_RELATIONSHIP_TYPE_GUID = "bf02c703-57a2-4ab7-b6db-f49b57b05985";
     public static final String SOLUTION_PORT_SCHEMA_RELATIONSHIP_TYPE_NAME = "SolutionPortSchema";

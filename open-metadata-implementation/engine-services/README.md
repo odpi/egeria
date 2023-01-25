@@ -4,10 +4,13 @@
 
 # Open Metadata Engine Services (OMES)
 
-The engine services are each able to host a specific type of [governance engine](https://egeria-project.org/concepts/governance-engine). 
+The engine services provide the specialist interfaces to host a specific type of [governance engine](https://egeria-project.org/concepts/governance-engine). 
 
-These engines are supported by the [Archive Manager OMES](asset-analysis),
-[Governance Action OMES](governance-action) and [Repository Governance OMES](repository-governance).
+* **[Asset Analysis OMES](asset-analysis)** - provides support for open discovery engines.
+* **[Governance Action OMES](governance-action)** - provides support for the governance action engines.
+* **[Repository Governance OMES](repository-governance)** - provides support for the repository governance engines.
+
+These services run in the Engine Host OMAG Server.
 
 ----
 Return to [open-metadata-implementation](..).

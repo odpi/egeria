@@ -7083,7 +7083,7 @@ public class OpenMetadataAPIGenericHandler<B>
                      * because it is a parent object.   If it now has no anchor then it can be
                      * deleted because it is a child object.
                      */
-                    String derivedAnchorGUID = this.deriveAnchorGUID(entityGUID, entityTypeName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+                    String derivedAnchorGUID = this.deriveAnchorGUID(entity.getGUID(), entityTypeName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
 
                     if (derivedAnchorGUID == null)
                     {
@@ -14516,7 +14516,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                         effectiveTime,
                                                                         methodName);
 
-        List<Relationship> links = this.getAttachmentLinks(userId,
+        List<Relationship> relationships = this.getAttachmentLinks(userId,
                                                            startingEntity,
                                                            startingGUIDParameterName,
                                                            startingElementTypeName,
@@ -14533,9 +14533,35 @@ public class OpenMetadataAPIGenericHandler<B>
                                                            effectiveTime,
                                                            methodName);
 
-        if (links == null)
+        if (relationships == null)
         {
             return null;
+        }
+
+        List<Relationship> links;
+
+        /*
+         * If this is a relationship that is dedicated to a specific user then the returned links are filtered for the specific user's relationship.
+         */
+        if (onlyCreatorPermitted)
+        {
+            links = new ArrayList<>();
+
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    if (userId.equals(relationship.getCreatedBy()))
+                    {
+                        links.add(relationship);
+                    }
+                }
+            }
+
+        }
+        else
+        {
+            links = relationships;
         }
 
         if (links.size() > 1)

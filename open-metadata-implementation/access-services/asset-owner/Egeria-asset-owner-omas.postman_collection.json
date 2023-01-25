@@ -102,10 +102,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "home/my-table.csv",
+					"raw": "{\n    \"class\" : \"NameRequestBody\",\n    \"name\" : \"DropFoot\"\n}",
 					"options": {
 						"raw": {
-							"language": "text"
+							"language": "json"
 						}
 					}
 				},
@@ -141,16 +141,16 @@
 			"response": []
 		},
 		{
-			"name": "Get Assets by search string",
+			"name": "Find Assets",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": ".*file.*",
+					"raw": "{\n    \"class\" : \"SearchStringRequestBody\",\n    \"searchString\" : \".*.\"\n}",
 					"options": {
 						"raw": {
-							"language": "text"
+							"language": "json"
 						}
 					}
 				},
@@ -226,7 +226,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-owner/users/{{user}}/assets/{{guid}}",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-owner/users/{{user}}/assets/{{assetGUID}}",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -239,33 +239,7 @@
 						"users",
 						"{{user}}",
 						"assets",
-						"{{guid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get Asset Universe (root)",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/asset-owner/connected-asset/users/{{user}}/assets/{{guid}}",
-					"host": [
-						"{{baseURL}}"
-					],
-					"path": [
-						"servers",
-						"{{server}}",
-						"open-metadata",
-						"common-services",
-						"asset-owner",
-						"connected-asset",
-						"users",
-						"{{user}}",
-						"assets",
-						"{{guid}}"
+						"{{assetGUID}}"
 					]
 				}
 			},
@@ -277,7 +251,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/asset-owner/connected-asset/users/{{user}}/assets/{{guid}}/connection",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/asset-owner/connected-asset/users/{{user}}/assets/{{assetGUID}}/connection",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -291,7 +265,7 @@
 						"users",
 						"{{user}}",
 						"assets",
-						"{{guid}}",
+						"{{assetGUID}}",
 						"connection"
 					]
 				}

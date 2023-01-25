@@ -10,7 +10,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -34,6 +33,8 @@ public class InstanceType extends InstanceElementHeader
     private List<TypeDefLink>         typeDefSuperTypes       = null;
     private List<InstanceStatus>      validStatusList         = null;
     private List<String>              validInstanceProperties = null;
+
+    public static final long CURRENT_INSTANCE_TYPE_HEADER_VERSION = 1;
 
     /**
      * Default constructor relies on initialization of variables in the declaration.
@@ -364,20 +365,50 @@ public class InstanceType extends InstanceElementHeader
         {
             return true;
         }
-        if (!(objectToCompare instanceof InstanceType))
+        if (! (objectToCompare instanceof InstanceType))
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
+
         InstanceType that = (InstanceType) objectToCompare;
-        return getTypeDefVersion() == that.getTypeDefVersion() &&
-                getTypeDefCategory() == that.getTypeDefCategory() &&
-                Objects.equals(getTypeDefGUID(), that.getTypeDefGUID()) &&
-                Objects.equals(getTypeDefName(), that.getTypeDefName()) &&
-                Objects.equals(getTypeDefDescription(), that.getTypeDefDescription()) &&
-                Objects.equals(getTypeDefDescriptionGUID(), that.getTypeDefDescriptionGUID()) &&
-                Objects.equals(getTypeDefSuperTypes(), that.getTypeDefSuperTypes()) &&
-                Objects.equals(getValidStatusList(), that.getValidStatusList()) &&
-                Objects.equals(getValidInstanceProperties(), that.getValidInstanceProperties());
+
+        if (typeDefVersion != that.typeDefVersion)
+        {
+            return false;
+        }
+        if (typeDefCategory != that.typeDefCategory)
+        {
+            return false;
+        }
+        if (typeDefGUID != null ? ! typeDefGUID.equals(that.typeDefGUID) : that.typeDefGUID != null)
+        {
+            return false;
+        }
+        if (typeDefName != null ? ! typeDefName.equals(that.typeDefName) : that.typeDefName != null)
+        {
+            return false;
+        }
+        if (typeDefDescription != null ? ! typeDefDescription.equals(that.typeDefDescription) : that.typeDefDescription != null)
+        {
+            return false;
+        }
+        if (typeDefDescriptionGUID != null ? ! typeDefDescriptionGUID.equals(that.typeDefDescriptionGUID) : that.typeDefDescriptionGUID != null)
+        {
+            return false;
+        }
+        if (typeDefSuperTypes != null ? ! typeDefSuperTypes.equals(that.typeDefSuperTypes) : that.typeDefSuperTypes != null)
+        {
+            return false;
+        }
+        if (validStatusList != null ? ! validStatusList.equals(that.validStatusList) : that.validStatusList != null)
+        {
+            return false;
+        }
+        return validInstanceProperties != null ? validInstanceProperties.equals(that.validInstanceProperties) : that.validInstanceProperties == null;
     }
 
 
@@ -389,15 +420,16 @@ public class InstanceType extends InstanceElementHeader
     @Override
     public int hashCode()
     {
-
-        return Objects.hash(getTypeDefCategory(),
-                            getTypeDefGUID(),
-                            getTypeDefName(),
-                            getTypeDefVersion(),
-                            getTypeDefDescription(),
-                            getTypeDefDescriptionGUID(),
-                            getTypeDefSuperTypes(),
-                            getValidStatusList(),
-                            getValidInstanceProperties());
+        int result = super.hashCode();
+        result = 31 * result + (typeDefCategory != null ? typeDefCategory.hashCode() : 0);
+        result = 31 * result + (typeDefGUID != null ? typeDefGUID.hashCode() : 0);
+        result = 31 * result + (typeDefName != null ? typeDefName.hashCode() : 0);
+        result = 31 * result + (int) (typeDefVersion ^ (typeDefVersion >>> 32));
+        result = 31 * result + (typeDefDescription != null ? typeDefDescription.hashCode() : 0);
+        result = 31 * result + (typeDefDescriptionGUID != null ? typeDefDescriptionGUID.hashCode() : 0);
+        result = 31 * result + (typeDefSuperTypes != null ? typeDefSuperTypes.hashCode() : 0);
+        result = 31 * result + (validStatusList != null ? validStatusList.hashCode() : 0);
+        result = 31 * result + (validInstanceProperties != null ? validInstanceProperties.hashCode() : 0);
+        return result;
     }
 }

@@ -20,6 +20,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -150,7 +151,7 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @SuppressWarnings(value = "deprecation")
+    @SuppressWarnings(value="deprecation")
     public GUIDResponse  addAssetToCatalog(String           serverName,
                                            String           userId,
                                            String           typeName,
@@ -189,28 +190,47 @@ public class AssetOwnerRESTServices
                 {
                     ownerTypeOrdinal = requestBody.getOwnerType().getOpenTypeOrdinal();
                 }
-                response.setGUID(handler.createAssetInRepository(userId,
-                                                                 null,
-                                                                 null,
-                                                                 requestBody.getQualifiedName(),
-                                                                 requestBody.getName(),
-                                                                 requestBody.getVersionIdentifier(),
-                                                                 requestBody.getDescription(),
-                                                                 requestBody.getZoneMembership(),
-                                                                 requestBody.getOwner(),
-                                                                 ownerTypeOrdinal,
-                                                                 requestBody.getOriginOrganizationGUID(),
-                                                                 requestBody.getOriginBusinessCapabilityGUID(),
-                                                                 requestBody.getOtherOriginValues(),
-                                                                 requestBody.getAdditionalProperties(),
-                                                                 assetTypeGUID,
-                                                                 assetTypeName,
-                                                                 requestBody.getExtendedProperties(),
-                                                                 null,
-                                                                 null,
-                                                                 InstanceStatus.ACTIVE,
-                                                                 new Date(),
-                                                                 methodName));
+
+                Date effectiveTime = new Date();
+                String assetGUID = handler.createAssetInRepository(userId,
+                                                                   null,
+                                                                   null,
+                                                                   requestBody.getQualifiedName(),
+                                                                   requestBody.getName(),
+                                                                   requestBody.getVersionIdentifier(),
+                                                                   requestBody.getDescription(),
+                                                                   requestBody.getZoneMembership(),
+                                                                   requestBody.getOwner(),
+                                                                   ownerTypeOrdinal,
+                                                                   requestBody.getOriginOrganizationGUID(),
+                                                                   requestBody.getOriginBusinessCapabilityGUID(),
+                                                                   requestBody.getOtherOriginValues(),
+                                                                   requestBody.getAdditionalProperties(),
+                                                                   assetTypeGUID,
+                                                                   assetTypeName,
+                                                                   requestBody.getExtendedProperties(),
+                                                                   null,
+                                                                   null,
+                                                                   InstanceStatus.ACTIVE,
+                                                                   effectiveTime,
+                                                                   methodName);
+                if (assetGUID != null)
+                {
+                    final String assetGUIDParameterName = "assetGUID";
+
+                    this.maintainSupplementaryProperties(userId,
+                                                         assetGUID,
+                                                         assetGUIDParameterName,
+                                                         OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                         requestBody.getQualifiedName(),
+                                                         requestBody,
+                                                         true,
+                                                         effectiveTime,
+                                                         handler,
+                                                         methodName);
+                }
+
+                response.setGUID(assetGUID);
             }
             else
             {
@@ -294,6 +314,88 @@ public class AssetOwnerRESTServices
         return response;
     }
 
+
+
+    /**
+     * Update a simple asset description to the catalog.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user (assumed to be the owner)
+     * @param assetGUID unique identifier of the asset
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param requestBody other properties for asset
+     *
+     * @return unique identifier (guid) of the asset or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse  updateAsset(String           serverName,
+                                     String           userId,
+                                     String           assetGUID,
+                                     boolean          isMergeUpdate,
+                                     AssetProperties  requestBody)
+    {
+        final String methodName             = "updateAsset";
+        final String assetGUIDParameterName = "assetGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+                Date effectiveTime = new Date();
+                handler.updateAsset(userId,
+                                    null,
+                                    null,
+                                    assetGUID,
+                                    assetGUIDParameterName,
+                                    requestBody.getQualifiedName(),
+                                    requestBody.getName(),
+                                    requestBody.getVersionIdentifier(),
+                                    requestBody.getDescription(),
+                                    requestBody.getAdditionalProperties(),
+                                    requestBody.getTypeName(),
+                                    requestBody.getExtendedProperties(),
+                                    null,
+                                    null,
+                                    isMergeUpdate,
+                                    false,
+                                    false,
+                                    effectiveTime,
+                                    methodName);
+
+                    this.maintainSupplementaryProperties(userId,
+                                                         assetGUID,
+                                                         assetGUIDParameterName,
+                                                         OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                         requestBody.getQualifiedName(),
+                                                         requestBody,
+                                                         isMergeUpdate,
+                                                         effectiveTime,
+                                                         handler,
+                                                         methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
 
 
     /**
@@ -2212,7 +2314,7 @@ public class AssetOwnerRESTServices
      *
      * @param serverName name of the server instances for this request
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
      *
@@ -2221,11 +2323,11 @@ public class AssetOwnerRESTServices
      * PropertyServerException there is a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
-    public AssetElementsResponse getAssetsByName(String   serverName,
-                                                 String   userId,
-                                                 String   name,
-                                                 int      startFrom,
-                                                 int      pageSize)
+    public AssetElementsResponse getAssetsByName(String          serverName,
+                                                 String          userId,
+                                                 NameRequestBody requestBody,
+                                                 int             startFrom,
+                                                 int             pageSize)
     {
         final String nameParameterName = "name";
         final String methodName        = "getAssetsByName";
@@ -2240,18 +2342,29 @@ public class AssetOwnerRESTServices
             AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setAssets(handler.getAssetsByName(userId,
-                                                       OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                       name,
-                                                       nameParameterName,
-                                                       startFrom,
-                                                       pageSize,
-                                                       false,
-                                                       false,
-                                                       new Date(),
-                                                       methodName));
-            response.setStartingFromElement(startFrom);
+
+            if (requestBody != null)
+            {
+                List<AssetElement> assets = handler.getAssetsByName(userId,
+                                                                    OpenMetadataAPIMapper.ASSET_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                    requestBody.getName(),
+                                                                    nameParameterName,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    false,
+                                                                    false,
+                                                                    new Date(),
+                                                                    methodName);
+
+                addSupplementaryProperties(assets, handler, methodName);
+                response.setAssets(assets);
+                response.setStartingFromElement(startFrom);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -2269,7 +2382,7 @@ public class AssetOwnerRESTServices
      *
      * @param serverName name of the server instances for this request
      * @param userId calling user
-     * @param searchString string to search for in text
+     * @param requestBody string to search for in text
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
      *
@@ -2278,11 +2391,11 @@ public class AssetOwnerRESTServices
      * PropertyServerException there is a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
-    public AssetElementsResponse findAssets(String   serverName,
-                                            String   userId,
-                                            String   searchString,
-                                            int      startFrom,
-                                            int      pageSize)
+    public AssetElementsResponse findAssets(String                  serverName,
+                                            String                  userId,
+                                            SearchStringRequestBody requestBody,
+                                            int                     startFrom,
+                                            int                     pageSize)
     {
         final String searchStringParameter = "searchString";
         final String methodName            = "findAssets";
@@ -2297,16 +2410,29 @@ public class AssetOwnerRESTServices
             AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setAssets(handler.findAssets(userId,
-                                                  searchString,
-                                                  searchStringParameter,
-                                                  startFrom,
-                                                  pageSize,
-                                                  false,
-                                                  false,
-                                                  new Date(),
-                                                  methodName));
-            response.setStartingFromElement(startFrom);
+
+            if (requestBody != null)
+            {
+                List<AssetElement> assets = handler.findAssets(userId,
+                                                               requestBody.getSearchString(),
+                                                               searchStringParameter,
+                                                               startFrom,
+                                                               pageSize,
+                                                               false,
+                                                               false,
+                                                               new Date(),
+                                                               methodName);
+
+                addSupplementaryProperties(assets, handler, methodName);
+                response.setAssets(assets);
+                response.setStartingFromElement(startFrom);
+
+                response.setStartingFromElement(startFrom);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -2346,14 +2472,27 @@ public class AssetOwnerRESTServices
             AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setAsset(handler.getBeanFromRepository(userId,
-                                                            assetGUID,
-                                                            assetGUIDParameter,
-                                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                            false,
-                                                            false,
-                                                            new Date(),
-                                                            methodName));
+            AssetElement asset = handler.getBeanFromRepository(userId,
+                                                               assetGUID,
+                                                               assetGUIDParameter,
+                                                               OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                               false,
+                                                               false,
+                                                               new Date(),
+                                                               methodName);
+
+            if (asset != null)
+            {
+                getSupplementaryProperties(assetGUID,
+                                           assetGUIDParameter,
+                                           asset.getAssetProperties(),
+                                           handler,
+                                           handler.getRepositoryHelper(),
+                                           handler.getServiceName(),
+                                           methodName);
+            }
+
+            response.setAsset(asset);
         }
         catch (Exception error)
         {
@@ -2725,5 +2864,174 @@ public class AssetOwnerRESTServices
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
+    }
+
+
+
+    /* ========================================================
+     * Managing the supplementary properties for technical metadata (assets, software server capabilities etc).
+     */
+
+
+    /**
+     * Maintain the supplementary properties in a glossary term linked to the supplied element.
+     * The glossary term needs to be connected to the
+     * @param userId calling user
+     * @param elementGUID unique identifier for the element connected to the supplementary properties
+     * @param elementGUIDParameterName name of guid parameter
+     * @param elementTypeName type of element
+     * @param elementQualifiedName unique name for the element connected to the supplementary properties
+     * @param supplementaryProperties properties to save
+     * @param isMergeUpdate should the new properties be merged with the existing properties, or replace them entirely
+     * @param effectiveTime time to issue queries for
+     * @param assetHandler handler for working with the metadata store
+     * @param methodName calling method
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem detected in the repository services
+     */
+    void maintainSupplementaryProperties(String                     userId,
+                                         String                     elementGUID,
+                                         String                     elementGUIDParameterName,
+                                         String                     elementTypeName,
+                                         String                     elementQualifiedName,
+                                         SupplementaryProperties    supplementaryProperties,
+                                         boolean                    isMergeUpdate,
+                                         Date                       effectiveTime,
+                                         AssetHandler<AssetElement> assetHandler,
+                                         String                     methodName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        if (supplementaryProperties != null)
+        {
+            assetHandler.maintainSupplementaryProperties(userId,
+                                                         elementGUID,
+                                                         elementGUIDParameterName,
+                                                         elementTypeName,
+                                                         elementQualifiedName,
+                                                         supplementaryProperties.getDisplayName(),
+                                                         supplementaryProperties.getDisplaySummary(),
+                                                         supplementaryProperties.getDisplayDescription(),
+                                                         supplementaryProperties.getAbbreviation(),
+                                                         supplementaryProperties.getUsage(),
+                                                         isMergeUpdate,
+                                                         false,
+                                                         false,
+                                                         effectiveTime,
+                                                         methodName);
+        }
+        else if (! isMergeUpdate)
+        {
+            assetHandler.maintainSupplementaryProperties(userId,
+                                                         elementGUID,
+                                                         elementGUIDParameterName,
+                                                         elementTypeName,
+                                                         elementQualifiedName,
+                                                         null,
+                                                         null,
+                                                         null,
+                                                         null,
+                                                         null,
+                                                         false,
+                                                         false,
+                                                         false,
+                                                         effectiveTime,
+                                                         methodName);
+        }
+    }
+
+
+    /**
+     * Extract any supplementary properties from the connected glossary term.
+     *
+     * @param assets returned assets
+     * @param assetHandler asset handler
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem calling the server
+     */
+    void addSupplementaryProperties(List<AssetElement>         assets,
+                                    AssetHandler<AssetElement> assetHandler,
+                                    String                     methodName) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        final String elementGUIDParameterName = "element.getElementHeader().getGUID()";
+
+        if ((assets != null) && (! assets.isEmpty()))
+        {
+            for (AssetElement element : assets)
+            {
+                getSupplementaryProperties(element.getElementHeader().getGUID(),
+                                           elementGUIDParameterName,
+                                           element.getAssetProperties(),
+                                           assetHandler,
+                                           assetHandler.getRepositoryHelper(),
+                                           assetHandler.getServiceName(),
+                                           methodName);
+            }
+        }
+    }
+
+    /**
+     * Retrieve the supplementary properties for an element.
+     *
+     * @param elementGUID unique identifier for the element connected to the supplementary properties
+     * @param elementGUIDParameterName name of guid parameter
+     * @param supplementaryProperties properties to save
+     * @param assetHandler handler for working with the metadata store
+     * @param repositoryHelper repository helper
+     * @param serviceName name of this service
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem calling the server
+     */
+    private void getSupplementaryProperties(String                     elementGUID,
+                                            String                     elementGUIDParameterName,
+                                            SupplementaryProperties    supplementaryProperties,
+                                            AssetHandler<AssetElement> assetHandler,
+                                            OMRSRepositoryHelper       repositoryHelper,
+                                            String                     serviceName,
+                                            String                     methodName) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        EntityDetail glossaryEntity = assetHandler.getSupplementaryProperties(elementGUID,
+                                                                              elementGUIDParameterName,
+                                                                              OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                              false,
+                                                                              false,
+                                                                              new Date(),
+                                                                              methodName);
+
+        if ((glossaryEntity != null) && (glossaryEntity.getProperties() != null))
+        {
+            supplementaryProperties.setDisplayName(repositoryHelper.getStringProperty(serviceName,
+                                                                                      OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                                      glossaryEntity.getProperties(),
+                                                                                      methodName));
+
+            supplementaryProperties.setDisplaySummary(repositoryHelper.getStringProperty(serviceName,
+                                                                                  OpenMetadataAPIMapper.SUMMARY_PROPERTY_NAME,
+                                                                                  glossaryEntity.getProperties(),
+                                                                                  methodName));
+            supplementaryProperties.setDisplayDescription(repositoryHelper.getStringProperty(serviceName,
+                                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                                      glossaryEntity.getProperties(),
+                                                                                      methodName));
+            supplementaryProperties.setAbbreviation(repositoryHelper.getStringProperty(serviceName,
+                                                                                       OpenMetadataAPIMapper.ABBREVIATION_PROPERTY_NAME,
+                                                                                       glossaryEntity.getProperties(),
+                                                                                       methodName));
+            supplementaryProperties.setUsage(repositoryHelper.getStringProperty(serviceName,
+                                                                                OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
+                                                                                glossaryEntity.getProperties(),
+                                                                                methodName));
+        }
     }
 }

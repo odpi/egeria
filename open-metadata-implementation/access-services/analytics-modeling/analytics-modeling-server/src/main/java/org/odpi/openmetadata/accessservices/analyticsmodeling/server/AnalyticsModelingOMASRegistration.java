@@ -3,9 +3,9 @@
 package org.odpi.openmetadata.accessservices.analyticsmodeling.server;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.admin.AnalyticsModelingAdmin;
-import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistrationEntry;
+import org.odpi.openmetadata.adminservices.registration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 
 /**
@@ -23,8 +23,8 @@ class AnalyticsModelingOMASRegistration {
 	 */
 	static void registerAccessService() {
 		AccessServiceDescription myDescription = AccessServiceDescription.ANALYTICS_MODELING_OMAS;
-		AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
-				ServiceOperationalStatus.ENABLED, AnalyticsModelingAdmin.class.getName());
+		AccessServiceRegistrationEntry myRegistration = new AccessServiceRegistrationEntry(myDescription,
+                                                                                           ServiceOperationalStatus.ENABLED, AnalyticsModelingAdmin.class.getName());
 
 		OMAGAccessServiceRegistration.registerAccessService(myRegistration);
 	}

@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.assetconsumer.client.rest.AssetConsu
 import org.odpi.openmetadata.accessservices.assetowner.client.AssetOwner;
 import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
 import org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.LikeProperties;
+import org.odpi.openmetadata.accessservices.assetconsumer.properties.MeaningProperties;
 import org.odpi.openmetadata.accessservices.stewardshipaction.client.StewardshipAction;
 import org.odpi.openmetadata.accessservices.stewardshipaction.client.rest.StewardshipActionRESTClient;
 import org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.AssetElement;
@@ -143,8 +143,8 @@ public class DuplicateAssetTest
      * @throws FVTUnexpectedCondition the test case failed
      */
     private AssetConsumer getAssetConsumerClient(String   serverName,
-                                                     String   serverPlatformRootURL,
-                                                     AuditLog auditLog) throws FVTUnexpectedCondition
+                                                 String   serverPlatformRootURL,
+                                                 AuditLog auditLog) throws FVTUnexpectedCondition
     {
         final String activityName = "getAssetConsumerClient";
 
@@ -152,7 +152,7 @@ public class DuplicateAssetTest
         {
             AssetConsumerRESTClient restClient = new AssetConsumerRESTClient(serverName, serverPlatformRootURL);
 
-            LikeProperties likeProperties = null;
+            MeaningProperties likeProperties = null;
 
             return new AssetConsumer(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
         }

@@ -12,6 +12,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicSenderConnectorBase;
 
+import java.util.concurrent.CompletionException;
+
 
 /**
  * AssetOwnerOutTopicServerConnector is the java implementation of the
@@ -36,13 +38,24 @@ public class AssetOwnerOutTopicServerConnector extends OpenMetadataTopicSenderCo
         try
         {
             String eventString = OBJECT_WRITER.writeValueAsString(event);
-            super.sendEvent(eventString);
+            super.sendEvent(eventString).join();
 
             if (super.auditLog != null)
             {
                 super.auditLog.logMessage(methodName,
                                           AssetOwnerAuditCode.OUT_TOPIC_EVENT.getMessageDefinition(event.getEventType().getEventTypeName()),
                                           eventString);
+            }
+        }
+        catch (CompletionException error)
+        {
+            if (error.getCause() instanceof ConnectorCheckedException)
+            {
+                throw (ConnectorCheckedException) error.getCause();
+            }
+            else if (error.getCause() instanceof InvalidParameterException)
+            {
+                throw (InvalidParameterException) error.getCause();
             }
         }
         catch (InvalidParameterException | ConnectorCheckedException error)

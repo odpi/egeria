@@ -135,10 +135,10 @@ class DataEngineCommonHandlerTest {
                 ENTITY_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
 
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
-        verify(genericHandler, times(1)).linkElementToElement(USER,  EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, FIRST_GUID,
+        verify(genericHandler, times(1)).uncheckedLinkElementToElement(USER,  EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, FIRST_GUID,
                 CommonMapper.GUID_PROPERTY_NAME, ENTITY_TYPE_NAME, SECOND_GUID, CommonMapper.GUID_PROPERTY_NAME,
                 ENTITY_TYPE_NAME, false, false, null,
-                RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE_NAME, null, null, null, null, methodName);
+                RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE_NAME, null, null, methodName);
     }
 
     @Test

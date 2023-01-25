@@ -11,14 +11,14 @@ import java.util.Objects;
 
 
 /**
- * AssetUniverse extends AssetDetail which extend AssetSummary.  AssetUniverse adds information about the
+ * AssetUniverse extends AssetDetail which extends AssetSummary.  AssetUniverse adds information about the
  * common open metadata entities related to this asset.
  * <ul>
  *     <li>meanings - glossary term(s) assigned to this asset.</li>
  *     <li>feedback - details of the reviews, tags and comments that are connected to the asset.</li>
  *     <li>knownLocations - details of the known locations of the asset.</li>
  *     <li>lineage - details of the lineage for the asset.</li>
- *     <li>relatedAssets - details of the assets lined to this asset.</li>
+ *     <li>relatedAssets - details of the assets linked to this asset.</li>
  * </ul>
  *
  */
@@ -252,7 +252,7 @@ public class AssetUniverse extends AssetDetail
                        ", name='" + getName() + '\'' +
                        ", versionIdentifier='" + getVersionIdentifier() + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
-                       ", shortDescription='" + getShortDescription() + '\'' +
+                       ", shortDescription='" + getConnectionDescription() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", ownerTypeName='" + getOwnerTypeName() + '\'' +
                        ", ownerPropertyName='" + getOwnerPropertyName() + '\'' +

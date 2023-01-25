@@ -32,6 +32,8 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
 {
     private final static String disabledExchangeServicesOption = "disabledExchangeServices";
 
+    private ConnectedAssetClient            connectedAssetClient;
+    private OpenMetadataStoreClient         openMetadataStoreClient;
     private ExternalAssetManagerClient      assetManagerClient;
     private CollaborationExchangeClient     collaborationExchangeClient;
     private ConnectionExchangeClient        connectionExchangeClient;
@@ -97,6 +99,13 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
             restClient = new AssetManagerRESTClient(partnerOMASServerName,
                                                     partnerOMASPlatformRootURL,
                                                     auditLog);
+
+            connectedAssetClient = new ConnectedAssetClient(partnerOMASServerName,
+                                                            partnerOMASPlatformRootURL,
+                                                            auditLog);
+
+            openMetadataStoreClient = new OpenMetadataStoreClient(partnerOMASServerName,
+                                                                  partnerOMASPlatformRootURL);
         }
         else
         {
@@ -105,7 +114,19 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
                                                     localServerUserId,
                                                     localServerPassword,
                                                     auditLog);
+
+            connectedAssetClient = new ConnectedAssetClient(partnerOMASServerName,
+                                                            partnerOMASPlatformRootURL,
+                                                            localServerUserId,
+                                                            localServerPassword,
+                                                            auditLog);
+
+            openMetadataStoreClient = new OpenMetadataStoreClient(partnerOMASServerName,
+                                                                  partnerOMASPlatformRootURL,
+                                                                  localServerUserId,
+                                                                  localServerPassword);
         }
+
 
         assetManagerClient = new ExternalAssetManagerClient(partnerOMASServerName,
                                                             partnerOMASPlatformRootURL,
@@ -271,6 +292,8 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
 
             serviceSpecificConnector.setContext(new CatalogIntegratorContext(assetManagerClient,
                                                                              eventClient,
+                                                                             connectedAssetClient,
+                                                                             openMetadataStoreClient,
                                                                              collaborationExchangeClient,
                                                                              connectionExchangeClient,
                                                                              dataAssetExchangeClient,

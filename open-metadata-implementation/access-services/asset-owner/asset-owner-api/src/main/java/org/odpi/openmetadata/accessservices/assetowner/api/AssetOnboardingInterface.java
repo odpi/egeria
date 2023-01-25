@@ -90,6 +90,26 @@ public interface AssetOnboardingInterface
 
 
     /**
+     * Update the metadata element representing an asset.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param assetProperties new properties for this element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void updateAsset(String              userId,
+                     String              assetGUID,
+                     boolean             isMergeUpdate,
+                     AssetProperties     assetProperties) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException;
+
+
+    /**
      * Stores the supplied schema details in the catalog and attaches it to the asset.  If another schema is currently
      * attached to the asset, it is unlinked and deleted.  If more attributes need to be added in addition to the
      * ones supplied then this can be done with addSchemaAttributesToSchemaType().

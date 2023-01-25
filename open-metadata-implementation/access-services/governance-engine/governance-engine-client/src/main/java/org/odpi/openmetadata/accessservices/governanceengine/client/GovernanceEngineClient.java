@@ -63,7 +63,7 @@ public class GovernanceEngineClient extends OpenMetadataStoreClientBase implemen
      * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param serverUserId          caller's userId embedded in all HTTP requests
-     * @param serverPassword        caller's userId embedded in all HTTP requests
+     * @param serverPassword        caller's password embedded in all HTTP requests
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
