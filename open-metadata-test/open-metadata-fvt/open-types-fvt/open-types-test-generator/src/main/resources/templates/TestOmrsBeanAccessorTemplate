@@ -368,14 +368,16 @@ public class TestBeansToAccessOMRS {
             $$Enum$$>
 
             MapPropertyValue mapTypePropertyValue;
+            PrimitivePropertyValue primitivePropertyValueForMap;
+            InstanceProperties mapValues;
             // In the models we are generating from we only have map<String,String> types, this code assumes those types.
             <$$Map$$
             mapTypePropertyValue = new MapPropertyValue();
-            PrimitivePropertyValue primitivePropertyValueForMap = new PrimitivePropertyValue();
+            primitivePropertyValueForMap = new PrimitivePropertyValue();
             primitivePropertyValueForMap.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
             primitivePropertyValueForMap.setPrimitiveValue("test string value for map");
 
-            InstanceProperties mapValues = new InstanceProperties();
+            mapValues = new InstanceProperties();
             mapValues.setProperty("a_new_property_name",primitivePropertyValueForMap);
             mapTypePropertyValue.setMapValues(mapValues);
             instanceProperties.setProperty("<$$uMapName$$>", mapTypePropertyValue);
