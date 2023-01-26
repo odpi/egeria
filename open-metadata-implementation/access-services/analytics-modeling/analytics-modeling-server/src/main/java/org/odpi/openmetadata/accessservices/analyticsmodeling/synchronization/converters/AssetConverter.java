@@ -3,10 +3,8 @@
 
 package org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.converters;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AssetReference;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
@@ -17,10 +15,13 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 public class AssetConverter extends OpenMetadataAPIGenericConverter<AnalyticsAsset> {
+
+	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
 	public AssetConverter(OMRSRepositoryHelper repositoryHelper, String serviceName, String serverName) {
 		super(repositoryHelper, serviceName, serverName);
@@ -63,7 +64,7 @@ public class AssetConverter extends OpenMetadataAPIGenericConverter<AnalyticsAss
 				String jsonReference = props.get(Constants.REFERENCE);
 				if (jsonReference != null && !jsonReference.isEmpty()) {
 					try {
-						bean.setReference(new ObjectMapper()
+						bean.setReference(OBJECT_MAPPER
 								.readValue(jsonReference.getBytes(), new TypeReference<List<AssetReference>>(){}));
 					} catch (IOException e) {
 						// log warning into execution context

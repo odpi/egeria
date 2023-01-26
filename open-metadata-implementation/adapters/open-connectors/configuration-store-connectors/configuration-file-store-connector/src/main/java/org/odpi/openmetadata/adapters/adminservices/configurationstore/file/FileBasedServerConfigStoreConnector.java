@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.adapters.adminservices.configurationstore.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreRetrieveAll;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
@@ -47,6 +49,12 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
      * Variables used for logging and debug.
      */
     private static final Logger log = LoggerFactory.getLogger(FileBasedServerConfigStoreConnector.class);
+
+    private  static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+    private static final ObjectWriter OBJECT_WRITER = OBJECT_MAPPER.writer();
+
+    private static final ObjectReader OBJECT_READER = OBJECT_MAPPER.reader();
 
 
     /**
@@ -114,9 +122,7 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
             }
             else
             {
-                ObjectMapper objectMapper = new ObjectMapper();
-
-                String configStoreFileContents = objectMapper.writeValueAsString(omagServerConfig);
+                String configStoreFileContents = OBJECT_WRITER.writeValueAsString(omagServerConfig);
 
                 FileUtils.writeStringToFile(configStoreFile, configStoreFileContents, (String)null,false);
             }
@@ -145,9 +151,7 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
 
             String configStoreFileContents = FileUtils.readFileToString(configStoreFile, "UTF-8");
 
-            ObjectMapper objectMapper = new ObjectMapper();
-
-            newConfigProperties = objectMapper.readValue(configStoreFileContents, OMAGServerConfig.class);
+            newConfigProperties = OBJECT_READER.readValue(configStoreFileContents, OMAGServerConfig.class);
         }
         catch (IOException ioException)
         {

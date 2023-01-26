@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.repositoryservices.connectors.omrstopic;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
@@ -63,6 +65,10 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
                                                                  AuditLoggingComponent
 {
     private static final Logger       log      = LoggerFactory.getLogger(OMRSTopicConnector.class);
+
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectReader OBJECT_READER = OBJECT_MAPPER.reader();
+    private static final ObjectWriter OBJECT_WRITER = OBJECT_MAPPER.writer();
 
     private List<Connector> embeddedConnectors = null;
 
@@ -435,9 +441,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
         final String methodName = "sendEventTask";
         try
         {
-            ObjectMapper objectMapper = new ObjectMapper();
-
-            String eventString = objectMapper.writeValueAsString(event);
+            String eventString = OBJECT_WRITER.writeValueAsString(event);
 
             if ((auditLog != null) && logEvent)
             {
@@ -490,9 +494,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
              */
             try
             {
-                ObjectMapper objectMapper = new ObjectMapper();
-
-                eventBean = objectMapper.readValue(event, OMRSEventBean.class);
+                eventBean = OBJECT_READER.readValue(event, OMRSEventBean.class);
             }
             catch (Exception   exception)
             {
