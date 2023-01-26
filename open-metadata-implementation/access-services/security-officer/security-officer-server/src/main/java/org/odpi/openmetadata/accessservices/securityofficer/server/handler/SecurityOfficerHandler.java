@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import static org.odpi.openmetadata.accessservices.securityofficer.server.utils.Constants.SCHEMA_ATTRIBUTE;
 import static org.odpi.openmetadata.accessservices.securityofficer.server.utils.Constants.SECURITY_OFFICER;
@@ -138,13 +139,13 @@ public class SecurityOfficerHandler {
             return false;
         }
 
-        if (typeDefSuperTypes.stream().anyMatch(typeDefLink -> SCHEMA_ATTRIBUTE.equals(typeDefLink.getName()))) {
+        if (typeDefSuperTypes.stream().anyMatch(typeDefLink -> Objects.equals(typeDefLink.getName(), SCHEMA_ATTRIBUTE))) {
             return true;
         }
 
         for (TypeDefLink typeDefLink : typeDefSuperTypes) {
             TypeDefLink superType = metadataCollection.getTypeDefByName(SECURITY_OFFICER, typeDefLink.getName()).getSuperType();
-            if (superType != null && SCHEMA_ATTRIBUTE.equals(superType.getName())) {
+            if (superType != null && Objects.equals(superType.getName(), SCHEMA_ATTRIBUTE)) {
                 return true;
             }
         }
