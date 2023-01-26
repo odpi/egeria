@@ -183,26 +183,17 @@ public class DataEngineEventProcessor {
         log.trace(DEBUG_MESSAGE_METHOD, methodName);
 
         try {
-<<<<<<< data-flows
-            DataFlowsEvent dataFlowsEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DataFlowsEvent.class);
-=======
-            LineageMappingsEvent lineageMappingsEvent = OBJECT_READER.readValue(dataEngineEvent, LineageMappingsEvent.class);
->>>>>>> main
+            DataFlowsEvent dataFlowsEvent = OBJECT_READER.readValue(dataEngineEvent, DataFlowsEvent.class);
 
             if (CollectionUtils.isEmpty(dataFlowsEvent.getDataFlows())) {
                 return;
             }
 
             FFDCResponseBase response = new FFDCResponseBase();
-<<<<<<< data-flows
+
             dataEngineRESTServices.addDataFlows(dataFlowsEvent.getUserId(), serverName, dataFlowsEvent.getDataFlows(),
                     response, dataFlowsEvent.getExternalSourceName());
-        } catch (JsonProcessingException | UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
-=======
-            dataEngineRESTServices.addLineageMappings(lineageMappingsEvent.getUserId(), serverName, lineageMappingsEvent.getLineageMappings(),
-                    response, lineageMappingsEvent.getExternalSourceName());
         } catch (IOException | UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
->>>>>>> main
             logException(dataEngineEvent, methodName, e);
         }
     }
