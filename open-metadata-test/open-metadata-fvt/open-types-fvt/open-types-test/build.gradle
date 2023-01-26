@@ -32,4 +32,17 @@ java {
     withJavadocJar()
 }
 
-build.dependsOn(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test-generator:build')
+clean {
+    delete += fileTree('src').include('**/*')
+}
+
+task createTestSrc(type: Exec) {
+    dependsOn ':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test-generator:shadowJar'
+    group = "Execution"
+    description = "Create test source"
+    workingDir '../../../..'
+    commandLine "java", "-jar", "${project.projectDir}/../open-types-test-generator/build/libs/open-types-test-generator-${project.version}-jar-with-dependencies.jar"
+}
+
+//build.dependsOn(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test-generator:build')
+classes.dependsOn(createTestSrc)

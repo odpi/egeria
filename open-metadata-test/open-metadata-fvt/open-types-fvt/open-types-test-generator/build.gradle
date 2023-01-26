@@ -16,6 +16,8 @@ dependencies {
     implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types')
     compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
     compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
+    runtimeOnly 'ch.qos.logback:logback-classic'
+
 }
 
 description = 'Open Types Test generator'
