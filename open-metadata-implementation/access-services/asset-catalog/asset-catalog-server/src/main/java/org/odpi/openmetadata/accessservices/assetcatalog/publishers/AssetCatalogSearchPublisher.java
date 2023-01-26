@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.assetcatalog.publishers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +16,8 @@ import java.io.Serializable;
  */
 public class AssetCatalogSearchPublisher {
 
-    private static final Logger log = LoggerFactory.getLogger(AssetCatalogSearchPublisher.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AssetCatalogSearchPublisher.class);
+    private static final ObjectWriter OBJECT_WRITER = new ObjectMapper().writer();
 
     private final OpenMetadataTopicConnector topicConnector;
 
@@ -35,21 +37,20 @@ public class AssetCatalogSearchPublisher {
         {
             if (topicConnector != null)
             {
-                ObjectMapper objectMapper = new ObjectMapper();
-                topicConnector.sendEvent(objectMapper.writeValueAsString(event));
+                topicConnector.sendEvent(OBJECT_WRITER.writeValueAsString(event));
             }
             else
             {
-                log.error("Cannot publish event: topic connector is null!");
+                LOG.error("Cannot publish event: topic connector is null!");
             }
         }
         catch (JsonProcessingException e)
         {
-            log.error("Unable to create json for publishing: " + event.toString(), e);
+            LOG.error("Unable to create json for publishing: " + event.toString(), e);
         }
         catch (Exception  e)
         {
-            log.error("Unable to publish new asset event", e);
+            LOG.error("Unable to publish new asset event", e);
         }
     }
 }

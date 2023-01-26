@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecord;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
@@ -29,6 +30,8 @@ import java.util.Map;
 public abstract class OMRSAuditLogStoreConnectorBase extends ConnectorBase implements OMRSAuditLogStore
 {
     private static final Logger log = LoggerFactory.getLogger(OMRSAuditLogStoreConnectorBase.class);
+
+    private static final ObjectWriter OBJECT_WRITER = new ObjectMapper().writer();
 
     private String        destinationName = "<Unknown";
     private List<String>  supportedSeverities = null;
@@ -288,11 +291,9 @@ public abstract class OMRSAuditLogStoreConnectorBase extends ConnectorBase imple
     {
         final String parameterName = "logRecord";
 
-        ObjectMapper objectMapper = new ObjectMapper();
-
         try
         {
-            return objectMapper.writeValueAsString(logRecord);
+            return OBJECT_WRITER.writeValueAsString(logRecord);
         }
         catch (Exception  exc)
         {

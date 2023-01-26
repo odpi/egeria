@@ -24,6 +24,7 @@ dependencies {
     implementation project(':open-metadata-test:open-metadata-fvt:fvt-utilities')
     implementation project(':open-metadata-implementation:common-services:generic-handlers')
     implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'commons-io:commons-io'
 
     testImplementation project(':open-metadata-distribution:open-metadata-assemblies')
     testImplementation 'org.junit.jupiter:junit-jupiter-api'

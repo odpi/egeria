@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.connectors.integration.openlineage;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -30,6 +31,8 @@ import java.util.Map;
 public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegratorConnector implements OpenLineageLogStore,
                                                                                                      OpenLineageEventListener
 {
+
+    private static final ObjectWriter OBJECT_WRITER = new ObjectMapper().writer();
     protected String                   destinationName = "<Unknown";
     protected LineageIntegratorContext myContext       = null;
 
@@ -86,11 +89,10 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
 
         if (openLineageEvent != null)
         {
-            ObjectMapper objectMapper = new ObjectMapper();
 
             try
             {
-                return objectMapper.writeValueAsString(openLineageEvent);
+                return OBJECT_WRITER.writeValueAsString(openLineageEvent);
             }
             catch (Exception error)
             {

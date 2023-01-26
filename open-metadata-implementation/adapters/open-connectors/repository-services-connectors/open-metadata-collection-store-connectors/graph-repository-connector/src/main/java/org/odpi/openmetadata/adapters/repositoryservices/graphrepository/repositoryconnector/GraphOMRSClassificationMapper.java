@@ -5,6 +5,8 @@ package org.odpi.openmetadata.adapters.repositoryservices.graphrepository.reposi
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.VertexProperty;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
@@ -18,8 +20,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
@@ -31,7 +31,25 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.*;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_NAME;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_ORIGIN;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_ORIGIN_GUID;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_CREATED_BY;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_CREATE_TIME;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_CURRENT_STATUS;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_INSTANCE_LICENSE;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_INSTANCE_PROVENANCE_TYPE;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_MAINTAINED_BY;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_MAPPING_PROPERTIES;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_METADATACOLLECTION_ID;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_METADATACOLLECTION_NAME;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_REPLICATED_BY;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_STATUS_ON_DELETE;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_TYPE_NAME;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_UPDATED_BY;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_UPDATE_TIME;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_VERSION;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.getPropertyKeyClassification;
 
 
 
@@ -39,9 +57,13 @@ public class GraphOMRSClassificationMapper {
 
     private static final Logger log = LoggerFactory.getLogger(GraphOMRSClassificationMapper.class);
 
-    private String metadataCollectionId;
-    private String repositoryName;
-    private OMRSRepositoryHelper repositoryHelper;
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectReader OBJECT_READER = OBJECT_MAPPER.reader();
+    private static final ObjectWriter OBJECT_WRITER = OBJECT_MAPPER.writer();
+
+    private final String metadataCollectionId;
+    private final String repositoryName;
+    private final OMRSRepositoryHelper repositoryHelper;
 
     public GraphOMRSClassificationMapper(String               metadataCollectionId,
                                          String               repositoryName,
@@ -103,10 +125,9 @@ public class GraphOMRSClassificationMapper {
         if (classificationProperties != null) {
 
             // First write properties as json - useful for handling collections and possibly for full text/string matching???
-            ObjectMapper objectMapper = new ObjectMapper();
             String jsonString;
             try {
-                jsonString = objectMapper.writeValueAsString(classificationProperties);
+                jsonString = OBJECT_WRITER.writeValueAsString(classificationProperties);
                 log.debug("{} classification has serialized properties {}", methodName, jsonString);
                 vertex.property("classificationProperties", jsonString);
             } catch (Exception exc) {
@@ -299,10 +320,9 @@ public class GraphOMRSClassificationMapper {
 
         List<String> maintainedByList = classification.getMaintainedBy();
         if (maintainedByList != null && !maintainedByList.isEmpty()) {
-            ObjectMapper objectMapper = new ObjectMapper();
             String jsonString;
             try {
-                jsonString = objectMapper.writeValueAsString(maintainedByList);
+                jsonString = OBJECT_WRITER.writeValueAsString(maintainedByList);
                 vertex.property(PROPERTY_KEY_CLASSIFICATION_MAINTAINED_BY, jsonString);
 
             } catch (Exception exc) {
@@ -330,10 +350,9 @@ public class GraphOMRSClassificationMapper {
 
         Map<String, Serializable> mappingProperties = classification.getMappingProperties();
         if (mappingProperties != null && !mappingProperties.isEmpty()) {
-            ObjectMapper objectMapper = new ObjectMapper();
             String jsonString;
             try {
-                jsonString = objectMapper.writeValueAsString(mappingProperties);
+                jsonString = OBJECT_WRITER.writeValueAsString(mappingProperties);
                 vertex.property(PROPERTY_KEY_CLASSIFICATION_MAPPING_PROPERTIES, jsonString);
 
             } catch (Exception exc) {
@@ -369,9 +388,8 @@ public class GraphOMRSClassificationMapper {
         String stringProps = (String) getVertexProperty(vertex, "classificationProperties");
 
         if (stringProps != null) {
-            ObjectMapper objectMapper = new ObjectMapper();
             try {
-                InstanceProperties instanceProperties = objectMapper.readValue(stringProps, InstanceProperties.class);
+                InstanceProperties instanceProperties = OBJECT_READER.readValue(stringProps, InstanceProperties.class);
                 log.debug("{} classification has deserialized properties {}", methodName, instanceProperties);
                 classification.setProperties(instanceProperties);
             } catch (Exception exc) {
@@ -445,9 +463,8 @@ public class GraphOMRSClassificationMapper {
         // maintainedBy
         String maintainedByString = (String) getVertexProperty(vertex, PROPERTY_KEY_CLASSIFICATION_MAINTAINED_BY);
         if (maintainedByString != null) {
-            ObjectMapper objectMapper = new ObjectMapper();
             try {
-                List<String> maintainedByList = (List<String>) objectMapper.readValue(maintainedByString, List.class);
+                List<String> maintainedByList = (List<String>) OBJECT_READER.readValue(maintainedByString, List.class);
                 log.debug("{} vertex has deserialized maintainedBy list {}", methodName, maintainedByList);
                 classification.setMaintainedBy(maintainedByList);
 
@@ -466,10 +483,9 @@ public class GraphOMRSClassificationMapper {
         // mappingProperties
         String mappingPropertiesString = (String) getVertexProperty(vertex, PROPERTY_KEY_CLASSIFICATION_MAPPING_PROPERTIES);
         if (mappingPropertiesString != null) {
-            ObjectMapper objectMapper = new ObjectMapper();
             try {
                 TypeReference<Map<String, Serializable>> typeReference = new TypeReference<Map<String, Serializable>>() {};
-                Map<String, Serializable> mappingPropertiesMap = objectMapper.readValue(mappingPropertiesString, typeReference);
+                Map<String, Serializable> mappingPropertiesMap = OBJECT_MAPPER.readValue(mappingPropertiesString, typeReference);
                 log.debug("{} vertex has deserialized mappingProperties {}", methodName, mappingPropertiesMap);
                 classification.setMappingProperties(mappingPropertiesMap);
 
