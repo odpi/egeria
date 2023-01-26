@@ -3,6 +3,7 @@
  * Copyright Contributors to the ODPi Egeria project.
  */
 
+
 dependencies {
     implementation 'org.slf4j:slf4j-api'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
@@ -11,8 +12,10 @@ dependencies {
     implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types')
 }
 
-description = 'Open Types Test generator'
+description = 'Open Types Test'
 
-//java {
-//    withJavadocJar()
-//}
+java {
+    withJavadocJar()
+}
+
+build.dependsOn(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test-generator:build')
