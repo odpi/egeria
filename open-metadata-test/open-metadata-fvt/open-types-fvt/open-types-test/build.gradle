@@ -46,5 +46,4 @@ task createTestSrc(type: Exec) {
     commandLine "java", "-jar", "${project.projectDir}/../open-types-test-generator/build/libs/open-types-test-generator-${project.version}-jar-with-dependencies.jar"
 }
 
-//build.dependsOn(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test-generator:build')
-classes.dependsOn(createTestSrc)
+compileJava.dependsOn(createTestSrc)
