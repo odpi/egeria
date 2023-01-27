@@ -32,9 +32,11 @@ java {
     withJavadocJar()
 }
 
-clean {
-    delete += fileTree('src').include('**/*')
+task cleanGeneratedSrc(type: Delete) {
+    delete 'src'
 }
+
+clean.dependsOn(cleanGeneratedSrc)
 
 task createTestSrc(type: Exec) {
     dependsOn ':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test-generator:shadowJar'
