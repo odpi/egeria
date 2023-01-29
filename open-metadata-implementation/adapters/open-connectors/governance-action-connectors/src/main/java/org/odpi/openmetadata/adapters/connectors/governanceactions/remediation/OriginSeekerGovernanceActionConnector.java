@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.remediation;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
@@ -33,6 +34,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
 {
     private static final String assetOriginClassification = "AssetOrigin";
     private static final String detectedOriginsProperty   = "detectedOrigins";
+    private static final ObjectWriter OBJECT_WRITER = new ObjectMapper().writer();
 
 
     /**
@@ -128,8 +130,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
                          */
                         newRequestParameters = new HashMap<>();
 
-                        ObjectMapper objectMapper = new ObjectMapper();
-                        String       jsonString   = objectMapper.writeValueAsString(originClassifications);
+                        String       jsonString   = OBJECT_WRITER.writeValueAsString(originClassifications);
 
                         newRequestParameters.put(detectedOriginsProperty, jsonString);
 

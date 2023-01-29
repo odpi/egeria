@@ -7,6 +7,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+
 /**
  * OpenMetadataTopicConnectorBase is a base class to topic connectors that only send
  * events on the embedded event bus connector
@@ -17,10 +20,11 @@ public class OpenMetadataTopicSenderConnectorBase extends OpenMetadataTopicConsu
      * Send the request to the embedded event bus connector(s).
      *
      * @param event event as a string
+     * @return a completable future with the sendEvent result
      * @throws InvalidParameterException the event is null
      * @throws ConnectorCheckedException there is a problem with the embedded event bus connector(s).
      */
-    protected void sendEvent(String event) throws InvalidParameterException,
+    protected CompletableFuture<Void> sendEvent(String event) throws InvalidParameterException,
                                                   ConnectorCheckedException
     {
         final String methodName = "sendEvent";
@@ -40,9 +44,14 @@ public class OpenMetadataTopicSenderConnectorBase extends OpenMetadataTopicConsu
         /*
          * Each of the event bus connectors need to be passed the new event.
          */
-        for (OpenMetadataTopicConnector eventBusConnector : eventBusConnectors)
-        {
-            eventBusConnector.sendEvent(event);
-        }
+        return CompletableFuture.runAsync(() -> {
+            for (OpenMetadataTopicConnector eventBusConnector : eventBusConnectors) {
+                try {
+                    eventBusConnector.sendEvent(event);
+                } catch (ConnectorCheckedException e) {
+                    throw new CompletionException(e);
+                }
+            }
+        });
     }
 }

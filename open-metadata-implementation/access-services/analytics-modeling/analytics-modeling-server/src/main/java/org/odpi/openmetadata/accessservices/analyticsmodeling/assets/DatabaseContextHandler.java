@@ -2,21 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.analyticsmodeling.assets;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.converter.GlossaryTermConverter;
@@ -25,8 +13,20 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.An
 import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Database;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.GlossaryTerm;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Schema;
-import org.odpi.openmetadata.accessservices.analyticsmodeling.model.*;
-import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.*;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ModuleTableFilter;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerDatabase;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerDatabaseSchema;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerModule;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerSchemaTables;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.BaseObjectType;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.Column;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.DataSource;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.ForeignColumn;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.ForeignKey;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.MetadataModule;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.PrimaryKey;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.Table;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.TableItem;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.response.Messages;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.ExecutionContext;
@@ -42,8 +42,20 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The class builds data content of the Analytics Modeling OMAS responses.<br>
@@ -63,6 +75,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * All repository logic should be handled there.<br>
  */
 public class DatabaseContextHandler {
+
+	private static final ObjectWriter OBJECT_WRITER = new ObjectMapper().writer();
 
 	public static final String DATA_SOURCE_GUID = "dataSourceGUID";
 	
@@ -460,7 +474,7 @@ public class DatabaseContextHandler {
 		}
 		
 		try {
-			return new ObjectMapper().writeValueAsString(json);
+			return OBJECT_WRITER.writeValueAsString(json);
 		} catch (JsonProcessingException e) {
 			// log warning in context
 			ctx.addMessage(AnalyticsModelingErrorCode.BUILD_GLOSSARY_TERM_EXCEPTION.getMessageDefinition(term.getName()),

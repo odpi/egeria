@@ -4,6 +4,8 @@
 package org.odpi.openmetadata.integrationservices.lineage.contextmanager;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.accessservices.assetmanager.client.*;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
@@ -40,7 +42,9 @@ public class LineageIntegratorContextManager extends IntegrationContextManager i
     private GovernanceExchangeClient   governanceExchangeClient;
     private StewardshipExchangeClient  stewardshipExchangeClient;
 
-    private final ObjectMapper                   objectMapper             = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectWriter OBJECT_WRITER = OBJECT_MAPPER.writer();
+    private static final ObjectReader OBJECT_READER = OBJECT_MAPPER.reader();
     private final List<OpenLineageEventListener> registeredEventListeners = new ArrayList<>();
 
 
@@ -288,7 +292,7 @@ public class LineageIntegratorContextManager extends IntegrationContextManager i
         {
             try
             {
-                event = objectMapper.readValue(rawEvent, OpenLineageRunEvent.class);
+                event = OBJECT_READER.readValue(rawEvent, OpenLineageRunEvent.class);
             }
             catch (Exception error)
             {
@@ -320,7 +324,7 @@ public class LineageIntegratorContextManager extends IntegrationContextManager i
         {
             try
             {
-                rawEvent = objectMapper.writeValueAsString(event);
+                rawEvent = OBJECT_WRITER.writeValueAsString(event);
             }
             catch (Exception error)
             {
