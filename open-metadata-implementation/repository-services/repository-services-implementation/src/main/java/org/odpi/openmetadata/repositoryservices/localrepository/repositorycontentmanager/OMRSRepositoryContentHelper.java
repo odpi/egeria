@@ -838,7 +838,6 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         entity.setStatus(repositoryContentManager.getInitialStatus(sourceName, typeName, methodName));
         entity.setCreatedBy(userName);
         entity.setInstanceURL(repositoryContentManager.getEntityURL(sourceName, guid));
-
     }
 
 

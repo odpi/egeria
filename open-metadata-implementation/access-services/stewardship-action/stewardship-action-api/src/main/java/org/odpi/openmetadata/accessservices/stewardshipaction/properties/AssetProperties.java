@@ -22,9 +22,9 @@ public class AssetProperties extends SupplementaryProperties
 {
     private static final long     serialVersionUID = 1L;
 
-    private String technicalName = null;
-    private String versionIdentifier = null;
-    private String technicalDescription = null;
+    private String resourceName        = null;
+    private String versionIdentifier   = null;
+    private String resourceDescription = null;
 
     /**
      * Default constructor
@@ -45,33 +45,33 @@ public class AssetProperties extends SupplementaryProperties
 
         if (template != null)
         {
-            technicalName = template.getDisplayName();
+            resourceName = template.getDisplayName();
             versionIdentifier = template.getVersionIdentifier();
-            technicalDescription = template.getTechnicalDescription();
+            resourceDescription = template.getResourceDescription();
         }
     }
 
 
     /**
-     * Returns the stored technical name property for the asset.
+     * Returns the name of the resource as known to the technology that supports it.
      * If no technical name is available then null is returned.
      *
      * @return String name
      */
-    public String getTechnicalName()
+    public String getResourceName()
     {
-        return technicalName;
+        return resourceName;
     }
 
 
     /**
-     * Set up the stored technical name property for the asset.
+     * Set up name of the resource as known to the technology that supports it.
      *
-     * @param technicalName String name
+     * @param resourceName String name
      */
-    public void setTechnicalName(String technicalName)
+    public void setResourceName(String resourceName)
     {
-        this.technicalName = technicalName;
+        this.resourceName = resourceName;
     }
 
 
@@ -99,25 +99,25 @@ public class AssetProperties extends SupplementaryProperties
 
 
     /**
-     * Returns the stored technical description property for the asset.
+     * Returns the stored technical description property from the resource.
      * If no description is provided then null is returned.
      *
      * @return description String text
      */
-    public String getTechnicalDescription()
+    public String getResourceDescription()
     {
-        return technicalDescription;
+        return resourceDescription;
     }
 
 
     /**
-     * Set up the stored technical description property associated with the asset.
+     * Set up the stored technical description property associated with the resource.
      *
-     * @param technicalDescription String text
+     * @param resourceDescription String text
      */
-    public void setTechnicalDescription(String technicalDescription)
+    public void setResourceDescription(String resourceDescription)
     {
-        this.technicalDescription = technicalDescription;
+        this.resourceDescription = resourceDescription;
     }
 
 
@@ -130,9 +130,9 @@ public class AssetProperties extends SupplementaryProperties
     public String toString()
     {
         return "AssetProperties{" +
-                       "technicalName='" + technicalName + '\'' +
+                       "resourceName='" + resourceName + '\'' +
                        ", versionIdentifier='" + versionIdentifier + '\'' +
-                       ", technicalDescription='" + technicalDescription + '\'' +
+                       ", resourceDescription='" + resourceDescription + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", effectiveFrom=" + getEffectiveFrom() +
@@ -172,7 +172,7 @@ public class AssetProperties extends SupplementaryProperties
 
         AssetProperties that = (AssetProperties) objectToCompare;
 
-        if (technicalName != null ? ! technicalName.equals(that.technicalName) : that.technicalName != null)
+        if (resourceName != null ? ! resourceName.equals(that.resourceName) : that.resourceName != null)
         {
             return false;
         }
@@ -180,7 +180,7 @@ public class AssetProperties extends SupplementaryProperties
         {
             return false;
         }
-        return technicalDescription != null ? technicalDescription.equals(that.technicalDescription) : that.technicalDescription == null;
+        return resourceDescription != null ? resourceDescription.equals(that.resourceDescription) : that.resourceDescription == null;
     }
 
 
@@ -192,6 +192,6 @@ public class AssetProperties extends SupplementaryProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), technicalName, versionIdentifier, technicalDescription);
+        return Objects.hash(super.hashCode(), resourceName, versionIdentifier, resourceDescription);
     }
 }

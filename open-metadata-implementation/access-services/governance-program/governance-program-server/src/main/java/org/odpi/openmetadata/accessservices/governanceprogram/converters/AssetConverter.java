@@ -121,8 +121,8 @@ public class AssetConverter<B> extends GovernanceProgramOMASConverter<B>
 
                     assetProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     assetProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    assetProperties.setTechnicalName(this.removeName(instanceProperties));
-                    assetProperties.setTechnicalDescription(this.removeDescription(instanceProperties));
+                    assetProperties.setResourceName(this.removeName(instanceProperties));
+                    assetProperties.setResourceDescription(this.removeDescription(instanceProperties));
 
                     /* Note this value should be in the classification and have been incorporated into the element header already */
                     this.removeOwner(instanceProperties);

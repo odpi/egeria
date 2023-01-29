@@ -23,7 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = InstanceAuditHeader.class, name = "InstanceAuditHeader"),
         @JsonSubTypes.Type(value = InstanceGraph.class, name = "InstanceGraph"),
         @JsonSubTypes.Type(value = InstanceType.class, name = "InstanceType"),
-        @JsonSubTypes.Type(value = InstancePropertyValue.class, name = "InstancePropertyValue")
+        @JsonSubTypes.Type(value = InstancePropertyValue.class, name = "InstancePropertyValue"),
+        @JsonSubTypes.Type(value = InstanceProperties.class, name = "InstanceProperties")
 })
 public abstract class InstanceElementHeader extends RepositoryElementHeader
 {

@@ -96,7 +96,7 @@ public class GraphOMRSEntityMapper {
 
     /*
      * method to remove property from vertex.
-     * qualfiiedPropName is the non-prefixed name - qualified by typename if a TDA; or simple core property name
+     * qualifiedPropName is the non-prefixed name - qualified by typename if a TDA; or simple core property name
      */
     private void removeProperty(Vertex vertex, String qualifiedPropName) {
         // no value has been specified - remove the property from the vertex

@@ -26,7 +26,7 @@ public class ConformanceSuiteOMRSTopicListener implements OMRSTopicListener
 {
     private static final Logger log = LoggerFactory.getLogger(ConformanceSuiteOMRSTopicListener.class);
 
-    private RepositoryConformanceWorkPad       workPad;
+    private final RepositoryConformanceWorkPad       workPad;
 
     private List<OMRSTypeDefEvent>             bufferedTypeDefEvents = new ArrayList<>();
     private int                                typeDefEventCount     = 0;

@@ -83,10 +83,26 @@ public enum RepositoryConformanceProfile implements Serializable
                                         "The technology under test supports the use of regular expressions to search for metadata instances.",
                                         "https://egeria-project.org/guides/cts/repository-profiles/entity-advanced-search",
                                         OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
-    RELATIONSHIP_ADVANCED_SEARCH   (15, "Relationship advanced search",
+    RELATIONSHIP_ADVANCED_SEARCH    (15, "Relationship advanced search",
                                          "The technology under test supports the use of regular expressions to search for relationship instances.",
                                          "https://egeria-project.org/guides/cts/repository-profiles/relationship-advanced-search",
-                                         OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE);
+                                         OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+    INSTANCE_VERSIONS               (16, "List the versions of each instance",
+                                         "The technology under test is able to return the list of versions of an instance that are stored.",
+                                        "https://egeria-project.org/guides/cts/repository-profiles/instance-versions",
+                                        OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+    HOME_CLASSIFICATIONS            (17, "Store classifications independently of entity",
+                                     "The technology under test is able to provide a home to a classification when the entity is homed in a different repository.",
+                                     "https://egeria-project.org/guides/cts/repository-profiles/home-classifications",
+                                     OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+    EXTERNAL_INSTANCES             (18, "External instances",
+                                     "The technology under test is able to store and maintain external entities.",
+                                     "https://egeria-project.org/guides/cts/repository-profiles/external-instances",
+                                     OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+    RESTORE_FROM_BACKUP             (19, "Restore metadata from a backup",
+                                     "The technology under test is able to process events that load metadata from its own backup.",
+                                     "https://egeria-project.org/guides/cts/repository-profiles/restore-from-backup",
+                                     OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE);
 
 
     private static final long serialVersionUID = 1L;

@@ -532,13 +532,14 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
         Relationship retrievedReferenceCopy = null;
         long start;
         long elapsedTime;
-        try {
-
+        try
+        {
             start = System.currentTimeMillis();
             retrievedReferenceCopy = metadataCollection.getRelationship(workPad.getLocalServerUserId(), newRelationship.getGUID());
             elapsedTime = System.currentTimeMillis() - start;
-
-        } catch (Exception exc) {
+        }
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any other exceptions from this method call. Log and fail the test.
              */
@@ -550,7 +551,6 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception(msg, exc);
-
         }
 
         assertCondition((retrievedReferenceCopy != null),
@@ -565,7 +565,6 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
         /*
          * Verify that the retrieved reference copy matches the original relationship
          */
-
         verifyCondition((newRelationship.equals(retrievedReferenceCopy)),
                         assertion3,
                         testTypeName + assertionMsg3,
@@ -578,11 +577,10 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
          * If the relationship def has any valid status values (including DELETED), attempt
          * to modify the status of the retrieved reference copy - this should fail
          */
-
-        for (InstanceStatus validInstanceStatus : relationshipDef.getValidInstanceStatusList()) {
-
-            try {
-
+        for (InstanceStatus validInstanceStatus : relationshipDef.getValidInstanceStatusList())
+        {
+            try
+            {
                 start = System.currentTimeMillis();
                 Relationship updatedRelationship = metadataCollection.updateRelationshipStatus(workPad.getLocalServerUserId(), retrievedReferenceCopy.getGUID(), validInstanceStatus);
                 elapsedTime = System.currentTimeMillis() - start;
@@ -595,8 +593,9 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                                 "updateRelationshipStatus-negative",
                                 elapsedTime);
 
-            } catch (InvalidParameterException e) {
-
+            }
+            catch (InvalidParameterException e)
+            {
                 /*
                  * We are not expecting the status update to work - it should have thrown an InvalidParameterException
                  */
@@ -608,11 +607,19 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                                 RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId(),
                                 "updateRelationshipStatus-negative",
                                 elapsedTime);
-            } catch (Exception exc) {
+            }
+            catch (AssertionFailureException exception)
+            {
+                /*
+                 * Re throw this exception, so it is not masked by Exception (below).
+                 */
+                throw exception;
+            }
+            catch (Exception exc)
+            {
                 /*
                  * We are not expecting any exceptions from this method call. Log and fail the test.
                  */
-
                 String methodName = "updateRelationshipStatus";
                 String operationDescription = "update the status of a relationship of type " + relationshipDef.getName();
                 Map<String, String> parameters = new HashMap<>();
@@ -621,25 +628,20 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                 String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception(msg, exc);
-
             }
-
         }
-
-
 
         /*
          * Attempt to modify one or more property of the retrieved reference copy. This is illegal so it should fail.
          */
-
-
         if ((retrievedReferenceCopy.getProperties() != null) &&
                 (retrievedReferenceCopy.getProperties().getInstanceProperties() != null) &&
-                (!retrievedReferenceCopy.getProperties().getInstanceProperties().isEmpty())) {
+                (!retrievedReferenceCopy.getProperties().getInstanceProperties().isEmpty()))
+        {
             InstanceProperties minRelationshipProps = super.getMinPropertiesForInstance(workPad.getLocalServerUserId(), relationshipDef);
 
-            try {
-
+            try
+            {
                 start = System.currentTimeMillis();
                 Relationship minPropertiesRelationship = metadataCollection.updateRelationshipProperties(workPad.getLocalServerUserId(), retrievedReferenceCopy.getGUID(), minRelationshipProps);
                 elapsedTime = System.currentTimeMillis() - start;
@@ -652,7 +654,9 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                                 "updateRelationshipProperties-negative",
                                 elapsedTime);
 
-            } catch (InvalidParameterException e) {
+            }
+            catch (InvalidParameterException e)
+            {
 
                 /*
                  * We are not expecting the status update to work - it should have thrown an InvalidParameterException
@@ -665,11 +669,19 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                                 RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId(),
                                 "updateRelationshipProperties-negative",
                                 elapsedTime);
-            } catch (Exception exc) {
+            }
+            catch (AssertionFailureException exception)
+            {
+                /*
+                 * Re throw this exception, so it is not masked by Exception (below).
+                 */
+                throw exception;
+            }
+            catch (Exception exc)
+            {
                 /*
                  * We are not expecting any other exceptions from this method call. Log and fail the test.
                  */
-
                 String methodName = "updateRelationshipProperties";
                 String operationDescription = "update the properties of a relationship of type " + relationshipDef.getName();
                 Map<String, String> parameters = new HashMap<>();
@@ -678,7 +690,6 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                 String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception(msg, exc);
-
             }
         }
 
@@ -691,9 +702,8 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
          * uses the original type.
          * This test is performed against the TUT.
          */
-
-        try {
-
+        try
+        {
             start = System.currentTimeMillis();
             Relationship reTypedRelationship = metadataCollection.reTypeRelationship(workPad.getLocalServerUserId(),
                                                                                      newRelationship.getGUID(),
@@ -709,8 +719,9 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                             "reTypeRelationship-negative",
                             elapsedTime);
 
-        } catch (InvalidParameterException e) {
-
+        }
+        catch (InvalidParameterException e)
+        {
             /*
              * We are not expecting the type update to work - it should have thrown an InvalidParameterException
              */
@@ -722,11 +733,19 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                             RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId(),
                             "reTypeRelationship-negative",
                             elapsedTime);
-        } catch (Exception exc) {
+        }
+        catch (AssertionFailureException exception)
+        {
+            /*
+             * Re throw this exception, so it is not masked by Exception (below).
+             */
+            throw exception;
+        }
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any other exceptions from this method call. Log and fail the test.
              */
-
             String methodName = "reTypeRelationship";
             String operationDescription = "retype a relationship of type " + relationshipDef.getName();
             Map<String, String> parameters = new HashMap<>();
@@ -736,10 +755,7 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception(msg, exc);
-
         }
-
-
 
         /*
          * Verify that it is not possible to re-identify the reference copy.
@@ -750,8 +766,8 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
         String newGUID = UUID.randomUUID().toString();
 
-        try {
-
+        try
+        {
             start = System.currentTimeMillis();
             Relationship reIdentifiedRelationship = metadataCollection.reIdentifyRelationship(workPad.getLocalServerUserId(),
                                                                                               relationshipDef.getGUID(),
@@ -769,9 +785,9 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                             RepositoryConformanceProfileRequirement.REFERENCE_COPY_LOCKING.getRequirementId(),
                             "reIdentifyRelationship-negative",
                             elapsedTime);
-
-        } catch (InvalidParameterException e) {
-
+        }
+        catch (InvalidParameterException e)
+        {
             /*
              * We are not expecting the identity update to work - it should have thrown an InvalidParameterException
              */
@@ -784,7 +800,16 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                             "reIdentifyRelationship-negative",
                             elapsedTime);
 
-        } catch (Exception exc) {
+        }
+        catch (AssertionFailureException exception)
+        {
+            /*
+             * Re throw this exception, so it is not masked by Exception (below).
+             */
+            throw exception;
+        }
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any other exceptions from this method call. Log and fail the test.
              */
@@ -798,7 +823,6 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception(msg, exc);
-
         }
 
 
@@ -807,8 +831,8 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
          * This test is performed against the TUT.
          */
 
-        try {
-
+        try
+        {
             start = System.currentTimeMillis();
             metadataCollection.purgeRelationshipReferenceCopy(workPad.getLocalServerUserId(), refRelationship);
             elapsedTime = System.currentTimeMillis() - start;
@@ -824,11 +848,19 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                             "purgeRelationshipReferenceCopy",
                             elapsedTime);
 
-        } catch (Exception exc) {
+        }
+        catch (AssertionFailureException exception)
+        {
+            /*
+             * Re throw this exception, so it is not masked by Exception (below).
+             */
+            throw exception;
+        }
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any other exceptions from this method call. Log and fail the test.
              */
-
             String methodName = "purgeRelationshipReferenceCopy";
             String operationDescription = "purge a reference copy of a relationship of type " + relationshipDef.getName();
             Map<String, String> parameters = new HashMap<>();
@@ -836,12 +868,11 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception(msg, exc);
-
         }
 
 
-        try {
-
+        try
+        {
             start = System.currentTimeMillis();
             metadataCollection.refreshRelationshipReferenceCopy(workPad.getLocalServerUserId(),
                                                                 refRelationship.getGUID(),
@@ -860,11 +891,19 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                             RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId(),
                             "refreshRelationshipReferenceCopy",
                             elapsedTime);
-        } catch (Exception exc) {
+        }
+        catch (AssertionFailureException exception)
+        {
+            /*
+             * Re throw this exception, so it is not masked by Exception (below).
+             */
+            throw exception;
+        }
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any other exceptions from this method call. Log and fail the test.
              */
-
             String methodName = "refreshRelationshipReferenceCopy";
             String operationDescription = "request a refresh of a reference copy of a relationship of type " + relationshipDef.getName();
             Map<String, String> parameters = new HashMap<>();
@@ -875,7 +914,6 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception(msg, exc);
-
         }
 
 
@@ -893,15 +931,18 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
          * Retrieve the ref copy from the TUT - if it does not exist, assert that ref copies are not a discovered property
          * Have to be prepared to wait until event has propagated and TUT has created a reference copy of the relationship.
          */
-        try {
+        try
+        {
             Integer remainingCount = this.pollCount;
-            while (refreshedRelationshipRefCopy == null && remainingCount > 0) {
+            while (refreshedRelationshipRefCopy == null && remainingCount > 0)
+            {
 
                 refreshedRelationshipRefCopy = metadataCollection.isRelationshipKnown(workPad.getLocalServerUserId(), newRelationship.getGUID());
                 Thread.sleep(this.pollPeriod);
                 remainingCount--;
             }
-            if (refreshedRelationshipRefCopy == null && remainingCount == 0) {
+            if (refreshedRelationshipRefCopy == null && remainingCount == 0)
+            {
                 ConformanceSuiteAuditCode overflow = ConformanceSuiteAuditCode.POLLING_OVERFLOW;
                 workPad.getAuditLog()
                         .logRecord(assertion10,
@@ -912,7 +953,9 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                                 overflow.getSystemAction(),
                                 overflow.getUserAction());
             }
-        } catch (Exception exc) {
+        }
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any exceptions from this method call. Log and fail the test.
              */
@@ -924,7 +967,6 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception(msg, exc);
-
         }
 
 
@@ -932,13 +974,14 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
          * Verify that the reference copy can be retrieved form the TUT and matches the original...
          */
 
-        try {
-
+        try
+        {
             start = System.currentTimeMillis();
             refreshedRelationshipRefCopy = metadataCollection.getRelationship(workPad.getLocalServerUserId(), newRelationship.getGUID());
             elapsedTime = System.currentTimeMillis() - start;
-
-        } catch (Exception exc) {
+        }
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any other exceptions from this method call. Log and fail the test.
              */
@@ -950,7 +993,6 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception(msg, exc);
-
         }
 
         assertCondition((refreshedRelationshipRefCopy != null),
@@ -966,11 +1008,14 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
          * Verify that the retrieved reference copy matches the original relationship
          */
 
-        verifyCondition((newRelationship.equals(refreshedRelationshipRefCopy)),
-                        assertion11,
-                        testTypeName + assertionMsg11,
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
+        verifyObjectsAreEqual(newRelationship,
+                              refreshedRelationshipRefCopy,
+                              assertion11,
+                              testTypeName + assertionMsg11,
+                              RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                              RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId(),
+                              "getRelationship",
+                              null);
 
 
 
@@ -979,12 +1024,15 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
          * They should cause an OMRS instance event to flow to the TUT and for the ref copy to be purged
          */
 
-        try {
+        try
+        {
             Relationship deletedRelationship = ctsMetadataCollection.deleteRelationship(workPad.getLocalServerUserId(),
                                                                                         newRelationship.getType().getTypeDefGUID(),
                                                                                         newRelationship.getType().getTypeDefName(),
                                                                                         newRelationship.getGUID());
-        } catch (FunctionNotSupportedException exception) {
+        }
+        catch (FunctionNotSupportedException exception)
+        {
 
             /*
              * This is OK - we can NO OP and just proceed to purgeEntity
@@ -1006,15 +1054,19 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
          * Since it may take time to propagate the purge event, retry until the relationship is no longer known at the TUT.
          */
 
-        try {
+        try
+        {
             Relationship survivingRelRefCopy;
             Integer remainingCount = this.pollCount;
-            do {
+            do
+            {
                 survivingRelRefCopy = metadataCollection.isRelationshipKnown(workPad.getLocalServerUserId(), newRelationship.getGUID());
                 Thread.sleep(this.pollPeriod);
                 remainingCount--;
             } while (survivingRelRefCopy != null && remainingCount > 0);
-            if (survivingRelRefCopy == null && remainingCount == 0) {
+
+            if (survivingRelRefCopy == null && remainingCount == 0)
+            {
                 ConformanceSuiteAuditCode overflow = ConformanceSuiteAuditCode.POLLING_OVERFLOW;
                 workPad.getAuditLog()
                         .logRecord(assertion12,
@@ -1025,7 +1077,9 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                                 overflow.getSystemAction(),
                                 overflow.getUserAction());
             }
-        } catch (Exception exc) {
+        }
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any exceptions from this method call. Log and fail the test.
              */
@@ -1037,11 +1091,11 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception(msg, exc);
-
         }
 
 
-        try {
+        try
+        {
             start = System.currentTimeMillis();
             metadataCollection.getRelationship(workPad.getLocalServerUserId(), newRelationship.getGUID());
             elapsedTime = System.currentTimeMillis() - start;
@@ -1054,7 +1108,9 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                             "getRelationship-negative",
                             elapsedTime);
 
-        } catch (RelationshipNotKnownException exception) {
+        }
+        catch (RelationshipNotKnownException exception)
+        {
             elapsedTime = System.currentTimeMillis() - start;
             assertCondition((true),
                             assertion12,
@@ -1063,7 +1119,16 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                             RepositoryConformanceProfileRequirement.REFERENCE_COPY_DELETE.getRequirementId(),
                             "getRelationship-negative",
                             elapsedTime);
-        } catch (Exception exc) {
+        }
+        catch (AssertionFailureException exception)
+        {
+            /*
+             * Re throw this exception, so it is not masked by Exception (below).
+             */
+            throw exception;
+        }
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any other exceptions from this method call. Log and fail the test.
              */
@@ -1075,10 +1140,7 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception(msg, exc);
-
         }
-
-
 
         /*
          * Now is a good time to clean uo the entities we created at teh CTS - which will also have ref copies at the TUT
@@ -1089,7 +1151,8 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
          * These operations are to the CTS
          */
 
-        try {
+        try
+        {
             EntityDetail deletedEntityOne = ctsMetadataCollection.deleteEntity(workPad.getLocalServerUserId(),
                                                                                entityOne.getType().getTypeDefGUID(),
                                                                                entityOne.getType().getTypeDefName(),
@@ -1099,7 +1162,9 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                                                                                entityTwo.getType().getTypeDefGUID(),
                                                                                entityTwo.getType().getTypeDefName(),
                                                                                entityTwo.getGUID());
-        } catch (FunctionNotSupportedException exception) {
+        }
+        catch (FunctionNotSupportedException exception)
+        {
 
             /*
              * This is OK - we can NO OP and just proceed to purgeEntity
@@ -1158,8 +1223,8 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
         EntityDef entityType = null;
 
 
-        try {
-
+        try
+        {
             entityType = entityDefs.get(end1TypeName);
             entityInstanceProperties = this.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityType);
             end1 = metadataCollection.addEntity(workPad.getLocalServerUserId(), entityType.getGUID(), entityInstanceProperties, null, null);
@@ -1170,21 +1235,22 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
             end2 = metadataCollection.addEntity(workPad.getLocalServerUserId(), entityType.getGUID(), entityInstanceProperties, null, null);
             createdEntitiesTUT.add(end2);
 
-        } catch (FunctionNotSupportedException exception) {
-
+        }
+        catch (FunctionNotSupportedException exception)
+        {
             /*
              * The repository does not support creation of entity instances; we need to report and fail the test
              *
              */
-
             super.addNotSupportedAssertion(assertion101,
                                            assertionMsg101,
                                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
                                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
             return;
-
-        } catch (Exception exc) {
+        }
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any other exceptions from this method call. Log and fail the test.
              */
@@ -1199,7 +1265,6 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception(msg, exc);
-
         }
 
 
@@ -1207,7 +1272,8 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
         Relationship relationshipWithMappingProperties = null;
 
-        try {
+        try
+        {
             start = System.currentTimeMillis();
             relationshipWithMappingProperties = metadataCollection.addRelationship(workPad.getLocalServerUserId(),
                                                                                    relationshipDef.getGUID(),
@@ -1227,7 +1293,9 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
             createdRelationshipsTUT.add(relationshipWithMappingProperties);
 
-        } catch (FunctionNotSupportedException exception) {
+        }
+        catch (FunctionNotSupportedException exception)
+        {
 
             /*
              * If running against a read-only repository/connector that cannot add
@@ -1243,13 +1311,19 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
             return;
 
-        } catch (AssertionFailureException exc) {
-            throw exc;
-        } catch (Exception exc) {
+        }
+        catch (AssertionFailureException exception)
+        {
+            /*
+             * Re throw this exception, so it is not masked by Exception (below).
+             */
+            throw exception;
+        }
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any exceptions from this method call. Log and fail the test.
              */
-
             String methodName = "addRelationship";
             String operationDescription = "add a relationship of type " + relationshipDef.getName();
             Map<String, String> parameters = new HashMap<>();
@@ -1261,7 +1335,6 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception(msg, exc);
-
         }
 
 
@@ -1282,21 +1355,25 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
          * If the repository under test supports soft delete, the entity must be deleted before being purged
          */
 
-        try {
+        try
+        {
             metadataCollection.deleteRelationship(workPad.getLocalServerUserId(),
                                                   relationshipWithMappingProperties.getType().getTypeDefGUID(),
                                                   relationshipWithMappingProperties.getType().getTypeDefName(),
                                                   relationshipWithMappingProperties.getGUID());
-        } catch (FunctionNotSupportedException exception) {
+        }
+        catch (FunctionNotSupportedException exception)
+        {
 
             /*
              * This is OK - we can NO OP and just proceed to purgeEntity
              */
-        } catch (Exception exc) {
+        }
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any other exceptions from this method call. Log and fail the test.
              */
-
             String methodName = "deleteRelationship";
             String operationDescription = "delete a relationship of type " + relationshipDef.getName();
             Map<String, String> parameters = new HashMap<>();
@@ -1306,16 +1383,18 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception(msg, exc);
-
         }
 
-        try {
+        try
+        {
             metadataCollection.purgeRelationship(workPad.getLocalServerUserId(),
                                                  relationshipWithMappingProperties.getType().getTypeDefGUID(),
                                                  relationshipWithMappingProperties.getType().getTypeDefName(),
                                                  relationshipWithMappingProperties.getGUID());
 
-        } catch (Exception exc) {
+        }
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any other exceptions from this method call. Log and fail the test.
              */
@@ -1329,7 +1408,6 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception(msg, exc);
-
         }
 
         // Beyond this point, there should be no further references to relationshipWithMappingProperties
@@ -1366,8 +1444,8 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
          * Save a reference copy of the 'remote' entity
          */
 
-        try {
-
+        try
+        {
             start = System.currentTimeMillis();
             metadataCollection.saveRelationshipReferenceCopy(workPad.getLocalServerUserId(), remoteRelationshipWithMappingProperties);
             elapsedTime = System.currentTimeMillis() - start;
@@ -1391,17 +1469,17 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
             Relationship retrievedReferenceCopyWithMappingProperties = null;
 
-            try {
-
+            try
+            {
                 start = System.currentTimeMillis();
                 retrievedReferenceCopyWithMappingProperties = metadataCollection.getRelationship(workPad.getLocalServerUserId(), remoteRelationshipGUID);
                 elapsedTime = System.currentTimeMillis() - start;
-
-            } catch (Exception exc) {
+            }
+            catch (Exception exc)
+            {
                 /*
                  * We are not expecting any other exceptions from this method call. Log and fail the test.
                  */
-
                 String methodName = "getRelationship";
                 String operationDescription = "retrieve a relationship of type " + relationshipDef.getName();
                 Map<String, String> parameters = new HashMap<>();
@@ -1409,16 +1487,16 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                 String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception(msg, exc);
-
             }
 
-            assertCondition((retrievedReferenceCopyWithMappingProperties.equals(remoteRelationshipWithMappingProperties)),
-                            assertion16,
-                            assertionMsg16 + relationshipDef.getName(),
-                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId(),
-                            "getRelationship",
-                            elapsedTime);
+            assertObjectsAreEqual(retrievedReferenceCopyWithMappingProperties,
+                                  remoteRelationshipWithMappingProperties,
+                                  assertion16,
+                                  assertionMsg16 + relationshipDef.getName(),
+                                  RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                                  RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId(),
+                                  "getRelationship",
+                                  elapsedTime);
 
 
             //---------------------------------------------
@@ -1444,7 +1522,8 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
              * Rehome of an instance is a pull operation - i.e. it must be conducted by the TUT as the TUT holds the ref copy.
              */
             Relationship newMasterRelationship = null;
-            try {
+            try
+            {
                 start = System.currentTimeMillis();
                 newMasterRelationship = metadataCollection.reHomeRelationship(workPad.getLocalServerUserId(),
                                                                               remoteRelationshipGUID,
@@ -1464,10 +1543,9 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                                 elapsedTime);
 
                 createdRelationshipsTUT.add(newMasterRelationship);
-
-
-            } catch (FunctionNotSupportedException exception) {
-
+            }
+            catch (FunctionNotSupportedException exception)
+            {
                 /*
                  * Because rehome is an optional method, this is not fatal - just record that the connector does not support rehome
                  */
@@ -1477,7 +1555,16 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getProfileId(),
                                                RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_HOME.getRequirementId());
 
-            } catch (Exception exc) {
+            }
+            catch (AssertionFailureException exception)
+            {
+                /*
+                 * Re throw this exception, so it is not masked by Exception (below).
+                 */
+                throw exception;
+            }
+            catch (Exception exc)
+            {
                 /*
                  * We are not expecting any other exceptions from this method call. Log and fail the test.
                  */
@@ -1494,21 +1581,20 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                 String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception(msg, exc);
-
             }
 
             /*
              * Verify that the new master instance can be retrieved
              */
 
-            try {
-
+            try
+            {
                 start = System.currentTimeMillis();
                 retrievedReferenceCopyWithMappingProperties = metadataCollection.getRelationship(workPad.getLocalServerUserId(), remoteRelationshipGUID);
                 elapsedTime = System.currentTimeMillis() - start;
-
             }
-            catch (Exception exc) {
+            catch (Exception exc)
+            {
                 /*
                  * We are not expecting any other exceptions from this method call. Log and fail the test.
                  */
@@ -1520,7 +1606,6 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                 String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception(msg, exc);
-
             }
 
             assertCondition((retrievedReferenceCopyWithMappingProperties != null),
@@ -1551,18 +1636,21 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
              * In both cases the operation is performed at the TUT.
              */
 
-            if (newMasterRelationship != null) {
+            if (newMasterRelationship != null)
+            {
 
                 /*
                  * The rehome operation worked - perform a soft delete (optional) followed by a purge.
                  */
-                try {
+                try
+                {
                     metadataCollection.deleteRelationship(workPad.getLocalServerUserId(),
                                                           newMasterRelationship.getType().getTypeDefGUID(),
                                                           newMasterRelationship.getType().getTypeDefName(),
                                                           newMasterRelationship.getGUID());
                 }
-                catch (FunctionNotSupportedException exception) {
+                catch (FunctionNotSupportedException exception)
+                {
 
                     /*
                      * This is OK - we can NO OP and just proceed to purgeEntity
@@ -1574,7 +1662,8 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                                                                   newMasterRelationship.getType().getTypeDefName(),
                                                                   newMasterRelationship.getMetadataCollectionId());
             }
-            else {
+            else
+            {
                 /*
                  * The rehome operation did not work - the TUT is still holding a reference copy
                  */
@@ -1591,23 +1680,27 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
 
             }
-
-
-
-        } catch (AssertionFailureException e) {
-            throw e;
-        } catch (FunctionNotSupportedException e) {
-
+        }
+        catch (AssertionFailureException exception)
+        {
+            /*
+             * Re throw this exception, so it is not masked by Exception (below).
+             */
+            throw exception;
+        }
+        catch (FunctionNotSupportedException e)
+        {
             super.addNotSupportedAssertion(assertion15,
                                            assertionMsg15,
                                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
                                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
 
-        } catch (Exception exc) {
+        }
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any other exceptions from this method call. Log and fail the test.
              */
-
             String methodName = "saveRelationshipReferenceCopy";
             String operationDescription = "save a reference copy of a relationship of type " + relationshipDef.getName();
             Map<String, String> parameters = new HashMap<>();
@@ -1615,7 +1708,6 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception(msg, exc);
-
         }
 
 
@@ -1624,17 +1716,19 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
          * And finally clean up the entities - these are known to be locally master (by the TUT) as they
          * were never subject to a rehome operation. Soft delete (optional) then purge.
          */
-        try {
+        try
+        {
             metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
-                    end1.getType().getTypeDefGUID(),
-                    end1.getType().getTypeDefName(),
-                    end1.getGUID());
+                                            end1.getType().getTypeDefGUID(),
+                                            end1.getType().getTypeDefName(),
+                                            end1.getGUID());
             metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
-                    end2.getType().getTypeDefGUID(),
-                    end2.getType().getTypeDefName(),
-                    end2.getGUID());
+                                            end2.getType().getTypeDefGUID(),
+                                            end2.getType().getTypeDefName(),
+                                            end2.getGUID());
         }
-        catch (FunctionNotSupportedException exception) {
+        catch (FunctionNotSupportedException exception)
+        {
 
             /*
              * This is OK - we can NO OP and just proceed to purgeEntity
@@ -1642,20 +1736,13 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
         }
 
         metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
-                end1.getType().getTypeDefGUID(),
-                end1.getType().getTypeDefName(),
-                end1.getGUID());
+                                       end1.getType().getTypeDefGUID(),
+                                       end1.getType().getTypeDefName(),
+                                       end1.getGUID());
         metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
-                end2.getType().getTypeDefGUID(),
-                end2.getType().getTypeDefName(),
-                end2.getGUID());
-
-
-
-
-
-
-
+                                       end2.getType().getTypeDefGUID(),
+                                       end2.getType().getTypeDefName(),
+                                       end2.getGUID());
 
         super.setSuccessMessage("Reference copies of relationships can be managed through their lifecycle");
 
@@ -1681,13 +1768,15 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
-        if (createdRelationshipsCTS != null && !createdRelationshipsCTS.isEmpty()) {
+        if (createdRelationshipsCTS != null && !createdRelationshipsCTS.isEmpty())
+        {
 
             /*
              * Instances were created - clean them up.
              */
 
-            for (Relationship relationship : createdRelationshipsCTS) {
+            for (Relationship relationship : createdRelationshipsCTS)
+            {
 
                 try
                 {
@@ -1713,46 +1802,15 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                                                      relationship.getGUID());
             }
         }
-        if (createdRelationshipsTUT != null && !createdRelationshipsTUT.isEmpty()) {
+        if (createdRelationshipsTUT != null && !createdRelationshipsTUT.isEmpty())
+        {
 
             /*
              * Instances were created - clean them up.
              */
 
-            for (Relationship relationship : createdRelationshipsTUT) {
-
-                try
-                {
-                    metadataCollection.deleteRelationship(workPad.getLocalServerUserId(),
-                                                          relationship.getType().getTypeDefGUID(),
-                                                          relationship.getType().getTypeDefName(),
-                                                          relationship.getGUID());
-                }
-                catch (FunctionNotSupportedException exception)
-                {
-                    // NO OP - can proceed to purge
-                }
-                catch (RelationshipNotKnownException exception)
-                {
-                    // Relationship already cleaned up - nothing more to do here.
-                    continue;
-                }
-
-                // If relationship is known then (whether delete was supported or not) issue purge
-                metadataCollection.purgeRelationship(workPad.getLocalServerUserId(),
-                                                     relationship.getType().getTypeDefGUID(),
-                                                     relationship.getType().getTypeDefName(),
-                                                     relationship.getGUID());
-            }
-        }
-        if (createdRelationshipRefCopiesTUT != null && !createdRelationshipRefCopiesTUT.isEmpty()) {
-
-            /*
-             * Instances were created - clean them up.
-             */
-
-            for (Relationship relationship : createdRelationshipRefCopiesTUT) {
-
+            for (Relationship relationship : createdRelationshipsTUT)
+            {
                 try
                 {
                     metadataCollection.deleteRelationship(workPad.getLocalServerUserId(),
@@ -1778,15 +1836,48 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
             }
         }
 
+        if (createdRelationshipRefCopiesTUT != null && !createdRelationshipRefCopiesTUT.isEmpty())
+        {
+            /*
+             * Instances were created - clean them up.
+             */
 
+            for (Relationship relationship : createdRelationshipRefCopiesTUT)
+            {
+                try
+                {
+                    metadataCollection.deleteRelationship(workPad.getLocalServerUserId(),
+                                                          relationship.getType().getTypeDefGUID(),
+                                                          relationship.getType().getTypeDefName(),
+                                                          relationship.getGUID());
+                }
+                catch (FunctionNotSupportedException exception)
+                {
+                    // NO OP - can proceed to purge
+                }
+                catch (RelationshipNotKnownException exception)
+                {
+                    // Relationship already cleaned up - nothing more to do here.
+                    continue;
+                }
 
-        if (createdEntitiesCTS != null && !createdEntitiesCTS.isEmpty()) {
+                // If relationship is known then (whether delete was supported or not) issue purge
+                metadataCollection.purgeRelationship(workPad.getLocalServerUserId(),
+                                                     relationship.getType().getTypeDefGUID(),
+                                                     relationship.getType().getTypeDefName(),
+                                                     relationship.getGUID());
+            }
+        }
+
+        if (createdEntitiesCTS != null && !createdEntitiesCTS.isEmpty())
+        {
 
             /*
              * Instances were created - clean them up.
              */
 
-            for (EntityDetail entity : createdEntitiesCTS) {
+            for (EntityDetail entity : createdEntitiesCTS)
+            {
 
                 try
                 {
@@ -1812,13 +1903,15 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                                                entity.getGUID());
             }
         }
-        if (createdEntitiesTUT != null && !createdEntitiesTUT.isEmpty()) {
+        if (createdEntitiesTUT != null && !createdEntitiesTUT.isEmpty())
+        {
 
             /*
              * Instances were created - clean them up.
              */
 
-            for (EntityDetail entity : createdEntitiesTUT) {
+            for (EntityDetail entity : createdEntitiesTUT)
+            {
 
                 try
                 {
