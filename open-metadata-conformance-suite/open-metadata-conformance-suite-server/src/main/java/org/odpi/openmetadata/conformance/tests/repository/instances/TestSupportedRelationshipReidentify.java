@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.conformance.tests.repository.instances;
 
+import org.odpi.openmetadata.conformance.ffdc.exception.AssertionFailureException;
 import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceTestCase;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
@@ -324,7 +325,6 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
 
         }
 
-
         assertCondition((true),
                         assertion8,
                         testTypeName + assertionMsg8,
@@ -378,8 +378,8 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
 
         Relationship reIdentifiedRelationship = null;
 
-        try {
-
+        try
+        {
             start = System.currentTimeMillis();
             reIdentifiedRelationship = metadataCollection.reIdentifyRelationship(workPad.getLocalServerUserId(),
                                                                                  relationshipDef.getGUID(),
@@ -411,8 +411,9 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
                             RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
                             RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
 
-        } catch (FunctionNotSupportedException exception) {
-
+        }
+        catch (FunctionNotSupportedException exception)
+        {
             super.addNotSupportedAssertion(assertion9,
                                            assertionMsg9,
                                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
@@ -420,13 +421,19 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
 
             /* Give up on the rest of the testcase */
             return;
-
         }
-        catch (Exception exc) {
+        catch (AssertionFailureException exception)
+        {
+            /*
+             * Re throw this exception, so it is not masked by Exception (below).
+             */
+            throw exception;
+        }
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any other exceptions from this method call. Log and fail the test.
              */
-
             String methodName = "reIdentifyRelationship";
             String operationDescription = "reidentify a relationship of type " + relationshipDef.getName();
             Map<String, String> parameters = new HashMap<>();
@@ -436,7 +443,6 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception(msg, exc);
-
         }
 
 
@@ -444,7 +450,8 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
          * Validate that the relationship can no longer be retrieved under its original GUID.
          */
 
-        try {
+        try
+        {
             start = System.currentTimeMillis();
             metadataCollection.getRelationship(workPad.getLocalServerUserId(), newRelationship.getGUID());
             elapsedTime = System.currentTimeMillis() - start;
@@ -456,7 +463,9 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
                             RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId(),
                             "getRelationship-negative",
                             elapsedTime);
-        } catch (RelationshipNotKnownException exception) {
+        }
+        catch (RelationshipNotKnownException exception)
+        {
             elapsedTime = System.currentTimeMillis() - start;
             assertCondition((true),
                             assertion5,
@@ -471,7 +480,8 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
          * Validate that the relationship can be retrieved under its new GUID.
          */
 
-        try {
+        try
+        {
             start = System.currentTimeMillis();
             Relationship theRelationship = metadataCollection.getRelationship(workPad.getLocalServerUserId(), newGUID);
             elapsedTime = System.currentTimeMillis() - start;
@@ -483,7 +493,9 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
                             "getRelationship",
                             elapsedTime);
 
-        } catch (RelationshipNotKnownException exception) {
+        }
+        catch (RelationshipNotKnownException exception)
+        {
             assertCondition((false),
                             assertion6,
                             testTypeName + assertionMsg6,
@@ -502,12 +514,15 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
          * not work this will fail but that's OK.
          */
 
-        try {
+        try
+        {
             Relationship deletedRelationship = metadataCollection.deleteRelationship(workPad.getLocalServerUserId(),
                                                                                      newRelationship.getType().getTypeDefGUID(),
                                                                                      newRelationship.getType().getTypeDefName(),
                                                                                      newGUID);
-        } catch (FunctionNotSupportedException exception) {
+        }
+        catch (FunctionNotSupportedException exception)
+        {
 
             /*
              * This is OK - we can NO OP and just proceed to purgeERelationship
@@ -527,7 +542,8 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
          * These operations are to the CTS
          */
 
-        try {
+        try
+        {
             EntityDetail deletedEntityOne = metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
                                                                             entityOne.getType().getTypeDefGUID(),
                                                                             entityOne.getType().getTypeDefName(),
@@ -537,7 +553,9 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
                                                                             entityTwo.getType().getTypeDefGUID(),
                                                                             entityTwo.getType().getTypeDefName(),
                                                                             entityTwo.getGUID());
-        } catch (FunctionNotSupportedException exception) {
+        }
+        catch (FunctionNotSupportedException exception)
+        {
 
             /*
              * This is OK - we can NO OP and just proceed to purgeEntity
@@ -559,8 +577,6 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
     }
 
 
-
-
     /**
      * Method to clean any instance created by the test case that has not already been cleaned by the running of the test.
      *
@@ -571,14 +587,15 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
 
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
-        if (createdRelationshipsTUT != null && !createdRelationshipsTUT.isEmpty()) {
+        if (createdRelationshipsTUT != null && !createdRelationshipsTUT.isEmpty())
+        {
 
             /*
              * Instances were created - clean them up.
              */
 
-            for (Relationship relationship : createdRelationshipsTUT) {
-
+            for (Relationship relationship : createdRelationshipsTUT)
+            {
                 try
                 {
                     metadataCollection.deleteRelationship(workPad.getLocalServerUserId(),
@@ -606,14 +623,15 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
 
 
 
-        if (createdEntitiesTUT != null && !createdEntitiesTUT.isEmpty()) {
+        if (createdEntitiesTUT != null && !createdEntitiesTUT.isEmpty())
+        {
 
             /*
              * Instances were created - clean them up.
              */
 
-            for (EntityDetail entity : createdEntitiesTUT) {
-
+            for (EntityDetail entity : createdEntitiesTUT)
+            {
                 try
                 {
                     metadataCollection.deleteEntity(workPad.getLocalServerUserId(),

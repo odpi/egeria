@@ -73,6 +73,7 @@ public class TestAsset
      *
      * @param resultObject object returned by the test
      */
+    @SuppressWarnings(value="deprecation")
     private void validateResultObject(Asset resultObject)
     {
         assertTrue(resultObject.getType().equals(type));
@@ -116,7 +117,7 @@ public class TestAsset
         assertTrue(nullObject.getAdditionalProperties() == null);
 
         assertTrue(nullObject.getDisplayName() == null);
-        assertTrue(nullObject.getDescription() == null);
+        assertTrue(nullObject.getResourceDescription() == null);
         assertTrue(nullObject.getConnectionDescription() == null);
         assertTrue(nullObject.getOwner() == null);
         assertTrue(nullObject.getZoneMembership() == null);
@@ -133,7 +134,7 @@ public class TestAsset
         assertTrue(nullObject.getAdditionalProperties() == null);
 
         assertTrue(nullObject.getDisplayName() == null);
-        assertTrue(nullObject.getDescription() == null);
+        assertTrue(nullObject.getResourceDescription() == null);
         assertTrue(nullObject.getConnectionDescription() == null);
         assertTrue(nullObject.getOwner() == null);
         assertTrue(nullObject.getZoneMembership() == null);

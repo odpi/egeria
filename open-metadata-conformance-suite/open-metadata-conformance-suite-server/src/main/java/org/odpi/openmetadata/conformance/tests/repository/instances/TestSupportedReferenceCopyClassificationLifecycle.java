@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.conformance.tests.repository.instances;
 
+import org.odpi.openmetadata.conformance.ffdc.exception.AssertionFailureException;
 import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceTestCase;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
@@ -96,7 +97,7 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
          * on the test by setting the discovered property to disabled and returning.
          */
 
-        EntityDetail newEntity;
+        EntityDetail       newEntity;
         InstanceProperties instProps = null;
 
         try
@@ -114,7 +115,6 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
              * thereby getting into the connector-logic beyond the property validation. It also creates an
              * entity that is logically complete - versus an instance with just the locally-defined properties.
              */
-
             instProps = super.getAllPropertiesForInstance(workPad.getLocalServerUserId(), testEntityDef);
 
             long start = System.currentTimeMillis();
@@ -134,12 +134,9 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
                             elapsedTime);
 
             createdEntitiesTUT.add(newEntity);
-
-
         }
         catch (FunctionNotSupportedException exception)
         {
-
             /*
              * If running against a read-only repository/connector that cannot add
              * entities or relationships catch FunctionNotSupportedException and give up the test.
@@ -153,7 +150,13 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
                                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
             return;
-
+        }
+        catch (AssertionFailureException exception)
+        {
+            /*
+             * Re throw this exception, so it is not masked by Exception (below).
+             */
+            throw exception;
         }
         catch (Exception exc)
         {
@@ -171,7 +174,6 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception(msg, exc);
-
         }
 
         /*
@@ -183,7 +185,6 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
          * Make a copy of the entity under a different variable name - not strictly necessary but makes things clearer - then modify it, so
          * it appears to be from a remote metadata collection.
          */
-
         EntityDetail remoteEntity = newEntity;
 
         /*
@@ -191,21 +192,25 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
          * If the repository under test supports soft delete, the entity must be deleted before being purged
          */
 
-        try {
+        try
+        {
             EntityDetail deletedEntity = metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
                                                                          newEntity.getType().getTypeDefGUID(),
                                                                          newEntity.getType().getTypeDefName(),
                                                                          newEntity.getGUID());
-        } catch (FunctionNotSupportedException exception) {
+        }
+        catch (FunctionNotSupportedException exception)
+        {
 
             /*
              * This is OK - we can NO OP and just proceed to purgeEntity
              */
-        } catch (Exception exc) {
+        }
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any other exceptions from this method call. Log and fail the test.
              */
-
             String methodName = "deleteEntity";
             String operationDescription = "delete an entity of type " + testEntityDef.getName();
             Map<String, String> parameters = new HashMap<>();
@@ -215,17 +220,17 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception(msg, exc);
-
         }
 
-        try {
-
-
+        try
+        {
             metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
                                            newEntity.getType().getTypeDefGUID(),
                                            newEntity.getType().getTypeDefName(),
                                            newEntity.getGUID());
-        } catch (Exception exc) {
+        }
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any other exceptions from this method call. Log and fail the test.
              */
@@ -239,7 +244,6 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception(msg, exc);
-
         }
 
 
@@ -273,7 +277,8 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
          * Save a reference copy of the 'remote' entity
          */
 
-        try {
+        try
+        {
 
             long start = System.currentTimeMillis();
             metadataCollection.saveEntityReferenceCopy(workPad.getLocalServerUserId(), remoteEntity);
@@ -298,12 +303,14 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
 
             EntityDetail retrievedReferenceCopy = null;
 
-            try {
+            try
+            {
                 start = System.currentTimeMillis();
                 retrievedReferenceCopy = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), remoteEntityGUID);
                 elapsedTime = System.currentTimeMillis() - start;
             }
-            catch (Exception exc) {
+            catch (Exception exc)
+            {
                 /*
                  * We are not expecting any other exceptions from this method call. Log and fail the test.
                  */
@@ -315,7 +322,6 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
                 String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception(msg, exc);
-
             }
 
             assertCondition((retrievedReferenceCopy.getClassifications() == null),
@@ -328,7 +334,8 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
 
             EntityDetail classifiedEntity = null;
 
-            try {
+            try
+            {
 
                 start = System.currentTimeMillis();
                 classifiedEntity = metadataCollection.classifyEntity(workPad.getLocalServerUserId(),
@@ -338,7 +345,8 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
                 elapsedTime = System.currentTimeMillis() - start;
 
             }
-            catch (Exception exc) {
+            catch (Exception exc)
+            {
                 /*
                  * We are not expecting any exceptions from this method call. Log and fail the test.
                  */
@@ -352,7 +360,6 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
                 String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception(msg, exc);
-
             }
 
             assertCondition((classifiedEntity != null),
@@ -367,7 +374,8 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
 
             List<Classification> classifications = classifiedEntity.getClassifications();
 
-            if ((classifications != null) && (classifications.size() == 1)) {
+            if ((classifications != null) && (classifications.size() == 1))
+            {
                 initialClassification = classifications.get(0);
             }
 
@@ -381,11 +389,13 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
 
 
             InstanceProperties classificationProperties = this.getPropertiesForInstance(classificationDef.getPropertiesDefinition());
-            if (classificationProperties != null) {
+            if (classificationProperties != null)
+            {
 
                 EntityDetail reclassifiedEntity =  null;
 
-                try {
+                try
+                {
 
                     start = System.currentTimeMillis();
                     reclassifiedEntity = metadataCollection.updateEntityClassification(workPad.getLocalServerUserId(),
@@ -393,9 +403,9 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
                                                                                        classificationDef.getName(),
                                                                                        classificationProperties);
                     elapsedTime = System.currentTimeMillis() - start;
-
                 }
-                catch (Exception exc) {
+                catch (Exception exc)
+                {
                     /*
                      * We are not expecting any exceptions from this method call. Log and fail the test.
                      */
@@ -415,7 +425,8 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
                 Classification updatedClassification = null;
                 classifications = reclassifiedEntity.getClassifications();
 
-                if ((classifications != null) && (classifications.size() == 1)) {
+                if ((classifications != null) && (classifications.size() == 1))
+                {
                     updatedClassification = classifications.get(0);
                 }
 
@@ -433,8 +444,8 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
 
             EntityDetail declassifiedEntity = null;
 
-            try {
-
+            try
+            {
                 start = System.currentTimeMillis();
                 declassifiedEntity = metadataCollection.declassifyEntity(workPad.getLocalServerUserId(),
                                                                          remoteEntity.getGUID(),
@@ -442,7 +453,8 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
                 elapsedTime = System.currentTimeMillis() - start;
 
             }
-            catch (Exception exc) {
+            catch (Exception exc)
+            {
                 /*
                  * We are not expecting any exceptions from this method call. Log and fail the test.
                  */
@@ -473,7 +485,8 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
              */
 
 
-            try {
+            try
+            {
                 metadataCollection.purgeEntityReferenceCopy(workPad.getLocalServerUserId(),
                                                             remoteEntity.getGUID(),
                                                             remoteEntity.getType().getTypeDefGUID(),
@@ -481,7 +494,8 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
                                                             remoteEntity.getMetadataCollectionId());
 
             }
-            catch (Exception exc) {
+            catch (Exception exc)
+            {
                 /*
                  * We are not expecting any other exceptions from this method call. Log and fail the test.
                  */
@@ -496,21 +510,26 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
                 String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception(msg, exc);
-
             }
-
         }
-        catch (FunctionNotSupportedException e) {
-
+        catch (FunctionNotSupportedException e)
+        {
             super.addNotSupportedAssertion(assertion7,
                                            assertionMsg7,
                                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
                                            RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
 
             return;
-
         }
-        catch (Exception exc) {
+        catch (AssertionFailureException exception)
+        {
+            /*
+             * Re throw this exception, so it is not masked by Exception (below).
+             */
+            throw exception;
+        }
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any other exceptions from this method call. Log and fail the test.
              */
@@ -522,15 +541,11 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception(msg, exc);
-
         }
-
 
         /*
          * If any other exception was thrown, let it go; this method will throw it and fail the whole test
          */
-
-
         super.setSuccessMessage("Classifications on entity reference copies can be managed through their lifecycle");
     }
 
@@ -549,14 +564,15 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
          * For this testcase we created master instances and reference copies at the TUT - two lists to clean up
          */
 
-        if (createdEntitiesTUT != null && !createdEntitiesTUT.isEmpty()) {
+        if (createdEntitiesTUT != null && !createdEntitiesTUT.isEmpty())
+        {
 
             /*
              * Instances were created - clean them up.
              */
 
-            for (EntityDetail entity : createdEntitiesTUT) {
-
+            for (EntityDetail entity : createdEntitiesTUT)
+            {
                 try
                 {
                     metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
@@ -582,14 +598,14 @@ public class TestSupportedReferenceCopyClassificationLifecycle extends Repositor
             }
         }
 
-        if (createdEntityRefCopiesTUT != null && !createdEntityRefCopiesTUT.isEmpty()) {
-
+        if (createdEntityRefCopiesTUT != null && !createdEntityRefCopiesTUT.isEmpty())
+        {
             /*
              * Instances were created - clean them up.
              */
 
-            for (EntityDetail entity : createdEntityRefCopiesTUT) {
-
+            for (EntityDetail entity : createdEntityRefCopiesTUT)
+            {
                 try
                 {
                     metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
