@@ -116,13 +116,16 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
             {
                 for (TypeDef typeDef : typeDefs)
                 {
-                    TestSupportedTypeDef testTypeDef = new TestSupportedTypeDef(workPad,
-                                                                                typeDef,
-                                                                                null,
-                                                                                RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getProfileId(),
-                                                                                RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getRequirementId());
+                    if (typeDef.getStatus() != TypeDefStatus.DEPRECATED_TYPEDEF)
+                    {
+                        TestSupportedTypeDef testTypeDef = new TestSupportedTypeDef(workPad,
+                                                                                    typeDef,
+                                                                                    null,
+                                                                                    RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getProfileId(),
+                                                                                    RepositoryConformanceProfileRequirement.SUPPORTED_TYPE_QUERIES.getRequirementId());
 
-                    typeDefTestCases.add(testTypeDef);
+                        typeDefTestCases.add(testTypeDef);
+                    }
                 }
             }
 
@@ -158,6 +161,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
             List<TestSupportedEntityLifecycle> entityTestCases = new ArrayList<>();
             List<TestSupportedRelationshipLifecycle> relationshipTestCases = new ArrayList<>();
             List<TestSupportedClassificationLifecycle> classificationTestCases = new ArrayList<>();
+
             /*
              * Reference Copy Lifecycle testcases
              */
@@ -179,8 +183,6 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
             List<TestSupportedEntityRetype> entityRetypeTestCases = new ArrayList<>();
 
 
-
-
             /*
              * Search testcases - these are multiphase tests (create, execute, clean)
              */
@@ -198,26 +200,18 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
              * Construct a map of entity type name to list of names of subtypes of that entity type.
              * The map is held in the workPad.
              */
+            OMRSRepositoryConnector cohortRepositoryConnector = workPad.getTutRepositoryConnector();
+            OMRSRepositoryHelper    repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
 
             if (entityDefs != null)
             {
-
                 for (EntityDef entityDef : entityDefs.values())
                 {
-
                     String entityTypeName = entityDef.getName();
+
                     /*
                      * For this entity type - find ALL its supertypes and add the entity type name to their subtype map entries.
-                     */
-                    OMRSRepositoryConnector cohortRepositoryConnector = null;
-                    OMRSRepositoryHelper repositoryHelper = null;
-                    if (workPad != null)
-                    {
-                        cohortRepositoryConnector = workPad.getTutRepositoryConnector();
-                        repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
-                    }
-
-                    /*
+                     *
                      * All entity defs are read from the known types (using the repository helper), not from the gallery returned by
                      * the repository
                      */
@@ -244,13 +238,10 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
              * These maps are useful during graph query testcases, to compose a supported graph.
              * The maps are held in the workPad.
              */
-
             if (relationshipDefs != null)
             {
-
                 for (RelationshipDef relationshipDef : relationshipDefs)
                 {
-
                     String relationshipTypeName = relationshipDef.getName();
                     /*
                      * For this relationship type - find both the end types and add the entity type names to the map.
@@ -258,22 +249,14 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                      */
                     String entityOneTypeName = relationshipDef.getEndDef1().getEntityType().getName();
                     String entityTwoTypeName = relationshipDef.getEndDef2().getEntityType().getName();
+
                     workPad.addRelationshipEndTypes(relationshipTypeName, entityOneTypeName, entityTwoTypeName);
                     workPad.addEntityRelationshipType(entityOneTypeName, relationshipTypeName, 1);
                     workPad.addEntityRelationshipType(entityTwoTypeName, relationshipTypeName, 2);
 
                     /*
                      * For this relationship type - find ALL its supertypes and add the relationship type name to their subtype map entries.
-                     */
-                    OMRSRepositoryConnector cohortRepositoryConnector = null;
-                    OMRSRepositoryHelper repositoryHelper = null;
-                    if (workPad != null)
-                    {
-                        cohortRepositoryConnector = workPad.getTutRepositoryConnector();
-                        repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
-                    }
-
-                    /*
+                     *
                      * All relationship defs are read from the known types (using the repository helper), not from the gallery returned by
                      * the repository
                      */
@@ -293,9 +276,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                     }
 
                 }
-
             }
-
 
 
             /*
@@ -304,10 +285,8 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
 
             if (entityDefs != null)
             {
-
                 for (EntityDef entityDef : entityDefs.values())
                 {
-
                     TestSupportedEntityLifecycle testEntityLifecycle = new TestSupportedEntityLifecycle(workPad, entityDef);
                     entityTestCases.add(testEntityLifecycle);
 
@@ -323,16 +302,13 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                     TestSupportedEntitySearch testEntitySearch = new TestSupportedEntitySearch(workPad, entityDef);
                     entitySearchTestCases.add(testEntitySearch);
                 }
-
             }
 
 
             if (relationshipDefs != null)
             {
-
                 for (RelationshipDef relationshipDef : relationshipDefs)
                 {
-
                     TestSupportedRelationshipLifecycle testRelationshipLifecycle = new TestSupportedRelationshipLifecycle(workPad, entityDefs, relationshipDef);
                     relationshipTestCases.add(testRelationshipLifecycle);
 
@@ -348,18 +324,14 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
 
                     TestSupportedRelationshipSearch testRelationshipSearch = new TestSupportedRelationshipSearch(workPad, entityDefs, relationshipDef);
                     relationshipSearchTestCases.add(testRelationshipSearch);
-
-
                 }
             }
 
 
             if (classificationDefs != null)
             {
-
                 for (ClassificationDef classificationDef : classificationDefs)
                 {
-
                     TestClassificationHasSupportedEntities testClassificationHasSupportedEntities = new TestClassificationHasSupportedEntities(workPad, entityDefs, classificationDef);
 
                     testClassificationHasSupportedEntities.executeTest();
@@ -384,9 +356,6 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                 }
 
             }
-
-
-
 
 
             /*
@@ -469,7 +438,6 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
             }
 
 
-
             /*
              * Validate all the entity and relationship searches
              */
@@ -496,7 +464,6 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                 testCase.executeTest(OpenMetadataTestCase.TestPhase.CLEAN);
             }
 
-
             /*
              * Phase 1
              */
@@ -504,6 +471,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
             {
                 testCase.executeTest(OpenMetadataTestCase.TestPhase.SEED);
             }
+
             /*
              * Phase 2
              */
@@ -536,9 +504,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                 TestGraphQueries testGraphQueries = new TestGraphQueries(workPad, relationshipDefs, entityDefs);
                 testGraphQueries.executeTest();
             }
-
         }
-
     }
 
 

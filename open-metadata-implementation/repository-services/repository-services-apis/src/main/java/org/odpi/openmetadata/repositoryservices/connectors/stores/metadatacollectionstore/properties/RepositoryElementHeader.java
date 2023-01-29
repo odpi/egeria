@@ -5,19 +5,7 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ArrayPropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationEntityExtension;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceElementHeader;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefElementHeader;
-
 import java.io.Serializable;
-import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -34,11 +22,10 @@ public abstract class RepositoryElementHeader implements Serializable
     private static final long serialVersionUID = 1L;
 
     /*
-     * Version number for this header.  This is used to ensure that all the critical header information
-     * in read in a back-level version of the OMRS.  The default is 0 to indicate that the element came from
-     * a version of the OMRS that does not have a version number encoded.
+     * Version number for this header.  The default is 1 to indicate that the element came from
+     * the first version of the OMRS.
      */
-    private long headerVersion = 0;
+    private long headerVersion = 1L;
 
 
     /**
@@ -64,8 +51,6 @@ public abstract class RepositoryElementHeader implements Serializable
             this.headerVersion = template.getHeaderVersion();
         }
     }
-
-
 
 
     /**

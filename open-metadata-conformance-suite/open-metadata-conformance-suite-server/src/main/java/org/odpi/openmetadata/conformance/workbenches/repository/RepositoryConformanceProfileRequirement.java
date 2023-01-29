@@ -226,7 +226,27 @@ public enum RepositoryConformanceProfileRequirement implements Serializable
     RELATIONSHIP_ADVANCED_VALUE_SEARCH     (50, "Relationship advanced value search",
                                             "The technology under test supports the use of regular expressions within value search criteria to search for relationship instances.",
                                             "https://egeria-project.org/guides/cts/repository-profiles/relationship-advanced-search/#advanced-value-search",
-                                            RepositoryConformanceProfile.RELATIONSHIP_ADVANCED_SEARCH);
+                                            RepositoryConformanceProfile.RELATIONSHIP_ADVANCED_SEARCH),
+    GET_ENTITY_VERSIONS                    (51, "Get entity versions",
+                                            "The technology under test supports the command to retrieve stored versions of an entity.",
+                                            "https://egeria-project.org/guides/cts/repository-profiles/instance-versions/#get-entity-versions",
+                                            RepositoryConformanceProfile.INSTANCE_VERSIONS),
+    GET_RELATIONSHIP_VERSIONS              (52, "Get relationship versions",
+                                            "The technology under test supports the command to retrieve stored versions of a relationship.",
+                                            "https://egeria-project.org/guides/cts/repository-profiles/instance-versions/#get-relationship-versions",
+                                            RepositoryConformanceProfile.INSTANCE_VERSIONS),
+    STORE_EXTERNAL_ENTITIES               (53, "Store external entities",
+                                            "The technology under test supports the command to create external entities and retrieve them with the correct provenance.",
+                                            "https://egeria-project.org/guides/cts/repository-profiles/external-instances/#store-external-entities",
+                                            RepositoryConformanceProfile.EXTERNAL_INSTANCES),
+    STORE_EXTERNAL_RELATIONSHIPS          (54, "Store external relationships",
+                                           "The technology under test supports the command to create external relationships and retrieve them with the correct provenance.",
+                                           "https://egeria-project.org/guides/cts/repository-profiles/external-instances/#store-external-relationships",
+                                           RepositoryConformanceProfile.EXTERNAL_INSTANCES),
+    STORE_EXTERNAL_CLASSIFICATIONS        (55, "Store external classifications",
+                                           "The technology under test supports the command to create external classifications and retrieve them with the correct provenance.",
+                                           "https://egeria-project.org/guides/cts/repository-profiles/external-instances/#store-external-classifications",
+                                           RepositoryConformanceProfile.EXTERNAL_INSTANCES);
 
 
 

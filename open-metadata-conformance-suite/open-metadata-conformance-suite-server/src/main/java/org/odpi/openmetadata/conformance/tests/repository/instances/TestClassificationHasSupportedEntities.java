@@ -30,10 +30,10 @@ public class TestClassificationHasSupportedEntities extends RepositoryConformanc
 
     private static final String successMessage = " has at least one supported entity";
 
-    private Map<String, EntityDef> entityDefs;
-    private ClassificationDef      classificationDef;
+    private final Map<String, EntityDef> entityDefs;
+    private final ClassificationDef      classificationDef;
 
-    private List<EntityDef>        supportedEntityDefsForClassification = new ArrayList<>();
+    private final List<EntityDef>        supportedEntityDefsForClassification = new ArrayList<>();
 
     /**
      * Typical constructor sets up superclass and discovered information needed for tests
@@ -62,7 +62,6 @@ public class TestClassificationHasSupportedEntities extends RepositoryConformanc
      */
     protected void run() throws Exception
     {
-
         /*
          * Verify that the supplied TypeDef is valid and update the testId
          */
@@ -98,7 +97,6 @@ public class TestClassificationHasSupportedEntities extends RepositoryConformanc
                 }
                 else
                 {
-
                     super.addNotSupportedAssertion(assertion2,
                             testTypeName + assertionMsg2 + classificationDef.getName(),
                             RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
@@ -108,10 +106,9 @@ public class TestClassificationHasSupportedEntities extends RepositoryConformanc
             }
         }
 
-
         /*
          * Verify that there are entities to connect this classification to.
-         * It the repository does not support any of the valid entity types for this classification.
+         * If the repository does not support any of the valid entity types for this classification.
          * it should not be supporting this classification.
          */
         assertCondition((! supportedEntityDefsForClassification.isEmpty()),

@@ -7,6 +7,7 @@ import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConfor
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 
 public class TestMetadataCollectionId extends RepositoryConformanceTestCase
 {
@@ -77,7 +78,26 @@ public class TestMetadataCollectionId extends RepositoryConformanceTestCase
                         defaultRequirementId);
 
         OMRSMetadataCollection  metadataCollection     = super.getMetadataCollection();
-        String                  mcMetadataCollectionId = metadataCollection.getMetadataCollectionId(workPad.getLocalServerUserId());
+        String                  mcMetadataCollectionId = null;
+
+        /*
+         * This is the first attempt to make a remote call to the technology under test.
+         */
+        int retryCount = 0;
+        do
+        {
+            try
+            {
+                mcMetadataCollectionId = metadataCollection.getMetadataCollectionId(workPad.getLocalServerUserId());
+            }
+            catch (RepositoryErrorException serverNotRunningException)
+            {
+                Thread.sleep(1000);
+            }
+
+            retryCount++;
+
+        } while ((retryCount < 20) && (mcMetadataCollectionId == null));
 
         verifyCondition((mcMetadataCollectionId != null),
                         assertion3,
@@ -90,7 +110,6 @@ public class TestMetadataCollectionId extends RepositoryConformanceTestCase
                         assertionMsg5,
                         defaultProfileId,
                         defaultRequirementId);
-
 
         addDiscoveredProperty(metadataCollectionIdPropertyName,
                               mcMetadataCollectionId,

@@ -876,10 +876,8 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @return {@code List<EntityDetail>} of each historical version of the entity detail within the bounds, and in the order requested.
      * @throws InvalidParameterException the guid or date is null or fromTime is after the toTime
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                 the metadata collection is stored.
-     * @throws EntityNotKnownException the requested entity instance is not known in the metadata collection
-     *                                   at the time requested.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where the metadata collection is stored.
+     * @throws EntityNotKnownException the requested entity instance is not active in the metadata collection at the time requested.
      * @throws EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection.
      * @throws FunctionNotSupportedException the repository does not support history.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.

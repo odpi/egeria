@@ -25,11 +25,11 @@ public class EndpointProperties extends ReferenceableProperties
 {
     private static final long     serialVersionUID = 1L;
 
-    private String technicalName        = null;
-    private String technicalDescription = null;
-    private String address              = null;
-    private String protocol             = null;
-    private String encryptionMethod     = null;
+    private String name             = null;
+    private String description      = null;
+    private String address          = null;
+    private String protocol         = null;
+    private String encryptionMethod = null;
 
 
     /**
@@ -52,8 +52,8 @@ public class EndpointProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            technicalName = template.getTechnicalName();
-            technicalDescription = template.getTechnicalDescription();
+            name             = template.getName();
+            description      = template.getDescription();
             address          = template.getAddress();
             protocol         = template.getProtocol();
             encryptionMethod = template.getEncryptionMethod();
@@ -64,11 +64,11 @@ public class EndpointProperties extends ReferenceableProperties
     /**
      * Set up the technical name for the endpoint.
      *
-     * @param technicalName String name
+     * @param name String name
      */
-    public void setTechnicalName(String technicalName)
+    public void setName(String name)
     {
-        this.technicalName = technicalName;
+        this.name = name;
     }
 
 
@@ -78,20 +78,20 @@ public class EndpointProperties extends ReferenceableProperties
      *
      * @return String name
      */
-    public String getTechnicalName()
+    public String getName()
     {
-        return technicalName;
+        return name;
     }
 
 
     /**
      * Set up the technical description of the endpoint.
      *
-     * @param technicalDescription String
+     * @param description String
      */
-    public void setTechnicalDescription(String technicalDescription)
+    public void setDescription(String description)
     {
-        this.technicalDescription = technicalDescription;
+        this.description = description;
     }
 
 
@@ -100,9 +100,9 @@ public class EndpointProperties extends ReferenceableProperties
      *
      * @return String technicalDescription
      */
-    public String getTechnicalDescription()
+    public String getDescription()
     {
-        return technicalDescription;
+        return description;
     }
 
 
@@ -186,8 +186,8 @@ public class EndpointProperties extends ReferenceableProperties
     public String toString()
     {
         return "EndpointProperties{" +
-                       "technicalName='" + technicalName + '\'' +
-                       ", technicalDescription='" + technicalDescription + '\'' +
+                       "name='" + name + '\'' +
+                       ", description='" + description + '\'' +
                        ", address='" + address + '\'' +
                        ", protocol='" + protocol + '\'' +
                        ", encryptionMethod='" + encryptionMethod + '\'' +
@@ -221,8 +221,8 @@ public class EndpointProperties extends ReferenceableProperties
             return false;
         }
         EndpointProperties that = (EndpointProperties) objectToCompare;
-        return Objects.equals(technicalName, that.technicalName) &&
-                       Objects.equals(technicalDescription, that.technicalDescription) &&
+        return Objects.equals(name, that.name) &&
+                       Objects.equals(description, that.description) &&
                        Objects.equals(address, that.address) &&
                        Objects.equals(protocol, that.protocol) &&
                        Objects.equals(encryptionMethod, that.encryptionMethod);
@@ -237,6 +237,6 @@ public class EndpointProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), technicalName, technicalDescription, address, protocol, encryptionMethod);
+        return Objects.hash(super.hashCode(), name, description, address, protocol, encryptionMethod);
     }
 }

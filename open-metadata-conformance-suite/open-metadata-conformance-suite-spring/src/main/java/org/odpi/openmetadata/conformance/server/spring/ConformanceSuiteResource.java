@@ -82,7 +82,7 @@ public class ConformanceSuiteResource
 
 
     /**
-     * Requests detailed information on the execution of a specific test case.
+     * Requests detailed information on the execution of a specific profile.
      * (Response size will vary, but could be ~25MB for the largest profile ("Metadata sharing").)
      *
      * @param userId calling user.

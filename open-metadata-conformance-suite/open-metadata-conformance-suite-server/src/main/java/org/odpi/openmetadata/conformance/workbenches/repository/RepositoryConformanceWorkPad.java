@@ -25,7 +25,7 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     private static final String workbenchDocURL        = "https://egeria-project.org/guides/cts/" + workbenchId;
     private static final String tutType                = "Open Metadata Repository";
 
-    private OMRSAuditLog            auditLog;
+    private final OMRSAuditLog            auditLog;
 
     private String                  tutServerName               = null;
     private String                  tutMetadataCollectionId     = null;
@@ -38,21 +38,21 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     private String                  localMetadataCollectionId   = null;
     private OMRSRepositoryConnector localRepositoryConnector    = null;
 
-    private Map<String, AttributeTypeDef>    supportedAttributeTypeDefsByGUIDFromRESTAPI = new HashMap<>();
-    private Map<String, AttributeTypeDef>    supportedAttributeTypeDefsByGUIDFromEvents  = new HashMap<>();
-    private Map<String, AttributeTypeDef>    supportedAttributeTypeDefsByName            = new HashMap<>();
+    private       Map<String, AttributeTypeDef>    supportedAttributeTypeDefsByGUIDFromRESTAPI = new HashMap<>();
+    private final Map<String, AttributeTypeDef>    supportedAttributeTypeDefsByGUIDFromEvents  = new HashMap<>();
+    private final Map<String, AttributeTypeDef>    supportedAttributeTypeDefsByName            = new HashMap<>();
 
-    private Map<String, TypeDef>    supportedTypeDefsByGUIDFromRESTAPI = new HashMap<>();
-    private Map<String, TypeDef>    supportedTypeDefsByGUIDFromEvents  = new HashMap<>();
-    private Map<String, TypeDef>    supportedTypeDefsByName            = new HashMap<>();
+    private       Map<String, TypeDef>    supportedTypeDefsByGUIDFromRESTAPI = new HashMap<>();
+    private final Map<String, TypeDef>    supportedTypeDefsByGUIDFromEvents  = new HashMap<>();
+    private final Map<String, TypeDef>    supportedTypeDefsByName            = new HashMap<>();
 
 
-    private Map<String, List<String>>              entitySubTypes          = new HashMap<>();
-    private Map<String, List<String>>              relationshipSubTypes    = new HashMap<>();
-    private Map<String, List<String>>              relationshipEndTypes    = new HashMap<>();
-    private Map<String, List<List<String>>>        entityRelationshipTypes = new HashMap<>();
-    private Map<String, List<List<EntityDetail>>>  entityInstances         = new HashMap<>();
-    private Map<String, List<List<Relationship>>>  relationshipInstances   = new HashMap<>();
+    private final Map<String, List<String>>              entitySubTypes          = new HashMap<>();
+    private final Map<String, List<String>>              relationshipSubTypes    = new HashMap<>();
+    private final Map<String, List<String>>              relationshipEndTypes    = new HashMap<>();
+    private final Map<String, List<List<String>>>        entityRelationshipTypes = new HashMap<>();
+    private final Map<String, List<List<EntityDetail>>>  entityInstances         = new HashMap<>();
+    private final Map<String, List<List<Relationship>>>  relationshipInstances   = new HashMap<>();
 
 
 
@@ -411,7 +411,9 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
 
 
     /**
-     * {@inheritDoc}
+     * Accumulate the set of profile names registered with this work pad.
+     *
+     * @return the profile names
      */
     public synchronized List<String> getProfileNames()
     {
@@ -426,7 +428,10 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
 
 
     /**
-     * {@inheritDoc}
+     * Accumulate the evidences for a given profile.
+     *
+     * @param profileName for which to obtain the detailed results
+     * @return the test evidence organized by profile and requirement within profile
      */
     public synchronized OpenMetadataConformanceProfileResults getProfileResults(String profileName)
     {
@@ -744,7 +749,8 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     void addEntityRelationshipType(String entityTypeName, String relationshipTypeName, int end)
     {
         List<List<String>> bothEndLists = this.entityRelationshipTypes.get(entityTypeName);
-        if (bothEndLists == null) {
+        if (bothEndLists == null)
+        {
             List<String> end1List = new ArrayList<>();
             List<String> end2List = new ArrayList<>();
             bothEndLists = new ArrayList<>();
@@ -752,11 +758,14 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
             bothEndLists.add(end2List);
             this.entityRelationshipTypes.put(entityTypeName,bothEndLists);
         }
-        if (end == 1) {
+
+        if (end == 1)
+        {
             List<String> end1List = bothEndLists.get(0);
             end1List.add(relationshipTypeName);
         }
-        else if (end == 2) {
+        else if (end == 2)
+        {
             List<String> end1List = bothEndLists.get(1);
             end1List.add(relationshipTypeName);
         }
