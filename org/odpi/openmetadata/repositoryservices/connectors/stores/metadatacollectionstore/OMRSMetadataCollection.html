@@ -2349,10 +2349,8 @@ public&nbsp;java.lang.String&nbsp;getMetadataCollectionId()
 <dd><code>List&lt;EntityDetail&gt;</code> of each historical version of the entity detail within the bounds, and in the order requested.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the guid or date is null or fromTime is after the toTime</dd>
-<dd><code><a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where
-                                 the metadata collection is stored.</dd>
-<dd><code><a href="../../../ffdc/exception/EntityNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityNotKnownException</a></code> - the requested entity instance is not known in the metadata collection
-                                   at the time requested.</dd>
+<dd><code><a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem communicating with the metadata repository where the metadata collection is stored.</dd>
+<dd><code><a href="../../../ffdc/exception/EntityNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityNotKnownException</a></code> - the requested entity instance is not active in the metadata collection at the time requested.</dd>
 <dd><code><a href="../../../ffdc/exception/EntityProxyOnlyException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityProxyOnlyException</a></code> - the requested entity instance is only a proxy in the metadata collection.</dd>
 <dd><code><a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - the repository does not support history.</dd>
 <dd><code><a href="../../../ffdc/exception/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>

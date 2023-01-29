@@ -210,16 +210,16 @@ extends <a href="SupplementaryProperties.html" title="class in org.odpi.openmeta
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTechnicalDescription()">getTechnicalDescription</a></span>()</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getResourceDescription()">getResourceDescription</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the stored technical description property for the asset.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTechnicalName()">getTechnicalName</a></span>()</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getResourceName()">getResourceName</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Returns the stored technical name property for the asset.</div>
+<div class="block">Returns the name property for the resource as it is known by the supporting technology.</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
@@ -238,16 +238,16 @@ extends <a href="SupplementaryProperties.html" title="class in org.odpi.openmeta
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTechnicalDescription(java.lang.String)">setTechnicalDescription</a></span>&#8203;(java.lang.String&nbsp;technicalDescription)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setResourceDescription(java.lang.String)">setResourceDescription</a></span>&#8203;(java.lang.String&nbsp;resourceDescription)</code></th>
 <td class="colLast">
 <div class="block">Set up the stored technical description property associated with the asset.</div>
 </td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTechnicalName(java.lang.String)">setTechnicalName</a></span>&#8203;(java.lang.String&nbsp;technicalName)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setResourceName(java.lang.String)">setResourceName</a></span>&#8203;(java.lang.String&nbsp;resourceName)</code></th>
 <td class="colLast">
-<div class="block">Set up the stored technical name property for the asset.</div>
+<div class="block">Set up the stored technical name property for the resource.</div>
 </td>
 </tr>
 <tr id="i7" class="rowColor">
@@ -336,14 +336,14 @@ extends <a href="SupplementaryProperties.html" title="class in org.odpi.openmeta
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="getTechnicalName()">
+<a id="getResourceName()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getTechnicalName</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getTechnicalName()</pre>
-<div class="block">Returns the stored technical name property for the asset.
+<h4>getResourceName</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getResourceName()</pre>
+<div class="block">Returns the name property for the resource as it is known by the supporting technology.
  If no technical name is available then null is returned.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -351,17 +351,17 @@ extends <a href="SupplementaryProperties.html" title="class in org.odpi.openmeta
 </dl>
 </li>
 </ul>
-<a id="setTechnicalName(java.lang.String)">
+<a id="setResourceName(java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>setTechnicalName</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setTechnicalName&#8203;(java.lang.String&nbsp;technicalName)</pre>
-<div class="block">Set up the stored technical name property for the asset.</div>
+<h4>setResourceName</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setResourceName&#8203;(java.lang.String&nbsp;resourceName)</pre>
+<div class="block">Set up the stored technical name property for the resource.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>technicalName</code> - String name</dd>
+<dd><code>resourceName</code> - String name</dd>
 </dl>
 </li>
 </ul>
@@ -393,13 +393,13 @@ extends <a href="SupplementaryProperties.html" title="class in org.odpi.openmeta
 </dl>
 </li>
 </ul>
-<a id="getTechnicalDescription()">
+<a id="getResourceDescription()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getTechnicalDescription</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getTechnicalDescription()</pre>
+<h4>getResourceDescription</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getResourceDescription()</pre>
 <div class="block">Returns the stored technical description property for the asset.
  If no description is provided then null is returned.</div>
 <dl>
@@ -408,17 +408,17 @@ extends <a href="SupplementaryProperties.html" title="class in org.odpi.openmeta
 </dl>
 </li>
 </ul>
-<a id="setTechnicalDescription(java.lang.String)">
+<a id="setResourceDescription(java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>setTechnicalDescription</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setTechnicalDescription&#8203;(java.lang.String&nbsp;technicalDescription)</pre>
+<h4>setResourceDescription</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setResourceDescription&#8203;(java.lang.String&nbsp;resourceDescription)</pre>
 <div class="block">Set up the stored technical description property associated with the asset.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>technicalDescription</code> - String text</dd>
+<dd><code>resourceDescription</code> - String text</dd>
 </dl>
 </li>
 </ul>

@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":6,"i17":6,"i18":6,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":6,"i18":6,"i19":6,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -270,7 +270,7 @@ extends java.lang.Object</pre>
                     java.lang.Integer&nbsp;defaultProfileId,
                     java.lang.Integer&nbsp;defaultRequirementId)</code></th>
 <td class="colLast">
-<div class="block">Typical constructor used when the test case Id needs to be constructed by the test case code.</div>
+<div class="block">Typical constructor used when the test case id needs to be constructed by the test case code.</div>
 </td>
 </tr>
 <tr class="altColor">
@@ -280,7 +280,7 @@ extends java.lang.Object</pre>
                     java.lang.Integer&nbsp;defaultProfileId,
                     java.lang.Integer&nbsp;defaultRequirementId)</code></th>
 <td class="colLast">
-<div class="block">Typical constructor used when the test case Id is fixed.</div>
+<div class="block">Typical constructor used when the test case id is fixed.</div>
 </td>
 </tr>
 </table>
@@ -346,146 +346,160 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i4" class="altColor">
+<td class="colFirst"><code>protected void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#assertObjectsAreEqual(java.lang.Object,java.lang.Object,java.lang.String,java.lang.String,java.lang.Integer,java.lang.Integer,java.lang.String,java.lang.Long)">assertObjectsAreEqual</a></span>&#8203;(java.lang.Object&nbsp;object1,
+                     java.lang.Object&nbsp;object2,
+                     java.lang.String&nbsp;assertionId,
+                     java.lang.String&nbsp;assertionMessage,
+                     java.lang.Integer&nbsp;profileId,
+                     java.lang.Integer&nbsp;requirementId,
+                     java.lang.String&nbsp;methodName,
+                     java.lang.Long&nbsp;elapsedTime)</code></th>
+<td class="colLast">
+<div class="block">Throw an exception if the condition is not true; else return</div>
+</td>
+</tr>
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#cleanTest()">cleanTest</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>protected void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#cleanup()">cleanup</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Default implementation - over-ridden by some test cases.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#endAsynchronousTest()">endAsynchronousTest</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Request from the workbench to log the start of an asynchronous test.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#executeTest()">executeTest</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Request from the workbench to execute this test and generate a result object.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#executeTest(org.odpi.openmetadata.conformance.beans.OpenMetadataTestCase.TestPhase)">executeTest</a></span>&#8203;(<a href="OpenMetadataTestCase.TestPhase.html" title="enum in org.odpi.openmetadata.conformance.beans">OpenMetadataTestCase.TestPhase</a>&nbsp;phase)</code></th>
 <td class="colLast">
 <div class="block">Request from the workbench to execute this test and generate a result object.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="OpenMetadataTestCaseResult.html" title="class in org.odpi.openmetadata.conformance.beans">OpenMetadataTestCaseResult</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getResult()">getResult</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the result object for this test case.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code><a href="OpenMetadataTestCaseSummary.html" title="class in org.odpi.openmetadata.conformance.beans">OpenMetadataTestCaseSummary</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSummary()">getSummary</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return a summary bean for this test case.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTestCaseDescriptionURL()">getTestCaseDescriptionURL</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the URL of the description of the test case.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTestCaseId()">getTestCaseId</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the unique identifier of the test case.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTestCaseName()">getTestCaseName</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the display name of the test case.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isTestPassed()">isTestPassed</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Has the test case passed? If it has not run then false is returned.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isTestRan()">isTestRan</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Has the test case been ran yet?</div>
+<div class="block">Has the test case run yet?</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>protected abstract void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#logTestEnd(java.lang.String)">logTestEnd</a></span>&#8203;(java.lang.String&nbsp;methodName)</code></th>
 <td class="colLast">
 <div class="block">Log that the test case is ending.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>protected abstract void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#logTestStart(java.lang.String)">logTestStart</a></span>&#8203;(java.lang.String&nbsp;methodName)</code></th>
 <td class="colLast">
 <div class="block">Log that the test case is starting.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>protected abstract void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#run()">run</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Method implemented by the actual test case.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>protected void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#run(org.odpi.openmetadata.conformance.beans.OpenMetadataTestCase.TestPhase)">run</a></span>&#8203;(<a href="OpenMetadataTestCase.TestPhase.html" title="enum in org.odpi.openmetadata.conformance.beans">OpenMetadataTestCase.TestPhase</a>&nbsp;phase)</code></th>
 <td class="colLast">
 <div class="block">Method implemented by the actual test case.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>protected void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setSuccessMessage(java.lang.String)">setSuccessMessage</a></span>&#8203;(java.lang.String&nbsp;message)</code></th>
 <td class="colLast">
 <div class="block">Set up the success message.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#startAsynchronousTest()">startAsynchronousTest</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Request from the workbench to log the start of an asynchronous test.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
 <div class="block">toString() JSON-style</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code>protected void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateTestId(java.lang.String,java.lang.String,java.lang.String)">updateTestId</a></span>&#8203;(java.lang.String&nbsp;testCaseRootId,
             java.lang.String&nbsp;testCaseId,
             java.lang.String&nbsp;testCaseName)</code></th>
 <td class="colLast">
-<div class="block">Update the test case Id, name and documentation URL if not already supplied in the constructor.</div>
+<div class="block">Update the test case id, name and documentation URL if not already supplied in the constructor.</div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code>protected void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#verifyCondition(boolean,java.lang.String,java.lang.String,java.lang.Integer,java.lang.Integer)">verifyCondition</a></span>&#8203;(boolean&nbsp;condition,
                java.lang.String&nbsp;assertionId,
@@ -496,7 +510,7 @@ extends java.lang.Object</pre>
 <div class="block">Log if the condition is not true; else return</div>
 </td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code>protected void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#verifyCondition(boolean,java.lang.String,java.lang.String,java.lang.Integer,java.lang.Integer,java.lang.String,java.lang.Long)">verifyCondition</a></span>&#8203;(boolean&nbsp;condition,
                java.lang.String&nbsp;assertionId,
@@ -505,6 +519,20 @@ extends java.lang.Object</pre>
                java.lang.Integer&nbsp;requirementId,
                java.lang.String&nbsp;methodName,
                java.lang.Long&nbsp;elapsedTime)</code></th>
+<td class="colLast">
+<div class="block">Log if the condition is not true; else return</div>
+</td>
+</tr>
+<tr id="i27" class="rowColor">
+<td class="colFirst"><code>protected void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#verifyObjectsAreEqual(java.lang.Object,java.lang.Object,java.lang.String,java.lang.String,java.lang.Integer,java.lang.Integer,java.lang.String,java.lang.Long)">verifyObjectsAreEqual</a></span>&#8203;(java.lang.Object&nbsp;object1,
+                     java.lang.Object&nbsp;object2,
+                     java.lang.String&nbsp;assertionId,
+                     java.lang.String&nbsp;assertionMessage,
+                     java.lang.Integer&nbsp;profileId,
+                     java.lang.Integer&nbsp;requirementId,
+                     java.lang.String&nbsp;methodName,
+                     java.lang.Long&nbsp;elapsedTime)</code></th>
 <td class="colLast">
 <div class="block">Log if the condition is not true; else return</div>
 </td>
@@ -672,7 +700,7 @@ extends java.lang.Object</pre>
                             java.lang.String&nbsp;testCaseName,
                             java.lang.Integer&nbsp;defaultProfileId,
                             java.lang.Integer&nbsp;defaultRequirementId)</pre>
-<div class="block">Typical constructor used when the test case Id is fixed.</div>
+<div class="block">Typical constructor used when the test case id is fixed.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>workPad</code> - location for workbench results</dd>
@@ -692,7 +720,7 @@ extends java.lang.Object</pre>
 <pre>public&nbsp;OpenMetadataTestCase&#8203;(<a href="OpenMetadataConformanceWorkbenchWorkPad.html" title="class in org.odpi.openmetadata.conformance.beans">OpenMetadataConformanceWorkbenchWorkPad</a>&nbsp;workPad,
                             java.lang.Integer&nbsp;defaultProfileId,
                             java.lang.Integer&nbsp;defaultRequirementId)</pre>
-<div class="block">Typical constructor used when the test case Id needs to be constructed by the test case code.</div>
+<div class="block">Typical constructor used when the test case id needs to be constructed by the test case code.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>workPad</code> - location for workbench results</dd>
@@ -720,7 +748,7 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">protected&nbsp;void&nbsp;updateTestId&#8203;(java.lang.String&nbsp;testCaseRootId,
                             java.lang.String&nbsp;testCaseId,
                             java.lang.String&nbsp;testCaseName)</pre>
-<div class="block">Update the test case Id, name and documentation URL if not already supplied in the constructor.</div>
+<div class="block">Update the test case id, name and documentation URL if not already supplied in the constructor.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>testCaseRootId</code> - common identifier of test case</dd>
@@ -806,7 +834,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>isTestRan</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;isTestRan()</pre>
-<div class="block">Has the test case been ran yet?</div>
+<div class="block">Has the test case run yet?</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>boolean flag</dd>
@@ -880,6 +908,37 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
+<a id="assertObjectsAreEqual(java.lang.Object,java.lang.Object,java.lang.String,java.lang.String,java.lang.Integer,java.lang.Integer,java.lang.String,java.lang.Long)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>assertObjectsAreEqual</h4>
+<pre class="methodSignature">protected&nbsp;void&nbsp;assertObjectsAreEqual&#8203;(java.lang.Object&nbsp;object1,
+                                     java.lang.Object&nbsp;object2,
+                                     java.lang.String&nbsp;assertionId,
+                                     java.lang.String&nbsp;assertionMessage,
+                                     java.lang.Integer&nbsp;profileId,
+                                     java.lang.Integer&nbsp;requirementId,
+                                     java.lang.String&nbsp;methodName,
+                                     java.lang.Long&nbsp;elapsedTime)
+                              throws <a href="../ffdc/exception/AssertionFailureException.html" title="class in org.odpi.openmetadata.conformance.ffdc.exception">AssertionFailureException</a></pre>
+<div class="block">Throw an exception if the condition is not true; else return</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>object1</code> - object to test</dd>
+<dd><code>object2</code> - object to test</dd>
+<dd><code>assertionId</code> - identifier for the assertion</dd>
+<dd><code>assertionMessage</code> - descriptive message of the assertion</dd>
+<dd><code>profileId</code> - identifier of profile for this assertion</dd>
+<dd><code>requirementId</code> - identifier of requirement for this assertion</dd>
+<dd><code>methodName</code> - method that this condition tests</dd>
+<dd><code>elapsedTime</code> - of the test executing (in milliseconds)</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../ffdc/exception/AssertionFailureException.html" title="class in org.odpi.openmetadata.conformance.ffdc.exception">AssertionFailureException</a></code> - condition was false</dd>
+</dl>
+</li>
+</ul>
 <a id="assertCondition(boolean,java.lang.String,java.lang.String,java.lang.Integer,java.lang.Integer,java.lang.String,java.lang.Long)">
 <!--   -->
 </a>
@@ -928,6 +987,34 @@ extends java.lang.Object</pre>
 <dd><code>assertionMessage</code> - descriptive message of the assertion</dd>
 <dd><code>profileId</code> - identifier of profile for this assertion</dd>
 <dd><code>requirementId</code> - identifier of requirement for this assertion</dd>
+</dl>
+</li>
+</ul>
+<a id="verifyObjectsAreEqual(java.lang.Object,java.lang.Object,java.lang.String,java.lang.String,java.lang.Integer,java.lang.Integer,java.lang.String,java.lang.Long)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>verifyObjectsAreEqual</h4>
+<pre class="methodSignature">protected&nbsp;void&nbsp;verifyObjectsAreEqual&#8203;(java.lang.Object&nbsp;object1,
+                                     java.lang.Object&nbsp;object2,
+                                     java.lang.String&nbsp;assertionId,
+                                     java.lang.String&nbsp;assertionMessage,
+                                     java.lang.Integer&nbsp;profileId,
+                                     java.lang.Integer&nbsp;requirementId,
+                                     java.lang.String&nbsp;methodName,
+                                     java.lang.Long&nbsp;elapsedTime)</pre>
+<div class="block">Log if the condition is not true; else return</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>object1</code> - object to test</dd>
+<dd><code>object2</code> - object to test</dd>
+<dd><code>assertionId</code> - identifier for the assertion</dd>
+<dd><code>assertionMessage</code> - descriptive message of the assertion</dd>
+<dd><code>profileId</code> - identifier of profile for this assertion</dd>
+<dd><code>requirementId</code> - identifier of requirement for this assertion</dd>
+<dd><code>methodName</code> - method that this condition tests</dd>
+<dd><code>elapsedTime</code> - of the test executing (in milliseconds)</dd>
 </dl>
 </li>
 </ul>
