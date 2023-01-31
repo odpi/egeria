@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.conformance.tests.repository.instances;
 
+import org.odpi.openmetadata.conformance.ffdc.exception.AssertionFailureException;
 import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceTestCase;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
@@ -100,9 +101,8 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
 
         InstanceProperties instProps = null;
 
-        try {
-
-
+        try
+        {
             /*
              * Generate property values for all the type's defined properties, including inherited properties
              * This ensures that any properties defined as mandatory by Egeria property cardinality are provided
@@ -130,7 +130,16 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
 
             createdEntitiesTUT.add(newEntity);
 
-        } catch (FunctionNotSupportedException exception) {
+        }
+        catch (AssertionFailureException exception)
+        {
+            /*
+             * Re throw this exception, so it is not masked by Exception (below).
+             */
+            throw exception;
+        }
+        catch (FunctionNotSupportedException exception)
+        {
             /*
              * If running against a read-only repository/connector that cannot add
              * entities or relationships catch FunctionNotSupportedException and give up the test.
@@ -144,7 +153,9 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
                                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
             return;
-        } catch (Exception exc) {
+        }
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any other exceptions from this method call. Log and fail the test.
              */
@@ -200,8 +211,8 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
         EntityDetail reIdentifiedEntity = null;
 
         long elapsedTime;
-        try {
-
+        try
+        {
             long start = System.currentTimeMillis();
             reIdentifiedEntity = metadataCollection.reIdentifyEntity(workPad.getLocalServerUserId(),
                                                                      entityDef.getGUID(),
@@ -209,9 +220,9 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
                                                                      newEntity.getGUID(),
                                                                      newGUID);
             elapsedTime = System.currentTimeMillis() - start;
-
-        } catch (FunctionNotSupportedException exception) {
-
+        }
+        catch (FunctionNotSupportedException exception)
+        {
             super.addNotSupportedAssertion(assertion8,
                                            assertionMsg8,
                                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
@@ -219,8 +230,9 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
 
             /* Give up the testcase */
             return;
-
-        } catch (Exception exc) {
+        }
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any other exceptions from this method call. Log and fail the test.
              */
@@ -234,7 +246,6 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception(msg, exc);
-
         }
 
         assertCondition(true,
@@ -265,7 +276,9 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
          */
 
         long start = System.currentTimeMillis();
-        try {
+
+        try
+        {
             metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID());
             elapsedTime = System.currentTimeMillis() - start;
 
@@ -277,7 +290,9 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
                             "getEntityDetail-negative",
                             elapsedTime);
 
-        } catch (EntityNotKnownException exception) {
+        }
+        catch (EntityNotKnownException exception)
+        {
             elapsedTime = System.currentTimeMillis() - start;
             assertCondition((true),
                             assertion5,
@@ -293,15 +308,19 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
          * Validate that the relationship can be retrieved under its new GUID.
          */
 
-        try {
-            assertCondition((reIdentifiedEntity.equals(metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newGUID))),
-                            assertion6,
-                            testTypeName + assertionMsg6,
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
-                            RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
-
-        } catch (EntityNotKnownException exception) {
-
+        try
+        {
+            assertObjectsAreEqual(reIdentifiedEntity,
+                                  metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newGUID),
+                                  assertion6,
+                                  testTypeName + assertionMsg6,
+                                  RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
+                                  RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId(),
+                                  "getEntityDetail",
+                                  null);
+        }
+        catch (EntityNotKnownException exception)
+        {
             assertCondition((false),
                             assertion6,
                             testTypeName + assertionMsg6,
@@ -321,14 +340,15 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
          * not work this will fail but that's OK.
          */
 
-        try {
-
+        try
+        {
             EntityDetail deletedEntity = metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
                                                                          newEntity.getType().getTypeDefGUID(),
                                                                          newEntity.getType().getTypeDefName(),
                                                                          newGUID);
-        } catch (FunctionNotSupportedException exception) {
-
+        }
+        catch (FunctionNotSupportedException exception)
+        {
             /*
              * This is OK - we can NO OP and just proceed to purgeEntity
              */
@@ -341,11 +361,7 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
 
 
         super.setSuccessMessage("Entities can be reidentified");
-
     }
-
-
-
 
 
     /**
@@ -358,7 +374,8 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
 
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
-        if (createdEntitiesTUT != null && !createdEntitiesTUT.isEmpty()) {
+        if (createdEntitiesTUT != null && !createdEntitiesTUT.isEmpty())
+        {
 
             /*
              * Instances were created - clean them up.
@@ -366,8 +383,8 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
              * FunctionNotSupportedException to EntityNotKnownException and maybe others.
              */
 
-            for (EntityDetail entity : createdEntitiesTUT) {
-
+            for (EntityDetail entity : createdEntitiesTUT)
+            {
                 try
                 {
                     metadataCollection.deleteEntity(workPad.getLocalServerUserId(),

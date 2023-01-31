@@ -102,19 +102,19 @@ class GraphOMRSMetadataStore {
 
     private static final Logger log = LoggerFactory.getLogger(GraphOMRSMetadataStore.class);
 
-    private String repositoryName;
-    private String metadataCollectionId;
+    private final String repositoryName;
+    private final String metadataCollectionId;
 
-    private OMRSRepositoryHelper repositoryHelper;
+    private final OMRSRepositoryHelper repositoryHelper;
 
     // The instance graph is used to store entities (vertices) and relationships (edges).
 
     GraphOMRSGraphFactory graphFactory;
 
-    private JanusGraph instanceGraph;
-    private GraphOMRSRelationshipMapper relationshipMapper;
-    private GraphOMRSEntityMapper entityMapper;
-    private GraphOMRSClassificationMapper classificationMapper;
+    private final JanusGraph instanceGraph;
+    private final GraphOMRSRelationshipMapper relationshipMapper;
+    private final GraphOMRSEntityMapper entityMapper;
+    private final GraphOMRSClassificationMapper classificationMapper;
 
 
     /**
@@ -368,7 +368,7 @@ class GraphOMRSMetadataStore {
      *  In summary
      *  - if no entity, create the ref copy
      *  - if existing entity,
-     *     - if its a proxy
+     *     - if it is a proxy
      *           check the metadataCollectionId matches the one passed.
      *           if matching metadataCollectionId
      *               update the existing entity, replacing the proxy with the ref copy; the proxy flag will be cleared.
@@ -415,14 +415,12 @@ class GraphOMRSMetadataStore {
              */
             String vertexMetadataCollectionId = entityMapper.getEntityMetadataCollectionId(vertex);
 
-            if (metadataCollectionId.equals(entity.getMetadataCollectionId())
-                    || !vertexMetadataCollectionId.equals(entity.getMetadataCollectionId()))
+            if (! vertexMetadataCollectionId.equals(entity.getMetadataCollectionId()))
             {
 
                 /*
                  *  Error condition
-                 *  Either the local repository is being asked to save a reference copy of something it already owns,
-                 *  or it already has a proxy or reference copy of an entity from a repository other than the one that
+                 *  The local repository already has a proxy or reference copy of an entity from a repository other than the one that
                  *  submitted this reference copy.
                  */
 
@@ -1090,19 +1088,16 @@ class GraphOMRSMetadataStore {
             log.debug("{} found existing edge {}", methodName, edge);
 
             /*
-             * Check the metadataCollectionId is not local and that it matches the metadataCollectionId of the
+             * Check the metadataCollectionId matches the metadataCollectionId of the
              * passed relationship
              */
             String edgeMetadataCollectionId = relationshipMapper.getRelationshipMetadataCollectionId(edge);
 
-            if (metadataCollectionId.equals(relationship.getMetadataCollectionId())
-                    || !edgeMetadataCollectionId.equals(relationship.getMetadataCollectionId()))
+            if (! edgeMetadataCollectionId.equals(relationship.getMetadataCollectionId()))
             {
-
                 /*
                  *  Error condition
-                 *  Either the local repository is being asked to save a reference copy of something it already owns,
-                 *  or it already has a reference copy of a relationship from a repository other than the one that
+                 *  Either the local repository already has a reference copy of a relationship from a repository other than the one that
                  *  submitted this reference copy.
                  */
 

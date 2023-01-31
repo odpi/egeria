@@ -443,11 +443,11 @@ public class CreateConnectionTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from Retrieve) =>>" + retrievedEndpoint);
             }
-            if (! endpointDisplayName.equals(retrievedEndpoint.getTechnicalName()))
+            if (! endpointDisplayName.equals(retrievedEndpoint.getName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve) =>>" + retrievedEndpoint);
             }
-            if (! endpointDescription.equals(retrievedEndpoint.getTechnicalDescription()))
+            if (! endpointDescription.equals(retrievedEndpoint.getDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve) =>>" + retrievedEndpoint);
             }
@@ -476,11 +476,11 @@ public class CreateConnectionTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from RetrieveByName) =>>" + retrievedEndpoint);
             }
-            if (! endpointDisplayName.equals(retrievedEndpoint.getTechnicalName()))
+            if (! endpointDisplayName.equals(retrievedEndpoint.getName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName) =>>" + retrievedEndpoint);
             }
-            if (! endpointDescription.equals(retrievedEndpoint.getTechnicalDescription()))
+            if (! endpointDescription.equals(retrievedEndpoint.getDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName) =>>" + retrievedEndpoint);
             }
@@ -558,8 +558,8 @@ public class CreateConnectionTest
             EndpointProperties properties = new EndpointProperties();
 
             properties.setQualifiedName(endpointName);
-            properties.setTechnicalName(endpointDisplayName);
-            properties.setTechnicalDescription(endpointDescription);
+            properties.setName(endpointDisplayName);
+            properties.setDescription(endpointDescription);
 
             String endpointGUID = client.createEndpoint(userId, properties);
 

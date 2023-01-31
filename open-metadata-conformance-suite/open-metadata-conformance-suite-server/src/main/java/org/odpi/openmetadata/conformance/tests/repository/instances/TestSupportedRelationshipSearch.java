@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.conformance.tests.repository.instances;
 
+import org.odpi.openmetadata.conformance.ffdc.exception.AssertionFailureException;
 import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceTestCase;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
@@ -742,6 +743,13 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
 
         }
+        catch (AssertionFailureException exception)
+        {
+            /*
+             * Re throw this exception, so it is not masked by Exception (below).
+             */
+            throw exception;
+        }
         catch (Exception exc)
         {
             /*
@@ -1336,7 +1344,6 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
             }
-
         }
     }
 
@@ -1658,12 +1665,12 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getProfileId(),
                                 RepositoryConformanceProfileRequirement.RELATIONSHIP_PROPERTY_SEARCH.getRequirementId());
             }
-
         }
     }
 
 
-    private enum RegexMatchType {
+    private enum RegexMatchType
+    {
         Exact,
         Prefix,
         Suffix,

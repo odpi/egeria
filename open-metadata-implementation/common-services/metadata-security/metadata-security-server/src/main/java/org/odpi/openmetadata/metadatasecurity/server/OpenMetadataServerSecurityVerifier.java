@@ -1621,7 +1621,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      */
 
     /**
-     * Tests for whether a specific user should have the right to create a instance within a repository.
+     * Tests for whether a specific user should have the right to create an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1657,7 +1657,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
      * @param instance instance details
-     * @return entity to return (may be altered by the connector)
+     * @return entity to return (maybe altered by the connector)
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
     @Override
@@ -1715,7 +1715,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
 
 
     /**
-     * Tests for whether a specific user should have the right to update a instance within a repository.
+     * Tests for whether a specific user should have the right to update an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1819,7 +1819,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
 
 
     /**
-     * Tests for whether a specific user should have the right to delete a instance within a repository.
+     * Tests for whether a specific user should have the right to delete an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1839,7 +1839,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
 
 
     /**
-     * Tests for whether a specific user should have the right to delete a instance within a repository.
+     * Tests for whether a specific user should have the right to delete an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1859,7 +1859,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
 
 
     /**
-     * Tests for whether a specific user should have the right to change the guid on a instance within a repository.
+     * Tests for whether a specific user should have the right to change the guid on an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1881,7 +1881,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
 
 
     /**
-     * Tests for whether a specific user should have the right to change the type of a instance within a repository.
+     * Tests for whether a specific user should have the right to change an instance's type within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1903,7 +1903,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
 
 
     /**
-     * Tests for whether a specific user should have the right to change the home of a instance within a repository.
+     * Tests for whether a specific user should have the right to change the home of an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1931,7 +1931,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
 
 
     /**
-     * Tests for whether a specific user should have the right to create a instance within a repository.
+     * Tests for whether a specific user should have the right to create an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1987,7 +1987,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
 
 
     /**
-     * Tests for whether a specific user should have the right to update a instance within a repository.
+     * Tests for whether a specific user should have the right to update an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -2007,7 +2007,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
 
 
     /**
-     * Tests for whether a specific user should have the right to delete a instance within a repository.
+     * Tests for whether a specific user should have the right to delete an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -2027,7 +2027,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
 
 
     /**
-     * Tests for whether a specific user should have the right to delete a instance within a repository.
+     * Tests for whether a specific user should have the right to delete an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -2047,7 +2047,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
 
 
     /**
-     * Tests for whether a specific user should have the right to change the guid on a instance within a repository.
+     * Tests for whether a specific user should have the right to change the guid on an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -2069,7 +2069,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
 
 
     /**
-     * Tests for whether a specific user should have the right to change the type of a instance within a repository.
+     * Tests for whether a specific user should have the right to change an instance's type within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -2091,7 +2091,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
 
 
     /**
-     * Tests for whether a specific user should have the right to change the home of a instance within a repository.
+     * Tests for whether a specific user should have the right to change the home of an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
