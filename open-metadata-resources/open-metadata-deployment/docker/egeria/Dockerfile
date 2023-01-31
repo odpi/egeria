@@ -14,7 +14,7 @@
 
 
 FROM registry.access.redhat.com/ubi8/openjdk-11
-ARG version=3.15-SNAPSHOT
+ARG version=3.15
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
 ARG BUILD_TIME=unknown
