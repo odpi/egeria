@@ -10,7 +10,7 @@
     <parent>
         <artifactId>repository-services-connectors</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.15-SNAPSHOT</version>
+        <version>3.16-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
