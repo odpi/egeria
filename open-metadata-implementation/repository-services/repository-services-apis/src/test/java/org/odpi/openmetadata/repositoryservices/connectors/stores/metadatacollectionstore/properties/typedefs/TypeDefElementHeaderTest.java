@@ -16,12 +16,12 @@ public class TypeDefElementHeaderTest
     {
         TypeDefElementHeaderMock testObject = new TypeDefElementHeaderMock();
 
-        assertTrue(testObject.getHeaderVersion() == 0);
+        assertTrue(testObject.getHeaderVersion() == 1);
 
-        testObject.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
+        testObject.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION+1);
 
         TypeDefElementHeaderMock cloneObject = new TypeDefElementHeaderMock(testObject);
 
-        assertTrue(cloneObject.getHeaderVersion() == TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
+        assertTrue(cloneObject.getHeaderVersion() == TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION+1);
     }
 }

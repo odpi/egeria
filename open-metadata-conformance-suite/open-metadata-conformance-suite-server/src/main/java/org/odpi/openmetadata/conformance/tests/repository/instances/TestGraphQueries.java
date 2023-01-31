@@ -81,8 +81,8 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
     private static final String assertionMsg16 = " repository supports getLinkingEntities ";
 
 
-    private String                      testTypeName;
-    private RepositoryConformanceWorkPad workPad;
+    private final String                      testTypeName;
+    private final RepositoryConformanceWorkPad workPad;
     private OMRSMetadataCollection      metadataCollection;
     private Map<String,EntityDef>       entityDefs       = null;
     private Map<String,RelationshipDef> relationshipDefs = null;
@@ -91,8 +91,8 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
     private int edgeCount = 0;
     private int nodeCount = 0;
-    private int maxDepth = 3;
-    private int maxFanout = 3;
+    private final int maxDepth = 3;
+    private final int maxFanout = 3;
 
     /*
      * The edgeToNodeMap is a map of relationshipGUID to a pair of entityGUIDs, ordered as end1 then end2
@@ -123,13 +123,13 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
     {
 
         super(workPad,
-                RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
-                RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
-
+              RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
+              RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
         this.workPad = workPad;
         this.entityDefs       = entityDefs;
         this.relationshipDefs = new HashMap<>();
-        for (RelationshipDef relDef : relationshipDefs) {
+        for (RelationshipDef relDef : relationshipDefs)
+        {
             this.relationshipDefs.put(relDef.getName(),relDef);
         }
 
@@ -137,7 +137,6 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
         this.relationshipTypeNames = workPad.getRelationshipTypeNames();
 
         this.testTypeName = this.updateTestIdByType(null, testCaseId, testCaseName);
-
     }
 
 
@@ -152,28 +151,26 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
         /*
          * Construct a graph from types that the repository supports.
-         *
          */
 
 
-        try {
-
+        try
+        {
             this.constructGraph();
-
         }
-        catch (FunctionNotSupportedException exception) {
+        catch (FunctionNotSupportedException exception)
+        {
 
             /*
              * If running against a read-only repository/connector that cannot add
-             * entities or relationships catch FunctionNotSupportedExceotion and give up the test.
+             * entities or relationships catch FunctionNotSupportedException and give up the test.
              *
              * In this case indicate that instance creation is not supported....
              */
             super.addNotSupportedAssertion(assertion13,
-                    assertionMsg13,
-                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
-
+                                           assertionMsg13,
+                                           RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                                           RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
             return;
         }
@@ -182,25 +179,14 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
         /*
          * Perform graph queries.
          */
-
         this.getEntityNeighborhood();
-
-
         this.getRelatedEntities();
-
-        this.getlinkingEntities();
-
-
-
+        this.getLinkingEntities();
 
         /*
          * Destroy graph instances
-         *
          */
-
         this.destroyGraph();
-
-
 
         super.setSuccessMessage("Graph queries can be performed");
     }
@@ -210,19 +196,25 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
         Map<String,String> routes = connMap.get(curE);
         Set<String> routeKeys = routes.keySet();
-        for (String routeKey : routeKeys) {
-            if (curP == null || !curP.contains(routeKey)) {
+        for (String routeKey : routeKeys)
+        {
+            if (curP == null || !curP.contains(routeKey))
+            {
                 String remoteEntity = routes.get(routeKey);
                 List<String> curPex = new ArrayList<>();
-                if (curP != null) {
+                if (curP != null)
+                {
                     curPex.addAll(curP);
                 }
                 curPex.add(routeKey);
-                if (remoteEntity.equals(tgtE)) {
+                if (remoteEntity.equals(tgtE))
+                {
                     /* Arrived!  - record path and pop */
                     discoveredPaths.add(curPex);
                     return;
-                } else {
+                }
+                else
+                {
                     traverse(remoteEntity, tgtE, curPex, discoveredPaths);
                 }
             }
@@ -240,19 +232,25 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
         List<String> discoveredEntityGUIDs = new ArrayList<>();
         List<String> discoveredRelationshipGUIDs = new ArrayList<>();
 
-        if (remainingDepth != 0) {
+        if (remainingDepth != 0)
+        {
 
             List<List<String>> inOutEdges = nodeToEdgesMap.get(entityGUID);
             List<String> bothEdges = new ArrayList<>();
             bothEdges.addAll(inOutEdges.get(0));
             bothEdges.addAll(inOutEdges.get(1));
-            if (!(bothEdges.isEmpty())) {
-                for (String edgeGUID : bothEdges) {
-                    if (!edgeGUID.equals(arrivalEdgeGUID)) {
+            if (!(bothEdges.isEmpty()))
+            {
+                for (String edgeGUID : bothEdges)
+                {
+                    if (!edgeGUID.equals(arrivalEdgeGUID))
+                    {
                         /* For each untraversed edge from this entity, explore */
                         List<String> end1end2 = this.edgeToNodesMap.get(edgeGUID);
-                        for (String entGUID : end1end2) {
-                            if (!(entGUID.equals(entityGUID))) {
+                        for (String entGUID : end1end2)
+                        {
+                            if (!(entGUID.equals(entityGUID)))
+                            {
                                 /* Explore from the other entity */
                                 List<List<String>> newGUIDs = this.exploreFromEntity(entGUID, edgeGUID, remainingDepth>0?(remainingDepth - 1):remainingDepth);
                                 discoveredEntityGUIDs.addAll(newGUIDs.get(0));
@@ -275,7 +273,8 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
 
 
-    private void constructGraph() throws Exception {
+    private void constructGraph() throws Exception
+    {
 
         /*
          * Clear the usage maps and counts
@@ -296,7 +295,8 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
         Iterator<String> relationshipTypeNameIterator = relationshipTypeNames.iterator();
 
-        if (relationshipTypeNameIterator.hasNext()) {
+        if (relationshipTypeNameIterator.hasNext())
+        {
 
             String relationshipTypeName = relationshipTypeNameIterator.next();
 
@@ -324,7 +324,8 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
              * Update end1's outbound and inbound edge lists
              */
             List<List<String>> end1pairedEdgeLists = this.nodeToEdgesMap.get(end1GUID);
-            if (end1pairedEdgeLists == null) {
+            if (end1pairedEdgeLists == null)
+            {
                 /*
                  * First time for this node, so create the pair of lists
                  */
@@ -365,10 +366,10 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
              * Create a relationship and far end (only) and hook the relationship onto the current (end2) entity.
              */
 
-            if (this.maxDepth > 1) {
+            if (this.maxDepth > 1)
+            {
                 this.extendGraph(workPad.getLocalServerUserId(), end2GUID, 1);
             }
-
         }
     }
 
@@ -377,35 +378,41 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
         /*
          * Clean up the instances created for the graph query tests.
-         * This is easiest if we use the keys from the ndoeToEdgesMap to delete the nodes (entities). This will clean up the relationships.
+         * This is easiest if we use the keys from the nodeToEdgesMap to delete the nodes (entities). This will clean up the relationships.
          */
 
         Set<String> nodeKeys = nodeToEdgesMap.keySet();
-        for (String nodeKey : nodeKeys) {
+        for (String nodeKey : nodeKeys)
+        {
 
             /*
-             * Need to get the entitiy so that we can note its type, needed for delete.
+             * Need to get the entity so that we can note its type, needed for delete.
              */
 
-            try {
-
+            try
+            {
                 EntityDetail entityToDelete = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), nodeKey);
 
-                try {
+                try
+                {
                     metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
-                            entityToDelete.getType().getTypeDefGUID(),
-                            entityToDelete.getType().getTypeDefName(),
-                            nodeKey);
+                                                    entityToDelete.getType().getTypeDefGUID(),
+                                                    entityToDelete.getType().getTypeDefName(),
+                                                    nodeKey);
 
-                } catch (FunctionNotSupportedException exc) {
+                }
+                catch (FunctionNotSupportedException exc)
+                {
                     /* NO OP - continue with purge */
                 }
 
                 metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
-                        entityToDelete.getType().getTypeDefGUID(),
-                        entityToDelete.getType().getTypeDefName(),
-                        nodeKey);
-            } catch (Exception exception) {
+                                               entityToDelete.getType().getTypeDefGUID(),
+                                               entityToDelete.getType().getTypeDefName(),
+                                               nodeKey);
+            }
+            catch (Exception exception)
+            {
                 /*
                  * Rethrow the exception - this will cause a failure of the testcase, which is desirable.
                  */
@@ -428,15 +435,15 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
         int fanout = 0;
         int endChoice = 1;
-        while (fanout < maxFanout) {
-
+        while (fanout < maxFanout)
+        {
             /*
              * Find an available relationship type if possible, if not reuse types.
              * Alternate between using this entity as end1 or end2 of the relationship to be created.
              */
 
-            if (endChoice == 1) {
-
+            if (endChoice == 1)
+            {
                 /* Use as end1 */
                 List<String> end1PossibleTypeNames = possibleRelTypeNames.get(0);
                 int end1Index = fanout % 2;
@@ -462,7 +469,8 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
                  * Update end1's outbound and inbound edge lists
                  */
                 List<List<String>> end1pairedEdgeLists = this.nodeToEdgesMap.get(end1GUID);
-                if (end1pairedEdgeLists == null) {
+                if (end1pairedEdgeLists == null)
+                {
                     /*
                      * First time for this node, so create the pair of lists
                      */
@@ -480,7 +488,8 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
                  * Update end2's outbound and inbound edge lists
                  */
                 List<List<String>> end2pairedEdgeLists = this.nodeToEdgesMap.get(end2GUID);
-                if (end2pairedEdgeLists == null) {
+                if (end2pairedEdgeLists == null)
+                {
                     /*
                      * First time for this node, so create the pair of lists
                      */
@@ -500,12 +509,13 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
                 currentDepth++;
 
-                if (this.maxDepth > currentDepth) {
+                if (this.maxDepth > currentDepth)
+                {
                     this.extendGraph(userId, end2GUID, currentDepth);
                 }
-
-            } else {
-
+            }
+            else
+            {
                 /* Use as end2 */
 
                 List<String> end2PossibleTypeNames = possibleRelTypeNames.get(1);
@@ -531,7 +541,8 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
                  * Update end1's outbound and inbound edge lists
                  */
                 List<List<String>> end1pairedEdgeLists = this.nodeToEdgesMap.get(end1GUID);
-                if (end1pairedEdgeLists == null) {
+                if (end1pairedEdgeLists == null)
+                {
                     /*
                      * First time for this node, so create the pair of lists
                      */
@@ -549,7 +560,8 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
                  * Update end2's outbound and inbound edge lists
                  */
                 List<List<String>> end2pairedEdgeLists = this.nodeToEdgesMap.get(end2GUID);
-                if (end2pairedEdgeLists == null) {
+                if (end2pairedEdgeLists == null)
+                {
                     /*
                      * First time for this node, so create the pair of lists
                      */
@@ -566,10 +578,10 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
                 this.edgeCount++;
                 this.nodeCount++;
 
-
                 currentDepth++;
 
-                if (this.maxDepth > currentDepth) {
+                if (this.maxDepth > currentDepth)
+                {
                     this.extendGraph(userId, end1GUID, currentDepth);
                 }
             }
@@ -602,25 +614,27 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
          */
         OMRSRepositoryConnector cohortRepositoryConnector = null;
         OMRSRepositoryHelper repositoryHelper = null;
-        if (workPad != null) {
+        if (workPad != null)
+        {
             cohortRepositoryConnector = workPad.getTutRepositoryConnector();
             repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
         }
 
         RelationshipDef knownRelationshipDef = null;
-        if (repositoryHelper != null) {
+        if (repositoryHelper != null)
+        {
             knownRelationshipDef = (RelationshipDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), relationshipTypeName);
         }
         RelationshipDef repositoryRelationshipDef = relationshipDefs.get(relationshipTypeName);
         verifyCondition((repositoryRelationshipDef.equals(knownRelationshipDef)),
-                assertion0,
-                testTypeName + assertionMsg0,
-                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
-                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
+                        assertion0,
+                        testTypeName + assertionMsg0,
+                        RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
+                        RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
 
         /*
          * In this testcase the repository is believed to support the relationship type defined by
-         * relationshipDef - but may not support all of the entity inheritance hierarchy - it may only
+         * relationshipDef - but may not support all the entity inheritance hierarchy - it may only
          * support a subset of entity types. So although the relationship type may have end definitions
          * each specifying a given entity type - the repository may only support certain sub-types of the
          * specified type. This is OK, and the testcase needs to only try to use entity types that are
@@ -637,7 +651,8 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
         }
         List<String> end1DefTypeNames = new ArrayList<>();
         end1DefTypeNames.add(end1DefName);
-        if (this.workPad.getEntitySubTypes(end1DefName) != null) {
+        if (this.workPad.getEntitySubTypes(end1DefName) != null)
+        {
             end1DefTypeNames.addAll(this.workPad.getEntitySubTypes(end1DefName));
         }
 
@@ -645,7 +660,8 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
         String end2DefName = knownRelationshipDef.getEndDef2().getEntityType().getName();
         List<String> end2DefTypeNames = new ArrayList<>();
         end2DefTypeNames.add(end2DefName);
-        if (this.workPad.getEntitySubTypes(end2DefName) != null) {
+        if (this.workPad.getEntitySubTypes(end2DefName) != null)
+        {
             end2DefTypeNames.addAll(this.workPad.getEntitySubTypes(end2DefName));
         }
 
@@ -654,13 +670,15 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
          */
 
         List<String> end1SupportedTypeNames = new ArrayList<>();
-        for (String end1TypeName : end1DefTypeNames) {
+        for (String end1TypeName : end1DefTypeNames)
+        {
             if (entityDefs.get(end1TypeName) != null)
                 end1SupportedTypeNames.add(end1TypeName);
         }
 
         List<String> end2SupportedTypeNames = new ArrayList<>();
-        for (String end2TypeName : end2DefTypeNames) {
+        for (String end2TypeName : end2DefTypeNames)
+        {
             if (entityDefs.get(end2TypeName) != null)
                 end2SupportedTypeNames.add(end2TypeName);
         }
@@ -668,16 +686,16 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
         /*
          * Check that neither list is empty
          */
-        if (end1SupportedTypeNames.isEmpty() || end2SupportedTypeNames.isEmpty()) {
-
+        if (end1SupportedTypeNames.isEmpty() || end2SupportedTypeNames.isEmpty())
+        {
             /*
              * There are no supported types for at least one of the ends - the repository cannot test this relationship type.
              */
             assertCondition((false),
-                    assertion12,
-                    testTypeName + assertionMsg12,
-                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+                            assertion12,
+                            testTypeName + assertionMsg12,
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
         }
 
 
@@ -699,14 +717,13 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
                                                                           super.getPropertiesForInstance(knownRelationshipDef.getPropertiesDefinition()),
                                                                           end1.getGUID(),
                                                                           end2.getGUID(),
-                                                                         null);
+                                                                          null);
 
         List<String> guids = new ArrayList<>();
         guids.add(newRelationship.getGUID());
         guids.add(end1.getGUID());
         guids.add(end2.getGUID());
         return guids;
-
     }
 
 
@@ -726,27 +743,29 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
          */
         OMRSRepositoryConnector cohortRepositoryConnector = null;
         OMRSRepositoryHelper repositoryHelper = null;
-        if (workPad != null) {
+        if (workPad != null)
+        {
             cohortRepositoryConnector = workPad.getTutRepositoryConnector();
             repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
         }
 
         RelationshipDef knownRelationshipDef = null;
-        if (repositoryHelper != null) {
+        if (repositoryHelper != null)
+        {
             knownRelationshipDef = (RelationshipDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), relationshipTypeName);
         }
         RelationshipDef repositoryRelationshipDef = relationshipDefs.get(relationshipTypeName);
         verifyCondition((repositoryRelationshipDef.equals(knownRelationshipDef)),
-                assertion0,
-                testTypeName + assertionMsg0,
-                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
-                RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
+                        assertion0,
+                        testTypeName + assertionMsg0,
+                        RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getProfileId(),
+                        RepositoryConformanceProfileRequirement.CONSISTENT_TYPES.getRequirementId());
 
         RelationshipDef relationshipDef = knownRelationshipDef;
 
         /*
          * In this testcase the repository is believed to support the relationship type defined by
-         * relationshipDef - but may not support all of the entity inheritance hierarchy - it may only
+         * relationshipDef - but may not support all the entity inheritance hierarchy - it may only
          * support a subset of entity types. So although the relationship type may have end definitions
          * each specifying a given entity type - the repository may only support certain sub-types of the
          * specified type. This is OK, and the testcase needs to only try to use entity types that are
@@ -760,7 +779,8 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
         String end1DefName = relationshipDef.getEndDef1().getEntityType().getName();
         List<String> end1DefTypeNames = new ArrayList<>();
         end1DefTypeNames.add(end1DefName);
-        if (this.workPad.getEntitySubTypes(end1DefName) != null) {
+        if (this.workPad.getEntitySubTypes(end1DefName) != null)
+        {
             end1DefTypeNames.addAll(this.workPad.getEntitySubTypes(end1DefName));
         }
 
@@ -768,7 +788,8 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
         String end2DefName = relationshipDef.getEndDef2().getEntityType().getName();
         List<String> end2DefTypeNames = new ArrayList<>();
         end2DefTypeNames.add(end2DefName);
-        if (this.workPad.getEntitySubTypes(end2DefName) != null) {
+        if (this.workPad.getEntitySubTypes(end2DefName) != null)
+        {
             end2DefTypeNames.addAll(this.workPad.getEntitySubTypes(end2DefName));
         }
         /*
@@ -776,15 +797,21 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
          */
 
         List<String> end1SupportedTypeNames = new ArrayList<>();
-        for (String end1TypeName : end1DefTypeNames) {
+        for (String end1TypeName : end1DefTypeNames)
+        {
             if (entityDefs.get(end1TypeName) != null)
+            {
                 end1SupportedTypeNames.add(end1TypeName);
+            }
         }
 
         List<String> end2SupportedTypeNames = new ArrayList<>();
-        for (String end2TypeName : end2DefTypeNames) {
+        for (String end2TypeName : end2DefTypeNames)
+        {
             if (entityDefs.get(end2TypeName) != null)
+            {
                 end2SupportedTypeNames.add(end2TypeName);
+            }
         }
 
         /*
@@ -796,10 +823,10 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
              * There are no supported types for at least one of the ends - the repository cannot test this relationship type.
              */
             assertCondition((false),
-                    assertion12,
-                    testTypeName + assertionMsg12,
-                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+                            assertion12,
+                            testTypeName + assertionMsg12,
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
         }
 
         /*
@@ -813,14 +840,16 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
         String end1GUID;
         String end2GUID;
 
-        if (existingEntityEnd ==1) {
+        if (existingEntityEnd == 1)
+        {
             /* Add an entity to end2 */
             EntityDef     end2Type = entityDefs.get(end2TypeName);
             EntityDetail  end2     = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end2Type);
             end1GUID = existingEntityGUID;
             end2GUID = end2.getGUID();
         }
-        else {
+        else
+        {
             /* existing entity is end 2 */
             /* Add an entity to end1 */
             EntityDef     end1Type = entityDefs.get(end1TypeName);
@@ -831,18 +860,18 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
 
         Relationship newRelationship = metadataCollection.addRelationship(workPad.getLocalServerUserId(),
-                relationshipDef.getGUID(),
-                super.getPropertiesForInstance(relationshipDef.getPropertiesDefinition()),
-                end1GUID,
-                end2GUID,
-                null);
+                                                                          relationshipDef.getGUID(),
+                                                                          super.getPropertiesForInstance(relationshipDef.getPropertiesDefinition()),
+                                                                          end1GUID,
+                                                                          end2GUID,
+                                                                          null);
 
         List<String> guids= new ArrayList<>();
         guids.add(newRelationship.getGUID());
         guids.add(end1GUID);
         guids.add(end2GUID);
-        return guids;
 
+        return guids;
     }
 
     private void getEntityNeighborhood() throws Exception
@@ -854,37 +883,39 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
          * There is no type filtering on these queries.
          */
         Set<String> entityGUIDs = this.nodeToEdgesMap.keySet();
-        for (String entityGUID : entityGUIDs) {
+        for (String entityGUID : entityGUIDs)
+        {
 
-            for (int level = 0; level < 4; level++) {
-
+            for (int level = 0; level < 4; level++)
+            {
                 InstanceGraph instGraph = null;
 
                 long start;
                 long elapsedTime;
-                try {
+                try
+                {
 
                     start = System.currentTimeMillis();
                     instGraph = metadataCollection.getEntityNeighborhood(workPad.getLocalServerUserId(),
-                            entityGUID,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            level);
+                                                                         entityGUID,
+                                                                         null,
+                                                                         null,
+                                                                         null,
+                                                                         null,
+                                                                         null,
+                                                                         level);
                     elapsedTime = System.currentTimeMillis() - start;
-
-                } catch (FunctionNotSupportedException exception) {
-
+                }
+                catch (FunctionNotSupportedException exception)
+                {
                     super.addNotSupportedAssertion(assertion14,
-                            assertionMsg14,
-                            RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
-
+                                                   assertionMsg14,
+                                                   RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
+                                                   RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
                     return;
-
-                } catch (Exception exc) {
+                }
+                catch (Exception exc)
+                {
                     /*
                      * We are not expecting any other exceptions from this method call. Log and fail the test.
                      */
@@ -906,12 +937,12 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
 
                 assertCondition((true),
-                        assertion14,
-                        testTypeName + assertionMsg14,
-                        RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
-                        RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId(),
-                        "getEntityNeighborhood",
-                        elapsedTime);
+                                assertion14,
+                                testTypeName + assertionMsg14,
+                                RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
+                                RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId(),
+                                "getEntityNeighborhood",
+                                elapsedTime);
 
 
                 /*
@@ -927,74 +958,84 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
 
                 assertCondition((instGraph != null),
-                        assertion1,
-                        testTypeName + assertionMsg1,
-                        RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
-                        RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
+                                assertion1,
+                                testTypeName + assertionMsg1,
+                                RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
+                                RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
 
 
                 /* Check entities */
 
                 /* Always expect to get at least one entity - the root of the query */
-                if (instGraph != null) {
+                if (instGraph != null)
+                {
                     assertCondition((instGraph.getEntities() != null && !(instGraph.getEntities().isEmpty()) && instGraph.getEntities().size() == expectedEntityGUIDs.size()),
-                            assertion2,
-                            testTypeName + assertionMsg2,
-                            RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
+                                    assertion2,
+                                    testTypeName + assertionMsg2,
+                                    RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
+                                    RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
                 }
 
                 List<String> returnedEntityGUIDs = new ArrayList<>();
-                if (instGraph != null && instGraph.getEntities() != null) {
-                    for (EntityDetail entity : instGraph.getEntities()) {
-                        if (entity != null) {
+                if (instGraph != null && instGraph.getEntities() != null)
+                {
+                    for (EntityDetail entity : instGraph.getEntities())
+                    {
+                        if (entity != null)
+                        {
                             returnedEntityGUIDs.add(entity.getGUID());
                         }
                     }
                 }
+
                 assertCondition((returnedEntityGUIDs.containsAll(expectedEntityGUIDs)),
-                        assertion3,
-                        testTypeName + assertionMsg3,
-                        RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
-                        RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
+                                assertion3,
+                                testTypeName + assertionMsg3,
+                                RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
+                                RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
 
 
                 /* Check relationships */
 
                 /* Don't always expect to get at least one relationship */
-                if (expectedRelationshipGUIDs.isEmpty()) {
+                if (expectedRelationshipGUIDs.isEmpty())
+                {
 
-                    if (instGraph != null) {
+                    if (instGraph != null)
+                    {
                         assertCondition((instGraph.getRelationships() == null),
-                                assertion4,
-                                testTypeName + assertionMsg4,
-                                RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
+                                        assertion4,
+                                        testTypeName + assertionMsg4,
+                                        RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
+                                        RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
                     }
-                } else {
-
+                }
+                else
+                {
                     if (instGraph != null) {
                         assertCondition((instGraph.getRelationships().size() == expectedRelationshipGUIDs.size()),
-                                assertion4,
-                                testTypeName + assertionMsg4,
-                                RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
+                                        assertion4,
+                                        testTypeName + assertionMsg4,
+                                        RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
+                                        RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
                     }
 
-
                     List<String> returnedRelationshipGUIDs = new ArrayList<>();
-                    if (instGraph.getRelationships() != null) {
+                    if (instGraph.getRelationships() != null)
+                    {
                         for (Relationship relationship : instGraph.getRelationships()) {
-                            if (relationship != null) {
+                            if (relationship != null)
+                            {
                                 returnedRelationshipGUIDs.add(relationship.getGUID());
                             }
                         }
                     }
+
                     assertCondition((returnedRelationshipGUIDs.containsAll(expectedRelationshipGUIDs)),
-                            assertion5,
-                            testTypeName + assertionMsg5,
-                            RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
+                                    assertion5,
+                                    testTypeName + assertionMsg5,
+                                    RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getProfileId(),
+                                    RepositoryConformanceProfileRequirement.ENTITY_NEIGHBORHOOD.getRequirementId());
                 }
             }
         }
@@ -1014,37 +1055,41 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
         Set<String> entityGUIDs = this.nodeToEdgesMap.keySet();
 
-        for (String entityGUID : entityGUIDs) {
-
+        for (String entityGUID : entityGUIDs)
+        {
             List<EntityDetail> relatedEntities = null;
 
             long start;
             long elapsedTime;
-            try {
+            try
+            {
 
                 start = System.currentTimeMillis();
                 relatedEntities = metadataCollection.getRelatedEntities(workPad.getLocalServerUserId(),
-                        entityGUID,
-                        null,
-                        0,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        0);
+                                                                        entityGUID,
+                                                                        null,
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        0);
                 elapsedTime = System.currentTimeMillis() - start;
 
-            } catch (FunctionNotSupportedException exception) {
-
+            }
+            catch (FunctionNotSupportedException exception)
+            {
                 super.addNotSupportedAssertion(assertion15,
-                        assertionMsg15,
-                        RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getProfileId(),
-                        RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getRequirementId());
+                                               assertionMsg15,
+                                               RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getProfileId(),
+                                               RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getRequirementId());
 
                 return;
 
-            } catch (Exception exc) {
+            }
+            catch (Exception exc)
+            {
                 /*
                  * We are not expecting any other exceptions from this method call. Log and fail the test.
                  */
@@ -1063,17 +1108,16 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
                 String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception(msg, exc);
-
             }
 
 
             assertCondition((true),
-                    assertion15,
-                    testTypeName + assertionMsg15,
-                    RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getProfileId(),
-                    RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getRequirementId(),
-                    "getRelatedEntities",
-                    elapsedTime);
+                            assertion15,
+                            testTypeName + assertionMsg15,
+                            RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getProfileId(),
+                            RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getRequirementId(),
+                            "getRelatedEntities",
+                            elapsedTime);
 
 
             /*
@@ -1094,10 +1138,10 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
             /* Always expect to get at least one entity - the root of the query */
             assertCondition((relatedEntities != null && !(relatedEntities.isEmpty()) && relatedEntities.size() == expectedEntityGUIDs.size()),
-                    assertion6,
-                    testTypeName + assertionMsg6,
-                    RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getProfileId(),
-                    RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getRequirementId());
+                            assertion6,
+                            testTypeName + assertionMsg6,
+                            RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getProfileId(),
+                            RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getRequirementId());
 
             List<String> returnedEntityGUIDs = new ArrayList<>();
             if (relatedEntities != null) {
@@ -1108,16 +1152,16 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
                 }
             }
             assertCondition((returnedEntityGUIDs.containsAll(expectedEntityGUIDs)),
-                    assertion7,
-                    testTypeName + assertionMsg7,
-                    RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getProfileId(),
-                    RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getRequirementId());
+                            assertion7,
+                            testTypeName + assertionMsg7,
+                            RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getProfileId(),
+                            RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getRequirementId());
 
 
         }
     }
 
-    private void getlinkingEntities() throws Exception
+    private void getLinkingEntities() throws Exception
     {
 
         /*
@@ -1137,7 +1181,8 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
         /* Form Map from entityGUID to Map of edgeGUID to remote entity GUID */
         this.connMap = new HashMap<>();
 
-        while (entityGUIDIterator.hasNext()) {
+        while (entityGUIDIterator.hasNext())
+        {
             String entityGUID = entityGUIDIterator.next();
             List<List<String>> edgeGUIDs = this.nodeToEdgesMap.get(entityGUID);
 
@@ -1145,15 +1190,20 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
             this.connMap.put(entityGUID, routeMap);
 
             /* process the end1 ends */
-            if (edgeGUIDs.get(0) != null) {
-                for (String edgeGUID : edgeGUIDs.get(0)) {
+            if (edgeGUIDs.get(0) != null)
+            {
+                for (String edgeGUID : edgeGUIDs.get(0))
+                {
                     String otherEntityGUID = this.edgeToNodesMap.get(edgeGUID).get(1);
                     routeMap.put(edgeGUID, otherEntityGUID);
                 }
             }
+
             /* process the end2 ends */
-            if (edgeGUIDs.get(1) != null) {
-                for (String edgeGUID : edgeGUIDs.get(1)) {
+            if (edgeGUIDs.get(1) != null)
+            {
+                for (String edgeGUID : edgeGUIDs.get(1))
+                {
                     String otherEntityGUID = this.edgeToNodesMap.get(edgeGUID).get(0);
                     routeMap.put(edgeGUID, otherEntityGUID);
                 }
@@ -1164,9 +1214,11 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
          * Traverse the connMap to find the available paths, from A to B
          */
 
-        for (String entityAGUID : entityGUIDs) {
+        for (String entityAGUID : entityGUIDs)
+        {
 
-            for (String entityBGUID : entityGUIDs) {
+            for (String entityBGUID : entityGUIDs)
+            {
 
                 /*
                  * Calculate the expected result
@@ -1175,14 +1227,15 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
                 List<String> expectedEntityGUIDs = new ArrayList<>();
                 List<String> expectedRelationshipGUIDs = new ArrayList<>();
 
-                if (entityBGUID.equals(entityAGUID)) {
+                if (entityBGUID.equals(entityAGUID))
+                {
                     /*
                      * There will be no paths - but we expect to get the (one) entity back.
                      */
                     expectedEntityGUIDs.add(entityAGUID);
-
-                } else {
-
+                }
+                else
+                {
                     /*
                      * For the pair of entities A & B find all paths through the test graph (if any exist)
                      */
@@ -1191,14 +1244,18 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
                     traverse(entityAGUID, entityBGUID, null, pathsAB);
 
-                    if (!pathsAB.isEmpty()) {
+                    if (!pathsAB.isEmpty())
+                    {
 
                         /* There is at least one path */
-                        for (List<String> thisPath : pathsAB) {
+                        for (List<String> thisPath : pathsAB)
+                        {
 
-                            for (String thisEdge : thisPath) {
+                            for (String thisEdge : thisPath)
+                            {
 
-                                if (!expectedRelationshipGUIDs.contains(thisEdge)) {
+                                if (!expectedRelationshipGUIDs.contains(thisEdge))
+                                {
                                     expectedRelationshipGUIDs.add(thisEdge);
                                     String entity1GUID = this.edgeToNodesMap.get(thisEdge).get(0);
                                     if (!expectedEntityGUIDs.contains(entity1GUID))
@@ -1217,26 +1274,29 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
                 long start;
                 long elapsedTime;
-                try {
+                try
+                {
 
                     start = System.currentTimeMillis();
                     instanceGraph = metadataCollection.getLinkingEntities(workPad.getLocalServerUserId(),
-                            entityAGUID,
-                            entityBGUID,
-                            null,
-                            null);
+                                                                          entityAGUID,
+                                                                          entityBGUID,
+                                                                          null,
+                                                                          null);
                     elapsedTime = System.currentTimeMillis() - start;
-
-                } catch (FunctionNotSupportedException exception) {
+                }
+                catch (FunctionNotSupportedException exception)
+                {
 
                     super.addNotSupportedAssertion(assertion16,
-                            assertionMsg16,
-                            RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getProfileId(),
-                            RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId());
+                                                   assertionMsg16,
+                                                   RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getProfileId(),
+                                                   RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId());
 
                     return;
-
-                } catch (Exception exc) {
+                }
+                catch (Exception exc)
+                {
                     /*
                      * We are not expecting any other exceptions from this method call. Log and fail the test.
                      */
@@ -1254,12 +1314,12 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
 
                 assertCondition((true),
-                        assertion16,
-                        testTypeName + assertionMsg16,
-                        RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getProfileId(),
-                        RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId(),
-                        "getLinkingEntities",
-                        elapsedTime);
+                                assertion16,
+                                testTypeName + assertionMsg16,
+                                RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getProfileId(),
+                                RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId(),
+                                "getLinkingEntities",
+                                elapsedTime);
 
 
                 /* Check results */
@@ -1283,63 +1343,70 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
                 String assertionMessage = MessageFormat.format(assertionMsg8, resultCount, expectedEntityCount, parameters);
 
                 assertCondition(((!expectedEntityGUIDs.isEmpty() && returnedEntities != null
-                                && !(returnedEntities.isEmpty())
-                                && returnedEntities.size() == expectedEntityGUIDs.size())
-                                || expectedEntityGUIDs.isEmpty() && returnedEntities == null),
-                        assertion8,
-                        assertionMessage,
-                        RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getProfileId(),
-                        RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId());
+                                          && !(returnedEntities.isEmpty())
+                                          && returnedEntities.size() == expectedEntityGUIDs.size())
+                                         || expectedEntityGUIDs.isEmpty() && returnedEntities == null),
+                                assertion8,
+                                assertionMessage,
+                                RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getProfileId(),
+                                RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId());
 
                 /* Extract the GUIDs so they are easier to check */
 
                 List<String> returnedEntityGUIDs = new ArrayList<>();
-                if (returnedEntities != null) {
-                    for (EntityDetail entity : returnedEntities) {
-                        if (entity != null) {
+                if (returnedEntities != null)
+                {
+                    for (EntityDetail entity : returnedEntities)
+                    {
+                        if (entity != null)
+                        {
                             returnedEntityGUIDs.add(entity.getGUID());
                         }
                     }
                 }
                 assertCondition((returnedEntityGUIDs.containsAll(expectedEntityGUIDs)),
-                        assertion9,
-                        testTypeName + assertionMsg9,
-                        RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getProfileId(),
-                        RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId());
+                                assertion9,
+                                testTypeName + assertionMsg9,
+                                RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getProfileId(),
+                                RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId());
 
                 /* Check relationships */
 
                 assertCondition(((!expectedRelationshipGUIDs.isEmpty() && returnedRelationships != null
-                                && !(returnedRelationships.isEmpty())
-                                && returnedRelationships.size() == expectedRelationshipGUIDs.size())
-                                || expectedRelationshipGUIDs.isEmpty() && returnedRelationships == null),
-                        assertion10,
-                        testTypeName + assertionMsg10,
-                        RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getProfileId(),
-                        RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId());
+                                          && !(returnedRelationships.isEmpty())
+                                          && returnedRelationships.size() == expectedRelationshipGUIDs.size())
+                                         || expectedRelationshipGUIDs.isEmpty() && returnedRelationships == null),
+                                assertion10,
+                                testTypeName + assertionMsg10,
+                                RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getProfileId(),
+                                RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId());
 
                 /* Extract the GUIDs so they are easier to check */
 
                 List<String> returnedRelationshipGUIDs = new ArrayList<>();
-                if (returnedRelationships != null) {
-                    for (Relationship relationship : returnedRelationships) {
-                        if (relationship != null) {
+                if (returnedRelationships != null)
+                {
+                    for (Relationship relationship : returnedRelationships)
+                    {
+                        if (relationship != null)
+                        {
                             returnedRelationshipGUIDs.add(relationship.getGUID());
                         }
                     }
                 }
                 assertCondition((returnedRelationshipGUIDs.containsAll(expectedRelationshipGUIDs)),
-                        assertion11,
-                        testTypeName + assertionMsg11,
-                        RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getProfileId(),
-                        RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId());
+                                assertion11,
+                                testTypeName + assertionMsg11,
+                                RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getProfileId(),
+                                RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId());
 
 
             }
         }
     }
 
-    private Map<String, String> getParameters(String startEntityGUID, String endEntityGUID) {
+    private Map<String, String> getParameters(String startEntityGUID, String endEntityGUID)
+    {
         Map<String,String> parameters = new TreeMap<>();
         parameters.put("startEntityGUID", startEntityGUID);
         parameters.put("endEntityGUID", endEntityGUID);

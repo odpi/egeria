@@ -52,12 +52,17 @@ class InMemoryOMRSMetadataStore
             versionStartTime = instanceHeader.getCreateTime();
         }
 
-        if (toTime.before(versionStartTime))
+        if ((toTime != null) && (toTime.before(versionStartTime)))
         {
             return false;
         }
 
         if (versionEndTime == null)
+        {
+            return true;
+        }
+
+        if (fromTime == null)
         {
             return true;
         }
@@ -893,7 +898,11 @@ class InMemoryOMRSMetadataStore
              */
             if ((this.entity == null) || (entity.getVersion() >= this.entity.getVersion()))
             {
-                entityHistory.add(0, this.entity);
+                if (this.entity != null)
+                {
+                    entityHistory.add(0, this.entity);
+                }
+
                 this.entity = new EntityDetail(entity);
             }
 
@@ -1005,13 +1014,12 @@ class InMemoryOMRSMetadataStore
                 /*
                  * The element has never been updated so the initial version is still valid.
                  */
-                if (entity.getUpdateTime() != null)
+                if (entity.getUpdateTime() == null)
                 {
                     return entity;
                 }
 
-                if ((asOfTime.equals(entity.getUpdateTime())) ||
-                            (asOfTime.after(entity.getUpdateTime())))
+                if ((asOfTime.equals(entity.getUpdateTime())) || (asOfTime.after(entity.getUpdateTime())))
                 {
                     /*
                      * The asOfTime is within the window of when this instance is valid.
@@ -1057,45 +1065,60 @@ class InMemoryOMRSMetadataStore
                                             boolean oldestFirst)
         {
             List<EntityDetail> historyResults = new ArrayList<>();
-            Date               followingUpdateTime = null;
 
-            if (this.entity != null)
+            /*
+             * Do not have a full entity
+             */
+            if (this.entity == null)
             {
-                if (toTime.before(this.entity.getCreateTime()))
-                {
-                    /*
-                     * The entity is known - but none of its instances are in the requested date range.
-                     */
-                    return historyResults;
-                }
-                else
-                {
-                    /*
-                     * The current version of the entity is in range.
-                     */
-                    if (oldestFirst)
-                    {
-                        historyResults.add(this.entity);
-                    }
-                    else
-                    {
-                        historyResults.add(0, this.entity);
-                    }
-
-                    followingUpdateTime = this.entity.getUpdateTime();
-                }
+                return null;
             }
 
+            if ((toTime != null) && (toTime.before(this.entity.getCreateTime())))
+            {
+                /*
+                 * The entity is known - but the query time is from before the instance existed.
+                 */
+                return null;
+            }
+
+            /*
+             * The current version of the entity is in range.
+             */
+            if (checkInclusiveDate(fromTime, toTime, this.entity, null))
+            {
+                historyResults.add(this.entity);
+            }
 
             if (! this.entityHistory.isEmpty())
             {
+                /*
+                 * The period when an instance is active is from its updateTime to the updateTime of the next element.
+                 * The entityHistory has the latest version first.
+                 */
+                Date followingUpdateTime = this.entity.getUpdateTime();
+
                 for (EntityDetail historicalInstance : this.entityHistory)
                 {
                     if (checkInclusiveDate(fromTime, toTime, historicalInstance, followingUpdateTime))
                     {
-                        historyResults.add(historicalInstance);
-                        followingUpdateTime = historicalInstance.getUpdateTime();
+                        if (oldestFirst)
+                        {
+                            /*
+                             * Add to the front
+                             */
+                            historyResults.add(0, historicalInstance);
+                        }
+                        else
+                        {
+                            /*
+                             * Add to the back
+                             */
+                            historyResults.add(historicalInstance);
+                        }
                     }
+
+                    followingUpdateTime = historicalInstance.getUpdateTime();
                 }
             }
 
@@ -1207,8 +1230,8 @@ class InMemoryOMRSMetadataStore
     {
         private final List<Relationship> relationshipHistory = new ArrayList<>();
 
-        private volatile Relationship relationship = null;
-        private volatile Date         purgeTime = null;
+        private volatile Relationship relationship         = null;
+        private volatile Date         unilateralDeleteTime = null;
 
 
         /**
@@ -1246,7 +1269,7 @@ class InMemoryOMRSMetadataStore
             if (this.relationship != null)
             {
                 this.relationshipHistory.add(this.relationship);
-                this.purgeTime = new Date();
+                this.unilateralDeleteTime = new Date();
             }
 
             this.relationship = null;
@@ -1295,13 +1318,12 @@ class InMemoryOMRSMetadataStore
                 /*
                  * The element has never been updated so the initial version is still valid.
                  */
-                if (relationship.getUpdateTime() != null)
+                if (relationship.getUpdateTime() == null)
                 {
                     return relationship;
                 }
 
-                if ((asOfTime.equals(relationship.getUpdateTime())) ||
-                            (asOfTime.after(relationship.getUpdateTime())))
+                if ((asOfTime.equals(relationship.getUpdateTime())) || (asOfTime.after(relationship.getUpdateTime())))
                 {
                     /*
                      * The asOfTime is within the window of when this instance is valid.
@@ -1320,8 +1342,7 @@ class InMemoryOMRSMetadataStore
                     return historicalRelationship;
                 }
 
-                if ((asOfTime.equals(historicalRelationship.getUpdateTime())) ||
-                            (asOfTime.after(historicalRelationship.getUpdateTime())))
+                if ((asOfTime.equals(historicalRelationship.getUpdateTime())) || (asOfTime.after(historicalRelationship.getUpdateTime())))
                 {
                     /*
                      * The asOfTime is within the window of when this instance was valid.
@@ -1349,54 +1370,77 @@ class InMemoryOMRSMetadataStore
             List<Relationship> historyResults = new ArrayList<>();
             Date               followingUpdateTime = null;
 
-            if (this.relationship != null)
+            /*
+             * Do not have a relationship
+             */
+            if (this.relationship == null)
             {
-                if (toTime.before(this.relationship.getCreateTime()))
-                {
-                    /*
-                     * The entity is known - but none of its instances are in the requested date range.
-                     */
-                    return historyResults;
-                }
-                else
-                {
-                    /*
-                     * The current version of the entity is in range.
-                     */
-                    if (oldestFirst)
-                    {
-                        historyResults.add(this.relationship);
-                    }
-                    else
-                    {
-                        historyResults.add(0, this.relationship);
-                    }
-
-                    followingUpdateTime = this.relationship.getUpdateTime();
-                }
+                return null;
             }
-            else if (purgeTime != null)
+
+            if ((toTime != null) && (toTime.before(this.relationship.getCreateTime())))
             {
-                if (fromTime.after(purgeTime))
+                /*
+                 * The relationship is known - but the query time is from before the instance existed.
+                 */
+                return null;
+            }
+
+            if (unilateralDeleteTime != null)
+            {
+                /*
+                 * Unilateral delete set when a linked entity is deleted.
+                 */
+                if (fromTime.after(unilateralDeleteTime))
                 {
                     /*
-                     * The entity has been purged before the "fromTime".
+                     * The relationship has been purged before the "fromTime".
                      */
-                    return historyResults;
+                    return null;
                 }
 
-                followingUpdateTime = purgeTime;
+                followingUpdateTime = unilateralDeleteTime;
+            }
+            else
+            {
+                if (checkInclusiveDate(fromTime, toTime, this.relationship, null))
+                {
+                    /*
+                     * The current version of the relationship is in range.
+                     */
+                    historyResults.add(this.relationship);
+                }
+
+                followingUpdateTime = this.relationship.getUpdateTime();
             }
 
             if (! this.relationshipHistory.isEmpty())
             {
+                /*
+                 * The period when an instance is active is from its updateTime to the updateTime of the next element.
+                 * The relationshipHistory has the latest version first.
+                 */
                 for (Relationship historicalInstance : this.relationshipHistory)
                 {
                     if (checkInclusiveDate(fromTime, toTime, historicalInstance, followingUpdateTime))
                     {
-                        historyResults.add(historicalInstance);
-                        followingUpdateTime = historicalInstance.getUpdateTime();
+                        if (oldestFirst)
+                        {
+                            /*
+                             * Add to the front
+                             */
+                            historyResults.add(0, historicalInstance);
+                        }
+                        else
+                        {
+                            /*
+                             * Add to the back
+                             */
+                            historyResults.add(historicalInstance);
+                        }
                     }
+
+                    followingUpdateTime = historicalInstance.getUpdateTime();
                 }
             }
 

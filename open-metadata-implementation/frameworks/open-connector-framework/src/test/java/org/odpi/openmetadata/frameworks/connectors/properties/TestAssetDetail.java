@@ -57,10 +57,10 @@ public class TestAssetDetail
         testObject.setClassifications(classifications);
 
         testObject.setQualifiedName("TestQualifiedName");
-        testObject.setDisplayName("TestDisplayName");
+        testObject.setResourceName("TestResourceName");
         testObject.setOwner("TestOwner");
         testObject.setConnectionDescription("TestShortDescription");
-        testObject.setDescription("TestDescription");
+        testObject.setResourceDescription("TestDescription");
         testObject.setExtendedProperties(assetProperties);
 
         return new AssetDetail(testObject,
@@ -90,7 +90,7 @@ public class TestAssetDetail
         testObject.setClassifications(classifications);
 
         testObject.setQualifiedName("TestQualifiedName");
-        testObject.setDisplayName("TestDisplayName");
+        testObject.setResourceName("TestResourceName");
         testObject.setOwner("TestOwner");
         testObject.setConnectionDescription("TestShortDescription");
         testObject.setExtendedProperties(assetProperties);
@@ -122,10 +122,10 @@ public class TestAssetDetail
         testObject.setClassifications(classifications);
 
         testObject.setQualifiedName("TestDifferentQualifiedName");
-        testObject.setDisplayName("TestDisplayName");
+        testObject.setResourceName("TestResourceName");
         testObject.setOwner("TestOwner");
         testObject.setConnectionDescription("TestShortDescription");
-        testObject.setDescription("TestDescription");
+        testObject.setResourceDescription("TestDescription");
         testObject.setExtendedProperties(assetProperties);
 
         return new AssetDetail(testObject,
@@ -215,9 +215,9 @@ public class TestAssetDetail
         RelatedMediaReferences relatedMediaReferences = new MockRelatedMediaReferences( 15, 50);
         NoteLogs               noteLogs               = new MockNoteLogs( 15, 50);
         ExternalReferences     externalReferences     = new MockExternalReferences( 15, 50);
-        Connections         connections    = new MockConnections( 15, 50);
-        Licenses            licenses       = new MockLicenses(15, 50);
-        Certifications certifications = new MockAssetCertifications( 15, 50);
+        Connections            connections    = new MockConnections( 15, 50);
+        Licenses               licenses       = new MockLicenses(15, 50);
+        Certifications         certifications = new MockAssetCertifications( 15, 50);
 
         AssetDetail testTemplate = new AssetDetail(new Asset(),
                                                    externalIdentifiers,
