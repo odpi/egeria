@@ -10,7 +10,7 @@
     <parent>
         <artifactId>digital-service</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.15-SNAPSHOT</version>
+        <version>3.15</version>
     </parent>
 
     <groupId>org.odpi.egeria</groupId>
