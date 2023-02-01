@@ -156,7 +156,7 @@
         <slf4j.version>1.7.36</slf4j.version>
         <testng.version>7.7.1</testng.version>
         <jackson.version>2.14.2</jackson.version>
-        <jackson.databind.version>2.14.1</jackson.databind.version>
+        <jackson.databind.version>2.14.2</jackson.databind.version>
         <logback.version>1.2.11</logback.version>
         <kafka.version>3.3.2</kafka.version>
         <tomcat.version>9.0.71</tomcat.version>
