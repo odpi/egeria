@@ -30,7 +30,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ATTRIBUTE_FOR_SCHEMA;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.COLLECTION_MEMBERSHIP;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.LINEAGE_MAPPING;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_FLOW;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_ALIAS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_DELEGATION;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_IMPLEMENTATION;
@@ -106,13 +106,13 @@ class ProcessContextHandlerTest {
         EntityDetail tabularSchemaType = mock(EntityDetail.class);
         when(handlerHelper.addContextForRelationships(USER, portEntity, PORT_SCHEMA, portContext)).thenReturn(tabularSchemaType);
 
-        List<Relationship> lineageMappings = mockLineageMappings(portContext.stream().findFirst().get());
-        EntityDetail entityDetail = mockEntityAtTheEnd(lineageMappings.get(0));
+        List<Relationship> dataFlows = mockDataFlows(portContext.stream().findFirst().get());
+        EntityDetail entityDetail = mockEntityAtTheEnd(dataFlows.get(0));
 
         processContextHandler.buildProcessContext(USER, process);
         verify(handlerHelper, times(1)).addContextForRelationships(USER, collectionEntity, COLLECTION_MEMBERSHIP, collectionContext);
         verify(handlerHelper, times(1)).addContextForRelationships(USER, tabularSchemaType, ATTRIBUTE_FOR_SCHEMA, portContext);
-        verify(handlerHelper, times(1)).buildContextForRelationships(USER, GUID, lineageMappings);
+        verify(handlerHelper, times(1)).buildContextForRelationships(USER, GUID, dataFlows);
         verify(assetContextHandler, times(1)).buildSchemaElementContext(USER, entityDetail);
     }
 
@@ -128,13 +128,13 @@ class ProcessContextHandlerTest {
         return context;
     }
 
-    private List<Relationship> mockLineageMappings(GraphContext graphContext) throws OCFCheckedExceptionBase {
+    private List<Relationship> mockDataFlows(GraphContext graphContext) throws OCFCheckedExceptionBase {
         LineageEntity lineageEntity = mock(LineageEntity.class);
         when(lineageEntity.getGuid()).thenReturn(GUID);
         when(lineageEntity.getTypeDefName()).thenReturn(RELATIONAL_COLUMN);
         when(graphContext.getToVertex()).thenReturn(lineageEntity);
 
-        return mockGetRelationships(LINEAGE_MAPPING, RELATIONAL_COLUMN);
+        return mockGetRelationships(DATA_FLOW, RELATIONAL_COLUMN);
     }
 
 

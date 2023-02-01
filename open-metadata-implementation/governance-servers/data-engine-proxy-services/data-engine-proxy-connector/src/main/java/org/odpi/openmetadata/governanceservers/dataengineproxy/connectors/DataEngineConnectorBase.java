@@ -141,16 +141,16 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
     }
 
     /**
-     * Retrieve a list of the changed lineage mappings between the dates and times provided.
+     * Retrieve a list of the changed data flows between the dates and times provided.
      *
      * @param from the date and time from which to look for changes (exclusive)
      * @param to the date and time up to which to look for changes (inclusive)
-     * @return {@code List<LineageMapping>}
+     * @return {@code List<DataFlow>}
      */
     @Override
-    public List<LineageMapping> getChangedLineageMappings(Date from, Date to) throws ConnectorCheckedException, PropertyServerException {
+    public List<DataFlow> getChangedDataFlows(Date from, Date to) throws ConnectorCheckedException, PropertyServerException {
         if (requiresPolling()) {
-            log.debug("DataEngineConnectorBase::getChangedLineageMappings(Date, Date) is not overridden (unimplemented).");
+            log.debug("DataEngineConnectorBase::getChangedDataFlows(Date, Date) is not overridden (unimplemented).");
         }
         return Collections.emptyList();
     }

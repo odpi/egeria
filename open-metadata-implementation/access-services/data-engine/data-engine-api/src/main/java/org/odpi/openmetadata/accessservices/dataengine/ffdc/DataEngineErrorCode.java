@@ -47,7 +47,7 @@ public enum DataEngineErrorCode implements ExceptionMessageSet {
             "Verify the topic configuration or the event schema."),
     REFERENCEABLE_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-005",
             "Referenceable with qualifiedName {0} was not found",
-            "The system is unable to create a new LineageMapping relation.",
+            "The system is unable to create a new DataFlow relation.",
             "Correct the code in the caller to provide the correct referenceable qualified name."),
     PORT_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-006",
             "Port with qualifiedName {0} was not found",

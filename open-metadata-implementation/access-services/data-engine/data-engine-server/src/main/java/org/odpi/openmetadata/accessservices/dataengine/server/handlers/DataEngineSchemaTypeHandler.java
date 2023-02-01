@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeBuilder;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -15,6 +16,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetailDifferences;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
@@ -25,9 +27,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FLOW_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.GUID_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME;
@@ -96,7 +98,7 @@ public class DataEngineSchemaTypeHandler {
     public String upsertSchemaType(String userId, SchemaType schemaType, String externalSourceName) throws InvalidParameterException,
                                                                                                            PropertyServerException,
                                                                                                            UserNotAuthorizedException {
-        final String methodName = "upsertSchemaType";
+        String methodName = "upsertSchemaType";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(schemaType.getQualifiedName(), QUALIFIED_NAME_PROPERTY_NAME, methodName);
@@ -150,60 +152,66 @@ public class DataEngineSchemaTypeHandler {
     }
 
     /**
-     * Create LineageMapping relationship between two entities
+     * Create DataFlow relationship between two entities
      *
      * @param userId              the name of the calling user
-     * @param sourceQualifiedName the qualified name of the source entity
-     * @param targetQualifiedName the qualified name of the target entity
+     * @param dataSupplierQualifiedName the qualified name of the data supplier entity
+     * @param dataConsumerQualifiedName the qualified name of the data consumer entity
      * @param externalSourceName  the unique name of the external source
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void addLineageMappingRelationship(String userId, String sourceQualifiedName, String targetQualifiedName, String
-            externalSourceName)
+    public void addDataFlowRelationship(String userId, String dataSupplierQualifiedName, String dataConsumerQualifiedName, String externalSourceName,
+                                        String formula, String description)
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        final String methodName = "addLineageMappingRelationship";
+        String methodName = "addDataFlowRelationship";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(sourceQualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
-        invalidParameterHandler.validateName(targetQualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateName(dataSupplierQualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateName(dataConsumerQualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
-        Optional<EntityDetail> sourceEntity = getLineageMappingEntity(userId, sourceQualifiedName);
-        Optional<EntityDetail> targetEntity = getLineageMappingEntity(userId, targetQualifiedName);
+        Optional<EntityDetail> dataSupplierEntity = getDataFlowEntity(userId, dataSupplierQualifiedName);
+        Optional<EntityDetail> dataconsumertEntity = getDataFlowEntity(userId, dataConsumerQualifiedName);
 
-        if (sourceEntity.isEmpty()) {
+        if (dataSupplierEntity.isEmpty()) {
             dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.REFERENCEABLE_NOT_FOUND, methodName,
-                    sourceQualifiedName);
+                    dataSupplierQualifiedName);
             return;
         }
-        if (targetEntity.isEmpty()) {
+        if (dataconsumertEntity.isEmpty()) {
             dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.REFERENCEABLE_NOT_FOUND, methodName,
-                    targetQualifiedName);
+                    dataConsumerQualifiedName);
             return;
         }
-        dataEngineCommonHandler.upsertExternalRelationship(userId, sourceEntity.get().getGUID(), targetEntity.get().getGUID(),
-                LINEAGE_MAPPING_TYPE_NAME, sourceEntity.get().getType().getTypeDefName(),
-                targetEntity.get().getType().getTypeDefName(), externalSourceName, null);
+
+        InstanceProperties relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName, null,
+                OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME, description, methodName);
+        relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName, relationshipProperties,
+                OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME, formula, methodName);
+
+        dataEngineCommonHandler.upsertExternalRelationship(userId, dataSupplierEntity.get().getGUID(), dataconsumertEntity.get().getGUID(),
+                DATA_FLOW_TYPE_NAME, dataSupplierEntity.get().getType().getTypeDefName(),
+                dataconsumertEntity.get().getType().getTypeDefName(), externalSourceName, relationshipProperties);
     }
 
     /**
-     * Returns the entity used to create the lineage mapping. It the entity is of type TabularSchemaType, then it will return the attached
+     * Returns the entity used to create the data flow. If the entity is of type TabularSchemaType, then it will return the attached
      * Asset
      *
      * @param userId        the name of the calling user
      * @param qualifiedName the qualified name of the entity
      *
-     * @return An optional containing the entity for which to create the lineage mapping, or an empty optional
+     * @return An optional containing the entity for which to create the data flow, or an empty optional
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    private Optional<EntityDetail> getLineageMappingEntity(String userId, String qualifiedName) throws UserNotAuthorizedException,
-                                                                                                       PropertyServerException,
-                                                                                                       InvalidParameterException {
+    private Optional<EntityDetail> getDataFlowEntity(String userId, String qualifiedName) throws UserNotAuthorizedException,
+                                                                                                 PropertyServerException,
+                                                                                                 InvalidParameterException {
         Optional<EntityDetail> referenceableEntity = dataEngineCommonHandler.findEntity(userId, qualifiedName, REFERENCEABLE_TYPE_NAME);
 
         if (referenceableEntity.isPresent()) {
@@ -236,7 +244,7 @@ public class DataEngineSchemaTypeHandler {
                                                                                                                                  PropertyServerException,
                                                                                                                                  UserNotAuthorizedException,
                                                                                                                                  FunctionNotSupportedException {
-        final String methodName = "removeSchemaType";
+        String methodName = "removeSchemaType";
         dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaTypeGUID, GUID_PROPERTY_NAME, methodName);

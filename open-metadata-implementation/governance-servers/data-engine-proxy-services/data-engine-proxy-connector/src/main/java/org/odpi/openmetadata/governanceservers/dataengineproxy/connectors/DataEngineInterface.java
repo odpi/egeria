@@ -5,7 +5,7 @@
  */
 package org.odpi.openmetadata.governanceservers.dataengineproxy.connectors;
 
-import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
+import org.odpi.openmetadata.accessservices.dataengine.model.DataFlow;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
 import org.odpi.openmetadata.accessservices.dataengine.model.Referenceable;
@@ -105,12 +105,12 @@ public interface DataEngineInterface {
     List<ProcessHierarchy> getChangedProcessHierarchies(Date from, Date to) throws ConnectorCheckedException, PropertyServerException;
 
     /**
-     * Retrieve a list of the changed lineage mappings between the dates and times provided.
+     * Retrieve a list of the changed data flows between the dates and times provided.
      *
      * @param from the date and time from which to look for changes (exclusive)
      * @param to the date and time up to which to look for changes (inclusive)
-     * @return {@code List<LineageMapping>}
+     * @return {@code List<DataFlow>}
      */
-    List<LineageMapping> getChangedLineageMappings(Date from, Date to) throws ConnectorCheckedException, PropertyServerException;
+    List<DataFlow> getChangedDataFlows(Date from, Date to) throws ConnectorCheckedException, PropertyServerException;
 
 }

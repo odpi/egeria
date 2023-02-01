@@ -40,7 +40,7 @@ import static org.mockito.Mockito.when;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET_SCHEMA_TYPE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATABASE;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.LINEAGE_MAPPING;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_FLOW;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS_HIERARCHY;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
@@ -334,12 +334,12 @@ class AssetLineageOMRSTopicListenerTest {
                 AssetLineageEventType.NEW_RELATIONSHIP_EVENT);
         verify(assetLineagePublisher, times(0)).publishGlossaryContext(GUID);
         verify(assetLineagePublisher, times(0))
-                .publishLineageMappingRelationshipEvent(lineageRelationship, AssetLineageEventType.NEW_RELATIONSHIP_EVENT);
+                .publishDataFlowRelationshipEvent(lineageRelationship, AssetLineageEventType.NEW_RELATIONSHIP_EVENT);
     }
 
     @Test
-    void processInstanceEvent_newRelationship_LineageMapping() throws OCFCheckedExceptionBase, JsonProcessingException {
-        Relationship relationship = mockRelationship(LINEAGE_MAPPING);
+    void processInstanceEvent_newRelationship_DataFlow() throws OCFCheckedExceptionBase, JsonProcessingException {
+        Relationship relationship = mockRelationship(DATA_FLOW);
         OMRSInstanceEvent instanceEvent = mockInstanceEvent(relationship, OMRSInstanceEventType.NEW_RELATIONSHIP_EVENT);
         LineageRelationship lineageRelationship = mockLineageRelationship(relationship);
         when(assetLineageTypesValidator.isValidLineageRelationshipType(relationship)).thenReturn(true);
@@ -347,12 +347,12 @@ class AssetLineageOMRSTopicListenerTest {
         assetLineageOMRSTopicListener.processInstanceEvent(instanceEvent);
 
         verify(assetLineagePublisher, times(1))
-                .publishLineageMappingRelationshipEvent(lineageRelationship, AssetLineageEventType.NEW_RELATIONSHIP_EVENT);
+                .publishDataFlowRelationshipEvent(lineageRelationship, AssetLineageEventType.NEW_RELATIONSHIP_EVENT);
     }
 
     @Test
     void processInstanceEvent_updatedRelationship() throws OCFCheckedExceptionBase, JsonProcessingException {
-        Relationship relationship = mockRelationship(LINEAGE_MAPPING);
+        Relationship relationship = mockRelationship(DATA_FLOW);
         OMRSInstanceEvent instanceEvent = mockInstanceEvent(relationship, OMRSInstanceEventType.UPDATED_RELATIONSHIP_EVENT);
         LineageRelationship lineageRelationship = mockLineageRelationship(relationship);
         when(assetLineageTypesValidator.isValidLineageRelationshipType(relationship)).thenReturn(true);
@@ -365,7 +365,7 @@ class AssetLineageOMRSTopicListenerTest {
 
     @Test
     void processInstanceEvent_deletedRelationship() throws OCFCheckedExceptionBase, JsonProcessingException {
-        Relationship relationship = mockRelationship(LINEAGE_MAPPING);
+        Relationship relationship = mockRelationship(DATA_FLOW);
         OMRSInstanceEvent instanceEvent = mockInstanceEvent(relationship, OMRSInstanceEventType.DELETED_RELATIONSHIP_EVENT);
         LineageRelationship lineageRelationship = mockLineageRelationship(relationship);
         when(assetLineageTypesValidator.isValidLineageRelationshipType(relationship)).thenReturn(true);

@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataengine.model.EventType;
-import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
+import org.odpi.openmetadata.accessservices.dataengine.model.DataFlow;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
@@ -231,20 +231,20 @@ public interface DataEngineClient {
                                                                                         ConnectorCheckedException;
 
     /**
-     * Add lineage mapping relationships between schema types
+     * Add data flow relationships between entities
      *
      * @param userId          the name of the calling user
-     * @param lineageMappings list of lineage mappings
+     * @param dataFlows list of data flows
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      * @throws ConnectorCheckedException  internal problem with the connector
      */
-    void addLineageMappings(String userId, List<LineageMapping> lineageMappings) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException,
-                                                                                        ConnectorCheckedException;
+    void addDataFlows(String userId, List<DataFlow> dataFlows) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException,
+                                                                      ConnectorCheckedException;
 
     /**
      * Sets external source system name using the data engine client
