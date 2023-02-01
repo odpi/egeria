@@ -106,7 +106,7 @@ allprojects {
         ossVersion = '4.15.0'
         mockitoVersion = '4.11.0'
         plexusVersion = '3.5.0'
-        prometheusVersion = '1.10.2'
+        prometheusVersion = '1.10.3'
         nettyVersion = '4.1.86.Final'
         quartzVersion = '2.3.2'
         reflectionsVersion = '0.10.2'
