@@ -307,7 +307,7 @@ allprojects {
             runtimeOnly("org.antlr:antlr4:4.11.1")
             runtimeOnly("org.apache.ivy:ivy:2.5.1")
         }
-        implementation platform('net.openhft:chronicle-bom:2.24ea25')
+        implementation platform('net.openhft:chronicle-bom:2.24ea35')
     }
 
     /*
