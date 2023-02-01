@@ -98,7 +98,7 @@ public class DataEngineSchemaTypeHandler {
     public String upsertSchemaType(String userId, SchemaType schemaType, String externalSourceName) throws InvalidParameterException,
                                                                                                            PropertyServerException,
                                                                                                            UserNotAuthorizedException {
-        final String methodName = "upsertSchemaType";
+        String methodName = "upsertSchemaType";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(schemaType.getQualifiedName(), QUALIFIED_NAME_PROPERTY_NAME, methodName);
@@ -166,7 +166,7 @@ public class DataEngineSchemaTypeHandler {
     public void addDataFlowRelationship(String userId, String dataSupplierQualifiedName, String dataConsumerQualifiedName, String externalSourceName,
                                         String formula, String description)
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        final String methodName = "addDataFlowRelationship";
+        String methodName = "addDataFlowRelationship";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(dataSupplierQualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
@@ -244,7 +244,7 @@ public class DataEngineSchemaTypeHandler {
                                                                                                                                  PropertyServerException,
                                                                                                                                  UserNotAuthorizedException,
                                                                                                                                  FunctionNotSupportedException {
-        final String methodName = "removeSchemaType";
+        String methodName = "removeSchemaType";
         dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaTypeGUID, GUID_PROPERTY_NAME, methodName);
