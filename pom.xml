@@ -264,7 +264,7 @@
         <openlineage.version>0.18.0</openlineage.version>
         <properties.plugin.version>1.1.0</properties.plugin.version>
         <cassandra.version>4.1.0</cassandra.version>
-        <ant.version>1.10.12</ant.version>
+        <ant.version>1.10.13</ant.version>
         <gson.version>2.10</gson.version>
         <protobuf.version>3.21.12</protobuf.version>
         <jnr.version>3.1.16</jnr.version>
