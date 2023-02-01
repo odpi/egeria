@@ -79,7 +79,7 @@ allprojects {
         httpclientVersion = '4.5.14'
         httpcoreVersion = '4.4.16'
         jacksonVersion = '2.14.1'
-        jacksonDatabindVersion = '2.14.1'
+        jacksonDatabindVersion = '2.14.2'
         jacksonaslVersion = '1.9.14-atlassian-6'
         jakartaannotationVersion = '2.1.1'
         jakartapersistenceVersion = '3.1.0'
