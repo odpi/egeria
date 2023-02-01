@@ -216,8 +216,8 @@ public class DataEngineProxyService implements Runnable {
             PropertyServerException,
             UserNotAuthorizedException,
             ConnectorCheckedException {
-        final String methodName = "upsertSchemaTypes";
-        final String type = "SchemaTypes";
+        String methodName = "upsertSchemaTypes";
+        String type = "SchemaTypes";
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
         List<SchemaType> changedSchemaTypes = connector.getChangedSchemaTypes(changesLastSynced, changesCutoff);
         if (changedSchemaTypes != null) {
@@ -234,8 +234,8 @@ public class DataEngineProxyService implements Runnable {
             PropertyServerException,
             UserNotAuthorizedException,
             ConnectorCheckedException {
-        final String methodName = "upsertDataStores";
-        final String type = "DataStores";
+        String methodName = "upsertDataStores";
+        String type = "DataStores";
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
         // get  list of incomplete relational tables & data files
         List<? super Referenceable> changedDataStores = connector.getChangedDataStores(changesLastSynced, changesCutoff);
@@ -271,8 +271,8 @@ public class DataEngineProxyService implements Runnable {
             PropertyServerException,
             UserNotAuthorizedException,
             ConnectorCheckedException {
-        final String methodName = "upsertProcesses";
-        final String type = "Processes";
+        String methodName = "upsertProcesses";
+        String type = "Processes";
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
         List<Process> changedProcesses = connector.getChangedProcesses(changesLastSynced, changesCutoff);
         if (changedProcesses != null && !changedProcesses.isEmpty()) {
@@ -298,8 +298,8 @@ public class DataEngineProxyService implements Runnable {
             PropertyServerException,
             UserNotAuthorizedException,
             ConnectorCheckedException {
-        final String methodName = "upsertProcessHierarchies";
-        final String type = "ProcessHierarchies";
+        String methodName = "upsertProcessHierarchies";
+        String type = "ProcessHierarchies";
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
         List<ProcessHierarchy> changedProcessHierarchies = connector.getChangedProcessHierarchies(changesLastSynced, changesCutoff);
         if (changedProcessHierarchies != null) {
