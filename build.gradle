@@ -15,7 +15,7 @@ plugins {
     // helps resolve log implementation clashes
     id 'dev.jacomet.logging-capabilities' version "0.10.0"
     // This plugin helps resolve jakarta/javax dev.jacomet.logging-capabilities
-    id 'org.gradlex.java-ecosystem-capabilities' version "1.0"
+    id 'org.gradlex.java-ecosystem-capabilities' version "1.1"
 }
 
 
