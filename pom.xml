@@ -162,7 +162,7 @@
         <netty.version>4.1.86.Final</netty.version>
         <tomcat.version>9.0.70</tomcat.version>
         <spring.ldap.core>2.4.1</spring.ldap.core>
-        <janus.version>0.6.1</janus.version>
+        <janus.version>1.0.0-20230126-071712.e8bfebe</janus.version>
         <spring-boot.version>2.7.7</spring-boot.version>
         <gremlin.version>3.5.2</gremlin.version>
         <springdoc.version>1.6.12</springdoc.version>
