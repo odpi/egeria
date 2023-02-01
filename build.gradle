@@ -132,7 +132,7 @@ allprojects {
         springwebVersion = '5.3.20'
         testngVersion = '7.6.1'
         thriftVersion = '0.16.0'
-        tinkVersion = '1.7.0'
+        tinkVersion = '1.7.0' 
         tomcatVersion = '9.0.63'
         validationVersion = '2.0.1.Final'
         antVersion = '1.10.12'
