@@ -257,7 +257,7 @@
         <nexus-staging-maven-plugin>1.6.13</nexus-staging-maven-plugin>
         <license-plugin.version>2.0.0</license-plugin.version>
         <build-helper.version>3.3.0</build-helper.version>
-        <failsafe-plugin.version>3.0.0-M7</failsafe-plugin.version>
+        <failsafe-plugin.version>3.0.0-M8</failsafe-plugin.version>
         <git-commit-plugin.version>4.9.10</git-commit-plugin.version>
         <process-exec-plugin.version>0.9</process-exec-plugin.version>
         <groovy-plugin.version>2.1.1</groovy-plugin.version>
