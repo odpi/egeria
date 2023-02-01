@@ -115,7 +115,7 @@ allprojects {
         sleepycatVersion = '18.3.12'
         snakeyamlVersion = '1.33'
         slf4jVersion = '1.7.36'
-        snappyVersion = '1.1.8.4'
+        snappyVersion = '1.1.9.1'
         springbootVersion = '2.7.7'
         springdocVersion = '1.6.12'
         spotbugsVersion = '4.7.3'
