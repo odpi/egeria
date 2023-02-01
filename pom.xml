@@ -158,7 +158,7 @@
         <jackson.version>2.14.1</jackson.version>
         <jackson.databind.version>2.14.1</jackson.databind.version>
         <logback.version>1.2.11</logback.version>
-        <kafka.version>3.3.1</kafka.version>
+        <kafka.version>3.3.2</kafka.version>
         <netty.version>4.1.86.Final</netty.version>
         <tomcat.version>9.0.70</tomcat.version>
         <spring.ldap.core>2.4.1</spring.ldap.core>
