@@ -12039,6 +12039,27 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 </ul>
 </li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.event.DataFlowsEvent">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/event/DataFlowsEvent.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">org.odpi.openmetadata.accessservices.dataengine.event.DataFlowsEvent</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/event/DataEngineEventHeader.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">DataEngineEventHeader</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>dataFlows</h4>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/dataengine/model/DataFlow.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DataFlow</a>&gt; dataFlows</pre>
+<div class="block">The data flows</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.event.DeleteEvent">
 <!--   -->
 </a>
@@ -12112,27 +12133,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>findRequestBody</h4>
 <pre><a href="org/odpi/openmetadata/accessservices/dataengine/rest/FindRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">FindRequestBody</a> findRequestBody</pre>
 <div class="block">The find request body</div>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.event.LineageMappingsEvent">
-<!--   -->
-</a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/event/LineageMappingsEvent.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">org.odpi.openmetadata.accessservices.dataengine.event.LineageMappingsEvent</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/event/DataEngineEventHeader.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">DataEngineEventHeader</a> implements Serializable</h3>
-<dl class="nameValue">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
-<ul class="blockList">
-<li class="blockList">
-<h3>Serialized Fields</h3>
-<ul class="blockList">
-<li class="blockListLast">
-<h4>lineageMappings</h4>
-<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/dataengine/model/LineageMapping.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">LineageMapping</a>&gt; lineageMappings</pre>
-<div class="block">The lineage mappings</div>
 </li>
 </ul>
 </li>
@@ -12846,6 +12846,40 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 </ul>
 </li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.DataFlow">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/DataFlow.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.DataFlow</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>dataConsumer</h4>
+<pre>java.lang.String dataConsumer</pre>
+<div class="block">The data consumer</div>
+</li>
+<li class="blockList">
+<h4>dataSupplier</h4>
+<pre>java.lang.String dataSupplier</pre>
+<div class="block">The data supplier</div>
+</li>
+<li class="blockList">
+<h4>description</h4>
+<pre>java.lang.String description</pre>
+</li>
+<li class="blockListLast">
+<h4>formula</h4>
+<pre>java.lang.String formula</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.DataStore">
 <!--   -->
 </a>
@@ -13017,32 +13051,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </a>
 <h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/FileFolder.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.FileFolder</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/model/DataStore.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DataStore</a> implements Serializable</h3>
 </li>
-<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping">
-<!--   -->
-</a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/LineageMapping.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping</a> extends java.lang.Object implements Serializable</h3>
-<dl class="nameValue">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
-<ul class="blockList">
-<li class="blockList">
-<h3>Serialized Fields</h3>
-<ul class="blockList">
-<li class="blockList">
-<h4>sourceAttribute</h4>
-<pre>java.lang.String sourceAttribute</pre>
-<div class="block">The source attribute</div>
-</li>
-<li class="blockListLast">
-<h4>targetAttribute</h4>
-<pre>java.lang.String targetAttribute</pre>
-<div class="block">The target attribute</div>
-</li>
-</ul>
-</li>
-</ul>
-</li>
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.ParentProcess">
 <!--   -->
 </a>
@@ -13152,6 +13160,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">The collection to which the process belongs</div>
 </li>
 <li class="blockList">
+<h4>dataFlows</h4>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/dataengine/model/DataFlow.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DataFlow</a>&gt; dataFlows</pre>
+<div class="block">The data flows</div>
+</li>
+<li class="blockList">
 <h4>formula</h4>
 <pre>java.lang.String formula</pre>
 <div class="block">The description of the processing performed by this process</div>
@@ -13160,11 +13173,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>implementationLanguage</h4>
 <pre>java.lang.String implementationLanguage</pre>
 <div class="block">The name of the programming language that this process is implemented in</div>
-</li>
-<li class="blockList">
-<h4>lineageMappings</h4>
-<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/dataengine/model/LineageMapping.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">LineageMapping</a>&gt; lineageMappings</pre>
-<div class="block">The lineage mappings</div>
 </li>
 <li class="blockList">
 <h4>name</h4>
@@ -13530,6 +13538,23 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 </ul>
 </li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.rest.DataFlowsRequestBody">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/rest/DataFlowsRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">org.odpi.openmetadata.accessservices.dataengine.rest.DataFlowsRequestBody</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/rest/DataEngineOMASAPIRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataEngineOMASAPIRequestBody</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>dataFlows</h4>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/dataengine/model/DataFlow.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DataFlow</a>&gt; dataFlows</pre>
+<div class="block">The data flows</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.rest.DeleteRequestBody">
 <!--   -->
 </a>
@@ -13601,23 +13626,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>type</h4>
 <pre>java.lang.String type</pre>
 <div class="block">The type of the entity</div>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody">
-<!--   -->
-</a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/rest/LineageMappingsRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/rest/DataEngineOMASAPIRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataEngineOMASAPIRequestBody</a> implements Serializable</h3>
-<ul class="blockList">
-<li class="blockList">
-<h3>Serialized Fields</h3>
-<ul class="blockList">
-<li class="blockListLast">
-<h4>lineageMappings</h4>
-<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/dataengine/model/LineageMapping.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">LineageMapping</a>&gt; lineageMappings</pre>
-<div class="block">The lineage mappings</div>
 </li>
 </ul>
 </li>

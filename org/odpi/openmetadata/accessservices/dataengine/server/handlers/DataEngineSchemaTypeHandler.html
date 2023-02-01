@@ -210,12 +210,14 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addLineageMappingRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">addLineageMappingRelationship</a></span>&#8203;(java.lang.String&nbsp;userId,
-                             java.lang.String&nbsp;sourceQualifiedName,
-                             java.lang.String&nbsp;targetQualifiedName,
-                             java.lang.String&nbsp;externalSourceName)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addDataFlowRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">addDataFlowRelationship</a></span>&#8203;(java.lang.String&nbsp;userId,
+                       java.lang.String&nbsp;dataSupplierQualifiedName,
+                       java.lang.String&nbsp;dataConsumerQualifiedName,
+                       java.lang.String&nbsp;externalSourceName,
+                       java.lang.String&nbsp;formula,
+                       java.lang.String&nbsp;description)</code></th>
 <td class="colLast">
-<div class="block">Create LineageMapping relationship between two entities</div>
+<div class="block">Create DataFlow relationship between two entities</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
@@ -384,25 +386,27 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="addLineageMappingRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="addDataFlowRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>addLineageMappingRelationship</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;addLineageMappingRelationship&#8203;(java.lang.String&nbsp;userId,
-                                          java.lang.String&nbsp;sourceQualifiedName,
-                                          java.lang.String&nbsp;targetQualifiedName,
-                                          java.lang.String&nbsp;externalSourceName)
-                                   throws <a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                          <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                          <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Create LineageMapping relationship between two entities</div>
+<h4>addDataFlowRelationship</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;addDataFlowRelationship&#8203;(java.lang.String&nbsp;userId,
+                                    java.lang.String&nbsp;dataSupplierQualifiedName,
+                                    java.lang.String&nbsp;dataConsumerQualifiedName,
+                                    java.lang.String&nbsp;externalSourceName,
+                                    java.lang.String&nbsp;formula,
+                                    java.lang.String&nbsp;description)
+                             throws <a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                    <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                    <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Create DataFlow relationship between two entities</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - the name of the calling user</dd>
-<dd><code>sourceQualifiedName</code> - the qualified name of the source entity</dd>
-<dd><code>targetQualifiedName</code> - the qualified name of the target entity</dd>
+<dd><code>dataSupplierQualifiedName</code> - the qualified name of the data supplier entity</dd>
+<dd><code>dataConsumerQualifiedName</code> - the qualified name of the data consumer entity</dd>
 <dd><code>externalSourceName</code> - the unique name of the external source</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>

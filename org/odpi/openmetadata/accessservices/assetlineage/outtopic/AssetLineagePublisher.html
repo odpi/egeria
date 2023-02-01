@@ -205,39 +205,39 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#publishDataFlowRelationshipEvent(org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship,org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType)">publishDataFlowRelationshipEvent</a></span>&#8203;(<a href="../model/LineageRelationship.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.model">LineageRelationship</a>&nbsp;lineageRelationship,
+                                <a href="../event/AssetLineageEventType.html" title="enum in org.odpi.openmetadata.accessservices.assetlineage.event">AssetLineageEventType</a>&nbsp;eventType)</code></th>
+<td class="colLast">
+<div class="block">Publishes a <a href="../event/LineageRelationshipEvent.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.event"><code>LineageRelationshipEvent</code></a> containing a <a href="../model/LineageRelationship.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.model"><code>LineageRelationship</code></a>.</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
+<td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#publishEvent(org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader)">publishEvent</a></span>&#8203;(<a href="../event/AssetLineageEventHeader.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.event">AssetLineageEventHeader</a>&nbsp;event)</code></th>
 <td class="colLast">
 <div class="block">Output a new asset event.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#publishGlossaryContext(java.lang.String)">publishGlossaryContext</a></span>&#8203;(java.lang.String&nbsp;glossaryTermGUID)</code></th>
 <td class="colLast">
 <div class="block">Build the context for a Glossary Term based on the glossary term GUID and publishes the event to the out topic</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>com.google.common.collect.Multimap&lt;java.lang.String,&#8203;<a href="../model/RelationshipsContext.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.model">RelationshipsContext</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#publishGlossaryContext(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail)">publishGlossaryContext</a></span>&#8203;(<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;entityDetail)</code></th>
 <td class="colLast">
 <div class="block">Build the context for a Glossary Term and publishes the event to the out topic</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#publishLineageEntityEvent(org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity,org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType)">publishLineageEntityEvent</a></span>&#8203;(<a href="../model/LineageEntity.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.model">LineageEntity</a>&nbsp;lineageEntity,
                          <a href="../event/AssetLineageEventType.html" title="enum in org.odpi.openmetadata.accessservices.assetlineage.event">AssetLineageEventType</a>&nbsp;lineageEventType)</code></th>
 <td class="colLast">
 <div class="block">Publish lineage entity event</div>
-</td>
-</tr>
-<tr id="i7" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#publishLineageMappingRelationshipEvent(org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship,org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType)">publishLineageMappingRelationshipEvent</a></span>&#8203;(<a href="../model/LineageRelationship.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.model">LineageRelationship</a>&nbsp;lineageRelationship,
-                                      <a href="../event/AssetLineageEventType.html" title="enum in org.odpi.openmetadata.accessservices.assetlineage.event">AssetLineageEventType</a>&nbsp;eventType)</code></th>
-<td class="colLast">
-<div class="block">Publishes a <a href="../event/LineageRelationshipEvent.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.event"><code>LineageRelationshipEvent</code></a> containing a <a href="../model/LineageRelationship.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.model"><code>LineageRelationship</code></a>.</div>
 </td>
 </tr>
 <tr id="i8" class="altColor">
@@ -500,16 +500,16 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="publishLineageMappingRelationshipEvent(org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship,org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType)">
+<a id="publishDataFlowRelationshipEvent(org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship,org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>publishLineageMappingRelationshipEvent</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;publishLineageMappingRelationshipEvent&#8203;(<a href="../model/LineageRelationship.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.model">LineageRelationship</a>&nbsp;lineageRelationship,
-                                                   <a href="../event/AssetLineageEventType.html" title="enum in org.odpi.openmetadata.accessservices.assetlineage.event">AssetLineageEventType</a>&nbsp;eventType)
-                                            throws <a href="../../../frameworks/connectors/ffdc/OCFCheckedExceptionBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFCheckedExceptionBase</a>,
-                                                   com.fasterxml.jackson.core.JsonProcessingException</pre>
+<h4>publishDataFlowRelationshipEvent</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;publishDataFlowRelationshipEvent&#8203;(<a href="../model/LineageRelationship.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.model">LineageRelationship</a>&nbsp;lineageRelationship,
+                                             <a href="../event/AssetLineageEventType.html" title="enum in org.odpi.openmetadata.accessservices.assetlineage.event">AssetLineageEventType</a>&nbsp;eventType)
+                                      throws <a href="../../../frameworks/connectors/ffdc/OCFCheckedExceptionBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFCheckedExceptionBase</a>,
+                                             com.fasterxml.jackson.core.JsonProcessingException</pre>
 <div class="block">Publishes a <a href="../event/LineageRelationshipEvent.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.event"><code>LineageRelationshipEvent</code></a> containing a <a href="../model/LineageRelationship.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.model"><code>LineageRelationship</code></a>. For each end of the relationship it publishes a
  <a href="../event/LineageRelationshipsEvent.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.event"><code>LineageRelationshipsEvent</code></a> containing the column context if available</div>
 <dl>

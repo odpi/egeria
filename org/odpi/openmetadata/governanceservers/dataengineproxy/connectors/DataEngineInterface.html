@@ -150,19 +150,19 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/dataengine/model/DataFlow.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DataFlow</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getChangedDataFlows(java.util.Date,java.util.Date)">getChangedDataFlows</a></span>&#8203;(java.util.Date&nbsp;from,
+                   java.util.Date&nbsp;to)</code></th>
+<td class="colLast">
+<div class="block">Retrieve a list of the changed data flows between the dates and times provided.</div>
+</td>
+</tr>
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;? super <a href="../../../accessservices/dataengine/model/Referenceable.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Referenceable</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getChangedDataStores(java.util.Date,java.util.Date)">getChangedDataStores</a></span>&#8203;(java.util.Date&nbsp;from,
                     java.util.Date&nbsp;to)</code></th>
 <td class="colLast">
 <div class="block">Retrieve a list of the changed data stores between the dates and times provided.</div>
-</td>
-</tr>
-<tr id="i1" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/dataengine/model/LineageMapping.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">LineageMapping</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getChangedLineageMappings(java.util.Date,java.util.Date)">getChangedLineageMappings</a></span>&#8203;(java.util.Date&nbsp;from,
-                         java.util.Date&nbsp;to)</code></th>
-<td class="colLast">
-<div class="block">Retrieve a list of the changed lineage mappings between the dates and times provided.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
@@ -445,23 +445,23 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="getChangedLineageMappings(java.util.Date,java.util.Date)">
+<a id="getChangedDataFlows(java.util.Date,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
-<h4>getChangedLineageMappings</h4>
-<pre class="methodSignature">java.util.List&lt;<a href="../../../accessservices/dataengine/model/LineageMapping.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">LineageMapping</a>&gt;&nbsp;getChangedLineageMappings&#8203;(java.util.Date&nbsp;from,
-                                                         java.util.Date&nbsp;to)
-                                                  throws <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
-                                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Retrieve a list of the changed lineage mappings between the dates and times provided.</div>
+<h4>getChangedDataFlows</h4>
+<pre class="methodSignature">java.util.List&lt;<a href="../../../accessservices/dataengine/model/DataFlow.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DataFlow</a>&gt;&nbsp;getChangedDataFlows&#8203;(java.util.Date&nbsp;from,
+                                             java.util.Date&nbsp;to)
+                                      throws <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
+                                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Retrieve a list of the changed data flows between the dates and times provided.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>from</code> - the date and time from which to look for changes (exclusive)</dd>
 <dd><code>to</code> - the date and time up to which to look for changes (inclusive)</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd><code>List&lt;LineageMapping&gt;</code></dd>
+<dd><code>List&lt;DataFlow&gt;</code></dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code></dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code></dd>

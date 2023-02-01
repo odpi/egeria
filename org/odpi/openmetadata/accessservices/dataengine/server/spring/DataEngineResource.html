@@ -183,11 +183,11 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addLineageMappings(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody)">addLineageMappings</a></span>&#8203;(java.lang.String&nbsp;userId,
-                  java.lang.String&nbsp;serverName,
-                  <a href="../../rest/LineageMappingsRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">LineageMappingsRequestBody</a>&nbsp;lineageMappingsRequestBody)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addDataFlows(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.rest.DataFlowsRequestBody)">addDataFlows</a></span>&#8203;(java.lang.String&nbsp;userId,
+            java.lang.String&nbsp;serverName,
+            <a href="../../rest/DataFlowsRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataFlowsRequestBody</a>&nbsp;dataFlowsRequestBody)</code></th>
 <td class="colLast">
-<div class="block">Add LineageMapping relationships</div>
+<div class="block">Add DataFlow relationships</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
@@ -800,25 +800,25 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="addLineageMappings(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody)">
+<a id="addDataFlows(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.rest.DataFlowsRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>addLineageMappings</h4>
-<pre class="methodSignature">@PostMapping(path="/lineage-mappings")
-public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;addLineageMappings&#8203;(@PathVariable("userId")
-                                       java.lang.String&nbsp;userId,
-                                       @PathVariable("serverName")
-                                       java.lang.String&nbsp;serverName,
-                                       @RequestBody
-                                       <a href="../../rest/LineageMappingsRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">LineageMappingsRequestBody</a>&nbsp;lineageMappingsRequestBody)</pre>
-<div class="block">Add LineageMapping relationships</div>
+<h4>addDataFlows</h4>
+<pre class="methodSignature">@PostMapping(path="/data-flows")
+public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;addDataFlows&#8203;(@PathVariable("userId")
+                                 java.lang.String&nbsp;userId,
+                                 @PathVariable("serverName")
+                                 java.lang.String&nbsp;serverName,
+                                 @RequestBody
+                                 <a href="../../rest/DataFlowsRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataFlowsRequestBody</a>&nbsp;dataFlowsRequestBody)</pre>
+<div class="block">Add DataFlow relationships</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of server instance to call</dd>
 <dd><code>userId</code> - the name of the calling user</dd>
-<dd><code>lineageMappingsRequestBody</code> - properties of the mappings</dd>
+<dd><code>dataFlowsRequestBody</code> - properties of the data flows</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the created entity</dd>
 </dl>

@@ -231,10 +231,10 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addLineageMappings(java.lang.String,java.util.List)">addLineageMappings</a></span>&#8203;(java.lang.String&nbsp;userId,
-                  java.util.List&lt;<a href="../model/LineageMapping.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">LineageMapping</a>&gt;&nbsp;lineageMappings)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addDataFlows(java.lang.String,java.util.List)">addDataFlows</a></span>&#8203;(java.lang.String&nbsp;userId,
+            java.util.List&lt;<a href="../model/DataFlow.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DataFlow</a>&gt;&nbsp;dataFlows)</code></th>
 <td class="colLast">
-<div class="block">Add lineage mapping relationships between schema types</div>
+<div class="block">Add data flow relationships between entities</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
@@ -957,24 +957,24 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 </dl>
 </li>
 </ul>
-<a id="addLineageMappings(java.lang.String,java.util.List)">
+<a id="addDataFlows(java.lang.String,java.util.List)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>addLineageMappings</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;addLineageMappings&#8203;(java.lang.String&nbsp;userId,
-                               java.util.List&lt;<a href="../model/LineageMapping.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">LineageMapping</a>&gt;&nbsp;lineageMappings)
-                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Add lineage mapping relationships between schema types</div>
+<h4>addDataFlows</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;addDataFlows&#8203;(java.lang.String&nbsp;userId,
+                         java.util.List&lt;<a href="../model/DataFlow.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DataFlow</a>&gt;&nbsp;dataFlows)
+                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Add data flow relationships between entities</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="DataEngineClient.html#addLineageMappings(java.lang.String,java.util.List)">addLineageMappings</a></code>&nbsp;in interface&nbsp;<code><a href="DataEngineClient.html" title="interface in org.odpi.openmetadata.accessservices.dataengine.client">DataEngineClient</a></code></dd>
+<dd><code><a href="DataEngineClient.html#addDataFlows(java.lang.String,java.util.List)">addDataFlows</a></code>&nbsp;in interface&nbsp;<code><a href="DataEngineClient.html" title="interface in org.odpi.openmetadata.accessservices.dataengine.client">DataEngineClient</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - the name of the calling user</dd>
-<dd><code>lineageMappings</code> - list of lineage mappings</dd>
+<dd><code>dataFlows</code> - list of data flows</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>

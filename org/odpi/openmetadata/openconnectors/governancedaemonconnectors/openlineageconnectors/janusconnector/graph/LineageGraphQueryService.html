@@ -327,8 +327,8 @@ implements <a href="../../../../../governanceservers/openlineage/OpenLineageQuer
 <pre class="methodSignature">public&nbsp;java.util.Optional&lt;<a href="../../../../../governanceservers/openlineage/model/LineageVerticesAndEdges.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageVerticesAndEdges</a>&gt;&nbsp;endToEnd&#8203;(java.lang.String&nbsp;guid,
                                                             boolean&nbsp;includeProcesses)</pre>
 <div class="block">Returns the end to end graph of queried entity, which can be a column or a table. In case of tables, relationships
- of type LineageMapping will be traversed backwards and forwards, all the way to the source and the destination,
- respectively. If no vertices are found, than DataFlow relationships are used for traversal. In case of columns,
+ of type DataFlow will be traversed backwards and forwards, all the way to the source and the destination,
+ respectively. If no vertices are found, then DataFlow relationships are used for traversal. In case of columns,
  DataFlow relationships are directly used</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -347,8 +347,8 @@ implements <a href="../../../../../governanceservers/openlineage/OpenLineageQuer
 <h4>ultimateSource</h4>
 <pre class="methodSignature">public&nbsp;java.util.Optional&lt;<a href="../../../../../governanceservers/openlineage/model/LineageVerticesAndEdges.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageVerticesAndEdges</a>&gt;&nbsp;ultimateSource&#8203;(java.lang.String&nbsp;guid)</pre>
 <div class="block">Returns the ultimate source graph of queried entity, which can be a column or a table. In case of tables,
- relationships of type LineageMapping will be traversed backwards, all the way to the source. If no vertices are
- found, than DataFlow relationships are used for traversal. In case of columns, DataFlow relationships are
+ relationships of type DataFlow will be traversed backwards, all the way to the source. If no vertices are
+ found, then DataFlow relationships are used for traversal. In case of columns, DataFlow relationships are
  directly used</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -366,7 +366,7 @@ implements <a href="../../../../../governanceservers/openlineage/OpenLineageQuer
 <h4>ultimateDestination</h4>
 <pre class="methodSignature">public&nbsp;java.util.Optional&lt;<a href="../../../../../governanceservers/openlineage/model/LineageVerticesAndEdges.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageVerticesAndEdges</a>&gt;&nbsp;ultimateDestination&#8203;(java.lang.String&nbsp;guid)</pre>
 <div class="block">Returns the ultimate destination graph of queried entity, which can be a column or a table. In case of tables,
- relationships of type LineageMapping will be traversed forwards, all the way to the destination. If no vertices
+ relationships of type DataFlow will be traversed forwards, all the way to the destination. If no vertices
  are found, then DataFlow relationships are used for traversal. In case of columns, DataFlow relationships are
  directly used</div>
 <dl>

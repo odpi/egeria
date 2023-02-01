@@ -242,22 +242,22 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addLineageMappings(java.lang.String,java.lang.String,java.util.List,org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase,java.lang.String)">addLineageMappings</a></span>&#8203;(java.lang.String&nbsp;userId,
-                  java.lang.String&nbsp;serverName,
-                  java.util.List&lt;<a href="../../model/LineageMapping.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">LineageMapping</a>&gt;&nbsp;lineageMappings,
-                  <a href="../../../../commonservices/ffdc/rest/FFDCResponseBase.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCResponseBase</a>&nbsp;response,
-                  java.lang.String&nbsp;externalSourceName)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addDataFlows(java.lang.String,java.lang.String,java.util.List,org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase,java.lang.String)">addDataFlows</a></span>&#8203;(java.lang.String&nbsp;userId,
+            java.lang.String&nbsp;serverName,
+            java.util.List&lt;<a href="../../model/DataFlow.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DataFlow</a>&gt;&nbsp;dataFlows,
+            <a href="../../../../commonservices/ffdc/rest/FFDCResponseBase.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCResponseBase</a>&nbsp;response,
+            java.lang.String&nbsp;externalSourceName)</code></th>
 <td class="colLast">
-<div class="block">Create LineageMappings relationships between schema attributes</div>
+<div class="block">Create DataFlows relationships between schema attributes</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addLineageMappings(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody)">addLineageMappings</a></span>&#8203;(java.lang.String&nbsp;userId,
-                  java.lang.String&nbsp;serverName,
-                  <a href="../../rest/LineageMappingsRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">LineageMappingsRequestBody</a>&nbsp;lineageMappingsRequestBody)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addDataFlows(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.rest.DataFlowsRequestBody)">addDataFlows</a></span>&#8203;(java.lang.String&nbsp;userId,
+            java.lang.String&nbsp;serverName,
+            <a href="../../rest/DataFlowsRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataFlowsRequestBody</a>&nbsp;dataFlowsRequestBody)</code></th>
 <td class="colLast">
-<div class="block">Create LineageMappings relationships between schema attributes</div>
+<div class="block">Create DataFlow relationships between schema attributes</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
@@ -504,7 +504,7 @@ extends java.lang.Object</pre>
              java.lang.String&nbsp;serverName,
              <a href="../../rest/DeleteRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DeleteRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
-<div class="block">Delete a process, with the associated port implementations, port aliases and lineage mappings</div>
+<div class="block">Delete a process, with the associated port implementations, port aliases and data flows</div>
 </td>
 </tr>
 <tr id="i26" class="altColor">
@@ -767,7 +767,7 @@ extends java.lang.Object</pre>
              <a href="../../model/Process.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Process</a>&nbsp;process,
              java.lang.String&nbsp;externalSourceName)</code></th>
 <td class="colLast">
-<div class="block">Create the process with ports, schema types and lineage mappings</div>
+<div class="block">Create the process with ports, schema types and data flows</div>
 </td>
 </tr>
 <tr id="i53" class="rowColor">
@@ -776,7 +776,7 @@ extends java.lang.Object</pre>
              java.lang.String&nbsp;serverName,
              <a href="../../rest/ProcessRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">ProcessRequestBody</a>&nbsp;processRequestBody)</code></th>
 <td class="colLast">
-<div class="block">Create or update the process with ports, schema types and lineage mappings</div>
+<div class="block">Create or update the process with ports, schema types and data flows</div>
 </td>
 </tr>
 <tr id="i54" class="altColor">
@@ -1381,7 +1381,7 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a>&nbsp;upsertProcess&#8203;(java.lang.String&nbsp;userId,
                                   java.lang.String&nbsp;serverName,
                                   <a href="../../rest/ProcessRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">ProcessRequestBody</a>&nbsp;processRequestBody)</pre>
-<div class="block">Create or update the process with ports, schema types and lineage mappings</div>
+<div class="block">Create or update the process with ports, schema types and data flows</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - the name of the calling user</dd>
@@ -1401,7 +1401,7 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;deleteProcess&#8203;(java.lang.String&nbsp;userId,
                                   java.lang.String&nbsp;serverName,
                                   <a href="../../rest/DeleteRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DeleteRequestBody</a>&nbsp;requestBody)</pre>
-<div class="block">Delete a process, with the associated port implementations, port aliases and lineage mappings</div>
+<div class="block">Delete a process, with the associated port implementations, port aliases and data flows</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - the name of the calling user</dd>
@@ -1559,26 +1559,26 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="addLineageMappings(java.lang.String,java.lang.String,java.util.List,org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase,java.lang.String)">
+<a id="addDataFlows(java.lang.String,java.lang.String,java.util.List,org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>addLineageMappings</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;addLineageMappings&#8203;(java.lang.String&nbsp;userId,
-                               java.lang.String&nbsp;serverName,
-                               java.util.List&lt;<a href="../../model/LineageMapping.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">LineageMapping</a>&gt;&nbsp;lineageMappings,
-                               <a href="../../../../commonservices/ffdc/rest/FFDCResponseBase.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCResponseBase</a>&nbsp;response,
-                               java.lang.String&nbsp;externalSourceName)
-                        throws <a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                               <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
-                               <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
-<div class="block">Create LineageMappings relationships between schema attributes</div>
+<h4>addDataFlows</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;addDataFlows&#8203;(java.lang.String&nbsp;userId,
+                         java.lang.String&nbsp;serverName,
+                         java.util.List&lt;<a href="../../model/DataFlow.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DataFlow</a>&gt;&nbsp;dataFlows,
+                         <a href="../../../../commonservices/ffdc/rest/FFDCResponseBase.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCResponseBase</a>&nbsp;response,
+                         java.lang.String&nbsp;externalSourceName)
+                  throws <a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                         <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                         <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
+<div class="block">Create DataFlows relationships between schema attributes</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - the name of the calling user</dd>
 <dd><code>serverName</code> - name of server instance to call</dd>
-<dd><code>lineageMappings</code> - the list of lineage mappings to be created</dd>
+<dd><code>dataFlows</code> - the list of daa flows to be created</dd>
 <dd><code>response</code> - the response object that will capture the exceptions that might occur during
                            parallel processing</dd>
 <dd><code>externalSourceName</code> - the unique name of the external source</dd>
@@ -1589,21 +1589,21 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="addLineageMappings(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody)">
+<a id="addDataFlows(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.rest.DataFlowsRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>addLineageMappings</h4>
-<pre class="methodSignature">public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;addLineageMappings&#8203;(java.lang.String&nbsp;userId,
-                                       java.lang.String&nbsp;serverName,
-                                       <a href="../../rest/LineageMappingsRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">LineageMappingsRequestBody</a>&nbsp;lineageMappingsRequestBody)</pre>
-<div class="block">Create LineageMappings relationships between schema attributes</div>
+<h4>addDataFlows</h4>
+<pre class="methodSignature">public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;addDataFlows&#8203;(java.lang.String&nbsp;userId,
+                                 java.lang.String&nbsp;serverName,
+                                 <a href="../../rest/DataFlowsRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataFlowsRequestBody</a>&nbsp;dataFlowsRequestBody)</pre>
+<div class="block">Create DataFlow relationships between schema attributes</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - the name of the calling user</dd>
 <dd><code>serverName</code> - ame of server instance to call</dd>
-<dd><code>lineageMappingsRequestBody</code> - list of lineage mappings</dd>
+<dd><code>dataFlowsRequestBody</code> - list of data flows</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>void response</dd>
 </dl>
@@ -2270,7 +2270,7 @@ extends java.lang.Object</pre>
                                   java.lang.String&nbsp;serverName,
                                   <a href="../../model/Process.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Process</a>&nbsp;process,
                                   java.lang.String&nbsp;externalSourceName)</pre>
-<div class="block">Create the process with ports, schema types and lineage mappings</div>
+<div class="block">Create the process with ports, schema types and data flows</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of server instance to call</dd>
