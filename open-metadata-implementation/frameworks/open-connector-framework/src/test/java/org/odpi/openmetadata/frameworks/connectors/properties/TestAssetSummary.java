@@ -18,10 +18,10 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestAssetSummary
 {
-    private ElementType                 type            = new ElementType();
-    private List<ElementClassification> classifications = new ArrayList<>();
-    private List<String>                zoneMembership  = new ArrayList<>();
-    private Map<String, Object>         assetProperties = new HashMap<>();
+    private final ElementType                 type            = new ElementType();
+    private final List<ElementClassification> classifications = new ArrayList<>();
+    private final List<String>                zoneMembership  = new ArrayList<>();
+    private final Map<String, Object>         assetProperties = new HashMap<>();
 
 
     /**
@@ -56,11 +56,11 @@ public class TestAssetSummary
         testObject.setClassifications(classifications);
 
         testObject.setQualifiedName("TestQualifiedName");
-        testObject.setDisplayName("TestDisplayName");
+        testObject.setResourceName("TestResourceName");
         testObject.setOwner("TestOwner");
         testObject.setOwnerType(OwnerType.PROFILE_ID);
         testObject.setConnectionDescription("TestShortDescription");
-        testObject.setDescription("TestDescription");
+        testObject.setResourceDescription("TestDescription");
         testObject.setExtendedProperties(assetProperties);
         testObject.setZoneMembership(zoneMembership);
 
@@ -83,10 +83,10 @@ public class TestAssetSummary
         testObject.setClassifications(classifications);
 
         testObject.setQualifiedName("TestQualifiedName");
-        testObject.setDisplayName("TestDisplayName");
+        testObject.setResourceName("TestResourceName");
         testObject.setOwner("TestOwner");
         testObject.setConnectionDescription("TestShortDescription");
-        testObject.setDescription("TestDescription");
+        testObject.setResourceDescription("TestDescription");
         testObject.setExtendedProperties(assetProperties);
 
         return new AssetSummary(testObject);
@@ -108,11 +108,11 @@ public class TestAssetSummary
         testObject.setClassifications(classifications);
 
         testObject.setQualifiedName("TestDifferentQualifiedName");
-        testObject.setDisplayName("TestDisplayName");
+        testObject.setResourceName("TestResourceName");
         testObject.setOwner("TestOwner");
         testObject.setOwnerType(OwnerType.PROFILE_ID);
         testObject.setConnectionDescription("TestShortDescription");
-        testObject.setDescription("TestDescription");
+        testObject.setResourceDescription("TestDescription");
         testObject.setExtendedProperties(assetProperties);
 
         return new AssetSummary(testObject);
@@ -132,8 +132,8 @@ public class TestAssetSummary
         assertTrue(resultObject.getClassifications() != null);
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
-        assertTrue(resultObject.getDisplayName().equals("TestDisplayName"));
-        assertTrue(resultObject.getDescription().equals("TestDescription"));
+        assertTrue(resultObject.getResourceName().equals("TestResourceName"));
+        assertTrue(resultObject.getResourceDescription().equals("TestDescription"));
         assertTrue(resultObject.getConnectionDescription().equals("TestShortDescription"));
         assertTrue(resultObject.getOwner().equals("TestOwner"));
         assertTrue(resultObject.getZoneMembership() != null);
@@ -155,8 +155,8 @@ public class TestAssetSummary
         assertTrue(nullObject.getClassifications() == null);
 
         assertTrue(nullObject.getQualifiedName() == null);
-        assertTrue(nullObject.getDisplayName() == null);
-        assertTrue(nullObject.getDescription() == null);
+        assertTrue(nullObject.getResourceName() == null);
+        assertTrue(nullObject.getResourceDescription() == null);
         assertTrue(nullObject.getConnectionDescription() == null);
         assertTrue(nullObject.getOwner() == null);
         assertTrue(nullObject.getExtendedProperties() == null);

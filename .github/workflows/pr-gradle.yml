@@ -23,7 +23,7 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
       - name: Cache Gradle packages
-        uses: actions/cache@v3.2.2
+        uses: actions/cache@v3.2.4
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}

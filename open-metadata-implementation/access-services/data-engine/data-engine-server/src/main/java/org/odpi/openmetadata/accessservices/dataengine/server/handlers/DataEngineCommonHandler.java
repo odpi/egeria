@@ -28,7 +28,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Date;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -209,11 +208,10 @@ public class DataEngineCommonHandler {
 
             TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId, relationshipTypeName);
 
-            genericHandler.linkElementToElement(userId, externalSourceGUID, externalSourceName, firstGUID,
+            genericHandler.uncheckedLinkElementToElement(userId, externalSourceGUID, externalSourceName, firstGUID,
                     CommonMapper.GUID_PROPERTY_NAME, firstEntityTypeName, secondGUID, CommonMapper.GUID_PROPERTY_NAME,
                     secondEntityTypeName, false, false, null,
-                    relationshipTypeDef.getGUID(), relationshipTypeName, relationshipProperties, null,
-                    null, getNow(), methodName);
+                    relationshipTypeDef.getGUID(), relationshipTypeName, relationshipProperties,  getNow(), methodName);
         } else {
             Relationship originalRelationship = relationship.get();
             String relationshipGUID = originalRelationship.getGUID();

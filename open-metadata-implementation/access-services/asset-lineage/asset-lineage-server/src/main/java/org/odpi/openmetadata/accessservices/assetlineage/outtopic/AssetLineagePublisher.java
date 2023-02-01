@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.outtopic;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import org.apache.commons.collections4.CollectionUtils;
@@ -54,6 +55,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 public class AssetLineagePublisher {
 
     private static final Logger log = LoggerFactory.getLogger(AssetLineagePublisher.class);
+    private static final ObjectWriter OBJECT_WRITER = new ObjectMapper().writer();
     private static final AssetLineageInstanceHandler instanceHandler = new AssetLineageInstanceHandler();
     private final OpenMetadataTopicConnector outTopicConnector;
     private final String serverUserName;
@@ -314,8 +316,7 @@ public class AssetLineagePublisher {
         if (outTopicConnector == null)
             return;
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        outTopicConnector.sendEvent(objectMapper.writeValueAsString(event));
+        outTopicConnector.sendEvent(OBJECT_WRITER.writeValueAsString(event));
 
     }
 

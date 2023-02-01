@@ -66,9 +66,9 @@ public class TestSupportedTypeDef extends RepositoryConformanceTestCase
     private static final String assertion20    = rootTestCaseId + "-20";
     private static final String assertionMsg20 = " type name is unique.";
 
-    private TypeDef typeDef;
-    private String            testCaseId;
-    private String            testTypeName;
+    private final TypeDef typeDef;
+    private final String  testCaseId;
+    private final String  testTypeName;
 
     /**
      * Typical constructor sets up superclass

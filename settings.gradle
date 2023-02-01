@@ -16,7 +16,7 @@ pluginManagement {
     }
     plugins {
         //id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-        id 'org.springframework.boot' version '2.7.7'
+        id 'org.springframework.boot' version '2.7.8'
         id 'gradle-aggregate-javadocs-plugin' version '3.0.1'
         id 'org.siouan.frontend-jdk11' version '6.0.0'
         id 'com.github.johnrengelman.shadow' version '7.1.2'

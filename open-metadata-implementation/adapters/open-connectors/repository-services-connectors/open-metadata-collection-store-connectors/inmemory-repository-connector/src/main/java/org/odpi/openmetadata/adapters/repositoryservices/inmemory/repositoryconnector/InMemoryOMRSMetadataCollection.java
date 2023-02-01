@@ -936,11 +936,11 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
             if ((pageSize == 0) || (pageSize >= relationshipHistory.size()))
             {
-                return new ArrayList<>(relationshipHistory.subList(startFromElement, relationshipHistory.size() - 1));
+                return new ArrayList<>(relationshipHistory.subList(startFromElement, relationshipHistory.size()));
             }
             else
             {
-                return new ArrayList<>(relationshipHistory.subList(startFromElement, pageSize - 1));
+                return new ArrayList<>(relationshipHistory.subList(startFromElement, pageSize));
             }
         }
 
@@ -2819,11 +2819,11 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
             if ((pageSize == 0) || (pageSize >= entityHistory.size()))
             {
-                return new ArrayList<>(entityHistory.subList(startFromElement, entityHistory.size() - 1));
+                return new ArrayList<>(entityHistory.subList(startFromElement, entityHistory.size()));
             }
             else
             {
-                return new ArrayList<>(entityHistory.subList(startFromElement, pageSize - 1));
+                return new ArrayList<>(entityHistory.subList(startFromElement, pageSize));
             }
         }
 

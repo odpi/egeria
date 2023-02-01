@@ -72,8 +72,8 @@ public class EndpointConverter<B> extends AssetOwnerOMASConverter<B>
 
                     endpointProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     endpointProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    endpointProperties.setTechnicalName(this.removeName(instanceProperties));
-                    endpointProperties.setTechnicalDescription(this.removeDescription(instanceProperties));
+                    endpointProperties.setName(this.removeName(instanceProperties));
+                    endpointProperties.setDescription(this.removeDescription(instanceProperties));
                     endpointProperties.setAddress(this.removeNetworkAddress(instanceProperties));
                     endpointProperties.setProtocol(this.removeProtocol(instanceProperties));
                     endpointProperties.setEncryptionMethod(this.removeEncryptionMethod(instanceProperties));

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.apache.commons.io.FileUtils;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
@@ -29,6 +30,8 @@ public class FileBasedAuditLogStoreConnector extends OMRSAuditLogStoreConnectorB
     private static final String defaultDirectoryTemplate = "omag.server.auditlog";
 
     private static final Logger log = LoggerFactory.getLogger(FileBasedAuditLogStoreConnector.class);
+
+    private static final ObjectWriter OBJECT_WRITER = new ObjectMapper().writer();
 
     private String logStoreTemplateName = null;
 
@@ -96,9 +99,8 @@ public class FileBasedAuditLogStoreConnector extends OMRSAuditLogStoreConnectorB
             {
                 File configStoreFile =
                         new File(logStoreTemplateName + "/log-record-" + logRecord.getGUID());
-                ObjectMapper objectMapper    = new ObjectMapper();
 
-                String configStoreFileContents = objectMapper.writeValueAsString(logRecord);
+                String configStoreFileContents = OBJECT_WRITER.writeValueAsString(logRecord);
                 FileUtils.writeStringToFile(configStoreFile, configStoreFileContents, (String)null, false);
             }
             catch (IOException ioException)

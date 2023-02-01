@@ -3,10 +3,9 @@
 
 package org.odpi.openmetadata.accessservices.analyticsmodeling.fvt.synchronization;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import org.apache.commons.io.FilenameUtils;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.client.SynchronizationClient;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.fvt.RepositoryService;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.fvt.common.AnalyticsModelingTestBase;
@@ -18,7 +17,10 @@ import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 
 /**
@@ -38,6 +40,7 @@ public class SynchronizationTest extends AnalyticsModelingTestBase
 
 	private static final String INPUT_FOLDER = "/src/test/resources/synchronization/input/";
 
+    private static final ObjectReader OBJECT_READER = new ObjectMapper().reader();
 
     /**
      * Run all of the defined tests and capture the results.
@@ -187,8 +190,7 @@ public class SynchronizationTest extends AnalyticsModelingTestBase
 			throws IOException
 	{
 		String root = Paths.get(".").toAbsolutePath().normalize().toString();
-		String input  =  root + folder + fileName + ".json";
-		ObjectMapper mapper = new ObjectMapper();
-		return mapper.readValue(new String(Files.readAllBytes(Paths.get(input))), cls);
+		String input  =  root + folder + FilenameUtils.getName(fileName) + ".json";
+        return OBJECT_READER.readValue(Files.readString(Paths.get(input).normalize(), Charset.defaultCharset()), cls);
 	}
 }

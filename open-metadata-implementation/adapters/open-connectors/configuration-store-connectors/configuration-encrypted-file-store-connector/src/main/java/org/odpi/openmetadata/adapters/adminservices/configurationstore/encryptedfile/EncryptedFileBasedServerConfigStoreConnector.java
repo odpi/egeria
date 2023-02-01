@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.crypto.tink.*;
 import com.google.crypto.tink.aead.AeadConfig;
 import com.google.crypto.tink.aead.AeadKeyTemplates;
@@ -45,6 +47,9 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
     private static final String DEFAULT_FILENAME_TEMPLATE = "data/servers/" + INSERT_FOR_FILENAME_TEMPLATE + "/config/" + INSERT_FOR_FILENAME_TEMPLATE + ".config";
     private static final KeyTemplate KEY_TEMPLATE = AeadKeyTemplates.CHACHA20_POLY1305;
     private static final Logger log = LoggerFactory.getLogger(EncryptedFileBasedServerConfigStoreConnector.class);
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectWriter OBJECT_WRITER = OBJECT_MAPPER.writer();
+    private static final ObjectReader OBJECT_READER = OBJECT_MAPPER.reader();
     private static SecureRandom rng = null;
     private String configStoreName = null;
 
@@ -129,8 +134,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
                 log.debug("Writing encrypted server configuration.");
                 Aead aead = getAead(true);
                 if (aead != null) {
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    String configStoreFileContents = objectMapper.writeValueAsString(omagServerConfig);
+                    String configStoreFileContents = OBJECT_WRITER.writeValueAsString(omagServerConfig);
                     byte[] ciphertext = aead.encrypt(configStoreFileContents.getBytes(StandardCharsets.UTF_8), null);
                     FileUtils.writeByteArrayToFile(configStoreFile, ciphertext, false);
                 } else {
@@ -168,8 +172,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
             try {
                 log.debug("Attempting to retrieve clear-text server configuration properties");
                 String configStoreFileContents = FileUtils.readFileToString(configStoreFile, "UTF-8");
-                ObjectMapper objectMapper = new ObjectMapper();
-                newConfigProperties = objectMapper.readValue(configStoreFileContents, OMAGServerConfig.class);
+                newConfigProperties = OBJECT_READER.readValue(configStoreFileContents, OMAGServerConfig.class);
                 // Assuming we are able to read it (unencrypted), immediately auto-encrypt it
                 log.info("Found unencrypted configuration document -- automatically encrypting it.");
                 saveServerConfig(newConfigProperties);
@@ -196,8 +199,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
                         byte[] ciphertext = FileUtils.readFileToByteArray(configStoreFile);
                         byte[] decrypted = aead.decrypt(ciphertext, null);
                         String configStoreFileContents = new String(decrypted, StandardCharsets.UTF_8);
-                        ObjectMapper objectMapper = new ObjectMapper();
-                        newConfigProperties = objectMapper.readValue(configStoreFileContents, OMAGServerConfig.class);
+                        newConfigProperties = OBJECT_READER.readValue(configStoreFileContents, OMAGServerConfig.class);
                     } else {
                         // If we have a configuration file, but no key anywhere to use to decrypt it, throw an error immediately
                         throw new OCFRuntimeException(DocStoreErrorCode.NO_KEYSTORE.getMessageDefinition(),
