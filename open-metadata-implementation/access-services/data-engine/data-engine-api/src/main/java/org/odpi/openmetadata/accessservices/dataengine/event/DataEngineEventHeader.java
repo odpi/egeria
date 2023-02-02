@@ -30,7 +30,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = DataEngineRegistrationEvent.class, name = "DataEngineRegistrationEvent"),
-        @JsonSubTypes.Type(value = LineageMappingsEvent.class, name = "LineageMappingsEvent"),
+        @JsonSubTypes.Type(value = DataFlowsEvent.class, name = "DataFlowsEvent"),
         @JsonSubTypes.Type(value = PortAliasEvent.class, name = "PortAliasEvent"),
         @JsonSubTypes.Type(value = PortImplementationEvent.class, name = "PortImplementationEvent"),
         @JsonSubTypes.Type(value = ProcessEvent.class, name = "ProcessEvent"),

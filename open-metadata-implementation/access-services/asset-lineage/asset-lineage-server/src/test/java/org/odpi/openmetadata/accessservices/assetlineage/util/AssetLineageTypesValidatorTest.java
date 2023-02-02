@@ -26,7 +26,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CLASSIFICATION_NAME_INCOMPLETE;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.LINEAGE_MAPPING;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_FLOW;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.REFERENCEABLE;
 
 @ExtendWith(MockitoExtension.class)
@@ -61,7 +61,7 @@ class AssetLineageTypesValidatorTest {
     void isValidLineageRelationshipType() {
         Relationship relationship = mock(Relationship.class);
         InstanceType instanceType = mock(InstanceType.class);
-        when(instanceType.getTypeDefName()).thenReturn(LINEAGE_MAPPING);
+        when(instanceType.getTypeDefName()).thenReturn(DATA_FLOW);
         when(relationship.getType()).thenReturn(instanceType);
         EntityProxy entityOneProxy = mock(EntityProxy.class);
         when(entityOneProxy.getType()).thenReturn(instanceType);

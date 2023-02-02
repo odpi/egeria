@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * DeleteSemantic defines the different types of delete for an entity
  * <ul>
  * <li>HARD - Hard-delete strategy. Process and related metadata associated is deleted by purging it from the metadata repository. Deletion
- * happens cascading down to lineage mappings.</li>
+ * happens cascading down to data flows.</li>
  * <li>SOFT - Soft-delete strategy. Process (and related metadata) will be not removed physically but flagged as 'inactive' or temporary deleted
  * from repository (deleteEntity); Process (and related metadata) can be restored in case it is needed (restoreEntity). </li>
  * <li> MEMENTO - Using Memento classification. Similarly to soft delete, process asset is classified as memento asset using memento

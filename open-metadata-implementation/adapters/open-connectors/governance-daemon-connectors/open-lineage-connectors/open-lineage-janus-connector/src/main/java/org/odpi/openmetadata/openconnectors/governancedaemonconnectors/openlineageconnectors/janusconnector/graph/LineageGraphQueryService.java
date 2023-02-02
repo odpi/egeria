@@ -81,7 +81,6 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.EMBEDDED_PROPERTIES;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.EMPTY_STRING;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.EVENT_SCHEMA_ATTRIBUTE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.FILE_FOLDER;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY_CATEGORY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY_TERM;
@@ -89,7 +88,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.INCOMPLETE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.JSON_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.KEYSTORE_FILE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.LINEAGE_MAPPING;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FLOW;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.LOG_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.MEDIA_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.NESTED_FILE;
@@ -194,8 +193,8 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
 
     /**
      * Returns the end to end graph of queried entity, which can be a column or a table. In case of tables, relationships
-     * of type LineageMapping will be traversed backwards and forwards, all the way to the source and the destination,
-     * respectively. If no vertices are found, than DataFlow relationships are used for traversal. In case of columns,
+     * of type DataFlow will be traversed backwards and forwards, all the way to the source and the destination,
+     * respectively. If no vertices are found, then DataFlow relationships are used for traversal. In case of columns,
      * DataFlow relationships are directly used
      *
      * @param guid             queried entity
@@ -256,8 +255,8 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
 
     /**
      * Returns the ultimate source graph of queried entity, which can be a column or a table. In case of tables,
-     * relationships of type LineageMapping will be traversed backwards, all the way to the source. If no vertices are
-     * found, than DataFlow relationships are used for traversal. In case of columns, DataFlow relationships are
+     * relationships of type DataFlow will be traversed backwards, all the way to the source. If no vertices are
+     * found, then DataFlow relationships are used for traversal. In case of columns, DataFlow relationships are
      * directly used
      *
      * @param guid queried entity
@@ -297,7 +296,7 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
 
     /**
      * Returns the ultimate destination graph of queried entity, which can be a column or a table. In case of tables,
-     * relationships of type LineageMapping will be traversed forwards, all the way to the destination. If no vertices
+     * relationships of type DataFlow will be traversed forwards, all the way to the destination. If no vertices
      * are found, then DataFlow relationships are used for traversal. In case of columns, DataFlow relationships are
      * directly used
      *
@@ -536,7 +535,7 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
     private Optional<List<String>> getEdgeLabelsForDataFlow(String label) {
         List<String> edgeLabels = new ArrayList<>();
         if (ASSETS.contains(label)) {
-            edgeLabels.add(LINEAGE_MAPPING);
+            edgeLabels.add(DATA_FLOW);
         }
         switch (label) {
             case TABULAR_FILE_COLUMN:
@@ -775,7 +774,7 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
         if (GLOSSARY_TERM.equalsIgnoreCase(queriedNode.getType())) {
             edges = Arrays.asList(SEMANTIC_ASSIGNMENT, TERM_CATEGORIZATION);
         } else {
-            edges = List.of(LINEAGE_MAPPING);
+            edges = List.of(DATA_FLOW);
         }
         searchTraversal = buildQueryWithRelatedNodes(searchTraversal, relatedNodes, edges);
         List<Vertex> results = searchTraversal.toList();

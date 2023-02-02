@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project
 
-FROM docker.io/library/alpine:3.17.0
+FROM docker.io/library/alpine:3.17.1
 ARG version=3.16-SNAPSHOT
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown

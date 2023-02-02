@@ -6,8 +6,8 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineClient;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
+import org.odpi.openmetadata.accessservices.dataengine.model.DataFlow;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
-import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
 import org.odpi.openmetadata.accessservices.dataengine.model.Referenceable;
@@ -131,7 +131,7 @@ public class DataEngineProxyService implements Runnable {
                 upsertDataStores(oldestSinceSync, changesCutoff);
                 upsertProcesses(oldestSinceSync, changesCutoff);
                 upsertProcessHierarchies(oldestSinceSync, changesCutoff);
-                upsertLineageMappings(oldestSinceSync, changesCutoff);
+                upsertDataFlows(oldestSinceSync, changesCutoff);
 
                 // Update the timestamp at which changes were last synced
                 connector.setChangesLastSynced(changesCutoff);
@@ -161,7 +161,7 @@ public class DataEngineProxyService implements Runnable {
             upsertDataStores(now, now);
             upsertProcesses(now, now);
             upsertProcessHierarchies(now, now);
-            upsertLineageMappings(now, now);
+            upsertDataFlows(now, now);
 
             upsertProcessingState(now);
 
@@ -216,8 +216,8 @@ public class DataEngineProxyService implements Runnable {
             PropertyServerException,
             UserNotAuthorizedException,
             ConnectorCheckedException {
-        final String methodName = "upsertSchemaTypes";
-        final String type = "SchemaTypes";
+        String methodName = "upsertSchemaTypes";
+        String type = "SchemaTypes";
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
         List<SchemaType> changedSchemaTypes = connector.getChangedSchemaTypes(changesLastSynced, changesCutoff);
         if (changedSchemaTypes != null) {
@@ -234,8 +234,8 @@ public class DataEngineProxyService implements Runnable {
             PropertyServerException,
             UserNotAuthorizedException,
             ConnectorCheckedException {
-        final String methodName = "upsertDataStores";
-        final String type = "DataStores";
+        String methodName = "upsertDataStores";
+        String type = "DataStores";
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
         // get  list of incomplete relational tables & data files
         List<? super Referenceable> changedDataStores = connector.getChangedDataStores(changesLastSynced, changesCutoff);
@@ -271,20 +271,20 @@ public class DataEngineProxyService implements Runnable {
             PropertyServerException,
             UserNotAuthorizedException,
             ConnectorCheckedException {
-        final String methodName = "upsertProcesses";
-        final String type = "Processes";
+        String methodName = "upsertProcesses";
+        String type = "Processes";
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
         List<Process> changedProcesses = connector.getChangedProcesses(changesLastSynced, changesCutoff);
         if (changedProcesses != null && !changedProcesses.isEmpty()) {
             for (Process changedProcess : changedProcesses) {
-                // We split up the process details (1) and lineage mappings (2) into separate calls to achieve optimal processing in DE OMAS.
+                // We split up the process details (1) and data flows (2) into separate calls to achieve optimal processing in DE OMAS.
                 // (1) Send process details
                 dataEngineOMASClient.createOrUpdateProcess(userId, changedProcess);
 
-                List<LineageMapping> lineageMappings = changedProcess.getLineageMappings();
-                if (lineageMappings != null) {
-                    // (2) Send lineage mappings
-                    dataEngineOMASClient.addLineageMappings(userId, lineageMappings);
+                List<DataFlow> dataFlows = changedProcess.getDataFlows();
+                if (dataFlows != null) {
+                    // (2) Send data flows
+                    dataEngineOMASClient.addDataFlows(userId, dataFlows);
                 }
             }
 
@@ -298,8 +298,8 @@ public class DataEngineProxyService implements Runnable {
             PropertyServerException,
             UserNotAuthorizedException,
             ConnectorCheckedException {
-        final String methodName = "upsertProcessHierarchies";
-        final String type = "ProcessHierarchies";
+        String methodName = "upsertProcessHierarchies";
+        String type = "ProcessHierarchies";
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
         List<ProcessHierarchy> changedProcessHierarchies = connector.getChangedProcessHierarchies(changesLastSynced, changesCutoff);
         if (changedProcessHierarchies != null) {
@@ -310,25 +310,25 @@ public class DataEngineProxyService implements Runnable {
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_FINISH.getMessageDefinition(type));
     }
 
-    private void upsertLineageMappings(Date changesLastSynced,
-                                       Date changesCutoff) throws
+    private void upsertDataFlows(Date changesLastSynced,
+                                 Date changesCutoff) throws
             InvalidParameterException,
             PropertyServerException,
             UserNotAuthorizedException,
             ConnectorCheckedException {
-        final String methodName = "upsertLineageMappings";
-        final String type = "LineageMappings";
+        String methodName = "upsertDataFlows";
+        String type = "DataFlows";
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
-        List<LineageMapping> changedLineageMappings = connector.getChangedLineageMappings(changesLastSynced, changesCutoff);
-        if (CollectionUtils.isNotEmpty(changedLineageMappings)) {
+        List<DataFlow> changedDataFlows = connector.getChangedDataFlows(changesLastSynced, changesCutoff);
+        if (CollectionUtils.isNotEmpty(changedDataFlows)) {
             if (dataEngineProxyConfig.isEventsClientEnabled()) {
-                for (LineageMapping changedLineageMapping : changedLineageMappings) {
-                    // If we are using the event-based interface, send the lineage mappings one-by-one rather than as
+                for (DataFlow changedDataFlow : changedDataFlows) {
+                    // If we are using the event-based interface, send the data flows one-by-one rather than as
                     // an array
-                    dataEngineOMASClient.addLineageMappings(userId, Collections.singletonList(changedLineageMapping));
+                    dataEngineOMASClient.addDataFlows(userId, Collections.singletonList(changedDataFlow));
                 }
             } else {
-                dataEngineOMASClient.addLineageMappings(userId, changedLineageMappings);
+                dataEngineOMASClient.addDataFlows(userId, changedDataFlows);
             }
         }
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_FINISH.getMessageDefinition(type));

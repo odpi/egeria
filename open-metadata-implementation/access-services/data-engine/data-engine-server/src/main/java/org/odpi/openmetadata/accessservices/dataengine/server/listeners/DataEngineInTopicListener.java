@@ -59,8 +59,8 @@ public class DataEngineInTopicListener implements OpenMetadataTopicListener {
                         case DATA_ENGINE_REGISTRATION_EVENT:
                             dataEngineEventProcessor.processDataEngineRegistrationEvent(dataEngineEvent);
                             break;
-                        case LINEAGE_MAPPINGS_EVENT:
-                            dataEngineEventProcessor.processLineageMappingsEvent(dataEngineEvent);
+                        case DATA_FLOWS_EVENT:
+                            dataEngineEventProcessor.processDataFlowsEvent(dataEngineEvent);
                             break;
                         case PORT_ALIAS_EVENT:
                             dataEngineEventProcessor.processPortAliasEvent(dataEngineEvent);

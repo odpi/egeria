@@ -67,7 +67,7 @@ allprojects {
         commonsloggingVersion = '1.2'
         commonstextVersion = '1.10.0'
         commonscliVersion = '1.5.0'
-        elasticsearchVersion = '8.5.3'
+        elasticsearchVersion = '8.6.1'
         findbugsVersion = '3.0.2'
         glassfishVersion = '1.1.4'
         gremlinVersion = '3.5.2'
@@ -79,7 +79,7 @@ allprojects {
         httpclientVersion = '4.5.14'
         httpcoreVersion = '4.4.16'
         jacksonVersion = '2.14.1'
-        jacksonDatabindVersion = '2.14.1'
+        jacksonDatabindVersion = '2.14.2'
         jacksonaslVersion = '1.9.14-atlassian-6'
         jakartaannotationVersion = '2.1.1'
         jakartapersistenceVersion = '3.1.0'
@@ -91,23 +91,23 @@ allprojects {
         jodatimeVersion = '2.12.2'
         jsonldVersion = '0.13.4'
         junitVersion = '4.13.2'
-        junitjupiterVersion = '5.9.1'
+        junitjupiterVersion = '5.9.2'
         junitplatformVersion = '1.9.1'
         jwtVersion = '0.9.1'
         jwtApiVersion = '0.11.5'
         jwtImplVersion = '0.11.5'
         jwtJacksonVersion = '0.11.5'
-        kafkaVersion = '3.3.1'
+        kafkaVersion = '3.3.2'
         lang3Version = '3.12.0'
         logbackVersion = '1.2.11'
         lettuceVersion = '6.2.2.RELEASE'
         luceneVersion = '8.11.1'
-        openlineageVersion = '0.18.0'
+        openlineageVersion = '0.19.2'
         ossVersion = '4.15.0'
-        mockitoVersion = '4.11.0'
+        mockitoVersion = '5.1.1'
         plexusVersion = '3.5.0'
-        prometheusVersion = '1.10.2'
-        nettyVersion = '4.1.86.Final'
+        prometheusVersion = '1.10.3'
+        nettyVersion = '4.1.87.Final'
         quartzVersion = '2.3.2'
         reflectionsVersion = '0.10.2'
         sanitizerVersion = '1.2.3'
@@ -115,28 +115,28 @@ allprojects {
         sleepycatVersion = '18.3.12'
         snakeyamlVersion = '1.33'
         slf4jVersion = '1.7.36'
-        snappyVersion = '1.1.8.4'
-        springbootVersion = '2.7.7'
-        springdocVersion = '1.6.12'
+        snappyVersion = '1.1.9.1'
+        springdocVersion = '1.6.13'
+        springbootVersion = '2.7.8'
         spotbugsVersion = '4.7.3'
-        springdataVersion = '2.7.6'
+        springdataVersion = '2.7.7'
         springldapVersion = '2.4.1'
         springsecurityVersion = '5.8.1'
-        swaggerVersion = '2.2.7'
+        swaggerVersion = '2.2.8'
         testngVersion = '7.7.1'
         thriftVersion = '0.17.0'
-        springwebVersion = '5.3.24'
+        springwebVersion = '5.3.25'
         tinkVersion = '1.7.0'
-        tomcatVersion = '9.0.70'
+        tomcatVersion = '9.0.71'
         validationVersion = '2.0.1.Final'
-        antVersion = '1.10.12'
-        gsonVersion = '2.10'
+        gsonVersion = '2.10.1'
+        antVersion = '1.10.13'
         jnrVersion = '3.1.16'
         cassandraVersion = '4.1.0'
         protobufVersion = '3.21.12'
         osgiVersion = '8.0.0'
         log4jVersion = '2.19.0'
-        jacksonjdk8Version = '2.14.1'
+        jacksonjdk8Version = '2.14.2'
         reactivestreamsVersion = '1.0.4'
     }
 
@@ -307,7 +307,7 @@ allprojects {
             runtimeOnly("org.antlr:antlr4:4.11.1")
             runtimeOnly("org.apache.ivy:ivy:2.5.1")
         }
-        implementation platform('net.openhft:chronicle-bom:2.24ea25')
+        implementation platform('net.openhft:chronicle-bom:2.24ea38')
     }
 
     /*
@@ -345,8 +345,8 @@ allprojects {
             includeEngines 'junit-jupiter'
         }
         dependencies {
-            testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
-            testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+            testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+            testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
         }
 
         testLogging {
