@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-metadata-packages</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.10</version>
+        <version>3.10.1</version>
     </parent>
 
     <name>Open Metadata Native Package</name>
