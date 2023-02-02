@@ -20,7 +20,7 @@
     <parent>
         <artifactId>subject-area</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.10</version>
+        <version>3.10.1</version>
     </parent>
 
     <name>Subject Area OMAS with Spring</name>

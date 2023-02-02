@@ -553,7 +553,7 @@
 			"response": []
 		},
 		{
-			"name": "3.10 Get term replacements",
+			"name": "3.10.1 Get term replacements",
 			"request": {
 				"method": "GET",
 				"header": [],
