@@ -60,9 +60,9 @@ public class SecurityOfficerAdmin extends AccessServiceAdmin
             this.auditLog = auditLog;
             String accessServiceName = accessServiceConfigurationProperties.getAccessServiceName();
             List<String> supportedZones = super.extractSupportedZones(accessServiceConfigurationProperties.getAccessServiceOptions(),
-                    accessServiceName, auditLog);
-            OpenMetadataTopicConnector securityOfficerOutputTopic = initializeSecurityOfficerTopicConnector(
-                    accessServiceConfigurationProperties.getAccessServiceOutTopic());
+                                                                      accessServiceName, auditLog);
+            Connection accessServiceOutTopic = accessServiceConfigurationProperties.getAccessServiceOutTopic();
+            OpenMetadataTopicConnector securityOfficerOutputTopic = initializeSecurityOfficerTopicConnector(accessServiceOutTopic);
             SecurityOfficerEventProcessor securityOfficerEventProcessor = new SecurityOfficerEventProcessor(enterpriseOMRSRepositoryConnector,
                                                                                                             accessServiceName);
 
@@ -71,7 +71,7 @@ public class SecurityOfficerAdmin extends AccessServiceAdmin
                                                                     repositoryHelper, accessServiceName, auditLog);
             this.instance = new SecurityOfficerInstance(enterpriseOMRSRepositoryConnector, supportedZones, auditLog, serverUserName,
                                                                 enterpriseOMRSRepositoryConnector.getMaxPageSize(),
-                                                                accessServiceConfigurationProperties.getAccessServiceOutTopic(),
+                                                                accessServiceOutTopic,
                                                                 securityOfficerPublisher);
             this.serverName = instance.getServerName();
             this.registerWithEnterpriseTopic(AccessServiceDescription.SECURITY_OFFICER_OMAS.getAccessServiceFullName(),
