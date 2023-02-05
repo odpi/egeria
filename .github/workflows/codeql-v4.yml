@@ -6,14 +6,15 @@
 #
 # You may wish to alter this file to override the set of languages analyzed,
 # or to provide custom queries or build logic.
+---
 name: "CodeQL Analysis v4"
 
 on:
   push:
-    branches: [egeria-release-4*]
+    branches: [main, egeria-release-4*]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [egeria-release-4*]
+    branches: [main, egeria-release-4*]
 
 jobs:
   analyze:
@@ -28,24 +29,22 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+      - uses: gradle/wrapper-validation-action@v1
       - name: Setup Java JDK
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
-
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v2
         with:
           languages: java
           queries: security-and-quality
-
       - name: Build
         uses: gradle/gradle-build-action@v2
         with:
           cache-read-only: true
           arguments: -x javadoc -x test build
-
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2

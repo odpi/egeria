@@ -1,10 +1,11 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the ODPi Egeria project.
+---
 name: "Verify PR v4"
 
 on:
   pull_request:
-    branches: [egeria-release-4*]
+    branches: [main, egeria-release-4*]
 
 permissions:
   contents: read
