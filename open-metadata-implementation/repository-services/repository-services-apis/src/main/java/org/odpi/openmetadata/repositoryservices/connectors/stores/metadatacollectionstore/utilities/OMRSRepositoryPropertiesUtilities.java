@@ -109,7 +109,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                         }
                     }
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     throwHelperLogicError(sourceName, methodName, thisMethodName);
                 }
@@ -247,7 +247,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                         return mapPropertyValue.getMapValues();
                     }
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     throwHelperLogicError(sourceName, methodName, thisMethodName);
                 }
@@ -306,7 +306,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                         }
                     }
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     throwHelperLogicError(sourceName, callingMethodName, thisMethodName);
                 }
@@ -750,7 +750,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                         return this.getInstancePropertiesAsMap(mapInstancePropertyValue.getMapValues());
                     }
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     throwHelperLogicError(sourceName, methodName, thisMethodName);
                 }
