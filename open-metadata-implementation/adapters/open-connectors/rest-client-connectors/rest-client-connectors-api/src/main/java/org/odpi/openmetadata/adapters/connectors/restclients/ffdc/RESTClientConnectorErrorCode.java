@@ -44,11 +44,11 @@ public enum RESTClientConnectorErrorCode
     ;
 
 
-    private int    httpErrorCode;
-    private String errorMessageId;
-    private String errorMessage;
-    private String systemAction;
-    private String userAction;
+    private final int    httpErrorCode;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
 
     private static final Logger log = LoggerFactory.getLogger(RESTClientConnectorErrorCode.class);
     private static final long    serialVersionUID = 1L;
