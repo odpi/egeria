@@ -6067,7 +6067,7 @@ public class OpenMetadataTypesArchive1_2
     {
         final String guid            = "a0b7ba50-4c97-4b76-9a7d-c6a00e1be646";
         final String name            = "ToDoSource";
-        final String description     = "The source of a to do, such as a meeting or a condition detected by an engine.";
+        final String description     = "The source of the to do, such as a person, meeting or a governance action.";
         final String descriptionGUID = null;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
@@ -6122,7 +6122,7 @@ public class OpenMetadataTypesArchive1_2
     {
         final String guid            = "aca1277b-bf1c-42f5-9b3b-fbc2c9047325";
         final String name            = "Actions";
-        final String description     = "An action to change or support a specific project, deliverable, situation or plan of action.";
+        final String description     = "An action to change or support a specific rule, project, deliverable, situation or plan of action.";
         final String descriptionGUID = null;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
@@ -6140,10 +6140,10 @@ public class OpenMetadataTypesArchive1_2
          * Set up end 1.
          */
         final String                     end1EntityType               = "Referenceable";
-        final String                     end1AttributeName            = "toDoOriginator";
-        final String                     end1AttributeDescription     = "Source of a to do request.";
+        final String                     end1AttributeName            = "toDoCause";
+        final String                     end1AttributeDescription     = "Rule or meeting that is driving the need for the to do.";
         final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
                                                                  end1AttributeName,
@@ -10199,7 +10199,7 @@ public class OpenMetadataTypesArchive1_2
     {
         final String guid            = "e9077f4f-955b-4d7b-b1f7-12ee769ff0c3";
         final String name            = "DeployedReport";
-        final String description     = "A collection if data items that describe a situation.";
+        final String description     = "A collection if data items that describe a situation.  This is an instance of a report.";
         final String descriptionGUID = null;
 
         final String superTypeName = "DataSet";
