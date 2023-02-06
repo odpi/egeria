@@ -8,11 +8,13 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelp
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationPropagationRule;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EnumDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EnumElementDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttributeStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
@@ -43,7 +45,7 @@ public class OpenMetadataTypesArchive
     private static final String                  archiveName        = "Open Metadata Types";
     private static final String                  archiveDescription = "Standard types for open metadata repositories.";
     private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.CONTENT_PACK;
-    private static final String                  archiveVersion     = "3.15";
+    private static final String                  archiveVersion     = "4.0";
     private static final String                  originatorName     = "Egeria";
     private static final String                  originatorLicense  = "Apache 2.0";
     private static final Date                    creationDate       = new Date(1588261366992L);
@@ -151,7 +153,7 @@ public class OpenMetadataTypesArchive
      */
     public void getOriginalTypes()
     {
-        OpenMetadataTypesArchive3_14 previousTypes = new OpenMetadataTypesArchive3_14(archiveBuilder);
+        OpenMetadataTypesArchive3_15 previousTypes = new OpenMetadataTypesArchive3_15(archiveBuilder);
 
         /*
          * Pull the types from previous releases.
@@ -159,37 +161,140 @@ public class OpenMetadataTypesArchive
         previousTypes.getOriginalTypes();
 
         /*
-         * Calls for new and changed types go here
+         * Add the type updates
          */
-        updateGovernanceEngines();
-        updateGovernanceActionTypes();
-        updateGovernanceActions();
-        update0710DigitalServices();
-        update0715DigitalServiceOwnership();
-        update0735SolutionPortsAndWires();
+        update0021Collections();
+        update0137ToDos();
+        add0220DataFileCollectionDataSet();
+        add0224TableDataSet();
+        add0239DeployedReportType();
+        update0462GovernanceActionType();
+        update0470IncidentClassifierSet();
+        update0484AgreementActor();
+        update0720InformationSupplyChains();
     }
-
 
     /*
      * -------------------------------------------------------------------------------------------------------
      */
 
-
-    /**
-     * Allow a mapping from a governance engine request type to a request type supported by a governance service.
-     */
-    private void updateGovernanceEngines()
+    private void update0021Collections()
     {
-        this.archiveBuilder.addTypeDefPatch(updateSupportedGovernanceServiceRelationship());
+        this.archiveBuilder.addEnumDef(getMembershipStatusEnum());
+        this.archiveBuilder.addTypeDefPatch(updateCollectionMembershipRelationship());
     }
 
+    private EnumDef getMembershipStatusEnum()
+    {
+        final String guid            = "a3bdb2ac-c28e-4e5a-8ab7-76aa01038832";
+        final String name            = "MembershipStatus";
+        final String description     = "Defines the provenance and confidence that a member belongs in a collection.";
+        final String descriptionGUID = null;
 
-    private TypeDefPatch updateSupportedGovernanceServiceRelationship()
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+
+        ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
+        EnumElementDef            elementDef;
+
+        final int    element0Ordinal         = 0;
+        final String element0Value           = "Unknown";
+        final String element0Description     = "The membership origin is unknown.";
+        final String element0DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element0Ordinal,
+                                                     element0Value,
+                                                     element0Description,
+                                                     element0DescriptionGUID);
+        elementDefs.add(elementDef);
+        enumDef.setDefaultValue(elementDef);
+
+        final int    element1Ordinal         = 1;
+        final String element1Value           = "Discovered";
+        final String element1Description     = "The membership was discovered by an automated process.";
+        final String element1DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
+                                                     element1Value,
+                                                     element1Description,
+                                                     element1DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element2Ordinal         = 2;
+        final String element2Value           = "Assigned";
+        final String element2Description     = "The membership was proposed by an expert curator.";
+        final String element2DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
+                                                     element2Value,
+                                                     element2Description,
+                                                     element2DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element3Ordinal         = 3;
+        final String element3Value           = "Imported";
+        final String element3Description     = "The membership was imported from another metadata system.";
+        final String element3DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
+                                                     element3Value,
+                                                     element3Description,
+                                                     element3DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element4Ordinal         = 4;
+        final String element4Value           = "Validated";
+        final String element4Description     = "The membership created by an automated process has been validated and approved by an expert curator.";
+        final String element4DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
+                                                     element4Value,
+                                                     element4Description,
+                                                     element4DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element5Ordinal         = 5;
+        final String element5Value           = "Deprecated";
+        final String element5Description     = "The membership should no longer be used.";
+        final String element5DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element5Ordinal,
+                                                     element5Value,
+                                                     element5Description,
+                                                     element5DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element6Ordinal         = 6;
+        final String element6Value           = "Obsolete";
+        final String element6Description     = "The membership must no longer be used.";
+        final String element6DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element6Ordinal,
+                                                     element6Value,
+                                                     element6Description,
+                                                     element6DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element99Ordinal         = 99;
+        final String element99Value           = "Other";
+        final String element99Description     = "Another membership status.";
+        final String element99DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
+                                                     element99Value,
+                                                     element99Description,
+                                                     element99DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        enumDef.setElementDefs(elementDefs);
+        return enumDef;
+    }
+
+    private TypeDefPatch updateCollectionMembershipRelationship()
     {
         /*
          * Create the Patch
          */
-        final String typeName = "SupportedGovernanceService";
+        final String typeName = "CollectionMembership";
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -202,9 +307,354 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "serviceRequestType";
-        final String attribute1Description     = "Request type supported by the governance action service (overrides requestType on call to governance service if specified).";
+        final String attribute1Name            = "membershipRationale";
+        final String attribute1Description     = "Description of how the member is used, or why it is useful in this collection.";
         final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "expression";
+        final String attribute2Description     = "Expression describing the membership relationship.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "status";
+        final String attribute3Description     = "The status of the membership relationship.";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "confidence";
+        final String attribute4Description     = "Level of confidence in the correctness of the membership relationship.";
+        final String attribute4DescriptionGUID = null;
+        final String attribute5Name            = "steward";
+        final String attribute5Description     = "Person responsible for the membership relationship.";
+        final String attribute5DescriptionGUID = null;
+        final String attribute6Name            = "source";
+        final String attribute6Description     = "Person, organization or automated process that created the membership relationship.";
+        final String attribute6DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getEnumTypeDefAttribute("MembershipStatus",
+                                                         attribute3Name,
+                                                         attribute3Description,
+                                                         attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getIntTypeDefAttribute(attribute4Name,
+                                                        attribute4Description,
+                                                        attribute4DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
+                                                           attribute5Description,
+                                                           attribute5DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
+                                                           attribute6Description,
+                                                           attribute6DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0137ToDos()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateActionTargetRelationship());
+    }
+
+    private TypeDefPatch updateActionTargetRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "ActionTarget";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "status";
+        final String attribute1Description     = "The status of the work on this element.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "startDate";
+        final String attribute2Description     = "Date/time that work started on this element.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "completionDate";
+        final String attribute3Description     = "Date/time that work stopped on this element.";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "actionTargetName";
+        final String attribute4Description     = "The name to identify the action target to the actor that processes it.";
+        final String attribute4DescriptionGUID = null;
+        final String attribute5Name            = "completionMessage";
+        final String attribute5Description     = "Message to provide additional information on the results of acting on the target by the actor or the reasons for any failures.";
+        final String attribute5DescriptionGUID = null;
+
+        property = archiveHelper.getEnumTypeDefAttribute("ToDoStatus",
+                                                         attribute1Name,
+                                                         attribute1Description,
+                                                         attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getDateTypeDefAttribute(attribute2Name,
+                                                         attribute2Description,
+                                                         attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getDateTypeDefAttribute(attribute3Name,
+                                                         attribute3Description,
+                                                         attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+                                                           attribute4Description,
+                                                           attribute4DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
+                                                           attribute5Description,
+                                                           attribute5DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void add0220DataFileCollectionDataSet()
+    {
+        this.archiveBuilder.addEntityDef(getDataFileCollectionDataSetEntity());
+
+    }
+
+    private EntityDef getDataFileCollectionDataSetEntity()
+    {
+        final String guid            = "962de053-ab51-40eb-b843-85b98013f5ca";
+        final String name            = "DataFileCollection";
+        final String description     = "A data set that consists of a collection files (do not need to be co-located).";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "DataSet";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void add0224TableDataSet()
+    {
+        this.archiveBuilder.addEntityDef(getTableDataSetEntity());
+
+    }
+
+    private EntityDef getTableDataSetEntity()
+    {
+        final String guid            = "20c45531-5d2e-4eb6-9a47-035cb1067b82";
+        final String name            = "TableDataSet";
+        final String description     = "A tabular data source (typically a database table) that is an asset in its own right.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "DataSet";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void add0239DeployedReportType()
+    {
+        this.archiveBuilder.addEntityDef(getDeployedReportTypeEntity());
+
+    }
+
+    private EntityDef getDeployedReportTypeEntity()
+    {
+        final String guid            = "ed53a480-e6d4-44f1-aac7-3fac60bbb00e";
+        final String name            = "DeployedReportType";
+        final String description     = "A template for generating report.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "Asset";
+
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
+                                                                name,
+                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                description,
+                                                                descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "id";
+        final String attribute1Description     = "Id of report.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "author";
+        final String attribute2Description     = "Author of the report.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "url";
+        final String attribute3Description     = "url of the report.";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "createdTime";
+        final String attribute4Description     = "Report create time.";
+        final String attribute4DescriptionGUID = null;
+        final String attribute5Name            = "lastModifiedTime";
+        final String attribute5Description     = "Report last modified time.";
+        final String attribute5DescriptionGUID = null;
+        final String attribute6Name            = "lastModifier";
+        final String attribute6Description     = "Report last modifier.";
+        final String attribute6DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getDateTypeDefAttribute(attribute4Name,
+                                                         attribute4Description,
+                                                         attribute4DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getDateTypeDefAttribute(attribute5Name,
+                                                         attribute5Description,
+                                                         attribute5DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
+                                                           attribute6Description,
+                                                           attribute6DescriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    private void update0462GovernanceActionType()
+    {
+        this.archiveBuilder.addTypeDefPatch(update0462GovernanceActionTypeExecutorRelationship());
+    }
+
+    private TypeDefPatch update0462GovernanceActionTypeExecutorRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "GovernanceActionTypeExecutor";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "requestParameterFilter";
+        final String attribute1Description     = "Which requestParameters to remove before calling governance action.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "requestParameterMap";
+        final String attribute2Description     = "The request parameters to rename before calling the governance action. Map is from old name to new name.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "actionTargetFilter";
+        final String attribute3Description     = "Which actionTargets to remove before calling governance action.";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "actionTargetMap";
+        final String attribute4Description     = "The action target to rename before calling the governance action. Map is from old name to new name.";
+        final String attribute4DescriptionGUID = null;
+
+        property = archiveHelper.getArrayStringTypeDefAttribute(attribute1Name,
+                                                                attribute1Description,
+                                                                attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute2Name,
+                                                                    attribute2Description,
+                                                                    attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getArrayStringTypeDefAttribute(attribute3Name,
+                                                                    attribute3Description,
+                                                                    attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute4Name,
+                                                                    attribute4Description,
+                                                                    attribute4DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0470IncidentClassifierSet()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateIncidentClassifierSetClassification());
+    }
+
+    private TypeDefPatch updateIncidentClassifierSetClassification()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "IncidentClassifierSet";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "incidentClassifierCategory";
+        final String attribute1Description     = "The category of classifiers used to set the incidentClassifiers in IncidentReport.";
+        final String attribute1DescriptionGUID = null;
+
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -216,225 +666,46 @@ public class OpenMetadataTypesArchive
         return typeDefPatch;
     }
 
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0484AgreementActor()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateAgreementActorRelationship());
+    }
+
+    private TypeDefPatch updateAgreementActorRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "AgreementActor";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setUpdateMultiLink(true);
+        typeDefPatch.setMultiLink(true);
+
+        return typeDefPatch;
+    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
      */
 
-
-    /**
-     * Adjust properties used to control the execution of governance actions.
-     */
-    private void updateGovernanceActionTypes()
+    private void update0720InformationSupplyChains()
     {
-        this.archiveBuilder.addTypeDefPatch(updateGovernanceActionTypeEntity());
-        this.archiveBuilder.addTypeDefPatch(updateNextGovernanceActionTypeRelationship());
-        this.archiveBuilder.addTypeDefPatch(updateNextGovernanceActionRelationship());
+        this.archiveBuilder.addRelationshipDef(getInformationSupplyChainLinkRelationship());
     }
 
-    private TypeDefPatch updateGovernanceActionTypeEntity()
+    private RelationshipDef getInformationSupplyChainLinkRelationship()
     {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "GovernanceActionType";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "waitTime";
-        final String attribute1Description     = "The minimum number of minutes that the governance engine should wait before calling the governance service.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute3Name            = "ignoreMultipleTriggers";
-        final String attribute3Description     = "Trigger one or many governance action instances?";
-        final String attribute3DescriptionGUID = null;
-
-
-        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
-                                                        attribute1Description,
-                                                        attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute3Name,
-                                                            attribute3Description,
-                                                            attribute3DescriptionGUID);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch updateNextGovernanceActionTypeRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "NextGovernanceActionType";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute3Name            = "ignoreMultipleTriggers";
-        final String attribute3Description     = "Trigger one or many next action instances? (deprecated)";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute3Name,
-                                                            attribute3Description,
-                                                            attribute3DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch updateNextGovernanceActionRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "NextGovernanceAction";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute3Name            = "ignoreMultipleTriggers";
-        final String attribute3Description     = "Trigger one or many next action instances? (deprecated)";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute3Name,
-                                                            attribute3Description,
-                                                            attribute3DescriptionGUID);
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * Allow a governance service to record a message as part of its completion.  This is particularly useful if it fails.
-     */
-    private void updateGovernanceActions()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateGovernanceActionEntity());
-        this.archiveBuilder.addTypeDefPatch(updateTargetForActionRelationship());
-    }
-
-
-    private TypeDefPatch updateGovernanceActionEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "GovernanceAction";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "completionMessage";
-        final String attribute1Description     = "Message to provide additional information on the results of running the governance service or the reasons for its failure.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateTargetForActionRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "TargetForAction";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "completionMessage";
-        final String attribute1Description     = "Message to provide additional information on the results of acting on the target by the governance service or the reasons for any failures.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0710DigitalServices()
-    {
-        this.archiveBuilder.addRelationshipDef(getDigitalServiceProductRelationship());
-        this.archiveBuilder.addTypeDefPatch(updateDigitalProductClassification());
-    }
-
-    private RelationshipDef getDigitalServiceProductRelationship()
-    {
-        final String guid            = "51465a59-c785-406d-929c-def34596e9af";
-        final String name            = "DigitalServiceProduct";
-        final String description     = "A digital product that is maintained by a digital service.";
+        final String guid            = "207e5130-ab7c-4048-9249-a63a43c13d60";
+        final String name            = "InformationSupplyChainLink";
+        final String description     = "A link between two related information supply chain segments -or to their source or destination.";
         final String descriptionGUID = null;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
@@ -451,11 +722,11 @@ public class OpenMetadataTypesArchive
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "DigitalService";
-        final String                     end1AttributeName            = "managingDigitalService";
-        final String                     end1AttributeDescription     = "Digital service responsible for the production of the digital product.";
+        final String                     end1EntityType               = "Referenceable";
+        final String                     end1AttributeName            = "supplyFrom";
+        final String                     end1AttributeDescription     = "Logical source of the information supply chain.";
         final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
                                                                  end1AttributeName,
@@ -464,12 +735,13 @@ public class OpenMetadataTypesArchive
                                                                  end1Cardinality);
         relationshipDef.setEndDef1(relationshipEndDef);
 
+
         /*
          * Set up end 2.
          */
         final String                     end2EntityType               = "Referenceable";
-        final String                     end2AttributeName            = "digitalProducts";
-        final String                     end2AttributeDescription     = "The associated digital products.";
+        final String                     end2AttributeName            = "supplyTo";
+        final String                     end2AttributeDescription     = "Logical destination of an information supply chain.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
@@ -480,196 +752,29 @@ public class OpenMetadataTypesArchive
                                                                  end2Cardinality);
         relationshipDef.setEndDef2(relationshipEndDef);
 
-        return relationshipDef;
-    }
-
-
-    private TypeDefPatch updateDigitalProductClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "DigitalProduct";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name = "syncDatesByKey";
-        final String attribute1Description = "Collection of synchronization dates identified by a key (deprecated, added in error).";
+        final String attribute1Name            = "description";
+        final String attribute1Description     = "Description of the relationship.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name = "productName";
-        final String attribute2Description = "Display name of the product.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name = "productType";
-        final String attribute3Description = "Type or category of the product.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name = "introductionDate";
-        final String attribute4Description = "Date that the product was made available.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name = "maturity";
-        final String attribute5Description = "Level of maturity for the product.";
-        final String attribute5DescriptionGUID = null;
-        final String attribute6Name = "serviceLife";
-        final String attribute6Description = "Length of time that the product is expected to be in service.";
-        final String attribute6DescriptionGUID = null;
-        final String attribute7Name = "currentVersion";
-        final String attribute7Description = "Which is the current supported version that is recommended for consumers.";
-        final String attribute7DescriptionGUID = null;
-        final String attribute8Name = "nextVersion";
-        final String attribute8Description = "When is the next version expected to be released.";
-        final String attribute8DescriptionGUID = null;
-        final String attribute9Name = "withdrawDate";
-        final String attribute9Description = "What date what the product withdrawn, preventing new consumers.";
-        final String attribute9DescriptionGUID = null;
-        final String attribute10Name = "additionalProperties";
-        final String attribute10Description = "Any additional properties needed to describe the product.";
-        final String attribute10DescriptionGUID = null;
 
-        property = archiveHelper.getMapStringLongTypeDefAttribute(attribute1Name,
-                                                                  attribute1Description,
-                                                                  attribute1DescriptionGUID);
-
-        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getDateTypeDefAttribute(attribute4Name,
-                                                         attribute4Description,
-                                                         attribute4DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
-                                                           attribute5Description,
-                                                           attribute5DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
-                                                           attribute6Description,
-                                                           attribute6DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
-                                                           attribute7Description,
-                                                           attribute7DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getDateTypeDefAttribute(attribute8Name,
-                                                         attribute8Description,
-                                                         attribute8DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getDateTypeDefAttribute(attribute9Name,
-                                                         attribute9Description,
-                                                         attribute9DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute10Name,
-                                                                    attribute10Description,
-                                                                    attribute10DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         properties.add(property);
 
-        typeDefPatch.setPropertyDefinitions(properties);
+        relationshipDef.setPropertiesDefinition(properties);
 
-        return typeDefPatch;
+        return relationshipDef;
     }
-
 
     /*
      * -------------------------------------------------------------------------------------------------------
      */
 
-    private void update0715DigitalServiceOwnership()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateDigitalServiceOperatorRelationship());
-    }
-
-    private TypeDefPatch updateDigitalServiceOperatorRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "DigitalServiceOperator";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2EntityType               = "Referenceable";
-        final String                     end2AttributeName            = "digitalServiceOperators";
-        final String                     end2AttributeDescription     = "The unit (team, capability, ...) responsible for managing this digital service.";
-        final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
-
-        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
-                                                                                    end2AttributeName,
-                                                                                    end2AttributeDescription,
-                                                                                    end2AttributeDescriptionGUID,
-                                                                                    end2Cardinality);
-
-
-        typeDefPatch.setEndDef2(relationshipEndDef);
-
-        return typeDefPatch;
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0735SolutionPortsAndWires()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateSolutionLinkingWireRelationship());
-    }
-
-    private TypeDefPatch updateSolutionLinkingWireRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "DigitalServiceOperator";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2EntityType               = "Referenceable";
-        final String                     end2AttributeName            = "digitalServiceOperators";
-        final String                     end2AttributeDescription     = "The unit (team, capability, ...) responsible for managing this digital service.";
-        final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
-
-        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
-                                                                                    end2AttributeName,
-                                                                                    end2AttributeDescription,
-                                                                                    end2AttributeDescriptionGUID,
-                                                                                    end2Cardinality);
-
-
-        typeDefPatch.setEndDef2(relationshipEndDef);
-
-        return typeDefPatch;
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
 }
 
