@@ -44,7 +44,9 @@ jobs:
       - name: Build
         uses: gradle/gradle-build-action@v2
         with:
-          cache-read-only: true
+          # codeQL requires a full before/after build to compare results. Caching can result in action failing
+          #cache-read-only: true
+          cache-disabled: true
           arguments: -x javadoc -x test build
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
