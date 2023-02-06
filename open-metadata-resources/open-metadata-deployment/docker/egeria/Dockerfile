@@ -10,11 +10,11 @@
 # See readme in source tree or on docker hub for more info
 
 # Based on RedHat UBI image.
-# https://catalog.redhat.com/software/containers/ubi8/openjdk-11/5dd6a4b45a13461646f677f4?container-tabs=gti&gti-tabs=unauthenticated
+# https://catalog.redhat.com/software/containers/ubi9/openjdk-17-runtime/61ee7d45384a3eb331996bee
 
 
-FROM registry.access.redhat.com/ubi8/openjdk-11
-ARG version=3.16-SNAPSHOT
+FROM registry.access.redhat.com/ubi9/openjdk-17-runtime
+ARG version=4.0-SNAPSHOT
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
 ARG BUILD_TIME=unknown
@@ -25,7 +25,7 @@ ENV version ${version}
 # Labels from https://github.com/opencontainers/image-spec/blob/master/annotations.md#pre-defined-annotation-keys (with additions prefixed ext)
 LABEL org.opencontainers.image.vendor = "ODPi" \
       org.opencontainers.image.title = "Egeria" \
-      org.opencontainers.image.description = "Common image for core ODPi Egeria runtime. Based on RedHat UBI 8 openjdk-11 image" \
+      org.opencontainers.image.description = "Common image for core ODPi Egeria runtime. Based on RedHat UBI 8 openjdk-17 image" \
       org.opencontainers.image.url = "https://egeria.odpi.org/" \
       org.opencontainers.image.source = "$VCS_ORIGIN" \
       org.opencontainers.image.authors = "ODPi Egeria" \
