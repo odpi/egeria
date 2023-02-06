@@ -169,7 +169,7 @@ distributions {
                 fileMode = 0755
             }
             into('user-interface') {
-                from { project(':open-metadata-implementation:user-interfaces:ui-chassis:ui-chassis-spring').jar }
+                from { project(':open-metadata-implementation:user-interfaces:ui-chassis:ui-chassis-spring').bootJar }
                 fileMode = 0755
             }
             into('conformance-suite') {
