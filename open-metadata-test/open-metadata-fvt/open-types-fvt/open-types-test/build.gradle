@@ -29,7 +29,8 @@ test {
 }
 
 java {
-    withJavadocJar()
+    // no javadoc for this module
+    //withJavadocJar()
 }
 
 task cleanGeneratedSrc(type: Delete) {
