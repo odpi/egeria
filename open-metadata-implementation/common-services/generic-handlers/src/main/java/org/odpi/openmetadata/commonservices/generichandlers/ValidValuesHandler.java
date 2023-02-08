@@ -131,6 +131,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                 externalSourceGUID,
                                 externalSourceName,
                                 null,
+                                null,
                                 suppliedTypeName,
                                 false,
                                 qualifiedName,
@@ -196,6 +197,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
         return createValidValue(userId,
                                 externalSourceGUID,
                                 externalSourceName,
+                                null,
                                 null,
                                 OpenMetadataAPIMapper.VALID_VALUE_SET_TYPE_NAME,
                                 false,
@@ -271,6 +273,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
         return createValidValue(userId,
                                 externalSourceGUID,
                                 externalSourceName,
+                                null,
                                 setGUID,
                                 OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
                                 isDefaultValue,
@@ -298,6 +301,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
      * @param userId               calling user.
      * @param externalSourceGUID   guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName   name of the software capability entity that represented the external source
+     * @param anchorGUID           unique identifier of the anchor for this valid value
      * @param setGUID              unique identifier of the set to attach this to
      * @param suppliedTypeName     name of the type to create
      * @param isDefaultValue       is this the default value for the set?
@@ -324,6 +328,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
     public String createValidValue(String              userId,
                                    String              externalSourceGUID,
                                    String              externalSourceName,
+                                   String              anchorGUID,
                                    String              setGUID,
                                    String              suppliedTypeName,
                                    boolean             isDefaultValue,
@@ -376,9 +381,9 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
 
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
-        if (setGUID != null)
+        if (anchorGUID != null)
         {
-            builder.setAnchors(userId, setGUID, methodName);
+            builder.setAnchors(userId, anchorGUID, methodName);
         }
 
         String definitionGUID = this.createBeanInRepository(userId,
