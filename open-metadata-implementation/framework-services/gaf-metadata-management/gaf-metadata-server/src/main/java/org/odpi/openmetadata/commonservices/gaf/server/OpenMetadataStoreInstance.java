@@ -5,9 +5,13 @@ package org.odpi.openmetadata.commonservices.gaf.server;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.commonservices.gaf.converters.MetadataElementConverter;
+import org.odpi.openmetadata.commonservices.gaf.converters.ValidMetadataValueConverter;
 import org.odpi.openmetadata.commonservices.gaf.ffdc.OpenMetadataStoreErrorCode;
 import org.odpi.openmetadata.commonservices.gaf.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.commonservices.gaf.properties.ValidMetadataValue;
+import org.odpi.openmetadata.commonservices.gaf.properties.ValidMetadataValueDetail;
+import org.odpi.openmetadata.commonservices.generichandlers.ValidValuesHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -23,7 +27,9 @@ public class OpenMetadataStoreInstance extends OMASServiceInstance
 {
     private final static CommonServicesDescription myDescription = CommonServicesDescription.GAF_METADATA_MANAGEMENT;
 
-    private final MetadataElementHandler<OpenMetadataElement> metadataElementHandler;
+    private final MetadataElementHandler<OpenMetadataElement>  metadataElementHandler;
+    private final ValidValuesHandler<ValidMetadataValue>       validMetadataValuesHandler;
+    private final ValidValuesHandler<ValidMetadataValueDetail> validMetadataValuesDetailHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -72,6 +78,33 @@ public class OpenMetadataStoreInstance extends OMASServiceInstance
                                                                        auditLog);
 
 
+            this.validMetadataValuesHandler = new ValidValuesHandler<>(new ValidMetadataValueConverter<>(repositoryHelper, serviceName, serverName),
+                                                                       ValidMetadataValue.class,
+                                                                       serviceName,
+                                                                       serverName,
+                                                                       invalidParameterHandler,
+                                                                       repositoryHandler,
+                                                                       repositoryHelper,
+                                                                       localServerUserId,
+                                                                       securityVerifier,
+                                                                       supportedZones,
+                                                                       defaultZones,
+                                                                       publishZones,
+                                                                       auditLog);
+
+            this.validMetadataValuesDetailHandler = new ValidValuesHandler<>(new ValidMetadataValueConverter<>(repositoryHelper, serviceName, serverName),
+                                                                             ValidMetadataValueDetail.class,
+                                                                             serviceName,
+                                                                             serverName,
+                                                                             invalidParameterHandler,
+                                                                             repositoryHandler,
+                                                                             repositoryHelper,
+                                                                             localServerUserId,
+                                                                             securityVerifier,
+                                                                             supportedZones,
+                                                                             defaultZones,
+                                                                             publishZones,
+                                                                             auditLog);
         }
         else
         {
@@ -82,7 +115,6 @@ public class OpenMetadataStoreInstance extends OMASServiceInstance
     }
 
 
-
     /**
      * Return the handler for open metadata store requests.
      *
@@ -91,5 +123,25 @@ public class OpenMetadataStoreInstance extends OMASServiceInstance
     public MetadataElementHandler<OpenMetadataElement> getMetadataElementHandler()
     {
         return metadataElementHandler;
+    }
+
+    /**
+     * Return the handler for open metadata store requests.
+     *
+     * @return handler object
+     */
+    public ValidValuesHandler<ValidMetadataValue> getValidMetadataValuesHandler()
+    {
+        return validMetadataValuesHandler;
+    }
+
+    /**
+     * Return the handler for open metadata store requests.
+     *
+     * @return handler object
+     */
+    public ValidValuesHandler<ValidMetadataValueDetail> getValidMetadataValuesDetailHandler()
+    {
+        return validMetadataValuesDetailHandler;
     }
 }

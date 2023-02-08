@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.IncidentDependency;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.IncidentImpactedElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 
 import java.util.Date;
 import java.util.List;
@@ -53,24 +54,34 @@ public interface StewardshipActionInterface
      * Create a "To Do" request for someone to work on.
      *
      * @param userId caller's userId
-     * @param toDoQualifiedName unique name for the to do.  (Could be the engine name and a guid?)
+     * @param qualifiedName unique name for the to do.  (Could be the engine name and a guid?)
      * @param title short meaningful phrase for the person receiving the request
      * @param instructions further details on what to do
+     * @param category a category of to dos (for example, "data error", "access request")
      * @param priority priority value (based on organization's scale)
      * @param dueDate date/time this needs to be completed
-     * @param assignTo qualified name of the PersonRole element for the recipient
+     * @param additionalProperties additional arbitrary properties for the incident reports
+     * @param assignTo qualified name of the Actor element for the recipient
+     * @param causeGUID unique identifier of the element that describes the rule, project that this is on behalf of
+     * @param actionTargets the list of elements that should be acted upon
+     *
      * @return unique identifier of new to do element
+     *
      * @throws InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
-     * @throws UserNotAuthorizedException the governance action service is not authorized to create a to do
+     * @throws UserNotAuthorizedException the governance action service is not authorized to create a "to do" entity
      * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
      */
-    String openToDo(String userId,
-                    String toDoQualifiedName,
-                    String title,
-                    String instructions,
-                    int    priority,
-                    Date   dueDate,
-                    String assignTo) throws InvalidParameterException,
-                                            UserNotAuthorizedException,
-                                            PropertyServerException;
+    String openToDo(String                userId,
+                    String                qualifiedName,
+                    String                title,
+                    String                instructions,
+                    String                category,
+                    int                   priority,
+                    Date                  dueDate,
+                    Map<String, String>   additionalProperties,
+                    String                assignTo,
+                    String                causeGUID,
+                    List<NewActionTarget> actionTargets) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException;
 }

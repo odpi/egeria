@@ -433,7 +433,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                                                                         UserNotAuthorizedException
     {
         final String   methodName = "getConnectedAssetSummary";
-        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/assets/{3}/via-connection/{4}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/framework-services/{1}/connected-asset/users/{2}/assets/{3}/via-connection/{4}";
 
         invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, remoteServerName, methodName);
 
@@ -492,7 +492,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                                                           UserNotAuthorizedException
     {
         final String   methodName = "getAssetSummary";
-        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/assets/{3}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/framework-services/{1}/connected-asset/users/{2}/assets/{3}";
         
         invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, remoteServerName, methodName);
 
