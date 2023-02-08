@@ -30,7 +30,7 @@
 
     <groupId>org.odpi.egeria</groupId>
     <artifactId>egeria</artifactId>
-    <version>3.16-SNAPSHOT</version>
+    <version>4.0-SNAPSHOT</version>
 
     <url>https://odpi.github.io/egeria-docs/</url>
 
