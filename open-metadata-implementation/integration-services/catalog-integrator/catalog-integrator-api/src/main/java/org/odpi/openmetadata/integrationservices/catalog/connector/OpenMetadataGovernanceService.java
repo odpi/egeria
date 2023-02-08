@@ -4,23 +4,15 @@
 package org.odpi.openmetadata.integrationservices.catalog.connector;
 
 import org.odpi.openmetadata.accessservices.assetmanager.client.OpenMetadataStoreClient;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection;
 import org.odpi.openmetadata.commonservices.gaf.properties.TranslationDetail;
 import org.odpi.openmetadata.commonservices.gaf.properties.ValidMetadataValue;
+import org.odpi.openmetadata.commonservices.gaf.properties.ValidMetadataValueDetail;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.IncidentDependency;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.IncidentImpactedElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifications;
-import org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
-import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorErrorCode;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 
 import java.util.Date;
 import java.util.List;
@@ -97,29 +89,39 @@ public class OpenMetadataGovernanceService
 
 
     /**
-     * Create a To-Do request for someone to work on.
+     * Create a "To Do" request for someone to work on.
      *
-     * @param toDoQualifiedName unique name for the to do.  (Could be the engine name and a guid?)
+     * @param qualifiedName unique name for the to do.  (Could be the engine name and a guid?)
      * @param title short meaningful phrase for the person receiving the request
      * @param instructions further details on what to do
+     * @param todoCategory a category of to dos (for example, "data error", "access request")
      * @param priority priority value (based on organization's scale)
      * @param dueDate date/time this needs to be completed
-     * @param assignTo qualified name of the PersonRole element for the recipient
+     * @param additionalProperties additional arbitrary properties for the incident reports
+     * @param assignTo qualified name of the Actor element for the recipient
+     * @param causeGUID unique identifier of the element that describes the rule, project that this is on behalf of
+     * @param actionTargets the list of elements that should be acted upon
+     *
      * @return unique identifier of new to do element
+     *
      * @throws InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
-     * @throws UserNotAuthorizedException the governance action service is not authorized to create a to-do
+     * @throws UserNotAuthorizedException the governance action service is not authorized to create a "to do" entity
      * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
      */
-    public String openToDo(String toDoQualifiedName,
-                           String title,
-                           String instructions,
-                           int    priority,
-                           Date   dueDate,
-                           String assignTo) throws InvalidParameterException,
-                                                   UserNotAuthorizedException,
-                                                   PropertyServerException
+    public String openToDo(String                qualifiedName,
+                           String                title,
+                           String                instructions,
+                           String                todoCategory,
+                           int                   priority,
+                           Date                  dueDate,
+                           Map<String, String>   additionalProperties,
+                           String                assignTo,
+                           String                causeGUID,
+                           List<NewActionTarget> actionTargets) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
-        return openMetadataStoreClient.openToDo(userId, toDoQualifiedName, title, instructions, priority, dueDate, assignTo);
+        return openMetadataStoreClient.openToDo(userId, qualifiedName, title, instructions, todoCategory, priority, dueDate, additionalProperties, assignTo, causeGUID, actionTargets);
     }
 
 
@@ -233,6 +235,60 @@ public class OpenMetadataGovernanceService
 
 
     /**
+     * Create or update the valid value for a name that can be stored in a particular open metadata property name.
+     * This property is of type map from name to string.
+     * The valid value is stored in the preferredValue property of validMetadataValue.
+     *
+     * If the typeName is null, this valid value applies to properties of this name from any open metadata type.
+     * If a valid value is already set up for this property (with overlapping effective dates) then the valid value is updated.
+     *
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param validMetadataValue preferred value to use in the open metadata types plus additional descriptive values.
+     *
+     * @throws InvalidParameterException  the property name is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to create/access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    public void setUpValidMetadataMapName(String             typeName,
+                                          String             propertyName,
+                                          ValidMetadataValue validMetadataValue) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        openMetadataStoreClient.setUpValidMetadataMapName(userId, typeName, propertyName, validMetadataValue);
+    }
+
+
+    /**
+     * Create or update the valid value for a name that can be stored in a particular open metadata property name.
+     * This property is of type map from name to string.
+     * The valid value is stored in the preferredValue property of validMetadataValue.
+     *
+     * If the typeName is null, this valid value applies to properties of this name from any open metadata type.
+     * If a valid value is already set up for this property (with overlapping effective dates) then the valid value is updated.
+     *
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param mapName name in the map that this valid value applies.  If null then the value can be used for any name in the map.
+     * @param validMetadataValue preferred value to use in the open metadata types plus additional descriptive values.
+     *
+     * @throws InvalidParameterException  the property name is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to create/access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    public void setUpValidMetadataMapValue(String             typeName,
+                                           String             propertyName,
+                                           String             mapName,
+                                           ValidMetadataValue validMetadataValue) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        openMetadataStoreClient.setUpValidMetadataMapValue(userId, typeName, propertyName, mapName, validMetadataValue);
+    }
+
+
+    /**
      * Remove a valid value for a property.
      *
      * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
@@ -250,6 +306,50 @@ public class OpenMetadataGovernanceService
                                                                       PropertyServerException
     {
         openMetadataStoreClient.clearValidMetadataValue(userId, typeName, propertyName, preferredValue);
+    }
+
+
+    /**
+     * Remove a valid map name value for a property.  The match is done on preferred name.
+     *
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param preferredValue specific valid value to remove
+     *
+     * @throws InvalidParameterException  the property name is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to create/access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    public void clearValidMetadataMapName(String typeName,
+                                          String propertyName,
+                                          String preferredValue) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        openMetadataStoreClient.clearValidMetadataMapName(userId, typeName, propertyName, preferredValue);
+    }
+
+
+    /**
+     * Remove a valid map name value for a property.  The match is done on preferred name.
+     *
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param mapName name in the map that this valid value applies.  If null then the value can be used for any name in the map.
+     * @param preferredValue specific valid value to remove
+     *
+     * @throws InvalidParameterException  the property name is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to create/access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    public void clearValidMetadataMapValue(String typeName,
+                                           String propertyName,
+                                           String mapName,
+                                           String preferredValue) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        openMetadataStoreClient.clearValidMetadataMapValue(userId, typeName, propertyName, mapName, preferredValue);
     }
 
 
@@ -277,6 +377,54 @@ public class OpenMetadataGovernanceService
 
 
     /**
+     * Validate whether the name found in an open metadata map property is valid.
+     *
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param actualValue value stored in the property - if this is null, true is only returned if null is set up as a valid value.
+     *
+     * @return boolean flag - true if the value is one of the defined valid values or there are no valid values set up for the property (and so any value is value).
+     *
+     * @throws InvalidParameterException  the property name is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to create/access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    public boolean validateMetadataMapName(String typeName,
+                                           String propertyName,
+                                           String actualValue) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
+        return openMetadataStoreClient.validateMetadataMapName(userId, typeName, propertyName, actualValue);
+    }
+
+
+    /**
+     * Validate whether the name found in an open metadata map property is valid.
+     *
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param mapName name in the map that this valid value applies.  If null then the value can be used for any name in the map.
+     * @param actualValue value stored in the property - if this is null, true is only returned if null is set up as a valid value.
+     *
+     * @return boolean flag - true if the value is one of the defined valid values or there are no valid values set up for the property (and so any value is value).
+     *
+     * @throws InvalidParameterException  the property name is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to create/access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    public boolean validateMetadataMapValue(String typeName,
+                                            String propertyName,
+                                            String mapName,
+                                            String actualValue) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        return openMetadataStoreClient.validateMetadataMapValue(userId, typeName, propertyName, mapName, actualValue);
+    }
+
+
+    /**
      * Retrieve details of a specific valid value for a property.
      *
      * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
@@ -300,6 +448,56 @@ public class OpenMetadataGovernanceService
 
 
     /**
+     * Retrieve details of a specific valid name for a map property.
+     *
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param preferredValue valid value to match
+     *
+     * @return specific valid value definition or none if there is no definition stored
+     *
+     * @throws InvalidParameterException  the property name is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to create/access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    public ValidMetadataValue getValidMetadataMapName(String userId,
+                                                      String typeName,
+                                                      String propertyName,
+                                                      String preferredValue) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        return openMetadataStoreClient.getValidMetadataMapName(userId, typeName, propertyName, preferredValue);
+    }
+
+
+    /**
+     * Retrieve details of a specific valid value for a map name.
+     *
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param mapName name in the map that this valid value applies.  If null then the value can be used for any name in the map.
+     * @param preferredValue valid value to match
+     *
+     * @return specific valid value definition or none if there is no definition stored
+     *
+     * @throws InvalidParameterException  the property name is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to create/access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    public ValidMetadataValue getValidMetadataMapValue(String typeName,
+                                                       String propertyName,
+                                                       String mapName,
+                                                       String preferredValue) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        return openMetadataStoreClient.getValidMetadataMapValue(userId, typeName, propertyName, mapName, preferredValue);
+    }
+
+
+    /**
      * Retrieve all the valid values for the requested property.
      *
      * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
@@ -313,12 +511,12 @@ public class OpenMetadataGovernanceService
      * @throws UserNotAuthorizedException the service is not able to create/access the element
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
-    public List<ValidMetadataValue> getValidMetadataValues(String typeName,
-                                                           String propertyName,
-                                                           int    startFrom,
-                                                           int    pageSize) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+    public List<ValidMetadataValueDetail> getValidMetadataValues(String typeName,
+                                                                 String propertyName,
+                                                                 int    startFrom,
+                                                                 int    pageSize) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
         return openMetadataStoreClient.getValidMetadataValues(userId, typeName, propertyName, startFrom, pageSize);
     }

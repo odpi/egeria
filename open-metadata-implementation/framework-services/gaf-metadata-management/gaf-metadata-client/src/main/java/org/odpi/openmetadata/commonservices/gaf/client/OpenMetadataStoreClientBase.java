@@ -9,6 +9,7 @@ import org.odpi.openmetadata.commonservices.gaf.api.ValidMetadataValuesInterface
 import org.odpi.openmetadata.commonservices.gaf.client.rest.OpenMetadataStoreRESTClient;
 import org.odpi.openmetadata.commonservices.gaf.properties.TranslationDetail;
 import org.odpi.openmetadata.commonservices.gaf.properties.ValidMetadataValue;
+import org.odpi.openmetadata.commonservices.gaf.properties.ValidMetadataValueDetail;
 import org.odpi.openmetadata.commonservices.gaf.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
@@ -184,7 +185,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
     {
         final String methodName        = "getMetadataElementByGUID";
         final String guidParameterName = "elementGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}?forLineage={4}&forDuplicateProcessing={5}&effectiveTime={6}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}?forLineage={4}&forDuplicateProcessing={5}&effectiveTime={6}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
@@ -231,7 +232,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         final String methodName          = "getMetadataElementByUniqueName";
         final String defaultPropertyName = "qualifiedName";
         final String nameParameterName   = "uniqueName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-unique-name?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-unique-name?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(uniqueName, nameParameterName, methodName);
@@ -292,7 +293,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         final String methodName          = "getMetadataElementGUIDByUniqueName";
         final String defaultPropertyName = "qualifiedName";
         final String nameParameterName   = "uniqueName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/guid-by-unique-name?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/guid-by-unique-name?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(uniqueName, nameParameterName, methodName);
@@ -354,7 +355,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
     {
         final String methodName                = "findMetadataElementsWithString";
         final String searchStringParameterName = "searchString";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-search-string?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}&startFrom={6}&pageSize={7}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-search-string?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}&startFrom={6}&pageSize={7}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
@@ -415,8 +416,8 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         final String methodName            = "getRelatedMetadataElements";
         final String guidParameterName     = "elementGUID";
 
-        final String allURLTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/{3}?startingAtEnd={4}&forLineage={5}&forDuplicateProcessing={6}&effectiveTime={7}&startFrom={8}&pageSize={9}";
-        final String specificURLTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/{3}/type/{4}?startingAtEnd={5}&forLineage={6}&forDuplicateProcessing={7}&effectiveTime={8}&startFrom={9}&pageSize={10}";
+        final String allURLTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/related-elements/{3}?startingAtEnd={4}&forLineage={5}&forDuplicateProcessing={6}&effectiveTime={7}&startFrom={8}&pageSize={9}";
+        final String specificURLTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/related-elements/{3}/type/{4}?startingAtEnd={5}&forLineage={6}&forDuplicateProcessing={7}&effectiveTime={8}&startFrom={9}&pageSize={10}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
@@ -503,7 +504,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
                                                                                                  PropertyServerException
     {
         final String methodName = "findMetadataElements";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-search-specification?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}&startFrom={6}&pageSize={7}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-search-specification?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}&startFrom={6}&pageSize={7}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -570,7 +571,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
                                                                                                                     PropertyServerException
     {
         final String methodName = "findRelationshipsBetweenMetadataElements";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/by-search-specification?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}&startFrom={6}&pageSize={7}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/related-elements/by-search-specification?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}&startFrom={6}&pageSize={7}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -678,7 +679,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
     {
         final String methodName               = "createMetadataElementInStore";
         final String elementTypeParameterName = "metadataElementTypeName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/new";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/new";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(metadataElementTypeName, elementTypeParameterName, methodName);
@@ -780,7 +781,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
     {
         final String methodName        = "updateMetadataElementInStore";
         final String guidParameterName = "metadataElementGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/update-properties";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/update-properties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -873,7 +874,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
     {
         final String methodName        = "updateMetadataElementStatusInStore";
         final String guidParameterName = "metadataElementGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/update-status";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/update-status";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -970,7 +971,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
     {
         final String methodName        = "updateMetadataElementEffectivityInStore";
         final String guidParameterName = "metadataElementGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/update-effectivity";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/update-effectivity";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -1054,7 +1055,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
     {
         final String methodName        = "deleteMetadataElementInStore";
         final String guidParameterName = "metadataElementGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -1163,7 +1164,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         final String methodName                  = "classifyMetadataElementInStore";
         final String guidParameterName           = "metadataElementGUID";
         final String classificationParameterName = "classificationName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/classifications/{4}/new";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/classifications/{4}/new";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -1270,7 +1271,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         final String methodName                  = "reclassifyMetadataElementInStore";
         final String guidParameterName           = "metadataElementGUID";
         final String classificationParameterName = "classificationName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/classifications/{4}/update-properties";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/classifications/{4}/update-properties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -1374,7 +1375,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         final String methodName                  = "updateClassificationEffectivityInStore";
         final String guidParameterName           = "metadataElementGUID";
         final String classificationParameterName = "classificationName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/classifications/{4}/update-effectivity";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/classifications/{4}/update-effectivity";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -1466,7 +1467,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         final String methodName                  = "unclassifyMetadataElementInStore";
         final String guidParameterName           = "metadataElementGUID";
         final String classificationParameterName = "classificationName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/classifications/{4}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/classifications/{4}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -1587,7 +1588,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         final String elementTypeParameterName = "relationshipTypeName";
         final String end1ParameterName        = "metadataElement1GUID";
         final String end2ParameterName        = "metadataElement2GUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/new";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/related-elements/new";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(relationshipTypeName, elementTypeParameterName, methodName);
@@ -1692,7 +1693,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
     {
         final String methodName = "updateRelatedElementsInStore";
         final String guidParameterName = "relationshipGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/{3}/update-properties";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/related-elements/{3}/update-properties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(relationshipGUID, guidParameterName, methodName);
@@ -1788,7 +1789,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
     {
         final String methodName = "updateRelatedElementsEffectivityInStore";
         final String guidParameterName = "relationshipGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/{3}/update-effectivity";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/related-elements/{3}/update-effectivity";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(relationshipGUID, guidParameterName, methodName);
@@ -1872,7 +1873,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
     {
         final String methodName = "deleteRelatedElementsInStore";
         final String guidParameterName = "relationshipGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/related-elements/{3}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(relationshipGUID, guidParameterName, methodName);
@@ -1929,7 +1930,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
     {
         final String methodName = "createIncidentReport";
         final String qualifiedNameParameterName = "qualifiedName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/incident-reports";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/incident-reports";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
@@ -1958,6 +1959,73 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
 
 
     /**
+     * Create a "To Do" request for someone to work on.
+     *
+     * @param userId caller's userId
+     * @param qualifiedName unique name for the to do.  (Could be the engine name and a guid?)
+     * @param title short meaningful phrase for the person receiving the request
+     * @param instructions further details on what to do
+     * @param category a category of to dos (for example, "data error", "access request")
+     * @param priority priority value (based on organization's scale)
+     * @param dueDate date/time this needs to be completed
+     * @param additionalProperties additional arbitrary properties for the incident reports
+     * @param assignTo qualified name of the Actor element for the recipient
+     * @param causeGUID unique identifier of the element that describes the rule, project that this is on behalf of
+     * @param actionTargets the list of elements that should be acted upon
+     *
+     * @return unique identifier of new to do element
+     *
+     * @throws InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
+     * @throws UserNotAuthorizedException the governance action service is not authorized to create a "to do" entity
+     * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
+     */
+    @Override
+    public String openToDo(String                userId,
+                           String                qualifiedName,
+                           String                title,
+                           String                instructions,
+                           String                category,
+                           int                   priority,
+                           Date                  dueDate,
+                           Map<String, String>   additionalProperties,
+                           String                assignTo,
+                           String                causeGUID,
+                           List<NewActionTarget> actionTargets) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        final String methodName = "openToDo";
+        final String qualifiedNamePropertyName = "qualifiedName";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/to-dos";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNamePropertyName, methodName);
+
+        ToDoRequestBody requestBody = new ToDoRequestBody();
+
+        requestBody.setQualifiedName(qualifiedName);
+        requestBody.setTitle(title);
+        requestBody.setInstructions(instructions);
+        requestBody.setCategory(category);
+        requestBody.setPriority(priority);
+        requestBody.setDueDate(dueDate);
+        requestBody.setAdditionalProperties(additionalProperties);
+        requestBody.setAssignToQualifiedName(assignTo);
+        requestBody.setCauseGUID(causeGUID);
+        requestBody.setActionTargets(actionTargets);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  serviceURLMarker,
+                                                                  userId);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
      * Create a To-Do request for someone to work on.
      *
      * @param userId caller's userId
@@ -1972,16 +2040,15 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
      * @throws UserNotAuthorizedException the governance action service is not authorized to create a to-do
      * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
      */
-    @Override
-    public String openToDo(String userId,
-                           String toDoQualifiedName,
-                           String title,
-                           String instructions,
-                           int    priority,
-                           Date   dueDate,
-                           String assignTo) throws InvalidParameterException,
-                                                   UserNotAuthorizedException,
-                                                   PropertyServerException
+    public String openToDo(String              userId,
+                           String              toDoQualifiedName,
+                           String              title,
+                           String              instructions,
+                           int                 priority,
+                           Date                dueDate,
+                           String              assignTo) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
     {
         final String methodName = "openToDo";
 
@@ -2132,7 +2199,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         final String methodName = "setTranslation";
         final String elementGUIDParameterName = "elementGUID";
         final String translationDetailParameterName = "translationDetail";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/multi-language/set-translation/{3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/multi-language/set-translation/{3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
@@ -2171,7 +2238,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         final String methodName = "clearTranslation";
         final String elementGUIDParameterName = "elementGUID";
         final String languageParameterName = "language";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/multi-language/clear-translation/{3}?language={4}&locale={5}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/multi-language/clear-translation/{3}?language={4}&locale={5}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
@@ -2214,7 +2281,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         final String methodName = "getTranslation";
         final String elementGUIDParameterName = "elementGUID";
         final String languageParameterName = "language";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/multi-language/get-translation/{3}?language={4}&locale={5}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/multi-language/get-translation/{3}?language={4}&locale={5}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
@@ -2257,7 +2324,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
     {
         final String methodName = "getTranslations";
         final String elementGUIDParameterName = "elementGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/multi-language/get-translations/{3}?startFrom={4}&pageSize={5}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/multi-language/get-translations/{3}?startFrom={4}&pageSize={5}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
@@ -2301,7 +2368,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         final String methodName = "setUpValidMetadataValue";
         final String propertyNameParameterName = "propertyName";
         final String propertiesParameterName = "validMetadataValue";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/valid-metadata-values/setup-valid-metadata-value/{3}?typeName={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/valid-metadata-values/setup-value/{3}?typeName={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(propertyName, propertyNameParameterName, methodName);
@@ -2314,6 +2381,101 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
                                         serviceURLMarker,
                                         userId,
                                         propertyName,
+                                        typeName);
+    }
+
+
+    /**
+     * Create or update the valid value for a name that can be stored in a particular open metadata property name.
+     * This property is of type map from name to string.
+     * The valid value is stored in the preferredValue property of validMetadataValue.
+     *
+     * If the typeName is null, this valid value applies to properties of this name from any open metadata type.
+     * If a valid value is already set up for this property (with overlapping effective dates) then the valid value is updated.
+     *
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param validMetadataValue preferred value to use in the open metadata types plus additional descriptive values.
+     *
+     * @throws InvalidParameterException  the property name is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to create/access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    @Override
+    public void setUpValidMetadataMapName(String             userId,
+                                          String             typeName,
+                                          String             propertyName,
+                                          ValidMetadataValue validMetadataValue) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        final String methodName = "setUpValidMetadataMapName";
+        final String propertyNameParameterName = "propertyName";
+        final String propertiesParameterName = "validMetadataValue";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/valid-metadata-values/setup-map-name/{3}?typeName={4}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(propertyName, propertyNameParameterName, methodName);
+        invalidParameterHandler.validateObject(validMetadataValue, propertiesParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        validMetadataValue,
+                                        serverName,
+                                        serviceURLMarker,
+                                        userId,
+                                        propertyName,
+                                        typeName);
+    }
+
+
+    /**
+     * Create or update the valid value for a name that can be stored in a particular open metadata property name.
+     * This property is of type map from name to string.
+     * The valid value is stored in the preferredValue property of validMetadataValue.
+     *
+     * If the typeName is null, this valid value applies to properties of this name from any open metadata type.
+     * If a valid value is already set up for this property (with overlapping effective dates) then the valid value is updated.
+     *
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param mapName name in the map that this valid value applies.  If null then the value can be used for any name in the map.
+     * @param validMetadataValue preferred value to use in the open metadata types plus additional descriptive values.
+     *
+     * @throws InvalidParameterException  the property name is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to create/access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    @Override
+    public void setUpValidMetadataMapValue(String             userId,
+                                           String             typeName,
+                                           String             propertyName,
+                                           String             mapName,
+                                           ValidMetadataValue validMetadataValue) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        final String methodName = "setUpValidMetadataMapValue";
+        final String propertyNameParameterName = "propertyName";
+        final String mapNameParameterName = "mapName";
+        final String propertiesParameterName = "validMetadataValue";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/valid-metadata-values/setup-map-value/{3}/{4}?typeName={5}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(propertyName, propertyNameParameterName, methodName);
+        invalidParameterHandler.validateName(mapName, mapNameParameterName, methodName);
+        invalidParameterHandler.validateObject(validMetadataValue, propertiesParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        validMetadataValue,
+                                        serverName,
+                                        serviceURLMarker,
+                                        userId,
+                                        propertyName,
+                                        mapName,
                                         typeName);
     }
 
@@ -2335,12 +2497,12 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
                                         String typeName,
                                         String propertyName,
                                         String preferredValue) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
         final String methodName = "clearValidMetadataValue";
         final String propertyNameParameterName = "propertyName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/valid-metadata-values/clear-valid-metadata-value/{3}?preferredValue={4}&typeName={5}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/valid-metadata-values/clear-value/{3}?preferredValue={4}&typeName={5}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(propertyName, propertyNameParameterName, methodName);
@@ -2352,6 +2514,89 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
                                         serviceURLMarker,
                                         userId,
                                         propertyName,
+                                        preferredValue,
+                                        typeName);
+    }
+
+
+    /**
+     * Remove a valid map name value for a property.  The match is done on preferred name.
+     *
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param preferredValue specific valid value to remove
+     *
+     * @throws InvalidParameterException  the property name is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to create/access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    @Override
+    public void clearValidMetadataMapName(String userId,
+                                          String typeName,
+                                          String propertyName,
+                                          String preferredValue) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        final String methodName = "clearValidMetadataMapName";
+        final String propertyNameParameterName = "propertyName";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/valid-metadata-values/clear-map-name/{3}?preferredValue={4}&typeName={5}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(propertyName, propertyNameParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        new NullRequestBody(),
+                                        serverName,
+                                        serviceURLMarker,
+                                        userId,
+                                        propertyName,
+                                        preferredValue,
+                                        typeName);
+    }
+
+
+    /**
+     * Remove a valid map name value for a property.  The match is done on preferred name.
+     *
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param mapName name in the map that this valid value applies.  If null then the value can be used for any name in the map.
+     * @param preferredValue specific valid value to remove
+     *
+     * @throws InvalidParameterException  the property name is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to create/access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    @Override
+    public void clearValidMetadataMapValue(String userId,
+                                           String typeName,
+                                           String propertyName,
+                                           String mapName,
+                                           String preferredValue) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        final String methodName = "clearValidMetadataMapValue";
+        final String propertyNameParameterName = "propertyName";
+        final String mapNameParameterName = "mapName";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/valid-metadata-values/clear-map-value/{3}/{4}?preferredValue={5}&typeName={6}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(propertyName, propertyNameParameterName, methodName);
+        invalidParameterHandler.validateName(mapName, mapNameParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        new NullRequestBody(),
+                                        serverName,
+                                        serviceURLMarker,
+                                        userId,
+                                        propertyName,
+                                        mapName,
                                         preferredValue,
                                         typeName);
     }
@@ -2381,18 +2626,106 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
     {
         final String methodName = "validateMetadataValue";
         final String propertyNameParameterName = "propertyName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/valid-metadata-values/validate/{3}?actualValue={4}&typeName={5}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/valid-metadata-values/validate-value/{3}?actualValue={4}&typeName={5}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(propertyName, propertyNameParameterName, methodName);
 
         BooleanResponse response = restClient.callBooleanGetRESTCall(methodName,
                                                                      urlTemplate,
-                                                                     new NullRequestBody(),
                                                                      serverName,
                                                                      serviceURLMarker,
                                                                      userId,
                                                                      propertyName,
+                                                                     actualValue,
+                                                                     typeName);
+
+        return response.getFlag();
+    }
+
+
+    /**
+     * Validate whether the name found in an open metadata map property is valid.
+     *
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param actualValue value stored in the property - if this is null, true is only returned if null is set up as a valid value.
+     *
+     * @return boolean flag - true if the value is one of the defined valid values or there are no valid values set up for the property (and so any value is value).
+     *
+     * @throws InvalidParameterException  the property name is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to create/access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    @Override
+    public boolean validateMetadataMapName(String userId,
+                                           String typeName,
+                                           String propertyName,
+                                           String actualValue) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
+        final String methodName = "validateMetadataMapName";
+        final String propertyNameParameterName = "propertyName";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/valid-metadata-values/validate-map-name/{3}?actualValue={4}&typeName={5}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(propertyName, propertyNameParameterName, methodName);
+
+        BooleanResponse response = restClient.callBooleanGetRESTCall(methodName,
+                                                                     urlTemplate,
+                                                                     serverName,
+                                                                     serviceURLMarker,
+                                                                     userId,
+                                                                     propertyName,
+                                                                     actualValue,
+                                                                     typeName);
+
+        return response.getFlag();
+    }
+
+
+    /**
+     * Validate whether the name found in an open metadata map property is valid.
+     *
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param mapName name in the map that this valid value applies.  If null then the value can be used for any name in the map.
+     * @param actualValue value stored in the property - if this is null, true is only returned if null is set up as a valid value.
+     *
+     * @return boolean flag - true if the value is one of the defined valid values or there are no valid values set up for the property (and so any value is value).
+     *
+     * @throws InvalidParameterException  the property name is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to create/access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    @Override
+    public boolean validateMetadataMapValue(String userId,
+                                            String typeName,
+                                            String propertyName,
+                                            String mapName,
+                                            String actualValue) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        final String methodName = "validateMetadataMapValue";
+        final String propertyNameParameterName = "propertyName";
+        final String mapNameParameterName = "mapName";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/valid-metadata-values/validate-map-value/{3}/{4}?actualValue={5}&typeName={6}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(propertyName, propertyNameParameterName, methodName);
+        invalidParameterHandler.validateName(mapName, mapNameParameterName, methodName);
+
+        BooleanResponse response = restClient.callBooleanGetRESTCall(methodName,
+                                                                     urlTemplate,
+                                                                     serverName,
+                                                                     serviceURLMarker,
+                                                                     userId,
+                                                                     propertyName,
+                                                                     mapName,
                                                                      actualValue,
                                                                      typeName);
 
@@ -2424,18 +2757,106 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
     {
         final String methodName = "getValidMetadataValue";
         final String propertyNameParameterName = "propertyName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/valid-metadata-values/get-valid-metadata-value/{3}?preferredValue={4}&typeName={5}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/valid-metadata-values/get-value/{3}?preferredValue={4}&typeName={5}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(propertyName, propertyNameParameterName, methodName);
 
         ValidMetadataValueResponse response = restClient.callValidMetadataValueGetRESTCall(methodName,
                                                                                            urlTemplate,
-                                                                                           new NullRequestBody(),
                                                                                            serverName,
                                                                                            serviceURLMarker,
                                                                                            userId,
                                                                                            propertyName,
+                                                                                           preferredValue,
+                                                                                           typeName);
+
+        return response.getElement();
+    }
+
+
+    /**
+     * Retrieve details of a specific valid name for a map property.
+     *
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param preferredValue valid value to match
+     *
+     * @return specific valid value definition or none if there is no definition stored
+     *
+     * @throws InvalidParameterException  the property name is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to create/access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    @Override
+    public ValidMetadataValue getValidMetadataMapName(String userId,
+                                                      String typeName,
+                                                      String propertyName,
+                                                      String preferredValue) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        final String methodName = "getValidMetadataMapName";
+        final String propertyNameParameterName = "propertyName";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/valid-metadata-values/get-map-name/{3}?preferredValue={4}&typeName={5}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(propertyName, propertyNameParameterName, methodName);
+
+        ValidMetadataValueResponse response = restClient.callValidMetadataValueGetRESTCall(methodName,
+                                                                                           urlTemplate,
+                                                                                           serverName,
+                                                                                           serviceURLMarker,
+                                                                                           userId,
+                                                                                           propertyName,
+                                                                                           preferredValue,
+                                                                                           typeName);
+
+        return response.getElement();
+    }
+
+
+    /**
+     * Retrieve details of a specific valid value for a map name.
+     *
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param mapName name in the map that this valid value applies.  If null then the value can be used for any name in the map.
+     * @param preferredValue valid value to match
+     *
+     * @return specific valid value definition or none if there is no definition stored
+     *
+     * @throws InvalidParameterException  the property name is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to create/access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    @Override
+    public ValidMetadataValue getValidMetadataMapValue(String userId,
+                                                       String typeName,
+                                                       String propertyName,
+                                                       String mapName,
+                                                       String preferredValue) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        final String methodName = "getValidMetadataMapValue";
+        final String propertyNameParameterName = "propertyName";
+        final String mapNameParameterName = "mapName";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/valid-metadata-values/get-map-value/{3}/{4}?preferredValue={5}&typeName={6}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(propertyName, propertyNameParameterName, methodName);
+        invalidParameterHandler.validateName(mapName, mapNameParameterName, methodName);
+
+        ValidMetadataValueResponse response = restClient.callValidMetadataValueGetRESTCall(methodName,
+                                                                                           urlTemplate,
+                                                                                           serverName,
+                                                                                           serviceURLMarker,
+                                                                                           userId,
+                                                                                           propertyName,
+                                                                                           mapName,
                                                                                            preferredValue,
                                                                                            typeName);
 
@@ -2459,24 +2880,23 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
     @Override
-    public List<ValidMetadataValue> getValidMetadataValues(String userId,
-                                                           String typeName,
-                                                           String propertyName,
-                                                           int    startFrom,
-                                                           int    pageSize) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+    public List<ValidMetadataValueDetail> getValidMetadataValues(String userId,
+                                                                 String typeName,
+                                                                 String propertyName,
+                                                                 int    startFrom,
+                                                                 int    pageSize) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
         final String methodName = "getValidMetadataValues";
         final String propertyNameParameterName = "propertyName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/valid-metadata-values/get-valid-metadata-values/{3}?typeName={4}?startFrom={5}&pageSize={6}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/valid-metadata-values/get-valid-metadata-values/{3}?typeName={4}&startFrom={5}&pageSize={6}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(propertyName, propertyNameParameterName, methodName);
 
         ValidMetadataValueListResponse response = restClient.callValidMetadataValueListGetRESTCall(methodName,
                                                                                                    urlTemplate,
-                                                                                                   new NullRequestBody(),
                                                                                                    serverName,
                                                                                                    serviceURLMarker,
                                                                                                    userId,

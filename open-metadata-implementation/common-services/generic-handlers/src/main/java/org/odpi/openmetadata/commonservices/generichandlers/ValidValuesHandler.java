@@ -127,38 +127,27 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
 
-        String typeName = OpenMetadataAPIMapper.VALID_VALUE_SET_TYPE_NAME;
-
-        if (suppliedTypeName != null)
-        {
-            typeName = suppliedTypeName;
-        }
-
-        String typeGUID = invalidParameterHandler.validateTypeName(typeName, OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME, serviceName, methodName, repositoryHelper);
-
-        ValidValuesBuilder builder = new ValidValuesBuilder(qualifiedName,
-                                                            displayName,
-                                                            description,
-                                                            usage,
-                                                            scope,
-                                                            preferredValue,
-                                                            isDeprecated,
-                                                            additionalProperties,
-                                                            extendedProperties,
-                                                            repositoryHelper,
-                                                            serviceName,
-                                                            serverName);
-
-        builder.setEffectivityDates(effectiveFrom, effectiveTo);
-
-        return this.createBeanInRepository(userId,
-                                           externalSourceGUID,
-                                           externalSourceName,
-                                           typeGUID,
-                                           typeName,
-                                           builder,
-                                           effectiveTime,
-                                           methodName);
+        return createValidValue(userId,
+                                externalSourceGUID,
+                                externalSourceName,
+                                null,
+                                suppliedTypeName,
+                                false,
+                                qualifiedName,
+                                displayName,
+                                description,
+                                usage,
+                                scope,
+                                preferredValue,
+                                isDeprecated,
+                                additionalProperties,
+                                extendedProperties,
+                                effectiveFrom,
+                                effectiveTo,
+                                false,
+                                false,
+                                effectiveTime,
+                                methodName);
     }
 
 
@@ -204,35 +193,27 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        final String nameParameter = "qualifiedName";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
-
-
-        ValidValuesBuilder builder = new ValidValuesBuilder(qualifiedName,
-                                                            displayName,
-                                                            description,
-                                                            usage,
-                                                            scope,
-                                                            null, /* typically, not used in a set*/
-                                                            isDeprecated,
-                                                            additionalProperties,
-                                                            extendedProperties,
-                                                            repositoryHelper,
-                                                            serviceName,
-                                                            serverName);
-
-        builder.setEffectivityDates(effectiveFrom, effectiveTo);
-
-        return this.createBeanInRepository(userId,
-                                           externalSourceGUID,
-                                           externalSourceName,
-                                           OpenMetadataAPIMapper.VALID_VALUE_SET_TYPE_GUID,
-                                           OpenMetadataAPIMapper.VALID_VALUE_SET_TYPE_NAME,
-                                           builder,
-                                           effectiveTime,
-                                           methodName);
+        return createValidValue(userId,
+                                externalSourceGUID,
+                                externalSourceName,
+                                null,
+                                OpenMetadataAPIMapper.VALID_VALUE_SET_TYPE_NAME,
+                                false,
+                                qualifiedName,
+                                displayName,
+                                description,
+                                usage,
+                                scope,
+                                null,
+                                isDeprecated,
+                                additionalProperties,
+                                extendedProperties,
+                                effectiveFrom,
+                                effectiveTo,
+                                false,
+                                false,
+                                effectiveTime,
+                                methodName);
     }
 
 
@@ -287,12 +268,98 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
+        return createValidValue(userId,
+                                externalSourceGUID,
+                                externalSourceName,
+                                setGUID,
+                                OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                isDefaultValue,
+                                qualifiedName,
+                                displayName,
+                                description,
+                                usage,
+                                scope,
+                                preferredValue,
+                                isDeprecated,
+                                additionalProperties,
+                                extendedProperties,
+                                effectiveFrom,
+                                effectiveTo,
+                                forLineage,
+                                forDuplicateProcessing,
+                                effectiveTime,
+                                methodName);
+    }
+
+
+    /**
+     * Create a new valid value definition.
+     *
+     * @param userId               calling user.
+     * @param externalSourceGUID   guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName   name of the software capability entity that represented the external source
+     * @param setGUID              unique identifier of the set to attach this to
+     * @param suppliedTypeName     name of the type to create
+     * @param isDefaultValue       is this the default value for the set?
+     * @param qualifiedName        unique name.
+     * @param displayName          displayable descriptive name.
+     * @param description          further information.
+     * @param usage                how/when should this value be used.
+     * @param scope                what is the scope of the values.
+     * @param preferredValue       the value that should be used in an implementation if possible.
+     * @param isDeprecated         is the valid value deprecated
+     * @param additionalProperties additional properties for this definition.
+     * @param extendedProperties   properties that need to be populated into a subtype.
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName           calling method
+     * @return unique identifier for the new definition
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException    the repository is not available or not working properly.
+     */
+    public String createValidValue(String              userId,
+                                   String              externalSourceGUID,
+                                   String              externalSourceName,
+                                   String              setGUID,
+                                   String              suppliedTypeName,
+                                   boolean             isDefaultValue,
+                                   String              qualifiedName,
+                                   String              displayName,
+                                   String              description,
+                                   String              usage,
+                                   String              scope,
+                                   String              preferredValue,
+                                   boolean             isDeprecated,
+                                   Map<String, String> additionalProperties,
+                                   Map<String, Object> extendedProperties,
+                                   Date                effectiveFrom,
+                                   Date                effectiveTo,
+                                   boolean             forLineage,
+                                   boolean             forDuplicateProcessing,
+                                   Date                effectiveTime,
+                                   String              methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
         final String nameParameter       = "qualifiedName";
         final String setParameter        = "setGUID";
         final String definitionParameter = "definitionGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
+
+        String typeName = OpenMetadataAPIMapper.VALID_VALUE_SET_TYPE_NAME;
+
+        if (suppliedTypeName != null)
+        {
+            typeName = suppliedTypeName;
+        }
+
+        String typeGUID = invalidParameterHandler.validateTypeName(typeName, OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME, serviceName, methodName, repositoryHelper);
 
         ValidValuesBuilder builder = new ValidValuesBuilder(qualifiedName,
                                                             displayName,
@@ -309,11 +376,16 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
 
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
+        if (setGUID != null)
+        {
+            builder.setAnchors(userId, setGUID, methodName);
+        }
+
         String definitionGUID = this.createBeanInRepository(userId,
                                                             externalSourceGUID,
                                                             externalSourceName,
-                                                            OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_GUID,
-                                                            OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                            typeGUID,
+                                                            typeName,
                                                             builder,
                                                             effectiveTime,
                                                             methodName);
@@ -330,7 +402,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                                OpenMetadataAPIMapper.VALID_VALUE_SET_TYPE_NAME,
                                                definitionGUID,
                                                definitionParameter,
-                                               OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                               typeName,
                                                forLineage,
                                                forDuplicateProcessing,
                                                supportedZones,

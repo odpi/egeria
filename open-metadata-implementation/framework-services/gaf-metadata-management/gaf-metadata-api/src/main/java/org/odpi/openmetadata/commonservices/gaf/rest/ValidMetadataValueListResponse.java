@@ -6,7 +6,7 @@ package org.odpi.openmetadata.commonservices.gaf.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.commonservices.gaf.properties.ValidMetadataValue;
+import org.odpi.openmetadata.commonservices.gaf.properties.ValidMetadataValueDetail;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +27,7 @@ public class ValidMetadataValueListResponse extends OMAGGAFAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<ValidMetadataValue> elementList = null;
+    private List<ValidMetadataValueDetail> elementList = null;
 
 
     /**
@@ -59,7 +59,7 @@ public class ValidMetadataValueListResponse extends OMAGGAFAPIResponse
      *
      * @return result object
      */
-    public List<ValidMetadataValue> getElementList()
+    public List<ValidMetadataValueDetail> getElementList()
     {
         if (elementList == null)
         {
@@ -81,7 +81,7 @@ public class ValidMetadataValueListResponse extends OMAGGAFAPIResponse
      *
      * @param elementList result object
      */
-    public void setElementList(List<ValidMetadataValue> elementList)
+    public void setElementList(List<ValidMetadataValueDetail> elementList)
     {
         this.elementList = elementList;
     }

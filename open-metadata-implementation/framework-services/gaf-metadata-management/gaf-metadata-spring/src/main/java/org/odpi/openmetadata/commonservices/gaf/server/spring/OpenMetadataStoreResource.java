@@ -4,6 +4,10 @@ package org.odpi.openmetadata.commonservices.gaf.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.gaf.properties.TranslationDetail;
+import org.odpi.openmetadata.commonservices.gaf.properties.ValidMetadataValue;
 import org.odpi.openmetadata.commonservices.gaf.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
@@ -22,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
  * OpenMetadataStoreResource supports the REST APIs for running Open Metadata Store Service
  */
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/common-services/{serviceURLMarker}/open-metadata-store/users/{userId}")
+@RequestMapping("/servers/{serverName}/open-metadata/framework-services/{serviceURLMarker}/open-metadata-store/users/{userId}")
 
 @Tag(name="Open Metadata Store Services",
      description="Provides generic open metadata retrieval and management services for Open Metadata Access Services (OMASs).",
@@ -32,10 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class OpenMetadataStoreResource
 {
-
     private final OpenMetadataStoreRESTServices restAPI = new OpenMetadataStoreRESTServices();
-
-
 
     /**
      * Retrieve the metadata element using its unique identifier.
@@ -726,6 +727,555 @@ public class OpenMetadataStoreResource
 
 
     /**
+     * Create a To-Do request for someone to work on.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param requestBody unique name for the to do and other characteristics
+     *
+     * @return unique identifier of new to do element or
+     * InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
+     * UserNotAuthorizedException the governance action service is not authorized to create a to-do
+     * PropertyServerException there is a problem connecting to (or inside) the metadata store
+     */
+    @PostMapping(path = "/to-dos")
+
+    public GUIDResponse openToDo(@PathVariable String          serverName,
+                                 @PathVariable String          serviceURLMarker,
+                                 @PathVariable String          userId,
+                                 @RequestBody  ToDoRequestBody requestBody)
+    {
+        return restAPI.openToDo(serverName, serviceURLMarker, userId, requestBody);
+    }
+
+
+    /**
+     * Create or update the translation for a particular language/locale for a metadata element.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param elementGUID unique identifier of the element that this translation is related to
+     * @param translationDetail properties of the translation
+     *
+     * @return void or
+     * InvalidParameterException  the unique identifier is null or not known.
+     * UserNotAuthorizedException the service is not able to access the element
+     * PropertyServerException    there is a problem accessing the metadata store
+     */
+    @PostMapping(path = "/multi-language/set-translation/{elementGUID}")
+
+    public VoidResponse setTranslation(@PathVariable String            serverName,
+                                       @PathVariable String            serviceURLMarker,
+                                       @PathVariable String            userId,
+                                       @PathVariable String            elementGUID,
+                                       @RequestBody  TranslationDetail translationDetail)
+    {
+        return restAPI.setTranslation(serverName, serviceURLMarker, userId, elementGUID, translationDetail);
+    }
+
+
+    /**
+     * Remove the translation for a particular language/locale for a metadata element.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param elementGUID unique identifier of the element that this translation is related to
+     * @param language language requested
+     * @param locale optional locale to qualify which translation if there are multiple translations for the language
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException  the language is null or not known or not unique (add locale)
+     * UserNotAuthorizedException the service is not able to access the element
+     * PropertyServerException    there is a problem accessing the metadata store
+     */
+    @PostMapping(path = "/multi-language/clear-translation/{elementGUID}")
+
+    public VoidResponse clearTranslation(@PathVariable String          serverName,
+                                         @PathVariable String          serviceURLMarker,
+                                         @PathVariable String          userId,
+                                         @PathVariable String          elementGUID,
+                                         @RequestParam(required = false)
+                                                       String language,
+                                         @RequestParam(required = false)
+                                                       String locale,
+                                         @RequestBody (required=false)
+                                                       NullRequestBody requestBody)
+    {
+        return restAPI.clearTranslation(serverName, serviceURLMarker, userId, elementGUID, language, locale, requestBody);
+    }
+
+
+    /**
+     * Retrieve the translation for the matching language/locale.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param elementGUID unique identifier of the element that this translation is related to
+     * @param language language requested
+     * @param locale optional locale to qualify which translation if there are multiple translations for the language.
+     *
+     * @return the properties of the translation or null if there is none or
+     * InvalidParameterException  the unique identifier is null or not known.
+     * UserNotAuthorizedException the service is not able to access the element
+     * PropertyServerException    there is a problem accessing the metadata store
+     */
+    @GetMapping(path = "/multi-language/get-translation/{elementGUID}")
+
+    public TranslationDetailResponse getTranslation(@PathVariable String serverName,
+                                                    @PathVariable String serviceURLMarker,
+                                                    @PathVariable String userId,
+                                                    @PathVariable String elementGUID,
+                                                    @RequestParam(required = false)
+                                                                  String language,
+                                                    @RequestParam(required = false)
+                                                                  String locale)
+    {
+        return restAPI.getTranslation(serverName, serviceURLMarker, userId, elementGUID, language, locale);
+    }
+
+
+    /**
+     * Retrieve all translations associated with a metadata element.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param elementGUID unique identifier of the element that this translation is related to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return
+     *
+     * @return list of translation properties or null if there are none or
+     * InvalidParameterException  the unique identifier is null or not known.
+     * UserNotAuthorizedException the service is not able to access the element
+     * PropertyServerException    there is a problem accessing the metadata store
+     */
+    @GetMapping(path = "/multi-language/get-translations/{elementGUID}")
+
+    public TranslationListResponse getTranslations(@PathVariable String serverName,
+                                                   @PathVariable String serviceURLMarker,
+                                                   @PathVariable String userId,
+                                                   @PathVariable String elementGUID,
+                                                   @RequestParam int    startFrom,
+                                                   @RequestParam int    pageSize)
+    {
+        return restAPI.getTranslations(serverName, serviceURLMarker, userId, elementGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Create or update the valid value for a particular open metadata property name.  If the typeName is null, this valid value
+     * applies to properties of this name from all types.  The valid value is stored in the preferredValue property.  If a valid value is
+     * already set up for this property (with overlapping effective dates) then the valid value is updated.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param validMetadataValue preferred value to use in the open metadata types plus additional descriptive values.
+     *
+     * @return void or
+     * InvalidParameterException  the property name is null or not known.
+     * UserNotAuthorizedException the service is not able to create/access the element
+     * PropertyServerException    there is a problem accessing the metadata store
+     */
+    @PostMapping(path = "/valid-metadata-values/setup-value/{propertyName}")
+
+    public VoidResponse setUpValidMetadataValue(@PathVariable String             serverName,
+                                                @PathVariable String             serviceURLMarker,
+                                                @PathVariable String             userId,
+                                                @RequestParam(required = false)
+                                                              String             typeName,
+                                                @PathVariable String             propertyName,
+                                                @RequestBody  ValidMetadataValue validMetadataValue)
+    {
+        return restAPI.setUpValidMetadataValue(serverName, serviceURLMarker, userId, typeName, propertyName, validMetadataValue);
+    }
+
+
+    /**
+     * Create or update the valid value for a name that can be stored in a particular open metadata property name.
+     * This property is of type map from name to string.
+     * The valid value is stored in the preferredValue property of validMetadataValue.
+     *
+     * If the typeName is null, this valid value applies to properties of this name from any open metadata type.
+     * If a valid value is already set up for this property (with overlapping effective dates) then the valid value is updated.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param validMetadataValue preferred value to use in the open metadata types plus additional descriptive values.
+     *
+     * @return void or
+     * InvalidParameterException  the property name is null or not known.
+     * UserNotAuthorizedException the service is not able to create/access the element
+     * PropertyServerException    there is a problem accessing the metadata store
+     */
+    @PostMapping(path = "/valid-metadata-values/setup-map-name/{propertyName}")
+
+    public VoidResponse setUpValidMetadataMapName(@PathVariable String             serverName,
+                                                  @PathVariable String             serviceURLMarker,
+                                                  @PathVariable String             userId,
+                                                  @RequestParam(required = false)
+                                                                String             typeName,
+                                                  @PathVariable String             propertyName,
+                                                  @RequestBody  ValidMetadataValue validMetadataValue)
+    {
+        return restAPI.setUpValidMetadataMapName(serverName, serviceURLMarker, userId, typeName, propertyName, validMetadataValue);
+    }
+
+
+    /**
+     * Create or update the valid value for a name that can be stored in a particular open metadata property name.
+     * This property is of type map from name to string.
+     * The valid value is stored in the preferredValue property of validMetadataValue.
+     *
+     * If the typeName is null, this valid value applies to properties of this name from any open metadata type.
+     * If a valid value is already set up for this property (with overlapping effective dates) then the valid value is updated.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param mapName name in the map that this valid value applies.  If null then the value can be used for any name in the map.
+     * @param validMetadataValue preferred value to use in the open metadata types plus additional descriptive values.
+     *
+     * @return void or
+     * InvalidParameterException  the property name is null or not known.
+     * UserNotAuthorizedException the service is not able to create/access the element
+     * PropertyServerException    there is a problem accessing the metadata store
+     */
+    @PostMapping(path = "/valid-metadata-values/setup-map-value/{propertyName}/{mapName}")
+
+    public VoidResponse setUpValidMetadataMapValue(@PathVariable String             serverName,
+                                                   @PathVariable String             serviceURLMarker,
+                                                   @PathVariable String             userId,
+                                                   @RequestParam(required = false)
+                                                                 String             typeName,
+                                                   @PathVariable String             propertyName,
+                                                   @PathVariable String             mapName,
+                                                   @RequestBody  ValidMetadataValue validMetadataValue)
+    {
+        return restAPI.setUpValidMetadataMapValue(serverName, serviceURLMarker, userId, typeName, propertyName, mapName, validMetadataValue);
+    }
+
+
+    /**
+     * Remove a valid value for a property.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param preferredValue specific valid value to remove
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException  the property name is null or not known.
+     * UserNotAuthorizedException the service is not able to create/access the element
+     * PropertyServerException    there is a problem accessing the metadata store
+     */
+    @PostMapping(path = "/valid-metadata-values/clear-value/{propertyName}")
+
+    public VoidResponse clearValidMetadataValue(@PathVariable String          serverName,
+                                                @PathVariable String          serviceURLMarker,
+                                                @PathVariable String          userId,
+                                                @RequestParam(required = false)
+                                                              String          typeName,
+                                                @PathVariable String          propertyName,
+                                                @RequestParam(required = false)
+                                                              String          preferredValue,
+                                                @RequestBody  NullRequestBody requestBody)
+    {
+        return restAPI.clearValidMetadataValue(serverName, serviceURLMarker, userId, typeName, propertyName, preferredValue, requestBody);
+    }
+
+
+    /**
+     * Remove a valid map name value for a property.  The match is done on preferred name.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param preferredValue specific valid value to remove
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException  the property name is null or not known.
+     * UserNotAuthorizedException the service is not able to create/access the element
+     * PropertyServerException    there is a problem accessing the metadata store
+     */
+    @PostMapping(path = "/valid-metadata-values/clear-map-name/{propertyName}")
+
+    public VoidResponse clearValidMetadataMapName(@PathVariable String          serverName,
+                                                  @PathVariable String          serviceURLMarker,
+                                                  @PathVariable String          userId,
+                                                  @RequestParam(required = false)
+                                                                String          typeName,
+                                                  @PathVariable String          propertyName,
+                                                  @RequestParam(required = false)
+                                                                String          preferredValue,
+                                                  @RequestBody  NullRequestBody requestBody)
+    {
+        return restAPI.clearValidMetadataMapName(serverName, serviceURLMarker, userId, typeName, propertyName, preferredValue, requestBody);
+    }
+
+
+    /**
+     * Remove a valid map name value for a property.  The match is done on preferred name.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param mapName name in the map that this valid value applies.  If null then the value can be used for any name in the map.
+     * @param preferredValue specific valid value to remove
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException  the property name is null or not known.
+     * UserNotAuthorizedException the service is not able to create/access the element
+     * PropertyServerException    there is a problem accessing the metadata store
+     */
+    @PostMapping(path = "/valid-metadata-values/clear-map-value/{propertyName}/{mapName}")
+
+    public VoidResponse clearValidMetadataMapValue(@PathVariable String          serverName,
+                                                   @PathVariable String          serviceURLMarker,
+                                                   @PathVariable String          userId,
+                                                   @RequestParam(required = false)
+                                                           String          typeName,
+                                                   @PathVariable String          propertyName,
+                                                   @PathVariable String          mapName,
+                                                   @RequestParam(required = false)
+                                                           String          preferredValue,
+                                                   NullRequestBody requestBody)
+    {
+        return restAPI.clearValidMetadataMapValue(serverName, serviceURLMarker, userId, typeName, propertyName, mapName, preferredValue, requestBody);
+    }
+
+
+    /**
+     * Validate whether the value found in an open metadata property is valid.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param actualValue value stored in the property - if this is null, true is only returned if null is set up as a valid value.
+     *
+     * @return boolean flag - true if the value is one of the defined valid values or there are no valid values set up for the property (and so any value is value) or
+     * InvalidParameterException  the property name is null or not known.
+     * UserNotAuthorizedException the service is not able to create/access the element
+     * PropertyServerException    there is a problem accessing the metadata store
+     */
+    @GetMapping(path = "/valid-metadata-values/validate-value/{propertyName}")
+
+    public BooleanResponse validateMetadataValue(@PathVariable String serverName,
+                                                 @PathVariable String serviceURLMarker,
+                                                 @PathVariable String userId,
+                                                 @RequestParam(required = false)
+                                                               String typeName,
+                                                 @PathVariable String propertyName,
+                                                 @RequestParam String actualValue)
+    {
+        return restAPI.validateMetadataValue(serverName, serviceURLMarker, userId, typeName, propertyName, actualValue);
+    }
+
+
+    /**
+     * Validate whether the name found in an open metadata map property is valid.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param actualValue value stored in the property - if this is null, true is only returned if null is set up as a valid value.
+     *
+     * @return boolean flag - true if the value is one of the defined valid values or there are no valid values set up for the property (and so any value is value) or
+     * InvalidParameterException  the property name is null or not known.
+     * UserNotAuthorizedException the service is not able to create/access the element
+     * PropertyServerException    there is a problem accessing the metadata store
+     */
+    @GetMapping(path = "/valid-metadata-values/validate-map-name/{propertyName}")
+
+    public BooleanResponse validateMetadataMapName(@PathVariable String serverName,
+                                                   @PathVariable String serviceURLMarker,
+                                                   @PathVariable String userId,
+                                                   @RequestParam(required = false)
+                                                                 String typeName,
+                                                   @PathVariable String propertyName,
+                                                   @RequestParam String actualValue)
+    {
+        return restAPI.validateMetadataMapName(serverName, serviceURLMarker, userId, typeName, propertyName, actualValue);
+    }
+
+
+    /**
+     * Validate whether the name found in an open metadata map property is valid.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param mapName name in the map that this valid value applies.  If null then the value can be used for any name in the map.
+     * @param actualValue value stored in the property - if this is null, true is only returned if null is set up as a valid value.
+     *
+     * @return boolean flag - true if the value is one of the defined valid values or there are no valid values set up for the property (and so any value is value) or
+     * InvalidParameterException  the property name is null or not known.
+     * UserNotAuthorizedException the service is not able to create/access the element
+     * PropertyServerException    there is a problem accessing the metadata store
+     */
+    @GetMapping(path = "/valid-metadata-values/validate-map-value/{propertyName}/{mapName}")
+
+    public BooleanResponse validateMetadataMapValue(@PathVariable String serverName,
+                                                    @PathVariable String serviceURLMarker,
+                                                    @PathVariable String userId,
+                                                    @RequestParam(required = false)
+                                                                  String typeName,
+                                                    @PathVariable String propertyName,
+                                                    @PathVariable String mapName,
+                                                    @RequestParam String actualValue)
+    {
+        return restAPI.validateMetadataMapValue(serverName, serviceURLMarker, userId, typeName, propertyName, mapName, actualValue);
+    }
+
+
+    /**
+     * Retrieve details of a specific valid value for a property.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param preferredValue valid value to match
+     *
+     * @return specific valid value definition or none if there is no definition stored or
+     * InvalidParameterException  the property name is null or not known.
+     * UserNotAuthorizedException the service is not able to create/access the element
+     * PropertyServerException    there is a problem accessing the metadata store
+     */
+    @GetMapping(path = "/valid-metadata-values/get-value/{propertyName}")
+
+    public ValidMetadataValueResponse getValidMetadataValue(@PathVariable String serverName,
+                                                            @PathVariable String serviceURLMarker,
+                                                            @PathVariable String userId,
+                                                            @RequestParam(required = false)
+                                                                          String typeName,
+                                                            @PathVariable String propertyName,
+                                                            @RequestParam String preferredValue)
+    {
+        return restAPI.getValidMetadataValue(serverName, serviceURLMarker, userId, typeName, propertyName, preferredValue);
+    }
+
+
+    /**
+     * Retrieve details of a specific valid name for a map property.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param preferredValue valid value to match
+     *
+     * @return specific valid value definition or none if there is no definition stored or
+     * InvalidParameterException  the property name is null or not known.
+     * UserNotAuthorizedException the service is not able to create/access the element
+     * PropertyServerException    there is a problem accessing the metadata store
+     */
+    @GetMapping(path = "/valid-metadata-values/get-map-name/{propertyName}")
+
+    public ValidMetadataValueResponse getValidMetadataMapName(@PathVariable String serverName,
+                                                              @PathVariable String serviceURLMarker,
+                                                              @PathVariable String userId,
+                                                              @RequestParam(required = false)
+                                                                            String typeName,
+                                                              @PathVariable String propertyName,
+                                                              @RequestParam String preferredValue)
+    {
+        return  restAPI.getValidMetadataMapName(serverName, serviceURLMarker, userId, typeName, propertyName, preferredValue);
+    }
+
+
+    /**
+     * Retrieve details of a specific valid value for a map name.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param mapName name in the map that this valid value applies.  If null then the value can be used for any name in the map.
+     * @param preferredValue valid value to match
+     *
+     * @return specific valid value definition or none if there is no definition stored or
+     * InvalidParameterException  the property name is null or not known.
+     * UserNotAuthorizedException the service is not able to create/access the element
+     * PropertyServerException    there is a problem accessing the metadata store
+     */
+    @GetMapping(path = "/valid-metadata-values/get-map-value/{propertyName}/{mapName}")
+
+    public ValidMetadataValueResponse getValidMetadataMapValue(@PathVariable String serverName,
+                                                               @PathVariable String serviceURLMarker,
+                                                               @PathVariable String userId,
+                                                               @RequestParam(required = false)
+                                                                             String typeName,
+                                                               @PathVariable String propertyName,
+                                                               @PathVariable String mapName,
+                                                               @RequestParam String preferredValue)
+    {
+        return restAPI.getValidMetadataMapValue(serverName, serviceURLMarker, userId, typeName, propertyName, mapName, preferredValue);
+    }
+
+
+    /**
+     * Retrieve all the valid values for the requested property.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of valid values defined for the property or
+     * InvalidParameterException  the property name is null or not known.
+     * UserNotAuthorizedException the service is not able to create/access the element
+     * PropertyServerException    there is a problem accessing the metadata store
+     */
+    @GetMapping(path = "/valid-metadata-values/get-valid-metadata-values/{propertyName}")
+
+    public ValidMetadataValueListResponse getValidMetadataValues(@PathVariable String serverName,
+                                                                 @PathVariable String serviceURLMarker,
+                                                                 @PathVariable String userId,
+                                                                 @RequestParam(required = false)
+                                                                               String typeName,
+                                                                 @PathVariable String propertyName,
+                                                                 @RequestParam int    startFrom,
+                                                                 @RequestParam int    pageSize)
+    {
+        return restAPI.getValidMetadataValues(serverName, serviceURLMarker, userId, typeName, propertyName, startFrom, pageSize);
+    }
+
+
+    /**
      * Log an audit message about an asset.
      *
      * @param serverName            name of server instance to route request to
@@ -750,5 +1300,4 @@ public class OpenMetadataStoreResource
     {
         return restAPI.logAssetAuditMessage(serverName, serviceURLMarker, userId, assetGUID, callingService, message);
     }
-
 }
