@@ -4763,7 +4763,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                 return true;
             }
 
-            List<TypeDefLink> superTypes = instanceType.getTypeDefSuperTypes();
+            List<TypeDefLink> superTypes = repositoryContentManager.getSuperTypes(sourceName, entityTypeName, methodName);
 
             if (superTypes != null)
             {

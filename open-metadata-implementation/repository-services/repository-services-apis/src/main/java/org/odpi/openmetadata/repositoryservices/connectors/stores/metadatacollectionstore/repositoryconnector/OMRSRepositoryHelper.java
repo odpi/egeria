@@ -83,6 +83,16 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
     TypeDef getTypeDefByName(String sourceName,
                              String typeDefName);
 
+    /**
+     * Gets super types for given type name.
+     *
+     * @param sourceName  the source of the request (used for logging)
+     * @param typeDefName unique name for the TypeDef
+     * @return the super types
+     */
+    List<TypeDefLink> getSuperTypes(String sourceName,
+                                    String typeDefName);
+
 
     /**
      * Return an instance properties that only contains the properties that uniquely identify the entity.

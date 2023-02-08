@@ -2,12 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +18,13 @@ import java.util.List;
  */
 class TypeConverter
 {
+    private final OMRSRepositoryHelper repositoryHelper;
+    private final String sourceName;
 
-    /**
-     * Default constructor
-     */
-    TypeConverter()
+    TypeConverter(OMRSRepositoryHelper repositoryHelper, String sourceName)
     {
+        this.repositoryHelper = repositoryHelper;
+        this.sourceName = sourceName;
     }
 
 
@@ -39,12 +40,17 @@ class TypeConverter
 
         if (instanceType != null)
         {
-            elementType.setTypeId(instanceType.getTypeDefGUID());
-            elementType.setTypeName(instanceType.getTypeDefName());
-            elementType.setTypeVersion(instanceType.getTypeDefVersion());
-            elementType.setTypeDescription(instanceType.getTypeDefDescription());
+            String typeName = instanceType.getTypeDefName();
 
-            List<TypeDefLink> typeDefSuperTypes = instanceType.getTypeDefSuperTypes();
+            elementType.setTypeId(instanceType.getTypeDefGUID());
+            elementType.setTypeName(typeName);
+            elementType.setTypeVersion(instanceType.getTypeDefVersion());
+
+            String description = repositoryHelper.getTypeDefByName(sourceName, typeName).getDescription();
+
+            elementType.setTypeDescription(description);
+
+            List<TypeDefLink> typeDefSuperTypes = repositoryHelper.getSuperTypes(sourceName, typeName);
 
             if ((typeDefSuperTypes != null) && (! typeDefSuperTypes.isEmpty()))
             {
