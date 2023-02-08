@@ -242,8 +242,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
                 log.debug("Calling {} with URL template {} and parameters {}.",
                           methodName,
                           urlTemplate,
-                          Arrays.toString(params)
-                );
+                          Arrays.toString(params));
             }
 
             T  responseObject;
@@ -422,8 +421,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
                 log.debug("Calling {} with URL template {} and parameters {}.",
                           methodName,
                           urlTemplate,
-                          Arrays.toString(params)
-                );
+                          Arrays.toString(params));
             }
             T  responseObject;
 

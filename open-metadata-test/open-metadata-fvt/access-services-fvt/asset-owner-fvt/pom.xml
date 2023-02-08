@@ -65,6 +65,11 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>gaf-metadata-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>fvt-utilities</artifactId>
         </dependency>
 

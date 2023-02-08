@@ -130,7 +130,7 @@ public class ConnectedExternalIdentifiers extends ExternalIdentifiers
                                                int  maximumSize) throws PropertyServerException
     {
         final String   methodName = "ExternalIdentifiers.getCachedList";
-        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/assets/{3}/external-identifiers?elementStart={4}&maxElements={5}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/framework-services/{1}/connected-asset/users/{2}/assets/{3}/external-identifiers?elementStart={4}&maxElements={5}";
 
         RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 

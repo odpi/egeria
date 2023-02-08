@@ -134,7 +134,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
     UNKNOWN_ELEMENT(400, "OMAG-COMMON-400-021",
                     "The identifier {0} of the {1} passed by {2} to method {3} of service {4} is not recognized by the {5} server",
                     "The system is unable to process the request because the identifier is invalid.",
-                    "Update the caller to provide a correct asset identifier."),
+                    "Update the caller to provide a correct identifier."),
 
     NULL_SEARCH_STRING(400, "OMAG-COMMON-400-022",
               "The search string passed on the {0} parameter of the {1} operation is null",
