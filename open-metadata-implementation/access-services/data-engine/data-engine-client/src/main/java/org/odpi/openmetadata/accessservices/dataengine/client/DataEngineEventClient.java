@@ -10,7 +10,7 @@ import org.odpi.openmetadata.accessservices.dataengine.event.DatabaseEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DatabaseSchemaEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DeleteEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.EventTypeEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.LineageMappingsEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.DataFlowsEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessEvent;
@@ -21,11 +21,11 @@ import org.odpi.openmetadata.accessservices.dataengine.event.SchemaTypeEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.TopicEvent;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
+import org.odpi.openmetadata.accessservices.dataengine.model.DataFlow;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.EventType;
-import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
@@ -260,13 +260,13 @@ public class DataEngineEventClient implements DataEngineClient {
      * @throws ConnectorCheckedException problem with the underlying connector (if used)
      */
     @Override
-    public void addLineageMappings(String userId, List<LineageMapping> lineageMappings) throws InvalidParameterException, ConnectorCheckedException {
+    public void addDataFlows(String userId, List<DataFlow> dataFlows) throws InvalidParameterException, ConnectorCheckedException {
 
-        LineageMappingsEvent event = new LineageMappingsEvent();
+        DataFlowsEvent event = new DataFlowsEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
-        event.setDataEngineEventType(DataEngineEventType.LINEAGE_MAPPINGS_EVENT);
-        event.setLineageMappings(lineageMappings);
+        event.setDataEngineEventType(DataEngineEventType.DATA_FLOWS_EVENT);
+        event.setDataFlows(dataFlows);
 
         topicConnector.sendEvent(event);
     }

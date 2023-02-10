@@ -2,6 +2,14 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+<!--- IMPORTANT NOTE:
+
+    As of release 4, maven builds are due to be removed
+    Please switch to gradle and build using './gradlew build'
+    Maven pom.xml files will be removed within the coming weeks (as of 5 Feb 2023)
+
+-->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -22,7 +30,7 @@
 
     <groupId>org.odpi.egeria</groupId>
     <artifactId>egeria</artifactId>
-    <version>3.16-SNAPSHOT</version>
+    <version>4.0-SNAPSHOT</version>
 
     <url>https://odpi.github.io/egeria-docs/</url>
 
@@ -3458,7 +3466,7 @@
             <dependency>
                 <groupId>net.openhft</groupId>
                 <artifactId>chronicle-bom</artifactId>
-                <version>2.24ea35</version>
+                <version>2.24ea38</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

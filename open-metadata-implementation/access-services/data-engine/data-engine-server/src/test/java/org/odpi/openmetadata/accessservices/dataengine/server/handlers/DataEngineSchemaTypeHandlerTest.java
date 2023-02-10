@@ -47,8 +47,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler.SCHEMA_TYPE_GUID_PARAMETER_NAME;
 import static org.odpi.openmetadata.accessservices.dataengine.server.util.MockedExceptionUtil.mockException;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FLOW_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME;
@@ -206,53 +206,53 @@ class DataEngineSchemaTypeHandlerTest {
     }
 
     @Test
-    void addLineageMappingRelationship() throws UserNotAuthorizedException, PropertyServerException,
+    void addDataFlowRelationship() throws UserNotAuthorizedException, PropertyServerException,
                                                 InvalidParameterException {
         mockFindEntity(SOURCE_QUALIFIED_NAME, SOURCE_GUID, SOURCE_TYPE, REFERENCEABLE_TYPE_NAME);
         mockFindEntity(TARGET_QUALIFIED_NAME, TARGET_GUID, TARGET_TYPE, REFERENCEABLE_TYPE_NAME);
 
-        dataEngineSchemaTypeHandler.addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        dataEngineSchemaTypeHandler.addDataFlowRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null, null);
 
         verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, SOURCE_GUID, TARGET_GUID,
-                LINEAGE_MAPPING_TYPE_NAME, SOURCE_TYPE, TARGET_TYPE, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
+                DATA_FLOW_TYPE_NAME, SOURCE_TYPE, TARGET_TYPE, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
     }
 
     @Test
-    void addLineageMappingRelationship_throwsUserNotAuthorizedException() throws UserNotAuthorizedException,
+    void addDataFlowRelationship_throwsUserNotAuthorizedException() throws UserNotAuthorizedException,
                                                                                  PropertyServerException,
                                                                                  InvocationTargetException,
                                                                                  NoSuchMethodException,
                                                                                  InstantiationException,
                                                                                  IllegalAccessException,
                                                                                  InvalidParameterException {
-        final String methodName = "addLineageMappingRelationship";
+        final String methodName = "addDataFlowRelationship";
 
         mockFindEntity(SOURCE_QUALIFIED_NAME, SOURCE_GUID, SOURCE_TYPE, REFERENCEABLE_TYPE_NAME);
         mockFindEntity(TARGET_QUALIFIED_NAME, TARGET_GUID, TARGET_TYPE, REFERENCEABLE_TYPE_NAME);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         doThrow(mockedException).when(dataEngineCommonHandler).upsertExternalRelationship(USER, SOURCE_GUID, TARGET_GUID,
-                LINEAGE_MAPPING_TYPE_NAME, SOURCE_TYPE, TARGET_TYPE, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
+                DATA_FLOW_TYPE_NAME, SOURCE_TYPE, TARGET_TYPE, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
-                dataEngineSchemaTypeHandler.addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME,
-                        EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
+                dataEngineSchemaTypeHandler.addDataFlowRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME,
+                        EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null, null));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
     }
 
     @Test
-    void addLineageMappingRelationship_throwsInvalidParameterException() throws UserNotAuthorizedException,
+    void addDataFlowRelationship_throwsInvalidParameterException() throws UserNotAuthorizedException,
                                                                                 PropertyServerException,
                                                                                 InvalidParameterException {
         when(dataEngineCommonHandler.findEntity(USER, TARGET_QUALIFIED_NAME, SCHEMA_ATTRIBUTE_TYPE_NAME)).thenReturn(Optional.empty());
 
-        dataEngineSchemaTypeHandler.addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        dataEngineSchemaTypeHandler.addDataFlowRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null, null);
 
         verify(dataEngineCommonHandler, times(1)).throwInvalidParameterException(DataEngineErrorCode.REFERENCEABLE_NOT_FOUND,
-                "addLineageMappingRelationship", SOURCE_QUALIFIED_NAME);
+                "addDataFlowRelationship", SOURCE_QUALIFIED_NAME);
     }
 
     @Test

@@ -26,7 +26,7 @@ plugins {
 allprojects {
 
     group = 'org.odpi.egeria'
-    version = '3.16-SNAPSHOT'
+    version = '4.0-SNAPSHOT'
 
     // Mostly java, so default to this for now
     apply plugin: 'java'
@@ -307,7 +307,7 @@ allprojects {
             runtimeOnly("org.antlr:antlr4:4.11.1")
             runtimeOnly("org.apache.ivy:ivy:2.5.1")
         }
-        implementation platform('net.openhft:chronicle-bom:2.24ea35')
+        implementation platform('net.openhft:chronicle-bom:2.24ea38')
     }
 
     /*
@@ -318,7 +318,7 @@ allprojects {
         withJavadocJar()
     }
     tasks.withType(JavaCompile) {
-        options.release = 11
+        options.release = 17
         options.encoding = 'UTF-8'
         options.incremental = true
         options.failOnError = true
@@ -365,7 +365,7 @@ allprojects {
 
     publishing {
         publications {
-            connector(MavenPublication) {
+            mavenmodule(MavenPublication) {
                 from components.java
                 pom {
                     url = 'http://egeria.odpi.org'

@@ -261,7 +261,7 @@
 			"response": []
 		},
 		{
-			"name": "2.2 Add lineage mappings high level",
+			"name": "2.2 Add data flows high level",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -274,7 +274,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"lineageMappings\": [\n        {\n            \"sourceAttribute\": \"(topic)=first-topic-high-level\",\n            \"targetAttribute\": \"(process)=high-level-process\"\n        },\n        {\n            \"sourceAttribute\": \"(process)=high-level-process\",\n            \"targetAttribute\": \"(topic)=second-topic-high-level\"\n        }\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}\n",
+					"raw": "{\n    \"dataFlows\": [\n        {\n            \"dataSupplier\": \"(topic)=first-topic-high-level\",\n            \"dataConsumer\": \"(process)=high-level-process\"\n        },\n        {\n            \"dataSupplier\": \"(process)=high-level-process\",\n            \"dataConsumer\": \"(topic)=second-topic-high-level\"\n        }\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -282,7 +282,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/lineage-mappings",
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/data-flows",
 					"host": [
 						"{{base-url}}"
 					],
@@ -294,7 +294,7 @@
 						"data-engine",
 						"users",
 						"{{user-id}}",
-						"lineage-mappings"
+						"data-flows"
 					]
 				}
 			},
@@ -356,7 +356,7 @@
 			"response": []
 		},
 		{
-			"name": "2.4 Add lineage mappings low level",
+			"name": "2.4 Add data flows low level",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -369,7 +369,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"lineageMappings\": [\n        {\n            \"sourceAttribute\": \"(topic)=first-topic-low-level::(eventType)=first-event-low-level::(eventAttribute)=first-event-attribute\",\n            \"targetAttribute\": \"(process)=low-level-parent-process::(process)=low-level-process::(port)=InputPort::(schema)=InputPortSchema::(attribute)=event-schema-attribute\"\n        },\n        {\n            \"sourceAttribute\": \"(process)=low-level-parent-process::(process)=low-level-process::(port)=InputPort::(schema)=InputPortSchema::(attribute)=event-schema-attribute\",\n            \"targetAttribute\": \"(process)=low-level-parent-process::(process)=low-level-process::(port)=OutputPort::(schema)=OutputPortSchema::(attribute)=event-schema-attribute\"\n        },\n        {\n            \"sourceAttribute\": \"(process)=low-level-parent-process::(process)=low-level-process::(port)=OutputPort::(schema)=OutputPortSchema::(attribute)=event-schema-attribute\",\n            \"targetAttribute\": \"(topic)=second-topic-low-level::(eventType)=second-event-low-level::(eventAttribute)=second-event-attribute\"\n        }\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}",
+					"raw": "{\n    \"dataFlows\": [\n        {\n            \"dataSupplier\": \"(topic)=first-topic-low-level::(eventType)=first-event-low-level::(eventAttribute)=first-event-attribute\",\n            \"dataConsumer\": \"(process)=low-level-parent-process::(process)=low-level-process::(port)=InputPort::(schema)=InputPortSchema::(attribute)=event-schema-attribute\"\n        },\n        {\n            \"dataSupplier\": \"(process)=low-level-parent-process::(process)=low-level-process::(port)=InputPort::(schema)=InputPortSchema::(attribute)=event-schema-attribute\",\n            \"dataConsumer\": \"(process)=low-level-parent-process::(process)=low-level-process::(port)=OutputPort::(schema)=OutputPortSchema::(attribute)=event-schema-attribute\"\n        },\n        {\n            \"dataSupplier\": \"(process)=low-level-parent-process::(process)=low-level-process::(port)=OutputPort::(schema)=OutputPortSchema::(attribute)=event-schema-attribute\",\n            \"dataConsumer\": \"(topic)=second-topic-low-level::(eventType)=second-event-low-level::(eventAttribute)=second-event-attribute\"\n        }\n    ],\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -377,7 +377,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/lineage-mappings",
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/data-flows",
 					"host": [
 						"{{base-url}}"
 					],
@@ -389,7 +389,7 @@
 						"data-engine",
 						"users",
 						"{{user-id}}",
-						"lineage-mappings"
+						"data-flows"
 					]
 				}
 			},
@@ -429,7 +429,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"process\": {\n        \"qualifiedName\": \"(process)=low-level-parent-process\",\n        \"displayName\": \"low-level-parent-process\",\n        \"name\": \"low-level-parent-process\",\n        \"description\": \"low-level-process describes high level process input and output and mappings between (sub)processes (if any).\",\n        \"owner\": \"Platform User\",\n        \"portAliases\": [\n            {\n                \"displayName\": \"ReadInputPortAlias\",\n                \"qualifiedName\": \"(process)=low-level-parent-process::(port)=ReadInputPortAlias\",\n                \"updateSemantic\": \"REPLACE\",\n                \"delegatesTo\": \"(process)=low-level-parent-process::(process)=low-level-process::(port)=InputPort\",\n                \"type\": \"INPUT_PORT\"\n            },\n            {\n                \"displayName\": \"WriteOutputPortAlias\",\n                \"qualifiedName\": \"(process)=low-level-process::(port)=WriteOutpuPortAlias\",\n                \"updateSemantic\": \"REPLACE\",\n                \"delegatesTo\": \"(process)=low-level-parent-process::(process)=low-level-process::(port)=OutputPort\",\n                \"type\": \"OUTPUT_PORT\"\n            }\n        ],\n        \"lineageMappings\": [],\n        \"updateSemantic\": \"REPLACE\"\n    },\n    \"externalSourceName\": \"(organization)=ING::(project)=ExternalDataPlatform\"\n}"
+					"raw": "{\n    \"process\": {\n        \"qualifiedName\": \"(process)=low-level-parent-process\",\n        \"displayName\": \"low-level-parent-process\",\n        \"name\": \"low-level-parent-process\",\n        \"description\": \"low-level-process describes high level process input and output and mappings between (sub)processes (if any).\",\n        \"owner\": \"Platform User\",\n        \"portAliases\": [\n            {\n                \"displayName\": \"ReadInputPortAlias\",\n                \"qualifiedName\": \"(process)=low-level-parent-process::(port)=ReadInputPortAlias\",\n                \"updateSemantic\": \"REPLACE\",\n                \"delegatesTo\": \"(process)=low-level-parent-process::(process)=low-level-process::(port)=InputPort\",\n                \"type\": \"INPUT_PORT\"\n            },\n            {\n                \"displayName\": \"WriteOutputPortAlias\",\n                \"qualifiedName\": \"(process)=low-level-process::(port)=WriteOutpuPortAlias\",\n                \"updateSemantic\": \"REPLACE\",\n                \"delegatesTo\": \"(process)=low-level-parent-process::(process)=low-level-process::(port)=OutputPort\",\n                \"type\": \"OUTPUT_PORT\"\n            }\n        ],\n        \"dataFlows\": [],\n        \"updateSemantic\": \"REPLACE\"\n    },\n    \"externalSourceName\": \"(organization)=ING::(project)=ExternalDataPlatform\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes",

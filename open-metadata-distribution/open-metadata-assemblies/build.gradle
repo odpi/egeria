@@ -169,7 +169,7 @@ distributions {
                 fileMode = 0755
             }
             into('user-interface') {
-                from { project(':open-metadata-implementation:user-interfaces:ui-chassis:ui-chassis-spring').jar }
+                from { project(':open-metadata-implementation:user-interfaces:ui-chassis:ui-chassis-spring').bootJar }
                 fileMode = 0755
             }
             into('conformance-suite') {
@@ -226,9 +226,12 @@ build.dependsOn unzip
 // We don't want a published artifact from this module, as it's creating the final assembly
 // So disable all publish tasks inherited from the top level
 publish.onlyIf { false }
-generatePomFileForConnectorPublication.onlyIf { false }
-publishConnectorPublicationToMavenLocal.onlyIf { false }
+generatePomFileForMavenmodulePublication.onlyIf { false }
+publishMavenmodulePublicationToMavenLocal.onlyIf { false }
 publishToMavenLocal.onlyIf { false }
+publishAllPublicationsToOSSRHRepository.onlyIf { false }
+publishMavenmodulePublicationToOSSRHRepository.onlyIf { false }
+generateMetadataFileForMavenmodulePublication.onlyIf { false }
 
 
 

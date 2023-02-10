@@ -21,6 +21,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
 
 import java.util.List;
@@ -57,16 +58,20 @@ public class SecurityOfficerAdmin extends AccessServiceAdmin
         try
         {
             this.auditLog = auditLog;
+            String accessServiceName = accessServiceConfigurationProperties.getAccessServiceName();
             List<String> supportedZones = super.extractSupportedZones(accessServiceConfigurationProperties.getAccessServiceOptions(),
-                                                                      accessServiceConfigurationProperties.getAccessServiceName(), auditLog);
-            OpenMetadataTopicConnector securityOfficerOutputTopic = initializeSecurityOfficerTopicConnector(
-                    accessServiceConfigurationProperties.getAccessServiceOutTopic());
-            SecurityOfficerEventProcessor securityOfficerEventProcessor = new SecurityOfficerEventProcessor(enterpriseOMRSRepositoryConnector);
+                                                                      accessServiceName, auditLog);
+            Connection accessServiceOutTopic = accessServiceConfigurationProperties.getAccessServiceOutTopic();
+            OpenMetadataTopicConnector securityOfficerOutputTopic = initializeSecurityOfficerTopicConnector(accessServiceOutTopic);
+            SecurityOfficerEventProcessor securityOfficerEventProcessor = new SecurityOfficerEventProcessor(enterpriseOMRSRepositoryConnector,
+                                                                                                            accessServiceName);
 
-            securityOfficerPublisher = new SecurityOfficerPublisher(securityOfficerEventProcessor, securityOfficerOutputTopic, auditLog);
+            OMRSRepositoryHelper repositoryHelper = enterpriseOMRSRepositoryConnector.getRepositoryHelper();
+            securityOfficerPublisher = new SecurityOfficerPublisher(securityOfficerEventProcessor, securityOfficerOutputTopic,
+                                                                    repositoryHelper, accessServiceName, auditLog);
             this.instance = new SecurityOfficerInstance(enterpriseOMRSRepositoryConnector, supportedZones, auditLog, serverUserName,
                                                                 enterpriseOMRSRepositoryConnector.getMaxPageSize(),
-                                                                accessServiceConfigurationProperties.getAccessServiceOutTopic(),
+                                                                accessServiceOutTopic,
                                                                 securityOfficerPublisher);
             this.serverName = instance.getServerName();
             this.registerWithEnterpriseTopic(AccessServiceDescription.SECURITY_OFFICER_OMAS.getAccessServiceFullName(),
@@ -74,7 +79,7 @@ public class SecurityOfficerAdmin extends AccessServiceAdmin
                                              enterpriseOMRSTopicConnector,
                                              new SecurityOfficerOMRSTopicListener(
                                                      securityOfficerPublisher,
-                                                     enterpriseOMRSRepositoryConnector.getRepositoryHelper(),
+                                                     repositoryHelper,
                                                      enterpriseOMRSRepositoryConnector.getRepositoryValidator(),
                                                      AccessServiceDescription.SECURITY_OFFICER_OMAS.getAccessServiceFullName(),
                                                      serverName,

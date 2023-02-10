@@ -101,7 +101,7 @@ public class ElementHeaderConverter
     {
         if (entity != null)
         {
-            TypeConverter typeConverter = new TypeConverter();
+            TypeConverter typeConverter = new TypeConverter(repositoryHelper, serviceName);
 
             bean.setType(typeConverter.getElementType(entity.getType()));
 

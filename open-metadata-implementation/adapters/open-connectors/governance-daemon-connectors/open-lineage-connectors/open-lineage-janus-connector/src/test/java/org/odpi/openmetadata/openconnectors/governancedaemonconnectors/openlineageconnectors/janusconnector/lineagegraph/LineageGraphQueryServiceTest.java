@@ -7,8 +7,6 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSo
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
@@ -43,7 +41,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY_CATEGORY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY_TERM;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.LINEAGE_MAPPING;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FLOW;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.NESTED_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.NESTED_SCHEMA_ATTRIBUTE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PROCESS;
@@ -217,7 +215,7 @@ public class LineageGraphQueryServiceTest {
     }
 
     @Test
-    void ultimateSourceTableLevelViaLineageMapping() {
+    void ultimateSourceTableLevelViaDataFlow() {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "t10";
         expectedNodeIDs.add("d10");
@@ -230,7 +228,7 @@ public class LineageGraphQueryServiceTest {
     }
 
     @Test
-    void ultimateDestinationTableLevelViaLineageMapping() {
+    void ultimateDestinationTableLevelViaDataFlow() {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "t10";
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION);
@@ -244,7 +242,7 @@ public class LineageGraphQueryServiceTest {
     }
 
     @Test
-    void endToEndTableLevelViaLineageMapping() {
+    void endToEndTableLevelViaDataFlow() {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "t10";
         expectedNodeIDs.add("d10");
@@ -635,17 +633,17 @@ public class LineageGraphQueryServiceTest {
         g.addE(EDGE_LABEL_TABLE_DATA_FLOW).from(t1).to(p2).next();
         g.addE(EDGE_LABEL_TABLE_DATA_FLOW).from(p2).to(t2).next();
 
-        // lineage via lineage mapping
+        // lineage via data flows
         Vertex d10 = getVertex(g, DATA_FILE, "d10", "d10");
         Vertex p10 = getVertex(g, PROCESS, "p10", "p10");
         Vertex t10 = getVertex(g, RELATIONAL_TABLE, "t10", "t10");
         Vertex p20 = getVertex(g, PROCESS, "p20", "p20");
         Vertex t20 = getVertex(g, RELATIONAL_TABLE, "t20", "t20");
 
-        g.addE(LINEAGE_MAPPING).from(d10).to(p10).next();
-        g.addE(LINEAGE_MAPPING).from(p10).to(t10).next();
-        g.addE(LINEAGE_MAPPING).from(t10).to(p20).next();
-        g.addE(LINEAGE_MAPPING).from(p20).to(t20).next();
+        g.addE(DATA_FLOW).from(d10).to(p10).next();
+        g.addE(DATA_FLOW).from(p10).to(t10).next();
+        g.addE(DATA_FLOW).from(t10).to(p20).next();
+        g.addE(DATA_FLOW).from(p20).to(t20).next();
     }
 
     private static void addHierarchyData(GraphTraversalSource g) {

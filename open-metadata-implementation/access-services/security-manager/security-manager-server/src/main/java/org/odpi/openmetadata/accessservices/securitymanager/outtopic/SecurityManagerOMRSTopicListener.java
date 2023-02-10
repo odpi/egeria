@@ -12,8 +12,10 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +35,7 @@ public class SecurityManagerOMRSTopicListener extends OMRSTopicListenerBase
 
     private final SecurityManagerOutTopicPublisher         eventPublisher;
     private final UserIdentityHandler<UserIdentityElement> userIdentityHandler;
+    private final OMRSRepositoryHelper                     repositoryHelper;
     private final String                                   localServerUserId;
     private final List<String>                             supportedZones;
 
@@ -56,6 +59,7 @@ public class SecurityManagerOMRSTopicListener extends OMRSTopicListenerBase
         super(serviceName, auditLog);
 
         this.userIdentityHandler = userIdentityHandler;
+        this.repositoryHelper = userIdentityHandler.getRepositoryHelper();
         this.supportedZones = supportedZones;
         this.localServerUserId = localServerUserId;
         this.eventPublisher = eventPublisher;
@@ -836,20 +840,24 @@ public class SecurityManagerOMRSTopicListener extends OMRSTopicListenerBase
         {
             List<String> typeNames = new ArrayList<>();
 
-            typeNames.add(entityHeader.getType().getTypeDefName());
+            InstanceType type = entityHeader.getType();
 
-            if (entityHeader.getType().getTypeDefSuperTypes() != null)
+            if (type != null)
             {
-                for (TypeDefLink superType : entityHeader.getType().getTypeDefSuperTypes())
-                {
-                    if (superType != null)
-                    {
-                        typeNames.add(superType.getName());
+                typeNames.add(type.getTypeDefName());
+
+                List<TypeDefLink> superTypes = repositoryHelper.getSuperTypes(serviceName, type.getTypeDefName());
+
+                if (superTypes != null) {
+                    for (TypeDefLink superType : superTypes) {
+                        if (superType != null) {
+                            typeNames.add(superType.getName());
+                        }
                     }
                 }
-            }
 
-            return typeNames.contains(interestingTypeName);
+                return typeNames.contains(interestingTypeName);
+            }
         }
 
         return false;

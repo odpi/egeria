@@ -126,6 +126,17 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
     /**
+     * Return this handler's converter.
+     *
+     * @return converter
+     */
+    public OpenMetadataAPIGenericConverter<B> getConverter()
+    {
+        return converter;
+    }
+
+
+    /**
      * Set up a new security verifier (the handler runs with a default verifier until this method is called).
      *
      * The security verifier provides authorization checks for access and maintenance
@@ -240,7 +251,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param methodName calling method
      * @throws InvalidParameterException the classification name is null
      * @throws PropertyServerException there is a problem with the repositories
-     * @throws UserNotAuthorizedException the user is not allowed to update the security tags
+     * @throws UserNotAuthorizedException the user is not allowed to perform this action
      */
     public void setClassificationInRepository(String              userId,
                                               String              externalSourceGUID,
@@ -313,7 +324,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param methodName calling method
      * @throws InvalidParameterException the classification name is null
      * @throws PropertyServerException there is a problem with the repositories
-     * @throws UserNotAuthorizedException the user is not allowed to update the security tags
+     * @throws UserNotAuthorizedException the user is not allowed to perform this action
      */
     public void setClassificationInRepository(String             userId,
                                               String             externalSourceGUID,
@@ -355,7 +366,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param methodName calling method
      * @throws InvalidParameterException the classification name is null
      * @throws PropertyServerException there is a problem with the repositories
-     * @throws UserNotAuthorizedException the user is not allowed to update the security tags
+     * @throws UserNotAuthorizedException the user is not allowed to perform this action
      */
     public void setClassificationInRepository(String             userId,
                                               String             externalSourceGUID,
@@ -428,7 +439,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param methodName calling method
      * @throws InvalidParameterException the classification name is null
      * @throws PropertyServerException there is a problem with the repositories
-     * @throws UserNotAuthorizedException the user is not allowed to update the security tags
+     * @throws UserNotAuthorizedException the user is not allowed to perform this action
      */
     public void setClassificationInRepository(String             userId,
                                               String             externalSourceGUID,
@@ -599,7 +610,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param methodName calling method
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws UserNotAuthorizedException the user is not allowed to perform this action
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public void updateClassificationEffectivityDates(String       userId,
@@ -735,7 +746,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param methodName calling method
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws UserNotAuthorizedException the user is not allowed to perform this action
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public void updateBeanEffectivityDates(String       userId,
@@ -778,7 +789,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param methodName calling method
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws UserNotAuthorizedException the user is not allowed to perform this action
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public void updateBeanEffectivityDates(String       userId,
@@ -895,7 +906,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param methodName calling method
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws UserNotAuthorizedException the user is not allowed to perform this action
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public void updateRelationshipEffectivityDates(String  userId,
@@ -935,7 +946,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param methodName calling method
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws UserNotAuthorizedException the user is not allowed to perform this action
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public void updateRelationshipEffectivityDates(String       userId,
@@ -1098,7 +1109,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this relationship
+     * @throws UserNotAuthorizedException the user is not allowed to perform this action
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public void updateRelationshipProperties(String             userId,
@@ -1139,7 +1150,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this relationship
+     * @throws UserNotAuthorizedException the user is not allowed to perform this action
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public void updateRelationshipProperties(String             userId,
@@ -1256,7 +1267,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this relationship
+     * @throws UserNotAuthorizedException the user is not allowed to perform this action
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public void deleteRelationship(String  userId,
@@ -1371,7 +1382,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param methodName calling method
      * @throws InvalidParameterException the classification name is null
      * @throws PropertyServerException there is a problem with the repositories
-     * @throws UserNotAuthorizedException the user is not allowed to update the security tags
+     * @throws UserNotAuthorizedException the user is not allowed to perform this action
      */
     public void removeClassificationFromRepository(String  userId,
                                                    String  externalSourceGUID,
@@ -10886,7 +10897,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @return list of beans
+     * @return list of entities
      * @throws InvalidParameterException the userId is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.

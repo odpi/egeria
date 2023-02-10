@@ -364,17 +364,17 @@ public class AssetLineagePublisher {
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      * @throws JsonProcessingException   exception parsing the event json
      */
-    public void publishLineageMappingRelationshipEvent(LineageRelationship lineageRelationship, AssetLineageEventType eventType) throws
+    public void publishDataFlowRelationshipEvent(LineageRelationship lineageRelationship, AssetLineageEventType eventType) throws
                                                                                                                                  OCFCheckedExceptionBase,
                                                                                                                                  JsonProcessingException {
         publishLineageRelationshipEvent(lineageRelationship, eventType);
 
-        publishLineageMappingContext(lineageRelationship.getSourceEntity());
-        publishLineageMappingContext(lineageRelationship.getTargetEntity());
+        publishDataFlowContext(lineageRelationship.getSourceEntity());
+        publishDataFlowContext(lineageRelationship.getTargetEntity());
     }
 
     /**
-     * Publishes the context for an entity involved in a lineage mapping. If the entity is of type column, it will publish the column context.
+     * Publishes the context for an entity involved in a data flow. If the entity is of type column, it will publish the column context.
      * If the entity is of type asset, it will publish the asset context.
      *
      * @param lineageEntity the lineage entity
@@ -382,7 +382,7 @@ public class AssetLineagePublisher {
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      * @throws JsonProcessingException   exception parsing the event json
      */
-    private void publishLineageMappingContext(LineageEntity lineageEntity) throws JsonProcessingException, OCFCheckedExceptionBase {
+    private void publishDataFlowContext(LineageEntity lineageEntity) throws JsonProcessingException, OCFCheckedExceptionBase {
         publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildColumnContext(serverUserName, lineageEntity)));
         publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildAssetContext(serverUserName, lineageEntity)));
 

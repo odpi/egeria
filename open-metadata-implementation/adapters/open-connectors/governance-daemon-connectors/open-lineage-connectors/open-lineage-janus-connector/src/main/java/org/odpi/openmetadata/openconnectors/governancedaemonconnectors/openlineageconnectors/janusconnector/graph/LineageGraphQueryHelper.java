@@ -450,7 +450,7 @@ public class LineageGraphQueryHelper {
         String additionalPropertiesValue = additionalProperties.value();
         return Arrays.stream(additionalPropertiesValue.split(","))
                 .filter(s -> s.trim().startsWith("path"))
-                .map(s -> s.split(":")[1])
+                .map(s -> s.split("=")[1])
                 .findFirst();
     }
 

@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ATTRIBUTE_FOR_SCHEMA;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.COLLECTION_MEMBERSHIP;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.LINEAGE_MAPPING;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_FLOW;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_ALIAS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_DELEGATION;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_IMPLEMENTATION;
@@ -102,15 +102,15 @@ public class ProcessContextHandler {
                     .map(GraphContext::getToVertex).collect(Collectors.toSet());
 
             for (LineageEntity tabularColumn : tabularColumns) {
-                addLineageContextForColumn(userId, context, tabularColumn.getGuid(), tabularColumn.getTypeDefName());
+                addDataFlowsContextForColumn(userId, context, tabularColumn.getGuid(), tabularColumn.getTypeDefName());
             }
         }
         return context;
     }
 
     /**
-     * Adds lineage context for the tabular column. It adds the lineage mappings for the column and the column context for all the technical assets
-     * that have lineage mappings to it.
+     * Adds data flows context for the tabular column. It adds the data flows for the column and the column context for all the technical assets
+     * that have data flows to it.
      *
      * @param userId      userId of user making request.
      * @param context     the context to be updated
@@ -119,16 +119,16 @@ public class ProcessContextHandler {
      *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-    private void addLineageContextForColumn(String userId, Multimap<String, RelationshipsContext> context, String columnGUID,
-                                            String typeDefName) throws OCFCheckedExceptionBase {
-        List<Relationship> lineageMappings = handlerHelper.getRelationshipsByType(userId, columnGUID, LINEAGE_MAPPING, typeDefName);
+    private void addDataFlowsContextForColumn(String userId, Multimap<String, RelationshipsContext> context, String columnGUID,
+                                              String typeDefName) throws OCFCheckedExceptionBase {
+        List<Relationship> dataFlows = handlerHelper.getRelationshipsByType(userId, columnGUID, DATA_FLOW, typeDefName);
 
-        context.put(AssetLineageEventType.LINEAGE_MAPPINGS_EVENT.getEventTypeName(),
-                handlerHelper.buildContextForRelationships(userId, columnGUID, lineageMappings));
+        context.put(AssetLineageEventType.DATA_FLOWS_EVENT.getEventTypeName(),
+                handlerHelper.buildContextForRelationships(userId, columnGUID, dataFlows));
 
-        for (Relationship lineageMapping : lineageMappings) {
+        for (Relationship dataFlow : dataFlows) {
             context.putAll(Multimaps.forMap(assetContextHandler.buildSchemaElementContext(userId, handlerHelper.getEntityAtTheEnd(userId,
-                    columnGUID, lineageMapping))));
+                    columnGUID, dataFlow))));
         }
     }
 

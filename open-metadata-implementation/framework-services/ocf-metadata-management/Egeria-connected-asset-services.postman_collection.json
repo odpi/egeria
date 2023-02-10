@@ -12,7 +12,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "/servers/{{server}}/open-metadata/common-services/{{serviceURLName}}/connected-asset/users/{{user}}/connections/{{guid}}",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/connections/{{guid}}",
 					"path": [
 						"servers",
 						"{{server}}",
@@ -35,7 +35,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/{{serviceURLName}}/connected-asset/users/{{user}}/connections/by-name/myConnection",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/connections/by-name/myConnection",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -62,7 +62,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/connection",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/connection",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -89,7 +89,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/by-connection/{{guid}}",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/by-connection/{{guid}}",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -116,7 +116,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/via-connection/{{guid}}",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/via-connection/{{guid}}",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -144,7 +144,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -170,7 +170,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/certifications?elementStart=0&maxElements=100",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/certifications?elementStart=0&maxElements=100",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -207,7 +207,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/comments?elementStart=0&maxElements=100",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/comments?elementStart=0&maxElements=100",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -244,7 +244,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/comments/{{guid}}/replies?elementStart=0&maxElements=100",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/comments/{{guid}}/replies?elementStart=0&maxElements=100",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -283,7 +283,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/connections?elementStart=0&maxElements=100",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/connections?elementStart=0&maxElements=100",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -320,7 +320,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/external-identifiers?elementStart=0&maxElements=100",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/external-identifiers?elementStart=0&maxElements=100",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -357,7 +357,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/external-references?elementStart=0&maxElements=100",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/external-references?elementStart=0&maxElements=100",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -394,7 +394,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/informal-tags?elementStart=0&maxElements=100",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/informal-tags?elementStart=0&maxElements=100",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -431,7 +431,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/licenses?elementStart=0&maxElements=100",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/licenses?elementStart=0&maxElements=100",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -468,7 +468,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/likes?elementStart=0&maxElements=100",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/likes?elementStart=0&maxElements=100",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -505,7 +505,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/known-locations?elementStart=0&maxElements=100",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/known-locations?elementStart=0&maxElements=100",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -542,7 +542,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/note-logs?elementStart=0&maxElements=100",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/note-logs?elementStart=0&maxElements=100",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -579,7 +579,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/{{serviceURLName}}/connected-asset/users/{{user}}/note-logs/{{guid}}/notes?elementStart=0&maxElements=100",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/note-logs/{{guid}}/notes?elementStart=0&maxElements=100",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -616,7 +616,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/ratings?elementStart=0&maxElements=100",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/ratings?elementStart=0&maxElements=100",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -653,7 +653,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/related-assets?elementStart=0&maxElements=100",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/related-assets?elementStart=0&maxElements=100",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -690,7 +690,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/{{serviceURLName}}/connected-asset/users/{{user}}/referenceables/{{guid}}/more-information?elementStart=0&maxElements=100",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/referenceables/{{guid}}/more-information?elementStart=0&maxElements=100",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -727,7 +727,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/related-media-references?elementStart=0&maxElements=100",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/related-media-references?elementStart=0&maxElements=100",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -764,7 +764,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/schemas/{{guid}}/schema-attributes?elementStart=0&maxElements=100",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/schemas/{{guid}}/schema-attributes?elementStart=0&maxElements=100",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -802,7 +802,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/schemas/apis/{{guid}}/api-operations?elementStart=0&maxElements=100",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/schemas/apis/{{guid}}/api-operations?elementStart=0&maxElements=100",
 					"host": [
 						"{{baseURL}}"
 					],

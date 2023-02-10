@@ -194,7 +194,7 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
                                                                       PropertyServerException,
                                                                       UserNotAuthorizedException
     {
-        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/assets/{3}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/framework-services/{1}/connected-asset/users/{2}/assets/{3}";
 
         AssetResponse restResult = ocfrestClient.callOCFAssetGetRESTCall(methodName,
                                                                          serverPlatformURLRoot + urlTemplate,
@@ -366,7 +366,7 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
                                                                          UserNotAuthorizedException
     {
         final String   methodName  = "getConnectionByGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/connections/{3}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/framework-services/{1}/connected-asset/users/{2}/connections/{3}";
 
         ConnectionResponse   restResult = restClient.callOCFConnectionGetRESTCall(methodName,
                                                                                   serverPlatformURLRoot + urlTemplate,
@@ -401,7 +401,7 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
                                                                          UserNotAuthorizedException
     {
         final String   methodName = "getConnectionByName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/connections/by-name/{3}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/framework-services/{1}/connected-asset/users/{2}/connections/by-name/{3}";
 
         ConnectionResponse restResult = restClient.callOCFConnectionGetRESTCall(methodName,
                                                                                 serverPlatformURLRoot + urlTemplate,
@@ -435,7 +435,7 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
                                                                                 UserNotAuthorizedException
     {
         final String   methodName = "getConnectionForAsset";
-        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/assets/{3}/connection";
+        final String   urlTemplate = "/servers/{0}/open-metadata/framework-services/{1}/connected-asset/users/{2}/assets/{3}/connection";
 
         ConnectionResponse restResult = restClient.callOCFConnectionGetRESTCall(methodName,
                                                                                 serverPlatformURLRoot + urlTemplate,
@@ -470,7 +470,7 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
                                                                                   UserNotAuthorizedException
     {
         final String   methodName = "getAssetForConnection";
-        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/assets/by-connection/{3}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/framework-services/{1}/connected-asset/users/{2}/assets/by-connection/{3}";
 
         GUIDResponse restResult = restClient.callGUIDGetRESTCall(methodName,
                                                                  serverPlatformURLRoot + urlTemplate,

@@ -34,7 +34,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FILE_FOLDER;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FOLDER_HIERARCHY;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_TERM;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.LINEAGE_MAPPING;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_FLOW;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_SCHEMA_ATTRIBUTE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT;
@@ -77,7 +77,7 @@ public class AssetLineageTypesValidator {
         final Set<String> defaultTopicRelationships =
                 Set.of(ATTRIBUTE_FOR_SCHEMA, SCHEMA_TYPE_OPTION, ASSET_SCHEMA_TYPE);
         final Set<String> defaultProcessRelationships =
-                Set.of(ATTRIBUTE_FOR_SCHEMA, ASSET_SCHEMA_TYPE, PORT_SCHEMA, PORT_DELEGATION, PROCESS_PORT, PROCESS_HIERARCHY, LINEAGE_MAPPING);
+                Set.of(ATTRIBUTE_FOR_SCHEMA, ASSET_SCHEMA_TYPE, PORT_SCHEMA, PORT_DELEGATION, PROCESS_PORT, PROCESS_HIERARCHY, DATA_FLOW);
         final Set<String> defaultGlossaryTermRelationships =
                 Set.of(SEMANTIC_ASSIGNMENT, TERM_CATEGORIZATION);
 

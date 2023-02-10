@@ -5,6 +5,9 @@ package org.odpi.openmetadata.commonservices.gaf.server;
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.commonservices.gaf.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.commonservices.gaf.properties.ValidMetadataValue;
+import org.odpi.openmetadata.commonservices.gaf.properties.ValidMetadataValueDetail;
+import org.odpi.openmetadata.commonservices.generichandlers.ValidValuesHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -54,4 +57,59 @@ public class OpenMetadataStoreInstanceHandler extends OMASServiceInstanceHandler
         return null;
     }
 
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    ValidValuesHandler<ValidMetadataValue> getValidMetadataValuesHandler(String userId,
+                                                                         String serverName,
+                                                                         String serviceOperationName) throws InvalidParameterException,
+                                                                                                              UserNotAuthorizedException,
+                                                                                                              PropertyServerException
+    {
+        OpenMetadataStoreInstance instance = (OpenMetadataStoreInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getValidMetadataValuesHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    ValidValuesHandler<ValidMetadataValueDetail> getValidMetadataValuesDetailHandler(String userId,
+                                                                                     String serverName,
+                                                                                     String serviceOperationName) throws InvalidParameterException,
+                                                                                                                         UserNotAuthorizedException,
+                                                                                                                         PropertyServerException
+    {
+        OpenMetadataStoreInstance instance = (OpenMetadataStoreInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getValidMetadataValuesDetailHandler();
+        }
+
+        return null;
+    }
 }

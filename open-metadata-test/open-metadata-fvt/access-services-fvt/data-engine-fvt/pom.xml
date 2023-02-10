@@ -9,7 +9,7 @@
     <parent>
         <artifactId>access-services-fvt</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.16-SNAPSHOT</version>
+        <version>4.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

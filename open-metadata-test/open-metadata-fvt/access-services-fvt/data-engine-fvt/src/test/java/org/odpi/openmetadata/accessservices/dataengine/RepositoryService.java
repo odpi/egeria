@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 
 /**
  * This class aims to offer support for the FVT in regards to calling the LocalRepositoryServicesClient.
- * It contains calls to various LocalRepositoryServicesClient methods that retrieve the proxies names from lineage mappings,
+ * It contains calls to various LocalRepositoryServicesClient methods that retrieve the proxies names from data flows,
  * that find relationships based on GUID, that find GUIDs based on qualified names or software sever capabilities
  * also based on qualified names.
  */
@@ -37,7 +37,7 @@ public class RepositoryService {
     private static final String QUALIFIED_NAME = "qualifiedName";
 
     private static final String TABULAR_COLUMN_TYPE_GUID = "d81a0425-4e9b-4f31-bc1c-e18c3566da10";
-    private static final String LINEAGE_MAPPING_TYPE_GUID = "a5991bB2-660D-A3a1-2955-fAcDA2d5F4Ff";
+    private static final String DATA_FLOW_TYPE_GUID = "d2490c0c-06cc-458a-add2-33cf2f5dd724";
 
     private static final int PAGE_SIZE = 100;
 
@@ -53,13 +53,13 @@ public class RepositoryService {
 
     /**
      * Given a list of relationships for the given attribute, the method calculates a list of qualified names indicating
-     * the other proxies involved in lineage mapping relationships.
+     * the other proxies involved in data flow relationships.
      *
      * @param lineageRelationships the lineage relationships correlated to the given attribute
-     * @param currentAttribute     the attribute for which the lineage mapping proxies are calculated
-     * @return a list of qualified names indicating the other proxies in the lineage mappings
+     * @param currentAttribute     the attribute for which the data flows proxies are calculated
+     * @return a list of qualified names indicating the other proxies in the data flows
      */
-    public List<String> getLineageMappingsProxiesQualifiedNames(List<Relationship> lineageRelationships, String currentAttribute) {
+    public List<String> getDataFlowsProxiesQualifiedNames(List<Relationship> lineageRelationships, String currentAttribute) {
         return lineageRelationships
                 .stream()
                 .map(lineage -> {
@@ -79,11 +79,11 @@ public class RepositoryService {
      * @param entityGUID the GUID of the entity
      * @return the list of relationships in which the entity is involved
      */
-    public List<Relationship> findLineageMappingRelationshipsByGUID(String entityGUID) throws UserNotAuthorizedException,
-            EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException,
-            PropertyErrorException, TypeErrorException, PagingErrorException {
+    public List<Relationship> findDataFlowRelationshipsByGUID(String entityGUID) throws UserNotAuthorizedException,
+                                                                                        EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException,
+                                                                                        PropertyErrorException, TypeErrorException, PagingErrorException {
 
-        return client.getRelationshipsForEntity(userId, entityGUID, LINEAGE_MAPPING_TYPE_GUID, 0,
+        return client.getRelationshipsForEntity(userId, entityGUID, DATA_FLOW_TYPE_GUID, 0,
                 null, null, null, SequencingOrder.ANY, PAGE_SIZE);
     }
 

@@ -12,7 +12,17 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatu
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementVersions;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -961,12 +971,15 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
         if (instanceType != null)
         {
-            elementType.setTypeId(instanceType.getTypeDefGUID());
-            elementType.setTypeName(instanceType.getTypeDefName());
-            elementType.setTypeVersion(instanceType.getTypeDefVersion());
-            elementType.setTypeDescription(instanceType.getTypeDefDescription());
+            String typeDefName = instanceType.getTypeDefName();
+            TypeDef typeDef = repositoryHelper.getTypeDefByName(serviceName, typeDefName);
 
-            List<TypeDefLink> typeDefSuperTypes = instanceType.getTypeDefSuperTypes();
+            elementType.setTypeId(instanceType.getTypeDefGUID());
+            elementType.setTypeName(typeDefName);
+            elementType.setTypeVersion(instanceType.getTypeDefVersion());
+            elementType.setTypeDescription(typeDef.getDescription());
+
+            List<TypeDefLink> typeDefSuperTypes = repositoryHelper.getSuperTypes(serviceName, typeDefName);
 
             if ((typeDefSuperTypes != null) && (! typeDefSuperTypes.isEmpty()))
             {

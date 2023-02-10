@@ -11,7 +11,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseSchemaReques
 import org.odpi.openmetadata.accessservices.dataengine.rest.DeleteRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.EventTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DataFlowsRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequestBody;
@@ -253,19 +253,19 @@ public class DataEngineResource {
     }
 
     /**
-     * Add LineageMapping relationships
+     * Add DataFlow relationships
      *
-     * @param serverName                 name of server instance to call
-     * @param userId                     the name of the calling user
-     * @param lineageMappingsRequestBody properties of the mappings
+     * @param serverName           name of server instance to call
+     * @param userId               the name of the calling user
+     * @param dataFlowsRequestBody properties of the data flows
      *
      * @return unique identifier of the created entity
      */
-    @PostMapping(path = "/lineage-mappings")
-    public VoidResponse addLineageMappings(@PathVariable("userId") String userId,
-                                           @PathVariable("serverName") String serverName,
-                                           @RequestBody LineageMappingsRequestBody lineageMappingsRequestBody) {
-        return restAPI.addLineageMappings(userId, serverName, lineageMappingsRequestBody);
+    @PostMapping(path = "/data-flows")
+    public VoidResponse addDataFlows(@PathVariable("userId") String userId,
+                                     @PathVariable("serverName") String serverName,
+                                     @RequestBody DataFlowsRequestBody dataFlowsRequestBody) {
+        return restAPI.addDataFlows(userId, serverName, dataFlowsRequestBody);
     }
 
 
@@ -467,8 +467,8 @@ public class DataEngineResource {
     /**
      * Find assets
      *
-     * @param serverName        name of server instance to call
-     * @param userId            the name of the calling user
+     * @param serverName      name of server instance to call
+     * @param userId          the name of the calling user
      * @param findRequestBody properties for the connection
      *
      * @return asset if found
@@ -476,7 +476,7 @@ public class DataEngineResource {
     @PostMapping(path = "/find")
     public GUIDListResponse search(@PathVariable("userId") String userId,
                                    @PathVariable("serverName") String serverName,
-                                   @RequestBody FindRequestBody findRequestBody){
+                                   @RequestBody FindRequestBody findRequestBody) {
         return restAPI.find(userId, serverName, findRequestBody);
     }
 
@@ -492,8 +492,8 @@ public class DataEngineResource {
      */
     @PostMapping(path = "/topics")
     public GUIDResponse upsertTopic(@PathVariable("userId") String userId,
-                                       @PathVariable("serverName") String serverName,
-                                       @RequestBody TopicRequestBody requestBody) {
+                                    @PathVariable("serverName") String serverName,
+                                    @RequestBody TopicRequestBody requestBody) {
         return restAPI.upsertTopic(userId, serverName, requestBody);
     }
 
@@ -508,8 +508,8 @@ public class DataEngineResource {
      */
     @DeleteMapping(path = "/topics")
     public VoidResponse deleteTopic(@PathVariable("userId") String userId,
-                                       @PathVariable("serverName") String serverName,
-                                       @RequestBody DeleteRequestBody requestBody) {
+                                    @PathVariable("serverName") String serverName,
+                                    @RequestBody DeleteRequestBody requestBody) {
         return restAPI.deleteTopic(userId, serverName, requestBody);
     }
 
@@ -524,8 +524,8 @@ public class DataEngineResource {
      */
     @PostMapping(path = "/event-types")
     public GUIDResponse upsertEventType(@PathVariable("userId") String userId,
-                                     @PathVariable("serverName") String serverName,
-                                     @RequestBody EventTypeRequestBody requestBody) {
+                                        @PathVariable("serverName") String serverName,
+                                        @RequestBody EventTypeRequestBody requestBody) {
         return restAPI.upsertEventType(userId, serverName, requestBody);
     }
 
@@ -551,6 +551,7 @@ public class DataEngineResource {
      * @param serverName  name of server instance to call
      * @param userId      the name of the calling user
      * @param requestBody properties of the processing state
+     *
      * @return void response
      */
     @PostMapping(path = "/processing-state")
@@ -563,14 +564,15 @@ public class DataEngineResource {
     /**
      * Get the data engine's processing state classification properties
      *
-     * @param serverName  name of server instance to call
-     * @param userId      the name of the calling user
+     * @param serverName name of server instance to call
+     * @param userId     the name of the calling user
+     *
      * @return PropertiesResponse response
      */
     @GetMapping(path = "/processing-state")
     public PropertiesResponse getProcessingState(@PathVariable("userId") String userId,
-                                                    @PathVariable("serverName") String serverName,
-                                                    @RequestParam("dataEngine") String externalSourceName) {
+                                                 @PathVariable("serverName") String serverName,
+                                                 @RequestParam("dataEngine") String externalSourceName) {
         return restAPI.getProcessingState(userId, serverName, externalSourceName);
     }
 

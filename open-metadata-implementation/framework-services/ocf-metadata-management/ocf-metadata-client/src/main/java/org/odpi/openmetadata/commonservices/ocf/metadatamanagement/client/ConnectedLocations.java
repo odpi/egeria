@@ -110,7 +110,7 @@ public class ConnectedLocations extends Locations
                                                int  maximumSize) throws PropertyServerException
     {
         final String   methodName = "Locations.getCachedList";
-        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/assets/{3}/known-locations?elementStart={4}&maxElements={5}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/framework-services/{1}/connected-asset/users/{2}/assets/{3}/known-locations?elementStart={4}&maxElements={5}";
 
         RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 

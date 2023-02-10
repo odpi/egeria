@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class FVTAuditLogDestination extends AuditLogDestination
 {
-    private volatile List<AuditLogRecord> auditLogRecords = new ArrayList<>();
+    private final List<AuditLogRecord> auditLogRecords = new ArrayList<>();
 
     /**
      * Add the new log record to the audit log.

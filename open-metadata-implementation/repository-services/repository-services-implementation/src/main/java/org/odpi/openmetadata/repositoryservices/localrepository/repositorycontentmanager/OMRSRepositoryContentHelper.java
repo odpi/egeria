@@ -254,6 +254,25 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         return repositoryContentManager.getTypeDefByName(typeDefName);
     }
 
+    /**
+     * Gets super types for given type name.
+     *
+     * @param sourceName  the source of the request (used for logging)
+     * @param typeDefName unique name for the TypeDef
+     * @return the super types
+     */
+    @Override
+    public List<TypeDefLink> getSuperTypes(String sourceName,
+                                           String typeDefName)
+    {
+        final String methodName = "getTypeDefByName";
+
+        validateRepositoryContentManager(methodName);
+
+        return repositoryContentManager.getSuperTypes(sourceName,
+                                                      typeDefName,
+                                                      methodName);
+    }
 
     /**
      * Return the attribute name for the related entity.
