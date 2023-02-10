@@ -1780,6 +1780,9 @@ public class DataEngineRESTServices {
         // first create port implementations sequentially
         try {
             for (PortImplementation portImplementation : portImplementations) {
+                if(portImplementation == null){
+                    continue;
+                }
                 String portGUID = upsertPortImplementation(userId, serverName, portImplementation, processGUID, externalSourceName);
                 schemaTypeMap.put(portGUID, portImplementation.getSchemaType());
             }
