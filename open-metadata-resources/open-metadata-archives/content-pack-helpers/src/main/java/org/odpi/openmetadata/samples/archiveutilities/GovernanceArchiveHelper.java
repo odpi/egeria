@@ -285,7 +285,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      *
      * @param typeName name of process subtype to use - default is GovernanceActionProcess
      * @param qualifiedName unique name for the capability
-     * @param displayName display name for the capability
+     * @param name display name for the capability
      * @param description description about the capability
      * @param formula logic for the process
      * @param domainIdentifier which governance domain - 0=all
@@ -297,7 +297,46 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      */
     public String addGovernanceActionProcess(String               typeName,
                                              String               qualifiedName,
-                                             String               displayName,
+                                             String               name,
+                                             String               description,
+                                             String               formula,
+                                             int                  domainIdentifier,
+                                             Map<String, String>  additionalProperties,
+                                             Map<String, Object>  extendedProperties,
+                                             List<Classification> classifications)
+    {
+        return this.addGovernanceActionProcess(typeName,
+                                               qualifiedName,
+                                               name,
+                                               null,
+                                               description,
+                                               formula,
+                                               domainIdentifier,
+                                               additionalProperties,
+                                               extendedProperties,
+                                               classifications);
+    }
+
+
+    /**
+     * Create a governance action process.
+     *
+     * @param typeName name of process subtype to use - default is GovernanceActionProcess
+     * @param qualifiedName unique name for the capability
+     * @param name display name for the capability
+     * @param description description about the capability
+     * @param formula logic for the process
+     * @param domainIdentifier which governance domain - 0=all
+     * @param additionalProperties any other properties
+     * @param extendedProperties properties for subtype
+     * @param classifications list of classifications (if any)
+     *
+     * @return id for the new entity
+     */
+    public String addGovernanceActionProcess(String               typeName,
+                                             String               qualifiedName,
+                                             String               name,
+                                             String               versionIdentifier,
                                              String               description,
                                              String               formula,
                                              int                  domainIdentifier,
@@ -323,7 +362,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
 
         return super.addProcess(processTypeName,
                                 qualifiedName,
-                                displayName,
+                                name,
+                                versionIdentifier,
                                 description,
                                 formula,
                                 additionalProperties,
