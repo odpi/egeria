@@ -2850,17 +2850,31 @@ public class OpenMetadataStoreRESTServices
                                                                                   handler,
                                                                                   methodName);
 
-                        List<ValidMetadataValue> mapDetails = handler.getValidValueSetMembers(userId,
-                                                                                              detailElement.getGUID(),
-                                                                                              "detail.getGUID()",
-                                                                                              0,
-                                                                                              0,
-                                                                                              false,
-                                                                                              false,
-                                                                                              null,
-                                                                                              methodName);
+                        if (detailElement == null)
+                        {
+                            detailElement = this.getValidMetadataElement(userId,
+                                                                         this.constructValidValueQualifiedName(typeName,
+                                                                                                               propertyName,
+                                                                                                               detail.getPreferredValue(),
+                                                                                                               null),
+                                                                         handler,
+                                                                         methodName);
+                        }
 
-                        detail.setValidMapNameValues(mapDetails);
+                        if (detailElement != null)
+                        {
+                            List<ValidMetadataValue> mapDetails = handler.getValidValueSetMembers(userId,
+                                                                                                  detailElement.getGUID(),
+                                                                                                  "detail.getGUID()",
+                                                                                                  0,
+                                                                                                  0,
+                                                                                                  false,
+                                                                                                  false,
+                                                                                                  null,
+                                                                                                  methodName);
+
+                            detail.setValidMapNameValues(mapDetails);
+                        }
                     }
                 }
 
