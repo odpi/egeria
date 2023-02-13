@@ -1177,9 +1177,6 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
             instanceType.setTypeDefGUID(typeDef.getGUID());
             instanceType.setTypeDefName(typeDef.getName());
             instanceType.setTypeDefVersion(typeDef.getVersion());
-            instanceType.setTypeDefDescription(typeDef.getDescription());
-            instanceType.setTypeDefDescriptionGUID(typeDef.getDescriptionGUID());
-            instanceType.setValidStatusList(typeDef.getValidInstanceStatusList());
         }
 
         return instanceType;
@@ -1196,40 +1193,7 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
     {
         TypeDef typeDef = archiveBuilder.getTypeDefByName(typeDefName);
 
-        InstanceType instanceType = this.getInstanceTypeHeader(typeDef);
-
-        if (typeDef != null)
-        {
-            List<String>       validProperties = this.getPropertiesList(typeDef.getPropertiesDefinition(), null);
-            List<TypeDefLink>  superTypes      = new ArrayList<>();
-            TypeDef            superType       = null;
-
-            if (typeDef.getSuperType() != null)
-            {
-                superType = archiveBuilder.getTypeDefByName(typeDef.getSuperType().getName());
-            }
-
-            while (superType != null)
-            {
-                validProperties = this.getPropertiesList(superType.getPropertiesDefinition(), validProperties);
-                superTypes.add(new TypeDefLink(superType));
-
-                if (superType.getSuperType() != null)
-                {
-                    superType = archiveBuilder.getTypeDefByName(superType.getSuperType().getName());
-                }
-                else
-                {
-                    superType = null;
-                }
-            }
-
-            instanceType.setTypeDefSuperTypes(superTypes);
-
-            instanceType.setValidInstanceProperties(validProperties);
-        }
-
-        return instanceType;
+        return this.getInstanceTypeHeader(typeDef);
     }
 
 

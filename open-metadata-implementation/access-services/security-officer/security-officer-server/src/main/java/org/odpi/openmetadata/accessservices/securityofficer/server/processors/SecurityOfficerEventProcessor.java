@@ -27,9 +27,9 @@ public class SecurityOfficerEventProcessor {
     private SecurityOfficerHandler securityOfficerHandler;
     private Builder builder = new Builder();
 
-    public SecurityOfficerEventProcessor(OMRSRepositoryConnector enterpriseOMRSRepositoryConnector) {
+    public SecurityOfficerEventProcessor(OMRSRepositoryConnector enterpriseOMRSRepositoryConnector, String sourceName) {
         try {
-            securityOfficerHandler = new SecurityOfficerHandler(enterpriseOMRSRepositoryConnector);
+            securityOfficerHandler = new SecurityOfficerHandler(enterpriseOMRSRepositoryConnector, sourceName);
         } catch (PropertyServerException e) {
             log.error(e.getMessage());
         }
