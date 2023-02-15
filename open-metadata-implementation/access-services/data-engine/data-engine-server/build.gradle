@@ -45,7 +45,14 @@ java {
 }
 
 test {
-    useTestNG()
-    // This will default to standard search pattern - see https://docs.gradle.org/current/userguide/java_testing.html#sec:test_detection
-    scanForTestClasses = false
+    // Enable JUnit 5 (Gradle 4.6+).
+    useJUnitPlatform()
+
+    // Always run tests, even when nothing changed.
+    dependsOn 'cleanTest'
+
+    // Show test results.
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }
