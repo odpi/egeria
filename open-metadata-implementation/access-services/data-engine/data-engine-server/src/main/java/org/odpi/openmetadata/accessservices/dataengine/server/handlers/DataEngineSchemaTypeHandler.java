@@ -95,7 +95,7 @@ public class DataEngineSchemaTypeHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public String upsertSchemaType(String userId, SchemaType schemaType, String externalSourceName) throws InvalidParameterException,
+    public String upsertSchemaType(String userId, SchemaType schemaType, String anchorGUID, String externalSourceName) throws InvalidParameterException,
                                                                                                            PropertyServerException,
                                                                                                            UserNotAuthorizedException {
         String methodName = "upsertSchemaType";
@@ -107,6 +107,9 @@ public class DataEngineSchemaTypeHandler {
         Optional<EntityDetail> originalSchemaTypeEntity = findSchemaTypeEntity(userId, schemaType.getQualifiedName());
 
         SchemaTypeBuilder schemaTypeBuilder = getSchemaTypeBuilder(schemaType);
+        if (anchorGUID != null) {
+            schemaTypeBuilder.setAnchors(userId, anchorGUID, methodName);
+        }
 
         String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngine(userId, externalSourceName);
 

@@ -29,7 +29,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -120,7 +119,7 @@ class DataEngineDataFileHandlerTest {
                       null, OWNER, 0, null, null,
                       null, null, CSV_FILE_TYPE_GUID, CSV_FILE_TYPE_NAME,
                       getExtendedProperties(), null, null, InstanceStatus.ACTIVE, null, METHOD);
-        verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, schemaType, EXTERNAL_SOURCE_NAME);
+        verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, schemaType, guid, EXTERNAL_SOURCE_NAME);
         verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, guid, SCHEMA_TYPE_GUID,
                 ASSET_TO_SCHEMA_TYPE_TYPE_NAME, CSV_FILE_TYPE_NAME, SCHEMA_TYPE_TYPE_NAME, EXTERNAL_SOURCE_NAME, null);
         verify(dataEngineFolderHierarchyHandler, times(1)).upsertFolderHierarchy(guid, FILE_TYPE,
@@ -148,7 +147,7 @@ class DataEngineDataFileHandlerTest {
                         null, OWNER, 0, null, null,
                         null, null, CSV_FILE_TYPE_GUID, CSV_FILE_TYPE_NAME,
                         getExtendedProperties(), null, null, InstanceStatus.ACTIVE, null, METHOD);
-        verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, schemaType, EXTERNAL_SOURCE_NAME);
+        verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, schemaType, guid, EXTERNAL_SOURCE_NAME);
         verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, guid, SCHEMA_TYPE_GUID,
                 ASSET_TO_SCHEMA_TYPE_TYPE_NAME, CSV_FILE_TYPE_NAME, SCHEMA_TYPE_TYPE_NAME, EXTERNAL_SOURCE_NAME, null);
         verify(dataEngineFolderHierarchyHandler, times(1)).upsertFolderHierarchy(guid, FILE_TYPE,
@@ -180,7 +179,7 @@ class DataEngineDataFileHandlerTest {
                 updateAsset(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, GUID_VALUE, CommonMapper.GUID_PROPERTY_NAME,
                             QUALIFIED_NAME, NAME, null, DESCRIPTION, null, CSV_FILE_TYPE_GUID, CSV_FILE_TYPE_NAME,
                             getExtendedProperties(),null, null, true, false, false, null, METHOD);
-        verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, schemaType, EXTERNAL_SOURCE_NAME);
+        verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, schemaType, guid, EXTERNAL_SOURCE_NAME);
         verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, guid, SCHEMA_TYPE_GUID,
                 ASSET_TO_SCHEMA_TYPE_TYPE_NAME, CSV_FILE_TYPE_NAME, SCHEMA_TYPE_TYPE_NAME, EXTERNAL_SOURCE_NAME, null);
         verify(dataEngineFolderHierarchyHandler, times(1)).upsertFolderHierarchy(guid, FILE_TYPE,
@@ -239,7 +238,7 @@ class DataEngineDataFileHandlerTest {
         SchemaType schemaType = getTabularSchema();
         List<Attribute> columns = getTabularColumns();
         schemaType.setAttributeList(columns);
-        when(dataEngineSchemaTypeHandler.upsertSchemaType(USER, schemaType, EXTERNAL_SOURCE_NAME)).thenReturn(SCHEMA_TYPE_GUID);
+        when(dataEngineSchemaTypeHandler.upsertSchemaType(USER, schemaType, null, EXTERNAL_SOURCE_NAME)).thenReturn(SCHEMA_TYPE_GUID);
     }
 
     private CSVFile getCsvFile() {
