@@ -110,6 +110,11 @@ class DataEngineDataFileHandlerTest {
         mockDataEngineCommonHandler(false);
         mockDataEngineSchemaTypeHandler();
 
+        when(fileHandler.createAssetInRepository(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, QUALIFIED_NAME, NAME, null,
+                DESCRIPTION, null, OWNER, 0, null, null,
+                null, null, CSV_FILE_TYPE_GUID, CSV_FILE_TYPE_NAME, getExtendedProperties(),
+                null, null, InstanceStatus.ACTIVE, null, METHOD)).thenReturn(GUID_VALUE);
+
         String guid = dataEngineDataFileHandler.upsertFileAssetIntoCatalog(CSV_FILE_TYPE_NAME, CSV_FILE_TYPE_GUID, csvFile, schemaType,
                 getExtendedProperties(), EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
 
@@ -137,6 +142,12 @@ class DataEngineDataFileHandlerTest {
         schemaType.setAttributeList(columns);
         mockDataEngineCommonHandler(false);
         mockDataEngineSchemaTypeHandler();
+
+        when(fileHandler.createAssetInRepository(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, QUALIFIED_NAME, NAME, null,
+                DESCRIPTION, null, OWNER, 0, null, null,
+                null, null, CSV_FILE_TYPE_GUID, CSV_FILE_TYPE_NAME, getExtendedProperties(),
+                null, null, InstanceStatus.ACTIVE, null, METHOD)).thenReturn(GUID_VALUE);
+
 
         String guid = dataEngineDataFileHandler.upsertFileAssetIntoCatalog(CSV_FILE_TYPE_NAME, CSV_FILE_TYPE_GUID, csvFile, schemaType,
                 getExtendedProperties(), EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
@@ -238,7 +249,7 @@ class DataEngineDataFileHandlerTest {
         SchemaType schemaType = getTabularSchema();
         List<Attribute> columns = getTabularColumns();
         schemaType.setAttributeList(columns);
-        when(dataEngineSchemaTypeHandler.upsertSchemaType(USER, schemaType, null, EXTERNAL_SOURCE_NAME)).thenReturn(SCHEMA_TYPE_GUID);
+        when(dataEngineSchemaTypeHandler.upsertSchemaType(USER, schemaType, GUID_VALUE, EXTERNAL_SOURCE_NAME)).thenReturn(SCHEMA_TYPE_GUID);
     }
 
     private CSVFile getCsvFile() {
