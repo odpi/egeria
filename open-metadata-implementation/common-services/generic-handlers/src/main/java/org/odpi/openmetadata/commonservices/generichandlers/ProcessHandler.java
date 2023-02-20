@@ -3057,8 +3057,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                forLineage,
                                                forDuplicateProcessing,
                                                supportedZones,
-                                               OpenMetadataAPIMapper.PROCESS_CALL_TYPE_GUID,
-                                               OpenMetadataAPIMapper.PROCESS_CALL_TYPE_NAME,
+                                               OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_GUID,
+                                               OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_NAME,
                                                this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                                effectiveTime,
                                                methodName);
