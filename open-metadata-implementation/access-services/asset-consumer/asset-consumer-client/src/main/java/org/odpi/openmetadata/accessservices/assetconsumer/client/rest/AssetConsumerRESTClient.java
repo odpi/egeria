@@ -124,7 +124,7 @@ public class AssetConsumerRESTClient extends OCFRESTClient
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param searchString request body describing the value to search for
+     * @param requestBody request body describing the value to search for
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return GlossaryTermListResponse
@@ -134,12 +134,12 @@ public class AssetConsumerRESTClient extends OCFRESTClient
      */
     public GlossaryTermListResponse callGlossaryTermListPostRESTCall(String    methodName,
                                                                      String    urlTemplate,
-                                                                     String    searchString,
+                                                                     Object    requestBody,
                                                                      Object... params) throws InvalidParameterException,
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
-        GlossaryTermListResponse restResult = this.callPostRESTCall(methodName, GlossaryTermListResponse.class, urlTemplate, searchString, params);
+        GlossaryTermListResponse restResult = this.callPostRESTCall(methodName, GlossaryTermListResponse.class, urlTemplate, requestBody, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 

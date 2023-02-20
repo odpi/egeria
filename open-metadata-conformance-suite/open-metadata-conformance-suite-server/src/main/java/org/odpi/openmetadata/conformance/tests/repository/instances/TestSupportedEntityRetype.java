@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.conformance.tests.repository.instances;
 
+import org.odpi.openmetadata.conformance.ffdc.exception.AssertionFailureException;
 import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceTestCase;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
@@ -136,8 +137,8 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
 
         long start;
         long elapsedTime;
-        try {
-
+        try
+        {
             /*
              * Generate property values for all the type's defined properties, including inherited properties
              * This ensures that any properties defined as mandatory by Egeria property cardinality are provided
@@ -156,18 +157,18 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
             elapsedTime = System.currentTimeMillis() - start;
 
             assertCondition((true),
-                    assertion17,
-                    testTypeName + assertionMsg17,
-                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId(),
-                    "addEntity",
-                    elapsedTime);
+                            assertion17,
+                            testTypeName + assertionMsg17,
+                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId(),
+                            "addEntity",
+                            elapsedTime);
 
             createdEntities.add(newEntity);
 
-
         }
-        catch (FunctionNotSupportedException exception) {
+        catch (FunctionNotSupportedException exception)
+        {
 
             /*
              * If running against a read-only repository/connector that cannot add
@@ -177,13 +178,21 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
              */
 
             super.addNotSupportedAssertion(assertion17,
-                    assertionMsg17,
-                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                                           assertionMsg17,
+                                           RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                                           RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
             return;
         }
-        catch(Exception exc) {
+        catch (AssertionFailureException exception)
+        {
+            /*
+             * Re throw this exception, so it is not masked by Exception (below).
+             */
+            throw exception;
+        }
+        catch(Exception exc)
+        {
             /*
              * We are not expecting any other exceptions from this method call. Log and fail the test.
              */
@@ -193,19 +202,18 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
             Map<String,String> parameters = new HashMap<>();
             parameters.put("typeGUID"                , entityDef.getGUID());
             parameters.put("initialProperties"       , instanceProperties!=null?instanceProperties.toString():"null");
-            parameters.put("initialClasiifications"  , "null");
+            parameters.put("initialClassifications"  , "null");
             parameters.put("initialStatus"           , "null");
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception( msg , exc );
-
         }
 
         assertCondition((newEntity != null),
-                assertion1,
-                testTypeName + assertionMsg1,
-                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                        assertion1,
+                        testTypeName + assertionMsg1,
+                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
         /*
          * Other conditions - such as content of InstanceAuditHeader fields - are tested by Entity Lifecycle tests; so not tested here.
@@ -218,10 +226,10 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
          */
 
         verifyCondition((newEntity.equals(metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID()))),
-                assertion2,
-                testTypeName + assertionMsg2,
-                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                        assertion2,
+                        testTypeName + assertionMsg2,
+                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
 
 
@@ -244,19 +252,21 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
          */
         List<String> subTypeNames = repositoryConformanceWorkPad.getEntitySubTypes(entityDef.getName());
 
-        if (subTypeNames == null) {
+        if (subTypeNames == null)
+        {
             /*
              * No subtypes - ignore this type
              */
             return;
 
         }
-        else {
-
+        else
+        {
             /*
              * This type has subtypes - retype the entity instance to each subtype and back again.
              */
-            for (String subTypeName : subTypeNames) {
+            for (String subTypeName : subTypeNames)
+            {
 
                 /*
                  * Re-type the entity instance to this subtype.
@@ -268,7 +278,8 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
 
                 TypeDef subTypeDef = metadataCollection.getTypeDefByName(workPad.getLocalServerUserId(), subTypeName);
 
-                try {
+                try
+                {
 
                     start = System.currentTimeMillis();
                     subTypedEntity = metadataCollection.reTypeEntity(workPad.getLocalServerUserId(),
@@ -276,8 +287,9 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
                                                                      entityDef,
                                                                      subTypeDef);
                     elapsedTime = System.currentTimeMillis() - start;
-                } catch (FunctionNotSupportedException exception) {
-
+                }
+                catch (FunctionNotSupportedException exception)
+                {
                     super.addNotSupportedAssertion(assertion18,
                                                    testTypeName + assertionMsg18 + subTypeName,
                                                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
@@ -286,7 +298,9 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
                     /* Give up the rest of the testcase */
                     return;
 
-                } catch (Exception exc) {
+                }
+                catch (Exception exc)
+                {
                     /*
                      * We are not expecting any other exceptions from this method call. Log and fail the test.
                      */
@@ -299,7 +313,6 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
                     String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                     throw new Exception(msg, exc);
-
                 }
 
                 assertCondition(true,
@@ -392,7 +405,8 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
 
                 EntityDetail superTypedEntity = null;
 
-                try {
+                try
+                {
 
                     start = System.currentTimeMillis();
                     superTypedEntity = metadataCollection.reTypeEntity(workPad.getLocalServerUserId(),
@@ -400,9 +414,9 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
                                                                        subTypeDef,
                                                                        entityDef);
                     elapsedTime = System.currentTimeMillis() - start;
-
-                } catch (FunctionNotSupportedException exception) {
-
+                }
+                catch (FunctionNotSupportedException exception)
+                {
                     super.addNotSupportedAssertion(assertion18,
                                                    subTypeName + assertionMsg18 + testTypeName,
                                                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
@@ -410,11 +424,12 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
 
                     return;
 
-                } catch (Exception exc) {
+                }
+                catch (Exception exc)
+                {
                     /*
                      * We are not expecting any other exceptions from this method call. Log and fail the test.
                      */
-
                     String methodName = "reTypeEntity";
                     String operationDescription = "retype an entity of type " + entityDef.getName();
                     Map<String, String> parameters = new HashMap<>();
@@ -423,7 +438,6 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
                     String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                     throw new Exception(msg, exc);
-
                 }
 
                 /*
@@ -500,8 +514,6 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
                                 testTypeName + assertionMsg16,
                                 RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
                                 RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
-
-
             }
         }
 
@@ -515,12 +527,15 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
          * not work this will fail but that's OK.
          */
 
-        try {
+        try
+        {
             EntityDetail deletedEntity = metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
-                    newEntity.getType().getTypeDefGUID(),
-                    newEntity.getType().getTypeDefName(),
-                    newEntity.getGUID());
-        } catch (FunctionNotSupportedException exception) {
+                                                                         newEntity.getType().getTypeDefGUID(),
+                                                                         newEntity.getType().getTypeDefName(),
+                                                                         newEntity.getGUID());
+        }
+        catch (FunctionNotSupportedException exception)
+        {
 
             /*
              * This is OK - we can NO OP and just proceed to purgeEntity
@@ -528,10 +543,9 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
         }
 
         metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
-                newEntity.getType().getTypeDefGUID(),
-                newEntity.getType().getTypeDefName(),
-                newEntity.getGUID());
-
+                                       newEntity.getType().getTypeDefGUID(),
+                                       newEntity.getType().getTypeDefName(),
+                                       newEntity.getGUID());
 
         super.setSuccessMessage("Entities can be retyped");
     }

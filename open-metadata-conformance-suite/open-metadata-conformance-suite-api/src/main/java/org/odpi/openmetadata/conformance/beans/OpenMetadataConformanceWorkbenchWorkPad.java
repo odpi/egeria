@@ -33,7 +33,7 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
      * Add time of last received event - this is to help with determining whether workbench has completed
      */
     protected Date lastActive = new Date();
-    private static final long DELAY_TIME = 10000l;  // 10 seconds - time to wait after activity has quiesced before reporting completion
+    private static final long DELAY_TIME = 10000L;  // 10 seconds - time to wait after activity has quiesced before reporting completion
 
     /**
      * Constructor takes properties that are common to all work pads.
@@ -150,7 +150,6 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
      * Set the completion state of the workbench to true.
      * This signifies that the synchronous portion of the tests have completed.
      * The workbench may still be processing asynchronous events which trigger further tests.
-     *
      */
     public void setWorkbenchComplete()
     {
@@ -356,24 +355,19 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
                                 break;
 
                             case SUCCESSFUL_ASSERTION:
-                                positiveTestEvidence.add(testEvidenceItem);
-                                break;
-
-                            case UNSUCCESSFUL_ASSERTION:
-                                negativeTestEvidence.add(testEvidenceItem);
-                                break;
-
                             case DISCOVERED_PROPERTY:
                                 positiveTestEvidence.add(testEvidenceItem);
+                                break;
+
+                            case UNEXPECTED_EXCEPTION:
+                            case UNSUCCESSFUL_ASSERTION:
+                                negativeTestEvidence.add(testEvidenceItem);
                                 break;
 
                             case NOT_SUPPORTED_FUNCTION:
                                 unsupportedTestEvidence.add(testEvidenceItem);
                                 break;
 
-                            case UNEXPECTED_EXCEPTION:
-                                negativeTestEvidence.add(testEvidenceItem);
-                                break;
                         }
                     }
                 }
@@ -423,10 +417,12 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
         testEvidence.setTestCaseDescriptionURL(testCaseDocumentationURL);
         testEvidence.setAssertionId(assertionId);
         testEvidence.setTestEvidenceType(OpenMetadataConformanceTestEvidenceType.SUCCESSFUL_ASSERTION);
-        if (methodName != null) {
+        if (methodName != null)
+        {
             testEvidence.setMethodName(methodName);
         }
-        if (elapsedTime != null) {
+        if (elapsedTime != null)
+        {
             testEvidence.setElapsedTime(elapsedTime);
         }
 
@@ -464,10 +460,12 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
         testEvidence.setTestCaseDescriptionURL(testCaseDocumentationURL);
         testEvidence.setAssertionId(assertionId);
         testEvidence.setTestEvidenceType(OpenMetadataConformanceTestEvidenceType.UNSUCCESSFUL_ASSERTION);
-        if (methodName != null) {
+        if (methodName != null)
+        {
             testEvidence.setMethodName(methodName);
         }
-        if (elapsedTime != null) {
+        if (elapsedTime != null)
+        {
             testEvidence.setElapsedTime(elapsedTime);
         }
 
@@ -476,7 +474,7 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
 
 
     /**
-     * Log that a test case has reported the correct response to a non supported function.
+     * Log that a test case has reported the correct response to a non-supported function.
      *
      * @param profileId profile for the requirement
      * @param requirementId identifier of the requirement
@@ -719,6 +717,7 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
 
         return workbenchSummary;
     }
+
 
     /**
      *  Register any activity to help with working out when the workbench has quiesced.

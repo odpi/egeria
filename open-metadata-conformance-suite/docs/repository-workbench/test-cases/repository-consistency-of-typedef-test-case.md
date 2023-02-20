@@ -33,7 +33,7 @@ recorded.
             "class": "OpenMetadataTestCaseResult",
             "testCaseId": "repository-consistency-of-typedef-WorkflowEngine-221",
             "testCaseName": "Verify consistency of type definition from event and REST API",
-            "testCaseDescriptionURL": "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/test-cases/repository-consistency-of-typedef-test-case.md",
+            "testCaseDescriptionURL": "https://egeria-project.org/guides/cts/repository-workbench/test-cases/repository-consistency-of-typedef-test-case.md",
             "successfulAssertions": [
                 "repository-test-case-base-01: Repository connector supplied to conformance suite.",
                 "repository-test-case-base-02: Metadata collection for repository connector supplied to conformance suite."
@@ -57,7 +57,7 @@ This next example shows the test case running successfully:
             "class": "OpenMetadataTestCaseResult",
             "testCaseId": "repository-consistency-of-typedef-WorkflowEngine-221",
             "testCaseName": "Verify consistency of type definition from event and REST API",
-            "testCaseDescriptionURL": "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/test-cases/repository-consistency-of-typedef-test-case.md",
+            "testCaseDescriptionURL": "https://egeria-project.org/guides/cts/repository-workbench/test-cases/repository-consistency-of-typedef-test-case.md",
             "successfulAssertions": [
                 "repository-test-case-base-01: Repository connector supplied to conformance suite.",
                 "repository-test-case-base-02: Metadata collection for repository connector supplied to conformance suite.",

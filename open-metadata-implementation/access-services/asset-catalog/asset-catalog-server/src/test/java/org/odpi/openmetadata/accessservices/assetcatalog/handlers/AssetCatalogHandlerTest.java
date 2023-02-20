@@ -429,7 +429,7 @@ public class AssetCatalogHandlerTest {
         List<EntityDetail> mockedEntities = mockEntities();
         when(assetHandler.getEntitiesByValue(USER, SEARCH_CRITERIA,
                 SEARCH_STRING_PARAMETER_NAME, ASSET_TYPE_GUID, ASSET_TYPE, Collections.singletonList(NAME),
-                searchParams.getCaseInsensitive(), null, null,
+                searchParams.getExactMatch(), false, null, null,
                 false, false, null,
                 SequencingOrder.ANY.getName(), FROM, PAGE_SIZE, null, methodName)).thenReturn(mockedEntities);
 
@@ -469,7 +469,6 @@ public class AssetCatalogHandlerTest {
     private Type convertInstanceType(InstanceType instanceType) {
         Type type = new Type();
         type.setName(instanceType.getTypeDefName());
-        type.setDescription(instanceType.getTypeDefDescription());
         type.setVersion(instanceType.getTypeDefVersion());
         return type;
     }

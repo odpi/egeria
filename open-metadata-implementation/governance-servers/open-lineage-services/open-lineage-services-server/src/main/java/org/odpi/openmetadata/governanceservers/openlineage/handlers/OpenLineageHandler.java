@@ -6,6 +6,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryServi
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.NodeNamesSearchCriteria;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.requests.ElementHierarchyRequest;
 import org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageNodeNamesResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
@@ -15,7 +16,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageVert
 
 public class OpenLineageHandler {
 
-    private OpenLineageQueryService openLineageQueryService;
+    private final OpenLineageQueryService openLineageQueryService;
 
     public OpenLineageHandler(OpenLineageQueryService openLineageQueryService) {
         this.openLineageQueryService = openLineageQueryService;
@@ -70,5 +71,17 @@ public class OpenLineageHandler {
      */
     public LineageNodeNamesResponse getNodes(NodeNamesSearchCriteria searchCriteria) {
         return openLineageQueryService.getNodes(searchCriteria);
+    }
+
+    /**
+     * Returns a subraph representing the hierarchy of a certain node, based on the request
+     *
+     * @param elementHierarchyRequest contains the guid of the queried node and the hierarchyType
+     *                                of the display name of the nodes, the maximum number of node names to retrieve
+     *
+     * @return nodes and edges representing the element hierarchy
+     */
+    public LineageResponse getElementHierarchy(ElementHierarchyRequest elementHierarchyRequest) {
+        return openLineageQueryService.getElementHierarchy(elementHierarchyRequest);
     }
 }

@@ -555,18 +555,18 @@ public class DataManagerBaseClient
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void setupRelationship(String userId,
-                           String externalSourceGUID,
-                           String externalSourceName,
-                           String primaryElementGUID,
-                           String primaryElementGUIDParameterName,
+    void setupRelationship(String                 userId,
+                           String                 externalSourceGUID,
+                           String                 externalSourceName,
+                           String                 primaryElementGUID,
+                           String                 primaryElementGUIDParameterName,
                            RelationshipProperties properties,
-                           String secondaryElementGUID,
-                           String secondaryElementGUIDParameterName,
-                           String urlTemplate,
-                           String methodName) throws InvalidParameterException,
-                                                     UserNotAuthorizedException,
-                                                     PropertyServerException
+                           String                 secondaryElementGUID,
+                           String                 secondaryElementGUIDParameterName,
+                           String                 urlTemplate,
+                           String                 methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(primaryElementGUID, primaryElementGUIDParameterName, methodName);
@@ -584,6 +584,63 @@ public class DataManagerBaseClient
                                         serverName,
                                         userId,
                                         primaryElementGUID,
+                                        secondaryElementGUID);
+    }
+
+
+    /**
+     * Create a relationship between a primary element and a secondary element.
+     *
+     * @param userId                            calling user
+     * @param externalSourceGUID                unique identifier of software capability representing the caller
+     * @param externalSourceName                unique name of software capability representing the caller
+     * @param primaryElementGUID                unique identifier of the primary element
+     * @param primaryElementGUIDParameterName   name of parameter passing the primaryElementGUID
+     * @param relationshipTypeName              type of relationship to create
+     * @param relationshipTypeNameParameterName name of the parameter passing relationshipTypeName
+     * @param properties                        describes the properties for the relationship
+     * @param secondaryElementGUID              unique identifier of the element to connect it to
+     * @param secondaryElementGUIDParameterName name of parameter passing the secondaryElementGUID
+     * @param urlTemplate                       URL to call (no expected placeholders)
+     * @param methodName                        calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void setupRelationship(String                 userId,
+                           String                 externalSourceGUID,
+                           String                 externalSourceName,
+                           String                 primaryElementGUID,
+                           String                 primaryElementGUIDParameterName,
+                           String                 relationshipTypeName,
+                           String                 relationshipTypeNameParameterName,
+                           RelationshipProperties properties,
+                           String                 secondaryElementGUID,
+                           String                 secondaryElementGUIDParameterName,
+                           String                 urlTemplate,
+                           String                 methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(primaryElementGUID, primaryElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(secondaryElementGUID, secondaryElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(relationshipTypeName, relationshipTypeNameParameterName, methodName);
+
+        RelationshipRequestBody requestBody = new RelationshipRequestBody();
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+        requestBody.setProperties(properties);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        primaryElementGUID,
+                                        relationshipTypeName,
                                         secondaryElementGUID);
     }
 
@@ -632,6 +689,60 @@ public class DataManagerBaseClient
                                         serverName,
                                         userId,
                                         primaryElementGUID,
+                                        secondaryElementGUID);
+    }
+
+
+    /**
+     * Remove a relationship.
+     *
+     * @param userId                            calling user
+     * @param externalSourceGUID                unique identifier of software capability representing the caller
+     * @param externalSourceName                unique name of software capability representing the caller
+     * @param primaryElementGUID                unique identifier of the primary element
+     * @param primaryElementGUIDParameterName   name of parameter passing the primaryElementGUID
+     * @param relationshipTypeName              type of relationship to create
+     * @param relationshipTypeNameParameterName name of the parameter passing relationshipTypeName
+     * @param secondaryElementGUID              unique identifier of the element to connect it to
+     * @param secondaryElementGUIDParameterName name of parameter passing the secondaryElementGUID
+     * @param urlTemplate                       URL to call (no expected placeholders)
+     * @param methodName                        calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void clearRelationship(String userId,
+                           String externalSourceGUID,
+                           String externalSourceName,
+                           String primaryElementGUID,
+                           String primaryElementGUIDParameterName,
+                           String relationshipTypeName,
+                           String relationshipTypeNameParameterName,
+                           String secondaryElementGUID,
+                           String secondaryElementGUIDParameterName,
+                           String urlTemplate,
+                           String methodName) throws InvalidParameterException,
+                                                     UserNotAuthorizedException,
+                                                     PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(primaryElementGUID, primaryElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(secondaryElementGUID, secondaryElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(relationshipTypeName, relationshipTypeNameParameterName, methodName);
+
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        primaryElementGUID,
+                                        relationshipTypeName,
                                         secondaryElementGUID);
     }
 

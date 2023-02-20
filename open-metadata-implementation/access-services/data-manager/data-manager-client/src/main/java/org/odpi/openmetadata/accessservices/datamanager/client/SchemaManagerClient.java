@@ -8,7 +8,6 @@ import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerR
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
@@ -24,31 +23,24 @@ import java.util.List;
 
 /**
  * SchemaManagerClient defines the common methods for managing SchemaTypes and SchemaAttributes. It is incorporated in the
- * EventBrokerClient and the APIManagerClient.
+ * EventBrokerClient, DisplayApplicationClient, FilesAndFoldersClient and the APIManagerClient.
  *
  * SchemaAttributes describe the data fields of the schema. If a schema attribute's type is simple (that is
- * primitive, literal, enum or external, its details are passed with the schema attribute.  Complex schema types (such as Maps,
+ * primitive, literal, enum or external) its details are passed with the schema attribute.  Complex schema types (such as Maps,
  * Choices) are constructed first and then their identifiers are attached to the schema attribute.
  * SchemaTypes are used when creating complex schema structures that involve maps, choice and links to externally defined
  * schemas that are, for example, part of a standard.
  */
-public abstract class SchemaManagerClient implements SchemaManagerInterface
+public abstract class SchemaManagerClient extends DataManagerBaseClient implements SchemaManagerInterface
 {
     private static final String schemaTypeURLTemplatePrefix      = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/schema-types";
     private static final String validValueSetsURLTemplatePrefix  = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/valid-value-sets";
     private static final String schemaAttributeURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/schema-attributes";
-    private static final String schemaElementURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/schema-elements";
-
-    String   serverName;               /* Initialized in constructor */
-    String   serverPlatformURLRoot;    /* Initialized in constructor */
-    AuditLog auditLog = null;          /* Initialized in constructor */
-
-    InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    DataManagerRESTClient   restClient;               /* Initialized in constructor */
+    private static final String schemaElementURLTemplatePrefix   = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/schema-elements";
 
     static final NullRequestBody nullRequestBody = new NullRequestBody();
 
-    private String schemaAttributeTypeName;
+    private final String schemaAttributeTypeName;
 
 
     /**
@@ -66,15 +58,7 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
                         String   serverPlatformURLRoot,
                         AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.auditLog = auditLog;
-
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog);
 
         this.schemaAttributeTypeName = schemaAttributeTypeName;
     }
@@ -93,14 +77,7 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
                         String serverName,
                         String serverPlatformURLRoot) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot);
 
         this.schemaAttributeTypeName = schemaAttributeTypeName;
     }
@@ -127,15 +104,7 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
                         String   password,
                         AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.auditLog = auditLog;
-
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, auditLog);
 
         this.schemaAttributeTypeName = schemaAttributeTypeName;
     }
@@ -149,7 +118,6 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param restClient client that issues the REST API calls
      * @param maxPageSize maximum number of results supported by this server
-     * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
@@ -157,20 +125,9 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
                         String                serverName,
                         String                serverPlatformURLRoot,
                         DataManagerRESTClient restClient,
-                        int                   maxPageSize,
-                        AuditLog              auditLog) throws InvalidParameterException
+                        int                   maxPageSize) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.auditLog = auditLog;
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-
-        this.restClient = restClient;
+        super(serverName, serverPlatformURLRoot, restClient, maxPageSize);
 
         this.schemaAttributeTypeName = schemaAttributeTypeName;
     }
@@ -194,14 +151,7 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
                         String userId,
                         String password) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password);
 
         this.schemaAttributeTypeName = schemaAttributeTypeName;
     }
@@ -719,8 +669,6 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
     }
 
 
-
-
     /**
      * Remove the metadata element representing a schema type.
      *
@@ -760,6 +708,105 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
                                         serverName,
                                         userId,
                                         schemaTypeGUID);
+    }
+
+
+    /**
+     * Create a relationship between two schema elements.  The name of the desired relationship, and any properties (including effectivity dates)
+     * are passed on the API.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param relationshipTypeName type of the relationship to create
+     * @param properties relationship properties
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void setupSchemaElementRelationship(String                 userId,
+                                               String                 externalSourceGUID,
+                                               String                 externalSourceName,
+                                               String                 endOneGUID,
+                                               String                 endTwoGUID,
+                                               String                 relationshipTypeName,
+                                               RelationshipProperties properties) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        final String methodName                        = "setupSchemaElementRelationship";
+        final String endOneGUIDParameterName           = "endOneGUID";
+        final String endTwoGUIDParameterName           = "endTwoGUID";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(endOneGUID, endOneGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(endTwoGUID, endTwoGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(relationshipTypeName, relationshipTypeNameParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + schemaElementURLTemplatePrefix + "/{2}/relationships/{3}/schema-elements/{4}";
+
+        super.setupRelationship(userId,
+                                externalSourceGUID,
+                                externalSourceName,
+                                endOneGUID,
+                                endOneGUIDParameterName,
+                                relationshipTypeName,
+                                relationshipTypeNameParameterName,
+                                properties,
+                                endTwoGUID,
+                                endTwoGUIDParameterName,
+                                urlTemplate,
+                                methodName);
+    }
+
+
+    /**
+     * Remove a relationship between two schema elements.  The name of the desired relationship is passed on the API.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param relationshipTypeName type of the relationship to delete
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void clearSchemaElementRelationship(String userId,
+                                               String externalSourceGUID,
+                                               String externalSourceName,
+                                               String endOneGUID,
+                                               String endTwoGUID,
+                                               String relationshipTypeName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String methodName                        = "clearSchemaElementRelationship";
+        final String endOneGUIDParameterName           = "endOneGUID";
+        final String endTwoGUIDParameterName           = "endTwoGUID";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
+
+        final String urlTemplate = serverPlatformURLRoot + schemaElementURLTemplatePrefix + "/{2}/relationships/{3}/schema-elements/{4}/delete";
+
+        super.clearRelationship(userId,
+                                externalSourceGUID,
+                                externalSourceName,
+                                endOneGUID,
+                                endOneGUIDParameterName,
+                                relationshipTypeName,
+                                relationshipTypeNameParameterName,
+                                endTwoGUID,
+                                endTwoGUIDParameterName,
+                                urlTemplate,
+                                methodName);
     }
 
 

@@ -10,7 +10,7 @@
     <parent>
         <artifactId>egeria</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.14-SNAPSHOT</version>
+        <version>4.0-SNAPSHOT</version>
     </parent>
 
     <name>Open Metadata Implementation</name>
@@ -33,6 +33,7 @@
         <module>frameworks</module>
         <module>adapters</module>
         <module>common-services</module>
+        <module>framework-services</module>
         <module>repository-services</module>
         <module>access-services</module>
         <module>engine-services</module>

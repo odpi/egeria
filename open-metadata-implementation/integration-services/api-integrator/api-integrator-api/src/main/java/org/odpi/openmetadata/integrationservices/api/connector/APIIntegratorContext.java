@@ -20,12 +20,12 @@ import java.util.List;
  */
 public class APIIntegratorContext
 {
-    private APIManagerClient        apiManagerClient;
-    private ConnectionManagerClient connectionManagerClient;
-    private DataManagerEventClient  eventClient;
-    private String                  userId;
-    private String                  apiManagerGUID;
-    private String                  apiManagerName;
+    private final APIManagerClient        apiManagerClient;
+    private final ConnectionManagerClient connectionManagerClient;
+    private final DataManagerEventClient  eventClient;
+    private final String                  userId;
+    private final String                  apiManagerGUID;
+    private final String                  apiManagerName;
 
     private boolean                apiManagerIsHome = true;
 
@@ -1401,6 +1401,51 @@ public class APIIntegratorContext
                                                                PropertyServerException
     {
         apiManagerClient.removeSchemaType(userId, apiManagerGUID, apiManagerName, schemaTypeGUID);
+    }
+
+
+    /**
+     * Create a relationship between two schema elements.  The name of the desired relationship, and any properties (including effectivity dates)
+     * are passed on the API.
+     *
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param relationshipTypeName type of the relationship to create
+     * @param properties relationship properties
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupSchemaElementRelationship(String                 endOneGUID,
+                                               String                 endTwoGUID,
+                                               String                 relationshipTypeName,
+                                               RelationshipProperties properties) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        apiManagerClient.setupSchemaElementRelationship(userId, apiManagerGUID, apiManagerName, endOneGUID, endTwoGUID, relationshipTypeName, properties);
+    }
+
+
+    /**
+     * Remove a relationship between two schema elements.  The name of the desired relationship is passed on the API.
+     *
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param relationshipTypeName type of the relationship to delete
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearSchemaElementRelationship(String endOneGUID,
+                                               String endTwoGUID,
+                                               String relationshipTypeName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        apiManagerClient.clearSchemaElementRelationship(userId, apiManagerGUID, apiManagerName, endOneGUID, endTwoGUID, relationshipTypeName);
     }
 
 

@@ -17,12 +17,12 @@ import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.CSVFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Collection;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
+import org.odpi.openmetadata.accessservices.dataengine.model.DataFlow;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataItemSortOrder;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.EventType;
-import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.OwnerType;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
@@ -40,7 +40,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseSchemaRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DeleteRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.EventTypeRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DataFlowsRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
@@ -753,57 +753,57 @@ class DataEngineRESTServicesTest {
     }
 
     @Test
-    void addLineageMappings() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        mockSchemaTypeHandler("addLineageMappings");
+    void addDataFlows() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        mockSchemaTypeHandler("addDataFlows");
 
-        LineageMappingsRequestBody requestBody = mockLineageMappingsRequestBody();
+        DataFlowsRequestBody requestBody = mockDataFlowsRequestBody();
 
-        dataEngineRESTServices.addLineageMappings(USER, SERVER_NAME, requestBody);
+        dataEngineRESTServices.addDataFlows(USER, SERVER_NAME, requestBody);
 
-        verify(dataEngineSchemaTypeHandler, times(1)).addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME,
-                TARGET_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        verify(dataEngineSchemaTypeHandler, times(1)).addDataFlowRelationship(USER, SOURCE_QUALIFIED_NAME,
+                TARGET_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null, null);
     }
 
     @Test
-    void addLineageMappings_ResponseWithCapturedInvalidParameterException() throws InvalidParameterException,
+    void addDataFlows_ResponseWithCapturedInvalidParameterException() throws InvalidParameterException,
                                                                                    PropertyServerException,
                                                                                    UserNotAuthorizedException,
                                                                                    InvocationTargetException,
                                                                                    NoSuchMethodException,
                                                                                    InstantiationException,
                                                                                    IllegalAccessException {
-        String methodName = "addLineageMappings";
+        String methodName = "addDataFlows";
         mockSchemaTypeHandler(methodName);
 
-        LineageMappingsRequestBody requestBody = mockLineageMappingsRequestBody();
+        DataFlowsRequestBody requestBody = mockDataFlowsRequestBody();
 
         InvalidParameterException mockedException = mockException(InvalidParameterException.class, methodName);
-        doThrow(mockedException).when(dataEngineSchemaTypeHandler).addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        doThrow(mockedException).when(dataEngineSchemaTypeHandler).addDataFlowRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null, null);
 
-        VoidResponse response = dataEngineRESTServices.addLineageMappings(USER, SERVER_NAME, requestBody);
+        dataEngineRESTServices.addDataFlows(USER, SERVER_NAME, requestBody);
 
         verify(restExceptionHandler, times(1)).captureExceptions(any(VoidResponse.class), eq(mockedException), eq(methodName));
     }
 
     @Test
-    void addLineageMappings_ResponseWithCapturedUserNotAuthorizedException() throws InvalidParameterException,
+    void addDataFlows_ResponseWithCapturedUserNotAuthorizedException() throws InvalidParameterException,
                                                                                     PropertyServerException,
                                                                                     UserNotAuthorizedException,
                                                                                     InvocationTargetException,
                                                                                     NoSuchMethodException,
                                                                                     InstantiationException,
                                                                                     IllegalAccessException {
-        String methodName = "addLineageMappings";
+        String methodName = "addDataFlows";
         mockSchemaTypeHandler(methodName);
 
-        LineageMappingsRequestBody requestBody = mockLineageMappingsRequestBody();
+        DataFlowsRequestBody requestBody = mockDataFlowsRequestBody();
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        doThrow(mockedException).when(dataEngineSchemaTypeHandler).addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        doThrow(mockedException).when(dataEngineSchemaTypeHandler).addDataFlowRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null, null);
 
-        VoidResponse response = dataEngineRESTServices.addLineageMappings(USER, SERVER_NAME, requestBody);
+        VoidResponse response = dataEngineRESTServices.addDataFlows(USER, SERVER_NAME, requestBody);
 
         verify(restExceptionHandler, times(1)).captureExceptions(any(VoidResponse.class), eq(mockedException), eq(methodName));
     }
@@ -1396,9 +1396,9 @@ class DataEngineRESTServicesTest {
         return deleteRequestBody;
     }
 
-    private LineageMappingsRequestBody mockLineageMappingsRequestBody() {
-        LineageMappingsRequestBody requestBody = new LineageMappingsRequestBody();
-        requestBody.setLineageMappings(Collections.singletonList(getLineageMapping()));
+    private DataFlowsRequestBody mockDataFlowsRequestBody() {
+        DataFlowsRequestBody requestBody = new DataFlowsRequestBody();
+        requestBody.setDataFlows(Collections.singletonList(getDataFlow()));
         requestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         return requestBody;
     }
@@ -1572,13 +1572,13 @@ class DataEngineRESTServicesTest {
         return schemaType;
     }
 
-    private LineageMapping getLineageMapping() {
-        LineageMapping lineageMapping = new LineageMapping();
+    private DataFlow getDataFlow() {
+        DataFlow dataFlow = new DataFlow();
 
-        lineageMapping.setSourceAttribute(SOURCE_QUALIFIED_NAME);
-        lineageMapping.setTargetAttribute(TARGET_QUALIFIED_NAME);
+        dataFlow.setDataSupplier(SOURCE_QUALIFIED_NAME);
+        dataFlow.setDataConsumer(TARGET_QUALIFIED_NAME);
 
-        return lineageMapping;
+        return dataFlow;
     }
 
     private PortImplementation getPortImplementation() {
@@ -1601,7 +1601,7 @@ class DataEngineRESTServicesTest {
         return portAlias;
     }
 
-    private Process getProcess(List<PortImplementation> portImplementations, List<PortAlias> portAliases, List<LineageMapping> lineageMappings) {
+    private Process getProcess(List<PortImplementation> portImplementations, List<PortAlias> portAliases, List<DataFlow> dataFlows) {
         Process process = new Process();
 
         process.setQualifiedName(PROCESS_QUALIFIED_NAME);

@@ -67,6 +67,7 @@ public class GenericFolderWatchdogGovernanceActionProvider extends GenericWatchd
         supportedGuards = new ArrayList<>();
         supportedGuards.add(MONITORING_COMPLETE);
         supportedGuards.add(MONITORING_FAILED);
+        supportedGuards.add(MONITORING_STOPPED);
 
         super.setConnectorClassName(connectorClassName);
 

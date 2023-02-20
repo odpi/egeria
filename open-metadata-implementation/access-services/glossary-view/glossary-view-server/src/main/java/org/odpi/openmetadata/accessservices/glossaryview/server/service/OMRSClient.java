@@ -133,7 +133,7 @@ public class OMRSClient {
                     serverName, methodName);
             entityDetails = entitiesHandler.getAttachedEntities(userId, entityGUID, OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
                     entityTypeName, relationshipTypeGUID,relationshipTypeName, null,
-                    null, null, 0, false,
+                    null, null, 2, false,
                     false, null, from, size, null, methodName);
         }catch(InvalidParameterException | UserNotAuthorizedException | PropertyServerException e){
             throw e;

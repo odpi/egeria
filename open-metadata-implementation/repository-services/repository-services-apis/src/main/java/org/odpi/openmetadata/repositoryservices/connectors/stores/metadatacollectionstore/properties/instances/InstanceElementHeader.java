@@ -5,8 +5,6 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.RepositoryElementHeader;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -25,13 +23,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = InstanceAuditHeader.class, name = "InstanceAuditHeader"),
         @JsonSubTypes.Type(value = InstanceGraph.class, name = "InstanceGraph"),
         @JsonSubTypes.Type(value = InstanceType.class, name = "InstanceType"),
-        @JsonSubTypes.Type(value = InstancePropertyValue.class, name = "InstancePropertyValue")
+        @JsonSubTypes.Type(value = InstancePropertyValue.class, name = "InstancePropertyValue"),
+        @JsonSubTypes.Type(value = InstanceProperties.class, name = "InstanceProperties")
 })
 public abstract class InstanceElementHeader extends RepositoryElementHeader
 {
     private static final long serialVersionUID = 1L;
-
-    public static final long  CURRENT_INSTANCE_HEADER_VERSION = 1;
 
     /**
      * Default Constructor sets the instance to nulls

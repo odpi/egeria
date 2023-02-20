@@ -44,6 +44,5 @@ public class OMRSRepositoryContentManagerTest
 
         assertEquals(instanceType.getTypeDefName(), "EntityType1");
         assertEquals(instanceType.getTypeDefGUID(), entityDefGUID);
-        assertEquals(instanceType.getValidStatusList(), validInstanceStatusList);
     }
 }

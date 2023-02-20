@@ -2819,25 +2819,25 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         /*
          * Validate parameters
          */
-        String entityGUID = entityProxy.getGUID();
-        super.declassifyEntityParameterValidation(userId, entityGUID, classificationName, methodName);
+        super.declassifyEntityParameterValidation(userId, entityProxy, classificationName, methodName);
 
         /*
          * Locate entity
          */
         EntitySummary entity;
-        try {
+        try
+        {
 
-            entity = graphStore.getEntityDetailFromStore(entityGUID);
+            entity = graphStore.getEntityDetailFromStore(entityProxy.getGUID());
 
         }
         catch (EntityProxyOnlyException e){
 
-            entity = graphStore.getEntityProxyFromStore(entityGUID);
+            entity = graphStore.getEntityProxyFromStore(entityProxy.getGUID());
 
         }
         catch ( EntityNotKnownException e) {
-            log.warn("{} entity wth GUID {} not found", methodName, entityGUID);
+            log.warn("{} entity wth GUID {} not found", methodName, entityProxy.getGUID());
 
             throw new EntityNotKnownException(OMRSErrorCode.ENTITY_PROXY_ONLY.getMessageDefinition(methodName,
                     this.getClass().getName(),
@@ -2848,11 +2848,11 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
         }
         catch (RepositoryErrorException e) {
-            log.error("{} repository exception during retrieval of entity wth GUID {}", methodName, entityGUID);
+            log.error("{} repository exception during retrieval of entity wth GUID {}", methodName, entityProxy.getGUID());
             throw e;
         }
 
-        repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
+        repositoryValidator.validateEntityFromStore(repositoryName, entityProxy.getGUID(), entity, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
 
         Classification toBeRemoved = repositoryHelper.getClassificationFromEntity(repositoryName,

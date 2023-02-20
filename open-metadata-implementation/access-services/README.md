@@ -42,7 +42,9 @@ asset managers.
 asset information, including schemas, profiles, policies and lineage
 information with a third party asset manager.  Typical examples of asset managers include
 data catalogs that are managing metadata for a collection of data assets for a
-data-serving solution.
+data-serving solution.  The asset manager is also called by the
+[Lineage Integrator OMIS](../integration-services/lineage-integrator) to capture design lineage
+from data engines and other processing services.
 
 * **[asset-owner](asset-owner)** - manage metadata and feedback for owned assets.
 
@@ -62,14 +64,15 @@ This information forms a key part of asset lineage.
 
 * **[data-manager](data-manager)** - exchange metadata with a data manager.
 
-  The Data Manager OMAS provides an integration point to enable technologies that manage collections of data
-such as database servers,
-file systems, file managers and content managers to publish metadata to the metadata
+  The Data Manager OMAS provides technology-specific APIs to enable technologies that manage collections of data
+such as database servers, file systems, file managers and content managers to publish metadata to the metadata
 repositories about the changing structures and content stored in the data platform.
-It is typically called from the
-[Database Integrator OMIS](../integration-services/database-integrator) and
-[Files Integrator OMIS](../integration-services/files-integrator)
-integration services.
+It is called from the
+[API Integrator OMIS](../integration-services/api-integrator),
+[Database Integrator OMIS](../integration-services/database-integrator),
+[Display Integrator OMIS](../integration-services/display-integrator),
+[Files Integrator OMIS](../integration-services/files-integrator) and
+[Topic Integrator OMIS](../integration-services/topic-integrator).
 
 
 * **[data-privacy](data-privacy)** - support a data privacy officer.
@@ -92,7 +95,7 @@ It is designed for data science and analytics management tools.
 These models may come from tools or be part of a packaged standard.
 This content is useful for governance, system integration and software development.
 
-* **[dev-ops](dev-ops)** - manage metadata for a devOps pipeline.
+* **[dev-ops](dev-ops)** - manage metadata for a DevOps pipeline.
   
   The DevOps OMAS provides services for a DevOps pipeline to query and maintain metadata about systems, processes and
 software components that are being deployed into the information landscape.
@@ -104,15 +107,14 @@ that support the business.
 models for an organization.  It is designed for architecture tools.  It is able to support the
 definition and management of a digital service through concept to deployment.
 
-* **[digital-service](digital-service)** - manage metadata for a the Egeria Digital Services lifecycle.
+* **[digital-service](digital-service)** - manage metadata for digital services and products.
   
-  The Digital Service OMAS provides services for a managing the lifecycle of an Egeria Digital Service.
+  The Digital Service OMAS provides services for a managing the lifecycle of a Digital Service and any associated products.
 
 * **[discovery-engine](discovery-engine)** - manage metadata for metadata discovery services.
 
   The Discovery Engine OMAS provides an API for a discovery engine to access and store
-metadata from an open
-metadata repository (or open metadata repository cohort).
+metadata about a digital resource, its schema and the data it stores.
 
 * **[governance-engine](governance-engine)** - manage metadata for an operational governance engine.
 
@@ -170,17 +172,10 @@ invalid licensing, job failures, and many more.
 The Stewardship Action OMAS also enables the review and triage of the exceptions,
 simple remediation and status reporting.
 
-* **[subject-area](subject-area)** - develop a definition of a subject area including glossary
-terms, reference data and rules.
+* **[subject-area](subject-area)** - develop a glossary.
 
-  The Subject Area OMAS is for tools that support subject matter experts
-who are defining glossaries, reference data and rules around data for a specific
-subject area, such as "customer data".   It supports the development of a comprehensive
-definition of the subject area and the standards that support it.
-These definitions can then be folded into the Governance Program,
-and used by Asset Owner's to improve the findability and understandability
-of their assets by linking their asset's structure to relevant parts of
-the subject area definition.
+  The Subject Area OMAS is for tools that support subject-matter experts
+who are defining glossaries for a specific subject area, such as "customer data".
 
 ## Using the OMASs
 

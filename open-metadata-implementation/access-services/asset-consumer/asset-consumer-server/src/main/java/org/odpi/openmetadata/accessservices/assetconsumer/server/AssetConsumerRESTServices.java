@@ -12,9 +12,15 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -110,7 +116,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -138,7 +144,7 @@ public class AssetConsumerRESTServices
      *
      * @param serverName name of the server instances for this request
      * @param userId calling user
-     * @param searchString string to search for in text
+     * @param requestBody string to search for in text
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
      *
@@ -147,11 +153,11 @@ public class AssetConsumerRESTServices
      * PropertyServerException there is a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
-    public GUIDListResponse findAssets(String   serverName,
-                                       String   userId,
-                                       String   searchString,
-                                       int      startFrom,
-                                       int      pageSize)
+    public GUIDListResponse findAssets(String                  serverName,
+                                       String                  userId,
+                                       SearchStringRequestBody requestBody,
+                                       int                     startFrom,
+                                       int                     pageSize)
     {
         final String searchStringParameter = "searchString";
         final String methodName            = "findAssets";
@@ -163,19 +169,26 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setGUIDs(handler.findAssetGUIDs(userId,
-                                                     searchString,
-                                                     searchStringParameter,
-                                                     startFrom,
-                                                     pageSize,
-                                                     false,
-                                                     false,
-                                                     new Date(),
-                                                     methodName));
+            if (requestBody != null)
+            {
+                response.setGUIDs(handler.findAssetGUIDs(userId,
+                                                         requestBody.getSearchString(),
+                                                         searchStringParameter,
+                                                         startFrom,
+                                                         pageSize,
+                                                         false,
+                                                         false,
+                                                         new Date(),
+                                                         methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -192,7 +205,7 @@ public class AssetConsumerRESTServices
      *
      * @param serverName name of the server instances for this request
      * @param userId calling user
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
      *
@@ -201,11 +214,11 @@ public class AssetConsumerRESTServices
      * PropertyServerException there is a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
-    public GUIDListResponse getAssetsByName(String   serverName,
-                                            String   userId,
-                                            String   name,
-                                            int      startFrom,
-                                            int      pageSize)
+    public GUIDListResponse getAssetsByName(String          serverName,
+                                            String          userId,
+                                            NameRequestBody requestBody,
+                                            int             startFrom,
+                                            int             pageSize)
     {
         final String nameParameterName = "name";
         final String methodName        = "getAssetsByName";
@@ -217,20 +230,28 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setGUIDs(handler.getAssetGUIDsByName(userId,
-                                                          OpenMetadataAPIMapper.ASSET_TYPE_GUID,
-                                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                          name,
-                                                          nameParameterName,
-                                                          startFrom,
-                                                          pageSize,
-                                                          false,
-                                                          false,
-                                                          new Date(),
-                                                          methodName));
+
+            if (requestBody != null)
+            {
+                response.setGUIDs(handler.getAssetGUIDsByName(userId,
+                                                              OpenMetadataAPIMapper.ASSET_TYPE_GUID,
+                                                              OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                              requestBody.getName(),
+                                                              nameParameterName,
+                                                              startFrom,
+                                                              pageSize,
+                                                              false,
+                                                              false,
+                                                              new Date(),
+                                                              methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -264,10 +285,10 @@ public class AssetConsumerRESTServices
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse addRatingToAsset(String           serverName,
-                                         String           userId,
-                                         String           guid,
-                                         RatingProperties requestBody)
+    public VoidResponse addRatingToAsset(String            serverName,
+                                         String            userId,
+                                         String            guid,
+                                         RatingRequestBody requestBody)
     {
         final String methodName = "addRatingToAsset";
         final String guidParameterName = "guid";
@@ -281,7 +302,7 @@ public class AssetConsumerRESTServices
         {
             if (requestBody != null)
             {
-                RatingHandler<RatingElement> handler = instanceHandler.getRatingHandler(userId, serverName, methodName);
+                RatingHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getRatingHandler(userId, serverName, methodName);
 
                 int starRating = StarRating.NO_RECOMMENDATION.getOpenTypeOrdinal();
 
@@ -297,7 +318,7 @@ public class AssetConsumerRESTServices
                                    guidParameterName,
                                    starRating,
                                    requestBody.getReview(),
-                                   requestBody.isPublic(),
+                                   requestBody.getIsPublic(),
                                    false,
                                    false,
                                    new Date(),
@@ -349,7 +370,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            RatingHandler<RatingElement> handler = instanceHandler.getRatingHandler(userId, serverName, methodName);
+            RatingHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getRatingHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.removeRating(userId,
@@ -403,7 +424,7 @@ public class AssetConsumerRESTServices
         {
             if (requestBody != null)
             {
-                LikeHandler<LikeElement> handler = instanceHandler.getLikeHandler(userId, serverName, methodName);
+                LikeHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getLikeHandler(userId, serverName, methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 handler.saveLike(userId,
@@ -462,7 +483,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            LikeHandler<LikeElement> handler = instanceHandler.getLikeHandler(userId, serverName, methodName);
+            LikeHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getLikeHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.removeLike(userId,
@@ -502,7 +523,7 @@ public class AssetConsumerRESTServices
     public GUIDResponse addCommentToAsset(String            serverName,
                                           String            userId,
                                           String            guid,
-                                          CommentProperties requestBody)
+                                          CommentRequestBody requestBody)
     {
         final String        methodName = "addCommentToAsset";
         final String        guidParameterName = "guid";
@@ -522,7 +543,7 @@ public class AssetConsumerRESTServices
                 {
                     commentType = requestBody.getCommentType().getOpenTypeOrdinal();
                 }
-                CommentHandler<CommentElement> handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
+                CommentHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 response.setGUID(handler.attachNewComment(userId,
@@ -571,11 +592,11 @@ public class AssetConsumerRESTServices
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse addCommentReply(String            serverName,
-                                        String            userId,
-                                        String            assetGUID,
-                                        String            commentGUID,
-                                        CommentProperties requestBody)
+    public GUIDResponse addCommentReply(String             serverName,
+                                        String             userId,
+                                        String             assetGUID,
+                                        String             commentGUID,
+                                        CommentRequestBody requestBody)
     {
         final String guidParameterName = "commentGUID";
         final String methodName        = "addCommentReply";
@@ -596,7 +617,7 @@ public class AssetConsumerRESTServices
                     commentType = requestBody.getCommentType().getOpenTypeOrdinal();
                 }
 
-                CommentHandler<CommentElement> handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
+                CommentHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 response.setGUID(handler.attachNewComment(userId,
@@ -649,7 +670,7 @@ public class AssetConsumerRESTServices
                                         String             userId,
                                         String             assetGUID,
                                         String             commentGUID,
-                                        CommentProperties requestBody)
+                                        CommentRequestBody requestBody)
     {
         final String guidParameterName = "commentGUID";
         final String methodName        = "updateComment";
@@ -670,7 +691,7 @@ public class AssetConsumerRESTServices
                     commentType = requestBody.getCommentType().getOpenTypeOrdinal();
                 }
 
-                CommentHandler<CommentElement> handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
+                CommentHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 handler.updateComment(userId,
@@ -735,7 +756,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            CommentHandler<CommentElement> handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
+            CommentHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.removeCommentFromElement(userId,
@@ -818,7 +839,7 @@ public class AssetConsumerRESTServices
      *
      * @param serverName name of the server instances for this request
      * @param userId the name of the calling user.
-     * @param term name of term.
+     * @param requestBody name of term.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
@@ -827,11 +848,11 @@ public class AssetConsumerRESTServices
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GlossaryTermListResponse getMeaningByName(String  serverName,
-                                                     String  userId,
-                                                     String  term,
-                                                     int     startFrom,
-                                                     int     pageSize)
+    public GlossaryTermListResponse getMeaningByName(String          serverName,
+                                                     String          userId,
+                                                     NameRequestBody requestBody,
+                                                     int             startFrom,
+                                                     int             pageSize)
     {
         final String nameParameterName = "term";
         final String methodName        = "getMeaningByName";
@@ -846,16 +867,24 @@ public class AssetConsumerRESTServices
             GlossaryTermHandler<MeaningElement> glossaryTermHandler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setMeanings(glossaryTermHandler.getTermsByName(userId,
-                                                                    term,
-                                                                    nameParameterName,
-                                                                    startFrom,
-                                                                    pageSize,
-                                                                    false,
-                                                                    false,
-                                                                    new Date(),
-                                                                    methodName));
-            response.setStartingFromElement(startFrom);
+
+            if (requestBody != null)
+            {
+                response.setMeanings(glossaryTermHandler.getTermsByName(userId,
+                                                                        requestBody.getName(),
+                                                                        nameParameterName,
+                                                                        startFrom,
+                                                                        pageSize,
+                                                                        false,
+                                                                        false,
+                                                                        new Date(),
+                                                                        methodName));
+                response.setStartingFromElement(startFrom);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -872,7 +901,7 @@ public class AssetConsumerRESTServices
      *
      * @param serverName name of the server instances for this request
      * @param userId the name of the calling user.
-     * @param term name of term.  This may include wild card characters.
+     * @param requestBody name of term.  This may include wild card characters.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
@@ -881,11 +910,11 @@ public class AssetConsumerRESTServices
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GlossaryTermListResponse findMeanings(String  serverName,
-                                                 String  userId,
-                                                 String  term,
-                                                 int     startFrom,
-                                                 int     pageSize)
+    public GlossaryTermListResponse findMeanings(String                  serverName,
+                                                 String                  userId,
+                                                 SearchStringRequestBody requestBody,
+                                                 int                     startFrom,
+                                                 int                     pageSize)
     {
         final String nameParameterName = "term";
         final String methodName = "findMeanings";
@@ -900,16 +929,24 @@ public class AssetConsumerRESTServices
             GlossaryTermHandler<MeaningElement> glossaryTermHandler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setMeanings(glossaryTermHandler.findTerms(userId,
-                                                               term,
-                                                               nameParameterName,
-                                                               startFrom,
-                                                               pageSize,
-                                                               false,
-                                                               false,
-                                                               new Date(),
-                                                               methodName));
-            response.setStartingFromElement(startFrom);
+
+            if (requestBody != null)
+            {
+                response.setMeanings(glossaryTermHandler.findTerms(userId,
+                                                                   requestBody.getSearchString(),
+                                                                   nameParameterName,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   false,
+                                                                   false,
+                                                                   new Date(),
+                                                                   methodName));
+                response.setStartingFromElement(startFrom);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -952,22 +989,67 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setGUIDs(handler.getAttachedElementGUIDs(userId,
-                                                              termGUID,
-                                                              guidParameterName,
-                                                              OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                                              OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
-                                                              OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
-                                                              OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                              false,
-                                                              false,
-                                                              startFrom,
-                                                              pageSize,
-                                                              new Date(),
-                                                              methodName));
+
+            List<EntityDetail> attachedEntities = handler.getAttachedEntities(userId,
+                                                                              termGUID,
+                                                                              guidParameterName,
+                                                                              OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                              OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
+                                                                              OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
+                                                                              OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                              null,
+                                                                              null,
+                                                                              1,
+                                                                              false,
+                                                                              false,
+                                                                              startFrom,
+                                                                              pageSize,
+                                                                              new Date(),
+                                                                              methodName);
+
+            if (attachedEntities != null)
+            {
+                final String entityGUIDParameterName = "attachedEntity.getGUID";
+                OMRSRepositoryHelper repositoryHelper = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
+                List<String> guids = new ArrayList<>();
+
+                for (EntityDetail entity : attachedEntities)
+                {
+                    if (repositoryHelper.isTypeOf(serverName, entity.getType().getTypeDefName(), OpenMetadataAPIMapper.ASSET_TYPE_NAME))
+                    {
+                        if (! guids.contains(entity.getGUID()))
+                        {
+                            guids.add(entity.getGUID());
+                        }
+                    }
+                    else
+                    {
+                        EntityDetail anchorEntity = handler.validateAnchorEntity(userId,
+                                                                                 entity.getGUID(),
+                                                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                                 entity,
+                                                                                 entityGUIDParameterName,
+                                                                                 false,
+                                                                                 false,
+                                                                                 false,
+                                                                                 handler.getSupportedZones(),
+                                                                                 new Date(),
+                                                                                 methodName);
+                        if (anchorEntity != null)
+                        {
+                            if (! guids.contains(anchorEntity.getGUID()))
+                            {
+                                guids.add(anchorEntity.getGUID());
+                            }
+                        }
+                    }
+                }
+
+                response.setGUIDs(guids);
+            }
         }
         catch (Exception error)
         {
@@ -1066,9 +1148,9 @@ public class AssetConsumerRESTServices
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse createTag(String                serverName,
-                                  String                userId,
-                                  InformalTagProperties requestBody)
+    public GUIDResponse createTag(String         serverName,
+                                  String         userId,
+                                  TagRequestBody requestBody)
     {
         final String   methodName = "createTag";
 
@@ -1126,7 +1208,7 @@ public class AssetConsumerRESTServices
     public VoidResponse   updateTagDescription(String                serverName,
                                                String                userId,
                                                String                tagGUID,
-                                               InformalTagProperties requestBody)
+                                               TagUpdateRequestBody  requestBody)
     {
         final String methodName           = "updateTagDescription";
         final String tagGUIDParameterName = "tagGUID";
@@ -1275,7 +1357,7 @@ public class AssetConsumerRESTServices
      *
      * @param serverName name of the server instances for this request
      * @param userId the name of the calling user.
-     * @param tagName name of tag.
+     * @param requestBody name of tag.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
@@ -1284,11 +1366,11 @@ public class AssetConsumerRESTServices
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public TagsResponse getTagsByName(String serverName,
-                                      String userId,
-                                      String tagName,
-                                      int    startFrom,
-                                      int    pageSize)
+    public TagsResponse getTagsByName(String          serverName,
+                                      String          userId,
+                                      NameRequestBody requestBody,
+                                      int             startFrom,
+                                      int             pageSize)
     {
         final String methodName = "getTagsByName";
         final String nameParameterName = "tagName";
@@ -1303,16 +1385,24 @@ public class AssetConsumerRESTServices
             InformalTagHandler<InformalTagElement> handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setTags(handler.getTagsByName(userId,
-                                                   tagName,
-                                                   nameParameterName,
-                                                   startFrom,
-                                                   pageSize,
-                                                   false,
-                                                   false,
-                                                   new Date(),
-                                                   methodName));
-            response.setStartingFromElement(startFrom);
+
+            if (requestBody != null)
+            {
+                response.setTags(handler.getTagsByName(userId,
+                                                       requestBody.getName(),
+                                                       nameParameterName,
+                                                       startFrom,
+                                                       pageSize,
+                                                       false,
+                                                       false,
+                                                       new Date(),
+                                                       methodName));
+                response.setStartingFromElement(startFrom);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1329,7 +1419,7 @@ public class AssetConsumerRESTServices
      *
      * @param serverName name of the server instances for this request
      * @param userId the name of the calling user.
-     * @param tagName name of tag.
+     * @param requestBody name of tag.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
@@ -1338,11 +1428,11 @@ public class AssetConsumerRESTServices
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public TagsResponse getMyTagsByName(String serverName,
-                                        String userId,
-                                        String tagName,
-                                        int    startFrom,
-                                        int    pageSize)
+    public TagsResponse getMyTagsByName(String          serverName,
+                                        String          userId,
+                                        NameRequestBody requestBody,
+                                        int             startFrom,
+                                        int             pageSize)
     {
         final String methodName = "getMyTagsByName";
         final String nameParameterName = "tagName";
@@ -1357,16 +1447,24 @@ public class AssetConsumerRESTServices
             InformalTagHandler<InformalTagElement> handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setTags(handler.getMyTagsByName(userId,
-                                                     tagName,
-                                                     nameParameterName,
-                                                     startFrom,
-                                                     pageSize,
-                                                     false,
-                                                     false,
-                                                     new Date(),
-                                                     methodName));
-            response.setStartingFromElement(startFrom);
+
+            if (requestBody != null)
+            {
+                response.setTags(handler.getMyTagsByName(userId,
+                                                         requestBody.getName(),
+                                                         nameParameterName,
+                                                         startFrom,
+                                                         pageSize,
+                                                         false,
+                                                         false,
+                                                         new Date(),
+                                                         methodName));
+                response.setStartingFromElement(startFrom);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1383,7 +1481,7 @@ public class AssetConsumerRESTServices
      *
      * @param serverName name of the server instances for this request
      * @param userId the name of the calling user.
-     * @param tagName name of tag.  This may include wild card characters.
+     * @param requestBody name of tag.  This may include wild card characters.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
@@ -1392,11 +1490,11 @@ public class AssetConsumerRESTServices
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public TagsResponse findTags(String serverName,
-                                 String userId,
-                                 String tagName,
-                                 int    startFrom,
-                                 int    pageSize)
+    public TagsResponse findTags(String                  serverName,
+                                 String                  userId,
+                                 SearchStringRequestBody requestBody,
+                                 int                     startFrom,
+                                 int                     pageSize)
     {
         final String methodName = "findTags";
         final String nameParameterName = "tagName";
@@ -1411,16 +1509,24 @@ public class AssetConsumerRESTServices
             InformalTagHandler<InformalTagElement> handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setTags(handler.findTags(userId,
-                                              tagName,
-                                              nameParameterName,
-                                              startFrom,
-                                              pageSize,
-                                              false,
-                                              false,
-                                              new Date(),
-                                              methodName));
-            response.setStartingFromElement(startFrom);
+
+            if (requestBody != null)
+            {
+                response.setTags(handler.findTags(userId,
+                                                  requestBody.getSearchString(),
+                                                  nameParameterName,
+                                                  startFrom,
+                                                  pageSize,
+                                                  false,
+                                                  false,
+                                                  new Date(),
+                                                  methodName));
+                response.setStartingFromElement(startFrom);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1437,7 +1543,7 @@ public class AssetConsumerRESTServices
      *
      * @param serverName name of the server instances for this request
      * @param userId the name of the calling user.
-     * @param tagName name of tag.  This may include wild card characters.
+     * @param requestBody name of tag.  This may include wild card characters.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
@@ -1446,11 +1552,11 @@ public class AssetConsumerRESTServices
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public TagsResponse findMyTags(String serverName,
-                                   String userId,
-                                   String tagName,
-                                   int    startFrom,
-                                   int    pageSize)
+    public TagsResponse findMyTags(String                  serverName,
+                                   String                  userId,
+                                   SearchStringRequestBody requestBody,
+                                   int                     startFrom,
+                                   int                     pageSize)
     {
         final String methodName = "findMyTags";
         final String nameParameterName = "tagName";
@@ -1465,16 +1571,24 @@ public class AssetConsumerRESTServices
             InformalTagHandler<InformalTagElement> handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setTags(handler.findMyTags(userId,
-                                                tagName,
-                                                nameParameterName,
-                                                startFrom,
-                                                pageSize,
-                                                false,
-                                                false,
-                                                new Date(),
-                                                methodName));
-            response.setStartingFromElement(startFrom);
+
+            if (requestBody != null)
+            {
+                response.setTags(handler.findMyTags(userId,
+                                                    requestBody.getSearchString(),
+                                                    nameParameterName,
+                                                    startFrom,
+                                                    pageSize,
+                                                    false,
+                                                    false,
+                                                    new Date(),
+                                                    methodName));
+                response.setStartingFromElement(startFrom);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1774,7 +1888,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler<AssetElement>   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<OpenMetadataAPIDummyBean>   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGUIDs(handler.getAssetGUIDsByTag(userId,

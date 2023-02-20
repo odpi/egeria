@@ -103,6 +103,7 @@ public class SimpleCatalogArchiveHelper
 
     private static final String GOVERNANCE_DEFINITION_SCOPE_RELATIONSHIP_NAME = "GovernanceDefinitionScope";
     private static final String GOVERNED_BY_RELATIONSHIP_NAME                 = "GovernedBy";
+    private static final String RESOURCE_LIST_RELATIONSHIP_NAME               = "ResourceList";
 
     public static final String GOVERNANCE_DRIVER_LINK_RELATIONSHIP_NAME      = "GovernanceDriverLink";
     public static final String GOVERNANCE_RESPONSE_RELATIONSHIP_NAME         = "GovernanceResponse";
@@ -145,7 +146,7 @@ public class SimpleCatalogArchiveHelper
     private static final String TERM_ANCHOR_TYPE_NAME                    = "TermAnchor";
     private static final String TERM_CATEGORIZATION_TYPE_NAME            = "TermCategorization";
     private static final String SYNONYM_RELATIONSHIP_TYPE_NAME           = "Synonym";
-    private static final String SEMANTIC_ASSIGNMENT_TYPE_NAME            = "TermAnchor";
+    private static final String SEMANTIC_ASSIGNMENT_TYPE_NAME            = "SemanticAssignment";
     private static final String MORE_INFORMATION_TYPE_NAME               = "MoreInformation";
     private static final String SPINE_OBJECT_NAME                        = "SpineObject";
     private static final String SPINE_ATTRIBUTE_NAME                     = "SpineAttribute";
@@ -312,6 +313,7 @@ public class SimpleCatalogArchiveHelper
     protected static final String ADDITIONAL_PROPERTIES_PROPERTY             = "additionalProperties";
 
     protected static final String NAME_PROPERTY                              = "name";
+    protected static final String VERSION_IDENTIFIER_PROPERTY                = "versionIdentifier";
     protected static final String DISPLAY_NAME_PROPERTY                      = "displayName";
     protected static final String DESCRIPTION_PROPERTY                       = "description";
 
@@ -357,6 +359,8 @@ public class SimpleCatalogArchiveHelper
     private static final String PROJECT_TYPE_PROPERTY                        = "projectType";
     private static final String PURPOSES_PROPERTY                            = "purposes";
     private static final String DETAILS_PROPERTY                             = "details";
+    private static final String RESOURCE_USE_PROPERTY                        = "resourceUse";
+    private static final String WATCH_RESOURCE_PROPERTY                      = "watchResource";
 
     private static final String GROUPS_PROPERTY                              = "groups";
     private static final String SECURITY_LABELS_PROPERTY                     = "securityLabels";
@@ -2463,6 +2467,38 @@ public class SimpleCatalogArchiveHelper
                                                                      end2));
     }
 
+    /**
+     * Link a referenceable to another referenceable to indicate that the second referenceable is providing resources in support of the first.
+     *
+     * @param referenceableQName qualified name of the referenceable
+     * @param resourceQName qualified name of the second referenceable
+     * @param resourceUse string description
+     * @param watchResource should the resource be watched (boolean)
+     */
+    public void addResourceListRelationship(String  referenceableQName,
+                                            String  resourceQName,
+                                            String  resourceUse,
+                                            boolean watchResource)
+    {
+        final String methodName = "addResourceListRelationship";
+
+        String guid1 = idToGUIDMap.getGUID(referenceableQName);
+        String guid2 = idToGUIDMap.getGUID(resourceQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, RESOURCE_USE_PROPERTY, resourceUse, methodName);
+        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, WATCH_RESOURCE_PROPERTY, watchResource, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(RESOURCE_LIST_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_resource_list_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
 
     /**
      * Link two governance definitions at the same level.
@@ -3076,7 +3112,7 @@ public class SimpleCatalogArchiveHelper
      *
      * @param typeName name of asset subtype to use - default is Asset
      * @param qualifiedName unique name for the asset
-     * @param displayName display name for the asset
+     * @param name display name for the asset
      * @param description description about the asset
      * @param additionalProperties any other properties
      * @param extendedProperties additional properties defined in the subtype
@@ -3086,7 +3122,34 @@ public class SimpleCatalogArchiveHelper
      */
     public String addAsset(String               typeName,
                            String               qualifiedName,
-                           String               displayName,
+                           String               name,
+                           String               description,
+                           Map<String, String>  additionalProperties,
+                           Map<String, Object>  extendedProperties,
+                           List<Classification> classifications)
+    {
+        return this.addAsset(typeName, qualifiedName, name, null, description, additionalProperties, extendedProperties, classifications);
+    }
+
+
+    /**
+     * Create an asset entity.
+     *
+     * @param typeName name of asset subtype to use - default is Asset
+     * @param qualifiedName unique name for the asset
+     * @param name display name for the asset
+     * @param versionIdentifier version for the asset
+     * @param description description about the asset
+     * @param additionalProperties any other properties
+     * @param extendedProperties additional properties defined in the subtype
+     * @param classifications list of classifications (if any)
+     *
+     * @return id for the asset
+     */
+    public String addAsset(String               typeName,
+                           String               qualifiedName,
+                           String               name,
+                           String               versionIdentifier,
                            String               description,
                            Map<String, String>  additionalProperties,
                            Map<String, Object>  extendedProperties,
@@ -3102,7 +3165,8 @@ public class SimpleCatalogArchiveHelper
         }
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, NAME_PROPERTY, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, NAME_PROPERTY, name, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, VERSION_IDENTIFIER_PROPERTY, versionIdentifier, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
@@ -3120,11 +3184,111 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
+     * Create an asset entity.
+     *
+     * @param typeName name of asset subtype to use - default is Asset
+     * @param qualifiedName unique name for the asset
+     * @param name display name for the asset
+     * @param description description about the asset
+     * @param additionalProperties any other properties
+     * @param extendedProperties additional properties defined in the subtype
+     *
+     * @return id for the asset
+     */
+    public String addAsset(String              typeName,
+                           String              qualifiedName,
+                           String              name,
+                           String              description,
+                           Map<String, String> additionalProperties,
+                           Map<String, Object> extendedProperties)
+    {
+        return this.addAsset(typeName, qualifiedName, name, description, additionalProperties, extendedProperties, null);
+    }
+
+
+    /**
+     * Create an asset entity.
+     *
+     * @param typeName name of asset subtype to use - default is Asset
+     * @param qualifiedName unique name for the asset
+     * @param name display name for the asset
+     * @param description description about the asset
+     * @param governanceZones list of zones to add to the asset
+     * @param additionalProperties any other properties
+     * @param extendedProperties additional properties defined in the subtype
+     *
+     * @return id for the asset
+     */
+    public String addAsset(String              typeName,
+                           String              qualifiedName,
+                           String              name,
+                           String              description,
+                           List<String>        governanceZones,
+                           Map<String, String> additionalProperties,
+                           Map<String, Object> extendedProperties)
+    {
+        return this.addAsset(typeName, qualifiedName, name, null, description, governanceZones, additionalProperties, extendedProperties);
+    }
+
+
+    /**
+     * Create an asset entity.
+     *
+     * @param typeName name of asset subtype to use - default is Asset
+     * @param qualifiedName unique name for the asset
+     * @param name display name for the asset
+     * @param versionIdentifier version of the asset
+     * @param description description about the asset
+     * @param governanceZones list of zones to add to the asset
+     * @param additionalProperties any other properties
+     * @param extendedProperties additional properties defined in the subtype
+     *
+     * @return id for the asset
+     */
+    public String addAsset(String              typeName,
+                           String              qualifiedName,
+                           String              name,
+                           String              versionIdentifier,
+                           String              description,
+                           List<String>        governanceZones,
+                           Map<String, String> additionalProperties,
+                           Map<String, Object> extendedProperties)
+    {
+        final String methodName = "addAsset (with governance zones)";
+
+        if (governanceZones == null)
+        {
+            return this.addAsset(typeName, qualifiedName, name, versionIdentifier, description, additionalProperties, extendedProperties, null);
+        }
+        else
+        {
+            List<Classification> classifications = new ArrayList<>();
+
+            InstanceProperties properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName,
+                                                                                           null,
+                                                                                           ZONE_MEMBERSHIP_PROPERTY,
+                                                                                           governanceZones,
+                                                                                           methodName);
+
+            Classification classification = archiveHelper.getClassification(ASSET_ZONE_MEMBERSHIP_TYPE_NAME,
+                                                                            properties,
+                                                                            InstanceStatus.ACTIVE);
+
+            classifications.add(classification);
+
+            return this.addAsset(typeName, qualifiedName, name, description, additionalProperties, extendedProperties, classifications);
+        }
+    }
+
+
+
+
+    /**
      * Create a process entity.
      *
      * @param typeName name of asset subtype to use - default is Asset
      * @param qualifiedName unique name for the asset
-     * @param displayName display name for the asset
+     * @param name display name for the asset
      * @param description description about the asset
      * @param formula description of the logic that this process performs
      * @param additionalProperties any other properties
@@ -3135,7 +3299,36 @@ public class SimpleCatalogArchiveHelper
      */
     public String addProcess(String               typeName,
                              String               qualifiedName,
-                             String               displayName,
+                             String               name,
+                             String               description,
+                             String               formula,
+                             Map<String, String>  additionalProperties,
+                             Map<String, Object>  extendedProperties,
+                             List<Classification> classifications)
+    {
+        return this.addProcess(typeName, qualifiedName, name, null, description, formula, additionalProperties, extendedProperties, classifications);
+    }
+
+
+    /**
+     * Create a process entity.
+     *
+     * @param typeName name of asset subtype to use - default is Asset
+     * @param qualifiedName unique name for the asset
+     * @param name display name for the asset
+     * @param versionIdentifier version of the asset
+     * @param description description about the asset
+     * @param formula description of the logic that this process performs
+     * @param additionalProperties any other properties
+     * @param extendedProperties additional properties defined in the subtype
+     * @param classifications list of classifications (if any)
+     *
+     * @return id for the asset
+     */
+    public String addProcess(String               typeName,
+                             String               qualifiedName,
+                             String               name,
+                             String               versionIdentifier,
                              String               description,
                              String               formula,
                              Map<String, String>  additionalProperties,
@@ -3152,7 +3345,8 @@ public class SimpleCatalogArchiveHelper
         }
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, NAME_PROPERTY, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, NAME_PROPERTY, name, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, VERSION_IDENTIFIER_PROPERTY, versionIdentifier, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, FORMULA_PROPERTY, formula, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
@@ -3171,82 +3365,11 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
-     * Create an asset entity.
-     *
-     * @param typeName name of asset subtype to use - default is Asset
-     * @param qualifiedName unique name for the asset
-     * @param displayName display name for the asset
-     * @param description description about the asset
-     * @param additionalProperties any other properties
-     * @param extendedProperties additional properties defined in the subtype
-     *
-     * @return id for the asset
-     */
-    public String addAsset(String              typeName,
-                           String              qualifiedName,
-                           String              displayName,
-                           String              description,
-                           Map<String, String> additionalProperties,
-                           Map<String, Object> extendedProperties)
-    {
-        return this.addAsset(typeName, qualifiedName, displayName, description, additionalProperties, extendedProperties, null);
-    }
-
-
-    /**
-     * Create an asset entity.
-     *
-     * @param typeName name of asset subtype to use - default is Asset
-     * @param qualifiedName unique name for the asset
-     * @param displayName display name for the asset
-     * @param description description about the asset
-     * @param governanceZones list of zones to add to the asset
-     * @param additionalProperties any other properties
-     * @param extendedProperties additional properties defined in the subtype
-     *
-     * @return id for the asset
-     */
-    public String addAsset(String              typeName,
-                           String              qualifiedName,
-                           String              displayName,
-                           String              description,
-                           List<String>        governanceZones,
-                           Map<String, String> additionalProperties,
-                           Map<String, Object> extendedProperties)
-    {
-        final String methodName = "addAsset (with governance zones)";
-
-        if (governanceZones == null)
-        {
-            return this.addAsset(typeName, qualifiedName, displayName, description, additionalProperties, extendedProperties, null);
-        }
-        else
-        {
-            List<Classification> classifications = new ArrayList<>();
-
-            InstanceProperties properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName,
-                                                                                           null,
-                                                                                           ZONE_MEMBERSHIP_PROPERTY,
-                                                                                           governanceZones,
-                                                                                           methodName);
-
-            Classification classification = archiveHelper.getClassification(ASSET_ZONE_MEMBERSHIP_TYPE_NAME,
-                                                                            properties,
-                                                                            InstanceStatus.ACTIVE);
-
-            classifications.add(classification);
-
-            return this.addAsset(typeName, qualifiedName, displayName, description, additionalProperties, extendedProperties, classifications);
-        }
-    }
-
-
-    /**
      * Create a software capability entity.
      *
      * @param typeName name of software capability subtype to use - default is SoftwareCapability
      * @param qualifiedName unique name for the capability
-     * @param displayName display name for the capability
+     * @param name display name for the capability
      * @param description description about the capability
      * @param capabilityType type
      * @param capabilityVersion version
@@ -3259,7 +3382,7 @@ public class SimpleCatalogArchiveHelper
      */
     public String addSoftwareCapability(String              typeName,
                                         String              qualifiedName,
-                                        String              displayName,
+                                        String              name,
                                         String              description,
                                         String              capabilityType,
                                         String              capabilityVersion,
@@ -3278,7 +3401,7 @@ public class SimpleCatalogArchiveHelper
         }
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, NAME_PROPERTY, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, NAME_PROPERTY, name, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, CAPABILITY_TYPE_PROPERTY, capabilityType, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, CAPABILITY_VERSION_PROPERTY, capabilityVersion, methodName);
@@ -4392,7 +4515,7 @@ public class SimpleCatalogArchiveHelper
                           String       displayName,
                           String       description)
     {
-        return addTerm(glossaryGUID, categoryGUIDs, false, qualifiedName, displayName, description, null, null, null,null, false, false, false, null, null, null);
+        return addTerm(glossaryGUID, categoryGUIDs, false, qualifiedName, displayName, null, description, null, null,null, false, false, false, null, null, null);
     }
 
 

@@ -19,14 +19,14 @@ import org.odpi.openmetadata.governanceservers.enginehostservices.admin.Governan
 import java.util.Date;
 
 /**
- * DiscoveryServiceHandler provides the support to run a discovery service.  A new instance is created for each request and it is assigned its
+ * DiscoveryServiceHandler provides the support to run a discovery service.  A new instance is created for each request, and it is assigned its
  * own thread.
  */
 public class DiscoveryServiceHandler extends GovernanceServiceHandler
 {
-    private DiscoveryService discoveryService;
-    private DiscoveryContext discoveryContext;
-    private String           discoveryReportGUID;
+    private final DiscoveryService discoveryService;
+    private final DiscoveryContext discoveryContext;
+    private final String           discoveryReportGUID;
 
 
     /**
@@ -39,7 +39,7 @@ public class DiscoveryServiceHandler extends GovernanceServiceHandler
      * @param engineHostUserId userId for making updates to the governance actions
      * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
      * @param governanceActionClient client for processing governance actions
-     * @param requestType requestType - used for message logging
+     * @param serviceRequestType requestType - used for message logging
      * @param discoveryServiceGUID name of this discovery service - used for message logging
      * @param discoveryServiceName name of this discovery service - used for message logging
      * @param discoveryServiceConnector connector that does the work
@@ -52,7 +52,7 @@ public class DiscoveryServiceHandler extends GovernanceServiceHandler
                             String                     engineHostUserId,
                             String                     governanceActionGUID,
                             GovernanceEngineClient     governanceActionClient,
-                            String                     requestType,
+                            String                     serviceRequestType,
                             String                     discoveryServiceGUID,
                             String                     discoveryServiceName,
                             Connector                  discoveryServiceConnector,
@@ -65,14 +65,12 @@ public class DiscoveryServiceHandler extends GovernanceServiceHandler
               engineHostUserId,
               governanceActionGUID,
               governanceActionClient,
-              requestType,
+              serviceRequestType,
               discoveryServiceGUID,
               discoveryServiceName,
               discoveryServiceConnector,
               auditLog);
 
-
-        this.requestType          = requestType;
         this.discoveryContext     = discoveryContext;
         this.discoveryReportGUID  = discoveryReportGUID;
         this.auditLog             = auditLog;
@@ -88,12 +86,12 @@ public class DiscoveryServiceHandler extends GovernanceServiceHandler
 
             auditLog.logException(actionDescription,
                                   AssetAnalysisAuditCode.INVALID_DISCOVERY_SERVICE.getMessageDefinition(discoveryServiceName,
-                                                                                                        requestType,
+                                                                                                        serviceRequestType,
                                                                                                         error.getClass().getName(),
                                                                                                         error.getMessage()),
                                   error);
             throw new InvalidParameterException(AssetAnalysisErrorCode.INVALID_DISCOVERY_SERVICE.getMessageDefinition(discoveryServiceName,
-                                                                                                                      requestType,
+                                                                                                                      serviceRequestType,
                                                                                                                       error.getClass().getName(),
                                                                                                                       error.getMessage()),
                                                 this.getClass().getName(),
@@ -137,7 +135,7 @@ public class DiscoveryServiceHandler extends GovernanceServiceHandler
             auditLog.logMessage(actionDescription,
                                 AssetAnalysisAuditCode.DISCOVERY_SERVICE_STARTING.getMessageDefinition(governanceServiceName,
                                                                                                        discoveryContext.getAssetGUID(),
-                                                                                                       requestType,
+                                                                                                       serviceRequestType,
                                                                                                        governanceEngineProperties.getQualifiedName(),
                                                                                                        governanceEngineGUID,
                                                                                                        discoveryReport.getDiscoveryReportGUID()));
@@ -155,7 +153,7 @@ public class DiscoveryServiceHandler extends GovernanceServiceHandler
             auditLog.logMessage(actionDescription,
                                 AssetAnalysisAuditCode.DISCOVERY_SERVICE_COMPLETE.getMessageDefinition(governanceServiceName,
                                                                                                        discoveryContext.getAssetGUID(),
-                                                                                                       requestType,
+                                                                                                       serviceRequestType,
                                                                                                        Long.toString(endTime.getTime() - startTime.getTime()),
                                                                                                        discoveryReport.getDiscoveryReportGUID()));
 
@@ -163,7 +161,7 @@ public class DiscoveryServiceHandler extends GovernanceServiceHandler
             super.disconnect();
             discoveryService.setDiscoveryContext(null);
 
-            super.recordCompletionStatus(CompletionStatus.ACTIONED, null, null, null);
+            super.recordCompletionStatus(CompletionStatus.ACTIONED, null, null, null, null);
         }
         catch (Exception  error)
         {
@@ -172,7 +170,7 @@ public class DiscoveryServiceHandler extends GovernanceServiceHandler
                                                                                                        error.getClass().getName(),
                                                                                                        discoveryReportGUID,
                                                                                                        discoveryContext.getAssetGUID(),
-                                                                                                       requestType,
+                                                                                                       serviceRequestType,
                                                                                                        governanceEngineProperties.getQualifiedName(),
                                                                                                        governanceEngineGUID,
                                                                                                        error.getMessage()),

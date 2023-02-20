@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.adapters.connectors.dynamicarchivers;
 
 import org.odpi.openmetadata.engineservices.repositorygovernance.connector.RepositoryGovernanceContext;
-import org.odpi.openmetadata.engineservices.repositorygovernance.connector.RepositoryGovernanceService;
+import org.odpi.openmetadata.engineservices.repositorygovernance.connector.RepositoryGovernanceServiceConnector;
 import org.odpi.openmetadata.engineservices.repositorygovernance.ffdc.RepositoryGovernanceErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -36,7 +36,7 @@ import java.util.List;
  * of a specific open metadata archive.  Information about the available metadata is passed in the archive context.
  * The returned archive context also contains the status of this service.
  */
-public abstract class DynamicArchiveService extends RepositoryGovernanceService
+public abstract class DynamicArchiveService extends RepositoryGovernanceServiceConnector
 {
     /*
      * This is the header information for the archive.

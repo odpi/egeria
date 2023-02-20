@@ -165,9 +165,12 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             HttpHeaders headers = getHttpHeaders();
 
-            if (headers.isEmpty()) {
+            if (headers.isEmpty())
+            {
                 responseObject = restTemplate.getForObject(urlTemplate, returnClass);
-            } else {
+            }
+            else
+            {
                 HttpEntity<?> request = new HttpEntity<>(headers);
 
                 ResponseEntity<T> responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.GET, request, returnClass);
@@ -185,15 +188,14 @@ public class SpringRESTClientConnector extends RESTClientConnector
                 log.debug("Returning from {} with no response object.", methodName);
             }
 
-
             return responseObject;
         }
         catch (Exception error)
         {
             log.debug("Exception {} with message {} occurred during REST call for {}.",
-                    error.getClass().getName(),
-                    error.getMessage(),
-                    methodName);
+                      error.getClass().getName(),
+                      error.getMessage(),
+                      methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
@@ -234,23 +236,25 @@ public class SpringRESTClientConnector extends RESTClientConnector
     {
         try
         {
-            if(log.isDebugEnabled())
+            if (log.isDebugEnabled())
             {
                 //avoid calling Arrays.toString if not debug level
                 log.debug("Calling {} with URL template {} and parameters {}.",
-                        methodName,
-                        urlTemplate,
-                        Arrays.toString(params)
-                );
+                          methodName,
+                          urlTemplate,
+                          Arrays.toString(params));
             }
 
             T  responseObject;
 
             HttpHeaders headers = getHttpHeaders();
 
-            if (headers.isEmpty()) {
+            if (headers.isEmpty())
+            {
                 responseObject = restTemplate.getForObject(urlTemplate, returnClass, params);
-            } else {
+            }
+            else
+            {
                 HttpEntity<?> request = new HttpEntity<>(headers);
 
                 ResponseEntity<T> responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.GET, request, returnClass, params);
@@ -274,9 +278,9 @@ public class SpringRESTClientConnector extends RESTClientConnector
         catch (Exception error)
         {
             log.debug("Exception {} with message {} occurred during REST call for {}.",
-                    error.getClass().getName(),
-                    error.getMessage(),
-                    methodName);
+                      error.getClass().getName(),
+                      error.getMessage(),
+                      methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
@@ -324,9 +328,12 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             HttpHeaders headers = getHttpHeaders();
 
-            if (headers.isEmpty()) {
+            if (headers.isEmpty())
+            {
                 responseObject = restTemplate.postForObject(urlTemplate, requestBody, returnClass);
-            } else {
+            }
+            else
+            {
                 HttpEntity<?> request;
 
                 if (requestBody != null)
@@ -361,9 +368,9 @@ public class SpringRESTClientConnector extends RESTClientConnector
         catch (Exception error)
         {
             log.debug("Exception {} with message {} occurred during REST call for {}.",
-                    error.getClass().getName(),
-                    error.getMessage(),
-                    methodName);
+                      error.getClass().getName(),
+                      error.getMessage(),
+                      methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
@@ -408,22 +415,24 @@ public class SpringRESTClientConnector extends RESTClientConnector
     {
         try
         {
-            if(log.isDebugEnabled())
+            if (log.isDebugEnabled())
             {
                 //avoid calling Arrays.toString if not debug level
                 log.debug("Calling {} with URL template {} and parameters {}.",
-                        methodName,
-                        urlTemplate,
-                        Arrays.toString(params)
-                );
+                          methodName,
+                          urlTemplate,
+                          Arrays.toString(params));
             }
             T  responseObject;
 
             HttpHeaders headers = getHttpHeaders();
 
-            if (headers.isEmpty()) {
+            if (headers.isEmpty())
+            {
                 responseObject = restTemplate.postForObject(urlTemplate, requestBody, returnClass, params);
-            } else {
+            }
+            else
+            {
                 HttpEntity<?> request;
 
                 if (requestBody != null)
@@ -456,9 +465,9 @@ public class SpringRESTClientConnector extends RESTClientConnector
         catch (Exception error)
         {
             log.debug("Exception {} with message {} occurred during REST call for {}.",
-                    error.getClass().getName(),
-                    error.getMessage(),
-                    methodName);
+                      error.getClass().getName(),
+                      error.getMessage(),
+                      methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
@@ -469,12 +478,12 @@ public class SpringRESTClientConnector extends RESTClientConnector
                                                                                                      error.getMessage());
 
             throw new RESTServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction(),
-                                              error);
+                                          this.getClass().getName(),
+                                          methodName,
+                                          errorMessage,
+                                          errorCode.getSystemAction(),
+                                          errorCode.getUserAction(),
+                                          error);
         }
     }
 
@@ -493,21 +502,20 @@ public class SpringRESTClientConnector extends RESTClientConnector
      */
     @Override
     public  <T> T callPutRESTCall(String    methodName,
-                                   Class<T>  returnClass,
-                                   String    urlTemplate,
-                                   Object    requestBody,
-                                   Object... params) throws RESTServerException
+                                  Class<T>  returnClass,
+                                  String    urlTemplate,
+                                  Object    requestBody,
+                                  Object... params) throws RESTServerException
     {
         try
         {
-            if(log.isDebugEnabled())
+            if (log.isDebugEnabled())
             {
                 //avoid calling Arrays.toString if not debug level
                 log.debug("Calling {} with URL template {} and parameters {}.",
-                        methodName,
-                        urlTemplate,
-                        Arrays.toString(params)
-                );
+                          methodName,
+                          urlTemplate,
+                          Arrays.toString(params));
             }
 
             HttpEntity<?> request = new HttpEntity<>(requestBody);
@@ -519,7 +527,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
             }
             if (basicAuthorizationHeader != null)
             {
-                    request = new HttpEntity<>(requestBody, basicAuthorizationHeader);
+                request = new HttpEntity<>(requestBody, basicAuthorizationHeader);
             }
 
             ResponseEntity<T> responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.PUT, request, returnClass, params);
@@ -540,9 +548,9 @@ public class SpringRESTClientConnector extends RESTClientConnector
         catch (Exception error)
         {
             log.debug("Exception {} with message {} occurred during REST call for {}.",
-                    error.getClass().getName(),
-                    error.getMessage(),
-                    methodName);
+                      error.getClass().getName(),
+                      error.getMessage(),
+                      methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
@@ -588,9 +596,12 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             HttpHeaders headers = getHttpHeaders();
 
-            if (headers.isEmpty()) {
+            if (headers.isEmpty())
+            {
                 restTemplate.delete(urlTemplate);
-            } else {
+            }
+            else
+            {
                 HttpEntity<?> request;
 
                 if (requestBody != null)
@@ -623,9 +634,9 @@ public class SpringRESTClientConnector extends RESTClientConnector
         catch (Exception error)
         {
             log.debug("Exception {} with message {} occurred during REST call for {}.",
-                    error.getClass().getName(),
-                    error.getMessage(),
-                    methodName);
+                      error.getClass().getName(),
+                      error.getMessage(),
+                      methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
@@ -669,14 +680,13 @@ public class SpringRESTClientConnector extends RESTClientConnector
     {
         try
         {
-            if(log.isDebugEnabled())
+            if (log.isDebugEnabled())
             {
                 //avoid calling Arrays.toString if not debug level
                 log.debug("Calling {} with URL template {} and parameters {}.",
-                        methodName,
-                        urlTemplate,
-                        Arrays.toString(params)
-                );
+                          methodName,
+                          urlTemplate,
+                          Arrays.toString(params));
             }
 
             // requestBody may be null
@@ -742,13 +752,13 @@ public class SpringRESTClientConnector extends RESTClientConnector
     {
         try
         {
-            if(log.isDebugEnabled())
+            if (log.isDebugEnabled())
             {
                 //avoid calling Arrays.toString if not debug level
                 log.debug("Calling {} with URL template {} and parameters {}.",
-                        methodName,
-                        urlTemplate,
-                        Arrays.toString(params)
+                          methodName,
+                          urlTemplate,
+                          Arrays.toString(params)
                 );
             }
 
@@ -758,10 +768,12 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             HttpHeaders headers = getHttpHeaders();
 
-            if (headers.isEmpty()) {
+            if (headers.isEmpty())
+            {
                 request = new HttpEntity<>(requestBody);
             }
-            else {
+            else
+            {
                 if (requestBody != null)
                 {
                     request = new HttpEntity<>(requestBody, headers);
@@ -791,25 +803,25 @@ public class SpringRESTClientConnector extends RESTClientConnector
         catch (Exception error)
         {
             log.debug("Exception {} with message {} occurred during REST call for {}.",
-                    error.getClass().getName(),
-                    error.getMessage(),
-                    methodName);
+                      error.getClass().getName(),
+                      error.getMessage(),
+                      methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                    methodName,
-                    urlTemplate,
-                    serverName,
-                    serverPlatformURLRoot,
-                    error.getMessage());
+                                                                                                     methodName,
+                                                                                                     urlTemplate,
+                                                                                                     serverName,
+                                                                                                     serverPlatformURLRoot,
+                                                                                                     error.getMessage());
 
             throw new RESTServerException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
+                                          this.getClass().getName(),
+                                          methodName,
+                                          errorMessage,
+                                          errorCode.getSystemAction(),
+                                          errorCode.getUserAction(),
+                                          error);
         }
     }
 
@@ -837,9 +849,9 @@ public class SpringRESTClientConnector extends RESTClientConnector
             {
                 //avoid calling Arrays.toString if not debug level
                 log.debug("Calling {} with URL template {} and parameters {}.",
-                        methodName,
-                        urlTemplate,
-                        Arrays.toString(params)
+                          methodName,
+                          urlTemplate,
+                          Arrays.toString(params)
                 );
             }
 
@@ -849,16 +861,18 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             HttpHeaders headers = getHttpHeaders();
 
-            if (headers.isEmpty()) {
+            if (headers.isEmpty())
+            {
                 request = HttpEntity.EMPTY;
-            } else {
+            }
+            else
+            {
                 request = new HttpEntity<>(headers);
             }
 
             ResponseEntity<T> responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.GET, request, responseType, params);
 
             responseObject = responseEntity.getBody();
-
 
             if (responseObject != null)
             {
@@ -874,25 +888,25 @@ public class SpringRESTClientConnector extends RESTClientConnector
         catch (Exception error)
         {
             log.debug("Exception {} with message {} occurred during REST call for {}.",
-                    error.getClass().getName(),
-                    error.getMessage(),
-                    methodName);
+                      error.getClass().getName(),
+                      error.getMessage(),
+                      methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                    methodName,
-                    urlTemplate,
-                    serverName,
-                    serverPlatformURLRoot,
-                    error.getMessage());
+                                                                                                     methodName,
+                                                                                                     urlTemplate,
+                                                                                                     serverName,
+                                                                                                     serverPlatformURLRoot,
+                                                                                                     error.getMessage());
 
             throw new RESTServerException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
+                                          this.getClass().getName(),
+                                          methodName,
+                                          errorMessage,
+                                          errorCode.getSystemAction(),
+                                          errorCode.getUserAction(),
+                                          error);
         }
     }
 
@@ -922,9 +936,9 @@ public class SpringRESTClientConnector extends RESTClientConnector
             {
                 //avoid calling Arrays.toString if not debug level
                 log.debug("Calling {} with URL template {} and parameters {}.",
-                        methodName,
-                        urlTemplate,
-                        Arrays.toString(params)
+                          methodName,
+                          urlTemplate,
+                          Arrays.toString(params)
                 );
             }
 
@@ -954,19 +968,19 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                    methodName,
-                    urlTemplate,
-                    serverName,
-                    serverPlatformURLRoot,
-                    error.getMessage());
+                                                                                                     methodName,
+                                                                                                     urlTemplate,
+                                                                                                     serverName,
+                                                                                                     serverPlatformURLRoot,
+                                                                                                     error.getMessage());
 
             throw new RESTServerException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
+                                          this.getClass().getName(),
+                                          methodName,
+                                          errorMessage,
+                                          errorCode.getSystemAction(),
+                                          errorCode.getUserAction(),
+                                          error);
         }
     }
 
@@ -989,14 +1003,15 @@ public class SpringRESTClientConnector extends RESTClientConnector
                                   Object    requestBody,
                                   Object... params) throws RESTServerException
     {
-        try {
+        try
+        {
             if(log.isDebugEnabled())
             {
                 //avoid calling Arrays.toString if not debug level
                 log.debug("Calling {} with URL template {} and parameters {}.",
-                        methodName,
-                        urlTemplate,
-                        Arrays.toString(params)
+                          methodName,
+                          urlTemplate,
+                          Arrays.toString(params)
                 );
             }
 
@@ -1030,25 +1045,25 @@ public class SpringRESTClientConnector extends RESTClientConnector
         catch (Exception error)
         {
             log.debug("Exception {} with message {} occurred during REST call for {}.",
-                    error.getClass().getName(),
-                    error.getMessage(),
-                    methodName);
+                      error.getClass().getName(),
+                      error.getMessage(),
+                      methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                    methodName,
-                    urlTemplate,
-                    serverName,
-                    serverPlatformURLRoot,
-                    error.getMessage());
+                                                                                                     methodName,
+                                                                                                     urlTemplate,
+                                                                                                     serverName,
+                                                                                                     serverPlatformURLRoot,
+                                                                                                     error.getMessage());
 
             throw new RESTServerException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
+                                          this.getClass().getName(),
+                                          methodName,
+                                          errorMessage,
+                                          errorCode.getSystemAction(),
+                                          errorCode.getUserAction(),
+                                          error);
         }
     }
 
@@ -1058,18 +1073,22 @@ public class SpringRESTClientConnector extends RESTClientConnector
      *
      * @return http headers
      */
-    private HttpHeaders getHttpHeaders() {
+    private HttpHeaders getHttpHeaders()
+    {
         HttpHeaders headers = new HttpHeaders();
 
         Map<String, String> threadLocalHeaders = HttpHeadersThreadLocal.getHeadersThreadLocal().get();
 
-        if (threadLocalHeaders != null) {
-            for (Map.Entry<String, String> entry : threadLocalHeaders.entrySet()) {
+        if (threadLocalHeaders != null)
+        {
+            for (Map.Entry<String, String> entry : threadLocalHeaders.entrySet())
+            {
                 headers.set(entry.getKey(), entry.getValue());
             }
         }
 
-        if (basicAuthorizationHeader != null) {
+        if (basicAuthorizationHeader != null)
+        {
             headers.addAll(basicAuthorizationHeader);
         }
 

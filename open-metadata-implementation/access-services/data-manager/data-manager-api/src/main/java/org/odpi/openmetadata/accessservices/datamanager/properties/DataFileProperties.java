@@ -83,7 +83,6 @@ public class DataFileProperties extends DataStoreProperties
         return "DataFileProperties{" +
                        "name='" + getName() + '\'' +
                        ", versionIdentifier='" + getVersionIdentifier() + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", fileType='" + fileType + '\'' +
                        ", pathName='" + getPathName() + '\'' +

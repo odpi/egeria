@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.apache.commons.lang3.StringUtils;
-import org.odpi.openmetadata.accessservices.assetconsumer.fvt.errorhandling.InvalidParameterTest;
+import org.odpi.openmetadata.accessservices.assetconsumer.fvt.InvalidParameterTest;
 import org.odpi.openmetadata.fvt.utilities.FVTConstants;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTTestFailureException;

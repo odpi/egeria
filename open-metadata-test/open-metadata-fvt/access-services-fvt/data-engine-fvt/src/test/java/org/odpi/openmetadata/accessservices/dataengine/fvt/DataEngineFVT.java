@@ -45,7 +45,7 @@ public class DataEngineFVT {
     protected static final String PORT_DELEGATION_RELATIONSHIP_GUID = "98bB8BA1-dc6A-eb9D-32Cf-F837bEbCbb8E";
     protected static final String PORT_SCHEMA_RELATIONSHIP_GUID = "B216fA00-8281-F9CC-9911-Ae6377f2b457";
     protected static final String ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP_GUID = "86b176a2-015c-44a6-8106-54d5d69ba661";
-    protected static final String LINEAGE_MAPPING_RELATIONSHIP_GUID = "a5991bB2-660D-A3a1-2955-fAcDA2d5F4Ff";
+    protected static final String DATA_FLOW_RELATIONSHIP_GUID = "d2490c0c-06cc-458a-add2-33cf2f5dd724";
     protected static final String ASSET_SCHEMA_TYPE_RELATIONSHIP_GUID = "815b004d-73c6-4728-9dd9-536f4fe803cd";
     protected static final String DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP_GUID = "b827683c-2924-4df3-a92d-7be1888e23c0";
     protected static final String NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP_GUID = "0ffb9d87-7074-45da-a9b0-ae0859611133";

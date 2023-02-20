@@ -11,7 +11,6 @@ import org.odpi.openmetadata.accessservices.datamanager.properties.TopicProperti
 import org.odpi.openmetadata.adapters.connectors.integration.kafka.ffdc.KafkaIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.adapters.connectors.integration.kafka.ffdc.KafkaIntegrationConnectorErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.integrationservices.topic.connector.TopicIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.topic.connector.TopicIntegratorContext;

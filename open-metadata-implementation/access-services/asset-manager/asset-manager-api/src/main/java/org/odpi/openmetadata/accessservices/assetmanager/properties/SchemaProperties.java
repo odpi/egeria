@@ -24,13 +24,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SchemaAttributeProperties.class, name = "SchemaAttributeProperties"),
                 @JsonSubTypes.Type(value = SchemaTypeProperties.class,      name = "SchemaTypeProperties"),
         })
-public class SchemaProperties extends SupplementaryProperties
+public class SchemaProperties extends ReferenceableProperties
 {
     private static final long     serialVersionUID = 1L;
 
-    private boolean isDeprecated         = false;
-    private String  technicalName        = null;
-    private String  technicalDescription = null;
+    private boolean isDeprecated = false;
+    private String  displayName  = null;
+    private String  description  = null;
 
     /**
      * Default constructor
@@ -53,8 +53,8 @@ public class SchemaProperties extends SupplementaryProperties
         if (template != null)
         {
             isDeprecated = template.getIsDeprecated();
-            technicalName = template.getTechnicalName();
-            technicalDescription = template.getTechnicalDescription();
+            displayName = template.getDisplayName();
+            description = template.getDescription();
         }
     }
 
@@ -86,7 +86,7 @@ public class SchemaProperties extends SupplementaryProperties
      *
      * @return string name
      */
-    public String getTechnicalName() { return technicalName; }
+    public String getDisplayName() { return displayName; }
 
 
     /**
@@ -94,9 +94,9 @@ public class SchemaProperties extends SupplementaryProperties
      *
      * @param name String display name
      */
-    public void setTechnicalName(String   name)
+    public void setDisplayName(String   name)
     {
-        this.technicalName = name;
+        this.displayName = name;
     }
 
 
@@ -105,20 +105,20 @@ public class SchemaProperties extends SupplementaryProperties
      *
      * @return string technicalDescription
      */
-    public String getTechnicalDescription()
+    public String getDescription()
     {
-        return technicalDescription;
+        return description;
     }
 
 
     /**
      * Set up the stored technicalDescription property for the schema element.
      *
-     * @param technicalDescription string technicalDescription
+     * @param description string technicalDescription
      */
-    public void setTechnicalDescription(String technicalDescription)
+    public void setDescription(String description)
     {
-        this.technicalDescription = technicalDescription;
+        this.description = description;
     }
 
 
@@ -132,13 +132,8 @@ public class SchemaProperties extends SupplementaryProperties
     {
         return "SchemaProperties{" +
                        "isDeprecated=" + isDeprecated +
-                       ", technicalName='" + technicalName + '\'' +
-                       ", technicalDescription='" + technicalDescription + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", summary='" + getSummary() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", abbreviation='" + getAbbreviation() + '\'' +
-                       ", usage='" + getUsage() + '\'' +
+                       ", displayName='" + displayName + '\'' +
+                       ", description='" + description + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", vendorProperties=" + getVendorProperties() +
@@ -171,8 +166,8 @@ public class SchemaProperties extends SupplementaryProperties
         }
         SchemaProperties that = (SchemaProperties) objectToCompare;
         return isDeprecated == that.isDeprecated &&
-                Objects.equals(technicalName, that.technicalName) &&
-                Objects.equals(technicalDescription, that.technicalDescription);
+                Objects.equals(displayName, that.displayName) &&
+                Objects.equals(description, that.description);
     }
 
 
@@ -184,6 +179,6 @@ public class SchemaProperties extends SupplementaryProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), isDeprecated, technicalName, technicalDescription);
+        return Objects.hash(super.hashCode(), isDeprecated, displayName, description);
     }
 }

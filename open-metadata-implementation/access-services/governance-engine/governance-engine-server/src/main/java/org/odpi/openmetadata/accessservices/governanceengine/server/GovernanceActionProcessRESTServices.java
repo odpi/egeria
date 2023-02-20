@@ -661,8 +661,6 @@ public class GovernanceActionProcessRESTServices
                                                                                                                                   serverName,
                                                                                                                                   methodName);
 
-
-
                 response.setGUID(handler.createGovernanceActionType(userId,
                                                                     requestBody.getQualifiedName(),
                                                                     requestBody.getDomainIdentifier(),
@@ -673,6 +671,8 @@ public class GovernanceActionProcessRESTServices
                                                                     requestBody.getGovernanceEngineGUID(),
                                                                     requestBody.getRequestType(),
                                                                     requestBody.getRequestParameters(),
+                                                                    requestBody.getIgnoreMultipleTriggers(),
+                                                                    requestBody.getWaitTime(),
                                                                     null,
                                                                     null,
                                                                     false,
@@ -747,6 +747,8 @@ public class GovernanceActionProcessRESTServices
                                                    properties.getGovernanceEngineGUID(),
                                                    properties.getRequestType(),
                                                    properties.getRequestParameters(),
+                                                   properties.getIgnoreMultipleTriggers(),
+                                                   properties.getWaitTime(),
                                                    null,
                                                    null,
                                                    false,
@@ -1170,7 +1172,6 @@ public class GovernanceActionProcessRESTServices
                                                              nextActionTypeGUID,
                                                              requestBody.getGuard(),
                                                              requestBody.getMandatoryGuard(),
-                                                             requestBody.getIgnoreMultipleTriggers(),
                                                              null,
                                                              null,
                                                              false,
@@ -1231,7 +1232,6 @@ public class GovernanceActionProcessRESTServices
                                              nextActionLinkGUID,
                                              requestBody.getGuard(),
                                              requestBody.getMandatoryGuard(),
-                                             requestBody.getIgnoreMultipleTriggers(),
                                              null,
                                              null,
                                              methodName);
@@ -1308,10 +1308,6 @@ public class GovernanceActionProcessRESTServices
                                                                                       OpenMetadataAPIMapper.MANDATORY_GUARD_PROPERTY_NAME,
                                                                                       relationship.getProperties(),
                                                                                       methodName));
-                        element.setIgnoreMultipleTriggers(repositoryHelper.getBooleanProperty(instanceHandler.getServiceName(),
-                                                                                              OpenMetadataAPIMapper.IGNORE_MULTIPLE_TRIGGERS_PROPERTY_NAME,
-                                                                                              relationship.getProperties(),
-                                                                                              methodName));
 
                         element.setNextActionType(handler.getGovernanceActionTypeByGUID(userId, relationship.getEntityTwoProxy().getGUID(), null, methodName));
 

@@ -1730,7 +1730,7 @@ public class OpenMetadataAPIMapper
     /* GovernanceEngine */
 
     public static final String GOVERNANCE_ACTION_SERVICE_TYPE_GUID       = "ececb378-31ac-4cc3-99b4-1c44e5fbc4d9";
-    public static final String GOVERNANCE_ACTION_SERVICE_TYPE_NAME       = "GovernanceActionService";
+    public static final String GOVERNANCE_ACTION_SERVICE_TYPE_NAME       = "GeneralGovernanceActionService";
     /* DeployedConnector */
 
     public static final String SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID    = "2726df0e-4f3a-44e1-8433-4ca5301457fd";
@@ -1738,6 +1738,7 @@ public class OpenMetadataAPIMapper
     /* End1 = GovernanceEngine; End 2 = GovernanceService */
 
     public static final String REQUEST_TYPE_PROPERTY_NAME                = "requestType";        /* from SupportedGovernanceService relationship */
+    public static final String SERVICE_REQUEST_TYPE_PROPERTY_NAME        = "serviceRequestType"; /* from SupportedGovernanceService relationship */
     public static final String REQUEST_PARAMETERS_PROPERTY_NAME          = "requestParameters";  /* from SupportedGovernanceService relationship */
 
     public static final String GOVERNANCE_ACTION_PROCESS_TYPE_GUID       = "4d3a2b8d-9e2e-4832-b338-21c74e45b238";
@@ -1765,6 +1766,7 @@ public class OpenMetadataAPIMapper
     public static final String GUARD_PROPERTY_NAME                       = "guard"; /* from NextGovernanceActionType relationship */
     public static final String MANDATORY_GUARD_PROPERTY_NAME             = "mandatoryGuard"; /* from NextGovernanceActionType relationship */
     public static final String IGNORE_MULTIPLE_TRIGGERS_PROPERTY_NAME    = "ignoreMultipleTriggers"; /* from NextGovernanceActionType relationship */
+    public static final String WAIT_TIME_PROPERTY_NAME                   = "waitTime"; /* from NextGovernanceActionType relationship */
 
     public static final String GOVERNANCE_ACTION_STATUS_ENUM_TYPE_GUID   = "a6e698b0-a4f7-4a39-8c80-db0bb0f972ec";
     public static final String GOVERNANCE_ACTION_STATUS_ENUM_TYPE_NAME   = "GovernanceActionStatus";
@@ -1795,10 +1797,7 @@ public class OpenMetadataAPIMapper
     public static final String PROCESSING_ENGINE_USER_ID_PROPERTY_NAME   = "processingEngineUserId"; /* from GovernanceAction entity */
     public static final String COMPLETION_DATE_PROPERTY_NAME             = "completionDate";         /* from GovernanceAction entity */
     public static final String COMPLETION_GUARDS_PROPERTY_NAME           = "completionGuards";       /* from GovernanceAction entity */
-
-    public static final String GOVERNANCE_ACTION_TYPE_USE_TYPE_GUID      = "31e734ec-5baf-4e96-9f0d-e8a85081cb14";
-    public static final String GOVERNANCE_ACTION_TYPE_USE_TYPE_NAME      = "GovernanceActionTypeUse";
-    /* End1 = GovernanceActionType; End 2 = GovernanceAction */
+    public static final String COMPLETION_MESSAGE_PROPERTY_NAME          = "completionMessage";      /* from GovernanceAction entity and TargetForAction relationship*/
 
     public static final String ORIGIN_GOVERNANCE_SERVICE_PROPERTY_NAME   = "originGovernanceService"; /* from GovernanceActionTypeUse relationship */
     public static final String ORIGIN_GOVERNANCE_ENGINE_PROPERTY_NAME    = "originGovernanceEngine";  /* from GovernanceActionTypeUse relationship */
@@ -2623,12 +2622,33 @@ public class OpenMetadataAPIMapper
     /* Area 7 - Lineage                                                                                                            */
     /* ============================================================================================================================*/
 
+    public static final String DIGITAL_SERVICE_TYPE_GUID = "f671e1fc-b204-4ee6-a4e2-da1633ecf50e";
+    public static final String DIGITAL_SERVICE_TYPE_NAME = "DigitalService";
+
+    public static final String DIGITAL_PRODUCT_CLASSIFICATION_TYPE_GUID = "4aaaa7ca-6b4b-4c4b-997f-d5dfd42917b0";
+    public static final String DIGITAL_PRODUCT_CLASSIFICATION_TYPE_NAME = "DigitalProduct";
+    public static final String PRODUCT_NAME_PROPERTY_NAME = "productName";
+    public static final String PRODUCT_TYPE_PROPERTY_NAME = "productType";
+    public static final String INTRODUCTION_DATE_PROPERTY_NAME = "introductionDate";
+    public static final String MATURITY_PROPERTY_NAME = "maturity";
+    public static final String SERVICE_LIFE_PROPERTY_NAME = "serviceLife";
+    public static final String CURRENT_VERSION_PROPERTY_NAME = "currentVersion";
+    public static final String NEXT_VERSION_PROPERTY_NAME = "nextVersion";
+    public static final String WITHDRAW_DATE_PROPERTY_NAME = "withdrawDate";
+
+    public static final String DIGITAL_SERVICE_DEPENDENCY_RELATIONSHIP_TYPE_GUID = "e8303911-ba1c-4640-974e-c4d57ee1b310";
+    public static final String DIGITAL_SERVICE_DEPENDENCY_RELATIONSHIP_TYPE_NAME = "DigitalServiceDependency";
+
+    public static final String DIGITAL_SERVICE_PRODUCT_RELATIONSHIP_TYPE_GUID = "51465a59-c785-406d-929c-def34596e9af";
+    public static final String DIGITAL_SERVICE_PRODUCT_RELATIONSHIP_TYPE_NAME = "DigitalServiceProduct";
+
     public static final String IMPLEMENTED_BY_RELATIONSHIP_TYPE_GUID = "28f63c94-aaef-4c84-98f7-d77aa605272e";
     public static final String IMPLEMENTED_BY_RELATIONSHIP_TYPE_NAME = "ImplementedBy";
-    /* End1 = SolutionPort; End 2 = SchemaType */
+    /* End1 = Referenceable; End 2 = Referenceable */
 
     public static final String DESIGN_STEP_PROPERTY_NAME = "designStep";
     public static final String ROLE_PROPERTY_NAME = "role";
+    public static final String TRANSFORMATION_PROPERTY_NAME = "transformation";
 
     public static final String SOLUTION_PORT_SCHEMA_RELATIONSHIP_TYPE_GUID = "bf02c703-57a2-4ab7-b6db-f49b57b05985";
     public static final String SOLUTION_PORT_SCHEMA_RELATIONSHIP_TYPE_NAME = "SolutionPortSchema";

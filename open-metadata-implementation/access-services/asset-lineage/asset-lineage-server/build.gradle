@@ -23,7 +23,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-core'
     implementation 'com.google.guava:guava'
     implementation 'org.apache.commons:commons-lang3'
-    implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-handlers')
+    implementation project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-handlers')
     implementation 'org.springframework:spring-core'
     testImplementation 'org.mockito:mockito-junit-jupiter'
     testImplementation 'org.junit.jupiter:junit-jupiter-api'

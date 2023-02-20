@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.directory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import org.apache.commons.io.FileUtils;
 import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.directory.ffdc.DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -24,7 +25,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreIterator<T extends Repository
     private int                                    pointer = 0;
     private AuditLog                               auditLog;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectReader OBJECT_READER = new ObjectMapper().reader();
 
 
     public DirectoryBasedOpenMetadataArchiveStoreIterator(DirectoryBasedOpenMetadataArchiveStore archiveStore,
@@ -60,7 +61,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreIterator<T extends Repository
         {
             String archiveStoreFileContents = FileUtils.readFileToString(elementFile, "UTF-8");
 
-            return (T)objectMapper.readValue(archiveStoreFileContents, RepositoryElementHeader.class);
+            return (T) OBJECT_READER.readValue(archiveStoreFileContents, RepositoryElementHeader.class);
         }
         catch (Exception error)
         {

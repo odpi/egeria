@@ -424,6 +424,122 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
 
 
     /**
+     * Create a relationship between two schema elements.  The name of the desired relationship, and any properties (including effectivity dates)
+     * are passed on the API.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param assetManagerIsHome ensure that only the asset manager can update this relationship
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param relationshipTypeName type of the relationship to create
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param properties relationship properties
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void setupSchemaElementRelationship(String                 userId,
+                                               String                 assetManagerGUID,
+                                               String                 assetManagerName,
+                                               boolean                assetManagerIsHome,
+                                               String                 endOneGUID,
+                                               String                 endTwoGUID,
+                                               String                 relationshipTypeName,
+                                               Date                   effectiveTime,
+                                               boolean                forLineage,
+                                               boolean                forDuplicateProcessing,
+                                               RelationshipProperties properties) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        final String methodName                        = "setupSchemaElementRelationship";
+        final String endOneGUIDParameterName           = "endOneGUID";
+        final String endTwoGUIDParameterName           = "endTwoGUID";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(endOneGUID, endOneGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(endTwoGUID, endTwoGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(relationshipTypeName, relationshipTypeNameParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-elements/{2}/relationships/{3}/schema-elements/{4}?assetManagerIsHome={5}&forLineage={6}&forDuplicateProcessing={7}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        getRelationshipRequestBody(assetManagerGUID, assetManagerName, effectiveTime, properties),
+                                        serverName,
+                                        userId,
+                                        endOneGUID,
+                                        relationshipTypeName,
+                                        endTwoGUID,
+                                        assetManagerIsHome,
+                                        forLineage,
+                                        forDuplicateProcessing);
+    }
+
+
+    /**
+     * Remove a relationship between two schema elements.  The name of the desired relationship is passed on the API.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param relationshipTypeName type of the relationship to delete
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void clearSchemaElementRelationship(String  userId,
+                                               String  assetManagerGUID,
+                                               String  assetManagerName,
+                                               String  endOneGUID,
+                                               String  endTwoGUID,
+                                               String  relationshipTypeName,
+                                               Date    effectiveTime,
+                                               boolean forLineage,
+                                               boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        final String methodName                        = "clearSchemaElementRelationship";
+        final String endOneGUIDParameterName           = "endOneGUID";
+        final String endTwoGUIDParameterName           = "endTwoGUID";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(endOneGUID, endOneGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(endTwoGUID, endTwoGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(relationshipTypeName, relationshipTypeNameParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-elements/{2}/relationships/{3}/schema-elements/{4}/remove?forLineage={5}&forDuplicateProcessing={6}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                        serverName,
+                                        userId,
+                                        endOneGUID,
+                                        relationshipTypeName,
+                                        endTwoGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
+    }
+
+
+    /**
      * Remove the metadata element representing a schema type.
      *
      * @param userId calling user
@@ -569,13 +685,14 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(parentElementGUID, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/parents/{2}/schema-types/retrieve?forLineage={3}&forDuplicateProcessing={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/parents/{2}/{3}/schema-types/retrieve?forLineage={4}&forDuplicateProcessing={5}";
 
         SchemaTypeElementResponse restResult = restClient.callSchemaTypePostRESTCall(methodName,
                                                                                      urlTemplate,
                                                                                      getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                                      serverName,
                                                                                      userId,
+                                                                                     parentElementTypeName,
                                                                                      parentElementGUID,
                                                                                      forLineage,
                                                                                      forDuplicateProcessing);
@@ -940,7 +1057,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                    methodName));
         requestBody.setEffectiveTime(effectiveTime);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attribute/{2}?isMergeUpdate={3}&forLineage={4}&forDuplicateProcessing={5}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/{2}?isMergeUpdate={3}&forLineage={4}&forDuplicateProcessing={5}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,

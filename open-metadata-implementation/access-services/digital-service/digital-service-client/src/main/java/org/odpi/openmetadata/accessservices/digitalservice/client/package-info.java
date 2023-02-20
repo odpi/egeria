@@ -2,6 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 /**
- * These are the client interfaces of the Digital Service OMAS.
+ * These are the Java clients for the Digital Service OMAS.
  */
 package org.odpi.openmetadata.accessservices.digitalservice.client;

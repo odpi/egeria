@@ -17,7 +17,7 @@ import java.util.List;
  * EventBrokerInterface, ApplicationInterface and the APIManagerInterface.
  *
  * SchemaAttributes describe the data fields of the schema. If a schema attribute's type is simple (that is
- * primitive, literal, enum or external, its details are passed with the schema attribute.  Complex schema types (such as Maps,
+ * primitive, literal, enum or external) its details are passed with the schema attribute.  Complex schema types (such as Maps,
  * Choices) are constructed first and then their identifiers are attached to the schema attribute.
  * SchemaTypes are used when creating complex schema structures that involve maps, choice and links to externally defined
  * schemas that are, for example, part of a standard.
@@ -282,6 +282,57 @@ public interface SchemaManagerInterface
                           String schemaTypeGUID) throws InvalidParameterException,
                                                         UserNotAuthorizedException,
                                                         PropertyServerException;
+
+
+    /**
+     * Create a relationship between two schema elements.  The name of the desired relationship, and any properties (including effectivity dates)
+     * are passed on the API.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param relationshipTypeName type of the relationship to create
+     * @param properties relationship properties
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void setupSchemaElementRelationship(String                 userId,
+                                        String                 externalSourceGUID,
+                                        String                 externalSourceName,
+                                        String                 endOneGUID,
+                                        String                 endTwoGUID,
+                                        String                 relationshipTypeName,
+                                        RelationshipProperties properties) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException;
+
+
+    /**
+     * Remove a relationship between two schema elements.  The name of the desired relationship is passed on the API.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param relationshipTypeName type of the relationship to delete
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void clearSchemaElementRelationship(String userId,
+                                        String externalSourceGUID,
+                                        String externalSourceName,
+                                        String endOneGUID,
+                                        String endTwoGUID,
+                                        String relationshipTypeName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException;
 
 
     /**

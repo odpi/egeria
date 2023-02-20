@@ -106,7 +106,7 @@ public class EntitySummaryAccumulator extends ClassificationAccumulator
     {
         if (currentSavedEntity != null)
         {
-            currentSavedEntity.setClassifications(super.getClassifications());
+            currentSavedEntity.setClassifications(super.getClassifications(false));
 
             return currentSavedEntity;
         }

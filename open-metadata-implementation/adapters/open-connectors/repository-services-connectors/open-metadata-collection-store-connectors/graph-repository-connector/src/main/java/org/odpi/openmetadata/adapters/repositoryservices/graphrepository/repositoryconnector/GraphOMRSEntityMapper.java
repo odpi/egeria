@@ -5,6 +5,8 @@ package org.odpi.openmetadata.adapters.repositoryservices.graphrepository.reposi
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
@@ -43,16 +45,18 @@ public class GraphOMRSEntityMapper {
 
     private static final Logger log = LoggerFactory.getLogger(GraphOMRSEntityMapper.class);
 
-    private String                          metadataCollectionId;
-    private String                          repositoryName;
-    private OMRSRepositoryHelper            repositoryHelper;
-    private GraphOMRSClassificationMapper   classificationMapper;
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectReader OBJECT_READER = OBJECT_MAPPER.reader();
+    private static final ObjectWriter OBJECT_WRITER = OBJECT_MAPPER.writer();
+
+    private final String                          repositoryName;
+    private final OMRSRepositoryHelper            repositoryHelper;
+    private final GraphOMRSClassificationMapper   classificationMapper;
 
     GraphOMRSEntityMapper(String               metadataCollectionId,
                           String               repositoryName,
                           OMRSRepositoryHelper repositoryHelper) {
 
-        this.metadataCollectionId   = metadataCollectionId;
         this.repositoryName         = repositoryName;
         this.repositoryHelper       = repositoryHelper;
 
@@ -92,7 +96,7 @@ public class GraphOMRSEntityMapper {
 
     /*
      * method to remove property from vertex.
-     * qualfiiedPropName is the non-prefixed name - qualified by typename if a TDA; or simple core property name
+     * qualifiedPropName is the non-prefixed name - qualified by typename if a TDA; or simple core property name
      */
     private void removeProperty(Vertex vertex, String qualifiedPropName) {
         // no value has been specified - remove the property from the vertex
@@ -130,10 +134,9 @@ public class GraphOMRSEntityMapper {
         if (instanceProperties != null) {
 
             // First write properties as json - useful for handling collections and possibly for full text/string matching???
-            ObjectMapper objectMapper = new ObjectMapper();
             String jsonString;
             try {
-                jsonString = objectMapper.writeValueAsString(instanceProperties);
+                jsonString = OBJECT_WRITER.writeValueAsString(instanceProperties);
                 log.debug("{} entity has serialized properties {}", methodName, jsonString);
                 vertex.property("instanceProperties", jsonString);
             } catch (Exception exc) {
@@ -192,10 +195,9 @@ public class GraphOMRSEntityMapper {
         InstanceProperties uniqueProperties = entity.getUniqueProperties();
         if (uniqueProperties != null) {
             // First approach was to write properties as json - could be useful for text/string matching???
-            ObjectMapper objectMapper = new ObjectMapper();
             String jsonString;
             try {
-                jsonString = objectMapper.writeValueAsString(uniqueProperties);
+                jsonString = OBJECT_WRITER.writeValueAsString(uniqueProperties);
                 log.debug("{} entity proxy has serialized unique properties {}", methodName, jsonString);
                 vertex.property("instanceProperties", jsonString);
             } catch (Exception exc) {
@@ -379,10 +381,9 @@ public class GraphOMRSEntityMapper {
         // can be indexed even on Relationships. Queries can use textRegex to search/retrieve.
         if (entity.getMaintainedBy() != null) {
             List<String> maintainers = entity.getMaintainedBy();
-            ObjectMapper objectMapper = new ObjectMapper();
             String jsonString;
             try {
-                jsonString = objectMapper.writeValueAsString(maintainers);
+                jsonString = OBJECT_WRITER.writeValueAsString(maintainers);
                 log.debug("{} entity maintainedBy serialized to {}", methodName, jsonString);
                 vertex.property(PROPERTY_KEY_ENTITY_MAINTAINED_BY, jsonString);
             }
@@ -413,10 +414,9 @@ public class GraphOMRSEntityMapper {
         // anticipated that it will be used for search, more for correlation.
         if (entity.getMappingProperties() != null) {
             Map<String, Serializable> mappingProperties = entity.getMappingProperties();
-            ObjectMapper objectMapper = new ObjectMapper();
             String jsonString;
             try {
-                jsonString = objectMapper.writeValueAsString(mappingProperties);
+                jsonString = OBJECT_WRITER.writeValueAsString(mappingProperties);
                 log.debug("{} entity maintainedBy serialized to {}", methodName, jsonString);
                 vertex.property(PROPERTY_KEY_ENTITY_MAPPING_PROPERTIES, jsonString);
             }
@@ -469,9 +469,8 @@ public class GraphOMRSEntityMapper {
         String stringProps = (String) getVertexProperty(vertex, "instanceProperties");
 
         if (stringProps != null) {
-            ObjectMapper objectMapper = new ObjectMapper();
             try {
-                InstanceProperties instanceProperties = objectMapper.readValue(stringProps, InstanceProperties.class);
+                InstanceProperties instanceProperties = OBJECT_READER.readValue(stringProps, InstanceProperties.class);
                 log.debug("{} entity has deserialized properties {}", methodName, instanceProperties);
                 entity.setProperties(instanceProperties);
             } catch (Exception exc) {
@@ -520,9 +519,8 @@ public class GraphOMRSEntityMapper {
         String stringProps = (String) getVertexProperty(vertex, "instanceProperties");
 
         if (stringProps != null) {
-            ObjectMapper objectMapper = new ObjectMapper();
             try {
-                InstanceProperties instanceProperties = objectMapper.readValue(stringProps, InstanceProperties.class);
+                InstanceProperties instanceProperties = OBJECT_READER.readValue(stringProps, InstanceProperties.class);
                 log.debug("{} entity has deserialized properties {}", methodName, instanceProperties);
                 List<TypeDefAttribute> propertiesDefinition = repositoryHelper.getAllPropertiesForTypeDef(repositoryName, typeDef, methodName);
                 InstanceProperties uniqueAttributes = new InstanceProperties();
@@ -624,9 +622,8 @@ public class GraphOMRSEntityMapper {
 
         String maintainedByString = (String) getVertexProperty(vertex, PROPERTY_KEY_ENTITY_MAINTAINED_BY);
         if (maintainedByString != null) {
-            ObjectMapper objectMapper = new ObjectMapper();
             try {
-                List<String> maintainedByList = (List<String>) objectMapper.readValue(maintainedByString, List.class);
+                List<String> maintainedByList = (List<String>) OBJECT_READER.readValue(maintainedByString, List.class);
                 log.debug("{} entity has deserialized maintainedBy {}", methodName, maintainedByList);
                 entity.setMaintainedBy(maintainedByList);
             } catch (Exception exc) {
@@ -644,10 +641,9 @@ public class GraphOMRSEntityMapper {
 
         String mappingPropertiesString = (String) getVertexProperty(vertex, PROPERTY_KEY_ENTITY_MAPPING_PROPERTIES);
         if (mappingPropertiesString != null) {
-            ObjectMapper objectMapper = new ObjectMapper();
             try {
                 TypeReference<Map<String, Serializable>> typeReference = new TypeReference<Map<String, Serializable>>() {};
-                Map<String, Serializable> mappingPropertiesMap = objectMapper.readValue(mappingPropertiesString, typeReference);
+                Map<String, Serializable> mappingPropertiesMap = OBJECT_MAPPER.readValue(mappingPropertiesString, typeReference);
                 log.debug("{} entity has deserialized mappingProperties {}", methodName, mappingPropertiesMap);
                 entity.setMappingProperties(mappingPropertiesMap);
             } catch (Exception exc) {

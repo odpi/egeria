@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
@@ -68,6 +69,7 @@ public class InstanceProperties extends InstanceElementHeader
     private Date                                effectiveToTime = null;
     private Map<String, InstancePropertyValue>  instanceProperties = new HashMap<>();
 
+    public static final long CURRENT_INSTANCE_PROPERTIES_HEADER_VERSION = 1;
 
     /**
      * Typical constructor
@@ -207,6 +209,7 @@ public class InstanceProperties extends InstanceElementHeader
      *
      * @return list of properties
      */
+    @JsonIgnore
     public Iterator<String> getPropertyNames()
     {
         return instanceProperties.keySet().iterator();
@@ -263,6 +266,7 @@ public class InstanceProperties extends InstanceElementHeader
      *
      * @return int property count
      */
+    @JsonIgnore
     public int getPropertyCount()
     {
         return instanceProperties.size();

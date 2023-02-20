@@ -449,6 +449,7 @@ class ExchangeHandlerBase
      * @param isMergeUpdate should the new properties be merged with the existing properties, or replace them entirely
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @throws InvalidParameterException  the parameters are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.integration.openapis;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import org.odpi.openmetadata.accessservices.datamanager.api.DataManagerEventListener;
 import org.odpi.openmetadata.accessservices.datamanager.events.DataManagerOutboundEvent;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.APIElement;
@@ -43,9 +44,10 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
     private String templateQualifiedName = null;
     private String targetRootURL = null;
 
-    private Map<String, RESTClient> restClients = new HashMap<>();
+    private final Map<String, RESTClient> restClients = new HashMap<>();
 
     private APIIntegratorContext myContext = null;
+    public static final ObjectReader OBJECT_READER = new ObjectMapper().reader();
 
     /**
      * Initialize the connector.
@@ -338,8 +340,7 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
 
                     if (openAPIJSON != null)
                     {
-                        ObjectMapper         objectMapper = new ObjectMapper();
-                        OpenAPISpecification openAPISpecification = objectMapper.readValue(openAPIJSON, OpenAPISpecification.class);
+                        OpenAPISpecification openAPISpecification = OBJECT_READER.readValue(openAPIJSON, OpenAPISpecification.class);
                         String               title = "<Untitled>";
 
                         if (openAPISpecification != null)
@@ -541,7 +542,7 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
 
     /**
      * Create a new API element if one does not already exist in the open metadata catalog.  The GUID of the API element is
-     * returned but it is the responsibility of the caller to add it to the apiGUIDMap if needed.
+     * returned, but it is the responsibility of the caller to add it to the apiGUIDMap if needed.
      *
      * @param url URL of the API
      * @param endpointGUID unique identifier for endpoint element that the API should be connected to

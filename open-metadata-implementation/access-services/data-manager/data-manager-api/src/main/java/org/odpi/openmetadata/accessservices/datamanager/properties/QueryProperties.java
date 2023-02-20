@@ -51,7 +51,6 @@ public class QueryProperties extends DataSetProperties
         return "QueryProperties{" +
                        "name='" + getName() + '\'' +
                        ", versionIdentifier='" + getVersionIdentifier() + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +

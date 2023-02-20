@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.enginehostservices.registration;
 
-import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceRegistrationEntry;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +23,7 @@ public class OMAGEngineServiceRegistration
      * A map is used so multiple registrations from the same engine service are ignored.
      * The last registration is used.
      */
-    static final private Map<String, EngineServiceRegistration> engineServiceRegistrationMap = new HashMap<>();
+    static final private Map<String, EngineServiceRegistrationEntry> engineServiceRegistrationMap = new HashMap<>();
 
 
     /**
@@ -31,7 +31,7 @@ public class OMAGEngineServiceRegistration
      *
      * @param registration information about the specific OMES
      */
-    public static synchronized void registerEngineService(EngineServiceRegistration registration)
+    public static synchronized void registerEngineService(EngineServiceRegistrationEntry registration)
     {
         if (registration != null)
         {
@@ -50,11 +50,11 @@ public class OMAGEngineServiceRegistration
      *
      * @return list of registration info
      */
-    public static synchronized List<EngineServiceRegistration> getEngineServiceRegistrationList()
+    public static synchronized List<EngineServiceRegistrationEntry> getEngineServiceRegistrationList()
     {
-        List<EngineServiceRegistration>  registrationList = new ArrayList<>();
+        List<EngineServiceRegistrationEntry> registrationList = new ArrayList<>();
 
-        for (EngineServiceRegistration engineServiceRegistration : engineServiceRegistrationMap.values())
+        for (EngineServiceRegistrationEntry engineServiceRegistration : engineServiceRegistrationMap.values())
         {
             if (engineServiceRegistration != null)
             {
@@ -72,11 +72,11 @@ public class OMAGEngineServiceRegistration
      * @param urlMarker URL insert that identifies the service
      * @return engine service registration info
      */
-    public static synchronized EngineServiceRegistration getEngineServiceRegistration(String   urlMarker)
+    public static synchronized EngineServiceRegistrationEntry getEngineServiceRegistration(String   urlMarker)
     {
         if (urlMarker != null)
         {
-            for (EngineServiceRegistration engineServiceRegistration : engineServiceRegistrationMap.values())
+            for (EngineServiceRegistrationEntry engineServiceRegistration : engineServiceRegistrationMap.values())
             {
                 if (engineServiceRegistration != null)
                 {

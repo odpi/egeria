@@ -43,7 +43,7 @@ drive the classification through each phase of its lifecycle validating that the
       "class" : "OpenMetadataTestCaseResult",
       "testCaseId" : "repository-classification-lifecycle",
       "testCaseName" : "Repository classification lifecycle test case",
-      "testCaseDescriptionURL" : "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/repository-classification-lifecycle-test-case.md",
+      "testCaseDescriptionURL" : "https://egeria-project.org/guides/cts/repository-workbench/test-cases/repository-classification-lifecycle-test-case.md",
       "assertionMessage" : "Classifications can be managed through their lifecycle",
       "successfulAssertions" : [ "DataValue classification can attach to a supported entity.", "DataValue classification added to entity of type GlossaryTerm", "DataValue classification removed from entity of type GlossaryTerm", "DataValue classification added to all identified entities" ],
       "unsuccessfulAssertions" : [ ],

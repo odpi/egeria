@@ -9,7 +9,6 @@ import org.odpi.openmetadata.accessservices.datamanager.client.MetadataSourceCli
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
 import org.odpi.openmetadata.accessservices.datamanager.properties.ApplicationProperties;
 import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -97,8 +96,7 @@ public class DisplayIntegratorContextManager extends IntegrationContextManager
         displayApplicationClient = new DisplayApplicationClient(partnerOMASServerName,
                                                                 partnerOMASPlatformRootURL,
                                                                 restClient,
-                                                                maxPageSize,
-                                                                auditLog);
+                                                                maxPageSize);
 
         metadataSourceClient = new MetadataSourceClient(partnerOMASServerName,
                                                         partnerOMASPlatformRootURL,
@@ -123,27 +121,23 @@ public class DisplayIntegratorContextManager extends IntegrationContextManager
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        final String metadataSourceQualifiedNameParameterName = "metadataSourceQualifiedName";
-        final String methodName = "setUpMetadataSource";
-
-        InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-
-        invalidParameterHandler.validateName(metadataSourceQualifiedName,
-                                             metadataSourceQualifiedNameParameterName,
-                                             methodName);
-
-        String metadataSourceGUID = metadataSourceClient.getMetadataSourceGUID(localServerUserId, metadataSourceQualifiedName);
-
-        if (metadataSourceGUID == null)
+        if (metadataSourceQualifiedName != null)
         {
-            ApplicationProperties properties = new ApplicationProperties();
+            String metadataSourceGUID = metadataSourceClient.getMetadataSourceGUID(localServerUserId, metadataSourceQualifiedName);
 
-            properties.setQualifiedName(metadataSourceQualifiedName);
+            if (metadataSourceGUID == null)
+            {
+                ApplicationProperties properties = new ApplicationProperties();
 
-            metadataSourceGUID = metadataSourceClient.createApplication(localServerUserId, null, null, properties);
+                properties.setQualifiedName(metadataSourceQualifiedName);
+
+                metadataSourceGUID = metadataSourceClient.createApplication(localServerUserId, null, null, properties);
+            }
+
+            return metadataSourceGUID;
         }
 
-        return metadataSourceGUID;
+        return null;
     }
 
 

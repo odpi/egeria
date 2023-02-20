@@ -286,11 +286,11 @@ public class FilesRESTServices
                 response.setGUIDs(handler.addFileToCatalog(userId,
                                                            requestBody.getExternalSourceGUID(),
                                                            requestBody.getExternalSourceName(),
-                                                           pathName,
-                                                           requestBody.getDisplayName(),
+                                                           requestBody.getQualifiedName(),
+                                                           requestBody.getName(),
                                                            requestBody.getVersionIdentifier(),
                                                            requestBody.getDescription(),
-                                                           requestBody.getPathName(),
+                                                           pathName,
                                                            requestBody.getCreateTime(),
                                                            requestBody.getModifiedTime(),
                                                            requestBody.getEncodingType(),
@@ -374,6 +374,7 @@ public class FilesRESTServices
                                                                        requestBody.getExternalSourceGUID(),
                                                                        requestBody.getExternalSourceName(),
                                                                        templateGUID,
+                                                                       requestBody.getQualifiedName(),
                                                                        pathName,
                                                                        requestBody.getDisplayName(),
                                                                        requestBody.getVersionIdentifier(),
@@ -441,7 +442,7 @@ public class FilesRESTServices
                                             dataFileGUID,
                                             isMergeUpdate,
                                             requestBody.getQualifiedName(),
-                                            requestBody.getDisplayName(),
+                                            requestBody.getName(),
                                             requestBody.getVersionIdentifier(),
                                             requestBody.getDescription(),
                                             requestBody.getCreateTime(),
@@ -642,6 +643,7 @@ public class FilesRESTServices
                                                                       requestBody.getExternalSourceGUID(),
                                                                       requestBody.getExternalSourceName(),
                                                                       requestBody.getQualifiedName(),
+                                                                      requestBody.getPathName(),
                                                                       requestBody.getName(),
                                                                       requestBody.getVersionIdentifier(),
                                                                       requestBody.getDescription(),
@@ -723,6 +725,7 @@ public class FilesRESTServices
                                                                          requestBody.getExternalSourceName(),
                                                                          templateGUID,
                                                                          requestBody.getQualifiedName(),
+                                                                         requestBody.getPathName(),
                                                                          requestBody.getDisplayName(),
                                                                          requestBody.getVersionIdentifier(),
                                                                          requestBody.getDescription(),
@@ -789,7 +792,7 @@ public class FilesRESTServices
                                               dataFolderGUID,
                                               isMergeUpdate,
                                               requestBody.getPathName(),
-                                              requestBody.getDisplayName(),
+                                              requestBody.getName(),
                                               requestBody.getVersionIdentifier(),
                                               requestBody.getDescription(),
                                               requestBody.getCreateTime(),
@@ -1612,23 +1615,23 @@ public class FilesRESTServices
      * @param startingFrom starting point in the list
      * @param maxPageSize maximum number of results
      *
-     * @return list of file asset unique identifiers or
+     * @return list of file assets or
      * InvalidParameterException one of the parameters is null or invalid or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    public GUIDListResponse  getFolderFiles(String  serverName,
-                                            String  userId,
-                                            String  folderGUID,
-                                            int     startingFrom,
-                                            int     maxPageSize)
+    public DataFilesResponse  getFolderFiles(String  serverName,
+                                             String  userId,
+                                             String  folderGUID,
+                                             int     startingFrom,
+                                             int     maxPageSize)
     {
         final String methodName = "getFolderFiles";
         final String guidParameterName = "folderGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GUIDListResponse response = new GUIDListResponse();
+        DataFilesResponse response = new DataFilesResponse();
         AuditLog         auditLog = null;
 
         try
@@ -1638,15 +1641,15 @@ public class FilesRESTServices
             FilesAndFoldersHandler<FileSystemElement, FileFolderElement, DataFileElement> handler =
                     instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
-            response.setGUIDs(handler.getFolderFiles(userId,
-                                                     folderGUID,
-                                                     guidParameterName,
-                                                     startingFrom,
-                                                     maxPageSize,
-                                                     false,
-                                                     false,
-                                                     new Date(),
-                                                     methodName));
+            response.setElementList(handler.getFolderFiles(userId,
+                                                         folderGUID,
+                                                         guidParameterName,
+                                                         startingFrom,
+                                                         maxPageSize,
+                                                         false,
+                                                         false,
+                                                         new Date(),
+                                                         methodName));
         }
         catch (Exception error)
         {

@@ -67,7 +67,7 @@ public class AuditLog extends MessageFormatter
         this.reportingComponent = new AuditLogReportingComponent(reportingComponent.getComponentId(),
                                                                  reportingComponent.getComponentDevelopmentStatus(),
                                                                  reportingComponent.getComponentName(),
-                                                                 reportingComponent.getComponentType(),
+                                                                 reportingComponent.getComponentDescription(),
                                                                  reportingComponent.getComponentWikiURL());
     }
 
@@ -115,7 +115,7 @@ public class AuditLog extends MessageFormatter
         return createNewAuditLog(childComponent.getComponentId(),
                                  childComponent.getComponentDevelopmentStatus(),
                                  childComponent.getComponentName(),
-                                 childComponent.getComponentType(),
+                                 childComponent.getComponentDescription(),
                                  childComponent.getComponentWikiURL());
     }
 
@@ -374,8 +374,8 @@ public class AuditLog extends MessageFormatter
      */
     public static class AuditLogActivity
     {
-        private volatile Map<Integer, List<String>> severityIdentificationMap = new HashMap<>();
-        private volatile Map<Integer, Integer>      severityCountMap          = new HashMap<>();
+        private final  Map<Integer, List<String>> severityIdentificationMap = new HashMap<>();
+        private final Map<Integer, Integer>      severityCountMap          = new HashMap<>();
 
         /**
          * Update the maps with information about another log record.
@@ -466,10 +466,7 @@ public class AuditLog extends MessageFormatter
                     result.put(severityCode, severityCount);
                 }
 
-                if (! result.isEmpty())
-                {
-                    return result;
-                }
+                return result;
             }
 
             return null;

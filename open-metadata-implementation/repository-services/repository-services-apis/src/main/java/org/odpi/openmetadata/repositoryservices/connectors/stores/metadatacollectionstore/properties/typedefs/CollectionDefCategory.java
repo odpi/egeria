@@ -33,10 +33,10 @@ public enum CollectionDefCategory implements Serializable
 
     private static final long serialVersionUID = 1L;
 
-    private  int         code;
-    private  String      name;
-    private  int         argumentCount;
-    private  String      javaClassName;
+    private  final int         code;
+    private  final String      name;
+    private  final int         argumentCount;
+    private  final String      javaClassName;
 
 
     /**
@@ -71,7 +71,8 @@ public enum CollectionDefCategory implements Serializable
      *
      * @return String type name
      */
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 

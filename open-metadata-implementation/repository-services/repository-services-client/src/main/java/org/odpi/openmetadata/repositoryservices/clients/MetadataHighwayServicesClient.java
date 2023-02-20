@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.clients;
 
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
-import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientFactory;
+import org.odpi.openmetadata.adapters.connectors.restclients.factory.RESTClientFactory;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
@@ -209,8 +209,8 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
 
 
     /**
-     * Returns the registration of the local server in the specified cohort
-     * @param serverName the name of the server
+     * Returns the registration of the local server in the specified cohort.
+     *
      * @param userId calling user
      * @param cohortName the name of the cohort
      * @return MemberRegistration local registration
@@ -219,21 +219,18 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
 
-    public MemberRegistration getLocalRegistration(String serverName,
-                                                   String userId,
+    public MemberRegistration getLocalRegistration(String userId,
                                                    String cohortName) throws InvalidParameterException,
                                                                              RepositoryErrorException,
                                                                              UserNotAuthorizedException
     {
         final String methodName  = "getLocalRegistration";
-
-        // TODO - validate cohortName
-
         final String operationSpecificURL = "/metadata-highway/cohorts/"+cohortName+"/local-registration";
 
         CohortMembershipResponse restResult = null;
 
-        try {
+        try
+        {
             restResult = restClient.callGetRESTCall(methodName,
                                                     CohortMembershipResponse.class,
                                                     restURLRoot + rootServiceNameInURL + userIdInURL + operationSpecificURL,
@@ -259,9 +256,63 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
         return restResult.getCohortMember();
     }
 
+
     /**
-     * Returns the remote member registrations seen by the local server in the specified cohort
-     * @param serverName the name of the server
+     * A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the
+     * open metadata repository.  It only needs to do this once and uses a timestamp to record that the registration
+     * event has been sent.
+     *
+     * If the server has already registered in the past, it sends a reregistration request.
+     *
+     * @param userId calling user
+     * @param cohortName name of cohort
+     *
+     * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
+     *
+     * @throws InvalidParameterException one of the supplied parameters caused a problem
+     * @throws RepositoryErrorException there is a problem communicating with the remote server.
+     * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
+     */
+    public boolean connectToCohort(String userId,
+                                   String cohortName) throws InvalidParameterException,
+                                                             RepositoryErrorException,
+                                                             UserNotAuthorizedException
+    {
+        final String methodName  = "connectToCohort";
+        final String operationSpecificURL = "/metadata-highway/cohorts/"+cohortName+"/connect";
+
+        BooleanResponse restResult;
+
+        try
+        {
+            restResult = restClient.callGetRESTCall(methodName,
+                                                    BooleanResponse.class,
+                                                    restURLRoot + rootServiceNameInURL + userIdInURL + operationSpecificURL,
+                                                    serverName,
+                                                    userId);
+        }
+        catch (Exception error)
+        {
+            throw new RepositoryErrorException(OMRSErrorCode.REMOTE_REPOSITORY_ERROR.getMessageDefinition(methodName,
+                                                                                                          serverName,
+                                                                                                          error.getClass().getSimpleName(),
+                                                                                                          error.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               error);
+        }
+
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+
+        return restResult.isFlag();
+    }
+
+
+    /**
+     * Returns the remote member registrations seen by the local server in the specified cohort.
+     *
      * @param userId calling user
      * @param cohortName the name of the cohort
      * @return MemberRegistration local registration
@@ -269,9 +320,7 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
      * @throws RepositoryErrorException there is a problem communicating with the remote server.
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
-
-    public List<MemberRegistration> getRemoteRegistrations(String serverName,
-                                                           String userId,
+    public List<MemberRegistration> getRemoteRegistrations(String userId,
                                                            String cohortName) throws InvalidParameterException,
                                                                                      RepositoryErrorException,
                                                                                      UserNotAuthorizedException
@@ -284,7 +333,8 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
 
         CohortMembershipListResponse restResult = null;
 
-        try {
+        try
+        {
             restResult = restClient.callGetRESTCall(methodName,
                                                     CohortMembershipListResponse.class,
                                                     restURLRoot + rootServiceNameInURL + userIdInURL + operationSpecificURL,
@@ -311,6 +361,98 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
     }
 
 
+    /**
+     * Disconnect communications from a specific cohort.
+     *
+     * @param userId calling user
+     * @param cohortName name of cohort
+     * @return boolean flag to indicate success.
+     * @throws InvalidParameterException one of the supplied parameters caused a problem
+     * @throws RepositoryErrorException there is a problem communicating with the remote server.
+     * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
+     */
+    public boolean disconnectFromCohort(String userId,
+                                        String cohortName) throws InvalidParameterException,
+                                                                  RepositoryErrorException,
+                                                                  UserNotAuthorizedException
+    {
+        final String methodName = "disconnectFromCohort";
+        final String operationSpecificURL = "/metadata-highway/cohorts/"+cohortName+"/disconnect";
+
+        BooleanResponse restResult;
+
+        try
+        {
+            restResult = restClient.callGetRESTCall(methodName,
+                                                    BooleanResponse.class,
+                                                    restURLRoot + rootServiceNameInURL + userIdInURL + operationSpecificURL,
+                                                    serverName,
+                                                    userId);
+        }
+        catch (Exception error)
+        {
+            throw new RepositoryErrorException(OMRSErrorCode.REMOTE_REPOSITORY_ERROR.getMessageDefinition(methodName,
+                                                                                                          serverName,
+                                                                                                          error.getClass().getSimpleName(),
+                                                                                                          error.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               error);
+        }
+
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+
+        return restResult.isFlag();
+    }
+
+
+    /**
+     * Unregister from a specific cohort and disconnect from cohort communications.
+     *
+     * @param userId calling user
+     * @param cohortName name of cohort
+     * @return boolean flag to indicate success.
+     * @throws InvalidParameterException one of the supplied parameters caused a problem
+     * @throws RepositoryErrorException there is a problem communicating with the remote server.
+     * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
+     */
+    public boolean unregisterFromCohort(String userId,
+                                        String cohortName) throws InvalidParameterException,
+                                                                  RepositoryErrorException,
+                                                                  UserNotAuthorizedException
+    {
+        final String methodName = "unregisterFromCohort";
+        final String operationSpecificURL = "/metadata-highway/cohorts/"+cohortName+"/unregister";
+
+        BooleanResponse restResult;
+
+        try
+        {
+            restResult = restClient.callGetRESTCall(methodName,
+                                                    BooleanResponse.class,
+                                                    restURLRoot + rootServiceNameInURL + userIdInURL + operationSpecificURL,
+                                                    serverName,
+                                                    userId);
+        }
+        catch (Exception error)
+        {
+            throw new RepositoryErrorException(OMRSErrorCode.REMOTE_REPOSITORY_ERROR.getMessageDefinition(methodName,
+                                                                                                          serverName,
+                                                                                                          error.getClass().getSimpleName(),
+                                                                                                          error.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               error);
+        }
+
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+
+        return restResult.isFlag();
+    }
 
 
     /*
@@ -381,7 +523,7 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
      * @param operationSpecificURL  template of the URL for the REST API call with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return AttributeTypeDefListResponse
-     * @throws RepositoryErrorException something went wrong with the REST call stack. TODO
+     * @throws RepositoryErrorException something went wrong with the REST call stack.
      */
     private CohortListResponse callCohortListGetRESTCall(String    methodName,
                                                          String    operationSpecificURL,
@@ -392,8 +534,6 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
                                     operationSpecificURL,
                                     params);
     }
-
-
 
 
     /**
@@ -417,10 +557,6 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
                                      requestBody,
                                      params);
     }
-
-
-
-
 
 
     /**
@@ -513,15 +649,11 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
     }
 
 
-
-
     /*
      * ===============================
      * Handling exceptions
      * ===============================
      */
-
-
 
 
     /**

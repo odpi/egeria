@@ -159,6 +159,63 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
         this.encodingStandard = encodingStandard;
         this.namespace = namespace;
     }
+    /**
+     * Constructor supporting all common properties and formula.
+     *
+     * @param qualifiedName unique name of schema type itself
+     * @param displayName new value for the display name.
+     * @param description description of the schema type.
+     * @param versionNumber version of the schema type.
+     * @param isDeprecated is the schema type deprecated
+     * @param author name of the author
+     * @param usage guidance on how the schema should be used.
+     * @param encodingStandard format of the schema.
+     * @param namespace namespace where the schema is defined.
+     * @param formula formula for derived properties
+     * @param additionalProperties additional properties
+     * @param typeName unique name of schema sub type
+     * @param typeId unique identifier of the schema subtype
+     * @param extendedProperties  properties from the subtype.
+     * @param repositoryHelper helper methods
+     * @param serviceName name of this OMAS
+     * @param serverName name of local server
+     */
+    public SchemaTypeBuilder(String               qualifiedName,
+                             String               displayName,
+                             String               description,
+                             String               versionNumber,
+                             boolean              isDeprecated,
+                             String               author,
+                             String               usage,
+                             String               encodingStandard,
+                             String               namespace,
+                             String               formula,
+                             Map<String, String>  additionalProperties,
+                             String               typeId,
+                             String               typeName,
+                             Map<String, Object>  extendedProperties,
+                             OMRSRepositoryHelper repositoryHelper,
+                             String               serviceName,
+                             String               serverName)
+    {
+        this(qualifiedName,
+             displayName,
+             description,
+             versionNumber,
+             isDeprecated,
+             author,
+             usage,
+             encodingStandard,
+             namespace,
+             additionalProperties,
+             typeId,
+             typeName,
+             extendedProperties,
+             repositoryHelper,
+             serviceName,
+             serverName);
+        setDerivedProperties(formula);
+    }
 
 
     /**
@@ -355,6 +412,29 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
     public boolean isDerived()
     {
         return (! (formula == null));
+    }
+
+
+    /**
+     * Return the schema type properties in an InstanceProperties object.
+     *
+     * @param methodName name of the calling method
+     * @return InstanceProperties object
+     */
+    public InstanceProperties getCalculatedValueProperties(String methodName)
+    {
+        InstanceProperties properties = null;
+
+        if (formula != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                    null,
+                    OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME,
+                    formula,
+                    methodName);
+        }
+
+        return properties;
     }
 
 

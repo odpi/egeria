@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.commonservices.multitenant;
 
 
-import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.registration.OMAGAccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistrationEntry;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
@@ -187,9 +187,9 @@ public class OMASServiceInstanceHandler extends AuditableServerServiceInstanceHa
         {
             accessServiceLookupTable = new HashMap<>();
 
-            List<AccessServiceRegistration> accessServiceRegistrationList = OMAGAccessServiceRegistration.getAccessServiceRegistrationList();
+            List<AccessServiceRegistrationEntry> accessServiceRegistrationList = OMAGAccessServiceRegistration.getAccessServiceRegistrationList();
 
-            for (AccessServiceRegistration registration : accessServiceRegistrationList)
+            for (AccessServiceRegistrationEntry registration : accessServiceRegistrationList)
             {
                 accessServiceLookupTable.put(registration.getAccessServiceURLMarker(), registration.getAccessServiceFullName());
             }

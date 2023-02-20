@@ -450,7 +450,7 @@ public class FileSystemOnboardingResource
      * @param startingFrom starting point in the list
      * @param maxPageSize maximum number of results
      *
-     * @return list of folder unique identifiers (null means no nested folders) or
+     * @return list of folder unique identifiers (null value means no nested folders) or
      * InvalidParameterException one of the parameters is null or invalid or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.

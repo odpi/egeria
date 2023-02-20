@@ -18,6 +18,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
+import org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRepository;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSTypeDefManager;
 
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
     private final boolean                    produceEventsForRealConnector;
     private final OMRSRepositoryEventManager outboundRepositoryEventProcessor;
     private final OMRSTypeDefManager         localTypeDefManager;
+    private final OMRSLocalRepository        localRepository;
 
     /*
      * The security verifier is initialized with a null security verifier.
@@ -80,6 +82,11 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          * The super class manages the local metadata collection id.  This is a locally managed value.
          */
         super(parentConnector, repositoryName, repositoryHelper, repositoryValidator, metadataCollectionId);
+
+        /*
+         * Save the parent connector also as a local repository.
+         */
+        localRepository = parentConnector;
 
         /*
          * Save the metadata collection object for the real repository.  This is the metadata collection that
@@ -1358,6 +1365,14 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                 }
             }
 
+            if (instance.getInstanceProvenanceType() == InstanceProvenanceType.LOCAL_COHORT)
+            {
+                if (! localRepository.isActiveCohortMember(instance.getMetadataCollectionId()))
+                {
+                    instance.setInstanceProvenanceType(InstanceProvenanceType.DEREGISTERED_REPOSITORY);
+                }
+            }
+
             if (instance.getMetadataCollectionName() == null)
             {
                 if (metadataCollectionId.equals(instance.getMetadataCollectionId()))
@@ -1706,6 +1721,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
     /**
      * Returns the entity if the entity is stored in the metadata collection, otherwise null.
+     * Notice that entities in DELETED state are returned by this call.
      *
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the entity
@@ -2375,7 +2391,8 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Returns a boolean indicating if the relationship is stored in the metadata collection.
+     * Returns a relationship indicating if the relationship is stored in the metadata collection.
+     * Notice that relationships in DELETED state are returned by this call.
      *
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the relationship.
@@ -3370,9 +3387,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
      */
     private void validateEntityCanBeUpdatedByRepository(String           entityGUID,
-                                                                EntityDetail     entityDetail,
-                                                                String           methodName) throws InvalidParameterException,
-                                                                                                    EntityNotKnownException
+                                                        EntityDetail     entityDetail,
+                                                        String           methodName) throws InvalidParameterException,
+                                                                                            EntityNotKnownException
     {
         if (entityDetail != null)
         {
@@ -3402,151 +3419,6 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                 this.getClass().getName(),
                                                 methodName,
                                                 parameterName);
-        }
-        else
-        {
-            /*
-             * There is a logic error as the caller has requested update of an entity but the
-             * entity cannot be found.
-             */
-            throw new EntityNotKnownException(OMRSErrorCode.NULL_INSTANCE.getMessageDefinition(repositoryName,
-                                                                                               entityGUID,
-                                                                                               methodName),
-                                              this.getClass().getName(),
-                                              methodName);
-        }
-    }
-
-
-    /**
-     * Validate the requested entity is suitable for a rehome operation initiated by this repository.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param entityGUID unique identifier (guid) for the requested entity.
-     * @param methodName calling method
-     * @return current entity
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    private EntityDetail validateEntityCanBeRehomed(String           userId,
-                                                    String           entityGUID,
-                                                    String           methodName) throws InvalidParameterException,
-                                                                                        RepositoryErrorException,
-                                                                                        EntityNotKnownException,
-                                                                                        UserNotAuthorizedException
-    {
-
-        /*
-         * This method will check:
-         *
-         *   that the entity can be retrieved (it exists and the entity is not a proxy) -
-         *      if the entity is not found this method will throw EntityNotKnownException
-         *      if the entity is found but is a proxy this method will map the underlying EntityProxyOnlyException to InvalidParameterException
-         *
-         *   that if the entity originated in the local cohort, this repository is NOT the master (it is a reference copy)
-         *      if the entity is from the local cohort and locally mastered this method will throw InvalidParameterException
-         *
-         *   that if the entity originated externally, this repository is NOT already the replicator
-         *      if the entity is from the outside the cohort and replicated here this method will throw InvalidParameterException
-         *
-         *   if something really unexpected happens this method will throw RepositoryErrorException but not in any of the above scenarios
-         */
-
-        EntityDetail entityDetail = this.validateEntityIsNotProxy(userId, entityGUID, methodName);
-
-        this.validateEntityCanBeRehomedByRepository(entityGUID, entityDetail, methodName);
-
-        return entityDetail;
-    }
-
-
-    /**
-     * Validate the requested entity is not a proxy and may be rehomed by this repository.
-     *
-     * @param entityGUID unique identifier (guid) for the requested entity.
-     * @param entityDetail the requested entity.
-     * @param methodName calling method
-     * @return current entity
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
-     */
-    private EntityDetail validateEntityCanBeRehomedByRepository(String           entityGUID,
-                                                                EntityDetail     entityDetail,
-                                                                String           methodName) throws InvalidParameterException,
-                                                                                                    EntityNotKnownException
-    {
-        if (entityDetail != null)
-        {
-            /*
-             * Check that it is legal to rehome the entity.
-             * The caller can rehome the entity provided:
-             * The entity originates from the local cohort and is NOT locally mastered
-             * OR
-             * The entity has instanceProvenanceType set to external and replicatedBy is NOT the local metadataCollectionId.
-             * Any other combination suggests that this is NOT a reference copy (of either an instance from the local cohort or
-             * an external entity) and consequently cannot be rehomed.
-             *
-             * If not "rehomable" throw an InvalidParameterException.
-             */
-
-            /*
-             * Assume it is NOT OK to rehome the entity, then inspect the conditions below
-             */
-            boolean updateAllowed = false;
-
-            InstanceProvenanceType instanceProvenance = entityDetail.getInstanceProvenanceType();
-            switch (instanceProvenance)
-            {
-                case LOCAL_COHORT:
-                    String entityHome = entityDetail.getMetadataCollectionId();
-                    if (entityHome != null && !entityHome.equals(metadataCollectionId))
-                    {
-                        updateAllowed = true;
-                    }
-                    break;
-
-                case EXTERNAL_SOURCE:
-                    String replicatedBy = entityDetail.getReplicatedBy();
-                    if (replicatedBy != null && !replicatedBy.equals(metadataCollectionId))
-                    {
-                        updateAllowed = true;
-                    }
-                    break;
-
-                default:
-                    /*
-                     * For any other instance provenance value do not allow update
-                     */
-                    updateAllowed = false;
-                    break;
-            }
-
-            if (updateAllowed)
-            {
-                return entityDetail;
-            }
-            else
-            {
-                /*
-                 * There is a logic error as the caller has requested update or delete of an entity and this
-                 * repository does not have the right to perform the requested operation.
-                 *
-                 * The entity should not be updated - throw InvalidParameterException
-                 */
-                String parameterName = "entityGUID";
-
-                throw new InvalidParameterException(OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL.getMessageDefinition(entityDetail.getMetadataCollectionId(),
-                                                                                                               methodName,
-                                                                                                               entityDetail.getGUID(),
-                                                                                                               metadataCollectionId,
-                                                                                                               repositoryName),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    parameterName);
-            }
         }
         else
         {
@@ -3611,69 +3483,6 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Validate the requested relationship is suitable for update by this repository.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param relationship the relationship instance.
-     * @param methodName calling method
-     * @return current relationship
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws RelationshipNotKnownException the relationship could not be found
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    private Relationship validateRelationshipCanBeUpdated(String           userId,
-                                                          Relationship     relationship,
-                                                          String           methodName) throws InvalidParameterException,
-                                                                                              RepositoryErrorException,
-                                                                                              RelationshipNotKnownException,
-                                                                                              UserNotAuthorizedException
-    {
-
-        /*
-         * This method will check:
-         *
-         *   that the relationship can be retrieved (it exists) -
-         *      if the relationship is not found this method will throw RelationshipNotKnownException
-         *
-         *   that if the relationship originated in the local cohort, this repository is the master (it is not a reference copy)
-         *      if the relationship is from the local cohort but not locally mastered this method will throw InvalidParameterException
-         *
-         *   that if the relationship originated externally, this repository is the replicator
-         *      if the relationship is from the outside the cohort but not replicated here this method will throw InvalidParameterException
-         *
-         *   if something really unexpected happens this method will throw RepositoryErrorException but not in any of the above scenarios
-         */
-
-
-        if (relationship != null)
-        {
-            relationship = this.validateRelationshipCanBeUpdatedByRepository(relationship.getGUID(),
-                                                                             relationship,
-                                                                             methodName);
-
-
-            return relationship;
-        }
-        else
-        {
-            /*
-             * There is a logic error as the caller has requested update of a relationship but the
-             * relationship cannot be found.
-             */
-            throw new RelationshipNotKnownException(OMRSErrorCode.NULL_INSTANCE.getMessageDefinition(repositoryName,
-                                                                                                     null,
-                                                                                                     methodName),
-                                                    this.getClass().getName(),
-                                                    methodName);
-        }
-    }
-
-
-
-
-    /**
      * Validate the requested relationship may be updated or deleted by this repository.
      *
      * @param relationshipGUID unique identifier (guid) for the requested relationship.
@@ -3734,146 +3543,6 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                     methodName);
         }
     }
-
-
-    /**
-     * Validate the requested relationship is suitable for a rehome operation initiated by this repository.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param relationshipGUID unique identifier (guid) for the requested relationship.
-     * @param methodName calling method
-     * @return current entity
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws RelationshipNotKnownException the relationship identified by the guid is not found in the metadata collection.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    private Relationship validateRelationshipCanBeRehomed(String           userId,
-                                                          String           relationshipGUID,
-                                                          String           methodName) throws InvalidParameterException,
-                                                                                              RepositoryErrorException,
-                                                                                              RelationshipNotKnownException,
-                                                                                              UserNotAuthorizedException
-    {
-
-        /*
-         * This method will check:
-         *
-         *   that the relationship can be retrieved (it exists) -
-         *      if the relationship is not found this method will throw RelationshipNotKnownException
-
-         *   that if the relationship originated in the local cohort, this repository is NOT the master (it is a reference copy)
-         *      if the relationship is from the local cohort and locally mastered this method will throw InvalidParameterException
-         *
-         *   that if the relationship originated externally, this repository is NOT already the replicator
-         *      if the relationship is from the outside the cohort and replicated here this method will throw InvalidParameterException
-         *
-         *   if something really unexpected happens this method will throw RepositoryErrorException but not in any of the above scenarios
-         */
-
-        return this.validateRelationshipCanBeRehomedByRepository(relationshipGUID,
-                                                                 realMetadataCollection.getRelationship(userId, relationshipGUID),
-                                                                 methodName);
-    }
-
-
-    /**
-     * Validate the requested relationship may be rehomed by this repository.
-     *
-     * @param relationshipGUID unique identifier (guid) for the requested entity.
-     * @param relationship the requested entity.
-     * @param methodName calling method
-     * @return current entity
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RelationshipNotKnownException the relationship identified by the guid is not found in the metadata collection.
-     */
-    private Relationship validateRelationshipCanBeRehomedByRepository(String           relationshipGUID,
-                                                                      Relationship     relationship,
-                                                                      String           methodName) throws InvalidParameterException,
-                                                                                                          RelationshipNotKnownException
-    {
-        if (relationship != null)
-        {
-            /*
-             * Check that it is legal to rehome the relationship.
-             * The caller can rehome the relationship provided:
-             * The relationship originates from the local cohort and is NOT locally mastered
-             * OR
-             * The relationship has instanceProvenanceType set to external and replicatedBy is NOT the local metadataCollectionId.
-             * Any other combination suggests that this is NOT a reference copy (of either an instance from the local cohort or
-             * an external relationship) and consequently cannot be rehomed.
-             *
-             * If not rehomable throw an InvalidParameterException.
-             */
-
-            /*
-             * Assume it is NOT OK to rehome the relationship, then inspect the conditions below
-             */
-            boolean updateAllowed = false;
-
-            InstanceProvenanceType instanceProvenance = relationship.getInstanceProvenanceType();
-            switch (instanceProvenance)
-            {
-                case LOCAL_COHORT:
-                    String entityHome = relationship.getMetadataCollectionId();
-                    if (entityHome != null && !entityHome.equals(metadataCollectionId))
-                    {
-                        updateAllowed = true;
-                    }
-                    break;
-
-                case EXTERNAL_SOURCE:
-                    String replicatedBy = relationship.getReplicatedBy();
-                    if (replicatedBy != null && !replicatedBy.equals(metadataCollectionId))
-                    {
-                        updateAllowed = true;
-                    }
-                    break;
-            }
-
-            if (updateAllowed)
-            {
-                return relationship;
-            }
-            else
-            {
-                /*
-                 * There is a logic error as the caller has requested update or delete of a relationship and this
-                 * repository does not have the right to perform the requested operation.
-                 *
-                 * The relationship should not be updated - throw InvalidParameterException
-                 */
-                String parameterName = "relationshipGUID";
-
-                throw new InvalidParameterException(OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL.getMessageDefinition(relationship.getMetadataCollectionId(),
-                                                                                                               methodName,
-                                                                                                               relationship.getGUID(),
-                                                                                                               metadataCollectionId,
-                                                                                                               repositoryName),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    parameterName);
-            }
-
-
-        }
-        else
-        {
-            /*
-             * There is a logic error as the caller has requested update of a relationship but the
-             * relationship cannot be found.
-             */
-            throw new RelationshipNotKnownException(OMRSErrorCode.NULL_INSTANCE.getMessageDefinition(repositoryName,
-                                                                                                     relationshipGUID,
-                                                                                                     methodName),
-                                                    this.getClass().getName(),
-                                                    methodName);
-        }
-    }
-
-
-
 
 
     /**
@@ -4708,7 +4377,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Validate parameters
          */
-        TypeDef typeDef = this.classifyEntityParameterValidation(userId, entityProxy.getGUID(), classificationName, classificationProperties, methodName);
+        TypeDef typeDef = this.classifyEntityParameterValidation(userId, entityProxy, classificationName, classificationProperties, methodName);
         if (! repositoryValidator.isActiveType(repositoryName, typeDef.getGUID(), typeDef.getName()))
         {
             throw new ClassificationErrorException(OMRSErrorCode.UNSUPPORTED_CLASSIFICATION.getMessageDefinition(repositoryName, classificationName),
@@ -4883,8 +4552,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Validate parameters
          */
-        String entityGUID = entityProxy.getGUID();
-        this.declassifyEntityParameterValidation(userId, entityGUID, classificationName, methodName);
+        this.declassifyEntityParameterValidation(userId, entityProxy, classificationName, methodName);
 
         /*
          * Check operation is allowed
@@ -5060,7 +4728,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Validate parameters
          */
-        this.classifyEntityParameterValidation(userId, entityProxy.getGUID(), classificationName, properties, methodName);
+        this.classifyEntityParameterValidation(userId, entityProxy, classificationName, properties, methodName);
 
         /*
          * Check operation is allowed
@@ -5707,7 +5375,21 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         Relationship relationship = realMetadataCollection.isRelationshipKnown(userId, deletedRelationshipGUID);
         if (relationship != null)
         {
-            this.validateRelationshipCanBeUpdated(deletedRelationshipGUID, relationship, methodName);
+            /*
+             * This method will check:
+             *
+             *   that the relationship can be retrieved (it exists) -
+             *      if the relationship is not found this method will throw RelationshipNotKnownException
+             *
+             *   that if the relationship originated in the local cohort, this repository is the master (it is not a reference copy)
+             *      if the relationship is from the local cohort but not locally mastered this method will throw InvalidParameterException
+             *
+             *   that if the relationship originated externally, this repository is the replicator
+             *      if the relationship is from the outside the cohort but not replicated here this method will throw InvalidParameterException
+             *
+             *   if something really unexpected happens this method will throw RepositoryErrorException but not in any of the above scenarios
+             */
+            relationship = this.validateRelationshipCanBeUpdatedByRepository(relationship.getGUID(), relationship, methodName);
 
             /*
              * Check operation is allowed
@@ -6077,7 +5759,24 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             /*
              * Locate entity and check it can be updated
              */
-            EntityDetail currentEntity = this.validateEntityCanBeRehomed(userId, entityGUID, methodName);
+            EntityDetail currentEntity = this.validateEntityIsNotProxy(userId, entityGUID, methodName);
+            /*
+             * This method will check:
+             *
+             *   that the entity can be retrieved (it exists and the entity is not a proxy) -
+             *      if the entity is not found this method will throw EntityNotKnownException
+             *      if the entity is found but is a proxy this method will map the underlying EntityProxyOnlyException to InvalidParameterException
+             *
+             *   that if the entity originated in the local cohort, this repository is NOT the master (it is a reference copy)
+             *      if the entity is from the local cohort and locally mastered this method will throw InvalidParameterException
+             *
+             *   that if the entity originated externally, this repository is NOT already the replicator
+             *      if the entity is from the outside the cohort and replicated here this method will throw InvalidParameterException
+             *
+             *   if something really unexpected happens this method will throw RepositoryErrorException but not in any of the above scenarios
+             */
+
+            repositoryValidator.validateEntityCanBeRehomed(repositoryName, metadataCollectionId, currentEntity, methodName);
 
             /*
              * Check operation is allowed
@@ -6401,7 +6100,22 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             /*
              * Locate relationship and check it can be updated
              */
-            Relationship currentRelationship = this.validateRelationshipCanBeRehomed(userId, relationshipGUID, methodName);
+            Relationship currentRelationship = realMetadataCollection.getRelationship(userId, relationshipGUID);
+            /*
+             * This method will check:
+             *
+             *   that the relationship can be retrieved (it exists) -
+             *      if the relationship is not found this method will throw RelationshipNotKnownException
+
+             *   that if the relationship originated in the local cohort, this repository is NOT the master (it is a reference copy)
+             *      if the relationship is from the local cohort and locally mastered this method will throw InvalidParameterException
+             *
+             *   that if the relationship originated externally, this repository is NOT already the replicator
+             *      if the relationship is from the outside the cohort and replicated here this method will throw InvalidParameterException
+             *
+             *   if something really unexpected happens this method will throw RepositoryErrorException but not in any of the above scenarios
+             */
+            repositoryValidator.validateRelationshipCanBeRehomed(repositoryName, metadataCollectionId, currentRelationship, methodName);
 
             /*
              * Check operation is allowed
@@ -6890,6 +6604,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String  methodName = "saveClassificationReferenceCopy";
         final String  instanceParameterName = "entity";
+        final String  classificationParameterName = "classification";
 
         /*
          * Validate parameters
@@ -6897,10 +6612,18 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         this.basicRequestValidation(userId, methodName);
         if (entity == null)
         {
-            throw new InvalidParameterException(OMRSErrorCode.NULL_REFERENCE_INSTANCE.getMessageDefinition(repositoryName, methodName),
+            throw new InvalidParameterException(OMRSErrorCode.NULL_REFERENCE_INSTANCE.getMessageDefinition(repositoryName, methodName, instanceParameterName),
                                                 this.getClass().getName(),
                                                 methodName,
                                                 instanceParameterName);
+        }
+
+        if (classification == null)
+        {
+            throw new InvalidParameterException(OMRSErrorCode.NULL_REFERENCE_INSTANCE.getMessageDefinition(repositoryName, methodName, classificationParameterName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                classificationParameterName);
         }
 
         repositoryValidator.validateInstanceType(repositoryName, entity);
@@ -6926,7 +6649,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * classification.  The entity may be either a locally homed entity or a reference copy.
      *
      * @param userId unique identifier for requesting user.
-     * @param entity entity that the classification is attached to.
+     * @param entityProxy entity that the classification is attached to.
      * @param classification classification to save.
      *
      * @throws InvalidParameterException one of the parameters is invalid or null.
@@ -6945,7 +6668,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      */
     @Override
     public void saveClassificationReferenceCopy(String         userId,
-                                                EntityProxy    entity,
+                                                EntityProxy    entityProxy,
                                                 Classification classification) throws InvalidParameterException,
                                                                                       RepositoryErrorException,
                                                                                       TypeErrorException,
@@ -6956,34 +6679,43 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                       FunctionNotSupportedException
     {
         final String  methodName = "saveClassificationReferenceCopy";
-        final String  instanceParameterName = "entity";
+        final String  instanceParameterName = "entityProxy";
+        final String  classificationParameterName = "classification";
 
         /*
          * Validate parameters
          */
         this.basicRequestValidation(userId, methodName);
-        if (entity == null)
+        if (entityProxy == null)
         {
-            throw new InvalidParameterException(OMRSErrorCode.NULL_REFERENCE_INSTANCE.getMessageDefinition(repositoryName, methodName),
+            throw new InvalidParameterException(OMRSErrorCode.NULL_REFERENCE_INSTANCE.getMessageDefinition(repositoryName, methodName, instanceParameterName),
                                                 this.getClass().getName(),
                                                 methodName,
                                                 instanceParameterName);
         }
 
-        repositoryValidator.validateInstanceType(repositoryName, entity);
-        repositoryValidator.validateHomeMetadataGUID(repositoryName, instanceParameterName, entity.getMetadataCollectionId(), methodName);
+        if (classification == null)
+        {
+            throw new InvalidParameterException(OMRSErrorCode.NULL_REFERENCE_INSTANCE.getMessageDefinition(repositoryName, methodName, classificationParameterName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                classificationParameterName);
+        }
+
+        repositoryValidator.validateInstanceType(repositoryName, entityProxy);
+        repositoryValidator.validateHomeMetadataGUID(repositoryName, instanceParameterName, entityProxy.getMetadataCollectionId(), methodName);
 
         /*
          * Validate that this instance is not from a future version of this OMRS with header values that
          * this version of the implementation does not understand.  Only save it if it is from the same or
          * past version of the OMRS.
          */
-        if (entity.getHeaderVersion() <= InstanceAuditHeader.CURRENT_AUDIT_HEADER_VERSION)
+        if (entityProxy.getHeaderVersion() <= InstanceAuditHeader.CURRENT_AUDIT_HEADER_VERSION)
         {
             /*
              * Save classification
              */
-            realMetadataCollection.saveClassificationReferenceCopy(userId, entity, classification);
+            realMetadataCollection.saveClassificationReferenceCopy(userId, entityProxy, classification);
         }
     }
 
@@ -7023,6 +6755,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
     {
         final String  methodName = "purgeClassificationReferenceCopy";
         final String  instanceParameterName = "entity";
+        final String  classificationParameterName = "classification";
 
         /*
          * Validate parameters
@@ -7030,10 +6763,17 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         this.basicRequestValidation(userId, methodName);
         if (entity == null)
         {
-            throw new InvalidParameterException(OMRSErrorCode.NULL_REFERENCE_INSTANCE.getMessageDefinition(repositoryName, methodName),
+            throw new InvalidParameterException(OMRSErrorCode.NULL_REFERENCE_INSTANCE.getMessageDefinition(repositoryName, methodName, instanceParameterName),
                                                 this.getClass().getName(),
                                                 methodName,
                                                 instanceParameterName);
+        }
+        if (classification == null)
+        {
+            throw new InvalidParameterException(OMRSErrorCode.NULL_REFERENCE_INSTANCE.getMessageDefinition(repositoryName, methodName, classificationParameterName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                classificationParameterName);
         }
 
         repositoryValidator.validateInstanceType(repositoryName, entity);
@@ -7050,6 +6790,80 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
              * Remove classification
              */
             realMetadataCollection.purgeClassificationReferenceCopy(userId, entity, classification);
+        }
+    }
+
+
+    /**
+     * Remove the reference copy of the classification from the local repository. This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or relationships that have come from open metadata archives.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy entity that the classification is attached to.
+     * @param classification classification to purge.
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws EntityConflictException the new entity conflicts with an existing entity.
+     * @throws InvalidEntityException the new entity has invalid contents.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    @Override
+    public  void purgeClassificationReferenceCopy(String         userId,
+                                                  EntityProxy    entityProxy,
+                                                  Classification classification) throws InvalidParameterException,
+                                                                                        TypeErrorException,
+                                                                                        PropertyErrorException,
+                                                                                        EntityConflictException,
+                                                                                        InvalidEntityException,
+                                                                                        RepositoryErrorException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        FunctionNotSupportedException
+    {
+        final String methodName = "purgeClassificationReferenceCopy (proxy)";
+        final String instanceParameterName = "entityProxy";
+        final String classificationParameterName = "classification";
+
+        /*
+         * Validate parameters
+         */
+        this.basicRequestValidation(userId, methodName);
+        if (entityProxy == null)
+        {
+            throw new InvalidParameterException(OMRSErrorCode.NULL_REFERENCE_INSTANCE.getMessageDefinition(repositoryName, methodName, instanceParameterName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                instanceParameterName);
+        }
+        if (classification == null)
+        {
+            throw new InvalidParameterException(OMRSErrorCode.NULL_REFERENCE_INSTANCE.getMessageDefinition(repositoryName, methodName, classificationParameterName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                classificationParameterName);
+        }
+
+        repositoryValidator.validateInstanceType(repositoryName, entityProxy);
+        repositoryValidator.validateHomeMetadataGUID(repositoryName, instanceParameterName, entityProxy.getMetadataCollectionId(), methodName);
+
+        /*
+         * Validate that this instance is not from a future version of this OMRS with header values that
+         * this version of the implementation does not understand.  Only save it if it is from the same or
+         * past version of the OMRS.
+         */
+        if (entityProxy.getHeaderVersion() <= InstanceAuditHeader.CURRENT_AUDIT_HEADER_VERSION)
+        {
+            /*
+             * Remove classification
+             */
+            realMetadataCollection.purgeClassificationReferenceCopy(userId, entityProxy, classification);
         }
     }
 

@@ -22,10 +22,10 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     private static final String workbenchId            = "repository-workbench";
     private static final String workbenchName          = "Open Metadata Repository Test Workbench";
     private static final String workbenchVersionNumber = "V1.1";
-    private static final String workbenchDocURL        = "https://egeria.odpi.org/open-metadata-conformance-suite/docs/" + workbenchId;
+    private static final String workbenchDocURL        = "https://egeria-project.org/guides/cts/" + workbenchId;
     private static final String tutType                = "Open Metadata Repository";
 
-    private OMRSAuditLog            auditLog;
+    private final OMRSAuditLog            auditLog;
 
     private String                  tutServerName               = null;
     private String                  tutMetadataCollectionId     = null;
@@ -38,21 +38,21 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     private String                  localMetadataCollectionId   = null;
     private OMRSRepositoryConnector localRepositoryConnector    = null;
 
-    private Map<String, AttributeTypeDef>    supportedAttributeTypeDefsByGUIDFromRESTAPI = new HashMap<>();
-    private Map<String, AttributeTypeDef>    supportedAttributeTypeDefsByGUIDFromEvents  = new HashMap<>();
-    private Map<String, AttributeTypeDef>    supportedAttributeTypeDefsByName            = new HashMap<>();
+    private       Map<String, AttributeTypeDef>    supportedAttributeTypeDefsByGUIDFromRESTAPI = new HashMap<>();
+    private final Map<String, AttributeTypeDef>    supportedAttributeTypeDefsByGUIDFromEvents  = new HashMap<>();
+    private final Map<String, AttributeTypeDef>    supportedAttributeTypeDefsByName            = new HashMap<>();
 
-    private Map<String, TypeDef>    supportedTypeDefsByGUIDFromRESTAPI = new HashMap<>();
-    private Map<String, TypeDef>    supportedTypeDefsByGUIDFromEvents  = new HashMap<>();
-    private Map<String, TypeDef>    supportedTypeDefsByName            = new HashMap<>();
+    private       Map<String, TypeDef>    supportedTypeDefsByGUIDFromRESTAPI = new HashMap<>();
+    private final Map<String, TypeDef>    supportedTypeDefsByGUIDFromEvents  = new HashMap<>();
+    private final Map<String, TypeDef>    supportedTypeDefsByName            = new HashMap<>();
 
 
-    private Map<String, List<String>>              entitySubTypes          = new HashMap<>();
-    private Map<String, List<String>>              relationshipSubTypes    = new HashMap<>();
-    private Map<String, List<String>>              relationshipEndTypes    = new HashMap<>();
-    private Map<String, List<List<String>>>        entityRelationshipTypes = new HashMap<>();
-    private Map<String, List<List<EntityDetail>>>  entityInstances         = new HashMap<>();
-    private Map<String, List<List<Relationship>>>  relationshipInstances   = new HashMap<>();
+    private final Map<String, List<String>>              entitySubTypes          = new HashMap<>();
+    private final Map<String, List<String>>              relationshipSubTypes    = new HashMap<>();
+    private final Map<String, List<String>>              relationshipEndTypes    = new HashMap<>();
+    private final Map<String, List<List<String>>>        entityRelationshipTypes = new HashMap<>();
+    private final Map<String, List<List<EntityDetail>>>  entityInstances         = new HashMap<>();
+    private final Map<String, List<List<Relationship>>>  relationshipInstances   = new HashMap<>();
 
 
 
@@ -411,7 +411,9 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
 
 
     /**
-     * {@inheritDoc}
+     * Accumulate the set of profile names registered with this work pad.
+     *
+     * @return the profile names
      */
     public synchronized List<String> getProfileNames()
     {
@@ -426,7 +428,10 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
 
 
     /**
-     * {@inheritDoc}
+     * Accumulate the evidences for a given profile.
+     *
+     * @param profileName for which to obtain the detailed results
+     * @return the test evidence organized by profile and requirement within profile
      */
     public synchronized OpenMetadataConformanceProfileResults getProfileResults(String profileName)
     {
@@ -440,7 +445,8 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
         {
 
             String candidateProfile = profile.getProfileName();
-            if (candidateProfile.equals(profileName)) {
+            if (candidateProfile.equals(profileName))
+            {
 
                 profileResults = new OpenMetadataConformanceProfileResults();
                 profileResults.setId(profile.getProfileId());
@@ -472,8 +478,8 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
                     List<OpenMetadataConformanceTestEvidence>       negativeTestEvidence = new ArrayList<>();
 
                     profileResults.setConformanceStatus(super.processEvidence(profileTestEvidence,
-                            positiveTestEvidence,
-                            negativeTestEvidence));
+                                                                              positiveTestEvidence,
+                                                                              negativeTestEvidence));
 
                     List<OpenMetadataConformanceRequirementResults> requirementResultsList = new ArrayList<>();
                     OpenMetadataConformanceRequirementResults       requirementResults;
@@ -509,8 +515,8 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
                             negativeTestEvidence = new ArrayList<>();
 
                             requirementResults.setConformanceStatus(super.processEvidence(requirementTestEvidence,
-                                    positiveTestEvidence,
-                                    negativeTestEvidence));
+                                                                                          positiveTestEvidence,
+                                                                                          negativeTestEvidence));
 
                             if (!positiveTestEvidence.isEmpty())
                             {
@@ -582,8 +588,8 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
 
         for (RepositoryConformanceProfile profile : profiles)
         {
-
             profileSummary = new OpenMetadataConformanceProfileSummary();
+
             profileSummary.setId(profile.getProfileId());
             profileSummary.setName(profile.getProfileName());
             profileSummary.setDocumentationURL(profile.getProfileDocumentationURL());
@@ -592,54 +598,67 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
 
             List<OpenMetadataConformanceTestEvidence> profileTestEvidence = new ArrayList<>();
 
-            if (testEvidenceList != null) {
-                for (OpenMetadataConformanceTestEvidence testEvidenceItem : testEvidenceList) {
-                    if ((testEvidenceItem != null) && (testEvidenceItem.getProfileId().intValue() == profileSummary.getId().intValue())) {
+            if (testEvidenceList != null)
+            {
+                for (OpenMetadataConformanceTestEvidence testEvidenceItem : testEvidenceList)
+                {
+                    if ((testEvidenceItem != null) && (testEvidenceItem.getProfileId().intValue() == profile.getProfileId().intValue()))
+                    {
                         profileTestEvidence.add(testEvidenceItem);
                     }
                 }
             }
 
-            if (profileTestEvidence.isEmpty()) {
+            if (profileTestEvidence.isEmpty())
+            {
                 profileSummary.setConformanceStatus(OpenMetadataConformanceStatus.UNKNOWN_STATUS);
-            } else {
+            }
+            else
+            {
                 List<OpenMetadataConformanceTestEvidence> positiveTestEvidence = new ArrayList<>();
                 List<OpenMetadataConformanceTestEvidence> negativeTestEvidence = new ArrayList<>();
 
                 profileSummary.setConformanceStatus(super.processEvidence(profileTestEvidence,
-                        positiveTestEvidence,
-                        negativeTestEvidence));
+                                                                          positiveTestEvidence,
+                                                                          negativeTestEvidence));
 
                 List<OpenMetadataConformanceRequirementSummary> requirementResultsList = new ArrayList<>();
                 OpenMetadataConformanceRequirementSummary requirementSummary;
 
 
-                for (RepositoryConformanceProfileRequirement requirement : requirements) {
-                    requirementSummary = new OpenMetadataConformanceRequirementSummary();
+                for (RepositoryConformanceProfileRequirement requirement : requirements)
+                {
+                    if (requirement.getProfileId().intValue() == profile.getProfileId().intValue())
+                    {
+                        requirementSummary = new OpenMetadataConformanceRequirementSummary();
 
-                    requirementSummary.setId(requirement.getRequirementId());
-                    requirementSummary.setName(requirement.getName());
-                    requirementSummary.setDescription(requirement.getDescription());
-                    requirementSummary.setDocumentationURL(requirement.getDocumentationURL());
+                        requirementSummary.setId(requirement.getRequirementId());
+                        requirementSummary.setName(requirement.getName());
+                        requirementSummary.setDescription(requirement.getDescription());
+                        requirementSummary.setDocumentationURL(requirement.getDocumentationURL());
 
-                    List<OpenMetadataConformanceTestEvidence> requirementTestEvidence = new ArrayList<>();
+                        List<OpenMetadataConformanceTestEvidence> requirementTestEvidence = new ArrayList<>();
 
-                    for (OpenMetadataConformanceTestEvidence testEvidenceItem : profileTestEvidence) {
-                        if (testEvidenceItem != null) {
-                            if (testEvidenceItem.getRequirementId().intValue() == requirementSummary.getId().intValue()) {
-                                requirementTestEvidence.add(testEvidenceItem);
+                        for (OpenMetadataConformanceTestEvidence testEvidenceItem : profileTestEvidence)
+                        {
+                            if (testEvidenceItem != null)
+                            {
+                                if (testEvidenceItem.getRequirementId().intValue() == requirementSummary.getId().intValue())
+                                {
+                                    requirementTestEvidence.add(testEvidenceItem);
+                                }
                             }
                         }
+
+                        positiveTestEvidence = new ArrayList<>();
+                        negativeTestEvidence = new ArrayList<>();
+
+                        requirementSummary.setConformanceStatus(super.processEvidence(requirementTestEvidence,
+                                                                                      positiveTestEvidence,
+                                                                                      negativeTestEvidence));
+
+                        requirementResultsList.add(requirementSummary);
                     }
-
-                    positiveTestEvidence = new ArrayList<>();
-                    negativeTestEvidence = new ArrayList<>();
-
-                    requirementSummary.setConformanceStatus(super.processEvidence(requirementTestEvidence,
-                            positiveTestEvidence,
-                            negativeTestEvidence));
-
-                    requirementResultsList.add(requirementSummary);
                 }
 
                 profileSummary.setRequirementSummary(requirementResultsList);
@@ -730,7 +749,8 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     void addEntityRelationshipType(String entityTypeName, String relationshipTypeName, int end)
     {
         List<List<String>> bothEndLists = this.entityRelationshipTypes.get(entityTypeName);
-        if (bothEndLists == null) {
+        if (bothEndLists == null)
+        {
             List<String> end1List = new ArrayList<>();
             List<String> end2List = new ArrayList<>();
             bothEndLists = new ArrayList<>();
@@ -738,11 +758,14 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
             bothEndLists.add(end2List);
             this.entityRelationshipTypes.put(entityTypeName,bothEndLists);
         }
-        if (end == 1) {
+
+        if (end == 1)
+        {
             List<String> end1List = bothEndLists.get(0);
             end1List.add(relationshipTypeName);
         }
-        else if (end == 2) {
+        else if (end == 2)
+        {
             List<String> end1List = bothEndLists.get(1);
             end1List.add(relationshipTypeName);
         }

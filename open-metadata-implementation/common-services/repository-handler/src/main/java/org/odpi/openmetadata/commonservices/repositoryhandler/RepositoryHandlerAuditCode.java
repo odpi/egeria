@@ -90,6 +90,12 @@ public enum RepositoryHandlerAuditCode implements AuditLogMessageSet
                         "The system is unable to format all or part of the response because the entity either has effectivity dates that are not effective for the time that the entity is retrieved or it is classified as a memento.",
                         "Use knowledge of the request and the contents of the repositories to determine if the entity is set up correctly or needs to be updated."),
 
+    FUNCTION_NOT_SUPPORTED("OMAG-REPOSITORY-HANDLER-0010",
+                          OMRSAuditLogRecordSeverity.ERROR,
+                          "Method {0} called from {1} for service {2} is using function that not supported by any of the metadata repositories connected to {3} - error message is: {4}",
+                          "The system is unable to process the request because none of the members of the connected cohort(s) support this function.",
+                          "Add an Egeria native metadata repository to one of the connected cohorts.  This will provide the support that you need."),
+
     ;
 
     private final String                     logMessageId;

@@ -8,7 +8,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
-import java.util.UUID;
 
 /**
  * CommentBuilder is able to build the properties for a Comment entity.

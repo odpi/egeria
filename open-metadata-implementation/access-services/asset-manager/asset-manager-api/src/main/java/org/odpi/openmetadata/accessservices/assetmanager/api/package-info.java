@@ -2,8 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 /**
- * This package contains the different interfaces of the asset manager.  Each interface is
- * focused on the exchange of groups of related metadata elements between a third party
+ * This package contains the different interfaces of the asset manager.
+ *
+ * Each interface is focused on the exchange of groups of related metadata elements between a third party
  * asset manager and open metadata.
  *
  * <ul>

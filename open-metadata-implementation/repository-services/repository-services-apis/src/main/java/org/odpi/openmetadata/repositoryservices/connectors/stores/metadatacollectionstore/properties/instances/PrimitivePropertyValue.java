@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * PrimitivePropertyValue stores a single primitive property.  This is stored in the specific Java class
- * for the property value's type although it is stored as an object.
+ * for the property value's type, although it is stored as an object.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -175,13 +175,22 @@ public class PrimitivePropertyValue extends InstancePropertyValue
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof PrimitivePropertyValue))
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
+
         PrimitivePropertyValue that = (PrimitivePropertyValue) objectToCompare;
-        return primitiveDefCategory == that.primitiveDefCategory &&
-                Objects.equals(primitiveValue, that.primitiveValue);
+
+        if (primitiveDefCategory != that.primitiveDefCategory)
+        {
+            return false;
+        }
+        return primitiveValue != null ? primitiveValue.equals(that.primitiveValue) : that.primitiveValue == null;
     }
 
 

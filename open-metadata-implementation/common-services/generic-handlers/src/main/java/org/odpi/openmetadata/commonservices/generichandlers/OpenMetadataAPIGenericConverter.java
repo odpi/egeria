@@ -12,7 +12,17 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatu
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementVersions;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -953,7 +963,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param instanceHeader values from the server
      * @return OCF ElementType object
      */
-    protected ElementType getElementType(InstanceAuditHeader instanceHeader)
+    public ElementType getElementType(InstanceAuditHeader instanceHeader)
     {
         ElementType elementType = new ElementType();
 
@@ -961,12 +971,15 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
         if (instanceType != null)
         {
-            elementType.setTypeId(instanceType.getTypeDefGUID());
-            elementType.setTypeName(instanceType.getTypeDefName());
-            elementType.setTypeVersion(instanceType.getTypeDefVersion());
-            elementType.setTypeDescription(instanceType.getTypeDefDescription());
+            String typeDefName = instanceType.getTypeDefName();
+            TypeDef typeDef = repositoryHelper.getTypeDefByName(serviceName, typeDefName);
 
-            List<TypeDefLink> typeDefSuperTypes = instanceType.getTypeDefSuperTypes();
+            elementType.setTypeId(instanceType.getTypeDefGUID());
+            elementType.setTypeName(typeDefName);
+            elementType.setTypeVersion(instanceType.getTypeDefVersion());
+            elementType.setTypeDescription(typeDef.getDescription());
+
+            List<TypeDefLink> typeDefSuperTypes = repositoryHelper.getSuperTypes(serviceName, typeDefName);
 
             if ((typeDefSuperTypes != null) && (! typeDefSuperTypes.isEmpty()))
             {
@@ -5063,7 +5076,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @return string
      */
     protected String removeRequestType(InstanceProperties instanceProperties)
-
     {
         final String methodName = "removeRequestType";
 
@@ -5071,6 +5083,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         {
             return repositoryHelper.removeStringProperty(serviceName,
                                                          OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the serviceRequestType property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string
+     */
+    protected String removeServiceRequestType(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeServiceRequestType";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.SERVICE_REQUEST_TYPE_PROPERTY_NAME,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -5245,6 +5279,29 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract and delete the guard property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string
+     */
+    protected String removeGuard(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeGuard";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.GUARD_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract and delete the mandatoryGuards property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
@@ -5264,6 +5321,75 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         }
 
         return null;
+    }
+
+
+    /**
+     * Extract and delete the mandatoryGuard property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return flag
+     */
+    protected boolean removeMandatoryGuard(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeMandatoryGuard";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeBooleanProperty(serviceName,
+                                                          OpenMetadataAPIMapper.MANDATORY_GUARD_PROPERTY_NAME,
+                                                          instanceProperties,
+                                                          methodName);
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Extract and delete the ignoreMultipleTriggers property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return flag
+     */
+    protected boolean removeIgnoreMultipleTriggers(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeIgnoreMultipleTriggers";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeBooleanProperty(serviceName,
+                                                          OpenMetadataAPIMapper.IGNORE_MULTIPLE_TRIGGERS_PROPERTY_NAME,
+                                                          instanceProperties,
+                                                          methodName);
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Extract and delete the waitTime property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return flag
+     */
+    protected int removeWaitTime(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeWaitTime";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeIntProperty(serviceName,
+                                                       OpenMetadataAPIMapper.WAIT_TIME_PROPERTY_NAME,
+                                                       instanceProperties,
+                                                       methodName);
+        }
+
+        return 0;
     }
 
 
@@ -5307,6 +5433,29 @@ public abstract class OpenMetadataAPIGenericConverter<B>
                                                               OpenMetadataAPIMapper.COMPLETION_GUARDS_PROPERTY_NAME,
                                                               instanceProperties,
                                                               methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the completionMessage property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string
+     */
+    protected String removeCompletionMessage(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeCompletionMessage";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.COMPLETION_MESSAGE_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
         }
 
         return null;

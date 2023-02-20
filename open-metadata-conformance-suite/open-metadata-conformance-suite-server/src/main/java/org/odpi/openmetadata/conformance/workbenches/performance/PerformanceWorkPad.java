@@ -18,7 +18,7 @@ public class PerformanceWorkPad extends OpenMetadataConformanceWorkbenchWorkPad
     private static final String workbenchId            = "performance-workbench";
     private static final String workbenchName          = "Open Metadata Performance Test Workbench";
     private static final String workbenchVersionNumber = "V1.1";
-    private static final String workbenchDocURL        = "https://egeria.odpi.org/open-metadata-conformance-suite/docs/" + workbenchId;
+    private static final String workbenchDocURL        = "https://egeria-project.org/guides/cts/" + workbenchId;
     private static final String tutType                = "Open Metadata Repository";
 
     private OMRSAuditLog            auditLog;

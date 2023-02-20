@@ -4,7 +4,8 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 
 import java.util.Map;
 
-public interface FFDCResponse {
+public interface FFDCResponse
+{
 
     /**
      * Return the HTTP Code to use if forwarding response to HTTP client.

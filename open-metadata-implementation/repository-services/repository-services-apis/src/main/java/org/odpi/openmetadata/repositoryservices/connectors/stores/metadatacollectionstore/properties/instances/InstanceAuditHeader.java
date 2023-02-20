@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * InstanceAuditHeader manages the attributes that are common to classifications,
  * entities and relationships.  We need to be able to audit when these fundamental elements change and
- * by whom.  Thus they share this header.  The fields in this header are managed as follows:
+ * by whom.  Thus, they share this header.  The fields in this header are managed as follows:
  * <ul>
  *     <li>
  *         Type identifies which TypeDef defines the type of concept/thing that this instance represents and
@@ -91,13 +91,6 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     private static final long    serialVersionUID = 1L;
 
     public static final long CURRENT_AUDIT_HEADER_VERSION = 1;
-
-    /*
-     * Version number for this header.  This is used to ensure that all the critical header information
-     * in read in a back-level version of the OMRS.  The default is 0 to indicate that the instance came from
-     * a version of the OMRS that does not have a version number encoded.
-     */
-    private long headerVersion = 0;
 
     /*
      * Summary information about this element's type
@@ -273,7 +266,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
 
     /**
      * Return the metadata collection id of the cohort member responsible for replicating metadata
-     * owned by repositories (eg data tools/engines/platforms) from outside of the
+     * owned by repositories (eg data tools/engines/platforms) from outside the
      * cohort or from an open metadata archive.  Null means the metadata is owned
      * by a cohort member, or is not to be replicated.
      *
@@ -287,7 +280,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
 
     /**
      * Set up the metadata collection id of the cohort member responsible for replicating metadata
-     * owned by repositories (eg data tools/engines/platforms) from outside of the
+     * owned by repositories (eg data tools/engines/platforms) from outside the
      * cohort or from an open metadata archive.  Null means the metadata is owned
      * by a cohort member, or is not to be replicated.
      *
@@ -530,7 +523,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     @Override
     public String toString() {
         return "InstanceAuditHeader{" +
-                "headerVersion=" + headerVersion +
+                "headerVersion=" + getHeaderVersion() +
                 ", type=" + type +
                 ", instanceProvenanceType=" + instanceProvenanceType +
                 ", metadataCollectionId='" + metadataCollectionId + '\'' +
@@ -563,28 +556,75 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof InstanceAuditHeader))
         {
             return false;
         }
-        InstanceAuditHeader that = (InstanceAuditHeader) objectToCompare;
-        return getVersion() == that.getVersion() &&
-                       Objects.equals(getType(), that.getType()) &&
-                       getInstanceProvenanceType() == that.getInstanceProvenanceType() &&
-                       Objects.equals(getMetadataCollectionId(), that.getMetadataCollectionId()) &&
-                       Objects.equals(getMetadataCollectionName(), that.getMetadataCollectionName()) &&
-                       Objects.equals(getReplicatedBy(), that.getReplicatedBy()) &&
-                       Objects.equals(getInstanceLicense(), that.getInstanceLicense()) &&
-                       Objects.equals(getCreatedBy(), that.getCreatedBy()) &&
-                       Objects.equals(getUpdatedBy(), that.getUpdatedBy()) &&
-                       Objects.equals(getMaintainedBy(), that.getMaintainedBy()) &&
-                       Objects.equals(getCreateTime(), that.getCreateTime()) &&
-                       Objects.equals(getUpdateTime(), that.getUpdateTime()) &&
-                       currentStatus == that.currentStatus &&
-                       getStatusOnDelete() == that.getStatusOnDelete() &&
-                       Objects.equals(getMappingProperties(), that.getMappingProperties());
-    }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
 
+        InstanceAuditHeader that = (InstanceAuditHeader) objectToCompare;
+
+        if (version != that.version)
+        {
+            return false;
+        }
+        if (type != null ? ! type.equals(that.type) : that.type != null)
+        {
+            return false;
+        }
+        if (instanceProvenanceType != that.instanceProvenanceType)
+        {
+            return false;
+        }
+        if (metadataCollectionId != null ? ! metadataCollectionId.equals(that.metadataCollectionId) : that.metadataCollectionId != null)
+        {
+            return false;
+        }
+        if (metadataCollectionName != null ? ! metadataCollectionName.equals(that.metadataCollectionName) : that.metadataCollectionName != null)
+        {
+            return false;
+        }
+        if (replicatedBy != null ? ! replicatedBy.equals(that.replicatedBy) : that.replicatedBy != null)
+        {
+            return false;
+        }
+        if (instanceLicense != null ? ! instanceLicense.equals(that.instanceLicense) : that.instanceLicense != null)
+        {
+            return false;
+        }
+        if (createdBy != null ? ! createdBy.equals(that.createdBy) : that.createdBy != null)
+        {
+            return false;
+        }
+        if (updatedBy != null ? ! updatedBy.equals(that.updatedBy) : that.updatedBy != null)
+        {
+            return false;
+        }
+        if (maintainedBy != null ? ! maintainedBy.equals(that.maintainedBy) : that.maintainedBy != null)
+        {
+            return false;
+        }
+        if (createTime != null ? ! createTime.equals(that.createTime) : that.createTime != null)
+        {
+            return false;
+        }
+        if (updateTime != null ? ! updateTime.equals(that.updateTime) : that.updateTime != null)
+        {
+            return false;
+        }
+        if (currentStatus != that.currentStatus)
+        {
+            return false;
+        }
+        if (statusOnDelete != that.statusOnDelete)
+        {
+            return false;
+        }
+        return mappingProperties != null ? mappingProperties.equals(that.mappingProperties) : that.mappingProperties == null;
+    }
 
 
     /**
@@ -595,9 +635,22 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(getType(), getInstanceProvenanceType(), getMetadataCollectionId(),
-                            getMetadataCollectionName(),
-                            getInstanceLicense(), getCreatedBy(), getUpdatedBy(), getCreateTime(), getMaintainedBy(), getUpdateTime(),
-                            getVersion(), getStatus(), getStatusOnDelete(), getMappingProperties());
+        int result = super.hashCode();
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (instanceProvenanceType != null ? instanceProvenanceType.hashCode() : 0);
+        result = 31 * result + (metadataCollectionId != null ? metadataCollectionId.hashCode() : 0);
+        result = 31 * result + (metadataCollectionName != null ? metadataCollectionName.hashCode() : 0);
+        result = 31 * result + (replicatedBy != null ? replicatedBy.hashCode() : 0);
+        result = 31 * result + (instanceLicense != null ? instanceLicense.hashCode() : 0);
+        result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
+        result = 31 * result + (updatedBy != null ? updatedBy.hashCode() : 0);
+        result = 31 * result + (maintainedBy != null ? maintainedBy.hashCode() : 0);
+        result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
+        result = 31 * result + (updateTime != null ? updateTime.hashCode() : 0);
+        result = 31 * result + (int) (version ^ (version >>> 32));
+        result = 31 * result + (currentStatus != null ? currentStatus.hashCode() : 0);
+        result = 31 * result + (statusOnDelete != null ? statusOnDelete.hashCode() : 0);
+        result = 31 * result + (mappingProperties != null ? mappingProperties.hashCode() : 0);
+        return result;
     }
 }

@@ -55,8 +55,8 @@ public abstract class RepositoryGovernanceContext
     protected String                   requestType;
     protected Map<String, String>      requestParameters;
 
-    private List<RequestSourceElement> requestSourceElements;
-    private List<ActionTargetElement>  actionTargetElements;
+    private final List<RequestSourceElement> requestSourceElements;
+    private final List<ActionTargetElement>  actionTargetElements;
 
 
     /**
@@ -246,7 +246,7 @@ public abstract class RepositoryGovernanceContext
      * @param standard     name of the standard null means any.
      * @param organization name of the organization null means any.
      * @param identifier   identifier of the element in the standard null means any.
-     * @return TypeDefs list each entry in the list contains a typedef.  This is is a structure
+     * @return TypeDefs list each entry in the list contains a typedef.  This is a structure
      * describing the TypeDef's category and properties.
      * @throws InvalidParameterException  all attributes of the external id are null.
      * @throws RepositoryErrorException   there is a problem communicating with the metadata repository.
@@ -263,7 +263,7 @@ public abstract class RepositoryGovernanceContext
      * Return the TypeDefs that match the search criteria.
      *
      * @param searchCriteria String search criteria.
-     * @return TypeDefs list each entry in the list contains a typedef.  This is is a structure
+     * @return TypeDefs list each entry in the list contains a typedef.  This is a structure
      * describing the TypeDef's category and properties.
      * @throws InvalidParameterException  the searchCriteria is null.
      * @throws RepositoryErrorException   there is a problem communicating with the metadata repository.
@@ -614,7 +614,7 @@ public abstract class RepositoryGovernanceContext
      * Return a list of entities that have the requested type of classifications attached.
      *
      * @param entityTypeGUID unique identifier for the type of entity requested.  Null means any type of entity
-     *                       (but could be slow so not recommended.
+     *                       (but could be slow so not recommended).
      * @param classificationName name of the classification, note a null is not valid.
      * @param matchClassificationProperties list of classification properties used to narrow the search (where any String
      *                                      property's value should be defined as a Java regular expression, even if it
@@ -961,6 +961,7 @@ public abstract class RepositoryGovernanceContext
      * @param outputGuards optional guard strings for triggering subsequent action(s)
      * @param newRequestParameters additional request parameters.  These override/augment any request parameters defined for the next invoked service
      * @param newActionTargets list of action target names to GUIDs for the resulting governance action service
+     * @param completionMessage message to describe completion results or reasons for failure
      *
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance
@@ -970,9 +971,10 @@ public abstract class RepositoryGovernanceContext
     public abstract  void recordCompletionStatus(CompletionStatus      status,
                                                  List<String>          outputGuards,
                                                  Map<String, String>   newRequestParameters,
-                                                 List<NewActionTarget> newActionTargets) throws InvalidParameterException,
-                                                                                                UserNotAuthorizedException,
-                                                                                                PropertyServerException;
+                                                 List<NewActionTarget> newActionTargets,
+                                                 String                completionMessage) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException;
 
 
     /**

@@ -292,9 +292,6 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
             response.setExceptionInfo(e, className);
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ",response=" + response);
-        }
         return response;
     }
 

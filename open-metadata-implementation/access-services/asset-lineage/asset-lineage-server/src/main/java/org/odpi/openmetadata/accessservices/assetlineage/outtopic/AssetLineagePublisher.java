@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.outtopic;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import org.apache.commons.collections4.CollectionUtils;
@@ -54,6 +55,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 public class AssetLineagePublisher {
 
     private static final Logger log = LoggerFactory.getLogger(AssetLineagePublisher.class);
+    private static final ObjectWriter OBJECT_WRITER = new ObjectMapper().writer();
     private static final AssetLineageInstanceHandler instanceHandler = new AssetLineageInstanceHandler();
     private final OpenMetadataTopicConnector outTopicConnector;
     private final String serverUserName;
@@ -314,8 +316,7 @@ public class AssetLineagePublisher {
         if (outTopicConnector == null)
             return;
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        outTopicConnector.sendEvent(objectMapper.writeValueAsString(event));
+        outTopicConnector.sendEvent(OBJECT_WRITER.writeValueAsString(event));
 
     }
 
@@ -363,17 +364,17 @@ public class AssetLineagePublisher {
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      * @throws JsonProcessingException   exception parsing the event json
      */
-    public void publishLineageMappingRelationshipEvent(LineageRelationship lineageRelationship, AssetLineageEventType eventType) throws
+    public void publishDataFlowRelationshipEvent(LineageRelationship lineageRelationship, AssetLineageEventType eventType) throws
                                                                                                                                  OCFCheckedExceptionBase,
                                                                                                                                  JsonProcessingException {
         publishLineageRelationshipEvent(lineageRelationship, eventType);
 
-        publishLineageMappingContext(lineageRelationship.getSourceEntity());
-        publishLineageMappingContext(lineageRelationship.getTargetEntity());
+        publishDataFlowContext(lineageRelationship.getSourceEntity());
+        publishDataFlowContext(lineageRelationship.getTargetEntity());
     }
 
     /**
-     * Publishes the context for an entity involved in a lineage mapping. If the entity is of type column, it will publish the column context.
+     * Publishes the context for an entity involved in a data flow. If the entity is of type column, it will publish the column context.
      * If the entity is of type asset, it will publish the asset context.
      *
      * @param lineageEntity the lineage entity
@@ -381,7 +382,7 @@ public class AssetLineagePublisher {
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      * @throws JsonProcessingException   exception parsing the event json
      */
-    private void publishLineageMappingContext(LineageEntity lineageEntity) throws JsonProcessingException, OCFCheckedExceptionBase {
+    private void publishDataFlowContext(LineageEntity lineageEntity) throws JsonProcessingException, OCFCheckedExceptionBase {
         publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildColumnContext(serverUserName, lineageEntity)));
         publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildAssetContext(serverUserName, lineageEntity)));
 

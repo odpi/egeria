@@ -8,6 +8,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterE
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.metadatahighway.OMRSMetadataHighwayManager;
+import org.odpi.openmetadata.repositoryservices.rest.properties.BooleanResponse;
 import org.odpi.openmetadata.repositoryservices.rest.properties.CohortListResponse;
 import org.odpi.openmetadata.repositoryservices.rest.properties.CohortMembershipListResponse;
 import org.odpi.openmetadata.repositoryservices.rest.properties.CohortMembershipResponse;
@@ -77,7 +78,7 @@ public class OMRSMetadataHighwayRESTServices
             exceptionHandler.captureGenericException(response, error, userId, serverName, methodName);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        log.debug("Returning from method: " + methodName + " with response: " + response);
 
         return response;
     }
@@ -123,7 +124,7 @@ public class OMRSMetadataHighwayRESTServices
             exceptionHandler.captureGenericException(response, error, userId, serverName, methodName);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        log.debug("Returning from method: " + methodName + " with response: " + response);
 
         return response;
     }
@@ -171,7 +172,58 @@ public class OMRSMetadataHighwayRESTServices
             exceptionHandler.captureGenericException(response, error, userId, serverName, methodName);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        log.debug("Returning from method: " + methodName + " with response: " + response);
+
+        return response;
+    }
+
+
+    /**
+     * A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the
+     * open metadata repository.  It only needs to do this once and uses a timestamp to record that the registration
+     * event has been sent.
+     *
+     * If the server has already registered in the past, it sends a reregistration request.
+     *
+     * @param serverName server to query
+     * @param userId calling user
+     * @param cohortName name of cohort
+     * @return flag indicating that the cohort name was recognized
+     */
+    public BooleanResponse connectToCohort(String          serverName,
+                                           String          userId,
+                                           String          cohortName)
+    {
+        final String methodName = "connectToCohort";
+
+        log.debug("Calling method: " + methodName);
+
+        BooleanResponse response = new BooleanResponse();
+
+        try
+        {
+            OMRSMetadataHighwayManager metadataHighwayManager = getMetadataHighway(userId, serverName, methodName);
+
+            response.setFlag(metadataHighwayManager.connectToCohort(cohortName));
+        }
+        catch (InvalidParameterException  error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (UserNotAuthorizedException  error)
+        {
+            exceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (RepositoryErrorException error)
+        {
+            exceptionHandler.captureRepositoryErrorException(response, error);
+        }
+        catch (Exception  error)
+        {
+            exceptionHandler.captureGenericException(response, error, userId, serverName, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response);
 
         return response;
     }
@@ -218,7 +270,101 @@ public class OMRSMetadataHighwayRESTServices
             exceptionHandler.captureGenericException(response, error, userId, serverName, methodName);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        log.debug("Returning from method: " + methodName + " with response: " + response);
+
+        return response;
+    }
+
+
+    /**
+     * Disconnect communications from a specific cohort.
+     *
+     * @param serverName server to query
+     * @param userId calling user
+     * @param cohortName name of cohort
+     * @return boolean flag to indicate success.
+     */
+    public BooleanResponse disconnectFromCohort(String serverName,
+                                                String userId,
+                                                String cohortName)
+    {
+        final String methodName = "disconnectFromCohort";
+
+        log.debug("Calling method: " + methodName);
+
+        BooleanResponse response = new BooleanResponse();
+
+        try
+        {
+            OMRSMetadataHighwayManager metadataHighwayManager = getMetadataHighway(userId, serverName, methodName);
+
+            response.setFlag(metadataHighwayManager.disconnectFromCohort(cohortName, false));
+        }
+        catch (InvalidParameterException  error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (UserNotAuthorizedException  error)
+        {
+            exceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (RepositoryErrorException error)
+        {
+            exceptionHandler.captureRepositoryErrorException(response, error);
+        }
+        catch (Exception  error)
+        {
+            exceptionHandler.captureGenericException(response, error, userId, serverName, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response);
+
+        return response;
+    }
+
+
+    /**
+     * Unregister from a specific cohort and disconnect from cohort communications.
+     *
+     * @param serverName server to query
+     * @param userId calling user
+     * @param cohortName name of cohort
+     * @return boolean flag to indicate success.
+     */
+    public BooleanResponse unregisterFromCohort(String serverName,
+                                                String userId,
+                                                String cohortName)
+    {
+        final String methodName = "unregisterFromCohort";
+
+        log.debug("Calling method: " + methodName);
+
+        BooleanResponse response = new BooleanResponse();
+
+        try
+        {
+            OMRSMetadataHighwayManager metadataHighwayManager = getMetadataHighway(userId, serverName, methodName);
+
+            response.setFlag(metadataHighwayManager.disconnectFromCohort(cohortName, true));
+        }
+        catch (InvalidParameterException  error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (UserNotAuthorizedException  error)
+        {
+            exceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (RepositoryErrorException error)
+        {
+            exceptionHandler.captureRepositoryErrorException(response, error);
+        }
+        catch (Exception  error)
+        {
+            exceptionHandler.captureGenericException(response, error, userId, serverName, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response);
 
         return response;
     }

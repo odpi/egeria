@@ -3,18 +3,12 @@
 package org.odpi.openmetadata.accessservices.governanceengine.converters;
 
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionTypeElement;
-import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceServiceElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.NextGovernanceActionTypeElement;
-import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RegisteredGovernanceServiceElement;
-import org.odpi.openmetadata.accessservices.governanceengine.properties.RegisteredGovernanceService;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -23,8 +17,8 @@ import java.util.Map;
  */
 public class NextGovernanceActionTypeConverter
 {
-    private OMRSRepositoryHelper       repositoryHelper;
-    private String                     serviceName;
+    private final OMRSRepositoryHelper       repositoryHelper;
+    private final String                     serviceName;
 
     /**
      * Constructor captures the repository content needed to create the endpoint object.
@@ -70,10 +64,7 @@ public class NextGovernanceActionTypeConverter
                                                                            OpenMetadataAPIMapper.MANDATORY_GUARD_PROPERTY_NAME,
                                                                            instanceProperties,
                                                                            methodName));
-                bean.setIgnoreMultipleTriggers(repositoryHelper.getBooleanProperty(serviceName,
-                                                                                   OpenMetadataAPIMapper.IGNORE_MULTIPLE_TRIGGERS_PROPERTY_NAME,
-                                                                                   instanceProperties,
-                                                                                   methodName));
+
                 bean.setNextActionLinkGUID(relationship.getGUID());
             }
         }

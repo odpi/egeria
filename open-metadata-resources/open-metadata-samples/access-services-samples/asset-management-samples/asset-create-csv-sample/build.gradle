@@ -13,8 +13,8 @@ dependencies {
     compileOnly project(':open-metadata-implementation:access-services:asset-owner:asset-owner-api')
     compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
     runtimeOnly 'ch.qos.logback:logback-classic'
-    compileOnly  project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-api')
-    compileOnly project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
+    compileOnly  project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-api')
+    compileOnly project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-client')
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
 
 }

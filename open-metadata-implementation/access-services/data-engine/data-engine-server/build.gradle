@@ -22,7 +22,7 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:repository-handler')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
-    implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-handlers')
+    implementation project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-handlers')
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation 'org.apache.commons:commons-collections4'
     implementation 'org.springframework:spring-web'
@@ -34,7 +34,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testImplementation 'org.mockito:mockito-core'
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
-    implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-api')
+    implementation project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-api')
     implementation project(':open-metadata-implementation:access-services:data-engine:data-engine-topic-connectors')
 }
 

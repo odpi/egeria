@@ -126,6 +126,9 @@ public class DatabaseColumnConverter<B> extends DataManagerOMASConverter<B>
                         {
                             if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.FOREIGN_KEY_RELATIONSHIP_TYPE_NAME))
                             {
+                                /*
+                                 * Foreign key properties are only set up in the column that contains the  foreign key which is at end 2 of the relationship.
+                                 */
                                 if (schemaAttributeEntity.getGUID().equals(relationship.getEntityTwoProxy().getGUID()))
                                 {
                                     DatabaseForeignKeyProperties databaseForeignKeyProperties = new DatabaseForeignKeyProperties();
@@ -144,8 +147,12 @@ public class DatabaseColumnConverter<B> extends DataManagerOMASConverter<B>
                                     databaseForeignKeyProperties.setExtendedProperties(this.getRemainingExtendedProperties(relationshipProperties));
 
                                     bean.setForeignKeyProperties(databaseForeignKeyProperties);
-                                    bean.setReferencedColumnGUID(relationship.getEntityTwoProxy().getGUID());
-                                    bean.setReferencedColumnQualifiedName(this.getQualifiedName(relationship.getEntityTwoProxy().getUniqueProperties()));
+
+                                    /*
+                                     * These values reference the column that is the primary key.
+                                     */
+                                    bean.setReferencedColumnGUID(relationship.getEntityOneProxy().getGUID());
+                                    bean.setReferencedColumnQualifiedName(this.getQualifiedName(relationship.getEntityOneProxy().getUniqueProperties()));
                                 }
                             }
                         }

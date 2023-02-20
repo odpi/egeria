@@ -7,13 +7,11 @@ import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationV
 import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndpointConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceAdmin;
+import org.odpi.openmetadata.adminservices.registration.ViewServiceAdmin;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminAuditCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.viewservices.tex.api.ffdc.TexViewAuditCode;
-import org.odpi.openmetadata.viewservices.tex.api.ffdc.TexViewErrorCode;
 import org.odpi.openmetadata.viewservices.tex.server.TexViewServicesInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

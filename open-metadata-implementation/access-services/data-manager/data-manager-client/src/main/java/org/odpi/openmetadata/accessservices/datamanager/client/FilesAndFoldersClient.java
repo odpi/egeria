@@ -109,16 +109,14 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param restClient pre-initialized REST client
      * @param maxPageSize pre-initialized parameter limit
-     * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem with the information about the remote OMAS
      */
     public FilesAndFoldersClient(String                serverName,
                                  String                serverPlatformURLRoot,
                                  DataManagerRESTClient restClient,
-                                 int                   maxPageSize,
-                                 AuditLog              auditLog) throws InvalidParameterException
+                                 int                   maxPageSize) throws InvalidParameterException
     {
-        super(defaultSchemaAttributeName, serverName, serverPlatformURLRoot, restClient, maxPageSize, auditLog);
+        super(defaultSchemaAttributeName, serverName, serverPlatformURLRoot, restClient, maxPageSize);
     }
 
 
@@ -382,7 +380,7 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
     {
         final String methodName                  = "addDataFileToCatalogFromTemplate";
         final String propertiesParameterName     = "templateProperties";
-        final String qualifiedNameParameterName  = "templateProperties.qualifiedName";
+        final String pathNameParameterName       = "pathName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
@@ -390,7 +388,7 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
         String pathName = this.getPathName(templateProperties.getPathName(),
                                            templateProperties.getQualifiedName());
 
-        invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        invalidParameterHandler.validateName(pathName, pathNameParameterName, methodName);
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-files/from-template/{2}";
 
@@ -582,11 +580,15 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
     {
         final String methodName                  = "addDataFolderToCatalog";
         final String propertiesParameterName     = "fileFolderProperties";
-        final String qualifiedNameParameterName  = "qualifiedName";
+        final String pathNameParameterName       = "pathName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-         invalidParameterHandler.validateObject(fileFolderProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(fileFolderProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        invalidParameterHandler.validateObject(fileFolderProperties, propertiesParameterName, methodName);
+
+        String pathName = this.getPathName(fileFolderProperties.getPathName(),
+                                           fileFolderProperties.getQualifiedName());
+
+        invalidParameterHandler.validateName(pathName, pathNameParameterName, methodName);
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-folders";
 
@@ -691,7 +693,10 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(dataFolderGUID, dataFileGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(fileFolderProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(fileFolderProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(fileFolderProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-folders/{2}?isMergeUpdate={3}";
 

@@ -44,7 +44,7 @@ public class TestOMRSAuditingComponent
     private void testGetters(OMRSAuditingComponent   testValue)
     {
         assertTrue(testValue.getComponentName() != null);
-        assertTrue(testValue.getComponentType() != null);
+        assertTrue(testValue.getComponentDescription() != null);
         assertTrue(testValue.getComponentWikiURL() != null);
     }
 

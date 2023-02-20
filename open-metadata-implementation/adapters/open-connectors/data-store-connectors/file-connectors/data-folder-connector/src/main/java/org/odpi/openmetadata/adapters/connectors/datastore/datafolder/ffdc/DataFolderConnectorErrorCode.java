@@ -4,11 +4,7 @@ package org.odpi.openmetadata.adapters.connectors.datastore.datafolder.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.text.MessageFormat;
-import java.util.Arrays;
 
 /**
  * The DataFolderConnectorErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
@@ -56,7 +52,7 @@ public enum DataFolderConnectorErrorCode implements ExceptionMessageSet
              "The connector is unable to process the data in the folder.",
              "Use details from the error message to determine the cause of the error and retry the request once it is resolved.");
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
     /**
      * The constructor for DataFolderConnectorErrorCode expects to be passed one of the enumeration rows defined in
@@ -67,7 +63,7 @@ public enum DataFolderConnectorErrorCode implements ExceptionMessageSet
      * This will expand out to the 5 parameters shown below.
      *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique Id for the message
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error

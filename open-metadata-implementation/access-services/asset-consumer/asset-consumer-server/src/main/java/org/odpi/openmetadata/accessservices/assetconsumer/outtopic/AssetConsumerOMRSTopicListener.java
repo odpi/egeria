@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.outtopic;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.elements.AssetElement;
 import org.odpi.openmetadata.accessservices.assetconsumer.events.AssetConsumerEventType;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIDummyBean;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
@@ -12,12 +12,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,11 +29,11 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
 {
     private static final Logger log = LoggerFactory.getLogger(AssetConsumerOMRSTopicListener.class);
 
-
-    private final AssetConsumerOutTopicPublisher eventPublisher;
-    private final AssetHandler<AssetElement>     assetHandler;
-    private final String                         localServerUserId;
-    private final List<String>                   supportedZones;
+    private final AssetConsumerOutTopicPublisher         eventPublisher;
+    private final AssetHandler<OpenMetadataAPIDummyBean> assetHandler;
+    private final String                                 localServerUserId;
+    private final List<String>                           supportedZones;
+    private final OMRSRepositoryHelper                   repositoryHelper;
 
     /**
      * Initialize the topic listener.
@@ -46,16 +45,17 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
      * @param supportedZones list of zones that the access service is allowed to serve instances from.
      * @param auditLog logging destination
      */
-    public AssetConsumerOMRSTopicListener(String                         serviceName,
-                                          String                         localServerUserId,
-                                          AssetConsumerOutTopicPublisher eventPublisher,
-                                          AssetHandler<AssetElement>     assetHandler,
-                                          List<String>                   supportedZones,
-                                          AuditLog                       auditLog)
+    public AssetConsumerOMRSTopicListener(String                                 serviceName,
+                                          String                                 localServerUserId,
+                                          AssetConsumerOutTopicPublisher         eventPublisher,
+                                          AssetHandler<OpenMetadataAPIDummyBean> assetHandler,
+                                          List<String>                           supportedZones,
+                                          AuditLog                               auditLog)
     {
         super(serviceName, auditLog);
 
         this.assetHandler = assetHandler;
+        this.repositoryHelper = assetHandler.getRepositoryHelper();
         this.supportedZones = supportedZones;
         this.localServerUserId = localServerUserId;
         this.eventPublisher = eventPublisher;
@@ -488,7 +488,7 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
 
 
     /**
-     * An existing entity has been deleted.  This is a soft delete. This means it is still in the repository
+     * An existing entity has been deleted.  This is a soft delete. This means it is still in the repository,
      * but it is no longer returned on queries.
      * <p>
      * All relationships to the entity are also soft-deleted and will no longer be usable.  These deleted relationships
@@ -636,7 +636,7 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
 
 
     /**
-     * An existing entity has had its type changed.  Typically this action is taken to move an entity's
+     * An existing entity has had its type changed.  Typically, this action is taken to move an entity's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *
@@ -738,7 +738,7 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
 
                     assetHandler.validateAnchorEntity(userId,
                                                       fullEntity.getGUID(),
-                                                      OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                       fullEntity,
                                                       guidParameterName,
                                                       false,
@@ -786,35 +786,13 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
 
 
     /**
-     * Asset Consumer OMAS only publishes events of type Asset that
+     * Asset Consumer OMAS only publishes events of type Asset.
      *
      * @param entityHeader entity element
      * @return flag to say whether to publish the event.
      */
     private boolean isTypeOfInterest(InstanceHeader entityHeader)
     {
-        final String interestingTypeName = "Asset";
-
-        if (entityHeader != null)
-        {
-            List<String> typeNames = new ArrayList<>();
-
-            typeNames.add(entityHeader.getType().getTypeDefName());
-
-            if (entityHeader.getType().getTypeDefSuperTypes() != null)
-            {
-                for (TypeDefLink superType : entityHeader.getType().getTypeDefSuperTypes())
-                {
-                    if (superType != null)
-                    {
-                        typeNames.add(superType.getName());
-                    }
-                }
-            }
-
-            return typeNames.contains(interestingTypeName);
-        }
-
-        return false;
+        return repositoryHelper.isTypeOf(serviceName, entityHeader.getType().getTypeDefName(), OpenMetadataAPIMapper.ASSET_TYPE_NAME);
     }
 }

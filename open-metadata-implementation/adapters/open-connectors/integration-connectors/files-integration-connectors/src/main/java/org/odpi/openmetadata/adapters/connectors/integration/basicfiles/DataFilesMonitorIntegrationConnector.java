@@ -47,7 +47,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
      */
     class FileCataloguingListener extends FileAlterationListenerAdaptor
     {
-        private DataFilesMonitorIntegrationConnector connector;
+        private final DataFilesMonitorIntegrationConnector connector;
 
         FileCataloguingListener(DataFilesMonitorIntegrationConnector connector)
         {
@@ -233,7 +233,8 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
 
                         DataFileProperties properties = new DataFileProperties();
 
-                        properties.setTypeName(this.getAssetTypeName(fileExtension));
+                        String assetTypeName = this.getAssetTypeName(fileExtension);
+                        properties.setTypeName(assetTypeName);
                         properties.setPathName(file.getAbsolutePath());
                         properties.setName(file.getName());
                         properties.setModifiedTime(new Date(file.lastModified()));
@@ -245,8 +246,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                             auditLog.logMessage(methodName,
                                                 BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_CREATED.getMessageDefinition(connectorName,
                                                                                                                                 properties.getPathName(),
-                                                                                                                                guids.get(
-                                                                                                                                        guids.size() - 1)));
+                                                                                                                                guids.get(guids.size() - 1)));
                         }
                     }
                     else
@@ -378,7 +378,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
     }
 
     /**
-     * The file no longer exists so this method updates the metadata catalog. This may be a delete or an archive action
+     * The file no longer exists so this method updates the metadata catalog. This may be a call to delete() or an archive action
      * depending on the setting of the allowCatalogDelete configuration property.
      *
      * @param file Java file access object

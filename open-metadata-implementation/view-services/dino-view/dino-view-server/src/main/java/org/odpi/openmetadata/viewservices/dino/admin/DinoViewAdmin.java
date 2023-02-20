@@ -7,22 +7,16 @@ import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationV
 import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndpointConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceAdmin;
+import org.odpi.openmetadata.adminservices.registration.ViewServiceAdmin;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminAuditCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.viewservices.dino.api.ffdc.DinoViewAuditCode;
-import org.odpi.openmetadata.viewservices.dino.api.ffdc.DinoViewErrorCode;
-import org.odpi.openmetadata.viewservices.dino.api.properties.ResourceEndpoint;
 import org.odpi.openmetadata.viewservices.dino.server.DinoViewServicesInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**

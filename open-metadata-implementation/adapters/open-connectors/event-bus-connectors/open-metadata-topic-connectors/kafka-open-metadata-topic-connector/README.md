@@ -6,12 +6,16 @@
 # Kafka Open Metadata Topic Connector
 
 The Kafka Open Metadata Topic Connector implements 
-an [Apache Kafka](https://kafka.apache.org/) connector for a topic that exchanges
+an [Apache Kafka](https://kafka.apache.org/) open metadata topic connector for a topic that exchanges
 Java Objects as JSON payloads.
 
-# Default Configuration
+[Link to usage instructions](https://egeria-project.org/connectors/resource/kafka-open-metadata-topic-connector/) in the connector catalog.
 
-## Producer
+## Implementation Notes
+### Default Configuration
+These are default property settings passed to Apache Kafka for the producer and consumer.
+
+#### Producer
 
 (see [Apache Kafka producer configurations](http://kafka.apache.org/0100/documentation.html#producerconfigs) for more information and options)
 
@@ -29,7 +33,7 @@ Java Objects as JSON payloads.
 | bring.up.retries | 10 |
 | bring.up.minSleepTime | 5000 |
 
-## Consumer
+#### Consumer
 
 (see [Apache Kafka consumer configurations](http://kafka.apache.org/0100/documentation.html#newconsumerconfigs) for more information and options)
 
@@ -45,12 +49,12 @@ Java Objects as JSON payloads.
 | bring.up.retries | 10 |
 | bring.up.minSleepTime | 5000 |
 
-#  Security
+###  Security
 
-By default kafka security is not configured. The exact configuration may depend on the specific kafka service being used. Service specific notes
+By default, kafka security is not configured. The exact configuration may depend on the specific kafka service being used. Service specific notes
 are below. They may work for other providers, and feedback is welcome so that this documentation can be updated accordingly.
 
-## IBM Event Streams on IBM Cloud
+#### IBM Event Streams on IBM Cloud
 
 There are 2 key pieces of information that are provided in the documentation for your configured cloud service
 
@@ -69,7 +73,7 @@ There are 2 key pieces of information that are provided in the documentation for
 ```
 An example of a use of this configuration can be found in the virtual data connector helm charts. See [odpi-egeria-vdc helm chart](https://github.com/odpi/egeria-samples/tree/main/helm-charts/odpi-egeria-vdc/README.md)
 
-## Handling Kafka Cluster Bring Up Issues
+#### Handling Kafka Cluster Bring Up Issues
 
 In some environments users have encountered issues when the Kafka Cluster hasn't become fully available, when attempting a connection to the Kafka Cluster.
 The Egeria KafkaTopicConnector provides a mechanism that verifies that the Kafka Cluster is actually running brokers before attempting to connect.
@@ -82,27 +86,28 @@ bring.up.retries
 defaults to 10 and specifies the number of times the Egeria KafkaTopicConnector will retry verification before reporting a failure.
  
 bring.up.minSleepTime is set to 5000ms by default and is the minimum amount of time to wait before attempting a verification retry. 
-If a Kafka verification attempt takes longer than this value the KafkaTopicConnector does not pause before retring the verification.
+If a Kafka verification attempt takes longer than this value the KafkaTopicConnector does not pause before retrying the verification.
 
-## Topic Creation
+#### Topic Creation
 
-In addition many enterprise kafka services do not allow automatic topic creation.
+In addition, many enterprise kafka services do not allow automatic topic creation.
 
 You will need to manually create topics of the following form
 
 BASE_TOPIC_NAME is the value used for topicURLRoot when configuring the egeria event bus. For example, the default
 value is `egeria`.
 
-### Cohort topics
+##### Cohort topics
 
 For each cohort being used (such as `cocoCohort`):
  * BASE_TOPIC_NAME.omag.openmetadata.repositoryservices.cohort.COHORT_NAME.OMRSTopic
  
-### OMAS Topics
-These need to be done FOR EACH SERVER configured to run one or more OMASs.
-(For example for Coco Pharmaceuticals this might include `cocoMDS1`, `cocoMDS2`, `cocoMDS3` etc).
+##### OMAS Topics
 
-FOR EACH OMAS configured (eg Asset Consumer OMAS, Data Platform OMAS, Governance Engine OMAS etc)
+These need to be done FOR EACH SERVER configured to run one or more OMASs.
+(For example for Coco Pharmaceuticals this might include `cocoMDS1`, `cocoMDS2`, `cocoMDS3` etc.)
+
+FOR EACH OMAS configured (eg Asset Consumer OMAS, Data Platform OMAS, Governance Engine OMAS etc.)
 
  * BASE_TOPIC_NAME.omag.server.SERVER_NAME.omas.OMAS_NAME.InTopic
  * BASE_TOPIC_NAME.omag.server.SERVER_NAME.omas.OMAS_NAME.OutTopic
@@ -111,7 +116,7 @@ FOR EACH OMAS configured (eg Asset Consumer OMAS, Data Platform OMAS, Governance
 One way to configure is to initially run against a kafka service which allows auto topic creation, then make note of the kafka
 topics that have been created - so that they can be replicated on the restricted setup.
 
-In addition review the Egeria Audit Log for any events beginning OCF-KAFKA-TOPIC-CONNECTOR so that
+In addition, review the Egeria Audit Log for any events beginning OCF-KAFKA-TOPIC-CONNECTOR so that
 action may be taken if for example topics are found to be missing.
 
 

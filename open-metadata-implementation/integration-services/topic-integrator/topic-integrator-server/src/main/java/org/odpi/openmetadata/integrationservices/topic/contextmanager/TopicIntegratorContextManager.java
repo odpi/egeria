@@ -11,7 +11,6 @@ import org.odpi.openmetadata.accessservices.datamanager.client.ValidValueManagem
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
 import org.odpi.openmetadata.accessservices.datamanager.properties.EventBrokerProperties;
 import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -101,8 +100,7 @@ public class TopicIntegratorContextManager extends IntegrationContextManager
         eventBrokerClient = new EventBrokerClient(partnerOMASServerName,
                                                   partnerOMASPlatformRootURL,
                                                   restClient,
-                                                  maxPageSize,
-                                                  auditLog);
+                                                  maxPageSize);
 
         connectionManagerClient = new ConnectionManagerClient(partnerOMASServerName,
                                                               partnerOMASPlatformRootURL,
@@ -138,27 +136,23 @@ public class TopicIntegratorContextManager extends IntegrationContextManager
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        final String metadataSourceQualifiedNameParameterName = "metadataSourceQualifiedName";
-        final String methodName = "setUpMetadataSource";
-
-        InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-
-        invalidParameterHandler.validateName(metadataSourceQualifiedName,
-                                             metadataSourceQualifiedNameParameterName,
-                                             methodName);
-
-        String metadataSourceGUID = metadataSourceClient.getMetadataSourceGUID(localServerUserId, metadataSourceQualifiedName);
-
-        if (metadataSourceGUID == null)
+        if (metadataSourceQualifiedName != null)
         {
-            EventBrokerProperties properties = new EventBrokerProperties();
+            String metadataSourceGUID = metadataSourceClient.getMetadataSourceGUID(localServerUserId, metadataSourceQualifiedName);
 
-            properties.setQualifiedName(metadataSourceQualifiedName);
+            if (metadataSourceGUID == null)
+            {
+                EventBrokerProperties properties = new EventBrokerProperties();
 
-            metadataSourceGUID = metadataSourceClient.createEventBroker(localServerUserId, null, null, properties);
+                properties.setQualifiedName(metadataSourceQualifiedName);
+
+                metadataSourceGUID = metadataSourceClient.createEventBroker(localServerUserId, null, null, properties);
+            }
+
+            return metadataSourceGUID;
         }
 
-        return metadataSourceGUID;
+        return null;
     }
 
 

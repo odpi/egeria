@@ -73,7 +73,6 @@ public class FormConverter<B> extends DataManagerOMASConverter<B>
                     formProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     formProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     formProperties.setName(this.removeName(instanceProperties));
-                    formProperties.setDisplayName(formProperties.getName());
                     formProperties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     formProperties.setDescription(this.removeDescription(instanceProperties));
 

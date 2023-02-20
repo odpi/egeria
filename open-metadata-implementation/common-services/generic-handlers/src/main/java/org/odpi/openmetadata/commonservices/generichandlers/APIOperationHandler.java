@@ -714,6 +714,81 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
 
 
     /**
+     * Retrieve the API Operations metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param apiSchemaTypeGUID unique identifier of the requested metadata element
+     * @param apiSchemaTypeGUIDParameterName parameter name of the apiSchemaTypeGUID
+     * @param serviceSupportedZones supported zones for calling service
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of API Operations element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<B> getAPIOperationsForAPISchemaType(String       userId,
+                                                    String       apiSchemaTypeGUID,
+                                                    String       apiSchemaTypeGUIDParameterName,
+                                                    List<String> serviceSupportedZones,
+                                                    int          startFrom,
+                                                    int          pageSize,
+                                                    boolean      forLineage,
+                                                    boolean      forDuplicateProcessing,
+                                                    Date         effectiveTime,
+                                                    String       methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        /*
+         * The API Operations are attached via an event list.
+         */
+        EntityDetail apiSchemaTypeEntity = this.getEntityFromRepository(userId,
+                                                                        apiSchemaTypeGUID,
+                                                                        apiSchemaTypeGUIDParameterName,
+                                                                        OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME,
+                                                                        null,
+                                                                        null,
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
+                                                                        serviceSupportedZones,
+                                                                        effectiveTime,
+                                                                        methodName);
+
+        if (apiSchemaTypeEntity != null)
+        {
+            return this.getAttachedElements(userId,
+                                            null,
+                                            null,
+                                            apiSchemaTypeEntity.getGUID(),
+                                            apiSchemaTypeGUIDParameterName,
+                                            OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME,
+                                            OpenMetadataAPIMapper.API_OPERATIONS_RELATIONSHIP_TYPE_GUID,
+                                            OpenMetadataAPIMapper.API_OPERATIONS_RELATIONSHIP_TYPE_NAME,
+                                            OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
+                                            null,
+                                            null,
+                                            2,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            serviceSupportedZones,
+                                            startFrom,
+                                            pageSize,
+                                            effectiveTime,
+                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Create/retrieve the API schema type for the operation.
      *
      * @param userId calling user

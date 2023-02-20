@@ -402,7 +402,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @param standard  name of the standard null means any.
      * @param organization  name of the organization null means any.
      * @param identifier  identifier of the element in the standard null means any.
-     * @return TypeDefs list  each entry in the list contains a TypeDef.  This is is a structure
+     * @return TypeDefs list  each entry in the list contains a TypeDef.  This is a structure
      * describing the TypeDef's category and properties.
      * @throws InvalidParameterException  all attributes of the external id are null.
      * @throws RepositoryErrorException  there is a problem communicating with the metadata repository.
@@ -420,7 +420,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      *
      * @param userId  unique identifier for requesting user.
      * @param searchCriteria  String search criteria.
-     * @return TypeDefs list each entry in the list contains a TypeDef.  This is is a structure
+     * @return TypeDefs list each entry in the list contains a TypeDef.  This is a structure
      * describing the TypeDef's category and properties.
      * @throws InvalidParameterException  the searchCriteria is null.
      * @throws RepositoryErrorException  there is a problem communicating with the metadata repository.
@@ -666,7 +666,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeDefNotKnownException the requested TypeDef is not found in the metadata collection.
-     * @throws TypeDefInUseException the TypeDef can not be deleted because there are instances of this type in the
+     * @throws TypeDefInUseException the TypeDef can not be deleted because there are instances of this type in
      *                                 the metadata collection.  These instances need to be purged before the
      *                                 TypeDef can be deleted.
      * @throws FunctionNotSupportedException the repository does not support this call.
@@ -693,7 +693,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeDefNotKnownException the requested AttributeTypeDef is not found in the metadata collection.
-     * @throws TypeDefInUseException the AttributeTypeDef can not be deleted because there are instances of this type in the
+     * @throws TypeDefInUseException the AttributeTypeDef can not be deleted because there are instances of this type in
      *                                 the metadata collection.  These instances need to be purged before the
      *                                 AttributeTypeDef can be deleted.
      * @throws FunctionNotSupportedException the repository does not support this call.
@@ -776,6 +776,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
 
     /**
      * Returns the entity if the entity is stored in the metadata collection, otherwise null.
+     * Notice that entities in DELETED state are returned by this call.
      *
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the entity
@@ -875,10 +876,8 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @return {@code List<EntityDetail>} of each historical version of the entity detail within the bounds, and in the order requested.
      * @throws InvalidParameterException the guid or date is null or fromTime is after the toTime
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                 the metadata collection is stored.
-     * @throws EntityNotKnownException the requested entity instance is not known in the metadata collection
-     *                                   at the time requested.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where the metadata collection is stored.
+     * @throws EntityNotKnownException the requested entity instance is not active in the metadata collection at the time requested.
      * @throws EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection.
      * @throws FunctionNotSupportedException the repository does not support history.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -1058,7 +1057,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      *
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID unique identifier for the type of entity requested.  Null means any type of entity
-     *                       (but could be slow so not recommended.
+     *                       (but could be slow so not recommended).
      * @param classificationName name of the classification, note a null is not valid.
      * @param matchClassificationProperties list of classification properties used to narrow the search (where any String
      *                                      property's value should be defined as a Java regular expression, even if it
@@ -1168,7 +1167,8 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
 
 
     /**
-     * Returns a boolean indicating if the relationship is stored in the metadata collection.
+     * Returns a relationship indicating if the relationship is stored in the metadata collection.
+     * Notice that relationships in DELETED state are returned by this call.
      *
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the relationship.
@@ -1742,9 +1742,9 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
 
 
     /**
-     * Delete an entity.  The entity is soft deleted.  This means it is still in the graph but it is no longer returned
+     * Delete an entity.  The entity is soft-deleted.  This means it is still in the graph, but it is no longer returned
      * on queries.  All relationships to the entity are also soft-deleted and will no longer be usable.
-     * To completely eliminate the entity from the graph requires a call to the purgeEntity() method after the delete call.
+     * To completely eliminate the entity from the graph requires a call to the purgeEntity() method after the delete() call.
      * The restoreEntity() method will switch an entity back to Active status to restore the entity to normal use.
      *
      * @param userId unique identifier for requesting user.
@@ -1883,10 +1883,11 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                                                                                UserNotAuthorizedException,
                                                                                                FunctionNotSupportedException
     {
-        final String methodName = "classifyEntity";
+        final String methodName = "classifyEntityProxy";
         reportUnsupportedOptionalFunction(methodName);
         return null;
     }
+
 
     /**
      * Add the requested classification to a specific entity.
@@ -1977,10 +1978,11 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                                                                                UserNotAuthorizedException,
                                                                                                FunctionNotSupportedException
     {
-        final String methodName = "classifyEntity";
+        final String methodName = "classifyEntityProxy (detailed)";
         reportUnsupportedOptionalFunction(methodName);
         return null;
     }
+
 
     /**
      * Remove a specific classification from an entity.
@@ -2031,9 +2033,11 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                                                               UserNotAuthorizedException,
                                                                               FunctionNotSupportedException
     {
-        declassifyEntity(userId, entityProxy.getGUID(), classificationName);
+        final String methodName = "declassifyEntityProxy";
+        reportUnsupportedOptionalFunction(methodName);
         return null;
     }
+
 
     /**
      * Update one or more properties in one of an entity's classifications.
@@ -2064,6 +2068,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                                                                                     UserNotAuthorizedException,
                                                                                                     FunctionNotSupportedException;
 
+
     /**
      * Update one or more properties in one of an entity's classifications.
      *
@@ -2093,20 +2098,11 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                                                                              UserNotAuthorizedException,
                                                                                              FunctionNotSupportedException
     {
-        EntityDetail entityDetail = this.updateEntityClassification(userId,
-                                                                    entityProxy.getGUID(),
-                                                                    classificationName,
-                                                                    properties);
-
-        for (Classification classification : entityDetail.getClassifications())
-        {
-            if (classification.getName().equals(classificationName))
-            {
-                return classification;
-            }
-        }
+        final String methodName = "updateEntityProxyClassification";
+        reportUnsupportedOptionalFunction(methodName);
         return null;
     }
+
 
     /**
      * Add a new relationship between two entities to the metadata collection.
@@ -2150,7 +2146,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
     /**
      * Save a new relationship that is sourced from an external technology.  The external
      * technology is identified by a GUID and a name.  These can be recorded in a
-     * Software Server Capability (guid and qualifiedName respectively.
+     * Software Server Capability (guid and qualifiedName respectively).
      * The new relationship is assigned a new GUID and put
      * in the requested state.  The new relationship is returned.
      *
@@ -2276,7 +2272,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
 
     /**
      * Delete a specific relationship.  This is a soft-delete which means the relationship's status is updated to
-     * DELETED and it is no longer available for queries.  To remove the relationship permanently from the
+     * DELETED, and it is no longer available for queries.  To remove the relationship permanently from the
      * metadata collection, use purgeRelationship().
      *
      * @param userId unique identifier for requesting user.
@@ -2387,7 +2383,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
 
 
     /**
-     * Change the type of an existing entity.  Typically this action is taken to move an entity's
+     * Change the existing entity's type.  Typically, this action is taken to move an entity's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type and the properties adjusted.
      *
@@ -2488,6 +2484,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Deprecated
+    @SuppressWarnings(value = "unused")
     public  EntityDetail reHomeEntity(String         userId,
                                       String         entityGUID,
                                       String         typeDefGUID,
@@ -2540,7 +2537,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
 
 
     /**
-     * Change the type of an existing relationship.  Typically this action is taken to move a relationship's
+     * Change the existing relationship's type.  Typically, this action is taken to move a relationship's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *
@@ -2642,6 +2639,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Deprecated
+    @SuppressWarnings(value = "unused")
     public  Relationship reHomeRelationship(String   userId,
                                             String   relationshipGUID,
                                             String   typeDefGUID,
@@ -2815,7 +2813,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      *
      * This method is called when a remote repository calls the variant of purgeEntity that
      * passes the EntityDetail object.  This is typically used if purge is called without a previous soft-delete.
-     * However it may also be used to purge after a soft-delete.
+     * However, it may also be used to purge after a soft-delete.
      *
      * @param userId unique identifier for requesting user.
      * @param entity details of the entity to purge.
@@ -3023,9 +3021,13 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                                                                       UserNotAuthorizedException,
                                                                                       FunctionNotSupportedException
     {
-        /*
-         * This is a new method used by repositories that support independent classifications
-         */
+        final String  methodName = "saveClassificationReferenceCopy (proxy)";
+
+        throw new FunctionNotSupportedException(OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName,
+                                                                                                          this.getClass().getName(),
+                                                                                                          repositoryName),
+                                                this.getClass().getName(),
+                                                methodName);
     }
 
 
@@ -3112,9 +3114,13 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                                                                         UserNotAuthorizedException,
                                                                                         FunctionNotSupportedException
     {
-        /*
-         * This is a new method used by repositories that support independent classifications
-         */
+        final String  methodName = "purgeClassificationReferenceCopy (proxy)";
+
+        throw new FunctionNotSupportedException(OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName,
+                                                                                                          this.getClass().getName(),
+                                                                                                          repositoryName),
+                                                this.getClass().getName(),
+                                                methodName);
     }
 
 
@@ -3202,7 +3208,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
     /**
      * This method is called when a remote repository calls the variant of purgeRelationship that
      * passes the relationship object.  This is typically used if purge is called without a previous soft-delete.
-     * However it may also be used to purge after a soft-delete.
+     * However, it may also be used to purge after a soft-delete.
      *
      * Remove the reference copy of the relationship from the local repository. This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,

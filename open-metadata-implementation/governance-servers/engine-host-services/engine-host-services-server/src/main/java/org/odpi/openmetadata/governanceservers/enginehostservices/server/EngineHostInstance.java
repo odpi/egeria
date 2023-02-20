@@ -24,9 +24,9 @@ import java.util.Map;
  */
 public class EngineHostInstance extends GovernanceServerServiceInstance
 {
-    private EngineConfigurationRefreshThread     configurationRefreshThread;
-    private Map<String, GovernanceEngineHandler> governanceEngineHandlers;
-    private Map<String, List<String>>            serviceEngineNames;
+    private final EngineConfigurationRefreshThread     configurationRefreshThread;
+    private final Map<String, GovernanceEngineHandler> governanceEngineHandlers;
+    private final Map<String, List<String>>            serviceEngineNames;
 
 
 

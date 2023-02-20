@@ -1,0 +1,839 @@
+{
+	"info": {
+		"_postman_id": "242f0aa6-7cf0-44de-8dc1-a5b1860e3e6d",
+		"name": "Egeria-connected-asset-services",
+		"description": "Support for the OCF connected asset services that extract metadata about an asset for a connector.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Connection By GUID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/connections/{{guid}}",
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"{{serviceURLName}}",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"connections",
+						"{{guid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Connection By Name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/connections/by-name/myConnection",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"{{serviceURLName}}",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"connections",
+						"by-name",
+						"myConnection"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Connection for Asset",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/connection",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"{{serviceURLName}}",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"connection"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Asset for Connection",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/by-connection/{{guid}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"{{serviceURLName}}",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"assets",
+						"by-connection",
+						"{{guid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Connected Asset Summary",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/via-connection/{{guid}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"{{serviceURLName}}",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"via-connection",
+						"{{guid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Asset Summary",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"{{serviceURLName}}",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Asset Certifications",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/certifications?elementStart=0&maxElements=100",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"{{serviceURLName}}",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"certifications"
+					],
+					"query": [
+						{
+							"key": "elementStart",
+							"value": "0"
+						},
+						{
+							"key": "maxElements",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Asset Comments",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/comments?elementStart=0&maxElements=100",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"{{serviceURLName}}",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"comments"
+					],
+					"query": [
+						{
+							"key": "elementStart",
+							"value": "0"
+						},
+						{
+							"key": "maxElements",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Asset Comment Replies",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/comments/{{guid}}/replies?elementStart=0&maxElements=100",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"{{serviceURLName}}",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"comments",
+						"{{guid}}",
+						"replies"
+					],
+					"query": [
+						{
+							"key": "elementStart",
+							"value": "0"
+						},
+						{
+							"key": "maxElements",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Asset Connections",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/connections?elementStart=0&maxElements=100",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"{{serviceURLName}}",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"connections"
+					],
+					"query": [
+						{
+							"key": "elementStart",
+							"value": "0"
+						},
+						{
+							"key": "maxElements",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Asset External Identifiers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/external-identifiers?elementStart=0&maxElements=100",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"{{serviceURLName}}",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"external-identifiers"
+					],
+					"query": [
+						{
+							"key": "elementStart",
+							"value": "0"
+						},
+						{
+							"key": "maxElements",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Asset External References",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/external-references?elementStart=0&maxElements=100",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"{{serviceURLName}}",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"external-references"
+					],
+					"query": [
+						{
+							"key": "elementStart",
+							"value": "0"
+						},
+						{
+							"key": "maxElements",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Asset Informal Tags",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/informal-tags?elementStart=0&maxElements=100",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"{{serviceURLName}}",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"informal-tags"
+					],
+					"query": [
+						{
+							"key": "elementStart",
+							"value": "0"
+						},
+						{
+							"key": "maxElements",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Asset Licenses",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/licenses?elementStart=0&maxElements=100",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"{{serviceURLName}}",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"licenses"
+					],
+					"query": [
+						{
+							"key": "elementStart",
+							"value": "0"
+						},
+						{
+							"key": "maxElements",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Asset Likes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/likes?elementStart=0&maxElements=100",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"{{serviceURLName}}",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"likes"
+					],
+					"query": [
+						{
+							"key": "elementStart",
+							"value": "0"
+						},
+						{
+							"key": "maxElements",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Asset Known Locations",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/known-locations?elementStart=0&maxElements=100",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"{{serviceURLName}}",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"known-locations"
+					],
+					"query": [
+						{
+							"key": "elementStart",
+							"value": "0"
+						},
+						{
+							"key": "maxElements",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Asset Note Logs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/note-logs?elementStart=0&maxElements=100",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"{{serviceURLName}}",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"note-logs"
+					],
+					"query": [
+						{
+							"key": "elementStart",
+							"value": "0"
+						},
+						{
+							"key": "maxElements",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get NoteLog Notes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/note-logs/{{guid}}/notes?elementStart=0&maxElements=100",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"{{serviceURLName}}",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"note-logs",
+						"{{guid}}",
+						"notes"
+					],
+					"query": [
+						{
+							"key": "elementStart",
+							"value": "0"
+						},
+						{
+							"key": "maxElements",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Asset Ratings",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/ratings?elementStart=0&maxElements=100",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"{{serviceURLName}}",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"ratings"
+					],
+					"query": [
+						{
+							"key": "elementStart",
+							"value": "0"
+						},
+						{
+							"key": "maxElements",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Related Assets",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/related-assets?elementStart=0&maxElements=100",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"{{serviceURLName}}",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"related-assets"
+					],
+					"query": [
+						{
+							"key": "elementStart",
+							"value": "0"
+						},
+						{
+							"key": "maxElements",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Element More Information",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/referenceables/{{guid}}/more-information?elementStart=0&maxElements=100",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"{{serviceURLName}}",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"referenceables",
+						"{{guid}}",
+						"more-information"
+					],
+					"query": [
+						{
+							"key": "elementStart",
+							"value": "0"
+						},
+						{
+							"key": "maxElements",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Asset Related Media References",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/related-media-references?elementStart=0&maxElements=100",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"{{serviceURLName}}",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"assets",
+						"{{assetGUID}}",
+						"related-media-references"
+					],
+					"query": [
+						{
+							"key": "elementStart",
+							"value": "0"
+						},
+						{
+							"key": "maxElements",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Schema Attributes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/schemas/{{guid}}/schema-attributes?elementStart=0&maxElements=100",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"{{serviceURLName}}",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"assets",
+						"schemas",
+						"{{guid}}",
+						"schema-attributes"
+					],
+					"query": [
+						{
+							"key": "elementStart",
+							"value": "0"
+						},
+						{
+							"key": "maxElements",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get API Operations",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/schemas/apis/{{guid}}/api-operations?elementStart=0&maxElements=100",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"common-services",
+						"{{serviceURLName}}",
+						"connected-asset",
+						"users",
+						"{{user}}",
+						"assets",
+						"schemas",
+						"apis",
+						"{{guid}}",
+						"api-operations"
+					],
+					"query": [
+						{
+							"key": "elementStart",
+							"value": "0"
+						},
+						{
+							"key": "maxElements",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -3,17 +3,17 @@
 
 package org.odpi.openmetadata.accessservices.analyticsmodeling.utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AssetReference;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.MetadataContainer;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.MetadataItem;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class provides useful operations with bean class
@@ -21,6 +21,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 public class AnalyticsAssetUtils {
+
+	private static final ObjectWriter OBJECT_WRITER = new ObjectMapper().writer();
+
+	private AnalyticsAssetUtils() {
+	}
 
 	/**
 	 * Add container to the asset.
@@ -129,7 +134,7 @@ public class AnalyticsAssetUtils {
 
         if (asset.getReference() != null ) {
             try {
-    			String references = new ObjectMapper().writeValueAsString(asset.getReference());
+				String references = OBJECT_WRITER.writeValueAsString(asset.getReference());
     	        additionalProperties.put(Constants.REFERENCE, references);
     		} catch (JsonProcessingException e) {
     			// log to execution context

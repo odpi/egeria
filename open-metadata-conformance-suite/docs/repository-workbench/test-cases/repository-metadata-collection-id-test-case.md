@@ -67,7 +67,7 @@ private static final  String assertion1    = testCaseId + "-01";
       "class" : "OpenMetadataTestCaseResult",
       "testCaseId" : "repository-metadata-collection",
       "testCaseName" : "Repository metadata collection id test case",
-      "testCaseDescriptionURL" : "https://egeria.odpi.org/open-metadata-conformance-suite/docs/origin-workbench/repository-metadata-collection-id-test-case.md",
+      "testCaseDescriptionURL" : "https://egeria-project.org/guides/cts/origin-workbench/repository-metadata-collection-id-test-case.md",
       "assertionMessage" : "Metadata collection id working consistently",
       "successfulAssertions" : [ "Metadata collection id retrieved from repository.", "Consistent metadata collection id retrieved from repository." ],
       "unsuccessfulAssertions" : [ ],

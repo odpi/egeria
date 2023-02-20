@@ -16,8 +16,8 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-client')
     implementation project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-api')
     implementation project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-topic-connectors')
-    implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-api')
-    implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
+    implementation project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-api')
+    implementation project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-client')
     implementation 'org.apache.lucene:lucene-analyzers-common'
     implementation project(':open-metadata-implementation:common-services:multi-tenant')
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')

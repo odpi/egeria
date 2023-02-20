@@ -1,0 +1,93 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+---
+name: "Release v4"
+
+# Trigger when a Release is created in github
+# - does not run on modification (may be just text)
+
+on:
+  # No checks for branch or repo - assuming release creation is manual, controlled
+  release:
+    types:
+      - created
+    branches: [main, egeria-release-4*]
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: "Release"
+    if: startsWith(github.repository,'odpi/')
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout source
+      - uses: gradle/wrapper-validation-action@v1
+      # Prep for docker builds
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to container registry (Quay.io)
+        uses: docker/login-action@v2
+        with:
+          registry: quay.io
+          username: ${{ secrets.QUAY_IO_USERNAME }}
+          password: ${{ secrets.QUAY_IO_ACCESS_TOKEN }}
+      - name: Login to container registry (docker.io)
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: build and publish to maven central
+        uses: gradle/gradle-build-action@v2
+        with:
+          cache-read-only: false
+          arguments: build publish
+        # Import secrets needed for code signing and distribution
+        env:
+          OSSRH_GPG_KEYID: ${{ secrets.OSSRH_GPG_KEYID }}
+          OSSRH_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_PASSPHRASE }}
+          OSSRH_GPG_PRIVATE_KEY: ${{ secrets.OSSRH_GPG_PRIVATE_KEY }}
+          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+      # QEMU is needed for ARM64 build for egeria-configure
+      # egeria-configure needs to install utilities
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set Release version env variable
+        run: |
+          echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+      # Publish container images(egeria) to quay.io and docker.io
+      - name: Copy the distribution content to be used in docker copy command
+        run: |
+          mkdir -p ./open-metadata-resources/open-metadata-deployment/docker/egeria/target/assembly
+          cp -r open-metadata-distribution/open-metadata-assemblies/target/egeria-${{ env.VERSION }}-distribution/egeria-omag-${{ env.VERSION }}/. open-metadata-resources/open-metadata-deployment/docker/egeria/target/assembly
+      - name: Build and push(egeria) to quay.io and docker.io
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          tags: odpi/egeria:${{ env.VERSION }}, odpi/egeria:latest, quay.io/odpi/egeria:${{ env.VERSION }}, quay.io/odpi/egeria:latest
+          context: ./open-metadata-resources/open-metadata-deployment/docker/egeria
+          platforms: linux/amd64,linux/arm64
+      # Publish container images(egeria-configure) to quay.io and docker.io
+      - name: Build and push(egeria-configure) to quay.io and docker.io
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          tags: odpi/egeria-configure:${{ env.VERSION }}, odpi/egeria-configure:latest, quay.io/odpi/egeria-configure:${{ env.VERSION }}, quay.io/odpi/egeria-configure:latest
+          context: ./open-metadata-resources/open-metadata-deployment/docker/configure
+          platforms: linux/amd64,linux/arm64
+      # Mostly for verification - not published to the release itself for now
+      - name: Upload assemblies
+        uses: actions/upload-artifact@v3
+        with:
+          name: Assemblies
+          path: open-metadata-distribution/open-metadata-assemblies/target/*.gz

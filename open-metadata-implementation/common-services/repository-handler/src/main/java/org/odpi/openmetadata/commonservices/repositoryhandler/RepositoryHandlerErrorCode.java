@@ -4,6 +4,7 @@ package org.odpi.openmetadata.commonservices.repositoryhandler;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 
 /**
@@ -164,6 +165,10 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
                                          "The system is unable to continue processing with these incompatible values.",
                                          "The effectivity dates are supplied by the caller.  Verify that the caller's logic is correct, and that the effectivity dates of the retrieved relationship are also correct.  If the command is to update the effectivity dates, rather than the relationship properties, use the specialist method for this purpose.  Once all errors have been resolved, and the time is right, retry the request."),
 
+    FUNCTION_NOT_SUPPORTED(404,"OMAG-REPOSITORY-HANDLER-404-018",
+                           "Method {0} for service {1} is not supported by any of the metadata repositories connected to {2}",
+                           "The system is unable to process the request because none of the members of the connected cohort(s) support this function.",
+                           "Add an Egeria native metadata repository to one of the connected cohorts.  This will provide the support that you need."),
 
     PROPERTY_SERVER_ERROR(500, "OMAG-REPOSITORY-HANDLER-500-001",
                           "An unexpected error {4} was returned to {5} by the metadata server during {1} request for open metadata access service " +

@@ -22,11 +22,11 @@ public class EndpointProperties extends ReferenceableProperties
 {
     private static final long     serialVersionUID = 1L;
 
-    private String technicalName        = null;
-    private String technicalDescription = null;
-    private String address              = null;
-    private String protocol             = null;
-    private String encryptionMethod     = null;
+    private String resourceName        = null;
+    private String resourceDescription = null;
+    private String address             = null;
+    private String protocol            = null;
+    private String encryptionMethod    = null;
 
 
     /**
@@ -49,11 +49,11 @@ public class EndpointProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            technicalName = template.getTechnicalName();
-            technicalDescription = template.getTechnicalDescription();
-            address          = template.getAddress();
-            protocol         = template.getProtocol();
-            encryptionMethod = template.getEncryptionMethod();
+            resourceName        = template.getResourceName();
+            resourceDescription = template.getResourceDescription();
+            address             = template.getAddress();
+            protocol            = template.getProtocol();
+            encryptionMethod    = template.getEncryptionMethod();
         }
     }
 
@@ -61,11 +61,11 @@ public class EndpointProperties extends ReferenceableProperties
     /**
      * Set up the technical name for the endpoint.
      *
-     * @param technicalName String name
+     * @param resourceName String name
      */
-    public void setTechnicalName(String technicalName)
+    public void setResourceName(String resourceName)
     {
-        this.technicalName = technicalName;
+        this.resourceName = resourceName;
     }
 
 
@@ -75,20 +75,20 @@ public class EndpointProperties extends ReferenceableProperties
      *
      * @return String name
      */
-    public String getTechnicalName()
+    public String getResourceName()
     {
-        return technicalName;
+        return resourceName;
     }
 
 
     /**
      * Set up the technical description of the endpoint.
      *
-     * @param technicalDescription String
+     * @param resourceDescription String
      */
-    public void setTechnicalDescription(String technicalDescription)
+    public void setResourceDescription(String resourceDescription)
     {
-        this.technicalDescription = technicalDescription;
+        this.resourceDescription = resourceDescription;
     }
 
 
@@ -97,9 +97,9 @@ public class EndpointProperties extends ReferenceableProperties
      *
      * @return String technicalDescription
      */
-    public String getTechnicalDescription()
+    public String getResourceDescription()
     {
-        return technicalDescription;
+        return resourceDescription;
     }
 
 
@@ -183,14 +183,15 @@ public class EndpointProperties extends ReferenceableProperties
     public String toString()
     {
         return "EndpointProperties{" +
-                       "technicalName='" + technicalName + '\'' +
-                       ", technicalDescription='" + technicalDescription + '\'' +
+                       "resourceName='" + resourceName + '\'' +
+                       ", resourceDescription='" + resourceDescription + '\'' +
                        ", address='" + address + '\'' +
                        ", protocol='" + protocol + '\'' +
                        ", encryptionMethod='" + encryptionMethod + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
-                       ", classifications=" + getClassifications() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        '}';
@@ -219,8 +220,8 @@ public class EndpointProperties extends ReferenceableProperties
             return false;
         }
         EndpointProperties that = (EndpointProperties) objectToCompare;
-        return Objects.equals(technicalName, that.technicalName) &&
-                       Objects.equals(technicalDescription, that.technicalDescription) &&
+        return Objects.equals(resourceName, that.resourceName) &&
+                       Objects.equals(resourceDescription, that.resourceDescription) &&
                        Objects.equals(address, that.address) &&
                        Objects.equals(protocol, that.protocol) &&
                        Objects.equals(encryptionMethod, that.encryptionMethod);
@@ -235,6 +236,6 @@ public class EndpointProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), technicalName, technicalDescription, address, protocol, encryptionMethod);
+        return Objects.hash(super.hashCode(), resourceName, resourceDescription, address, protocol, encryptionMethod);
     }
 }

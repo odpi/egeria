@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public abstract class OpenMetadataTestCase
 {
-    private static final String  documentationRootURL = "https://egeria.odpi.org/open-metadata-conformance-suite/docs/";
+    private static final String  documentationRootURL = "https://egeria-project.org/guides/cts/";
 
     protected String  testCaseId = "<Unknown>";
     protected String  testCaseName = "<Unknown>";
@@ -35,9 +35,10 @@ public abstract class OpenMetadataTestCase
     protected String              successMessage         = null;
 
     /*
-     * Enumerated type for control of multi-phase tests
+     * Enumerated type for control of multiphase tests
      */
-    public enum TestPhase {
+    public enum TestPhase
+    {
         SEED,
         EXECUTE,
         CLEAN
@@ -52,7 +53,7 @@ public abstract class OpenMetadataTestCase
 
 
     /**
-     * Typical constructor used when the test case Id is fixed.
+     * Typical constructor used when the test case id is fixed.
      *
      * @param workPad location for workbench results
      * @param testCaseId identifier of test case
@@ -68,7 +69,7 @@ public abstract class OpenMetadataTestCase
     {
         this.testCaseId = testCaseId;
         this.testCaseName = testCaseName;
-        this.testCaseDescriptionURL = documentationRootURL + workPad.getWorkbenchId() + "/test-cases/" + testCaseId + "-test-case.md";
+        this.testCaseDescriptionURL = documentationRootURL + workPad.getWorkbenchId() + "/test-cases/" + testCaseId + "-test-case";
         this.defaultProfileId = defaultProfileId;
         this.defaultRequirementId = defaultRequirementId;
         this.workPad = workPad;
@@ -78,7 +79,7 @@ public abstract class OpenMetadataTestCase
 
 
     /**
-     * Typical constructor used when the test case Id needs to be constructed by the test case code.
+     * Typical constructor used when the test case id needs to be constructed by the test case code.
      *
      * @param workPad location for workbench results
      * @param defaultProfileId identifier of default profile (for unexpected exceptions)
@@ -95,7 +96,7 @@ public abstract class OpenMetadataTestCase
 
 
     /**
-     * Update the test case Id, name and documentation URL if not already supplied in the constructor.
+     * Update the test case id, name and documentation URL if not already supplied in the constructor.
      *
      * @param testCaseRootId common identifier of test case
      * @param testCaseId unique identifier of test case
@@ -107,7 +108,7 @@ public abstract class OpenMetadataTestCase
     {
         this.testCaseId = testCaseId;
         this.testCaseName = testCaseName;
-        this.testCaseDescriptionURL = documentationRootURL + workPad.getWorkbenchId() + "/test-cases/" + testCaseRootId + "-test-case.md";
+        this.testCaseDescriptionURL = documentationRootURL + workPad.getWorkbenchId() + "/test-cases/" + testCaseRootId + "-test-case";
 
         workPad.registerTestCase(this);
     }
@@ -163,7 +164,7 @@ public abstract class OpenMetadataTestCase
 
 
     /**
-     * Has the test case been ran yet?
+     * Has the test case run yet?
      *
      * @return boolean flag
      */
@@ -253,6 +254,41 @@ public abstract class OpenMetadataTestCase
     /**
      * Throw an exception if the condition is not true; else return
      *
+     * @param object1 object to test
+     * @param object2 object to test
+     * @param assertionId identifier for the assertion
+     * @param assertionMessage descriptive message of the assertion
+     * @param profileId identifier of profile for this assertion
+     * @param requirementId identifier of requirement for this assertion
+     * @param methodName method that this condition tests
+     * @param elapsedTime of the test executing (in milliseconds)
+     * @throws AssertionFailureException condition was false
+     */
+    protected void assertObjectsAreEqual(Object    object1,
+                                         Object    object2,
+                                         String    assertionId,
+                                         String    assertionMessage,
+                                         Integer   profileId,
+                                         Integer   requirementId,
+                                         String    methodName,
+                                         Long      elapsedTime) throws AssertionFailureException
+    {
+        if (object1.equals(object2))
+        {
+            successfulAssertions.add(assertionId + ": " +assertionMessage);
+            workPad.addSuccessfulCondition(profileId, requirementId, testCaseId, testCaseName, testCaseDescriptionURL, assertionId, methodName, elapsedTime);
+            return;
+        }
+
+        unsuccessfulAssertions.add(assertionId + ": " + assertionMessage + "==>object1=" + object1 + "; ===>object2=" + object2);
+        workPad.addUnsuccessfulCondition(profileId, requirementId, testCaseId, testCaseName, testCaseDescriptionURL, assertionId, methodName, elapsedTime);
+        throw new AssertionFailureException(assertionId, assertionMessage);
+    }
+
+
+    /**
+     * Throw an exception if the condition is not true; else return
+     *
      * @param condition condition to test
      * @param assertionId identifier for the assertion
      * @param assertionMessage descriptive message of the assertion
@@ -299,6 +335,39 @@ public abstract class OpenMetadataTestCase
                                    Integer   requirementId)
     {
         verifyCondition(condition, assertionId, assertionMessage, profileId, requirementId, null, null);
+    }
+
+
+    /**
+     * Log if the condition is not true; else return
+     *
+     * @param object1 object to test
+     * @param object2 object to test
+     * @param assertionId identifier for the assertion
+     * @param assertionMessage descriptive message of the assertion
+     * @param profileId identifier of profile for this assertion
+     * @param requirementId identifier of requirement for this assertion
+     * @param methodName method that this condition tests
+     * @param elapsedTime of the test executing (in milliseconds)
+     */
+    protected void verifyObjectsAreEqual(Object    object1,
+                                         Object    object2,
+                                         String    assertionId,
+                                         String    assertionMessage,
+                                         Integer   profileId,
+                                         Integer   requirementId,
+                                         String    methodName,
+                                         Long      elapsedTime)
+    {
+        if (object1.equals(object2))
+        {
+            successfulAssertions.add(assertionId + ": " + assertionMessage);
+            workPad.addSuccessfulCondition(profileId, requirementId, testCaseId, testCaseName, testCaseDescriptionURL, assertionId, methodName, elapsedTime);
+            return;
+        }
+
+        unsuccessfulAssertions.add(assertionId + ": " + assertionMessage + "==>object1=" + object1 + "; ===>object2=" + object2);
+        workPad.addUnsuccessfulCondition(profileId, requirementId, testCaseId, testCaseName, testCaseDescriptionURL, assertionId, methodName, elapsedTime);
     }
 
 
@@ -421,6 +490,9 @@ public abstract class OpenMetadataTestCase
         }
         catch (AssertionFailureException   exception)
         {
+            /*
+             * This exception has already been logged
+             */
         }
         catch (Exception   exception)
         {
@@ -461,6 +533,9 @@ public abstract class OpenMetadataTestCase
         }
         catch (AssertionFailureException   exception)
         {
+            /*
+             * This is already handled.
+             */
         }
         catch (Exception   exception)
         {
@@ -480,11 +555,14 @@ public abstract class OpenMetadataTestCase
     }
 
 
-    public void cleanTest() {
-        try {
+    public void cleanTest()
+    {
+        try
+        {
             this.cleanup();
         }
-        catch (Exception   exception) {
+        catch (Exception   exception)
+        {
             /* No action taken - the cleanup should be a belt and braces clearing of instances */
         }
     }
@@ -514,7 +592,7 @@ public abstract class OpenMetadataTestCase
     protected void run(TestPhase phase) throws Exception
     {
         /*
-         * Method is overloaded by any multi-phase test case
+         * Method is overloaded by any multiphase test case
          */
     }
 

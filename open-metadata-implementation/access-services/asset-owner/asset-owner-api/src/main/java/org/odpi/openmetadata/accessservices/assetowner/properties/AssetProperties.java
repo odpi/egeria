@@ -53,13 +53,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes({
         @JsonSubTypes.Type(value = DataStoreProperties.class, name = "DataStoreProperties"),
 })
-public class AssetProperties extends ReferenceableProperties
+public class AssetProperties extends SupplementaryProperties
 {
     private static final long     serialVersionUID = 1L;
 
     private String              name                         = null;
     private String              versionIdentifier            = null;
-    private String              displayName                  = null;
     private String              description                  = null;
     private String              owner                        = null;
     private OwnerType           ownerType                    = null;
@@ -92,7 +91,6 @@ public class AssetProperties extends ReferenceableProperties
         {
             name                         = template.getName();
             versionIdentifier            = template.getVersionIdentifier();
-            displayName                  = template.getDisplayName();
             description                  = template.getDescription();
             owner                        = template.getOwner();
             ownerTypeName                = template.getOwnerTypeName();
@@ -113,11 +111,6 @@ public class AssetProperties extends ReferenceableProperties
      */
     public String getName()
     {
-        if (name == null)
-        {
-            return displayName;
-        }
-
         return name;
     }
 
@@ -152,34 +145,6 @@ public class AssetProperties extends ReferenceableProperties
     public void setVersionIdentifier(String versionIdentifier)
     {
         this.versionIdentifier = versionIdentifier;
-    }
-
-
-    /**
-     * Returns the stored display name property for the asset.
-     * If no display name is available then name is returned.
-     *
-     * @return String name
-     */
-    public String getDisplayName()
-    {
-        if (displayName == null)
-        {
-            return name;
-        }
-
-        return displayName;
-    }
-
-
-    /**
-     * Set up the stored display name property for the asset.
-     *
-     * @param displayName String name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
     }
 
 
@@ -417,7 +382,6 @@ public class AssetProperties extends ReferenceableProperties
         return "AssetProperties{" +
                        "name='" + name + '\'' +
                        ", versionIdentifier='" + versionIdentifier + '\'' +
-                       ", displayName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
                        ", owner='" + owner + '\'' +
                        ", ownerType=" + ownerType +
@@ -431,6 +395,11 @@ public class AssetProperties extends ReferenceableProperties
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", extendedProperties=" + getExtendedProperties() +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", displaySummary='" + getDisplaySummary() + '\'' +
+                       ", displayDescription='" + getDisplayDescription() + '\'' +
+                       ", abbreviation='" + getAbbreviation() + '\'' +
+                       ", usage='" + getUsage() + '\'' +
                        '}';
     }
 
@@ -464,10 +433,6 @@ public class AssetProperties extends ReferenceableProperties
             return false;
         }
         if (versionIdentifier != null ? ! versionIdentifier.equals(that.versionIdentifier) : that.versionIdentifier != null)
-        {
-            return false;
-        }
-        if (displayName != null ? ! displayName.equals(that.displayName) : that.displayName != null)
         {
             return false;
         }
@@ -516,7 +481,7 @@ public class AssetProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), name, versionIdentifier,displayName, description, owner, ownerTypeName, ownerPropertyName, ownerType,
+        return Objects.hash(super.hashCode(), name, versionIdentifier, description, owner, ownerTypeName, ownerPropertyName, ownerType,
                             zoneMembership, originOrganizationGUID, originBusinessCapabilityGUID, otherOriginValues);
     }
 }

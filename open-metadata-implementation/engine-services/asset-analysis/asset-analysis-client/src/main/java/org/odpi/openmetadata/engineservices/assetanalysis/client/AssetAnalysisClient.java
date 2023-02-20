@@ -9,7 +9,7 @@ import org.odpi.openmetadata.accessservices.discoveryengine.rest.DiscoveryReques
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorReportResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.engineservices.assetanalysis.api.AssetAnalysisAPI;
@@ -31,13 +31,13 @@ import java.util.Map;
  */
 public class AssetAnalysisClient extends DiscoveryEngine implements AssetAnalysisAPI
 {
-    private String                  serverName;               /* Initialized in constructor */
-    private String                  serverPlatformRootURL;    /* Initialized in constructor */
-    private String                  discoveryEngineName;      /* Initialized in constructor */
-    private AssetAnalysisRESTClient restClient;               /* Initialized in constructor */
+    private final String                  serverName;               /* Initialized in constructor */
+    private final String                  serverPlatformRootURL;    /* Initialized in constructor */
+    private final String                  discoveryEngineName;      /* Initialized in constructor */
+    private final AssetAnalysisRESTClient restClient;               /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private RESTExceptionHandler    exceptionHandler        = new RESTExceptionHandler();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final RESTExceptionHandler    exceptionHandler        = new RESTExceptionHandler();
 
 
     /**
@@ -108,13 +108,13 @@ public class AssetAnalysisClient extends DiscoveryEngine implements AssetAnalysi
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(connectorProviderClassName, nameParameter, methodName);
 
-        ConnectorTypeResponse restResult = restClient.callOCFConnectorTypeGetRESTCall(methodName,
-                                                                                      serverPlatformRootURL + urlTemplate,
-                                                                                      serverName,
-                                                                                      userId,
-                                                                                      connectorProviderClassName);
+        ConnectorReportResponse restResult = restClient.callOCFConnectorReportGetRESTCall(methodName,
+                                                                                          serverPlatformRootURL + urlTemplate,
+                                                                                          serverName,
+                                                                                          userId,
+                                                                                          connectorProviderClassName);
 
-        return new ConnectorReport(restResult);
+        return restResult.getConnectorReport();
     }
 
 

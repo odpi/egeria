@@ -63,11 +63,8 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
 
         this.repositoryConformanceWorkPad = workPad;
 
-        if (workPad != null)
-        {
-            cohortRepositoryConnector = workPad.getTutRepositoryConnector();
-            maxSearchResults = workPad.getMaxSearchResults();
-        }
+        cohortRepositoryConnector = workPad.getTutRepositoryConnector();
+        maxSearchResults = workPad.getMaxSearchResults();
     }
 
     /**
@@ -225,6 +222,7 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
     protected int getMaxSearchResults() {
         return maxSearchResults;
     }
+
 
     /**
      * Return the repository connector generated from the cohort registration event.
@@ -481,14 +479,14 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
         {
             Map<String, InstancePropertyValue> propertyMap = new HashMap<>();
 
-
             for (TypeDefAttribute  typeDefAttribute : allTypeDefAttributes)
             {
                 String                   attributeName = typeDefAttribute.getAttributeName();
                 AttributeTypeDef         attributeType = typeDefAttribute.getAttributeType();
                 AttributeTypeDefCategory category = attributeType.getCategory();
 
-                if (category == AttributeTypeDefCategory.PRIMITIVE) {
+                if (category == AttributeTypeDefCategory.PRIMITIVE)
+                {
                     PrimitiveDef primitiveDef = (PrimitiveDef) attributeType;
                     propertyMap.put(attributeName, this.getPrimitivePropertyValue(attributeName, primitiveDef));
                 }
@@ -529,7 +527,8 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
                 AttributeTypeDefCategory category      = attributeType.getCategory();
                 boolean                  attrUnique    = typeDefAttribute.isUnique();
 
-                if (category == AttributeTypeDefCategory.PRIMITIVE) {
+                if (category == AttributeTypeDefCategory.PRIMITIVE)
+                {
                     PrimitiveDef primitiveDef = (PrimitiveDef) attributeType;
                     propertyMap.put(attributeName, this.getPrimitivePropertyValue(attributeName, primitiveDef, attrUnique, instanceCount));
                 }
@@ -573,8 +572,10 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
                 AttributeTypeDef         attributeType = typeDefAttribute.getAttributeType();
                 AttributeTypeDefCategory category = attributeType.getCategory();
 
-                if (typeDefAttribute.isUnique()) {
-                    if (category == AttributeTypeDefCategory.PRIMITIVE) {
+                if (typeDefAttribute.isUnique())
+                {
+                    if (category == AttributeTypeDefCategory.PRIMITIVE)
+                    {
                         PrimitiveDef primitiveDef = (PrimitiveDef) attributeType;
                         propertyMap.put(attributeName, this.getPrimitivePropertyValue(attributeName, primitiveDef));
                     }

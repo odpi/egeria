@@ -39,7 +39,7 @@ calls to the repository services.
       "class" : "OpenMetadataTestCaseResult",
       "testCaseId" : "repository-get-typedef-gallery",
       "testCaseName" : "Repository get type definition gallery test case",
-      "testCaseDescriptionURL" : "https://egeria.odpi.org/open-metadata-conformance-suite/docs/origin-workbench/repository-get-typedef-gallery-test-case.md",
+      "testCaseDescriptionURL" : "https://egeria-project.org/guides/cts/origin-workbench/repository-get-typedef-gallery-test-case.md",
       "assertionMessage" : "Repository type definition gallery retrieved",
       "successfulAssertions" : [ "TypeDefGallery retrieved." ],
       "unsuccessfulAssertions" : [ ],

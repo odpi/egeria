@@ -26,7 +26,7 @@ import java.util.*;
  */
 public class DiscoveryEngineHandler extends GovernanceEngineHandler
 {
-    private DiscoveryEngineClient discoveryEngineClient;    /* Initialized in constructor */
+    private final DiscoveryEngineClient discoveryEngineClient;    /* Initialized in constructor */
 
     private static final String supportGovernanceEngineType = "OpenDiscoveryEngine";
     private static final String assetTypeName = "Asset";
@@ -78,7 +78,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem with connecting to the metadata server or
-     *                                 there is a problem with the set up of the discovery engine.
+     *                                 there is a problem with the setup of the discovery engine.
      */
     public  String discoverAsset(String              assetGUID,
                                  String              discoveryRequestType,
@@ -113,7 +113,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem with connecting to the metadata server or
-     *                                 there is a problem with the set up of the discovery engine.
+     *                                 there is a problem with the setup of the discovery engine.
      */
     public  void scanAllAssets(String              discoveryRequestType,
                                Map<String, String> analysisParameters,
@@ -173,7 +173,8 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
      * Run an instance of a governance action service in its own thread and return the handler (for disconnect processing).
      *
      * @param governanceActionGUID unique identifier of the asset to analyse
-     * @param requestType unique identifier of the asset that the annotations should be attached to
+     * @param governanceRequestType governance request type to use when calling the governance engine
+     * @param startDate date/time to start the governance action service
      * @param requestParameters name-value properties to control the governance action service
      * @param requestSourceElements metadata elements associated with the request to the governance action service
      * @param actionTargetElements metadata elements that need to be worked on by the governance action service
@@ -186,7 +187,8 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
      */
     @Override
     public GovernanceServiceHandler runGovernanceService(String                     governanceActionGUID,
-                                                         String                     requestType,
+                                                         String                     governanceRequestType,
+                                                         Date                       startDate,
                                                          Map<String, String>        requestParameters,
                                                          List<RequestSourceElement> requestSourceElements,
                                                          List<ActionTargetElement>  actionTargetElements) throws InvalidParameterException,
@@ -197,7 +199,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
 
         super.validateGovernanceEngineInitialized(supportGovernanceEngineType, methodName);
 
-        GovernanceServiceCache governanceServiceCache = super.getServiceCache(requestType);
+        GovernanceServiceCache governanceServiceCache = super.getServiceCache(governanceRequestType);
 
         if ((governanceServiceCache != null) && (actionTargetElements != null) && (! actionTargetElements.isEmpty()))
         {
@@ -220,14 +222,14 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
             }
 
             DiscoveryServiceHandler discoveryServiceHandler = this.getDiscoveryServiceHandler(assetGUID,
-                                                                                              requestType,
+                                                                                              governanceRequestType,
                                                                                               requestParameters,
                                                                                               null,
                                                                                               null,
                                                                                               governanceActionGUID,
                                                                                               governanceServiceCache);
 
-            Thread thread = new Thread(discoveryServiceHandler, governanceServiceCache.getGovernanceServiceName() + assetGUID + new Date().toString());
+            Thread thread = new Thread(discoveryServiceHandler, governanceServiceCache.getGovernanceServiceName() + assetGUID + new Date());
             thread.start();
 
             return discoveryServiceHandler;
@@ -269,7 +271,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
                                                                                           null,
                                                                                           governanceServiceCache);
 
-        Thread thread = new Thread(discoveryServiceHandler, governanceServiceCache.getGovernanceServiceName() + assetGUID + new Date().toString());
+        Thread thread = new Thread(discoveryServiceHandler, governanceServiceCache.getGovernanceServiceName() + assetGUID + new Date());
         thread.start();
 
         return discoveryServiceHandler.getDiscoveryReportGUID();
@@ -305,17 +307,12 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
                                                                                                                      PropertyServerException
     {
         Date                creationTime = new Date();
-        Map<String, String> analysisParameters = suppliedAnalysisParameters;
+        Map<String, String> analysisParameters = governanceServiceCache.getRequestParameters(suppliedAnalysisParameters);
 
-        if (analysisParameters == null)
-        {
-            analysisParameters = governanceServiceCache.getRequestParameters(discoveryRequestType);
-        }
-
-        String reportQualifiedName = "DiscoveryAnalysisReport:" + discoveryRequestType + ":" + assetGUID + ":" + creationTime.toString();
+        String reportQualifiedName = "DiscoveryAnalysisReport:" + discoveryRequestType + ":" + assetGUID + ":" + creationTime;
         String reportDisplayName   = "Discovery Analysis Report for " + assetGUID;
         String reportDescription   = "This is the " + discoveryRequestType + " discovery analysis report for asset " + assetGUID + " generated at " +
-                                             creationTime.toString() +
+                                             creationTime +
                                              " by the " + governanceServiceCache.getGovernanceServiceName() + " discovery service running on discovery engine " +
                                              governanceEngineProperties.getDisplayName() + " (" + governanceEngineName + ").";
 
@@ -357,7 +354,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
                                            serverUserId,
                                            governanceActionGUID,
                                            serverClient,
-                                           discoveryRequestType,
+                                           governanceServiceCache.getServiceRequestType(),
                                            governanceServiceCache.getGovernanceServiceGUID(),
                                            governanceServiceCache.getGovernanceServiceName(),
                                            governanceServiceCache.getNextGovernanceService(),

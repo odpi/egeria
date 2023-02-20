@@ -863,6 +863,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
     /**
      * Returns the entity if the entity is stored in the metadata collection, otherwise null.
+     * Notice that entities in DELETED state are returned by this call.
      *
      * @param userId  unique identifier for requesting user.
      * @param guid  String unique identifier for the entity
@@ -894,7 +895,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
         FederationControl       federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
-        GetEntityDetailExecutor executor          = new GetEntityDetailExecutor(userId, guid, false, auditLog, methodName);
+        GetEntityDetailExecutor executor          = new GetEntityDetailExecutor(userId, guid, auditLog, methodName);
 
         /*
          * Ready to process the request.  Create requests occur in the first repository that accepts the call.
@@ -903,7 +904,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         federationControl.executeCommand(executor);
 
-        return executor.isEntityKnown();
+        return executor.isEntityKnown(true);
     }
 
 
@@ -993,7 +994,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
         FederationControl       federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
-        GetEntityDetailExecutor executor          = new GetEntityDetailExecutor(userId, guid, true, auditLog, methodName);
+        GetEntityDetailExecutor executor          = new GetEntityDetailExecutor(userId, guid, auditLog, methodName);
 
         federationControl.executeCommand(executor);
 
@@ -1623,7 +1624,8 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Returns a boolean indicating if the relationship is stored in the metadata collection.
+     * Returns a relationship indicating if the relationship is stored in the metadata collection.
+     * Notice that relationships in DELETED state are returned by this call.
      *
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the relationship
@@ -1655,7 +1657,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
         FederationControl       federationControl = new SequentialFederationControl(userId, cohortConnectors, auditLog, methodName);
-        GetRelationshipExecutor executor          = new GetRelationshipExecutor(userId, guid, false, auditLog, methodName);
+        GetRelationshipExecutor executor          = new GetRelationshipExecutor(userId, guid, auditLog, methodName);
 
         /*
          * Ready to process the request.  Create requests occur in the first repository that accepts the call.
@@ -1704,7 +1706,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
         FederationControl       federationControl = new SequentialFederationControl(userId, cohortConnectors, auditLog, methodName);
-        GetRelationshipExecutor executor          = new GetRelationshipExecutor(userId, guid, true, auditLog, methodName);
+        GetRelationshipExecutor executor          = new GetRelationshipExecutor(userId, guid, auditLog, methodName);
 
         /*
          * Ready to process the request.  Create requests occur in the first repository that accepts the call.
@@ -3232,10 +3234,10 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          * Validate parameters
          */
         this.classifyEntityParameterValidation(userId,
-                entityProxy.getGUID(),
-                classificationName,
-                classificationProperties,
-                methodName);
+                                               entityProxy,
+                                               classificationName,
+                                               classificationProperties,
+                                               methodName);
 
         /*
          * Locate entity and check classification is not already present.
@@ -3421,7 +3423,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Validate parameters
          */
-        this.classifyEntityParameterValidation(userId, entityProxy.getGUID(), classificationName, classificationProperties, methodName);
+        this.classifyEntityParameterValidation(userId, entityProxy, classificationName, classificationProperties, methodName);
 
         /*
          * Locate entity and check classification is not already present.
@@ -3549,13 +3551,12 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Validate parameters
          */
-        String entityGUID = entityProxy.getGUID();
-        super.declassifyEntityParameterValidation(userId, entityGUID, classificationName, methodName);
+        super.declassifyEntityParameterValidation(userId, entityProxy, classificationName, methodName);
 
         /*
          * Locate entity and retrieve classification.
          */
-        EntitySummary  entity         = this.getEntitySummary(userId, entityGUID);
+        EntitySummary  entity         = this.getEntitySummary(userId, entityProxy.getGUID());
         Classification classification = repositoryHelper.getClassificationFromEntity(repositoryName, entity, classificationName, methodName);
 
         /*
@@ -3664,7 +3665,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Validate parameters
          */
-        classifyEntityParameterValidation(userId, entityProxy.getGUID(), classificationName, properties, methodName);
+        classifyEntityParameterValidation(userId, entityProxy, classificationName, properties, methodName);
 
         /*
          * Locate entity and retrieve classification.

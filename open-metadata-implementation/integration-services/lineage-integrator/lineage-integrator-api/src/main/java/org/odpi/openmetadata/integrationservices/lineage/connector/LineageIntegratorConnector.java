@@ -12,7 +12,7 @@ import org.odpi.openmetadata.integrationservices.lineage.ffdc.LineageIntegratorE
  * LineageIntegratorConnector is the base class for an integration connector that is managed by the
  * Lineage Integrator OMIS.
  */
-public abstract class LineageIntegratorConnector extends IntegrationConnectorBase
+public abstract class LineageIntegratorConnector extends IntegrationConnectorBase implements LineageIntegratorOMISConnector
 {
     private LineageIntegratorContext context = null;
 

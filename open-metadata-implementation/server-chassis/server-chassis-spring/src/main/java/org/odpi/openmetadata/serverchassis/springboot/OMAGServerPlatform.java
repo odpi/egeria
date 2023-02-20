@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
-import org.odpi.openmetadata.adminservices.OMAGServerOperationalServices;
+import org.odpi.openmetadata.adminservices.server.OMAGServerOperationalServices;
 import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.http.HttpRequestHeadersFilter;
@@ -37,7 +37,7 @@ import java.util.*;
 @OpenAPIDefinition(
         info = @Info(
                 title = "Egeria's Open Metadata and Governance (OMAG) Server Platform",
-                version = "3.14-SNAPSHOT",
+                version = "4.0-SNAPSHOT",
                 description = "The OMAG Server Platform provides a runtime process and platform for Open Metadata and Governance (OMAG) Services.\n" +
                         "\n" +
                         "The OMAG services are configured and activated in OMAG Servers using the Administration Services.\n" +
@@ -55,7 +55,7 @@ import java.util.*;
                         "operation for a cloud service, " +
                         "or host a variety of different OMAG Servers needed at a particular location.\n" +
                         "\n" +
-                        "NOTE: many REST APIS are not guaranteed to be backward-compatible from release to release since they have supported Java clients.  " +
+                        "NOTE: many REST APIs are not guaranteed to be backward-compatible from release to release since they have supported Java clients.  " +
                         "REST APIs may be used for development, testing, evaluation.  Click on the documentation for each module to discover more ...",
                 license = @License(name = "Apache 2.0 License", url = "https://www.apache.org/licenses/LICENSE-2.0"),
                 contact = @Contact(url = "https://egeria-project.org", name = "Egeria Project",

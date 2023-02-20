@@ -12,7 +12,7 @@ import org.odpi.openmetadata.integrationservices.display.ffdc.DisplayIntegratorE
  * DisplayIntegratorConnector is the base class for an integration connector that is managed by the
  * Display Integrator OMIS.
  */
-public abstract class DisplayIntegratorConnector extends IntegrationConnectorBase
+public abstract class DisplayIntegratorConnector extends IntegrationConnectorBase implements DisplayIntegratorOMISConnector
 {
     private DisplayIntegratorContext context = null;
 

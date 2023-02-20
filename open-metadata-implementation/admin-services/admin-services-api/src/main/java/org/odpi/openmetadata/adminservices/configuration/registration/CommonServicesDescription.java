@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * AccessServiceDescription provides a list of registered OMAS services.
+ * CommonServicesDescription provides a list of fixed services that support the platform.
  */
 public enum CommonServicesDescription implements Serializable
 {
@@ -37,7 +37,7 @@ public enum CommonServicesDescription implements Serializable
     OPEN_METADATA_SECURITY           (183,
                                       ComponentDevelopmentStatus.STABLE,
                                       "Open Metadata Security Services",
-                                      null,
+                                      null, // no REST API
                                       "Authorization services for Open Metadata and Governance",
                                       "https://egeria-project.org/services/metadata-security-services"),
 
@@ -46,7 +46,15 @@ public enum CommonServicesDescription implements Serializable
                                       "Open Metadata Store Services",
                                       "open-metadata-store",
                                       "Provides generic open metadata retrieval and management services for Open Metadata Access Services (OMASs).",
-                                      "https://egeria-project.org/services/gaf-metadata-management"),;
+                                      "https://egeria-project.org/services/gaf-metadata-management"),
+
+    PLATFORM_SERVICES               (185,
+                                      ComponentDevelopmentStatus.STABLE,
+                                      "Platform Services",
+                                      "platform-services",
+                                      "Provides information about the registered services and connectors available in an OMAG Server Platform.",
+                                      "https://egeria-project.org/services/platform-services/overview"),
+    ;
 
 
     private static final long     serialVersionUID    = 1L;
@@ -71,7 +79,9 @@ public enum CommonServicesDescription implements Serializable
         serviceDescriptionList.add(CommonServicesDescription.REPOSITORY_SERVICES);
         serviceDescriptionList.add(CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES);
         serviceDescriptionList.add(CommonServicesDescription.OCF_METADATA_MANAGEMENT);
+        serviceDescriptionList.add(CommonServicesDescription.GAF_METADATA_MANAGEMENT);
         serviceDescriptionList.add(CommonServicesDescription.OPEN_METADATA_SECURITY);
+        serviceDescriptionList.add(CommonServicesDescription.PLATFORM_SERVICES);
 
         return serviceDescriptionList;
     }

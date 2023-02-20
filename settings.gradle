@@ -16,12 +16,12 @@ pluginManagement {
     }
     plugins {
         //id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-        id 'org.springframework.boot' version '2.7.5'
+        id 'org.springframework.boot' version '2.7.8'
         id 'gradle-aggregate-javadocs-plugin' version '3.0.1'
         id 'org.siouan.frontend-jdk11' version '6.0.0'
         id 'com.github.johnrengelman.shadow' version '7.1.2'
-        id 'com.github.psxpaul.execfork' version '0.2.0'
-        id 'de.jjohannes.java-ecosystem-capabilities' version '0.5'
+        id 'com.github.psxpaul.execfork' version '0.2.2'
+        id 'org.gradlex.java-ecosystem-capabilities' version '1.0'
 
 
         // For reference we use these, but they are internal so no version spec needed
@@ -94,19 +94,19 @@ include(':open-metadata-implementation:common-services:metadata-security:metadat
 include(':open-metadata-implementation:common-services:metadata-security')
 include(':open-metadata-implementation:common-services:multi-tenant')
 include(':open-metadata-implementation:common-services:repository-handler')
-include(':open-metadata-implementation:common-services:gaf-metadata-management:gaf-metadata-api')
-include(':open-metadata-implementation:common-services:gaf-metadata-management:gaf-metadata-client')
-include(':open-metadata-implementation:common-services:gaf-metadata-management:gaf-metadata-server')
-include(':open-metadata-implementation:common-services:gaf-metadata-management:gaf-metadata-spring')
-include(':open-metadata-implementation:common-services:gaf-metadata-management')
-include(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-api')
-include(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
-include(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-handlers')
-include(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-server')
-include(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-spring')
-include(':open-metadata-implementation:common-services:ocf-metadata-management')
 include(':open-metadata-implementation:common-services')
-include(':open-metadata-implementation:common-services')
+include(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-api')
+include(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-client')
+include(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-server')
+include(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-spring')
+include(':open-metadata-implementation:framework-services:gaf-metadata-management')
+include(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-api')
+include(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-client')
+include(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-handlers')
+include(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-server')
+include(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-spring')
+include(':open-metadata-implementation:framework-services:ocf-metadata-management')
+include(':open-metadata-implementation:framework-services')
 include(':open-metadata-implementation:engine-services:repository-governance:repository-governance-api')
 include(':open-metadata-implementation:engine-services:repository-governance:repository-governance-client')
 include(':open-metadata-implementation:engine-services:repository-governance:repository-governance-server')
@@ -442,7 +442,6 @@ include(':open-metadata-test:open-metadata-fvt:access-services-fvt:data-manager-
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt:digital-architecture-fvt')
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt:stewardship-action-fvt')
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt:subject-area-fvt')
-include(':open-metadata-test:open-metadata-fvt:access-services-fvt:glossary-author-fvt')
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt')
 include(':open-metadata-test:open-metadata-fvt:fvt-utilities')
 //TODO: restore tests once ready
@@ -513,18 +512,19 @@ project(':open-metadata-implementation:common-services:metadata-security').proje
 project(':open-metadata-implementation:common-services:multi-tenant').projectDir = file('open-metadata-implementation/common-services/multi-tenant')
 project(':open-metadata-implementation:common-services:repository-handler').projectDir = file('open-metadata-implementation/common-services/repository-handler')
 project(':open-metadata-implementation:common-services:generic-handlers').projectDir = file('open-metadata-implementation/common-services/generic-handlers')
-project(':open-metadata-implementation:common-services:gaf-metadata-management:gaf-metadata-api').projectDir = file('open-metadata-implementation/common-services/gaf-metadata-management/gaf-metadata-api')
-project(':open-metadata-implementation:common-services:gaf-metadata-management:gaf-metadata-client').projectDir = file('open-metadata-implementation/common-services/gaf-metadata-management/gaf-metadata-client')
-project(':open-metadata-implementation:common-services:gaf-metadata-management:gaf-metadata-server').projectDir = file('open-metadata-implementation/common-services/gaf-metadata-management/gaf-metadata-server')
-project(':open-metadata-implementation:common-services:gaf-metadata-management:gaf-metadata-spring').projectDir = file('open-metadata-implementation/common-services/gaf-metadata-management/gaf-metadata-spring')
-project(':open-metadata-implementation:common-services:gaf-metadata-management').projectDir = file('open-metadata-implementation/common-services/gaf-metadata-management')
-project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-api').projectDir = file('open-metadata-implementation/common-services/ocf-metadata-management/ocf-metadata-api')
-project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client').projectDir = file('open-metadata-implementation/common-services/ocf-metadata-management/ocf-metadata-client')
-project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-handlers').projectDir = file('open-metadata-implementation/common-services/ocf-metadata-management/ocf-metadata-handlers')
-project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-server').projectDir = file('open-metadata-implementation/common-services/ocf-metadata-management/ocf-metadata-server')
-project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-spring').projectDir = file('open-metadata-implementation/common-services/ocf-metadata-management/ocf-metadata-spring')
-project(':open-metadata-implementation:common-services:ocf-metadata-management').projectDir = file('open-metadata-implementation/common-services/ocf-metadata-management')
 project(':open-metadata-implementation:common-services').projectDir = file('open-metadata-implementation/common-services')
+project(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-api').projectDir = file('open-metadata-implementation/framework-services/gaf-metadata-management/gaf-metadata-api')
+project(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-client').projectDir = file('open-metadata-implementation/framework-services/gaf-metadata-management/gaf-metadata-client')
+project(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-server').projectDir = file('open-metadata-implementation/framework-services/gaf-metadata-management/gaf-metadata-server')
+project(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-spring').projectDir = file('open-metadata-implementation/framework-services/gaf-metadata-management/gaf-metadata-spring')
+project(':open-metadata-implementation:framework-services:gaf-metadata-management').projectDir = file('open-metadata-implementation/framework-services/gaf-metadata-management')
+project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-api').projectDir = file('open-metadata-implementation/framework-services/ocf-metadata-management/ocf-metadata-api')
+project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-client').projectDir = file('open-metadata-implementation/framework-services/ocf-metadata-management/ocf-metadata-client')
+project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-handlers').projectDir = file('open-metadata-implementation/framework-services/ocf-metadata-management/ocf-metadata-handlers')
+project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-server').projectDir = file('open-metadata-implementation/framework-services/ocf-metadata-management/ocf-metadata-server')
+project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-spring').projectDir = file('open-metadata-implementation/framework-services/ocf-metadata-management/ocf-metadata-spring')
+project(':open-metadata-implementation:framework-services:ocf-metadata-management').projectDir = file('open-metadata-implementation/framework-services/ocf-metadata-management')
+project(':open-metadata-implementation:framework-services').projectDir = file('open-metadata-implementation/framework-services')
 project(':open-metadata-implementation:repository-services:repository-services-apis').projectDir = file('open-metadata-implementation/repository-services/repository-services-apis')
 project(':open-metadata-implementation:repository-services:repository-services-archive-utilities').projectDir = file('open-metadata-implementation/repository-services/repository-services-archive-utilities')
 project(':open-metadata-implementation:repository-services:repository-services-client').projectDir = file('open-metadata-implementation/repository-services/repository-services-client')
@@ -858,7 +858,7 @@ project(':open-metadata-test:open-metadata-fvt:access-services-fvt:data-manager-
 project(':open-metadata-test:open-metadata-fvt:access-services-fvt:digital-architecture-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt/digital-architecture-fvt')
 project(':open-metadata-test:open-metadata-fvt:access-services-fvt:stewardship-action-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt/stewardship-action-fvt')
 project(':open-metadata-test:open-metadata-fvt:access-services-fvt:subject-area-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt/subject-area-fvt')
-project(':open-metadata-test:open-metadata-fvt:access-services-fvt:glossary-author-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt/glossary-author-fvt')
+project(':open-metadata-test:open-metadata-fvt:view-services-fvt:glossary-author-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/view-services-fvt/glossary-author-fvt')
 project(':open-metadata-test:open-metadata-fvt:access-services-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt')
 project(':open-metadata-test:open-metadata-fvt:fvt-utilities').projectDir = file('open-metadata-test/open-metadata-fvt/fvt-utilities')
 project(':open-metadata-distribution:open-metadata-assemblies').projectDir = file('open-metadata-distribution/open-metadata-assemblies')

@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.conformance.tests.repository.instances;
 
+import org.odpi.openmetadata.conformance.ffdc.exception.AssertionFailureException;
 import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceTestCase;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
@@ -41,11 +42,11 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
     private static final String assertionMsg6 = " repository supports creation of instances ";
 
 
-    private EntityDef            testEntityDef;
-    private ClassificationDef    classificationDef;
-    private String               testTypeName;
+    private final EntityDef            testEntityDef;
+    private final ClassificationDef    classificationDef;
+    private final String               testTypeName;
 
-    private List<EntityDetail>   createdEntities = new ArrayList<>();
+    private final List<EntityDetail>   createdEntities = new ArrayList<>();
 
 
 
@@ -82,20 +83,18 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
     {
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
-
         /*
          * To accommodate repositories that do not support the creation of instances, wrap the creation of the entity
          * in a try..catch to check for FunctionNotSupportedException. If the connector throws this, then give up
          * on the test by setting the discovered property to disabled and returning.
          */
 
-        EntityDetail testEntity;
-
+        EntityDetail       testEntity;
         InstanceProperties instProps = null;
 
         long elapsedTime;
-        try {
-
+        try
+        {
             /*
              * Generate property values for all the type's defined properties, including inherited properties
              * This ensures that any properties defined as mandatory by Egeria property cardinality are provided
@@ -123,9 +122,16 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
 
             // Record the created instance for later clean up.
             createdEntities.add(testEntity);
-
-
-        } catch (FunctionNotSupportedException exception) {
+        }
+        catch (AssertionFailureException exception)
+        {
+            /*
+             * Re throw this exception, so it is not masked by Exception (below).
+             */
+            throw exception;
+        }
+        catch (FunctionNotSupportedException exception)
+        {
 
             /*
              * If running against a read-only repository/connector that cannot add
@@ -141,24 +147,23 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
 
             return;
 
-        } catch (Exception exc) {
+        }
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any exceptions from this method call. Log and fail the test.
              */
-
             String methodName = "addEntity";
             String operationDescription = "add an entity of type " + testEntityDef.getName();
             Map<String, String> parameters = new HashMap<>();
             parameters.put("typeGUID", testEntityDef.getGUID());
             parameters.put("initialProperties", instProps != null ? instProps.toString() : "null");
-            parameters.put("initialClasiifications", "null");
+            parameters.put("initialClassifications", "null");
             parameters.put("initialStatus", "null");
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception(msg, exc);
-
         }
-
 
         assertCondition((testEntity.getClassifications() == null),
                         assertion1,
@@ -169,8 +174,8 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
 
 
         EntityDetail classifiedEntity = null;
-        try {
-
+        try
+        {
             long start = System.currentTimeMillis();
             classifiedEntity = metadataCollection.classifyEntity(workPad.getLocalServerUserId(),
                                                                               testEntity.getGUID(),
@@ -179,7 +184,8 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
             elapsedTime = System.currentTimeMillis() - start;
 
         }
-        catch (Exception exc) {
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any exceptions from this method call. Log and fail the test.
              */
@@ -193,9 +199,7 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception(msg, exc);
-
         }
-
 
         assertCondition((classifiedEntity != null),
                         assertion2,
@@ -226,20 +230,19 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
         InstanceProperties  classificationProperties = this.getPropertiesForInstance(classificationDef.getPropertiesDefinition());
         if (classificationProperties != null)
         {
-
             EntityDetail reclassifiedEntity = null;
 
-            try {
-
+            try
+            {
                 long start = System.currentTimeMillis();
                 reclassifiedEntity = metadataCollection.updateEntityClassification(workPad.getLocalServerUserId(),
-                                                                                                testEntity.getGUID(),
-                                                                                                classificationDef.getName(),
-                                                                                                classificationProperties);
+                                                                                   testEntity.getGUID(),
+                                                                                   classificationDef.getName(),
+                                                                                   classificationProperties);
                 elapsedTime = System.currentTimeMillis() - start;
-
             }
-            catch (Exception exc) {
+            catch (Exception exc)
+            {
                 /*
                  * We are not expecting any exceptions from this method call. Log and fail the test.
                  */
@@ -253,9 +256,7 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
                 String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
                 throw new Exception(msg, exc);
-
             }
-
 
             Classification updatedClassification = null;
             classifications = reclassifiedEntity.getClassifications();
@@ -276,10 +277,10 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
                             elapsedTime);
         }
 
-
         EntityDetail declassifiedEntity = null;
 
-        try {
+        try
+        {
 
             long start = System.currentTimeMillis();
             declassifiedEntity = metadataCollection.declassifyEntity(workPad.getLocalServerUserId(),
@@ -287,7 +288,8 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
                                                                                   classificationDef.getName());
             elapsedTime = System.currentTimeMillis() - start;
         }
-        catch (Exception exc) {
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any exceptions from this method call. Log and fail the test.
              */
@@ -300,9 +302,7 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
             String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception(msg, exc);
-
         }
-
 
         assertCondition(((declassifiedEntity != null) && (declassifiedEntity.getClassifications() == null)),
                         assertion5,
@@ -316,7 +316,6 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
     }
 
 
-
     /**
      * Method to clean any instance created by the test case that has not already been cleaned by the running of the test.
      *
@@ -324,17 +323,16 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
      */
     public void cleanup() throws Exception
     {
-
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
-        if (createdEntities != null && !createdEntities.isEmpty()) {
-
+        if (createdEntities != null && !createdEntities.isEmpty())
+        {
             /*
              * Instances were created - clean them up.
              */
 
-            for (EntityDetail entity : createdEntities) {
-
+            for (EntityDetail entity : createdEntities)
+            {
                 try
                 {
                     metadataCollection.deleteEntity(workPad.getLocalServerUserId(),

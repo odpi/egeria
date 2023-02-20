@@ -5,11 +5,14 @@ package org.odpi.openmetadata.opentypes;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveTypeStore;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EnumDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -206,17 +209,13 @@ public class OpenMetadataTypesArchiveAccessor
     public InstanceType createTemplateFromTypeDef(TypeDef typeDef)
     {
         InstanceType template = new InstanceType();
+
+        template.setHeaderVersion(InstanceType.CURRENT_INSTANCE_TYPE_HEADER_VERSION);
         template.setTypeDefName(typeDef.getName());
         template.setTypeDefCategory(typeDef.getCategory());
-        template.setTypeDefDescription(typeDef.getDescription());
-        template.setTypeDefDescriptionGUID(typeDef.getDescriptionGUID());
         template.setTypeDefGUID(typeDef.getGUID());
 
-        List<TypeDefLink> supertypes = new ArrayList<>();
-        supertypes.add(typeDef.getSuperType());
-        template.setTypeDefSuperTypes(supertypes);
         template.setTypeDefVersion(typeDef.getVersion());
-        template.setValidStatusList(typeDef.getValidInstanceStatusList());
         // Not setting template.setValidInstanceProperties(); as this information is not in the typeDef
         return template;
     }

@@ -91,17 +91,15 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param restClient client that issues the REST API calls
      * @param maxPageSize maximum number of results supported by this server
-     * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public APIManagerClient(String                serverName,
                             String                serverPlatformURLRoot,
                             DataManagerRESTClient restClient,
-                            int                   maxPageSize,
-                            AuditLog              auditLog) throws InvalidParameterException
+                            int                   maxPageSize) throws InvalidParameterException
     {
-        super(defaultSchemaAttributeName, serverName, serverPlatformURLRoot, restClient, maxPageSize, auditLog);
+        super(defaultSchemaAttributeName, serverName, serverPlatformURLRoot, restClient, maxPageSize);
     }
 
 
@@ -723,7 +721,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
 
 
     /**
-     * Create a new metadata element to represent a API operation using an existing metadata element as a template.
+     * Create a new metadata element to represent an API operation using an existing metadata element as a template.
      *
      * @param userId calling user
      * @param apiManagerGUID unique identifier of software server capability representing the API manager
@@ -1117,7 +1115,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
 
 
     /**
-     * Create a new metadata element to represent a an API Parameter List using an existing API Parameter List as a template.
+     * Create a new metadata element to represent an API Parameter List using an existing API Parameter List as a template.
      *
      * @param userId calling user
      * @param apiManagerGUID unique identifier of software server capability representing the caller
@@ -1314,6 +1312,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
 
         APIParameterListsResponse restResult = restClient.callAPIParameterListsPostRESTCall(methodName,
                                                                                            urlTemplate,
+                                                                                           requestBody,
                                                                                            serverName,
                                                                                            userId,
                                                                                            startFrom,
@@ -1439,7 +1438,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/api-operationsapi-parameter-lists/{2}";
+        final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/api-operations/api-parameter-lists/{2}";
 
         APIParameterListResponse restResult = restClient.callAPIParameterListGetRESTCall(methodName,
                                                                                          urlTemplate,
@@ -1574,7 +1573,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
 
 
     /**
-     * Update the properties of the metadata element representing a API parameter.
+     * Update the properties of the metadata element representing an API parameter.
      *
      * @param userId calling user
      * @param apiManagerGUID unique identifier of software server capability representing the caller
@@ -1784,5 +1783,4 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
             return null;
         }
     }
-
 }

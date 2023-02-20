@@ -85,15 +85,15 @@ public class Process extends Asset {
     private List<PortAlias> portAliases;
 
     /**
-     * The lineage mappings
+     * The data flows
      * -- GETTER --
-     * Gets lineage mappings.
-     * @return the lineage mappings
+     * Gets data flows
+     * @return the data flows
      * -- SETTER --
-     * Sets lineage mappings.
-     * @param lineageMappings the lineage mappings
+     * Sets data flows.
+     * @param dataFlows the data flows
      */
-    private List<LineageMapping> lineageMappings;
+    private List<DataFlow> dataFlows;
 
     /**
      * The collection to which the process belongs

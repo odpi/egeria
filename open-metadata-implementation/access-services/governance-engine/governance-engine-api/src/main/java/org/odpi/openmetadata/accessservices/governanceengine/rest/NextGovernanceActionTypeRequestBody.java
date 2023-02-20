@@ -25,7 +25,6 @@ public class NextGovernanceActionTypeRequestBody implements Serializable
 
     private String  guard                  = null;
     private boolean mandatoryGuard         = false;
-    private boolean ignoreMultipleTriggers = false;
 
 
     /**
@@ -48,7 +47,6 @@ public class NextGovernanceActionTypeRequestBody implements Serializable
         {
             guard                    = template.getGuard();
             mandatoryGuard           = template.getMandatoryGuard();
-            ignoreMultipleTriggers   = template.getIgnoreMultipleTriggers();
         }
     }
 
@@ -96,29 +94,6 @@ public class NextGovernanceActionTypeRequestBody implements Serializable
         this.mandatoryGuard = mandatoryGuard;
     }
 
-
-    /**
-     * Return whether this action type can be triggered more than once in a single step of the governance action process.
-     *
-     * @return boolean flag
-     */
-    public boolean getIgnoreMultipleTriggers()
-    {
-        return ignoreMultipleTriggers;
-    }
-
-
-    /**
-     * Set up whether this action type can be triggered more than once in a single step of the governance action process.
-     *
-     * @param ignoreMultipleTriggers boolean flag
-     */
-    public void setIgnoreMultipleTriggers(boolean ignoreMultipleTriggers)
-    {
-        this.ignoreMultipleTriggers = ignoreMultipleTriggers;
-    }
-
-
     /**
      * JSON-style toString
      *
@@ -130,7 +105,6 @@ public class NextGovernanceActionTypeRequestBody implements Serializable
         return "NextGovernanceActionTypeRequestBody{" +
                        "guard='" + guard + '\'' +
                        ", mandatoryGuard=" + mandatoryGuard +
-                       ", ignoreMultipleTriggers=" + ignoreMultipleTriggers +
                        '}';
     }
 
@@ -154,7 +128,6 @@ public class NextGovernanceActionTypeRequestBody implements Serializable
         }
         NextGovernanceActionTypeRequestBody that = (NextGovernanceActionTypeRequestBody) objectToCompare;
         return mandatoryGuard == that.mandatoryGuard &&
-                       ignoreMultipleTriggers == that.ignoreMultipleTriggers &&
                        Objects.equals(guard, that.guard);
     }
 
@@ -167,6 +140,6 @@ public class NextGovernanceActionTypeRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(guard, mandatoryGuard, ignoreMultipleTriggers);
+        return Objects.hash(guard, mandatoryGuard);
     }
 }

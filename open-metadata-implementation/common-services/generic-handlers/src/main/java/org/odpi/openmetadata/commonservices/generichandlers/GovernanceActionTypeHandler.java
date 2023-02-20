@@ -84,6 +84,8 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
      * @param governanceEngineGUID unique identifier of governance engine to execute the request
      * @param requestType type of request
      * @param requestParameters properties for the request type
+     * @param ignoreMultipleTriggers prevent multiple instances of the next step to run (or not)
+     * @param waitTime minimum number of minutes to wait before running the governance action
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship
      * @param forLineage return elements marked with the Memento classification?
@@ -107,6 +109,8 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                              String               governanceEngineGUID,
                                              String               requestType,
                                              Map<String, String>  requestParameters,
+                                             boolean              ignoreMultipleTriggers,
+                                             int                  waitTime,
                                              Date                 effectiveFrom,
                                              Date                 effectiveTo,
                                              boolean              forLineage,
@@ -126,6 +130,8 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                                                               displayName,
                                                                               description,
                                                                               supportedGuards,
+                                                                              ignoreMultipleTriggers,
+                                                                              waitTime,
                                                                               additionalProperties,
                                                                               repositoryHelper,
                                                                               serviceName,
@@ -246,6 +252,8 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
      * @param governanceEngineGUID unique identifier of governance engine to execute the request
      * @param requestType type of request
      * @param requestParameters properties for the request type
+     * @param ignoreMultipleTriggers prevent multiple instances of the next step to run (or not)
+     * @param waitTime minimum number of minutes to wait before running the governance action
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship
      * @param forLineage return elements marked with the Memento classification?
@@ -269,6 +277,8 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                            String              governanceEngineGUID,
                                            String              requestType,
                                            Map<String, String> requestParameters,
+                                           boolean             ignoreMultipleTriggers,
+                                           int                 waitTime,
                                            Date                effectiveFrom,
                                            Date                effectiveTo,
                                            boolean             forLineage,
@@ -404,6 +414,8 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                                                               displayName,
                                                                               description,
                                                                               supportedGuards,
+                                                                              ignoreMultipleTriggers,
+                                                                              waitTime,
                                                                               additionalProperties,
                                                                               repositoryHelper,
                                                                               serviceName,
@@ -613,7 +625,7 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                     OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_GUID,
                                     OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                     specificMatchPropertyNames,
-                                    false,
+                                    true,
                                     null,
                                     null,
                                     false,
@@ -861,7 +873,6 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
      * @param nextActionTypeGUID unique identifier of the governance action type that defines the next step in the governance action process
      * @param guard guard required for this next step to proceed - or null for always run the next step.
      * @param mandatoryGuard means that no next steps can run if this guard is not returned
-     * @param ignoreMultipleTriggers prevent multiple instances of the next step to run (or not)
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship
      * @param forLineage return elements marked with the Memento classification?
@@ -880,7 +891,6 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                       String   nextActionTypeGUID,
                                       String   guard,
                                       boolean  mandatoryGuard,
-                                      boolean  ignoreMultipleTriggers,
                                       Date     effectiveFrom,
                                       Date     effectiveTo,
                                       boolean  forLineage,
@@ -907,12 +917,6 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                                                                relationshipProperties,
                                                                                OpenMetadataAPIMapper.MANDATORY_GUARD_PROPERTY_NAME,
                                                                                mandatoryGuard,
-                                                                               methodName);
-
-        relationshipProperties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
-                                                                               relationshipProperties,
-                                                                               OpenMetadataAPIMapper.IGNORE_MULTIPLE_TRIGGERS_PROPERTY_NAME,
-                                                                               ignoreMultipleTriggers,
                                                                                methodName);
 
         return this.linkElementToElement(userId,
@@ -945,7 +949,6 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
      * @param nextActionLinkGUID unique identifier of the relationship between the governance action types
      * @param guard guard required for this next step to proceed - or null for always run the next step.
      * @param mandatoryGuard means that no next steps can run if this guard is not returned
-     * @param ignoreMultipleTriggers prevent multiple instances of the next step to run (or not)
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship
      * @param methodName calling method
@@ -958,7 +961,6 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                      String  nextActionLinkGUID,
                                      String  guard,
                                      boolean mandatoryGuard,
-                                     boolean ignoreMultipleTriggers,
                                      Date    effectiveFrom,
                                      Date    effectiveTo,
                                      String  methodName) throws InvalidParameterException,
@@ -980,12 +982,6 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                                                                relationshipProperties,
                                                                                OpenMetadataAPIMapper.MANDATORY_GUARD_PROPERTY_NAME,
                                                                                mandatoryGuard,
-                                                                               methodName);
-
-        relationshipProperties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
-                                                                               relationshipProperties,
-                                                                               OpenMetadataAPIMapper.IGNORE_MULTIPLE_TRIGGERS_PROPERTY_NAME,
-                                                                               ignoreMultipleTriggers,
                                                                                methodName);
 
         this.setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo);

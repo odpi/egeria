@@ -5,4 +5,4 @@
  * The registration package provides the definitions and interfaces to describe each of the Open Metadata
  * and Governance services that support the different subsystems within the OMAG Server.
  */
-package org.odpi.openmetadata.adminservices.configuration.api;
+package org.odpi.openmetadata.adminservices.configuration.registration;

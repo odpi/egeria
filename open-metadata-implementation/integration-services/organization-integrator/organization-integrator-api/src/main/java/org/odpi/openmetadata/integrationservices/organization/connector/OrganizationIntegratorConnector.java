@@ -12,7 +12,7 @@ import org.odpi.openmetadata.integrationservices.organization.ffdc.OrganizationI
  * OrganizationIntegratorConnector is the base class for an integration connector that is managed by the
  * Organization Integrator OMIS.
  */
-public abstract class OrganizationIntegratorConnector extends IntegrationConnectorBase
+public abstract class OrganizationIntegratorConnector extends IntegrationConnectorBase implements OrganizationIntegratorOMISConnector
 {
     private OrganizationIntegratorContext context = null;
 

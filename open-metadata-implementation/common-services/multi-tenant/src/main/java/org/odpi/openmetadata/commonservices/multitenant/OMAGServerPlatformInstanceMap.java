@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.multitenant;
 
-import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
-import org.odpi.openmetadata.adminservices.configuration.OMAGViewServiceRegistration;
+import org.odpi.openmetadata.adminservices.registration.OMAGAccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.registration.OMAGViewServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.*;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
@@ -24,14 +24,14 @@ import java.util.*;
 /**
  * OMAGServerPlatformInstanceMap provides part of the mapping for inbound REST requests to the appropriate
  * service instances for the requested server.  It manages the server name to server instance mapping.
- * The map is maintained in a static so it is scoped to the class loader.
+ * The map is maintained in a static, so it is scoped to the class loader.
  *
  * Instances of this class call the synchronized static methods to work with the map.
  */
 public class OMAGServerPlatformInstanceMap
 {
-    private static Map<String, OMAGServerInstance> activeServerInstanceMap   = new HashMap<>();
-    private static Map<String, OMAGServerInstance> inActiveServerInstanceMap = new HashMap<>();
+    private static final Map<String, OMAGServerInstance> activeServerInstanceMap   = new HashMap<>();
+    private static final Map<String, OMAGServerInstance> inActiveServerInstanceMap = new HashMap<>();
 
 
     /**
@@ -40,7 +40,7 @@ public class OMAGServerPlatformInstanceMap
      * @param userId calling user
      * @throws UserNotAuthorizedException calling user not allowed to use these services
      */
-    private static void validateUserAsInvestigatorForPlatform(String userId) throws UserNotAuthorizedException
+    public static void validateUserAsInvestigatorForPlatform(String userId) throws UserNotAuthorizedException
     {
         try
         {
@@ -101,14 +101,14 @@ public class OMAGServerPlatformInstanceMap
         /*
          * Get the list of Access Services implemented in this server.
          */
-        List<AccessServiceRegistration> accessServiceRegistrationList = OMAGAccessServiceRegistration.getAccessServiceRegistrationList();
+        List<AccessServiceRegistrationEntry> accessServiceRegistrationList = OMAGAccessServiceRegistration.getAccessServiceRegistrationList();
 
         /*
          * Set up the available access services.
          */
         if ((accessServiceRegistrationList != null) && (! accessServiceRegistrationList.isEmpty()))
         {
-            for (AccessServiceRegistration registration : accessServiceRegistrationList)
+            for (AccessServiceRegistrationEntry registration : accessServiceRegistrationList)
             {
                 if (registration != null)
                 {
@@ -152,14 +152,14 @@ public class OMAGServerPlatformInstanceMap
         /*
          * Get the list of Engine Services implemented in this server.
          */
-        List<EngineServiceRegistration> engineServiceRegistrationList = OMAGEngineServiceRegistration.getEngineServiceRegistrationList();
+        List<EngineServiceRegistrationEntry> engineServiceRegistrationList = OMAGEngineServiceRegistration.getEngineServiceRegistrationList();
 
         /*
          * Set up the available engine services.
          */
         if ((engineServiceRegistrationList != null) && (! engineServiceRegistrationList.isEmpty()))
         {
-            for (EngineServiceRegistration registration : engineServiceRegistrationList)
+            for (EngineServiceRegistrationEntry registration : engineServiceRegistrationList)
             {
                 if (registration != null)
                 {
@@ -219,14 +219,14 @@ public class OMAGServerPlatformInstanceMap
         /*
          * Get the list of View Services implemented in this server.
          */
-        List<ViewServiceRegistration> viewServiceRegistrationList = OMAGViewServiceRegistration.getViewServiceRegistrationList();
+        List<ViewServiceRegistrationEntry> viewServiceRegistrationList = OMAGViewServiceRegistration.getViewServiceRegistrationList();
 
         /*
          * Set up the available view services.
          */
         if ((viewServiceRegistrationList != null) && (! viewServiceRegistrationList.isEmpty()))
         {
-            for (ViewServiceRegistration registration : viewServiceRegistrationList)
+            for (ViewServiceRegistrationEntry registration : viewServiceRegistrationList)
             {
                 if (registration != null)
                 {
@@ -523,7 +523,7 @@ public class OMAGServerPlatformInstanceMap
 
     /**
      * Return whether a particular service is registered with this platform.
-     * This is used by the admin services when there being no instance is not an error.
+     * This is used by the admin services when no instance is not an error.
      *
      * @param userId calling user or null if it is an anonymous request
      * @param serverName name of the server
@@ -543,7 +543,7 @@ public class OMAGServerPlatformInstanceMap
 
     /**
      * Return whether a particular service is registered with this platform.
-     * This is used by the admin services when there being no instance is not an error.
+     * This is used by the admin services when no instance is not an error.
      *
      * @param userId calling user or null if it is an anonymous request
      * @param serverName name of the server
@@ -933,7 +933,7 @@ public class OMAGServerPlatformInstanceMap
 
         /*
          * Null will never be returned since handlerBadServerName always throws an exception (but the
-         * compiler is not sure :).
+         * compiler is not sure :)).
          */
         handleBadServerName(userId, serverName, methodName);
         return null;
@@ -996,7 +996,7 @@ public class OMAGServerPlatformInstanceMap
 
     /**
      * Return whether a particular server is active (running) in the platform.
-     * This is used by the admin services when there being no instance is not an error.
+     * This is used by the admin services when no instance is not an error.
      *
      * @param userId calling user or null if it is an anonymous request
      * @param serverName name of the server
@@ -1013,7 +1013,7 @@ public class OMAGServerPlatformInstanceMap
 
     /**
      * Return whether a particular server is registered with the platform.
-     * This is used by the admin services when there being no instance is not an error.
+     * This is used by the admin services when no instance is not an error.
      *
      * @param userId calling user or null if it is an anonymous request
      * @param serverName name of the server

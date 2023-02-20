@@ -8,10 +8,11 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.commo
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -22,9 +23,10 @@ import java.util.Date;
  */
 
 public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance {
-    private static final Logger log = LoggerFactory.getLogger(SubjectAreaTermRESTServices.class);
     private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
     private static final String className = SubjectAreaTermRESTServices.class.getName();
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(SubjectAreaTermRESTServices.class),
+                                                                            instanceHandler.getServiceName());
 
     /**
      * Default constructor
@@ -59,9 +61,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      */
     public SubjectAreaOMASAPIResponse<Term> createTerm(String serverName, String userId, Term suppliedTerm) {
         final String methodName = "createTerm";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId);
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -73,9 +73,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -96,9 +94,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      */
     public SubjectAreaOMASAPIResponse<Term> getTermByGuid(String serverName, String userId, String guid) {
         final String methodName = "getTermByGuid";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -111,9 +107,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -149,9 +143,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
                                                                          String sequencingProperty
                                                                         ) {
         String methodName = "getTermRelationships";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Relationship> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -169,9 +161,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -209,9 +199,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
                                                      String sequencingProperty) {
 
         final String methodName = "findTerm";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId);
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -224,9 +212,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -249,15 +235,13 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<Term> updateTerm(String serverName, String userId, String guid, Term suppliedTerm, boolean isReplace)
     {
         final String methodName = "updateTerm";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -269,9 +253,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -302,9 +284,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
     public SubjectAreaOMASAPIResponse<Term> deleteTerm(String serverName, String userId, String guid)
     {
         final String methodName = "deleteTerm";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -316,9 +296,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
     /**
@@ -340,9 +318,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      */
     public SubjectAreaOMASAPIResponse<Term> restoreTerm(String serverName, String userId, String guid) {
         final String methodName = "restoreTerm";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -354,9 +330,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
     /**
@@ -378,9 +352,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
     public SubjectAreaOMASAPIResponse<Category> getTermCategories(String serverName, String userId, String guid, Integer startingFrom, Integer pageSize) {
 
         final String methodName = "getTermCategories";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
-        }
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
@@ -396,9 +368,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         } catch (Exception exception) {
             response = getResponseForException(exception, auditLog, className, methodName);
         }
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
-        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
 
     }
