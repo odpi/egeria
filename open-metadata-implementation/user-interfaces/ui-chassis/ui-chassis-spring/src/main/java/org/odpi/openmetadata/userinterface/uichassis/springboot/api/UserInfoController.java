@@ -8,6 +8,7 @@ import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.TokenUser;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.service.ComponentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,9 +24,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/users")
 public class UserInfoController {
-
-    @Autowired
-    private AuthService authService;
 
     @Autowired
     private ComponentService componentService;
@@ -58,7 +56,7 @@ public class UserInfoController {
      * @return token user from request
      */
     private TokenUser getTokenUser(HttpServletRequest request){
-        Authentication auth = authService.getAuthentication(request);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if(auth == null || auth.getDetails() == null || !(auth.getDetails() instanceof TokenUser)){
             throw new UserNotAuthorizedException("User is not authorized");

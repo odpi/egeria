@@ -2,37 +2,36 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.userinterface.uichassis.springboot.auth.demo;
 
-import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.AuthenticationExceptionHandler;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.SecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-@EnableWebSecurity
-@Configuration("securityConfig")
+@Configuration
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ConditionalOnProperty(value = "authentication.source", havingValue = "demo")
-public class DemoSecurityConfig extends SecurityConfig {
+public class DemoSecurityConfig {
 
     @Autowired
     @Qualifier("demoUserDetailsService")
     private UserDetailsService userDetailsService;
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
+    @Bean
+    public AuthenticationProvider getDemoAuthenticationProvider(){
+        var authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(new BCryptPasswordEncoder());
+        return authProvider;
     }
 
-    @Override
-    protected AuthenticationExceptionHandler getAuthenticationExceptionHandler() {
-        return BadCredentialsException.class::isInstance;
-    }
+//    protected AuthenticationExceptionHandler getAuthenticationExceptionHandler() {
+//        return BadCredentialsException.class::isInstance;
+//    }
 }

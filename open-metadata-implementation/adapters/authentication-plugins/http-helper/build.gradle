@@ -6,7 +6,7 @@
 
 dependencies {
     implementation 'org.slf4j:slf4j-api'
-    implementation 'javax.servlet:javax.servlet-api'
+    implementation 'jakarta.servlet:jakarta.servlet-api'
     testImplementation 'org.mockito:mockito-core'
     testImplementation 'org.testng:testng'
 }
