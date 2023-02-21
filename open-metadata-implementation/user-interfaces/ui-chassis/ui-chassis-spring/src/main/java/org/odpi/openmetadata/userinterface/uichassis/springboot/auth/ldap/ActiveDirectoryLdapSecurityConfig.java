@@ -5,33 +5,38 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.auth.ldap;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider;
+import org.springframework.security.ldap.userdetails.InetOrgPersonContextMapper;
 
-@EnableWebSecurity
-@Configuration("securityConfig")
-@Order(Ordered.HIGHEST_PRECEDENCE)
-@ConditionalOnProperty(value = "authentication.source", havingValue = "ad")
-public class ActiveDirectoryLdapSecurityConfig extends LdapSecurityConfig {
+@Configuration
+public class ActiveDirectoryLdapSecurityConfig {
 
     @Value("${ldap.domain}")
     private String ldapDomain;
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    @Value("${ldap.url}")
+    protected String ldapURL;
+
+    @Value("${ldap.user.search.base}")
+    protected String userSearchBase;
+
+    @Value("${ldap.user.search.filter}")
+    protected String userSearchFilter;
+
+    @Bean
+    @ConditionalOnProperty(value = "authentication.source", havingValue = "ad")
+    public ActiveDirectoryLdapAuthenticationProvider getActiveDirectoryAuthenticationProvider(){
         ActiveDirectoryLdapAuthenticationProvider adProvider =
                 new ActiveDirectoryLdapAuthenticationProvider(
                         ldapDomain,
                         ldapURL,
                         userSearchBase);
         adProvider.setSearchFilter(userSearchFilter);
-        adProvider.setUserDetailsContextMapper(userContextMapper());
+        adProvider.setUserDetailsContextMapper(new InetOrgPersonContextMapper());
         adProvider.setConvertSubErrorCodesToExceptions(true);
         adProvider.setUseAuthenticationRequestCredentials(true);
-        auth.authenticationProvider(adProvider);
+        return adProvider;
     }
 }

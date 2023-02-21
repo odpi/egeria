@@ -11,7 +11,6 @@ import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalog;
 import org.odpi.openmetadata.accessservices.glossaryview.client.GlossaryViewClient;
 import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient;
 import org.odpi.openmetadata.http.HttpHelper;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -19,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 
@@ -30,7 +28,7 @@ import org.springframework.core.env.Environment;
 @OpenAPIDefinition(
         info = @Info(
                 title = "Egeria's Spring Boot based UI RESTful web services API",
-                version = "3.10-SNAPSHOT",
+                version = "4.0-SNAPSHOT",
                 description = "",
                 license = @License(name = "Apache 2.0 License", url = "https://www.apache.org/licenses/LICENSE-2.0"),
                 contact = @Contact(url = "https://egeria-project.org", name = "Egeria Project",
@@ -68,6 +66,7 @@ public class EgeriaUIPlatform {
                 //'javax.net.ssl.trustStorePassword' from application.properties
                 System.setProperty("javax.net.ssl.trustStore", env.getProperty("server.ssl.trust-store"));
                 System.setProperty("javax.net.ssl.trustStorePassword", env.getProperty("server.ssl.trust-store-password"));
+                System.out.println("test");
             }
         };
     }
@@ -90,22 +89,22 @@ public class EgeriaUIPlatform {
         return new OpenLineageClient(serverName, serverUrl);
     }
 
-    @Bean
-    public AuthService getAuthService(@Value("${authentication.mode:token}") String authenticationMode)  {
-        if( "token".equals(authenticationMode) ){
-            return new TokenAuthService();
-        }else if( "redis".equals(authenticationMode) ){
-            return new RedisAuthService();
-        }
-        return new SessionAuthService();
-    }
-
-    @Bean(value = "tokenClient")
-    @ConditionalOnProperty(value = "authentication.mode", havingValue = "token", matchIfMissing = true)
-    public TokenClient stateLessTokenClient(){
-        return new TokenClient() {
-        };
-    }
+//    @Bean
+//    public AuthService getAuthService(@Value("${authentication.mode:token}") String authenticationMode)  {
+//        if( "token".equals(authenticationMode) ){
+//            return new TokenAuthService();
+//        }else if( "redis".equals(authenticationMode) ){
+//            return new RedisAuthService();
+//        }
+//        return new SessionAuthService();
+//    }
+//
+//    @Bean(value = "tokenClient")
+//    @ConditionalOnProperty(value = "authentication.mode", havingValue = "token", matchIfMissing = true)
+//    public TokenClient stateLessTokenClient(){
+//        return new TokenClient() {
+//        };
+//    }
 
 }
 
