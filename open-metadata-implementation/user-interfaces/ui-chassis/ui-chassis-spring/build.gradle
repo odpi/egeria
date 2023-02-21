@@ -104,3 +104,14 @@ java {
 test {
     useJUnitPlatform()
 }
+
+// See https://stackoverflow.com/questions/61197984/bootjar-mavenjar-artifact-wasnt-produced-by-this-build
+// Remove the regular (plain) jar & replace with the SpringBoot version
+configurations {
+    [apiElements, runtimeElements].each {
+        it.outgoing.artifacts.removeIf {
+            it.buildDependencies.getDependencies(null).contains(jar)
+        }
+        it.outgoing.artifact(bootJar)
+    }
+}
