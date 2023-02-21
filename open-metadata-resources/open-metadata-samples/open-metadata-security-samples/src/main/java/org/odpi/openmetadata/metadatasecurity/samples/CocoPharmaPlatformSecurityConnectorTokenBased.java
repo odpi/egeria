@@ -2,10 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.metadatasecurity.samples;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.http.HttpHeadersThreadLocal;
 import org.odpi.openmetadata.metadatasecurity.connectors.OpenMetadataPlatformSecurityConnector;
@@ -97,16 +93,16 @@ public class CocoPharmaPlatformSecurityConnectorTokenBased extends OpenMetadataP
     private List<String> getUserActionsFromToken(String userId) {
         Map<String, String> headersMap = HttpHeadersThreadLocal.getHeadersThreadLocal().get();
         if (headersMap != null && !headersMap.isEmpty()) {
-            Jws<Claims> jwtClaims = Jwts.parserBuilder()
-                    .setSigningKey(Keys.hmacShaKeyFor(secret))
-                    .build().parseClaimsJws(headersMap.get("authorization"));
-
-            String username = jwtClaims.getBody().getSubject();
-            List<String> actions = jwtClaims.getBody().get("actions", List.class);
-            if (username.equals(userId) && actions != null && !actions.isEmpty()) {
-                log.info("User {} validated for issuing requests.", username);
-                return actions;
-            }
+//            Jws<Claims> jwtClaims = Jwts.parserBuilder()
+//                    .setSigningKey(Keys.hmacShaKeyFor(secret))
+//                    .build().parseClaimsJws(headersMap.get("authorization"));
+//
+//            String username = jwtClaims.getBody().getSubject();
+//            List<String> actions = jwtClaims.getBody().get("actions", List.class);
+//            if (username.equals(userId) && actions != null && !actions.isEmpty()) {
+//                log.info("User {} validated for issuing requests.", username);
+//                return actions;
+//            }
         }
         return null;
     }
