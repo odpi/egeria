@@ -97,7 +97,7 @@ allprojects {
         junitVersion = '4.13.2'
         junitjupiterVersion = '5.9.2'
         junitplatformVersion = '1.9.1'
-        jwtVersion = '0.9.1'
+        jwtVersion = '9.24.4'
         jwtApiVersion = '0.11.5'
         jwtImplVersion = '0.11.5'
         jwtJacksonVersion = '0.11.5'
@@ -116,16 +116,18 @@ allprojects {
         reflectionsVersion = '0.10.2'
         sanitizerVersion = '1.2.3'
         servletVersion = '4.0.1'
+        jakartaServletVersion = '6.0.0'
         sleepycatVersion = '18.3.12'
         snakeyamlVersion = '1.33'
         slf4jVersion = '1.7.36'
         snappyVersion = '1.1.9.1'
         springdocVersion = '1.6.13'
-        springbootVersion = '2.7.9'
+        springbootVersion = '3.0.2'
         spotbugsVersion = '4.7.3'
         springdataVersion = '2.7.8'
         springldapVersion = '2.4.1'
-        springsecurityVersion = '5.8.2'
+        springsecurityVersion = '6.0.1'
+        springsecurityJwtVersion = '1.1.1.RELEASE'
         swaggerVersion = '2.2.8'
         testngVersion = '7.7.1'
         thriftVersion = '0.18.0'
@@ -142,6 +144,7 @@ allprojects {
         log4jVersion = '2.20.0'
         jacksonjdk8Version = '2.14.2'
         reactivestreamsVersion = '1.0.4'
+        springdocSterterVersion = '2.0.2'
     }
 
     dependencies {
@@ -168,7 +171,8 @@ allprojects {
             implementation("commons-logging:commons-logging:${commonsloggingVersion}")
             implementation("org.apache.commons:commons-text:${commonstextVersion}")
             implementation("io.github.classgraph:classgraph:${classgraphVersion}")
-            implementation("io.jsonwebtoken:jjwt:${jwtVersion}")
+//            implementation("io.jsonwebtoken:jjwt:${jwtVersion}")
+            implementation("com.nimbusds:nimbus-jose-jwt:${jwtVersion}")
             implementation("io.jsonwebtoken:jjwt-api:${jwtApiVersion}")
             implementation("io.lettuce:lettuce-core:${lettuceVersion}")
             implementation("io.micrometer:micrometer-registry-prometheus:${prometheusVersion}")
@@ -238,10 +242,13 @@ allprojects {
             implementation("org.springframework.boot:spring-boot-starter-security:${springbootVersion}")
             implementation("org.springframework.boot:spring-boot-starter-data-redis:${springbootVersion}")
             implementation("org.springframework.boot:spring-boot-starter-actuator:${springbootVersion}")
+            implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server:${springbootVersion}")
             implementation("org.springframework.security:spring-security-config:${springsecurityVersion}")
             implementation("org.springframework.security:spring-security-core:${springsecurityVersion}")
             implementation("org.springframework.security:spring-security-ldap:${springsecurityVersion}")
             implementation("org.springframework.security:spring-security-web:${springsecurityVersion}")
+            implementation("org.springframework.security:spring-security-jwt:${springsecurityJwtVersion}")
+            implementation("org.springframework.security:spring-security-oauth2-jose:${springsecurityVersion}")
             implementation("org.springframework:spring-aop:${springwebVersion}")
             implementation("org.springframework:spring-beans:${springwebVersion}")
             implementation("org.springframework:spring-context:${springwebVersion}")
@@ -254,6 +261,7 @@ allprojects {
             implementation("org.springframework:spring-core:${springwebVersion}")
             implementation("org.springframework.ldap:ldap-core:${springldapVersion}")
             implementation("javax.servlet:javax.servlet-api:${servletVersion}")
+            implementation("jakarta.servlet:jakarta.servlet-api:${jakartaServletVersion}")
             implementation("commons-configuration:commons-configuration:${commonsconfigurationVersion}")
             implementation("org.apache.commons:commons-configuration2:${commonsconfiguration2Version}")
             implementation("org.hibernate:hibernate-validator:${hibernatevalidatorVersion}")
@@ -270,7 +278,8 @@ allprojects {
 
             annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
             implementation("org.projectlombok:lombok:${lombokVersion}")
-
+            implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocSterterVersion}")
+            implementation("io.swagger.core.v3:swagger-annotations-jakarta:${swaggerVersion}")
 
             // testng also used in our 'source' code to support unit tests
             implementation("org.testng:testng:${testngVersion}")
@@ -526,7 +535,13 @@ dependencyAnalysis {
                 severity('fail')
             }
             onUnusedDependencies {
-                exclude("junit:junit", "org.junit.jupiter:junit-jupiter-api", "org.junit.jupiter:junit-jupiter-engine", "com.fasterxml.jackson.core:jackson-annotations")
+                exclude("junit:junit", "org.junit.jupiter:junit-jupiter-api",
+                        "org.junit.jupiter:junit-jupiter-engine", "com.fasterxml.jackson.core:jackson-annotations",
+                        "org.springframework.boot:spring-boot-starter-oauth2-resource-server",
+                        "org.springdoc:springdoc-openapi-starter-webmvc-ui",
+                        "org.springframework.ldap:spring-ldap-core"
+
+                )
             }
         }
     }

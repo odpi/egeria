@@ -159,8 +159,8 @@
         <junit.platform.version>1.9.2</junit.platform.version>
         <hamcrest.version>2.2</hamcrest.version>
         <junit.version>4.13.2</junit.version>
-        <mockito.version>5.0.0</mockito.version>
-        <surefire.plugin.version>3.0.0-M9</surefire.plugin.version>
+        <surefire.plugin.version>3.0.0-M8</surefire.plugin.version>
+        <mockito.version>4.11.0</mockito.version>
         <slf4j.version>1.7.36</slf4j.version>
         <testng.version>7.7.1</testng.version>
         <jackson.version>2.14.2</jackson.version>
@@ -172,11 +172,11 @@
         <spring.ldap.core>2.4.1</spring.ldap.core>
         <janus.version>0.6.1</janus.version>
         <gremlin.version>3.5.5</gremlin.version>
-        <spring-boot.version>2.7.9</spring-boot.version>
-        <springdoc.version>1.6.12</springdoc.version>
-        <spring-data.version>2.7.8</spring-data.version>
+        <spring-boot.version>3.0.2</spring-boot.version>
+        <springdoc.version>1.6.13</springdoc.version>
+        <spring-data.version>3.0.2</spring-data.version>
         <spring.version>5.3.25</spring.version>
-        <spring-security.version>5.8.1</spring-security.version>
+        <spring-security.version>6.0.0</spring-security.version>
         <springdoc-plugin.version>1.4</springdoc-plugin.version>
         <commons-io.version>2.11.0</commons-io.version>
         <commons-cli.version>1.5.0</commons-cli.version>
@@ -214,7 +214,7 @@
         <antlr.version>3.5.3</antlr.version>
         <ST4.version>4.3.4</ST4.version>
         <snappy.version>1.1.9.1</snappy.version>
-        <snakeyaml.version>2.0</snakeyaml.version>
+        <snakeyaml.version>1.33</snakeyaml.version>
         <swagger.version>2.2.6</swagger.version>
         <classgraph.version>4.8.155</classgraph.version>
         <micrometer-registry-prometheus.version>1.10.3</micrometer-registry-prometheus.version>
@@ -231,7 +231,7 @@
         <lettuce.version>6.2.3.RELEASE</lettuce.version>
         <lombok.version>1.18.26</lombok.version>
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
-        <javax.servlet.version>4.0.1</javax.servlet.version>
+        <jakarta.servlet.version>6.0.0</jakarta.servlet.version>
         <thrift.version>0.18.0</thrift.version>
         <elasticsearch.version>8.6.2</elasticsearch.version>
         <hibernate-validator.version>8.0.0.Final</hibernate-validator.version>
@@ -443,9 +443,9 @@
             </dependency>
 
            <dependency>
-               <groupId>javax.servlet</groupId>
-               <artifactId>javax.servlet-api</artifactId>
-                <version>${javax.servlet.version}</version>
+               <groupId>jakarta.servlet</groupId>
+               <artifactId>jakarta.servlet-api</artifactId>
+                <version>${jakarta.servlet.version}</version>
            </dependency>
 
             <dependency>
@@ -3798,8 +3798,8 @@
                                 </requireMavenVersion>
                                 <requireJavaVersion>
                                     <level>ERROR</level>
-                                    <version>[11,)</version>
-                                    <message>** JAVA VERSION ERROR ** Java 11 or above is required.
+                                    <version>[17,)</version>
+                                    <message>** JAVA VERSION ERROR ** Java 17 or above is required.
                                     </message>
                                 </requireJavaVersion>
                                 <banDuplicatePomDependencyVersions/>

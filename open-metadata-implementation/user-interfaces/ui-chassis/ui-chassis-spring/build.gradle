@@ -6,29 +6,34 @@
 buildscript {
     repositories {
         mavenCentral()
+        gradlePluginPortal()
     }
 
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin")
+        classpath("org.springdoc.openapi-gradle-plugin:org.springdoc.openapi-gradle-plugin.gradle.plugin")
     }
 }
 
 plugins {
-    id "io.freefair.lombok"
+    id 'io.freefair.lombok'
     id 'org.springframework.boot'
+    id 'org.springdoc.openapi-gradle-plugin' version("1.6.0")
 }
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.boot:spring-boot-test'
     implementation 'org.springframework.security:spring-security-ldap'
+    implementation 'org.springframework.security:spring-security-oauth2-jose'
+    implementation 'com.nimbusds:nimbus-jose-jwt'
     annotationProcessor 'org.projectlombok:lombok'
     implementation 'org.projectlombok:lombok'
     implementation 'org.springframework.security:spring-security-crypto'
-    implementation 'io.jsonwebtoken:jjwt'
     implementation 'io.lettuce:lettuce-core'
     implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-client')
     runtimeOnly project(':open-metadata-implementation:access-services:subject-area:subject-area-client')
@@ -53,7 +58,6 @@ dependencies {
     implementation 'org.springframework:spring-beans'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     runtimeOnly 'javax.xml.bind:jaxb-api'
-    implementation 'javax.servlet:javax.servlet-api'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation 'org.slf4j:slf4j-api'
     implementation 'org.springframework:spring-core'
@@ -84,21 +88,23 @@ dependencies {
     implementation project(':open-metadata-implementation:view-services:dino-view:dino-view-server')
     runtimeOnly project(':open-metadata-implementation:view-services:dino-view:dino-view-spring')
     implementation project(':open-metadata-implementation:admin-services:admin-services-registration')
-    runtimeOnly 'org.springdoc:springdoc-openapi-ui'
-    implementation 'io.swagger.core.v3:swagger-annotations'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui'
+    implementation 'io.swagger.core.v3:swagger-annotations-jakarta'
 }
 
 description = 'UI Server Platform Chassis for Spring'
 
 bootJar {
     manifest {
-        attributes 'Main-Class': 'org.springframework.boot.loader.PropertiesLauncher'
+//        attributes 'Main-Class': 'org.springframework.boot.loader.PropertiesLauncher'
+        mainClass = 'org.odpi.openmetadata.userinterface.uichassis.springboot.EgeriaUIPlatform'
     }
 }
 
 java {
     withJavadocJar()
 }
+
 
 test {
     useJUnitPlatform()
