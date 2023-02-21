@@ -165,9 +165,9 @@
         <testng.version>7.7.1</testng.version>
         <jackson.version>2.14.2</jackson.version>
         <jackson.databind.version>2.14.2</jackson.databind.version>
-        <logback.version>1.2.11</logback.version>
+        <logback.version>1.4.5</logback.version>
         <kafka.version>3.3.2</kafka.version>
-        <tomcat.version>9.0.71</tomcat.version>
+        <tomcat.version>10.1.5</tomcat.version>
         <netty.version>4.1.87.Final</netty.version>
         <spring.ldap.core>2.4.1</spring.ldap.core>
         <janus.version>0.6.1</janus.version>
@@ -215,9 +215,9 @@
         <ST4.version>4.3.4</ST4.version>
         <snappy.version>1.1.9.1</snappy.version>
         <snakeyaml.version>1.33</snakeyaml.version>
-        <swagger.version>2.2.6</swagger.version>
+        <swagger.version>2.2.8</swagger.version>
         <classgraph.version>4.8.154</classgraph.version>
-        <micrometer-registry-prometheus.version>1.10.3</micrometer-registry-prometheus.version>
+        <micrometer-registry-prometheus.version>1.10.4</micrometer-registry-prometheus.version>
         <jcl-over-slf4j.version>1.7.36</jcl-over-slf4j.version>
         <groovy.version>3.0.14</groovy.version>
         <reflections.version>0.10.2</reflections.version>
@@ -3001,6 +3001,12 @@
             <dependency>
                 <groupId>io.micrometer</groupId>
                 <artifactId>micrometer-registry-prometheus</artifactId>
+                <version>${micrometer-registry-prometheus.version}</version>
+             </dependency>
+
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-observation</artifactId>
                 <version>${micrometer-registry-prometheus.version}</version>
              </dependency>
 
