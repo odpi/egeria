@@ -56,7 +56,7 @@ dependencies {
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
     runtimeOnly 'jakarta.persistence:jakarta.persistence-api'
     implementation 'org.springframework:spring-beans'
-    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
     runtimeOnly 'javax.xml.bind:jaxb-api'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation 'org.slf4j:slf4j-api'
@@ -64,7 +64,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-api')
     implementation 'org.springframework.security:spring-security-web'
     runtimeOnly project(':open-metadata-implementation:access-services:subject-area:subject-area-api')
-    implementation 'com.fasterxml.jackson.core:jackson-core'
+    runtimeOnly 'com.fasterxml.jackson.core:jackson-core'
     implementation project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-client')
     implementation project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-api')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
