@@ -530,11 +530,8 @@ dependencyAnalysis {
             }
             onUnusedDependencies {
                 exclude("junit:junit", "org.junit.jupiter:junit-jupiter-api",
-                        "org.junit.jupiter:junit-jupiter-engine", "com.fasterxml.jackson.core:jackson-annotations",
-                        "org.springframework.boot:spring-boot-starter-oauth2-resource-server",
-                        "org.springdoc:springdoc-openapi-starter-webmvc-ui",
-                        "org.springframework.ldap:spring-ldap-core"
-
+                        "org.junit.jupiter:junit-jupiter-engine",
+                        "org.springdoc:springdoc-openapi-starter-webmvc-ui"
                 )
             }
         }
