@@ -76,10 +76,8 @@ public class SecurityConfig {
     }
 
     /**
-     *
-     * @return CorsConfigurationSource the cors configuration
+     *Returns CorsConfigurationSource the cors configuration
      * The bean is based on springboot configuration property cors.allowed-origins
-     *
      */
     @Bean
     @ConditionalOnProperty(value = "cors.allowed-origins")
