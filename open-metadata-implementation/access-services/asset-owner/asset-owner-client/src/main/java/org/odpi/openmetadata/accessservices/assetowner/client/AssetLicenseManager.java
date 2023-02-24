@@ -1,18 +1,16 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.governanceprogram.client;
+package org.odpi.openmetadata.accessservices.assetowner.client;
 
-import org.odpi.openmetadata.accessservices.governanceprogram.api.RightsManagementInterface;
-import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.LicenseElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.LicenseTypeElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.LicenseListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.LicenseTypeListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.LicenseTypeResponse;
+import org.odpi.openmetadata.accessservices.assetowner.api.AssetLicenseInterface;
+import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.LicenseElement;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.LicenseTypeElement;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.RelatedElement;
+import org.odpi.openmetadata.accessservices.assetowner.properties.LicenseProperties;
+import org.odpi.openmetadata.accessservices.assetowner.rest.LicenseListResponse;
+import org.odpi.openmetadata.accessservices.assetowner.rest.LicenseTypeListResponse;
+import org.odpi.openmetadata.accessservices.assetowner.rest.LicenseTypeResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -22,9 +20,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import java.util.List;
 
 /**
- * RightsManager is the java client for managing license types and the licensing of elements.
+ * AssetLicenseManager is the java client for managing license types and the licensing of elements.
  */
-public class RightsManager extends GovernanceProgramBaseClient implements RightsManagementInterface
+public class AssetLicenseManager extends AssetOwnerBaseClient implements AssetLicenseInterface
 {
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -34,8 +32,8 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
      *
      * @throws InvalidParameterException bad input parameters
      */
-    public RightsManager(String serverName,
-                         String serverPlatformURLRoot) throws InvalidParameterException
+    public AssetLicenseManager(String serverName,
+                               String serverPlatformURLRoot) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot);
     }
@@ -52,10 +50,10 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
      *
      * @throws InvalidParameterException bad input parameters
      */
-    public RightsManager(String     serverName,
-                         String     serverPlatformURLRoot,
-                         String     userId,
-                         String     password) throws InvalidParameterException
+    public AssetLicenseManager(String     serverName,
+                               String     serverPlatformURLRoot,
+                               String     userId,
+                               String     password) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password);
     }
@@ -72,10 +70,10 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
      *
      * @throws InvalidParameterException bad input parameters
      */
-    public RightsManager(String   serverName,
-                         String   serverPlatformURLRoot,
-                         int      maxPageSize,
-                         AuditLog auditLog) throws InvalidParameterException
+    public AssetLicenseManager(String   serverName,
+                               String   serverPlatformURLRoot,
+                               int      maxPageSize,
+                               AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, maxPageSize, auditLog);
     }
@@ -94,12 +92,12 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
      *
      * @throws InvalidParameterException bad input parameters
      */
-    public RightsManager(String     serverName,
-                         String     serverPlatformURLRoot,
-                         String     userId,
-                         String     password,
-                         int        maxPageSize,
-                         AuditLog   auditLog) throws InvalidParameterException
+    public AssetLicenseManager(String     serverName,
+                               String     serverPlatformURLRoot,
+                               String     userId,
+                               String     password,
+                               int        maxPageSize,
+                               AuditLog   auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password, maxPageSize, auditLog);
     }
@@ -115,10 +113,10 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
      *
      * @throws InvalidParameterException bad input parameters
      */
-    public RightsManager(String                      serverName,
-                         String                      serverPlatformURLRoot,
-                         GovernanceProgramRESTClient restClient,
-                         int                         maxPageSize) throws InvalidParameterException
+    public AssetLicenseManager(String               serverName,
+                               String               serverPlatformURLRoot,
+                               AssetOwnerRESTClient restClient,
+                               int                  maxPageSize) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, restClient, maxPageSize);
     }
@@ -127,118 +125,6 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
     /* ========================================
      * License Types
      */
-
-    /**
-     * Create a description of the license type.
-     *
-     * @param userId calling user
-     * @param properties license properties
-     * @param initialStatus what is the initial status for the license type definition - default value is DRAFT
-     *
-     * @return unique identifier of new definition
-     *
-     * @throws InvalidParameterException documentIdentifier or userId is null; documentIdentifier is not unique
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Override
-    public String createLicenseType(String                     userId,
-                                    LicenseTypeProperties      properties,
-                                    GovernanceDefinitionStatus initialStatus) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
-    {
-        final String   methodName = "createLicenseType";
-        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types";
-        final String   propertiesParameterName = "properties";
-
-        return super.createGovernanceDefinition(userId, properties, propertiesParameterName, initialStatus, urlTemplate, methodName);
-    }
-
-
-    /**
-     * Update the properties of the license type.
-     *
-     * @param userId calling user
-     * @param licenseTypeGUID identifier of the governance definition to change
-     * @param isMergeUpdate are unspecified properties unchanged (true) or replaced with null?
-     * @param properties license properties
-     *
-     * @throws InvalidParameterException guid, documentIdentifier or userId is null; documentIdentifier is not unique
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Override
-    public void updateLicenseType(String                userId,
-                                  String                licenseTypeGUID,
-                                  boolean               isMergeUpdate,
-                                  LicenseTypeProperties properties) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
-    {
-        final String methodName = "updateLicenseType";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types/{2}/update?isMergeUpdate={3}";
-
-        final String guidParameterName = "licenseTypeGUID";
-        final String propertiesParameterName = "properties";
-
-        super.updateGovernanceDefinition(userId, licenseTypeGUID, guidParameterName, isMergeUpdate, properties, propertiesParameterName, urlTemplate, methodName);
-    }
-
-
-    /**
-     * Update the status of a license type
-     *
-     * @param userId calling user
-     * @param licenseTypeGUID identifier of the governance definition to change
-     * @param newStatus new status
-     *
-     * @throws InvalidParameterException guid, documentIdentifier or userId is null; documentIdentifier is not unique
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Override
-    public void setLicenseTypeStatus(String                     userId,
-                                     String                     licenseTypeGUID,
-                                     GovernanceDefinitionStatus newStatus) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
-    {
-        final String methodName = "setGovernanceDefinitionStatus";
-        final String guidParameterName = "licenseTypeGUID";
-        final String propertiesParameterName = "newStatus";
-
-        super.updateGovernanceDefinitionStatus(userId,
-                                               licenseTypeGUID,
-                                               guidParameterName,
-                                               newStatus,
-                                               propertiesParameterName,
-                                               methodName);
-    }
-
-
-    /**
-     * Delete the properties of the license type.
-     *
-     * @param userId calling user
-     * @param licenseTypeGUID identifier of the governance definition to delete
-     *
-     * @throws InvalidParameterException guid or userId is null
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Override
-    public void deleteLicenseType(String userId,
-                                  String licenseTypeGUID) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
-    {
-        final String methodName = "deleteLicenseType";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types/{2}/delete";
-        final String guidParameterName = "licenseTypeGUID";
-
-        super.removeReferenceable(userId, licenseTypeGUID, guidParameterName, urlTemplate, methodName);
-    }
 
 
     /**
@@ -260,7 +146,7 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
                                                                                   PropertyServerException
     {
         final String methodName = "getLicenseTypeByGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/license-types/{2}";
 
         final String guidParameterName = "licenseTypeGUID";
 
@@ -296,7 +182,7 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
                                                                                       PropertyServerException
     {
         final String   methodName = "getLicenseTypeByDocId";
-        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types/by-document-id/{2}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/license-types/by-document-id/{2}";
 
         final String   documentIdParameterName = "documentId";
 
@@ -336,7 +222,7 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
                                                                                    PropertyServerException
     {
         final String methodName = "getLicenseTypesByTitle";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types/by-title?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/license-types/by-title?startFrom={2}&pageSize={3}";
         final String titleParameterName = "title";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -383,7 +269,7 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
                                                                                      PropertyServerException
     {
         final String methodName = "getLicenseTypeByDomainId";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types/by-domain/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/license-types/by-domain/{2}?startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -428,7 +314,7 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
                                                                       PropertyServerException
     {
         final String methodName = "licenseElement";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/license-types/{3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/elements/{2}/license-types/{3}";
 
         final String elementGUIDParameterName = "elementGUID";
         final String licenseTypeGUIDParameterName = "licenseTypeGUID";
@@ -466,7 +352,7 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
                                                                     PropertyServerException
     {
         final String methodName = "updateLicense";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/licenses/{2}/update?isMergeUpdate={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/licenses/{2}/update?isMergeUpdate={3}";
 
         final String licenseGUIDParameterName = "licenseGUID";
 
@@ -498,7 +384,7 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
                                                                  PropertyServerException
     {
         final String methodName = "unlicenseElement";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/licenses/{2}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/licenses/{2}/delete";
 
         final String licenseGUIDParameterName = "licenseGUID";
 
@@ -535,7 +421,7 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
     {
         final String methodName = "getLicencedElements";
         final String guidParameter = "licenseGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/licenses/{2}?&startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/elements/licenses/{2}?&startFrom={3}&pageSize={4}";
 
         return super.getRelatedElements(userId, licenseGUID, guidParameter, urlTemplate, startFrom, pageSize, methodName);
     }
@@ -565,7 +451,7 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
     {
         final String methodName = "getLicences";
         final String guidParameterName = "elementGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/licenses?&startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/elements/{2}/licenses?&startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);

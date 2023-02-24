@@ -1,13 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.governanceprogram.api;
+package org.odpi.openmetadata.accessservices.assetowner.api;
 
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.LicenseElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.LicenseTypeElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.LicenseElement;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.LicenseTypeElement;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.RelatedElement;
+import org.odpi.openmetadata.accessservices.assetowner.properties.LicenseProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -15,87 +13,13 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import java.util.List;
 
 /**
- * The RightsManagementInterface supports the management of the types of licenses (terms and conditions) associated with elements.
+ * The AssetLicenseInterface supports the management of the types of licenses (terms and conditions) associated with elements.
  */
-public interface RightsManagementInterface
+public interface AssetLicenseInterface
 {
     /* ========================================================
      * Management of the different types of licenses
      */
-
-    /**
-     * Create a description of the license type.
-     *
-     * @param userId calling user
-     * @param properties license properties
-     * @param initialStatus what is the initial status for the license type - default value is DRAFT
-     *
-     * @return unique identifier of new definition
-     *
-     * @throws InvalidParameterException documentIdentifier or userId is null; documentIdentifier is not unique
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    String createLicenseType(String                     userId,
-                             LicenseTypeProperties      properties,
-                             GovernanceDefinitionStatus initialStatus) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException;
-
-
-    /**
-     * Update the properties of the license type.
-     *
-     * @param userId calling user
-     * @param licenseGUID identifier of the governance definition to change
-     * @param isMergeUpdate are unspecified properties unchanged (true) or replaced with null?
-     * @param properties license properties
-     *
-     * @throws InvalidParameterException guid, documentIdentifier or userId is null; documentIdentifier is not unique
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    void updateLicenseType(String                userId,
-                           String                licenseGUID,
-                           boolean               isMergeUpdate,
-                           LicenseTypeProperties properties) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException;
-
-
-    /**
-     * Update the status of a license type.
-     *
-     * @param userId calling user
-     * @param licenseTypeGUID identifier of the governance definition to change
-     * @param newStatus new status
-     *
-     * @throws InvalidParameterException guid, documentIdentifier or userId is null; documentIdentifier is not unique
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    void setLicenseTypeStatus(String                     userId,
-                              String                     licenseTypeGUID,
-                              GovernanceDefinitionStatus newStatus) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException;
-
-
-    /**
-     * Delete the properties of the license type.
-     *
-     * @param userId calling user
-     * @param licenseGUID identifier of the governance definition to delete
-     *
-     * @throws InvalidParameterException guid or userId is null
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    void deleteLicenseType(String userId,
-                           String licenseGUID) throws InvalidParameterException,
-                                                      UserNotAuthorizedException,
-                                                      PropertyServerException;
-
 
     /**
      * Retrieve the license type by the unique identifier assigned by this service when it was created.

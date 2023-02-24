@@ -8,6 +8,9 @@ import org.odpi.openmetadata.accessservices.assetowner.ffdc.AssetOwnerErrorCode;
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.CertificationHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ExternalReferenceHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.LicenseHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeHandler;
@@ -56,7 +59,11 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
 
     private final ConnectionHandler<ConnectionElement>       connectionHandler;
     private final ConnectorTypeHandler<ConnectorTypeElement> connectorTypeHandler;
-    private final EndpointHandler<EndpointElement>           endpointHandler;
+    private final EndpointHandler<EndpointElement>                   endpointHandler;
+    private final ExternalReferenceHandler<ExternalReferenceElement> externalReferenceHandler;
+    private final CertificationHandler<CertificationTypeElement>     certificationTypeHandler;
+    private final LicenseHandler<LicenseTypeElement>                 licenseTypeHandler;
+    private final ReferenceableHandler<RelatedElement>                     relatedElementHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -199,6 +206,7 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
                                                                      defaultZones,
                                                                      publishZones,
                                                                      auditLog);
+
         this.annotationHandler              = new AnnotationHandler<>(new AnnotationConverter<>(repositoryHelper, serviceName, serverName),
                                                                       Annotation.class,
                                                                       serviceName,
@@ -212,6 +220,7 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
                                                                       defaultZones,
                                                                       publishZones,
                                                                       auditLog);
+
         this.discoveryAnalysisReportHandler = new DiscoveryAnalysisReportHandler<>(new DiscoveryAnalysisReportConverter<>(repositoryHelper,
                                                                                                                           serviceName,
                                                                                                                           serverName),
@@ -269,6 +278,62 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
                                                      defaultZones,
                                                      publishZones,
                                                      auditLog);
+
+        this.relatedElementHandler = new ReferenceableHandler<>(new RelatedElementConverter<>(repositoryHelper, serviceName,serverName),
+                                                                RelatedElement.class,
+                                                                serviceName,
+                                                                serverName,
+                                                                invalidParameterHandler,
+                                                                repositoryHandler,
+                                                                repositoryHelper,
+                                                                localServerUserId,
+                                                                securityVerifier,
+                                                                supportedZones,
+                                                                defaultZones,
+                                                                publishZones,
+                                                                auditLog);
+
+        this.externalReferenceHandler = new ExternalReferenceHandler<>(new ExternalReferenceConverter<>(repositoryHelper, serviceName, serverName),
+                                                                       ExternalReferenceElement.class,
+                                                                       serviceName,
+                                                                       serverName,
+                                                                       invalidParameterHandler,
+                                                                       repositoryHandler,
+                                                                       repositoryHelper,
+                                                                       localServerUserId,
+                                                                       securityVerifier,
+                                                                       supportedZones,
+                                                                       defaultZones,
+                                                                       publishZones,
+                                                                       auditLog);
+
+        this.certificationTypeHandler = new CertificationHandler<>(new CertificationTypeConverter<>(repositoryHelper, serviceName, serverName),
+                                                                   CertificationTypeElement.class,
+                                                                   serviceName,
+                                                                   serverName,
+                                                                   invalidParameterHandler,
+                                                                   repositoryHandler,
+                                                                   repositoryHelper,
+                                                                   localServerUserId,
+                                                                   securityVerifier,
+                                                                   supportedZones,
+                                                                   defaultZones,
+                                                                   publishZones,
+                                                                   auditLog);
+
+        this.licenseTypeHandler = new LicenseHandler<>(new LicenseTypeConverter<>(repositoryHelper, serviceName, serverName),
+                                                       LicenseTypeElement.class,
+                                                       serviceName,
+                                                       serverName,
+                                                       invalidParameterHandler,
+                                                       repositoryHandler,
+                                                       repositoryHelper,
+                                                       localServerUserId,
+                                                       securityVerifier,
+                                                       supportedZones,
+                                                       defaultZones,
+                                                       publishZones,
+                                                       auditLog);
     }
 
 
@@ -463,4 +528,68 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
         return endpointHandler;
     }
 
+
+    /**
+     * Return the external references handler
+     *
+     * @return handler
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    ExternalReferenceHandler<ExternalReferenceElement> getExternalReferencesHandler() throws PropertyServerException
+    {
+        final String methodName = "getExternalReferencesHandler";
+
+        validateActiveRepository(methodName);
+
+        return externalReferenceHandler;
+    }
+
+
+
+    /**
+     * Return the handler for governance definition requests.
+     *
+     * @return handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    CertificationHandler<CertificationTypeElement> getCertificationTypeHandler() throws PropertyServerException
+    {
+        final String methodName = "getCertificationTypeHandler";
+
+        validateActiveRepository(methodName);
+
+        return certificationTypeHandler;
+    }
+
+
+    /**
+     * Return the handler for governance definition requests.
+     *
+     * @return handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    LicenseHandler<LicenseTypeElement> getLicenseTypeHandler() throws PropertyServerException
+    {
+        final String methodName = "getLicenseTypeHandler";
+
+        validateActiveRepository(methodName);
+
+        return licenseTypeHandler;
+    }
+
+
+    /**
+     * Return the handler for related referenceables.
+     *
+     * @return handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    public ReferenceableHandler<RelatedElement> getRelatedElementHandler() throws PropertyServerException
+    {
+        final String methodName = "getRelatedElementHandler";
+
+        validateActiveRepository(methodName);
+
+        return relatedElementHandler;
+    }
 }

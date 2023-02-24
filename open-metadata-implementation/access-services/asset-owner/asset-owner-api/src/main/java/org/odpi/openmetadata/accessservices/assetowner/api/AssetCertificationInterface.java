@@ -1,12 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.governanceprogram.api;
+package org.odpi.openmetadata.accessservices.assetowner.api;
 
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.CertificationTypeElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationTypeProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.CertificationTypeElement;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.RelatedElement;
+import org.odpi.openmetadata.accessservices.assetowner.properties.CertificationProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -14,69 +12,13 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import java.util.List;
 
 /**
- * The CertificationManagementInterface provides the ability to manage the certification types that can be associated with elements.
+ * The AssetCertificationInterface provides the ability to manage the certification types that can be associated with elements.
  */
-public interface CertificationManagementInterface
+public interface AssetCertificationInterface
 {
     /* ========================================
      * Certification Types
      */
-
-    /**
-     * Create a description of the certification type.
-     *
-     * @param userId calling user
-     * @param properties certification properties
-     * @param initialStatus what is the initial status for the certification type - default value is DRAFT
-     *
-     * @return unique identifier of new definition
-     *
-     * @throws InvalidParameterException documentIdentifier or userId is null; documentIdentifier is not unique
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    String createCertificationType(String                      userId,
-                                   CertificationTypeProperties properties,
-                                   GovernanceDefinitionStatus  initialStatus) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException;
-
-
-    /**
-     * Update the properties of the certification type.
-     *
-     * @param userId calling user
-     * @param certificationTypeGUID identifier of the governance definition to change
-     * @param isMergeUpdate are unspecified properties unchanged (true) or replaced with null?
-     * @param properties certification properties
-     *
-     * @throws InvalidParameterException guid, documentIdentifier or userId is null; documentIdentifier is not unique
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    void updateCertificationType(String                      userId,
-                                 String                      certificationTypeGUID,
-                                 boolean                     isMergeUpdate,
-                                 CertificationTypeProperties properties) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException;
-
-
-    /**
-     * Delete the properties of the certification type.
-     *
-     * @param userId calling user
-     * @param certificationTypeGUID identifier of the governance definition to delete
-     *
-     * @throws InvalidParameterException guid or userId is null
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    void deleteCertificationType(String userId,
-                                 String certificationTypeGUID) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException;
-
 
     /**
      * Retrieve the certification type by the unique identifier assigned by this service when it was created.
