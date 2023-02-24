@@ -141,6 +141,22 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Using the supplied instances, return a new instance of the bean.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.assetowner.metadataelements">RelatedElement</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelatedElement(java.lang.Class,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship,java.lang.String)" class="member-name-link">getRelatedElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;<a href="AssetConverter.html" title="type parameter in AssetConverter">B</a>&gt;&nbsp;beanClass,
+ <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;entity,
+ <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;relationship,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Using the supplied instances, return a new instance of a relatedElement bean.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.assetowner.metadataelements">RelatedElement</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelatedElement(java.lang.Class,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy,java.lang.String)" class="member-name-link">getRelatedElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;<a href="AssetConverter.html" title="type parameter in AssetConverter">B</a>&gt;&nbsp;beanClass,
+ <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;relationship,
+ <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityProxy.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityProxy</a>&nbsp;entityProxy,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Using the supplied instances, return a new instance of a relatedElement bean.</div>
+</div>
 </div>
 </div>
 </div>
@@ -223,6 +239,52 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>beanClass</code> - name of the class to create</dd>
 <dd><code>entity</code> - entity containing the properties</dd>
+<dd><code>relationship</code> - relationship containing the properties</dd>
+<dd><code>methodName</code> - calling method</dd>
+<dt>Returns:</dt>
+<dd>bean populated with properties from the instances supplied</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem instantiating the bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getRelatedElement(java.lang.Class,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship,java.lang.String)">
+<h3>getRelatedElement</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.assetowner.metadataelements">RelatedElement</a></span>&nbsp;<span class="element-name">getRelatedElement</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;<a href="AssetConverter.html" title="type parameter in AssetConverter">B</a>&gt;&nbsp;beanClass,
+ <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;entity,
+ <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;relationship,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
+                                 throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Using the supplied instances, return a new instance of a relatedElement bean. This is used for beans that
+ contain a combination of the properties from an entity and that of a connected relationship.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>beanClass</code> - name of the class to create</dd>
+<dd><code>entity</code> - entity containing the properties</dd>
+<dd><code>relationship</code> - relationship containing the properties</dd>
+<dd><code>methodName</code> - calling method</dd>
+<dt>Returns:</dt>
+<dd>bean populated with properties from the instances supplied</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem instantiating the bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getRelatedElement(java.lang.Class,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy,java.lang.String)">
+<h3>getRelatedElement</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.assetowner.metadataelements">RelatedElement</a></span>&nbsp;<span class="element-name">getRelatedElement</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;<a href="AssetConverter.html" title="type parameter in AssetConverter">B</a>&gt;&nbsp;beanClass,
+ <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;relationship,
+ <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityProxy.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityProxy</a>&nbsp;entityProxy,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
+                                 throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Using the supplied instances, return a new instance of a relatedElement bean. This is used for beans that
+ contain a combination of the properties from an entityProxy and that of a connected relationship.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>beanClass</code> - name of the class to create</dd>
+<dd><code>entityProxy</code> - entityProxy containing the properties</dd>
 <dd><code>relationship</code> - relationship containing the properties</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Returns:</dt>
