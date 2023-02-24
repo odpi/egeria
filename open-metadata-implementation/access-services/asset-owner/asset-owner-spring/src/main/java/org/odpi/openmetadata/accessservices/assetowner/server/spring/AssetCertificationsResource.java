@@ -1,17 +1,15 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.governanceprogram.server.spring;
+package org.odpi.openmetadata.accessservices.assetowner.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.CertificationTypeListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.CertificationTypeResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDefinitionRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.RelatedElementListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.RelationshipRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.server.CertificationRESTServices;
+import org.odpi.openmetadata.accessservices.assetowner.rest.CertificationTypeListResponse;
+import org.odpi.openmetadata.accessservices.assetowner.rest.CertificationTypeResponse;
+import org.odpi.openmetadata.accessservices.assetowner.rest.RelatedElementListResponse;
+import org.odpi.openmetadata.accessservices.assetowner.rest.RelationshipRequestBody;
+import org.odpi.openmetadata.accessservices.assetowner.server.CertificationRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -25,24 +23,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 /**
- * GovernanceCertificationsResource sets up the certification types that are part of an organization governance.
+ * AssetCertificationsResource sets up the certification types that are part of an organization governance.
  */
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/access-services/governance-program/users/{userId}")
+@RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-owner/users/{userId}")
 
-@Tag(name="Governance Program OMAS",
-     description="The Governance Program OMAS provides APIs and events for tools and applications focused on defining a data strategy, planning support for a regulation and/or developing a governance program for the data landscape.",
-     externalDocs=@ExternalDocumentation(description="Governance Program Open Metadata Access Service (OMAS)",
-                                         url="https://egeria-project.org/services/omas/governance-program/overview/"))
+@Tag(name="Asset Owner OMAS", description="The Asset Owner OMAS provides APIs and notifications for tools and applications supporting the work of Asset Owners in protecting and enhancing their assets.\n" +
+                                                  "\n", externalDocs=@ExternalDocumentation(description="Asset Owner Open Metadata Access Service (OMAS)",url="https://egeria-project.org/services/omas/asset-owner/overview/"))
 
-public class GovernanceCertificationsResource
+public class AssetCertificationsResource
 {
     private final CertificationRESTServices restAPI = new CertificationRESTServices();
 
     /**
      * Default constructor
      */
-    public GovernanceCertificationsResource()
+    public AssetCertificationsResource()
     {
     }
 
@@ -51,78 +47,6 @@ public class GovernanceCertificationsResource
     /* ========================================
      * Certification Types
      */
-
-    /**
-     * Create a description of the certification type.
-     *
-     * @param serverName name of the server instance to connect to
-     * @param userId calling user
-     * @param requestBody certification properties and initial status
-     *
-     * @return unique identifier of new definition or
-     *  InvalidParameterException documentIdentifier or userId is null; documentIdentifier is not unique
-     *  PropertyServerException problem accessing property server
-     *  UserNotAuthorizedException security access problem
-     */
-    @PostMapping (path = "/certification-types")
-
-    public GUIDResponse createCertificationType(@PathVariable String                          serverName,
-                                                @PathVariable String                          userId,
-                                                @RequestBody  GovernanceDefinitionRequestBody requestBody)
-    {
-        return restAPI.createCertificationType(serverName, userId, requestBody);
-    }
-
-
-    /**
-     * Update the properties of the certification type.
-     *
-     * @param serverName name of the server instance to connect to
-     * @param userId calling user
-     * @param certificationTypeGUID identifier of the governance definition to change
-     * @param isMergeUpdate are unspecified properties unchanged (true) or replaced with null?
-     * @param requestBody certification properties
-     *
-     * @return void or
-     *  InvalidParameterException one of the properties is invalid
-     *  PropertyServerException problem accessing property server
-     *  UserNotAuthorizedException security access problem
-     */
-    @PostMapping (path = "/certification-types/{certificationTypeGUID}/update")
-
-    public VoidResponse updateCertificationType(@PathVariable String                          serverName,
-                                                @PathVariable String                          userId,
-                                                @PathVariable String                          certificationTypeGUID,
-                                                @RequestParam boolean                         isMergeUpdate,
-                                                @RequestBody  GovernanceDefinitionRequestBody requestBody)
-    {
-        return restAPI.updateCertificationType(serverName, userId, certificationTypeGUID, isMergeUpdate, requestBody);
-    }
-
-
-    /**
-     * Delete the properties of the certification type.
-     *
-     * @param serverName name of the server instance to connect to
-     * @param userId calling user
-     * @param certificationTypeGUID identifier of the governance definition to delete
-     * @param requestBody external source request body
-     *
-     * @return void or
-     *  InvalidParameterException one of the properties is invalid
-     *  PropertyServerException problem accessing property server
-     *  UserNotAuthorizedException security access problem
-     */
-    @PostMapping (path = "/certification-types/{certificationTypeGUID}/delete")
-
-    public VoidResponse deleteCertificationType(@PathVariable String                    serverName,
-                                                @PathVariable String                    userId,
-                                                @PathVariable String                    certificationTypeGUID,
-                                                @RequestBody  ExternalSourceRequestBody requestBody)
-    {
-        return restAPI.deleteCertificationType(serverName, userId, certificationTypeGUID, requestBody);
-    }
-
 
     /**
      * Retrieve the certification type by the unique identifier assigned by this service when it was created.
