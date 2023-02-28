@@ -15,7 +15,8 @@ on:
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [main, egeria-release-4*]
-
+env:
+  CODEQL_ACTION_EXTRA_OPTIONS: '{"database":{"interpret-results":["--max-paths",0]}}'
 jobs:
   analyze:
     if: ${{ github.repository == 'odpi/egeria'}}
