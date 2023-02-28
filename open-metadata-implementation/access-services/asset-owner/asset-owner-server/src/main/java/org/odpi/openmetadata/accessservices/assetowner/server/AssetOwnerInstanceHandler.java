@@ -351,9 +351,7 @@ class AssetOwnerInstanceHandler extends OMASServiceInstanceHandler
                                                                                                                   UserNotAuthorizedException,
                                                                                                                   PropertyServerException
     {
-        AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance)super.getServerServiceInstance(userId,
-                                                                                                         serverName,
-                                                                                                         serviceOperationName);
+        AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null)
         {
@@ -381,9 +379,7 @@ class AssetOwnerInstanceHandler extends OMASServiceInstanceHandler
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
     {
-        AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance)super.getServerServiceInstance(userId,
-                                                                                                         serverName,
-                                                                                                         serviceOperationName);
+        AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null)
         {
@@ -392,4 +388,121 @@ class AssetOwnerInstanceHandler extends OMASServiceInstanceHandler
 
         return null;
     }
+
+
+
+
+    /**
+     * Retrieve the specific converter for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return converter for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    ReferenceableHandler<RelatedElement> getRelatedElementHandler(String userId,
+                                                                  String serverName,
+                                                                  String serviceOperationName) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getRelatedElementHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve a specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    ExternalReferenceHandler<ExternalReferenceElement> getExternalReferencesHandler(String userId,
+                                                                                    String serverName,
+                                                                                    String serviceOperationName) throws InvalidParameterException,
+                                                                                                                        UserNotAuthorizedException,
+                                                                                                                        PropertyServerException
+    {
+        AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getExternalReferencesHandler();
+        }
+
+        return null;
+    }
+
+    
+
+    /**
+     * Retrieve a specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    LicenseHandler<LicenseTypeElement> getLicenseTypeHandler(String userId,
+                                                             String serverName,
+                                                             String serviceOperationName) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getLicenseTypeHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve a specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    CertificationHandler<CertificationTypeElement> getCertificationTypeHandler(String userId,
+                                                                               String serverName,
+                                                                               String serviceOperationName) throws InvalidParameterException,
+                                                                                                                   UserNotAuthorizedException,
+                                                                                                                   PropertyServerException
+    {
+        AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getCertificationTypeHandler();
+        }
+
+        return null;
+    }
+
+
 }

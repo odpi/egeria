@@ -442,7 +442,7 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
      *
      * @return handler object
      */
-    GovernanceDefinitionHandler<LicenseTypeElement> getLicenseTypeHandler()
+    LicenseHandler<LicenseTypeElement> getLicenseTypeHandler()
     {
         return licenseTypeHandler;
     }

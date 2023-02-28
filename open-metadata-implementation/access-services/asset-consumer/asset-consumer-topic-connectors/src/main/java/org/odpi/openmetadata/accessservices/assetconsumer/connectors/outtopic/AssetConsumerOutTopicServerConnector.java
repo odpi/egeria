@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.connectors.outtopic;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.accessservices.assetconsumer.events.AssetConsumerOutTopicEvent;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerAuditCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
@@ -20,6 +21,9 @@ import java.util.concurrent.CompletionException;
  */
 public class AssetConsumerOutTopicServerConnector extends OpenMetadataTopicSenderConnectorBase
 {
+
+    private static final ObjectWriter OBJECT_WRITER = new ObjectMapper().writer();
+
     /**
      * Send the request to the embedded event bus connector(s).
      *
@@ -30,11 +34,10 @@ public class AssetConsumerOutTopicServerConnector extends OpenMetadataTopicSende
     public void sendEvent(AssetConsumerOutTopicEvent event) throws InvalidParameterException, ConnectorCheckedException
     {
         final String methodName = "sendEvent";
-        ObjectMapper objectMapper = new ObjectMapper();
 
         try
         {
-            String eventString = objectMapper.writeValueAsString(event);
+            String eventString = OBJECT_WRITER.writeValueAsString(event);
             super.sendEvent(eventString).join();
 
             if (super.auditLog != null)

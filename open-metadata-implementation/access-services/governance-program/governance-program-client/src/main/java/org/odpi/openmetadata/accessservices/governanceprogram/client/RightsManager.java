@@ -317,7 +317,7 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
      * Retrieve all the license types for a particular title.  The title can include regEx wildcards.
      *
      * @param userId calling user
-     * @param title short description of the role
+     * @param title short description of the license
      * @param startFrom where to start from in the list of definitions
      * @param pageSize max number of results to return in one call
      *

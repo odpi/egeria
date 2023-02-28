@@ -137,7 +137,7 @@ public interface RightsManagementInterface
      * Retrieve all the license types for a particular title.  The title can include regEx wildcards.
      *
      * @param userId calling user
-     * @param title identifier of role
+     * @param title identifier of license
      * @param startFrom where to start from in the list of definitions
      * @param pageSize max number of results to return in one call
      *
