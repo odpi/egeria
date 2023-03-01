@@ -171,7 +171,7 @@
         <netty.version>4.1.87.Final</netty.version>
         <spring.ldap.core>2.4.1</spring.ldap.core>
         <janus.version>0.6.1</janus.version>
-        <gremlin.version>3.5.2</gremlin.version>
+        <gremlin.version>3.5.5</gremlin.version>
         <spring-boot.version>2.7.8</spring-boot.version>
         <springdoc.version>1.6.12</springdoc.version>
         <spring-data.version>2.7.8</spring-data.version>
