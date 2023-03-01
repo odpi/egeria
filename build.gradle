@@ -39,6 +39,8 @@ allprojects {
     // Only use maven central
     repositories {
         mavenCentral()
+        // used by tink (encrypted filestore connector)
+        google()
     }
 
     // ensures we pick up the very latest snapshots when built
