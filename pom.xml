@@ -253,7 +253,7 @@
         <spotify-docker-plugin.version>1.4.13</spotify-docker-plugin.version>
         <maven-enforcer-plugin.version>3.2.1</maven-enforcer-plugin.version>
         <jacoco-plugin.version>0.8.8</jacoco-plugin.version>
-        <maven-assembly-plugin.version>3.4.2</maven-assembly-plugin.version>
+        <maven-assembly-plugin.version>3.5.0</maven-assembly-plugin.version>
         <frontend.plugin.version>1.12.1</frontend.plugin.version>
         <resources.plugin.version>3.3.0</resources.plugin.version>
         <exec.plugin.version>3.1.0</exec.plugin.version>
