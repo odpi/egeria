@@ -278,7 +278,7 @@
         <jnr.version>3.1.16</jnr.version>
         <osgi.version>8.0.0</osgi.version>
         <jacksonjdk8.version>2.14.2</jacksonjdk8.version>
-        <log4j.version>2.19.0</log4j.version>
+        <log4j.version>2.20.0</log4j.version>
         <reactivestreams.version>1.0.4</reactivestreams.version>
 
         <!-- Configuration of sonar code scanning-->
