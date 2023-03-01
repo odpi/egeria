@@ -160,7 +160,7 @@
         <hamcrest.version>2.2</hamcrest.version>
         <junit.version>4.13.2</junit.version>
         <surefire.plugin.version>3.0.0-M8</surefire.plugin.version>
-        <mockito.version>4.11.0</mockito.version>
+        <mockito.version>5.0.0</mockito.version>
         <slf4j.version>1.7.36</slf4j.version>
         <testng.version>7.7.1</testng.version>
         <jackson.version>2.14.2</jackson.version>
