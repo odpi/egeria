@@ -214,7 +214,7 @@
         <antlr.version>3.5.3</antlr.version>
         <ST4.version>4.3.4</ST4.version>
         <snappy.version>1.1.9.1</snappy.version>
-        <snakeyaml.version>1.33</snakeyaml.version>
+        <snakeyaml.version>2.0</snakeyaml.version>
         <swagger.version>2.2.6</swagger.version>
         <classgraph.version>4.8.154</classgraph.version>
         <micrometer-registry-prometheus.version>1.10.3</micrometer-registry-prometheus.version>
