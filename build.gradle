@@ -13,7 +13,7 @@ plugins {
     // Checks for unnecessary dependencies
     id 'com.autonomousapps.dependency-analysis' version "1.18.0"
     // helps resolve log implementation clashes
-    id 'dev.jacomet.logging-capabilities' version "0.10.0"
+    id 'dev.jacomet.logging-capabilities' version "0.11.0"
     // This plugin helps resolve jakarta/javax dev.jacomet.logging-capabilities
     id 'org.gradlex.java-ecosystem-capabilities' version "1.0"
 }
