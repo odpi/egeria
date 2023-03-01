@@ -121,7 +121,7 @@ allprojects {
         spotbugsVersion = '4.7.3'
         springdataVersion = '2.7.7'
         springldapVersion = '2.4.1'
-        springsecurityVersion = '5.8.1'
+        springsecurityVersion = '5.8.2'
         swaggerVersion = '2.2.8'
         testngVersion = '7.7.1'
         thriftVersion = '0.17.0'
