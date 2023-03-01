@@ -354,26 +354,7 @@ allprojects {
     lombok {
         version = "${lombokVersion}"
     }
-    // Cannot define here as test then becomes immutable, which breaks override to use testNG in some modules
-    // start by using defaults
-    // Testing
-    //test {
-    //    useJUnitPlatform {
-    //        includeEngines 'junit-jupiter'
-    //    }
-    //    dependencies {
-    //        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
-    //        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
-    //    }
 
-    //    testLogging {
-    //        events "passed", "skipped", "failed"
-    //    }
-
-    //    reports {
-    //        html.required = true
-    //    }
-    //}
     /*
      * Publishing of maven artifacts -- and signing (only for CI)
      */
