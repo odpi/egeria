@@ -135,7 +135,7 @@ allprojects {
         cassandraVersion = '4.1.0'
         protobufVersion = '3.21.12'
         osgiVersion = '8.0.0'
-        log4jVersion = '2.19.0'
+        log4jVersion = '2.20.0'
         jacksonjdk8Version = '2.14.2'
         reactivestreamsVersion = '1.0.4'
     }
