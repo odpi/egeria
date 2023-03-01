@@ -132,3 +132,9 @@ configurations {
         it.outgoing.artifact(bootJar)
     }
 }
+
+// Assuming the plugin has been applied
+loggingCapabilities {
+    // Configuration goes here
+    enforceLogback()
+}
