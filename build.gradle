@@ -53,7 +53,7 @@ allprojects {
 
     // Assign variables for any constraints
     ext {
-        lombokVersion= '1.18.24'
+        lombokVersion= '1.18.26'
         antlrVersion = '3.5.3'
         ST4Version = '4.3.4'
         avroVersion = '1.11.1'
