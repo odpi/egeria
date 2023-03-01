@@ -168,7 +168,7 @@
         <logback.version>1.2.11</logback.version>
         <kafka.version>3.3.2</kafka.version>
         <tomcat.version>9.0.71</tomcat.version>
-        <netty.version>4.1.87.Final</netty.version>
+        <netty.version>4.1.89.Final</netty.version>
         <spring.ldap.core>2.4.1</spring.ldap.core>
         <janus.version>0.6.1</janus.version>
         <gremlin.version>3.5.2</gremlin.version>
