@@ -127,7 +127,7 @@ allprojects {
         thriftVersion = '0.17.0'
         springwebVersion = '5.3.25'
         tinkVersion = '1.7.0'
-        tomcatVersion = '9.0.71'
+        tomcatVersion = '9.0.72'
         validationVersion = '2.0.1.Final'
         gsonVersion = '2.10.1'
         antVersion = '1.10.13'
