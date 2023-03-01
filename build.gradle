@@ -113,7 +113,7 @@ allprojects {
         sanitizerVersion = '1.2.3'
         servletVersion = '4.0.1'
         sleepycatVersion = '18.3.12'
-        snakeyamlVersion = '1.33'
+        snakeyamlVersion = '2.0'
         slf4jVersion = '1.7.36'
         snappyVersion = '1.1.9.1'
         springdocVersion = '1.6.13'
