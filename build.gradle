@@ -124,7 +124,7 @@ allprojects {
         springsecurityVersion = '5.8.1'
         swaggerVersion = '2.2.8'
         testngVersion = '7.7.1'
-        thriftVersion = '0.17.0'
+        thriftVersion = '0.18.0'
         springwebVersion = '5.3.25'
         tinkVersion = '1.7.0'
         tomcatVersion = '9.0.71'
