@@ -232,7 +232,7 @@
         <lombok.version>1.18.24</lombok.version>
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
-        <thrift.version>0.17.0</thrift.version>
+        <thrift.version>0.18.0</thrift.version>
         <elasticsearch.version>8.6.1</elasticsearch.version>
         <hibernate-validator.version>8.0.0.Final</hibernate-validator.version>
         <!-- Versions of plugins -->
