@@ -72,7 +72,6 @@ dependencies {
     testCompileOnly project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-client')
     compileOnly project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-client')
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine'
     testImplementation 'org.mockito:mockito-junit-jupiter'
     testImplementation 'org.mockito:mockito-inline'
     testImplementation 'org.mockito:mockito-core'

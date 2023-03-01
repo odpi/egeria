@@ -13,9 +13,9 @@ plugins {
     // Checks for unnecessary dependencies
     id 'com.autonomousapps.dependency-analysis' version "1.19.0"
     // helps resolve log implementation clashes
-    id 'dev.jacomet.logging-capabilities' version "0.10.0"
+    id 'dev.jacomet.logging-capabilities' version "0.11.0"
     // This plugin helps resolve jakarta/javax dev.jacomet.logging-capabilities
-    id 'org.gradlex.java-ecosystem-capabilities' version "1.0"
+    id 'org.gradlex.java-ecosystem-capabilities' version "1.1"
 }
 
 
@@ -106,7 +106,7 @@ allprojects {
         luceneVersion = '8.11.1'
         openlineageVersion = '0.20.6'
         ossVersion = '4.15.0'
-        mockitoVersion = '5.1.1'
+        mockitoVersion = '4.11.0'
         plexusVersion = '3.5.0'
         prometheusVersion = '1.10.4'
         nettyVersion = '4.1.87.Final'
@@ -312,6 +312,12 @@ allprojects {
         implementation platform('net.openhft:chronicle-bom:2.24ea43')
     }
 
+    // we already have bridge modules that implement commons logging, so cannot have another implementation in classpath
+    configurations {
+        all {
+            exclude module: 'commons-logging'
+        }
+    }
     /*
      * Java related configuration
      */
@@ -341,24 +347,26 @@ allprojects {
     lombok {
         version = "${lombokVersion}"
     }
+    // Cannot define here as test then becomes immutable, which breaks override to use testNG in some modules
+    // start by using defaults
     // Testing
-    test {
-        useJUnitPlatform {
-            includeEngines 'junit-jupiter'
-        }
-        dependencies {
-            testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
-            testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
-        }
+    //test {
+    //    useJUnitPlatform {
+    //        includeEngines 'junit-jupiter'
+    //    }
+    //    dependencies {
+    //        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+    //        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    //    }
 
-        testLogging {
-            events "passed", "skipped", "failed"
-        }
+    //    testLogging {
+    //        events "passed", "skipped", "failed"
+    //    }
 
-        reports {
-            html.required = true
-        }
-    }
+    //    reports {
+    //        html.required = true
+    //    }
+    //}
     /*
      * Publishing of maven artifacts -- and signing (only for CI)
      */
