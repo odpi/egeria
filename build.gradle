@@ -310,12 +310,19 @@ allprojects {
             runtimeOnly("org.apache.ivy:ivy:2.5.1")
         }
         implementation platform('net.openhft:chronicle-bom:2.24ea43')
+        modules {
+            module('org.glassfish:jakarta.json') {
+                replacedBy 'jakarta.json:jakarta.json-api', 'use jakarta.json.api instead of glassfish'
+            }
+        }
     }
 
     // we already have bridge modules that implement commons logging, so cannot have another implementation in classpath
+    // we also want to avoid the glassfish implementation of jakarta.json (if we have to, will replace as above)
     configurations {
         all {
             exclude module: 'commons-logging'
+            exclude module: 'org.glassfish:jakarta.json'
         }
     }
     /*
