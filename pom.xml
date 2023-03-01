@@ -259,7 +259,7 @@
         <exec.plugin.version>3.1.0</exec.plugin.version>
         <rat-plugin.version>0.15</rat-plugin.version>
         <maven-dependency-plugin.version>3.5.0</maven-dependency-plugin.version>
-        <maven-deploy-plugin.version>3.0.0</maven-deploy-plugin.version>
+        <maven-deploy-plugin.version>3.1.0</maven-deploy-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
         <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
         <nexus-staging-maven-plugin>1.6.13</nexus-staging-maven-plugin>
