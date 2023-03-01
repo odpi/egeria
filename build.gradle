@@ -97,7 +97,7 @@ allprojects {
         jwtApiVersion = '0.11.5'
         jwtImplVersion = '0.11.5'
         jwtJacksonVersion = '0.11.5'
-        kafkaVersion = '3.3.2'
+        kafkaVersion = '3.4.0'
         lang3Version = '3.12.0'
         logbackVersion = '1.2.11'
         lettuceVersion = '6.2.2.RELEASE'
