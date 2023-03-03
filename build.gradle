@@ -109,7 +109,7 @@ allprojects {
         mockitoVersion = '4.11.0'
         plexusVersion = '3.5.0'
         prometheusVersion = '1.10.4'
-        nettyVersion = '4.1.87.Final'
+        nettyVersion = '4.1.89.Final'
         quartzVersion = '2.3.2'
         reflectionsVersion = '0.10.2'
         sanitizerVersion = '1.2.3'
