@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.repositoryservices;
 
 
-import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
@@ -18,7 +17,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 
