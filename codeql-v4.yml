@@ -10,11 +10,11 @@
 name: "CodeQL Analysis v4"
 
 on:
-  push:
-    branches: [main, egeria-release-4*]
-  pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [main, egeria-release-4*]
+  #push:
+  #  branches: [main, egeria-release-4*]
+  #pull_request:
+  #  # The branches below must be a subset of the branches above
+  #  branches: [main, egeria-release-4*]
   workflow_dispatch:
 
 env:
@@ -45,7 +45,6 @@ jobs:
         with:
           languages: java
           queries: security-and-quality
-          ram: 4096
       - name: Build
         uses: gradle/gradle-build-action@v2
         with:
@@ -55,5 +54,3 @@ jobs:
           arguments: -x javadoc -x test build -PskipOpenTypesFVT
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
-        with:
-          ram: 4096
