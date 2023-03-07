@@ -444,12 +444,10 @@ include(':open-metadata-test:open-metadata-fvt:access-services-fvt:stewardship-a
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt:subject-area-fvt')
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt')
 include(':open-metadata-test:open-metadata-fvt:fvt-utilities')
-//TODO: restore tests once ready
-//include(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test-generator')
-//include(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test')
-//include(':open-metadata-test:open-metadata-fvt:open-types-fvt')
-//include(':open-metadata-test:open-metadata-fvt')
-//include(':open-metadata-test')
+if (!startParameter.projectProperties.hasProperty("skipOpenTypesFVT")) {
+    include(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test-generator')
+    include(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test')
+}
 project(':open-metadata-implementation:frameworks:audit-log-framework').projectDir = file('open-metadata-implementation/frameworks/audit-log-framework')
 project(':open-metadata-implementation:frameworks:open-connector-framework').projectDir = file('open-metadata-implementation/frameworks/open-connector-framework')
 project(':open-metadata-implementation:frameworks:open-discovery-framework').projectDir = file('open-metadata-implementation/frameworks/open-discovery-framework')
@@ -862,9 +860,7 @@ project(':open-metadata-test:open-metadata-fvt:view-services-fvt:glossary-author
 project(':open-metadata-test:open-metadata-fvt:access-services-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt')
 project(':open-metadata-test:open-metadata-fvt:fvt-utilities').projectDir = file('open-metadata-test/open-metadata-fvt/fvt-utilities')
 project(':open-metadata-distribution:open-metadata-assemblies').projectDir = file('open-metadata-distribution/open-metadata-assemblies')
-
-//TODO: restore tests
-//project(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test-generator').projectDir = file('open-metadata-test/open-metadata-fvt/open-types-fvt/open-types-test-generator')
-//project(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test').projectDir = file('open-metadata-test/open-metadata-fvt/open-types-fvt/open-types-test')
-//project(':open-metadata-test:open-metadata-fvt:open-types-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/open-types-fvt')
-//project(':open-metadata-test:open-metadata-fvt').projectDir = file('open-metadata-test/open-metadata-fvt')
+if (!startParameter.projectProperties.hasProperty("skipOpenTypesFVT")) {
+    project(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test-generator').projectDir = file('open-metadata-test/open-metadata-fvt/open-types-fvt/open-types-test-generator')
+    project(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test').projectDir = file('open-metadata-test/open-metadata-fvt/open-types-fvt/open-types-test')
+}

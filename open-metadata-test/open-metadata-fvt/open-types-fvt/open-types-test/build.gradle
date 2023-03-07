@@ -3,16 +3,48 @@
  * Copyright Contributors to the ODPi Egeria project.
  */
 
+
 dependencies {
     implementation 'org.slf4j:slf4j-api'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types')
+    implementation project(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test-generator')
+    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+
+    testImplementation 'org.mockito:mockito-core'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine'
+    testImplementation 'org.testng:testng'
+
 }
 
-description = 'Open Types Test generator'
+description = 'Open Types Test'
 
-//java {
-//    withJavadocJar()
-//}
+test {
+    useTestNG()
+}
+
+java {
+    // no javadoc for this module
+    //withJavadocJar()
+}
+
+task cleanGeneratedSrc(type: Delete) {
+    delete 'src'
+}
+
+clean.dependsOn(cleanGeneratedSrc)
+
+task createTestSrc(type: Exec) {
+    dependsOn ':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test-generator:shadowJar'
+    group = "Execution"
+    description = "Create test source"
+    workingDir '../../../..'
+    commandLine "java", "-jar", "${project.projectDir}/../open-types-test-generator/build/libs/open-types-test-generator-${project.version}-jar-with-dependencies.jar"
+}
+
+compileJava.dependsOn(createTestSrc)
