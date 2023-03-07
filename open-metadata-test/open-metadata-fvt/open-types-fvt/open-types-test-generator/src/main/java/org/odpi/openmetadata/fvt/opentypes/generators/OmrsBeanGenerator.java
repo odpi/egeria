@@ -673,13 +673,13 @@ public class OmrsBeanGenerator {
                                         attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("AttrType"), "String");
 
                                         attrValue = "\"string" + attributeNumber + "\"";
-                                    } else if (uppercaseattributeType.equals("DATE")) {
-                                        attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("AttrType"), "java.util.Date");
-                                        attrValue = "new java.util.Date()";
+//                                    } else if (uppercaseattributeType.equals("DATE")) {
+//                                        attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("AttrType"), "java.util.Date");
+//                                        attrValue = "new java.util.Date()";
                                     } else if (uppercaseattributeType.equals("INT")) {
                                         attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("AttrType"), "Integer");
                                         attrValue = String.valueOf(attributeNumber);
-                                    } else if (uppercaseattributeType.equals("LONG")) {
+                                    } else if (uppercaseattributeType.equals("LONG") || uppercaseattributeType.equals("DATE")) {
                                         attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("AttrType"), "Long");
                                         attrValue = String.valueOf(attributeNumber) +"L";
                                     } else if (uppercaseattributeType.equals("FLOAT")) {
@@ -746,13 +746,13 @@ public class OmrsBeanGenerator {
                                     attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("AttrType"), "String");
 
                                     attrValue = "\"string" + attributeNumber + "\"";
-                                } else if (uppercaseattributeType.equals("DATE")) {
-                                    attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("AttrType"), "java.util.Date");
-                                    attrValue = "new java.util.Date()";
+//                                } else if (uppercaseattributeType.equals("DATE")) {
+//                                    attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("AttrType"), "java.util.Date");
+//                                    attrValue = "new java.util.Date()";
                                 } else if (uppercaseattributeType.equals("INT")) {
                                     attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("AttrType"), "Integer");
                                     attrValue = String.valueOf(attributeNumber);
-                                } else if (uppercaseattributeType.equals("LONG")) {
+                                } else if (uppercaseattributeType.equals("LONG") || uppercaseattributeType.equals("DATE")) {
                                     attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("AttrType"), "Long");
                                     attrValue = String.valueOf(attributeNumber) +"L";
                                 } else if (uppercaseattributeType.equals("FLOAT")) {
