@@ -483,6 +483,10 @@ public class OmrsBeanModel {
         if (typeName.equals("int")) {
             normalizedTypeName = "Integer";
         }
+        //TODO do we need to get the primitive class name from the PrimitiveDefCategory javaClassName
+        if (typeName.equals("date")) {
+            normalizedTypeName = "Long";
+        }
         return normalizedTypeName;
     }
 }
