@@ -150,7 +150,6 @@ public class CertificationHandler<B> extends GovernanceDefinitionHandler<B>
     }
 
 
-
     /**
      * Return the Certifications attached to a referenceable entity.
      *

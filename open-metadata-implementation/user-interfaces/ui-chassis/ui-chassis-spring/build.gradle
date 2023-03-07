@@ -72,7 +72,6 @@ dependencies {
     testCompileOnly project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-client')
     compileOnly project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-client')
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine'
     testImplementation 'org.mockito:mockito-junit-jupiter'
     testImplementation 'org.mockito:mockito-inline'
     testImplementation 'org.mockito:mockito-core'
@@ -103,4 +102,15 @@ java {
 
 test {
     useJUnitPlatform()
+}
+
+// See https://stackoverflow.com/questions/61197984/bootjar-mavenjar-artifact-wasnt-produced-by-this-build
+// Remove the regular (plain) jar & replace with the SpringBoot version
+configurations {
+    [apiElements, runtimeElements].each {
+        it.outgoing.artifacts.removeIf {
+            it.buildDependencies.getDependencies(null).contains(jar)
+        }
+        it.outgoing.artifact(bootJar)
+    }
 }

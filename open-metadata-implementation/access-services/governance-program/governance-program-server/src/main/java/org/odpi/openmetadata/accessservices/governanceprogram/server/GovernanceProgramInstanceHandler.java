@@ -308,11 +308,11 @@ class GovernanceProgramInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    GovernanceDefinitionHandler<LicenseTypeElement> getLicenseTypeHandler(String userId,
-                                                                          String serverName,
-                                                                          String serviceOperationName) throws InvalidParameterException,
-                                                                                                              UserNotAuthorizedException,
-                                                                                                              PropertyServerException
+    LicenseHandler<LicenseTypeElement> getLicenseTypeHandler(String userId,
+                                                             String serverName,
+                                                             String serviceOperationName) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
     {
         GovernanceProgramServicesInstance instance = (GovernanceProgramServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
 

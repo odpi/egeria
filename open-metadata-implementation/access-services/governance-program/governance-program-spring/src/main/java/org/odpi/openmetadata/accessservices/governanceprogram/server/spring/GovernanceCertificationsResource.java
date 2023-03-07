@@ -173,7 +173,7 @@ public class GovernanceCertificationsResource
      *
      * @param serverName name of the server instance to connect to
      * @param userId calling user
-     * @param requestBody short description of the role
+     * @param requestBody short description of the certification
      * @param startFrom where to start from in the list of definitions
      * @param pageSize max number of results to return in one call
      *
