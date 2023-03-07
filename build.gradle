@@ -16,6 +16,7 @@ plugins {
     id 'dev.jacomet.logging-capabilities' version "0.11.0"
     // This plugin helps resolve jakarta/javax dev.jacomet.logging-capabilities
     id 'org.gradlex.java-ecosystem-capabilities' version "1.1"
+    id 'checkstyle'
 }
 
 
@@ -29,6 +30,7 @@ allprojects {
     version = '4.0-SNAPSHOT'
 
     // Mostly java, so default to this for now
+    apply plugin: 'checkstyle'
     apply plugin: 'java'
     apply plugin: 'jacoco'
     apply plugin: 'org.gradlex.java-ecosystem-capabilities'
@@ -109,7 +111,7 @@ allprojects {
         mockitoVersion = '4.11.0'
         plexusVersion = '3.5.0'
         prometheusVersion = '1.10.4'
-        nettyVersion = '4.1.87.Final'
+        nettyVersion = '4.1.89.Final'
         quartzVersion = '2.3.2'
         reflectionsVersion = '0.10.2'
         sanitizerVersion = '1.2.3'
@@ -423,6 +425,14 @@ allprojects {
     task printSubDependencies(type: DependencyReportTask) {}
     task findDependency(type: DependencyInsightReportTask) {}
 
+    // Checking of headers etc
+    checkstyle {
+        toolVersion = '10.7.0'
+        // Whilst initially adding, soft warnings only, as there are fixes needed
+        ignoreFailures = true
+        showViolations = true
+    }
+
 } // end of allProjects
 
 // Whilst all modules have their own javadoc, we only build
@@ -523,6 +533,8 @@ dependencyAnalysis {
         }
     }
 }
+
+
 
 // Always run dependency check for every regular build
 build.dependsOn("buildHealth")
