@@ -428,8 +428,6 @@ allprojects {
     // Checking of headers etc
     checkstyle {
         toolVersion = '10.7.0'
-        // Whilst initially adding, soft warnings only, as there are fixes needed
-        ignoreFailures = true
         showViolations = true
     }
 
