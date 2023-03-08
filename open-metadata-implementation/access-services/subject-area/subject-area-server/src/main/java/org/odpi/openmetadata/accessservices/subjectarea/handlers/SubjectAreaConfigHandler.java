@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project */
 /* Copyright Contributors to the ODPi Egeria term. */
 package org.odpi.openmetadata.accessservices.subjectarea.handlers;
 
