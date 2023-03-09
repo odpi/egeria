@@ -48,11 +48,11 @@ export SAN="DNS:localhost"
 #
 # ie set CA_CLEAN
 #
-if [[ ! -z $CA_CLEAN ]]; then
-  rm -f *.pem
-  rm -f *.p12
-  rm -fr ${rootCA}
-  rm -fr ${iCA}
+if [ ! -z $CA_CLEAN ]; then
+  rm -f -- *.pem
+  rm -f -- *.p12
+  rm -fr -- ${rootCA}
+  rm -fr -- ${iCA}
 
   # A few empty dirs needed by the signing process
   for d in ./${rootCA} ./${iCA}; do
@@ -74,7 +74,7 @@ if [[ ! -z $CA_CLEAN ]]; then
   # for both the root cert authority, and then the intermediate cert authority
   export CA=${rootCA}
   export CA_POLICY=policy_strict
-  printf "\n\n---- Generating root CA ($rootCA)  ----\n\n"
+  printf "\n\n---- Generating root CA (%s)  ----\n\n" ${rootCA}
   openssl genrsa -aes256 -out ${rootCA}/private/${rootCA}.key.pem -passout pass:${KEYPASS} 4096
   openssl req -batch -passin pass:${KEYPASS} -new -x509 -days 3650 -sha256 \
     -key ${rootCA}/private/${rootCA}.key.pem \
@@ -89,7 +89,7 @@ if [[ ! -z $CA_CLEAN ]]; then
   # ---
   export CA=${iCA}
   export CA_POLICY=policy_loose
-  printf "\n\n---- Generating Intermediate CA ($iCA)  ----\n\n"
+  printf "\n\n---- Generating Intermediate CA (%s)  ----\n\n" ${iCA}
   openssl genrsa -aes256 -out ${iCA}/private/${iCA}.key.pem -passout pass:${KEYPASS} 4096
   openssl req -batch -passin pass:${KEYPASS} -new -key ${iCA}/private/${iCA}.key.pem \
     -sha256 -out ${iCA}/csr/${iCA}.csr.pem \
@@ -121,8 +121,8 @@ export CA_POLICY=policy_loose
 for cert in ${SERVERCERTS}; do
 
   FNAME=Egeria${cert}
-  rm -f ${FNAME}*
-  printf "\n\n---- Generating cert ($FNAME)  ----\n\n"
+  rm -f -- ${FNAME}*
+  printf "\n\n---- Generating cert (%s)  ----\n\n" ${FNAME}
   openssl genrsa -aes256 -out ${FNAME}.key.pem -passout pass:${KEYPASS} 2048
   openssl req -new -batch -passin pass:${KEYPASS} -key ${FNAME}.key.pem \
     -out ${FNAME}.csr.pem -days 825 -subj '/C=US/ST=CA/O=LFAIData/CN='${cert} \
@@ -139,9 +139,9 @@ done
 # Client certs
 # ---
 for cert in ${CLIENTCERTS}; do
-  printf "\n\n---- Generating cert ($FNAME)  ----\n\n"
+  printf "\n\n---- Generating cert (%s)  ----\n\n" ${FNAME}
   FNAME=Egeria${cert}
-  rm -f ${FNAME}*
+  rm -f -- ${FNAME}*
   openssl genrsa -aes256 -out ${FNAME}.key.pem -passout pass:${KEYPASS} 2048
   openssl req -batch -new -passin pass:${KEYPASS} -key ${FNAME}.key.pem \
     -out ${FNAME}.csr.pem -days 825 -subj '/C=US/ST=CA/O=LFAIData/CN='${cert} \
