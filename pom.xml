@@ -277,6 +277,7 @@
         <jacksonjdk8.version>2.14.2</jacksonjdk8.version>
         <log4j.version>2.20.0</log4j.version>
         <reactivestreams.version>1.0.4</reactivestreams.version>
+        <errorprone.version>2.16</errorprone.version>
 
         <!-- Configuration of sonar code scanning-->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
@@ -3464,6 +3465,13 @@
                 <artifactId>reactive-streams</artifactId>
                 <version>${reactivestreams.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.google.errorprone</groupId>
+                <artifactId>error_prone_annotations</artifactId>
+                <version>${errorprone.version}</version>
+            </dependency>
+
 
 
             <!-- Explicitly enforced versions of transitive dependencies to mitigate potential CVEs reported by static security scans. -->
