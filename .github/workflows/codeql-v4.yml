@@ -10,11 +10,12 @@
 name: "CodeQL Analysis v4"
 
 on:
-  push:
-    branches: [main, egeria-release-4*]
-  pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [main, egeria-release-4*]
+  #push:
+  #  branches: [main, egeria-release-4*]
+  #pull_request:
+  #  # The branches below must be a subset of the branches above
+  #  branches: [main, egeria-release-4*]
+  workflow_dispatch:
 
 jobs:
   analyze:
