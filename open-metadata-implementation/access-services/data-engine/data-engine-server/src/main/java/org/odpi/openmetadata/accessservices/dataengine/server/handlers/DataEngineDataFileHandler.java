@@ -107,7 +107,7 @@ public class DataEngineDataFileHandler {
             fileGuid = createFileInRepository(fileTypeName, fileTypeGuid, file, extendedProperties, externalSourceGuid,
                     externalSourceName, userId, methodName);
         }
-        String schemaTypeGuid = dataEngineSchemaTypeHandler.upsertSchemaType(userId, schemaType, externalSourceName);
+        String schemaTypeGuid = dataEngineSchemaTypeHandler.upsertSchemaType(userId, schemaType, fileGuid, externalSourceName);
         dataEngineCommonHandler.upsertExternalRelationship(userId, fileGuid, schemaTypeGuid, ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                 fileTypeName, SCHEMA_TYPE_TYPE_NAME, externalSourceName, null);
         dataEngineFolderHierarchyHandler.upsertFolderHierarchy(fileGuid, file.getFileType(), file.getPathName(),

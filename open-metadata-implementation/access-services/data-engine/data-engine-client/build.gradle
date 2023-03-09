@@ -31,3 +31,4 @@ description = 'Data Engine OMAS Client'
 java {
     withJavadocJar()
 }
+
