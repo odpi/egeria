@@ -104,7 +104,9 @@ task cleanData(type: Delete) {
 test {
     description 'Run Integration Tests'
     group = 'verification'
-    outputs.upToDateWhen {return false}
+    outputs.upToDateWhen {
+
+    }
     systemProperties = [
             'fvt.url': 'https://localhost:10443'
     ]

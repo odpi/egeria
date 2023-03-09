@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: Apache 2.0 */
+/* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 /**
  * FFDC stands for First Failure Data Capture.  The classes in this package provide the message definitions and
