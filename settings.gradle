@@ -807,6 +807,8 @@ project(':open-metadata-implementation:platform-services:platform-services-sprin
 project(':open-metadata-implementation:platform-services').projectDir = file('open-metadata-implementation/platform-services')
 project(':open-metadata-implementation:server-chassis:server-chassis-spring').projectDir = file('open-metadata-implementation/server-chassis/server-chassis-spring')
 project(':open-metadata-implementation:server-chassis').projectDir = file('open-metadata-implementation/server-chassis')
+project(':open-metadata-implementation:server-standalone:server-standalone-spring').projectDir = file('open-metadata-implementation/server-standalone/server-standalone-spring')
+project(':open-metadata-implementation:server-standalone').projectDir = file('open-metadata-implementation/server-standalone')
 project(':open-metadata-implementation:user-interfaces:ui-chassis:ui-chassis-spring').projectDir = file('open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring')
 project(':open-metadata-implementation:user-interfaces:ui-chassis').projectDir = file('open-metadata-implementation/user-interfaces/ui-chassis')
 project(':open-metadata-implementation:user-interfaces').projectDir = file('open-metadata-implementation/user-interfaces')

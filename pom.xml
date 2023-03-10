@@ -2832,6 +2832,13 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>server-standalone-spring</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>open-lineage-janus-connector</artifactId>
                 <version>${open-metadata.version}</version>
             </dependency>
