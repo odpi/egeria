@@ -33,9 +33,9 @@ dependencies {
     implementation 'org.springframework:spring-beans'
     implementation 'org.springframework:spring-core'
     implementation 'org.springframework:spring-context'
-
+    implementation project(':open-metadata-implementation:admin-services:admin-services-server')
     compileOnly project(':open-metadata-implementation:common-services:ffdc-services')
-
+    implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     runtimeOnly 'ch.qos.logback:logback-classic'
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     implementation 'org.slf4j:slf4j-api'
@@ -43,6 +43,7 @@ dependencies {
     implementation 'io.swagger.core.v3:swagger-annotations'
     runtimeOnly 'org.hibernate:hibernate-validator'
     runtimeOnly project(':open-metadata-implementation:platform-services:platform-services-spring')
+    runtimeOnly project(':open-metadata-implementation:admin-services:admin-services-spring')
 
     // The following are only included at runtime for the full platform (ie adminChassisOnly is not set as a property)
     if (!project.hasProperty("adminChassisOnly")) {
@@ -105,7 +106,7 @@ dependencies {
     }
 }
 
-description = 'OMAG Server Platform with standalone server for Spring'
+description = 'OMAG Server Platform Chassis for Spring'
 
 bootJar {
     manifest {

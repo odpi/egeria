@@ -388,6 +388,8 @@ include(':open-metadata-implementation:integration-services:topic-integrator:top
 include(':open-metadata-implementation:integration-services')
 include(':open-metadata-implementation:server-chassis:server-chassis-spring')
 include(':open-metadata-implementation:server-chassis')
+include(':open-metadata-implementation:server-standalone:server-standalone-spring')
+include(':open-metadata-implementation:server-standalone')
 include(':open-metadata-implementation:user-interfaces:ui-chassis:ui-chassis-spring')
 include(':open-metadata-implementation:user-interfaces:ui-chassis')
 include(':open-metadata-implementation:user-interfaces')

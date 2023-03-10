@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.server.OMAGServerOperationalServices;
 import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.http.HttpHelper;
@@ -92,10 +93,10 @@ public class StandaloneOMAGServer
     private String startupMessage = "";
     private OMAGServerOperationalServices operationalServices = new OMAGServerOperationalServices();
 
-    private static final Logger log = LoggerFactory.getLogger(main.java.org.odpi.openmetadata.serverstandalone.springboot.StandaloneOMAGServer.class);
+    private static final Logger log = LoggerFactory.getLogger(org.odpi.openmetadata.serverstandalone.springboot.StandaloneOMAGServer.class);
 
     public static void main(String[] args) {
-        SpringApplication.run(main.java.org.odpi.openmetadata.serverstandalone.springboot.StandaloneOMAGServer.class, args);
+        SpringApplication.run(org.odpi.openmetadata.serverstandalone.springboot.StandaloneOMAGServer.class, args);
     }
 
     @Bean
@@ -140,19 +141,17 @@ public class StandaloneOMAGServer
     }
 
     /**
-     * Starts the servers specified in the startup.server.list property
+     * Starts the server in the supplied configuration
      */
-    private void autoStartConfig()
+    private void startServer()
     {
-        List<String>  servers = getAutoStartList();
-
-        if (servers != null)
-        {
-            log.info("Startup detected for servers: {}", startupServers);
-        }
-
-        SuccessMessageResponse response = operationalServices.activateServerListWithStoredConfig(sysUser.trim(), servers);
-
+//        if (servers != null)
+//        {
+//            log.info("Startup detected for servers: {}", startupServers);
+//        }
+        OMAGServerConfig configuration = null;
+        String userId = "garygeeke";
+        SuccessMessageResponse response = operationalServices.activateServerWithSuppliedConfig(userId, configuration);
         if (response.getRelatedHTTPCode() == 200)
         {
             startupMessage = response.getSuccessMessage();
@@ -168,22 +167,6 @@ public class StandaloneOMAGServer
     }
 
 
-    /**
-     *  Deactivate all servers that were started automatically
-     */
-    private void temporaryDeactivateServers()
-    {
-        List<String>  servers = getAutoStartList();
-
-        if (servers != null)
-        {
-            log.info("Temporarily deactivating any auto-started servers '{}'", servers);
-
-            System.out.println(new Date() + " OMAG Server Platform shutdown requested. Shutting down auto-started servers (if running): " + servers);
-
-            operationalServices.deactivateTemporarilyServerList(sysUser, servers);
-        }
-    }
 
     @Component
     public class ApplicationContextListener
@@ -191,8 +174,8 @@ public class StandaloneOMAGServer
 
         @EventListener(ApplicationReadyEvent.class)
         public void applicationReady() {
-            autoStartConfig();
-            System.out.println(main.java.org.odpi.openmetadata.serverstandalone.springboot.StandaloneOMAGServer.this.startupMessage);
+            startServer();
+            System.out.println(org.odpi.openmetadata.serverstandalone.springboot.StandaloneOMAGServer.this.startupMessage);
 
             if(triggeredRuntimeHalt){
                 Runtime.getRuntime().halt(43);
@@ -203,7 +186,8 @@ public class StandaloneOMAGServer
         @EventListener
         public void onApplicationEvent(ContextClosedEvent event)
         {
-            temporaryDeactivateServers();
+//            temporaryDeactivateServers();
+            //TODO should we do anything here ?
         }
     }
 
@@ -213,7 +197,8 @@ public class StandaloneOMAGServer
         @Override
         public void onApplicationEvent(StartupFailEvent event) {
             log.info("Received startup fail event with message: {} " + event.getMessage());
-            temporaryDeactivateServers();
+//            temporaryDeactivateServers();
+            //TODO should we do anything here ?
         }
 
     }
