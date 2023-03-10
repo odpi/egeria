@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package main.java.org.odpi.openmetadata.serverstandalone.springboot;
+package org.odpi.openmetadata.serverstandalone.springboot;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -68,7 +68,7 @@ import java.util.*;
 
 
 @Configuration
-public class OMAGServerPlatform
+public class StandaloneOMAGServer
 {
     @Value("${strict.ssl}")
     Boolean strictSSL;
@@ -92,10 +92,10 @@ public class OMAGServerPlatform
     private String startupMessage = "";
     private OMAGServerOperationalServices operationalServices = new OMAGServerOperationalServices();
 
-    private static final Logger log = LoggerFactory.getLogger(OMAGServerPlatform.class);
+    private static final Logger log = LoggerFactory.getLogger(main.java.org.odpi.openmetadata.serverstandalone.springboot.StandaloneOMAGServer.class);
 
     public static void main(String[] args) {
-        SpringApplication.run(OMAGServerPlatform.class, args);
+        SpringApplication.run(main.java.org.odpi.openmetadata.serverstandalone.springboot.StandaloneOMAGServer.class, args);
     }
 
     @Bean
@@ -192,7 +192,7 @@ public class OMAGServerPlatform
         @EventListener(ApplicationReadyEvent.class)
         public void applicationReady() {
             autoStartConfig();
-            System.out.println(OMAGServerPlatform.this.startupMessage);
+            System.out.println(main.java.org.odpi.openmetadata.serverstandalone.springboot.StandaloneOMAGServer.this.startupMessage);
 
             if(triggeredRuntimeHalt){
                 Runtime.getRuntime().halt(43);
