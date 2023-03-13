@@ -122,7 +122,7 @@ allprojects {
         slf4jVersion = '1.7.36'
         snappyVersion = '1.1.9.1'
         springdocVersion = '1.6.13'
-        springbootVersion = '3.0.2'
+        springbootVersion = '3.0.4'
         spotbugsVersion = '4.7.3'
         springdataVersion = '2.7.9'
         springldapVersion = '2.4.1'
