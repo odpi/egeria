@@ -162,7 +162,7 @@ public class  <$$uname$$> implements Serializable {
      * @return Set of Strings of the <$$uname$$> map property names
      */
     public static java.util.Set<String> getMapPropertyNames() {
-         return ENUM_NAMES_SET;
+         return MAP_NAMES_SET;
     }
 
     /**

@@ -129,7 +129,7 @@ class DataEngineSchemaTypeHandlerTest {
 
         mockTypeDef(TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME, TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID);
 
-        String result = dataEngineSchemaTypeHandler.upsertSchemaType(USER, schemaType, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        String result = dataEngineSchemaTypeHandler.upsertSchemaType(USER, schemaType, null, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         assertEquals(GUID, result);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
@@ -161,7 +161,7 @@ class DataEngineSchemaTypeHandlerTest {
         when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
                 .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
-        String result = dataEngineSchemaTypeHandler.upsertSchemaType(USER, schemaType, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        String result = dataEngineSchemaTypeHandler.upsertSchemaType(USER, schemaType, null, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         assertEquals(GUID, result);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
@@ -200,7 +200,7 @@ class DataEngineSchemaTypeHandlerTest {
                 null, false, false, null,
                 methodName)).thenThrow(mockedException);
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
-                dataEngineSchemaTypeHandler.upsertSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
+                dataEngineSchemaTypeHandler.upsertSchemaType(USER, getSchemaType(), null, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
     }
