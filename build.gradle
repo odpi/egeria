@@ -139,7 +139,7 @@ allprojects {
         antVersion = '1.10.13'
         jnrVersion = '3.1.16'
         cassandraVersion = '4.1.0'
-        protobufVersion = '3.22.0'
+        protobufVersion = '3.22.2'
         osgiVersion = '8.0.0'
         log4jVersion = '2.20.0'
         jacksonjdk8Version = '2.14.2'
