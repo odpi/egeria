@@ -2,20 +2,30 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.userinterface.uichassis.springboot.auth;
 
-import org.odpi.openmetadata.userinterface.uichassis.springboot.service.ComponentService;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.RSAKey;
+import com.nimbusds.jose.jwk.source.JWKSource;
+import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpStatus;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.ldap.userdetails.InetOrgPersonContextMapper;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -26,57 +36,49 @@ import java.util.List;
 /**
  * Configuration of HttpSecurity for Spring security
  */
-public abstract class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-    @Autowired
-    private AuthService authService;
-
-    @Autowired(required = false)
-    TokenClient tokenClient;
-
-    @Autowired
-    private ComponentService componentService;
+@EnableWebSecurity
+@EnableMethodSecurity
+@Configuration
+public class SecurityConfig {
 
     @Value("${cors.allowed-origins}")
     List<String> allowedOrigins;
 
-    public SecurityConfig() {
-        super(true);
+
+    @Bean
+    public AuthenticationManager authManager(AuthenticationProvider authProvider) {
+        return new ProviderManager(authProvider);
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-            .cors()
-                .and()
-            .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-                .and()
-            .anonymous()
-                .and()
-            .authorizeRequests()
-                .antMatchers("/logout").permitAll()
-                .antMatchers("/api/public/**").permitAll()
-                .antMatchers("/api/**").authenticated()
-                .antMatchers("/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-            .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessHandler(logoutSuccessHandler())
-                .and()
-            .addFilterBefore(new AuthFilter(authService), UsernamePasswordAuthenticationFilter.class)
-            .addFilterBefore(new LoggingRequestFilter("/api/auth/login"), UsernamePasswordAuthenticationFilter.class)
-            .addFilterBefore(
-                    new LoginFilter.LoginFilterBuilder()
-                            .url("/api/auth/login")
-                            .authManager(authenticationManager())
-                            .exceptionHandler(getAuthenticationExceptionHandler())
-                            .authService(authService)
-                            .appRoles(componentService.getAppRoles())
-                            .build(),
-                            UsernamePasswordAuthenticationFilter.class);
+    @Value("${ldap.user.search.base}")
+    protected String userSearchBase;
+
+    @Value("${ldap.user.search.filter}")
+    protected String userSearchFilter;
+
+    private RSAKey rsaKey = RSAGenerator.generateRsa();
+
+    @Bean
+    public JWKSource<SecurityContext> jwkSource() {
+        rsaKey = RSAGenerator.generateRsa();
+        JWKSet jwkSet = new JWKSet(rsaKey);
+        return (jwkSelector, securityContext) -> jwkSelector.select(jwkSet);
     }
 
+    @Bean
+    JwtEncoder jwtEncoder(JWKSource<SecurityContext> jwks) {
+        return new NimbusJwtEncoder(jwks);
+    }
+
+    @Bean
+    JwtDecoder jwtDecoder() throws JOSEException {
+        return NimbusJwtDecoder.withPublicKey(rsaKey.toRSAPublicKey()).build();
+    }
+
+    /**
+     *Returns CorsConfigurationSource the cors configuration
+     * The bean is based on springboot configuration property cors.allowed-origins
+     */
     @Bean
     @ConditionalOnProperty(value = "cors.allowed-origins")
     CorsConfigurationSource corsConfigurationSource() {
@@ -92,20 +94,20 @@ public abstract class SecurityConfig extends WebSecurityConfigurerAdapter {
         return source;
     }
 
-    public LogoutSuccessHandler logoutSuccessHandler() {
-        return new TokenLogoutSuccessHandler(tokenClient);
-    }
-
     @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests( auth -> auth
+                        .requestMatchers("/api/token").permitAll()
+                        .requestMatchers("/api/public/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
+                .build();
     }
 
-    @Bean
-    public InetOrgPersonContextMapper userContextMapper() {
-        return new InetOrgPersonContextMapper();
-    }
-
-    protected abstract AuthenticationExceptionHandler getAuthenticationExceptionHandler();
 }
+
+

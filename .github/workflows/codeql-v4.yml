@@ -17,6 +17,9 @@ on:
   #  branches: [main, egeria-release-4*]
   workflow_dispatch:
 
+env:
+  CODEQL_ACTION_EXTRA_OPTIONS: '{"database":{"interpret-results":["--max-paths",0]}}'
+
 jobs:
   analyze:
     if: ${{ github.repository == 'odpi/egeria'}}
