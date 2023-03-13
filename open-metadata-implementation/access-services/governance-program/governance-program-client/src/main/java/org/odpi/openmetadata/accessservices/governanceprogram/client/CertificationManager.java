@@ -1,17 +1,15 @@
-/* SPDX-Certification-Identifier: Apache-2.0 */
+/*  SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.client;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.api.CertificationManagementInterface;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.CertificationTypeElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.CertificationElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationTypeProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -291,7 +289,7 @@ public class CertificationManager extends GovernanceProgramBaseClient implements
      * Retrieve all the certification types for a particular title.  The title can include regEx wildcards.
      *
      * @param userId calling user
-     * @param title short description of the role
+     * @param title short description of the certification
      * @param startFrom where to start from in the list of definitions
      * @param pageSize max number of results to return in one call
      *

@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: Apache 2.0 */
+/* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.server;
 
@@ -442,7 +442,7 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
      *
      * @return handler object
      */
-    GovernanceDefinitionHandler<LicenseTypeElement> getLicenseTypeHandler()
+    LicenseHandler<LicenseTypeElement> getLicenseTypeHandler()
     {
         return licenseTypeHandler;
     }

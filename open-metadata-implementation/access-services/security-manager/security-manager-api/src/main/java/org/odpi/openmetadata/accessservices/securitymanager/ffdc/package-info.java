@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project */
 
 /**
  * This package provides the first failure data capture support for the Security Manager OMAS module.

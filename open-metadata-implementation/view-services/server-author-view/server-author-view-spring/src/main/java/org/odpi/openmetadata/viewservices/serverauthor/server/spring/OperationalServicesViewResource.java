@@ -1,4 +1,4 @@
-package org.odpi.openmetadata.viewservices.serverauthor.server.spring;/* SPDX-License-Identifier: Apache 2.0 */
+package org.odpi.openmetadata.viewservices.serverauthor.server.spring;/* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;

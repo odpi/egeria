@@ -4,8 +4,7 @@
 package org.odpi.openmetadata.accessservices.assetowner.rest;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.accessservices.assetowner.properties.MeaningProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
+import org.odpi.openmetadata.accessservices.assetowner.properties.ReferenceableProperties;
 
 import java.util.*;
 
@@ -29,12 +28,9 @@ public class ReferenceableRequestBody extends AssetOwnerOMASAPIRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    private String                      typeName             = null;
-    private List<ElementClassification> classifications      = null;
-    private String                      qualifiedName        = null;
-    private List<MeaningProperties>     meanings             = null;
-    private Map<String, String>         additionalProperties = null;
-    private Map<String, Object>         extendedProperties   = null;
+    private String                  anchorGUID = null;
+    private ReferenceableProperties properties = null;
+
 
 
     /**
@@ -56,183 +52,54 @@ public class ReferenceableRequestBody extends AssetOwnerOMASAPIRequestBody
 
         if (template != null)
         {
-            this.typeName = template.getTypeName();
-            this.classifications = template.getClassifications();
-            this.qualifiedName = template.getQualifiedName();
-            this.meanings = template.getMeanings();
-            this.additionalProperties = template.getAdditionalProperties();
-            this.extendedProperties = template.getExtendedProperties();
+            anchorGUID = template.getAnchorGUID();
+            properties = template.getProperties();
         }
     }
 
 
+
     /**
-     * Return the open metadata type name of this object - this is used to create a subtype of
-     * the referenceable.  Any properties associated with this subtype are passed as extended properties.
+     * Return the properties for the relationship.
      *
-     * @return string type name
+     * @return properties object
      */
-    public String getTypeName()
+    public ReferenceableProperties getProperties()
     {
-        return typeName;
+        return properties;
     }
 
 
     /**
-     * Set up the open metadata type name of this object - this is used to create a subtype of
-     * the referenceable.  Any properties associated with this subtype are passed as extended properties.
+     * Set up the properties for the relationship.
      *
-     * @param typeName string type name
+     * @param properties properties object
      */
-    public void setTypeName(String typeName)
+    public void setProperties(ReferenceableProperties properties)
     {
-        this.typeName = typeName;
+        this.properties = properties;
     }
 
 
     /**
-     * Return the classifications associated with this referenceable.
+     * Return an optional anchor GUID to attach the new element to.
      *
-     * @return list of classifications with their properties
+     * @return guid
      */
-    public List<ElementClassification> getClassifications()
+    public String getAnchorGUID()
     {
-        return classifications;
+        return anchorGUID;
     }
 
 
     /**
-     * Set up the list of classifications associated with this referenceable.
+     * Set up an optional anchor GUID to attach the new element to.
      *
-     * @param classifications list of classifications with their properties
+     * @param anchorGUID guid
      */
-    public void setClassifications(List<ElementClassification> classifications)
+    public void setAnchorGUID(String anchorGUID)
     {
-        this.classifications = classifications;
-    }
-
-
-    /**
-     * Returns the stored qualified name property for the metadata entity.
-     * If no qualified name is available then the empty string is returned.
-     *
-     * @return qualifiedName
-     */
-    public String getQualifiedName()
-    {
-        return qualifiedName;
-    }
-
-
-    /**
-     * Set up the fully qualified name.
-     *
-     * @param qualifiedName String name
-     */
-    public void setQualifiedName(String qualifiedName)
-    {
-        this.qualifiedName = qualifiedName;
-    }
-
-
-    /**
-     * Return a copy of the additional properties.  Null means no additional properties are available.
-     *
-     * @return AdditionalProperties
-     */
-    public Map<String, String> getAdditionalProperties()
-    {
-        if (additionalProperties == null)
-        {
-            return null;
-        }
-        else if (additionalProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(additionalProperties);
-        }
-    }
-
-
-    /**
-     * Set up additional properties.
-     *
-     * @param additionalProperties Additional properties object
-     */
-    public void setAdditionalProperties(Map<String, String> additionalProperties)
-    {
-        this.additionalProperties = additionalProperties;
-    }
-
-
-    /**
-     * Return the assigned meanings for this metadata entity.
-     *
-     * @return list of meanings
-     */
-    public List<MeaningProperties> getMeanings()
-    {
-        if (meanings == null)
-        {
-            return null;
-        }
-        else if (meanings.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(meanings);
-        }
-    }
-
-
-    /**
-     * Set up the assigned meanings for this metadata entity.
-     *
-     * @param meanings list of meanings
-     */
-    public void setMeanings(List<MeaningProperties> meanings)
-    {
-        this.meanings = meanings;
-    }
-
-
-    /**
-     * Return the properties that are defined for a subtype of referenceable but are not explicitly
-     * supported by the bean.
-     *
-     * @return map of properties
-     */
-    public Map<String, Object> getExtendedProperties()
-    {
-        if (extendedProperties == null)
-        {
-            return null;
-        }
-        else if (extendedProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(extendedProperties);
-        }
-    }
-
-
-    /**
-     * Set up the properties that are defined for a subtype of referenceable but are not explicitly
-     * supported by the bean.
-     *
-     * @param extendedProperties map of properties
-     */
-    public void setExtendedProperties(Map<String, Object> extendedProperties)
-    {
-        this.extendedProperties = extendedProperties;
+        this.anchorGUID = anchorGUID;
     }
 
 
@@ -245,13 +112,9 @@ public class ReferenceableRequestBody extends AssetOwnerOMASAPIRequestBody
     public String toString()
     {
         return "ReferenceableRequestBody{" +
-                "typeName='" + typeName + '\'' +
-                ", classifications=" + classifications +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", meanings=" + meanings +
-                ", additionalProperties=" + additionalProperties +
-                ", extendedProperties=" + extendedProperties +
-                '}';
+                       "anchorGUID='" + anchorGUID + '\'' +
+                       ", properties=" + properties +
+                       '}';
     }
 
 
@@ -268,17 +131,16 @@ public class ReferenceableRequestBody extends AssetOwnerOMASAPIRequestBody
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof ReferenceableRequestBody))
+        {
+            return false;
+        }
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         ReferenceableRequestBody that = (ReferenceableRequestBody) objectToCompare;
-        return Objects.equals(getTypeName(), that.getTypeName()) &&
-                Objects.equals(getClassifications(), that.getClassifications()) &&
-                Objects.equals(getQualifiedName(), that.getQualifiedName()) &&
-                Objects.equals(getMeanings(), that.getMeanings()) &&
-                Objects.equals(getAdditionalProperties(), that.getAdditionalProperties()) &&
-                Objects.equals(getExtendedProperties(), that.getExtendedProperties());
+        return Objects.equals(anchorGUID, that.anchorGUID) && Objects.equals(properties, that.properties);
     }
 
 
@@ -291,7 +153,6 @@ public class ReferenceableRequestBody extends AssetOwnerOMASAPIRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(getTypeName(), getClassifications(), getQualifiedName(), getMeanings(),
-                            getAdditionalProperties(), getExtendedProperties());
+        return Objects.hash(super.hashCode(), anchorGUID, properties);
     }
 }

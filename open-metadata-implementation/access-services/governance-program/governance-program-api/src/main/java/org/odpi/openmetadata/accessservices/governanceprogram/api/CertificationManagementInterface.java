@@ -118,7 +118,7 @@ public interface CertificationManagementInterface
      * Retrieve all the certification types for a particular title.  The title can include regEx wildcards.
      *
      * @param userId calling user
-     * @param title identifier of role
+     * @param title identifier of certification
      * @param startFrom where to start from in the list of definitions
      * @param pageSize max number of results to return in one call
      *

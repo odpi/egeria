@@ -10,11 +10,12 @@
 name: "CodeQL Analysis v4"
 
 on:
-  push:
-    branches: [main, egeria-release-4*]
-  pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [main, egeria-release-4*]
+  #push:
+  #  branches: [main, egeria-release-4*]
+  #pull_request:
+  #  # The branches below must be a subset of the branches above
+  #  branches: [main, egeria-release-4*]
+  workflow_dispatch:
 
 jobs:
   analyze:
@@ -47,6 +48,6 @@ jobs:
           # codeQL requires a full before/after build to compare results. Caching can result in action failing
           #cache-read-only: true
           cache-disabled: true
-          arguments: -x javadoc -x test build
+          arguments: -x javadoc -x test build -PskipOpenTypesFVT
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2

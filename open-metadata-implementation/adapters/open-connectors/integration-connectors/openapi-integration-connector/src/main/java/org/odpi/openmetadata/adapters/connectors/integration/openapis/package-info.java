@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: Apache 2.0 */
+/* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 /**
  * The Open API Specification Monitor integration connector monitors a REST Endpoint and is it supports the retrieval of the

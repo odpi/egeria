@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: Apache 2.0 */
+/* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.client.rest;
 
@@ -658,4 +658,314 @@ public class AssetOwnerRESTClient extends OCFRESTClient
 
         return restResult;
     }
+
+
+    /**
+     * Issue a GET REST call that returns a CertificationTypeResponse object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return CertificationTypeResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public CertificationTypeResponse callCertificationTypeGetRESTCall(String    methodName,
+                                                                      String    urlTemplate,
+                                                                      Object... params) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
+    {
+        CertificationTypeResponse restResult = this.callGetRESTCall(methodName, CertificationTypeResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a list of CertificationTypeElement objects.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return CertificationTypeListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public CertificationTypeListResponse callCertificationTypeListGetRESTCall(String    methodName,
+                                                                              String    urlTemplate,
+                                                                              Object... params) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException
+    {
+        CertificationTypeListResponse restResult = this.callGetRESTCall(methodName, CertificationTypeListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a list of CertificationTypeElement objects.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL with place-holders for the parameters
+     * @param requestBody request body for the REST call - contains most of the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return CertificationTypeListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public CertificationTypeListResponse callCertificationTypeListPostRESTCall(String    methodName,
+                                                                               String    urlTemplate,
+                                                                               Object    requestBody,
+                                                                               Object... params) throws InvalidParameterException,
+                                                                                                        PropertyServerException,
+                                                                                                        UserNotAuthorizedException
+    {
+        CertificationTypeListResponse restResult = this.callPostRESTCall(methodName, CertificationTypeListResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a ElementStubListResponse object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return ElementStubListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public ElementStubListResponse callElementStubListGetRESTCall(String    methodName,
+                                                                  String    urlTemplate,
+                                                                  Object... params) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        ElementStubListResponse restResult = this.callGetRESTCall(methodName, ElementStubListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a ExternalReferenceResponse object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return ExternalReferenceResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public ExternalReferenceResponse callExternalReferenceGetRESTCall(String    methodName,
+                                                                      String    urlTemplate,
+                                                                      Object... params) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
+    {
+        ExternalReferenceResponse restResult = this.callGetRESTCall(methodName, ExternalReferenceResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a list of ExternalReferenceElement objects.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return ExternalReferenceListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public ExternalReferenceListResponse callExternalReferenceListGetRESTCall(String    methodName,
+                                                                              String    urlTemplate,
+                                                                              Object... params) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException
+    {
+        ExternalReferenceListResponse restResult = this.callGetRESTCall(methodName, ExternalReferenceListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a list of ExternalReferenceElement objects.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL with place-holders for the parameters
+     * @param requestBody request body for the REST call - contains most of the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return ExternalReferenceListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public ExternalReferenceListResponse callExternalReferenceListPostRESTCall(String    methodName,
+                                                                               String    urlTemplate,
+                                                                               Object    requestBody,
+                                                                               Object... params) throws InvalidParameterException,
+                                                                                                        PropertyServerException,
+                                                                                                        UserNotAuthorizedException
+    {
+        ExternalReferenceListResponse restResult = this.callPostRESTCall(methodName, ExternalReferenceListResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a RelatedElementListResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate  REST API call URL template with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public RelatedElementListResponse callRelatedElementListGetRESTCall(String    methodName,
+                                                                        String    urlTemplate,
+                                                                        Object... params) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        RelatedElementListResponse restResult = this.callGetRESTCall(methodName, RelatedElementListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a LicenseTypeResponse object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return LicenseTypeResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public LicenseTypeResponse callLicenseTypeGetRESTCall(String    methodName,
+                                                          String    urlTemplate,
+                                                          Object... params) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        LicenseTypeResponse restResult = this.callGetRESTCall(methodName, LicenseTypeResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a list of LicenseTypeElement objects.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return LicenseTypeListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public LicenseTypeListResponse callLicenseTypeListGetRESTCall(String    methodName,
+                                                                  String    urlTemplate,
+                                                                  Object... params) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        LicenseTypeListResponse restResult = this.callGetRESTCall(methodName, LicenseTypeListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+
+    /**
+     * Issue a GET REST call that returns a list of LicenseElement objects.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return LicenseListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public LicenseListResponse callLicenseListGetRESTCall(String    methodName,
+                                                          String    urlTemplate,
+                                                          Object... params) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        LicenseListResponse restResult = this.callGetRESTCall(methodName, LicenseListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a list of LicenseTypeElement objects.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL with place-holders for the parameters
+     * @param requestBody request body for the REST call - contains most of the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return LicenseTypeListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public LicenseTypeListResponse callLicenseTypeListPostRESTCall(String    methodName,
+                                                                   String    urlTemplate,
+                                                                   Object    requestBody,
+                                                                   Object... params) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        LicenseTypeListResponse restResult = this.callPostRESTCall(methodName, LicenseTypeListResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
 }

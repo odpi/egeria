@@ -3,14 +3,21 @@
  * Copyright Contributors to the ODPi Egeria project.
  */
 
+plugins {
+    id 'application'
+    id "com.github.johnrengelman.shadow"
+}
+
 dependencies {
     implementation 'org.slf4j:slf4j-api'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types')
-    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
-    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
+    runtimeOnly 'ch.qos.logback:logback-classic'
+
 }
 
 description = 'Open Types Test generator'
@@ -24,3 +31,5 @@ shadowJar {
     mainClassName = 'org.odpi.openmetadata.fvt.opentypes.generators.OmrsBeanGenerator'
     archiveClassifier = 'jar-with-dependencies'
 }
+
+

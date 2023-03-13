@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: Apache 2.0 */
+/* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.governanceprogram.server.spring;
@@ -173,7 +173,7 @@ public class GovernanceCertificationsResource
      *
      * @param serverName name of the server instance to connect to
      * @param userId calling user
-     * @param requestBody short description of the role
+     * @param requestBody short description of the certification
      * @param startFrom where to start from in the list of definitions
      * @param pageSize max number of results to return in one call
      *
