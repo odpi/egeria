@@ -78,15 +78,11 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><a href="ldap/package-summary.html">org.odpi.openmetadata.userinterface.uichassis.springboot.auth.ldap</a></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><a href="redis/package-summary.html">org.odpi.openmetadata.userinterface.uichassis.springboot.auth.redis</a></div>
+<div class="col-first odd-row-color"><a href="model/package-summary.html">org.odpi.openmetadata.userinterface.uichassis.springboot.auth.model</a></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><a href="../api/package-summary.html">org.odpi.openmetadata.userinterface.uichassis.springboot.api</a></div>
+<div class="col-first even-row-color"><a href="redis/package-summary.html">org.odpi.openmetadata.userinterface.uichassis.springboot.auth.redis</a></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><a href="../auditlog/package-summary.html">org.odpi.openmetadata.userinterface.uichassis.springboot.auditlog</a></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><a href="../beans/package-summary.html">org.odpi.openmetadata.userinterface.uichassis.springboot.beans</a></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><a href="../service/package-summary.html">org.odpi.openmetadata.userinterface.uichassis.springboot.service</a></div>
+<div class="col-first odd-row-color"><a href="service/package-summary.html">org.odpi.openmetadata.userinterface.uichassis.springboot.auth.service</a></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </div>
@@ -103,20 +99,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Handles AuthenticationException for different instances of WebSecurityConfigurerAdapter used for different
  authentication mechanism used</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="AuthFilter.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.auth">AuthFilter</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">Filter for security context of Spring security
-  It takes Authentication from request and put it into security context</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab1"><a href="AuthService.html" title="interface in org.odpi.openmetadata.userinterface.uichassis.springboot.auth">AuthService</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab1">&nbsp;</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="LoggingRequestFilter.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.auth">LoggingRequestFilter</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="LoginFilter.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.auth">LoginFilter</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="LoginFilter.LoginFilterBuilder.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.auth">LoginFilter.LoginFilterBuilder</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="RedisAuthService.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.auth">RedisAuthService</a></div>
+<div class="col-first odd-row-color class-summary class-summary-tab1"><a href="AuthService.html" title="interface in org.odpi.openmetadata.userinterface.uichassis.springboot.auth">AuthService</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab1">&nbsp;</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="LoggingRequestFilter.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.auth">LoggingRequestFilter</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="RoleService.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.auth">RoleService</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
@@ -124,22 +109,16 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">Configuration of HttpSecurity for Spring security</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SessionAuthService.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.auth">SessionAuthService</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="TokenAuthService.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.auth">TokenAuthService</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
 <div class="col-first odd-row-color class-summary class-summary-tab1"><a href="TokenClient.html" title="interface in org.odpi.openmetadata.userinterface.uichassis.springboot.auth">TokenClient</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab1">
 <div class="block">TokenOption is used to have statefull webtoken by using persistence and expiration validation</div>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="TokenLogoutSuccessHandler.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.auth">TokenLogoutSuccessHandler</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="TokenService.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.auth">TokenService</a></div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="TokenUser.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.auth">TokenUser</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="TokenUser.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.auth">TokenUser</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="UserAuthentication.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.auth">UserAuthentication</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="UserAuthentication.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.auth">UserAuthentication</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
 </div>
 </div>
 </div>

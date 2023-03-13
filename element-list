@@ -1825,7 +1825,9 @@ org.odpi.openmetadata.userinterface.uichassis.springboot.auditlog
 org.odpi.openmetadata.userinterface.uichassis.springboot.auth
 org.odpi.openmetadata.userinterface.uichassis.springboot.auth.demo
 org.odpi.openmetadata.userinterface.uichassis.springboot.auth.ldap
+org.odpi.openmetadata.userinterface.uichassis.springboot.auth.model
 org.odpi.openmetadata.userinterface.uichassis.springboot.auth.redis
+org.odpi.openmetadata.userinterface.uichassis.springboot.auth.service
 org.odpi.openmetadata.userinterface.uichassis.springboot.beans
 org.odpi.openmetadata.userinterface.uichassis.springboot.service
 org.odpi.openmetadata.userinterface.uichassis.springboot.service.graphrules

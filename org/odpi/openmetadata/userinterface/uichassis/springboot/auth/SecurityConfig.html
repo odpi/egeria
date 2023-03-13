@@ -45,13 +45,13 @@ loadScripts(document, 'script');</script>
 <ul class="sub-nav-list">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
 </ul>
 <ul class="sub-nav-list">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-detail">Method</a></li>
 </ul>
@@ -72,26 +72,37 @@ loadScripts(document, 'script');</script>
 <h1 title="Class SecurityConfig" class="title">Class SecurityConfig</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance">org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 <div class="inheritance">org.odpi.openmetadata.userinterface.uichassis.springboot.auth.SecurityConfig</div>
 </div>
-</div>
 <section class="class-description" id="class-description">
-<dl class="notes">
-<dt>All Implemented Interfaces:</dt>
-<dd><code>org.springframework.security.config.annotation.SecurityConfigurer&lt;javax.servlet.Filter,<wbr>org.springframework.security.config.annotation.web.builders.WebSecurity&gt;</code>, <code>org.springframework.security.config.annotation.web.WebSecurityConfigurer&lt;org.springframework.security.config.annotation.web.builders.WebSecurity&gt;</code></dd>
-</dl>
-<dl class="notes">
-<dt>Direct Known Subclasses:</dt>
-<dd><code><a href="ldap/ActiveDirectoryLdapSecurityConfig.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.auth.ldap">ActiveDirectoryLdapSecurityConfig</a></code>, <code><a href="demo/DemoSecurityConfig.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.auth.demo">DemoSecurityConfig</a></code></dd>
-</dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">SecurityConfig</span>
-<span class="extends-implements">extends org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter</span></div>
+<div class="type-signature"><span class="annotations">@EnableWebSecurity
+@EnableMethodSecurity
+@Configuration
+</span><span class="modifiers">public class </span><span class="element-name type-name-label">SecurityConfig</span>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">Configuration of HttpSecurity for Spring security</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
+<!-- =========== FIELD SUMMARY =========== -->
+<li>
+<section class="field-summary" id="field-summary">
+<h2>Field Summary</h2>
+<div class="caption"><span>Fields</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Field</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#userSearchBase" class="member-name-link">userSearchBase</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#userSearchFilter" class="member-name-link">userSearchFilter</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+</div>
+</section>
+</li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <li>
 <section class="constructor-summary" id="constructor-summary">
@@ -110,33 +121,24 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab3" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab3', 3)" class="table-tab">Abstract Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel">
 <div class="summary-table three-column-summary" aria-labelledby="method-summary-table-tab0">
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>org.springframework.security.authentication.AuthenticationManager</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#authenticationManagerBean()" class="member-name-link">authenticationManagerBean</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#authManager(org.springframework.security.authentication.AuthenticationProvider)" class="member-name-link">authManager</a><wbr>(org.springframework.security.authentication.AuthenticationProvider&nbsp;authProvider)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#configure(org.springframework.security.config.annotation.web.builders.HttpSecurity)" class="member-name-link">configure</a><wbr>(org.springframework.security.config.annotation.web.builders.HttpSecurity&nbsp;http)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>com.nimbusds.jose.jwk.source.JWKSource&lt;com.nimbusds.jose.proc.SecurityContext&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#jwkSource()" class="member-name-link">jwkSource</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract <a href="AuthenticationExceptionHandler.html" title="interface in org.odpi.openmetadata.userinterface.uichassis.springboot.auth">AuthenticationExceptionHandler</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getAuthenticationExceptionHandler()" class="member-name-link">getAuthenticationExceptionHandler</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>org.springframework.security.web.authentication.logout.LogoutSuccessHandler</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#logoutSuccessHandler()" class="member-name-link">logoutSuccessHandler</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>org.springframework.security.ldap.userdetails.InetOrgPersonContextMapper</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#userContextMapper()" class="member-name-link">userContextMapper</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>org.springframework.security.web.SecurityFilterChain</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#securityFilterChain(org.springframework.security.config.annotation.web.builders.HttpSecurity)" class="member-name-link">securityFilterChain</a><wbr>(org.springframework.security.config.annotation.web.builders.HttpSecurity&nbsp;http)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
-<div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter">Methods inherited from class&nbsp;org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter</h3>
-<code>authenticationManager, configure, configure, getApplicationContext, getHttp, init, setApplicationContext, setAuthenticationConfiguration, setContentNegotationStrategy, setObjectPostProcessor, setTrustResolver, userDetailsService, userDetailsServiceBean</code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -146,6 +148,28 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="details">
 <ul class="details-list">
+<!-- ============ FIELD DETAIL =========== -->
+<li>
+<section class="field-details" id="field-detail">
+<h2>Field Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="userSearchBase">
+<h3>userSearchBase</h3>
+<div class="member-signature"><span class="annotations">@Value("${ldap.user.search.base}")
+</span><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">userSearchBase</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="userSearchFilter">
+<h3>userSearchFilter</h3>
+<div class="member-signature"><span class="annotations">@Value("${ldap.user.search.filter}")
+</span><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">userSearchFilter</span></div>
+</section>
+</li>
+</ul>
+</section>
+</li>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <li>
 <section class="constructor-details" id="constructor-detail">
@@ -166,49 +190,29 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="configure(org.springframework.security.config.annotation.web.builders.HttpSecurity)">
-<h3>configure</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">configure</span><wbr><span class="parameters">(org.springframework.security.config.annotation.web.builders.HttpSecurity&nbsp;http)</span>
-                  throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a></span></div>
+<section class="detail" id="authManager(org.springframework.security.authentication.AuthenticationProvider)">
+<h3>authManager</h3>
+<div class="member-signature"><span class="annotations">@Bean
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">org.springframework.security.authentication.AuthenticationManager</span>&nbsp;<span class="element-name">authManager</span><wbr><span class="parameters">(org.springframework.security.authentication.AuthenticationProvider&nbsp;authProvider)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="jwkSource()">
+<h3>jwkSource</h3>
+<div class="member-signature"><span class="annotations">@Bean
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">com.nimbusds.jose.jwk.source.JWKSource&lt;com.nimbusds.jose.proc.SecurityContext&gt;</span>&nbsp;<span class="element-name">jwkSource</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="securityFilterChain(org.springframework.security.config.annotation.web.builders.HttpSecurity)">
+<h3>securityFilterChain</h3>
+<div class="member-signature"><span class="annotations">@Bean
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">org.springframework.security.web.SecurityFilterChain</span>&nbsp;<span class="element-name">securityFilterChain</span><wbr><span class="parameters">(org.springframework.security.config.annotation.web.builders.HttpSecurity&nbsp;http)</span>
+                                                                         throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a></span></div>
 <dl class="notes">
-<dt>Overrides:</dt>
-<dd><code>configure</code>&nbsp;in class&nbsp;<code>org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter</code></dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a></code></dd>
 </dl>
-</section>
-</li>
-<li>
-<section class="detail" id="logoutSuccessHandler()">
-<h3>logoutSuccessHandler</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.springframework.security.web.authentication.logout.LogoutSuccessHandler</span>&nbsp;<span class="element-name">logoutSuccessHandler</span>()</div>
-</section>
-</li>
-<li>
-<section class="detail" id="authenticationManagerBean()">
-<h3>authenticationManagerBean</h3>
-<div class="member-signature"><span class="annotations">@Bean
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type">org.springframework.security.authentication.AuthenticationManager</span>&nbsp;<span class="element-name">authenticationManagerBean</span>()
-                                                                                            throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a></span></div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code>authenticationManagerBean</code>&nbsp;in class&nbsp;<code>org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter</code></dd>
-<dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a></code></dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="userContextMapper()">
-<h3>userContextMapper</h3>
-<div class="member-signature"><span class="annotations">@Bean
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type">org.springframework.security.ldap.userdetails.InetOrgPersonContextMapper</span>&nbsp;<span class="element-name">userContextMapper</span>()</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getAuthenticationExceptionHandler()">
-<h3>getAuthenticationExceptionHandler</h3>
-<div class="member-signature"><span class="modifiers">protected abstract</span>&nbsp;<span class="return-type"><a href="AuthenticationExceptionHandler.html" title="interface in org.odpi.openmetadata.userinterface.uichassis.springboot.auth">AuthenticationExceptionHandler</a></span>&nbsp;<span class="element-name">getAuthenticationExceptionHandler</span>()</div>
 </section>
 </li>
 </ul>

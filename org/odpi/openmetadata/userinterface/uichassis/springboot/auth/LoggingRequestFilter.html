@@ -77,12 +77,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code>javax.servlet.Filter</code></dd>
+<dd><code>jakarta.servlet.Filter</code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">LoggingRequestFilter</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements javax.servlet.Filter</span></div>
+implements jakarta.servlet.Filter</span></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -114,12 +114,12 @@ implements javax.servlet.Filter</span></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#destroy()" class="member-name-link">destroy</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#doFilter(javax.servlet.ServletRequest,javax.servlet.ServletResponse,javax.servlet.FilterChain)" class="member-name-link">doFilter</a><wbr>(javax.servlet.ServletRequest&nbsp;servletRequest,
- javax.servlet.ServletResponse&nbsp;servletResponse,
- javax.servlet.FilterChain&nbsp;filterChain)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#doFilter(jakarta.servlet.ServletRequest,jakarta.servlet.ServletResponse,jakarta.servlet.FilterChain)" class="member-name-link">doFilter</a><wbr>(jakarta.servlet.ServletRequest&nbsp;servletRequest,
+ jakarta.servlet.ServletResponse&nbsp;servletResponse,
+ jakarta.servlet.FilterChain&nbsp;filterChain)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#init(javax.servlet.FilterConfig)" class="member-name-link">init</a><wbr>(javax.servlet.FilterConfig&nbsp;filterConfig)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#init(jakarta.servlet.FilterConfig)" class="member-name-link">init</a><wbr>(jakarta.servlet.FilterConfig&nbsp;filterConfig)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
@@ -153,32 +153,32 @@ implements javax.servlet.Filter</span></div>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="init(javax.servlet.FilterConfig)">
+<section class="detail" id="init(jakarta.servlet.FilterConfig)">
 <h3>init</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">init</span><wbr><span class="parameters">(javax.servlet.FilterConfig&nbsp;filterConfig)</span>
-          throws <span class="exceptions">javax.servlet.ServletException</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">init</span><wbr><span class="parameters">(jakarta.servlet.FilterConfig&nbsp;filterConfig)</span>
+          throws <span class="exceptions">jakarta.servlet.ServletException</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code>init</code>&nbsp;in interface&nbsp;<code>javax.servlet.Filter</code></dd>
+<dd><code>init</code>&nbsp;in interface&nbsp;<code>jakarta.servlet.Filter</code></dd>
 <dt>Throws:</dt>
-<dd><code>javax.servlet.ServletException</code></dd>
+<dd><code>jakarta.servlet.ServletException</code></dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="doFilter(javax.servlet.ServletRequest,javax.servlet.ServletResponse,javax.servlet.FilterChain)">
+<section class="detail" id="doFilter(jakarta.servlet.ServletRequest,jakarta.servlet.ServletResponse,jakarta.servlet.FilterChain)">
 <h3>doFilter</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">doFilter</span><wbr><span class="parameters">(javax.servlet.ServletRequest&nbsp;servletRequest,
- javax.servlet.ServletResponse&nbsp;servletResponse,
- javax.servlet.FilterChain&nbsp;filterChain)</span>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">doFilter</span><wbr><span class="parameters">(jakarta.servlet.ServletRequest&nbsp;servletRequest,
+ jakarta.servlet.ServletResponse&nbsp;servletResponse,
+ jakarta.servlet.FilterChain&nbsp;filterChain)</span>
               throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a>,
-javax.servlet.ServletException</span></div>
+jakarta.servlet.ServletException</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code>doFilter</code>&nbsp;in interface&nbsp;<code>javax.servlet.Filter</code></dd>
+<dd><code>doFilter</code>&nbsp;in interface&nbsp;<code>jakarta.servlet.Filter</code></dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code></dd>
-<dd><code>javax.servlet.ServletException</code></dd>
+<dd><code>jakarta.servlet.ServletException</code></dd>
 </dl>
 </section>
 </li>
@@ -188,7 +188,7 @@ javax.servlet.ServletException</span></div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">destroy</span>()</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code>destroy</code>&nbsp;in interface&nbsp;<code>javax.servlet.Filter</code></dd>
+<dd><code>destroy</code>&nbsp;in interface&nbsp;<code>jakarta.servlet.Filter</code></dd>
 </dl>
 </section>
 </li>

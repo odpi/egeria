@@ -72,10 +72,6 @@ loadScripts(document, 'script');</script>
 <h1 title="Interface AuthService" class="title">Interface AuthService</h1>
 </div>
 <section class="class-description" id="class-description">
-<dl class="notes">
-<dt>All Known Implementing Classes:</dt>
-<dd><code><a href="RedisAuthService.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.auth">RedisAuthService</a></code>, <code><a href="SessionAuthService.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.auth">SessionAuthService</a></code>, <code><a href="TokenAuthService.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.auth">TokenAuthService</a></code></dd>
-</dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">AuthService</span></div>
 </section>
@@ -108,8 +104,8 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#addAuthentication(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,org.springframework.security.core.Authentication)" class="member-name-link">addAuthentication</a><wbr>(javax.servlet.http.HttpServletRequest&nbsp;request,
- javax.servlet.http.HttpServletResponse&nbsp;response,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#addAuthentication(jakarta.servlet.http.HttpServletRequest,jakarta.servlet.http.HttpServletResponse,org.springframework.security.core.Authentication)" class="member-name-link">addAuthentication</a><wbr>(jakarta.servlet.http.HttpServletRequest&nbsp;request,
+ jakarta.servlet.http.HttpServletResponse&nbsp;response,
  org.springframework.security.core.Authentication&nbsp;authentication)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Add the authentication on the response after performs other operations like persistence server side</div>
@@ -118,7 +114,7 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#extractUserAppRoles(java.util.Collection)" class="member-name-link">extractUserAppRoles</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;roles)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>org.springframework.security.core.Authentication</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getAuthentication(javax.servlet.http.HttpServletRequest)" class="member-name-link">getAuthentication</a><wbr>(javax.servlet.http.HttpServletRequest&nbsp;request)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getAuthentication(jakarta.servlet.http.HttpServletRequest)" class="member-name-link">getAuthentication</a><wbr>(jakarta.servlet.http.HttpServletRequest&nbsp;request)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>long</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTokenTimeout()" class="member-name-link">getTokenTimeout</a>()</code></div>
@@ -166,16 +162,16 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getAuthentication(javax.servlet.http.HttpServletRequest)">
+<section class="detail" id="getAuthentication(jakarta.servlet.http.HttpServletRequest)">
 <h3>getAuthentication</h3>
-<div class="member-signature"><span class="return-type">org.springframework.security.core.Authentication</span>&nbsp;<span class="element-name">getAuthentication</span><wbr><span class="parameters">(javax.servlet.http.HttpServletRequest&nbsp;request)</span></div>
+<div class="member-signature"><span class="return-type">org.springframework.security.core.Authentication</span>&nbsp;<span class="element-name">getAuthentication</span><wbr><span class="parameters">(jakarta.servlet.http.HttpServletRequest&nbsp;request)</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="addAuthentication(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,org.springframework.security.core.Authentication)">
+<section class="detail" id="addAuthentication(jakarta.servlet.http.HttpServletRequest,jakarta.servlet.http.HttpServletResponse,org.springframework.security.core.Authentication)">
 <h3>addAuthentication</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">addAuthentication</span><wbr><span class="parameters">(javax.servlet.http.HttpServletRequest&nbsp;request,
- javax.servlet.http.HttpServletResponse&nbsp;response,
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">addAuthentication</span><wbr><span class="parameters">(jakarta.servlet.http.HttpServletRequest&nbsp;request,
+ jakarta.servlet.http.HttpServletResponse&nbsp;response,
  org.springframework.security.core.Authentication&nbsp;authentication)</span></div>
 <div class="block">Add the authentication on the response after performs other operations like persistence server side</div>
 <dl class="notes">
