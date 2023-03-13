@@ -144,7 +144,7 @@ allprojects {
         log4jVersion = '2.20.0'
         jacksonjdk8Version = '2.14.2'
         reactivestreamsVersion = '1.0.4'
-        springdocSterterVersion = '2.0.2'
+        springdocSterterVersion = '2.0.3'
     }
 
     dependencies {
