@@ -109,7 +109,7 @@ allprojects {
         openlineageVersion = '0.20.6'
         ossVersion = '4.15.0'
         mockitoVersion = '4.11.0'
-        plexusVersion = '3.5.0'
+        plexusVersion = '3.5.1'
         prometheusVersion = '1.10.4'
         nettyVersion = '4.1.89.Final'
         quartzVersion = '2.3.2'
