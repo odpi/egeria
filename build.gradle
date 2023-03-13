@@ -320,7 +320,7 @@ allprojects {
             runtimeOnly("org.antlr:antlr4:4.12.0")
             runtimeOnly("org.apache.ivy:ivy:2.5.1")
         }
-        implementation platform('net.openhft:chronicle-bom:2.24ea43')
+        implementation platform('net.openhft:chronicle-bom:2.24ea45')
         modules {
             module('org.glassfish:jakarta.json') {
                 replacedBy 'jakarta.json:jakarta.json-api', 'use jakarta.json.api instead of glassfish'
