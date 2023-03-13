@@ -22,12 +22,12 @@
         <url>http://github.com/odpi/egeria/tree/main</url>
     </scm>
 
-    <name>Standalone Server </name>
+    <name>Server standalone</name>
     <description>
-        A standalone server to host open metadata services.
+        The server standalone provides an single server to host the open metadata services.
     </description>
 
-    <artifactId>server-standalone</artifactId>
+    <artifactId>server-chassis</artifactId>
     <packaging>pom</packaging>
     <modules>
         <module>server-standalone-spring</module>

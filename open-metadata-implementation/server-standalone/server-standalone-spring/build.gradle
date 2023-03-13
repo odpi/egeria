@@ -44,6 +44,7 @@ dependencies {
     runtimeOnly 'org.hibernate:hibernate-validator'
     runtimeOnly project(':open-metadata-implementation:platform-services:platform-services-spring')
     runtimeOnly project(':open-metadata-implementation:admin-services:admin-services-spring')
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
 
     // The following are only included at runtime for the full platform (ie adminChassisOnly is not set as a property)
     if (!project.hasProperty("adminChassisOnly")) {
@@ -106,7 +107,7 @@ dependencies {
     }
 }
 
-description = 'OMAG Server Platform Chassis for Spring'
+description = 'OMAG Server standalone for Spring'
 
 bootJar {
     manifest {

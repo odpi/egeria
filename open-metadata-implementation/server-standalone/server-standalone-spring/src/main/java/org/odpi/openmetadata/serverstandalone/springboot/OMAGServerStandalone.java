@@ -2,12 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.serverstandalone.springboot;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
-import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.server.OMAGServerOperationalServices;
 import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.http.HttpHelper;
@@ -29,6 +30,12 @@ import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 
@@ -60,25 +67,28 @@ import java.util.*;
                         "REST APIs may be used for development, testing, evaluation.  Click on the documentation for each module to discover more ...",
                 license = @License(name = "Apache 2.0 License", url = "https://www.apache.org/licenses/LICENSE-2.0"),
                 contact = @Contact(url = "https://egeria-project.org", name = "Egeria Project",
-                                   email = "egeria-technical-discuss@lists.lfaidata.foundation")
+                        email = "egeria-technical-discuss@lists.lfaidata.foundation")
         ),
 
         externalDocs = @ExternalDocumentation(description = "OMAG Server Platform documentation",
                 url="https://egeria-project.org/concepts/omag-server-platform/")
-        )
+)
 
 
 @Configuration
-public class StandaloneOMAGServer
+public class OMAGServerStandalone
 {
+
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectReader OBJECT_READER = OBJECT_MAPPER.reader();
     @Value("${strict.ssl}")
     Boolean strictSSL;
 
     @Value("${startup.user}")
     String sysUser;
 
-    @Value("${startup.server.list}")
-    String startupServers;
+    @Value("${server.config.location}")
+    String configFilelocation;
 
     @Value("${header.name.list}")
     List<String> headerNames;
@@ -93,10 +103,10 @@ public class StandaloneOMAGServer
     private String startupMessage = "";
     private OMAGServerOperationalServices operationalServices = new OMAGServerOperationalServices();
 
-    private static final Logger log = LoggerFactory.getLogger(org.odpi.openmetadata.serverstandalone.springboot.StandaloneOMAGServer.class);
+    private static final Logger log = LoggerFactory.getLogger(OMAGServerStandalone.class);
 
     public static void main(String[] args) {
-        SpringApplication.run(org.odpi.openmetadata.serverstandalone.springboot.StandaloneOMAGServer.class, args);
+        SpringApplication.run(OMAGServerStandalone.class, args);
     }
 
     @Bean
@@ -116,57 +126,58 @@ public class StandaloneOMAGServer
         };
     }
 
-    /**
-     * Extract the list of servers to auto start along with the administration userId.
-     * The userId is in property "sysUser" and the list of server names are in property
-     * "startupServers".  If either are null then no servers are auto started.
-     */
-    List<String>  getAutoStartList()
-    {
-        if (!startupServers.trim().isEmpty())
-        {
-            String[] splits = startupServers.split(",");
-            //remove eventual duplicates
-            TreeSet<String> serverSet = new TreeSet<String>();
-
-            Collections.addAll(serverSet, splits);
-
-            if (! serverSet.isEmpty())
-            {
-                return new ArrayList<>(serverSet);
-            }
-        }
-
-        return null;
-    }
 
     /**
-     * Starts the server in the supplied configuration
+     * Starts the server
      */
     private void startServer()
     {
-//        if (servers != null)
-//        {
-//            log.info("Startup detected for servers: {}", startupServers);
-//        }
-        OMAGServerConfig configuration = null;
-        String userId = "garygeeke";
-        SuccessMessageResponse response = operationalServices.activateServerWithSuppliedConfig(userId, configuration);
-        if (response.getRelatedHTTPCode() == 200)
-        {
-            startupMessage = response.getSuccessMessage();
-        }
-        else
-        {
-            startupMessage = "Server startup failed with error: " + response.getExceptionErrorMessage();
 
-            StartupFailEvent customSpringEvent = new StartupFailEvent(this, startupMessage);
+        OMAGServerConfig configuration = null;
+        StartupFailEvent customSpringEvent = null;
+        try {
+            System.err.println("configFilelocation="+configFilelocation);
+            if (configFilelocation != null) {
+                configuration = OBJECT_READER.readValue(new File(configFilelocation), OMAGServerConfig.class);
+            }
+        } catch(IOException e) {
+                startupMessage = "Server startup failed - as configuration could not be read" ;
+                customSpringEvent = new StartupFailEvent(this, startupMessage);
+        }
+        if (configuration !=null) {
+            SuccessMessageResponse response = operationalServices.activateWithSuppliedConfig(sysUser.trim(), configuration);
+
+            if (response.getRelatedHTTPCode() == 200) {
+                startupMessage = response.getSuccessMessage();
+            } else {
+                startupMessage = "Server startup failed with error: " + response.getExceptionErrorMessage();
+                customSpringEvent = new StartupFailEvent(this, startupMessage);
+            }
+        }
+        if (customSpringEvent !=null) {
             applicationEventPublisher.publishEvent(customSpringEvent);
             triggeredRuntimeHalt = true;
         }
+
     }
 
 
+    /**
+     *  Deactivate all servers that were started automatically
+     */
+//    private void temporaryDeactivateServers()
+//    {
+//        List<String>  servers = getAutoStartList();
+//
+//        if (servers != null)
+//        {
+//            log.info("Temporarily deactivating any auto-started servers '{}'", servers);
+//
+//            System.out.println(new Date() + " OMAG Server Platform shutdown requested. Shutting down auto-started servers (if running): " + servers);
+//
+//            operationalServices.deactivateTemporarilyServerList(sysUser, servers);
+//        }
+//    }
 
     @Component
     public class ApplicationContextListener
@@ -175,7 +186,7 @@ public class StandaloneOMAGServer
         @EventListener(ApplicationReadyEvent.class)
         public void applicationReady() {
             startServer();
-            System.out.println(org.odpi.openmetadata.serverstandalone.springboot.StandaloneOMAGServer.this.startupMessage);
+            System.out.println(OMAGServerStandalone.this.startupMessage);
 
             if(triggeredRuntimeHalt){
                 Runtime.getRuntime().halt(43);
@@ -186,8 +197,7 @@ public class StandaloneOMAGServer
         @EventListener
         public void onApplicationEvent(ContextClosedEvent event)
         {
-//            temporaryDeactivateServers();
-            //TODO should we do anything here ?
+            // temporaryDeactivateServers();
         }
     }
 
@@ -197,8 +207,7 @@ public class StandaloneOMAGServer
         @Override
         public void onApplicationEvent(StartupFailEvent event) {
             log.info("Received startup fail event with message: {} " + event.getMessage());
-//            temporaryDeactivateServers();
-            //TODO should we do anything here ?
+            //  temporaryDeactivateServers();
         }
 
     }

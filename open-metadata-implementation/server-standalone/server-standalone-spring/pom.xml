@@ -21,7 +21,7 @@
         <url>http://github.com/odpi/egeria/tree/main</url>
     </scm>
 
-    <name>OMAG Server Platform and stand alone server for Spring</name>
+    <name>OMAG Server standalone for Spring</name>
     <description>
         Provides the spring-based OMAG standalone server.
     </description>
@@ -82,6 +82,22 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>search-integrator-spring</artifactId>
             <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>admin-services-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>admin-services-server</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>admin-services-api</artifactId>
         </dependency>
 
         <dependency>
