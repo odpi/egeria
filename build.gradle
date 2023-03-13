@@ -106,7 +106,7 @@ allprojects {
         logbackVersion = '1.4.5'
         lettuceVersion = '6.2.3.RELEASE'
         luceneVersion = '8.11.1'
-        openlineageVersion = '0.20.6'
+        openlineageVersion = '0.21.1'
         ossVersion = '4.15.0'
         mockitoVersion = '4.11.0'
         plexusVersion = '3.5.0'
