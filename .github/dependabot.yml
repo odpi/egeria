@@ -11,15 +11,6 @@ updates:
   open-pull-requests-limit: 100
   reviewers:
   - planetf1
-- package-ecosystem: maven
-  directory: "/"
-  schedule:
-    interval: monthly
-    time: "03:00"
-    timezone: "Etc/UTC"
-  open-pull-requests-limit: 100
-  reviewers:
-  - planetf1
 - package-ecosystem: docker
   directory: "/open-metadata-resources/open-metadata-deployment/docker/egeria"
   schedule:
