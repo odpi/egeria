@@ -97,7 +97,7 @@ allprojects {
         junitVersion = '4.13.2'
         junitjupiterVersion = '5.9.2'
         junitplatformVersion = '1.9.1'
-        jwtVersion = '9.24.4'
+        jwtVersion = '9.31'
         jwtApiVersion = '0.11.5'
         jwtImplVersion = '0.11.5'
         jwtJacksonVersion = '0.11.5'
