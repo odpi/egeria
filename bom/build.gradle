@@ -310,6 +310,9 @@ dependencies {
 publishing {
     publications {
         mavenmodule(MavenPublication) {
+            // We override the assumed 'bom' project name and use as a drop-in replacement for the
+            // egeria module, which was used as the BOM in the 3.x maven build
+            artifactId = "egeria"
             from components.javaPlatform
             pom {
                 url = 'http://egeria.odpi.org'
@@ -341,7 +344,6 @@ publishing {
             // Override the project name & description for the pom based on properties set in the child build.gradle (hard to default & required for maven central)
             pom.withXml {
                 // NOTE - this subproject is similar to the root project in maven, in that it defines the BOM
-                asNode().appendNode('name', "egeria")
                 asNode().appendNode('description', "${project.description}")
             }
         }
