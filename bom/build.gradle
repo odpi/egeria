@@ -114,6 +114,7 @@ ext {
     jacksonjdk8Version = '2.14.2'
     reactivestreamsVersion = '1.0.4'
     springdocStarterVersion = '2.0.3'
+    jacocoVersion = '0.8.8'
 }
 
 dependencies {
