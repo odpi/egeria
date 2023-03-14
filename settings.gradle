@@ -30,7 +30,7 @@ pluginManagement {
     }
 }
 rootProject.name = 'egeria'
-
+include(':bom')
 include(':open-metadata-implementation:frameworks:audit-log-framework')
 include(':open-metadata-implementation:frameworks:open-connector-framework')
 include(':open-metadata-implementation:frameworks:open-discovery-framework')
@@ -448,6 +448,9 @@ if (!startParameter.projectProperties.hasProperty("skipOpenTypesFVT")) {
     include(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test-generator')
     include(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test')
 }
+
+// These are not required if the project name == the directory name but are included for clarity
+project(':bom').projectDir = file('bom')
 project(':open-metadata-implementation:frameworks:audit-log-framework').projectDir = file('open-metadata-implementation/frameworks/audit-log-framework')
 project(':open-metadata-implementation:frameworks:open-connector-framework').projectDir = file('open-metadata-implementation/frameworks/open-connector-framework')
 project(':open-metadata-implementation:frameworks:open-discovery-framework').projectDir = file('open-metadata-implementation/frameworks/open-discovery-framework')
