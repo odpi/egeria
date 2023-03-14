@@ -7,7 +7,7 @@
  * Dependency Management - to fix versions. Pick up maven build settings for now
  */
 
-description='Egeria BOM'
+description = 'Egeria BOM'
 
 apply plugin: 'java-platform'
 
@@ -19,7 +19,7 @@ javaPlatform {
 
 // Assign variables for any constraints
 ext {
-    lombokVersion= '1.18.26'
+    lombokVersion = '1.18.26'
     // TODO: version 4 under new package name
     antlrVersion = '3.5.3'
     ST4Version = '4.3.4'
@@ -303,7 +303,6 @@ dependencies {
             }
         }
     }
-
 }
 
 // Special publication for our BOM, which is our top level project - in lieu of the root project
