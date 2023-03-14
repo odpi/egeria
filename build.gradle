@@ -517,6 +517,15 @@ dependencies {
         api("com.beust:jcommander:1.82")
         api("org.antlr:antlr4:4.12.0")
         api("org.apache.ivy:ivy:2.5.1")
+
+        // Add in Egeria's own projects -- not for us, but for our users
+        subprojects.forEach { subProject ->
+            // TODO what do we want to exclude from our BOM?
+            if (subProject.name != 'toexclude') {
+                // Naming convention for our maven artifacts
+                api("org.odpi.egeria:" + subProject.name + ":" + version)
+            }
+        }
     }
 
 }
