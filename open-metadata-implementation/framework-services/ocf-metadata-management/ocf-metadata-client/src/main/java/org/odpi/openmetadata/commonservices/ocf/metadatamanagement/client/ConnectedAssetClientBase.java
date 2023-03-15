@@ -220,7 +220,7 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    protected AssetUniverse getAssetProperties(String serviceName,
+    public AssetUniverse getAssetProperties(String serviceName,
                                                String userId,
                                                String assetGUID) throws InvalidParameterException,
                                                                         PropertyServerException,
@@ -238,7 +238,7 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
              * Make use of the ConnectedAsset OMAS Service which provides the metadata services for the
              * Open Connector Framework (OCF).
              */
-            return new ConnectedAssetUniverse(serviceName, serverName, serverPlatformURLRoot, userId, assetGUID);
+            return ConnectedAssetUniverse.create(serviceName, serverName, serverPlatformURLRoot, userId, assetGUID);
         }
         catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException error)
         {

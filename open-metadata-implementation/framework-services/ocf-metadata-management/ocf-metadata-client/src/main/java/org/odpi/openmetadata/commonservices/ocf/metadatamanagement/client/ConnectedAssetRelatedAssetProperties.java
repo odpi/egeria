@@ -116,12 +116,12 @@ public class ConnectedAssetRelatedAssetProperties extends org.odpi.openmetadata.
 
         try
         {
-            assetProperties = new ConnectedAssetUniverse(serviceName,
-                                                         serverName,
-                                                         omasServerURL,
-                                                         userId,
-                                                         assetGUID,
-                                                         restClient);
+            assetProperties = ConnectedAssetUniverse.create(serviceName,
+                                                            serverName,
+                                                            omasServerURL,
+                                                            userId,
+                                                            assetGUID,
+                                                            restClient);
         }
         catch (UserNotAuthorizedException  error)
         {
