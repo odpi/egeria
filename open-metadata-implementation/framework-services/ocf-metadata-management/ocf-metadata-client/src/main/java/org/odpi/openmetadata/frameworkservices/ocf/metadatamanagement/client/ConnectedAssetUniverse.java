@@ -29,14 +29,12 @@ public class ConnectedAssetUniverse extends AssetUniverse
 
     private final int MAX_CACHE_SIZE = 100;
 
-    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private final RESTExceptionHandler    restExceptionHandler    = new RESTExceptionHandler();
-
+    private static final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private static final RESTExceptionHandler    restExceptionHandler    = new RESTExceptionHandler();
 
     /**
-     * Constructor used by Asset Consumer OMAS for getAssetProperties() with no authentication
-     * information being attached to the HTTP requests.  The calling user of the specific
-     * request flows as a property in the URL.
+     * Private constructor used by the create() static factory methods for instantiation
+     * of ConnectedAssetUniverse objects.
      *
      * @param serviceName calling service
      * @param remoteServerName  name of the server.
@@ -48,18 +46,30 @@ public class ConnectedAssetUniverse extends AssetUniverse
      * @throws PropertyServerException There is a problem retrieving the asset properties from the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public ConnectedAssetUniverse(String   serviceName,
-                                  String   remoteServerName,
-                                  String   omasServerURL,
-                                  String   userId,
-                                  String   assetGUID) throws InvalidParameterException,
+    private ConnectedAssetUniverse(AssetResponse assetResponse,
+                                  OCFRESTClient restClient,
+                                  String serviceName,
+                                  String remoteServerName,
+                                  String omasServerURL,
+                                  String userId,
+                                  String assetGUID) throws InvalidParameterException,
                                                              PropertyServerException,
                                                              UserNotAuthorizedException
     {
-        super();
-
-        OCFRESTClient restClient    = new OCFRESTClient(remoteServerName, omasServerURL);
-        AssetResponse assetResponse = this.getAssetSummary(serviceName, remoteServerName, omasServerURL, restClient, userId, assetGUID);
+        super(assetResponse.getAsset(),
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                assetResponse.getAsset().getMeanings(),
+                null,
+                null,
+                null,
+                null,
+                null);
 
         this.processAssetResponse(serviceName,
                                   remoteServerName,
@@ -70,12 +80,43 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                   assetResponse);
     }
 
+    /**
+     * Static factory method used for creating a ConnectedAssetUniverse object
+     * without authentication.
+     *
+     * @param serviceName calling service
+     * @param remoteServerName  name of the server.
+     * @param omasServerURL  url used to call the server.
+     * @param userId  userId of user making request.
+     * @param assetGUID  unique id for asset.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException There is a problem retrieving the asset properties from the property server.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public static ConnectedAssetUniverse create(String serviceName,
+                                                String remoteServerName,
+                                                String omasServerURL,
+                                                String userId,
+                                                String assetGUID) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        OCFRESTClient restClient = new OCFRESTClient(remoteServerName, omasServerURL);
+        AssetResponse assetResponse = getAssetSummary(serviceName, remoteServerName, omasServerURL, restClient, userId, assetGUID);
 
+        return new ConnectedAssetUniverse(assetResponse,
+                                          restClient,
+                                          serviceName,
+                                          remoteServerName,
+                                          omasServerURL,
+                                          userId,
+                                          assetGUID);
+    }
 
     /**
-     * Constructor used by Asset Consumer OMAS for getExtendedProperties() where a userId and password
-     * of the local calling server are embedded in the HTTP requests.  The calling user of the specific
-     * request flows as a property in the URL.
+     * Static factory method used for creating a ConnectedAssetUniverse object where a userId and password
+     * of the local calling server are embedded in the HTTP request.
      *
      * @param serviceName calling service
      * @param remoteServerName  name of the server.
@@ -89,34 +130,30 @@ public class ConnectedAssetUniverse extends AssetUniverse
      * @throws PropertyServerException There is a problem retrieving the asset properties from the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public ConnectedAssetUniverse(String   serviceName,
-                                  String   remoteServerName,
-                                  String   localServerUserId,
-                                  String   localServerPassword,
-                                  String   omasServerURL,
-                                  String   userId,
-                                  String   assetGUID) throws InvalidParameterException,
-                                                             PropertyServerException,
-                                                             UserNotAuthorizedException
+    public static ConnectedAssetUniverse create(String serviceName,
+                                                String remoteServerName,
+                                                String localServerUserId,
+                                                String localServerPassword,
+                                                String omasServerURL,
+                                                String userId,
+                                                String assetGUID) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException
     {
-        super();
+        OCFRESTClient restClient = new OCFRESTClient(remoteServerName, omasServerURL, localServerUserId, localServerPassword);
+        AssetResponse assetResponse = getAssetSummary(serviceName, remoteServerName, omasServerURL, restClient, userId, assetGUID);
 
-        OCFRESTClient
-                      restClient    = new OCFRESTClient(remoteServerName, omasServerURL, localServerUserId, localServerPassword);
-        AssetResponse assetResponse = this.getAssetSummary(serviceName, remoteServerName, omasServerURL, restClient, userId, assetGUID);
-
-        this.processAssetResponse(serviceName,
-                                  remoteServerName,
-                                  omasServerURL,
-                                  userId,
-                                  assetGUID,
-                                  restClient,
-                                  assetResponse);
+        return new ConnectedAssetUniverse(assetResponse,
+                                          restClient,
+                                          serviceName,
+                                          remoteServerName,
+                                          omasServerURL,
+                                          userId,
+                                          assetGUID);
     }
 
-
     /**
-     * Constructor used by Connected Asset OMAS for related asset properties.
+     * Static factory method used for creating a ConnectedAssetUniverse object.
      *
      * @param serviceName calling service
      * @param remoteServerName  name of the server.
@@ -129,33 +166,29 @@ public class ConnectedAssetUniverse extends AssetUniverse
      * @throws PropertyServerException There is a problem retrieving the asset properties from the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public ConnectedAssetUniverse(String        serviceName,
-                                  String        remoteServerName,
-                                  String        omasServerURL,
-                                  String        userId,
-                                  String        assetGUID,
-                                  OCFRESTClient restClient) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
+    public static ConnectedAssetUniverse create(String serviceName,
+                                                String remoteServerName,
+                                                String omasServerURL,
+                                                String userId,
+                                                String assetGUID,
+                                                OCFRESTClient restClient) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
     {
-        super();
+        AssetResponse assetResponse = getAssetSummary(serviceName, remoteServerName, omasServerURL, restClient, userId, assetGUID);
 
-        AssetResponse assetResponse = this.getAssetSummary(serviceName, remoteServerName, omasServerURL, restClient, userId, assetGUID);
-
-        this.processAssetResponse(serviceName,
-                                  remoteServerName,
-                                  omasServerURL,
-                                  userId,
-                                  assetGUID,
-                                  restClient,
-                                  assetResponse);
+        return new ConnectedAssetUniverse(assetResponse,
+                                          restClient,
+                                          serviceName,
+                                          remoteServerName,
+                                          omasServerURL,
+                                          userId,
+                                          assetGUID);
     }
 
-
     /**
-     * Constructor used by EgeriaConnectedAssetProperties.refresh() with no authentication
-     * information being attached to the HTTP requests.  The calling user of the specific
-     * request flows as a property in the URL.
+     * Static factory method used by EgeriaConnectedAssetProperties.refresh() to instantiate a ConnectedAssetUniverse object
+     * with no authentication information being attached to the HTTP requests.
      *
      * @param serviceName calling service
      * @param remoteServerName  name of the server.
@@ -168,34 +201,30 @@ public class ConnectedAssetUniverse extends AssetUniverse
      * @throws PropertyServerException There is a problem retrieving the asset properties from the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public ConnectedAssetUniverse(String   serviceName,
-                                  String   remoteServerName,
-                                  String   omasServerURL,
-                                  String   userId,
-                                  String   assetGUID,
-                                  String   connectionGUID) throws InvalidParameterException,
-                                                                  PropertyServerException,
-                                                                  UserNotAuthorizedException
+    public static ConnectedAssetUniverse create(String serviceName,
+                                                String remoteServerName,
+                                                String omasServerURL,
+                                                String userId,
+                                                String assetGUID,
+                                                String connectionGUID) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
     {
-        super();
+        OCFRESTClient restClient = new OCFRESTClient(remoteServerName, omasServerURL);
+        AssetResponse assetResponse = getConnectedAssetSummary(serviceName, remoteServerName, omasServerURL, restClient, userId, assetGUID, connectionGUID);
 
-        OCFRESTClient restClient    = new OCFRESTClient(remoteServerName, omasServerURL);
-        AssetResponse assetResponse = this.getConnectedAssetSummary(serviceName, remoteServerName, omasServerURL, restClient, userId, assetGUID, connectionGUID);
-
-        this.processAssetResponse(serviceName,
-                                  remoteServerName,
-                                  omasServerURL,
-                                  userId,
-                                  assetGUID,
-                                  restClient,
-                                  assetResponse);
+        return new ConnectedAssetUniverse(assetResponse,
+                                          restClient,
+                                          serviceName,
+                                          remoteServerName,
+                                          omasServerURL,
+                                          userId,
+                                          assetGUID);
     }
 
-
     /**
-     * Constructor used by EgeriaConnectedAssetProperties.refresh() with no authentication
-     * information being attached to the HTTP requests.  The calling user of the specific
-     * request flows as a property in the URL.
+     * Static factory method used by EgeriaConnectedAssetProperties.refresh() to instantiate a ConnectedAssetUniverse object
+     * where a usedId and password of the local calling server are embedded in the HTTP request.
      *
      * @param serviceName calling service
      * @param remoteServerName  name of the server.
@@ -210,40 +239,28 @@ public class ConnectedAssetUniverse extends AssetUniverse
      * @throws PropertyServerException There is a problem retrieving the asset properties from the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public ConnectedAssetUniverse(String   serviceName,
-                                  String   remoteServerName,
-                                  String   localServerUserId,
-                                  String   localServerPassword,
-                                  String   omasServerURL,
-                                  String   userId,
-                                  String   assetGUID,
-                                  String   connectionGUID) throws InvalidParameterException,
-                                                                  PropertyServerException,
-                                                                  UserNotAuthorizedException
+    public static ConnectedAssetUniverse create(String serviceName,
+                                                String remoteServerName,
+                                                String localServerUserId,
+                                                String localServerPassword,
+                                                String omasServerURL,
+                                                String userId,
+                                                String assetGUID,
+                                                String connectionGUID) throws InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException
     {
-        super();
+        OCFRESTClient restClient = new OCFRESTClient(remoteServerName, omasServerURL, localServerUserId, localServerPassword);
+        AssetResponse assetResponse = getConnectedAssetSummary(serviceName, remoteServerName, omasServerURL, restClient, userId, assetGUID, connectionGUID);
 
-        OCFRESTClient restClient    = new OCFRESTClient(remoteServerName,
-                                                        omasServerURL,
-                                                        localServerUserId,
-                                                        localServerPassword);
-        AssetResponse assetResponse = this.getConnectedAssetSummary(serviceName,
-                                                                    remoteServerName,
-                                                                    omasServerURL,
-                                                                    restClient,
-                                                                    userId,
-                                                                    assetGUID,
-                                                                    connectionGUID);
-
-        this.processAssetResponse(serviceName,
-                                  remoteServerName,
-                                  omasServerURL,
-                                  userId,
-                                  assetGUID,
-                                  restClient,
-                                  assetResponse);
+        return new ConnectedAssetUniverse(assetResponse,
+                                          restClient,
+                                          serviceName,
+                                          remoteServerName,
+                                          omasServerURL,
+                                          userId,
+                                          assetGUID);
     }
-
 
     /**
      * Extract the returned properties from AssetResponse and set up the superclass.
@@ -404,7 +421,6 @@ public class ConnectedAssetUniverse extends AssetUniverse
         }
     }
 
-
     /**
      * Returns the basic information about the asset.  The connection guid allows the short description for the
      * asset to be filled out.
@@ -422,7 +438,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    private AssetResponse getConnectedAssetSummary(String        serviceName,
+    private static AssetResponse getConnectedAssetSummary(String        serviceName,
                                                    String        remoteServerName,
                                                    String        omasServerURL,
                                                    OCFRESTClient restClient,
@@ -482,7 +498,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    private AssetResponse getAssetSummary(String        serviceName,
+    private static AssetResponse getAssetSummary(String        serviceName,
                                           String        remoteServerName,
                                           String        omasServerURL,
                                           OCFRESTClient restClient,
