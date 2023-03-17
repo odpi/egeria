@@ -93,6 +93,23 @@ public class AssetUniverse extends AssetDetail
         this.relatedAssets = relatedAssets;
     }
 
+    public AssetUniverse(Asset assetBean) {
+        this(assetBean,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
+    }
+
 
     /**
      * Copy/clone Constructor note this is a deep copy
