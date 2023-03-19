@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.integrationservices.analytics.connector;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.integrationservices.analytics.ffdc.AnalyticsIntegratorAuditCode;
 import org.odpi.openmetadata.integrationservices.analytics.ffdc.AnalyticsIntegratorErrorCode;
 
@@ -23,6 +23,7 @@ public abstract class AnalyticsIntegratorConnector extends IntegrationConnectorB
      */
     public synchronized void setContext(AnalyticsIntegratorContext context)
     {
+        super.setContext(context);
         this.context = context;
     }
 

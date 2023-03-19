@@ -55,6 +55,7 @@ public class SchemaTypeElement implements MetadataElement, Serializable
      * Used when a value, or set of values associated with the schema are derived rather than stored.
      */
     private String                                       formula              = null;
+    private String                                       formulaType          = null;
     private List<DerivedSchemaTypeQueryTargetProperties> queries              = null;
 
     /**
@@ -88,6 +89,7 @@ public class SchemaTypeElement implements MetadataElement, Serializable
             schemaOptions = template.getSchemaOptions();
 
             formula = template.getFormula();
+            formulaType = template.getFormulaType();
             queries = template.getQueries();
         }
     }
@@ -283,6 +285,28 @@ public class SchemaTypeElement implements MetadataElement, Serializable
 
 
     /**
+     * Return the specification language for the formula.
+     *
+     * @return string description
+     */
+    public String getFormulaType()
+    {
+        return formulaType;
+    }
+
+
+    /**
+     * Set up  the specification language for the formula.
+     *
+     * @param formulaType string description
+     */
+    public void setFormulaType(String formulaType)
+    {
+        this.formulaType = formulaType;
+    }
+
+
+    /**
      * Return the list of individual query targets for a derived column.
      *
      * @return list of queries and their target element
@@ -319,6 +343,7 @@ public class SchemaTypeElement implements MetadataElement, Serializable
                        ", mapFromElement=" + mapFromElement +
                        ", mapToElement=" + mapToElement +
                        ", formula='" + formula + '\'' +
+                       ", formulaType='" + formulaType + '\'' +
                        ", queries=" + queries +
                        '}';
     }
@@ -350,6 +375,7 @@ public class SchemaTypeElement implements MetadataElement, Serializable
                        Objects.equals(externalSchemaType, that.externalSchemaType) &&
                        Objects.equals(schemaOptions, that.schemaOptions) &&
                        Objects.equals(formula, that.formula) &&
+                       Objects.equals(formulaType, that.formulaType) &&
                        Objects.equals(queries, that.queries);
     }
 
@@ -363,7 +389,6 @@ public class SchemaTypeElement implements MetadataElement, Serializable
     public int hashCode()
     {
         return Objects.hash(schemaTypeProperties, elementHeader, attributeCount, mapFromElement, mapToElement, externalSchemaType, schemaOptions,
-                            formula,
-                            queries);
+                            formula, formulaType, queries);
     }
 }

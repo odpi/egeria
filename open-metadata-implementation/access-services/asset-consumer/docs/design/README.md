@@ -13,7 +13,7 @@ The module structure for the Asset Consumer OMAS is as follows:
 The Asset Consumer OMAS interfaces are heavily influenced by the
 [Open Connector Framework (OCF)](../../../../frameworks/open-connector-framework).
 It also uses the client and server side support provided by the
-[ocf-metadata-management](../../../../common-services/ocf-metadata-management) common services.
+[ocf-metadata-management](../../../../framework-services/ocf-metadata-management) common services.
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

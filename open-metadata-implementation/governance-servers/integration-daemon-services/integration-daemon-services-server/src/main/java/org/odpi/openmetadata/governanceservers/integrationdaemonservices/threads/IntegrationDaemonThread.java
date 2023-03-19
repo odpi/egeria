@@ -5,12 +5,12 @@ package org.odpi.openmetadata.governanceservers.integrationdaemonservices.thread
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationConnectorCacheMap;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationConnectorHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -22,9 +22,9 @@ public class IntegrationDaemonThread implements Runnable
 {
     private static final Logger log = LoggerFactory.getLogger(IntegrationDaemonThread.class);
 
-    private String                            integrationDaemonName;
-    private List<IntegrationConnectorHandler> connectorHandlers;
-    private AuditLog                          auditLog;
+    private final String                            integrationDaemonName;
+    private final IntegrationConnectorCacheMap      connectorHandlers;
+    private final AuditLog                          auditLog;
 
 
     private final AtomicBoolean running = new AtomicBoolean(false);
@@ -37,9 +37,9 @@ public class IntegrationDaemonThread implements Runnable
      * @param connectorHandlers wrapper for the connector.
      * @param auditLog logging destination
      */
-    public IntegrationDaemonThread(String                            integrationDaemonName,
-                                   List<IntegrationConnectorHandler> connectorHandlers,
-                                   AuditLog                          auditLog)
+    public IntegrationDaemonThread(String                       integrationDaemonName,
+                                   IntegrationConnectorCacheMap connectorHandlers,
+                                   AuditLog                     auditLog)
     {
         this.integrationDaemonName = integrationDaemonName;
         this.connectorHandlers     = connectorHandlers;
@@ -85,34 +85,38 @@ public class IntegrationDaemonThread implements Runnable
         {
             Date now = new Date();
 
-            for (IntegrationConnectorHandler connectorHandler : connectorHandlers)
+            for (IntegrationConnectorHandler connectorHandler : connectorHandlers.getIntegrationConnectorProcessingList())
             {
                 if (connectorHandler != null)
                 {
-                    try
+                    if (((connectorHandler.getStartDate() == null) || now.after(connectorHandler.getStartDate())) &&
+                        ((connectorHandler.getStopDate() == null)  || now.before(connectorHandler.getStopDate())))
                     {
-                        if (connectorHandler.getLastRefreshTime() == null)
+                        try
                         {
-                            connectorHandler.refreshConnector(actionDescription, true);
-                        }
-                        else if (connectorHandler.getMinMinutesBetweenRefresh() > 0)
-                        {
-                            long nextRefreshTime =
-                                    connectorHandler.getLastRefreshTime().getTime() +
-                                            (connectorHandler.getMinMinutesBetweenRefresh() * 60000);
-
-                            if (nextRefreshTime < now.getTime())
+                            if (connectorHandler.getLastRefreshTime() == null)
                             {
-                                connectorHandler.refreshConnector(actionDescription, false);
+                                connectorHandler.refreshConnector(actionDescription, true);
+                            }
+                            else if (connectorHandler.getMinMinutesBetweenRefresh() > 0)
+                            {
+                                long nextRefreshTime =
+                                        connectorHandler.getLastRefreshTime().getTime() +
+                                                (connectorHandler.getMinMinutesBetweenRefresh() * 60000);
+
+                                if (nextRefreshTime < now.getTime())
+                                {
+                                    connectorHandler.refreshConnector(actionDescription, false);
+                                }
                             }
                         }
-                    }
-                    catch (Exception error)
-                    {
-                        auditLog.logMessage(actionDescription,
-                                            IntegrationDaemonServicesAuditCode.DAEMON_THREAD_CONNECTOR_ERROR.getMessageDefinition(integrationDaemonName,
-                                                                                                                                  error.getClass().getName(),
-                                                                                                                                  error.getMessage()));
+                        catch (Exception error)
+                        {
+                            auditLog.logMessage(actionDescription,
+                                                IntegrationDaemonServicesAuditCode.DAEMON_THREAD_CONNECTOR_ERROR.getMessageDefinition(integrationDaemonName,
+                                                                                                                                      error.getClass().getName(),
+                                                                                                                                      error.getMessage()));
+                        }
                     }
                 }
             }

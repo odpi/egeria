@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.integrationservices.security.connector;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.integrationservices.security.ffdc.SecurityIntegratorAuditCode;
 import org.odpi.openmetadata.integrationservices.security.ffdc.SecurityIntegratorErrorCode;
 
@@ -23,6 +23,7 @@ public abstract class SecurityIntegratorConnector extends IntegrationConnectorBa
      */
     public synchronized void setContext(SecurityIntegratorContext context)
     {
+        super.setContext(context);
         this.context = context;
     }
 

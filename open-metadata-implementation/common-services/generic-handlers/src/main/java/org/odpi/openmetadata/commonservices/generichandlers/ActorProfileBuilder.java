@@ -9,7 +9,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import java.util.Map;
 
 /**
- * ActorProfileBuilder creates the parts for an entity that represents a actor profile.
+ * ActorProfileBuilder creates the parts for an entity that represents an actor profile.
  * It is designed to be used to create its main subtype: Person, Team and ITProfile.
  */
 public class ActorProfileBuilder extends ReferenceableBuilder

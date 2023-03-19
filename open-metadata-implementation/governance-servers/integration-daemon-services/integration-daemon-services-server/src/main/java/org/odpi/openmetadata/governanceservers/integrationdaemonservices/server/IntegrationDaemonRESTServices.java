@@ -11,9 +11,9 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationServiceHandler;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationDaemonStatus;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationServiceSummary;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.ConnectorConfigPropertiesRequestBody;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.IntegrationDaemonStatusResponse;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.*;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
@@ -21,9 +21,9 @@ import java.util.List;
 
 
 /**
- * IntegrationDaemonRESTServices provides the external service implementation for a integration service.
- * Each method contains the integration daemon name and the integration service identifier (guid).
- * The IntegrationDaemonRESTServices locates the correct integration service instance within the correct
+ * IntegrationDaemonRESTServices provides the external service implementation for an integration service
+ * and integration group.
+ * The IntegrationDaemonRESTServices locates the correct integration service/group instance within the correct
  * integration daemon instance and delegates the request.
  */
 public class IntegrationDaemonRESTServices
@@ -296,11 +296,11 @@ public class IntegrationDaemonRESTServices
 
 
     /**
-     * Return a summary of each of the integration services' status.
+     * Return a summary of each of the integration services' and integration groups' status.
      *
      * @param serverName integration daemon name
      * @param userId calling user
-     * @return list of statuses - on for each assigned integration services or
+     * @return list of statuses - on for each assigned integration services or group
      *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
@@ -318,19 +318,81 @@ public class IntegrationDaemonRESTServices
 
         try
         {
-            List<IntegrationServiceHandler> handlers = instanceHandler.getAllIntegrationServiceHandlers(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            List<IntegrationServiceHandler> integrationServiceHandlers = instanceHandler.getAllIntegrationServiceHandlers(userId, serverName, methodName);
+
+            IntegrationDaemonStatus integrationDaemonStatus = new IntegrationDaemonStatus();
+
+            List<IntegrationServiceSummary> integrationServiceSummaries = new ArrayList<>();
+
+            if (integrationServiceHandlers != null)
+            {
+                for (IntegrationServiceHandler handler : integrationServiceHandlers)
+                {
+                    if (handler != null)
+                    {
+                        integrationServiceSummaries.add(handler.getIntegrationServiceSummary());
+                    }
+                }
+            }
+
+            if (! integrationServiceSummaries.isEmpty())
+            {
+                integrationDaemonStatus.setIntegrationServiceSummaries(integrationServiceSummaries);
+            }
+
+            integrationDaemonStatus.setIntegrationGroupSummaries(instanceHandler.getIntegrationGroupSummaries(userId, serverName, methodName));
+
+            response.setIntegrationDaemonStatus(integrationDaemonStatus);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return a summary of each of the integration services' status.
+     *
+     * @param serverName integration daemon name
+     * @param userId calling user
+     * @return list of statuses - on for each assigned integration services
+     *
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  PropertyServerException there was a problem detected by the integration daemon.
+     */
+    public IntegrationServiceSummaryResponse getIntegrationServicesSummaries(String   serverName,
+                                                                             String   userId)
+    {
+        final String methodName = "getIntegrationServicesSummaries";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        IntegrationServiceSummaryResponse response = new IntegrationServiceSummaryResponse();
+        AuditLog                        auditLog = null;
+
+        try
+        {
+            List<IntegrationServiceHandler> integrationServiceHandlers = instanceHandler.getAllIntegrationServiceHandlers(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             List<IntegrationServiceSummary> integrationServiceSummaries = new ArrayList<>();
 
-            if (handlers != null)
+            if (integrationServiceHandlers != null)
             {
-                for (IntegrationServiceHandler handler : handlers)
+                for (IntegrationServiceHandler handler : integrationServiceHandlers)
                 {
                     if (handler != null)
                     {
-                        integrationServiceSummaries.add(handler.getSummary());
+                        integrationServiceSummaries.add(handler.getIntegrationServiceSummary());
                     }
                 }
             }
@@ -339,6 +401,128 @@ public class IntegrationDaemonRESTServices
             {
                 response.setIntegrationServiceSummaries(integrationServiceSummaries);
             }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Request that the integration group refresh its configuration by calling the metadata server.
+     * This request is useful if the metadata server has an outage, particularly while the
+     * governance server is initializing.  This request just ensures that the latest configuration
+     * is in use.
+     *
+     * @param serverName name of the governance server.
+     * @param integrationGroupName unique name of the integration group.
+     * @param userId identifier of calling user
+     *
+     * @return void or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  IntegrationGroupException there was a problem detected by the integration group.
+     */
+    public  VoidResponse refreshConfig(String serverName,
+                                       String userId,
+                                       String integrationGroupName)
+    {
+        final String        methodName = "refreshConfig";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            instanceHandler.refreshConfig(userId, serverName, integrationGroupName, methodName);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return a summary of the requested engine's status.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param integrationGroupName qualifiedName of the requested integration group
+     *
+     * @return list of integration group summaries or
+     *  InvalidParameterException no available instance for the requested server
+     *  UserNotAuthorizedException user does not have access to the requested server
+     *  PropertyServerException the service name is not known - indicating a logic error
+     */
+    public IntegrationGroupSummaryResponse getIntegrationGroupSummary(String serverName,
+                                                                      String userId,
+                                                                      String integrationGroupName)
+    {
+        final String methodName = "getIntegrationGroupSummary";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        IntegrationGroupSummaryResponse response = new IntegrationGroupSummaryResponse();
+        AuditLog                        auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            response.setIntegrationGroupSummary(instanceHandler.getIntegrationGroupSummary(userId, serverName, integrationGroupName, methodName));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+
+    /**
+     * Return a summary of each of the integration groups' status for all running engine services.
+     *
+     * @param serverName integration daemon server name
+     * @param userId calling user
+     * @return list of statuses - on for each assigned integration groups or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     */
+    public IntegrationGroupSummariesResponse getIntegrationGroupSummaries(String   serverName,
+                                                                          String   userId)
+    {
+        final String methodName = "getIntegrationGroupSummaries";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        IntegrationGroupSummariesResponse response = new IntegrationGroupSummariesResponse();
+        AuditLog                          auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            response.setIntegrationGroupSummaries(instanceHandler.getIntegrationGroupSummaries(userId, serverName, methodName));
         }
         catch (Exception error)
         {

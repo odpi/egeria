@@ -189,7 +189,7 @@ public enum OCFErrorCode implements ExceptionMessageSet
             "The system is unable to create the requested connector instance because the supplied connection is a virtual connection but the connector's class does not implement org.odpi.openmetadata.VirtualConnector.",
             "Update the connection configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of the connection's connectorType. Then retry the request.");
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
     private static final Logger log = LoggerFactory.getLogger(OCFErrorCode.class);
 

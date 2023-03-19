@@ -301,7 +301,7 @@ public interface RemediationGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException the governance action service is not authorized to remove this classification
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    void unclassifyMetadataElement(String  metadataElementGUID,
+    void declassifyMetadataElement(String  metadataElementGUID,
                                    String  classificationName,
                                    boolean forLineage,
                                    boolean forDuplicateProcessing,

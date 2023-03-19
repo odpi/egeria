@@ -19,6 +19,7 @@ import java.util.Map;
 public class ProcessBuilder extends AssetBuilder
 {
     private String formula                = null;
+    private String formulaType            = null;
     private String implementationLanguage = null;
 
     /**
@@ -41,6 +42,29 @@ public class ProcessBuilder extends AssetBuilder
 
 
     /**
+     * Creation constructor used when working with classifications
+     *
+     * @param typeGUID unique identifier for the type of this process
+     * @param typeName unique name for the type of this process
+     * @param repositoryHelper helper methods
+     * @param serviceName name of this OMAS
+     * @param serverName name of local server
+     */
+    ProcessBuilder(String               typeGUID,
+                   String               typeName,
+                   OMRSRepositoryHelper repositoryHelper,
+                   String               serviceName,
+                   String               serverName)
+    {
+        super(typeGUID,
+              typeName,
+              repositoryHelper,
+              serviceName,
+              serverName);
+    }
+
+
+    /**
      * Constructor supporting all entity properties. (Classifications are added separately.)
      *
      * @param qualifiedName unique name
@@ -48,6 +72,7 @@ public class ProcessBuilder extends AssetBuilder
      * @param versionIdentifier new value for the versionIdentifier
      * @param technicalDescription new description for the process
      * @param formula description of the logic that is implemented by this process
+     * @param formulaType description of the language used in the formula
      * @param implementationLanguage language used to implement this process (DeployedSoftwareComponent and subtypes only)
      * @param additionalProperties additional properties
      * @param typeGUID unique identifier for the type of this process
@@ -62,6 +87,7 @@ public class ProcessBuilder extends AssetBuilder
                    String               versionIdentifier,
                    String               technicalDescription,
                    String               formula,
+                   String               formulaType,
                    String               implementationLanguage,
                    Map<String, String>  additionalProperties,
                    String               typeGUID,
@@ -84,6 +110,7 @@ public class ProcessBuilder extends AssetBuilder
               serverName);
 
         this.formula = formula;
+        this.formulaType = formulaType;
         this.implementationLanguage = implementationLanguage;
     }
 
@@ -104,6 +131,12 @@ public class ProcessBuilder extends AssetBuilder
                                                                   properties,
                                                                   OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME,
                                                                   formula,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.FORMULA_TYPE_PROPERTY_NAME,
+                                                                  formulaType,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,

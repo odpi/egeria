@@ -75,7 +75,7 @@ public class GovernanceDefinitionManager extends GovernanceProgramBaseClient imp
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      *
      * @throws InvalidParameterException bad input parameters
      */
@@ -91,7 +91,7 @@ public class GovernanceDefinitionManager extends GovernanceProgramBaseClient imp
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      *
@@ -110,7 +110,7 @@ public class GovernanceDefinitionManager extends GovernanceProgramBaseClient imp
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param maxPageSize pre-initialized parameter limit
      * @param auditLog logging destination
      *
@@ -130,7 +130,7 @@ public class GovernanceDefinitionManager extends GovernanceProgramBaseClient imp
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @param maxPageSize pre-initialized parameter limit
@@ -153,7 +153,7 @@ public class GovernanceDefinitionManager extends GovernanceProgramBaseClient imp
      * Create a new client that uses the supplied rest client.  This is typically used when called from another OMAG Server.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param restClient internal client for rest calls
      * @param maxPageSize pre-initialized parameter limit
      *

@@ -79,13 +79,14 @@ public class DataFlowConverter<B> extends ITInfrastructureOMASConverter<B>
                     }
 
                     /*
-                     * The rest of the properties coem from the relationship.
+                     * The rest of the properties come from the relationship.
                      */
                     InstanceProperties instanceProperties = new InstanceProperties(relationship.getProperties());
 
                     dataFlowProperties.setQualifiedName(this.getQualifiedName(instanceProperties));
                     dataFlowProperties.setDescription(this.getDescription(instanceProperties));
                     dataFlowProperties.setFormula(this.getFormula(instanceProperties));
+                    dataFlowProperties.setFormulaType(this.getFormulaType(instanceProperties));
 
                     bean.setDataFlowProperties(dataFlowProperties);
                 }

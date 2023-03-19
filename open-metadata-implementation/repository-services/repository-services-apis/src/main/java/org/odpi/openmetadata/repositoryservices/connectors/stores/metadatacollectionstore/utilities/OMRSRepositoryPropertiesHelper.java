@@ -340,6 +340,39 @@ public interface OMRSRepositoryPropertiesHelper
 
 
     /**
+     * Return the requested property or 0 if property is not found.  If the property is not
+     * an int property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return string property value or null
+     */
+    long  getLongProperty(String             sourceName,
+                          String             propertyName,
+                          InstanceProperties properties,
+                          String             methodName);
+
+
+    /**
+     * Return the requested property or 0 if property is not found.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not an int property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return string property value or null
+     */
+    long   removeLongProperty(String             sourceName,
+                              String             propertyName,
+                              InstanceProperties properties,
+                              String             methodName);
+
+
+    /**
      * Return the requested property or null if property is not found.  If the property is not
      * a date property then a logic exception is thrown.
      *

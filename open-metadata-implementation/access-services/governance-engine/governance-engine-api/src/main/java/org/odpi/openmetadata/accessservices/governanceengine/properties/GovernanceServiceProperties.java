@@ -30,7 +30,6 @@ public class GovernanceServiceProperties extends ReferenceableProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private String              qualifiedName                = null;
     private String              displayName                  = null;
     private String              description                  = null;
     private String              owner                        = null;
@@ -40,7 +39,6 @@ public class GovernanceServiceProperties extends ReferenceableProperties
     private String              originOrganizationGUID       = null;
     private String              originBusinessCapabilityGUID = null;
     private Map<String, String> otherOriginValues            = null;
-    private Map<String, String> additionalProperties         = null;
 
     private Connection          connection                   = null;
 
@@ -65,7 +63,6 @@ public class GovernanceServiceProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            qualifiedName                = template.getQualifiedName();
             displayName                  = template.getDisplayName();
             description                  = template.getDescription();
             owner                        = template.getOwner();
@@ -75,7 +72,6 @@ public class GovernanceServiceProperties extends ReferenceableProperties
             originOrganizationGUID       = template.getOriginOrganizationGUID();
             originBusinessCapabilityGUID = template.getOriginBusinessCapabilityGUID();
             otherOriginValues            = template.getOtherOriginValues();
-            additionalProperties         = template.getAdditionalProperties();
             connection                   = template.getConnection();
         }
     }
@@ -335,7 +331,7 @@ public class GovernanceServiceProperties extends ReferenceableProperties
     public String toString()
     {
         return "GovernanceServiceProperties{" +
-                       "qualifiedName='" + qualifiedName + '\'' +
+                       "qualifiedName='" + getQualifiedName() + '\'' +
                        ", displayName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
                        ", owner='" + owner + '\'' +
@@ -345,7 +341,7 @@ public class GovernanceServiceProperties extends ReferenceableProperties
                        ", originOrganizationGUID='" + originOrganizationGUID + '\'' +
                        ", originBusinessCapabilityGUID='" + originBusinessCapabilityGUID + '\'' +
                        ", otherOriginValues=" + otherOriginValues +
-                       ", additionalProperties=" + additionalProperties +
+                       ", additionalProperties=" + getAdditionalProperties() +
                        ", connection=" + connection +
                        '}';
     }
@@ -373,8 +369,7 @@ public class GovernanceServiceProperties extends ReferenceableProperties
             return false;
         }
         GovernanceServiceProperties that = (GovernanceServiceProperties) objectToCompare;
-        return Objects.equals(qualifiedName, that.qualifiedName) &&
-                       Objects.equals(displayName, that.displayName) &&
+        return Objects.equals(displayName, that.displayName) &&
                        Objects.equals(description, that.description) &&
                        Objects.equals(owner, that.owner) &&
                        Objects.equals(ownerTypeName, that.ownerTypeName) &&
@@ -383,7 +378,6 @@ public class GovernanceServiceProperties extends ReferenceableProperties
                        Objects.equals(originOrganizationGUID, that.originOrganizationGUID) &&
                        Objects.equals(originBusinessCapabilityGUID, that.originBusinessCapabilityGUID) &&
                        Objects.equals(otherOriginValues, that.otherOriginValues) &&
-                       Objects.equals(additionalProperties, that.additionalProperties) &&
                        Objects.equals(connection, that.connection);
     }
 
@@ -396,7 +390,7 @@ public class GovernanceServiceProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), qualifiedName, displayName, description, owner, ownerTypeName, ownerPropertyName, zoneMembership, originOrganizationGUID,
-                            originBusinessCapabilityGUID, otherOriginValues, additionalProperties, connection);
+        return Objects.hash(super.hashCode(), displayName, description, owner, ownerTypeName, ownerPropertyName, zoneMembership, originOrganizationGUID,
+                            originBusinessCapabilityGUID, otherOriginValues, connection);
     }
 }

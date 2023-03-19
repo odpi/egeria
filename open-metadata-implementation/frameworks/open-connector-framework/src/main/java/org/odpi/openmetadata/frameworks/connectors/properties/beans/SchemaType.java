@@ -57,6 +57,7 @@ public class SchemaType extends SchemaElement
      * Values for when the schemaType is derived from other values rather than stored
      */
     protected String                             formula = null;
+    protected String                             formulaType = null;
     protected List<DerivedSchemaTypeQueryTarget> queries = null;
 
 
@@ -87,6 +88,7 @@ public class SchemaType extends SchemaElement
             namespace = template.getNamespace();
 
             formula = template.getFormula();
+            formulaType = template.getFormulaType();
             queries = template.getQueries();
         }
     }
@@ -110,6 +112,28 @@ public class SchemaType extends SchemaElement
     public void setFormula(String formula)
     {
         this.formula = formula;
+    }
+
+
+    /**
+     * Return the specification language for the formula.
+     *
+     * @return string description
+     */
+    public String getFormulaType()
+    {
+        return formulaType;
+    }
+
+
+    /**
+     * Set up  the specification language for the formula.
+     *
+     * @param formulaType string description
+     */
+    public void setFormulaType(String formulaType)
+    {
+        this.formulaType = formulaType;
     }
 
 
@@ -284,17 +308,41 @@ public class SchemaType extends SchemaElement
                 ", usage='" + usage + '\'' +
                 ", encodingStandard='" + encodingStandard + '\'' +
                 ", namespace='" + namespace + '\'' +
-                ", deprecated=" + getIsDeprecated() +
+                ", formula='" + formula + '\'' +
+                ", formulaType='" + formulaType + '\'' +
+                ", queries=" + queries +
+                ", isDeprecated=" + isDeprecated +
+                ", displayName='" + displayName + '\'' +
+                ", description='" + description + '\'' +
+                ", isCalculatedValue=" + isCalculatedValue +
+                ", expression='" + expression + '\'' +
+                ", expressionType='" + expressionType + '\'' +
+                ", meanings=" + meanings +
+                ", searchKeywords=" + searchKeywords +
+                ", qualifiedName='" + qualifiedName + '\'' +
+                ", additionalProperties=" + additionalProperties +
+                ", url='" + url + '\'' +
+                ", extendedProperties=" + extendedProperties +
+                ", cloneSchemaElement=" + cloneSchemaElement() +
+                ", cloneSchemaType=" + cloneSchemaType() +
+                ", isDeprecated=" + getIsDeprecated() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
+                ", calculatedValue=" + getIsCalculatedValue() +
+                ", expression='" + getExpression() + '\'' +
+                ", meanings=" + getMeanings() +
+                ", searchKeywords=" + getSearchKeywords() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
-                ", type=" + getType() +
-                ", GUID='" + getGUID() + '\'' +
                 ", URL='" + getURL() + '\'' +
-                ", classifications=" + getClassifications() +
                 ", extendedProperties=" + getExtendedProperties() +
+                ", GUID='" + getGUID() + '\'' +
+                ", classifications=" + getClassifications() +
+                ", status=" + getStatus() +
+                ", type=" + getType() +
+                ", origin=" + getOrigin() +
+                ", versions=" + getVersions() +
+                ", headerVersion=" + getHeaderVersion() +
                 '}';
     }
 
@@ -327,6 +375,7 @@ public class SchemaType extends SchemaElement
                        Objects.equals(getEncodingStandard(), that.getEncodingStandard()) &&
                        Objects.equals(getNamespace(), that.getNamespace()) &&
                        Objects.equals(getFormula(), that.getFormula()) &&
+                       Objects.equals(getFormulaType(), that.getFormulaType()) &&
                        Objects.equals(getQueries(), that.getQueries());
     }
 
@@ -340,6 +389,6 @@ public class SchemaType extends SchemaElement
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), getVersionNumber(), getAuthor(), getUsage(), getEncodingStandard(), getNamespace(), getFormula(),
-                            getQueries());
+                            getFormulaType(), getQueries());
     }
 }

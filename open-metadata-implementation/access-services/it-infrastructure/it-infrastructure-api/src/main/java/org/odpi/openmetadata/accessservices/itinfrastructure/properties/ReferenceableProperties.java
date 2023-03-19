@@ -56,7 +56,7 @@ public class ReferenceableProperties implements Serializable
 
 
     /**
-     * Copy/clone constructor.  Retrieves values from the supplied template
+     * Copy/clone constructor.  Retrieves properties from the supplied template
      *
      * @param template element to copy
      */

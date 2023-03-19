@@ -77,7 +77,8 @@ public class ProcessConverter<B> extends ITInfrastructureOMASConverter<B>
                     processProperties.setDisplayName(processProperties.getName());
                     processProperties.setDescription(this.removeDescription(instanceProperties));
 
-                    processProperties.setFormula(this.removeFormula(instanceProperties));
+                    processProperties.setFormula(this.removeFormulaType(instanceProperties));
+                    processProperties.setFormulaType(this.removeFormulaType(instanceProperties));
                     processProperties.setImplementationLanguage(this.removeImplementationLanguage(instanceProperties));
 
                     /*

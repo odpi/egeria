@@ -153,8 +153,8 @@ public class OMAGServerConfigurationClient
 
     /**
      * Set up the root URL for this server that is used to construct full URL paths to calls for
-     * this server's REST interfaces.  Typically this is the URL root of the OMAG Server Platform
-     * Where the server is deployed to.  However it may be a DNS name - particularly if the server is
+     * this server's REST interfaces.  Typically, this is the URL root of the OMAG Server Platform
+     * Where the server is deployed to.  However, it may be a DNS name - particularly if the server is
      * deployed to multiple platforms for high availability (HA).
      * The default value is "https://localhost:9443".
      *
@@ -194,7 +194,7 @@ public class OMAGServerConfigurationClient
     /**
      * Set up the default event bus for embedding in event-driven connector.   The resulting connector will
      * be used in the OMRS Topic Connector for each cohort, the in and out topics for each Access Service and
-     * the local repositories event mapper.
+     * the local repository's event mapper.
      *
      * @param connectorProvider  connector provider for the event bus (if it is null then Kafka is assumed).
      * @param topicURLRoot the common root of the topics used by the open metadata server.
@@ -553,10 +553,10 @@ public class OMAGServerConfigurationClient
 
     /**
      * Replace an audit log destination connection identified by the supplied audit log destination connection name with the
-     * supplied supplied audit log destination connection.
+     * supplied audit log destination connection.
      *
-     * @param suppliedConnectionName the name of the audit log destination to update
-     * @param connection connection object that replaces the existing one
+     * @param suppliedConnectionName the qualified name of the audit log destination to update.
+     * @param connection connection object that replaces the existing one.
      *
      * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
      * @throws OMAGInvalidParameterException invalid parameter.
@@ -592,7 +592,7 @@ public class OMAGServerConfigurationClient
     /**
      * Delete an audit log destination that is defined by the supplied audit log destination connection name
      *
-     * @param connectionName the name of the audit log destination connection to update
+     * @param connectionName the qualified name of the audit log destination connection to delete.
      * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
      * @throws OMAGInvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.

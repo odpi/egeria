@@ -2,8 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers;
 
-import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationConnectorConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
+import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RegisteredIntegrationConnectorElement;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
@@ -11,9 +10,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedExcepti
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnector;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnectorBase;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager.IntegrationContextManager;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
+import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorStatus;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads.IntegrationConnectorDedicatedThread;
@@ -34,18 +35,23 @@ public class IntegrationConnectorHandler implements Serializable
     /*
      * These values are set in the constructor and do not change.
      */
-    private String                    integrationServiceFullName;
-    private Map<String, Object>       integrationServiceOptions;
-    private String                    integrationDaemonName;
-    private String                    integrationConnectorId;
-    private String                    integrationConnectorName;
-    private String                    metadataSourceQualifiedName;
-    private PermittedSynchronization  permittedSynchronization;
-    private Connection                connection;
-    private boolean                   needDedicatedThread;
-    private long                      minMinutesBetweenRefresh;
-    private IntegrationContextManager contextManager;
-    private AuditLog                  auditLog;
+    private final String                    integrationServiceFullName;
+    private final String                    integrationDaemonName;
+    private final String                    integrationConnectorId;
+    private       String                    integrationConnectorGUID;
+    private       String                    integrationConnectorName;
+    private       String                    integrationConnectorUserId;
+    private       Date                      startDate;
+    private       Date                      stopDate;
+    private       String                    metadataSourceQualifiedName;
+    private       PermittedSynchronization  permittedSynchronization;
+    private final boolean                   generateIntegrationReport;
+    private       Connection                connection;
+    private       boolean                   needDedicatedThread;
+    private       long                      minMinutesBetweenRefresh;
+    private final IntegrationContextManager contextManager;
+    private       IntegrationContext        integrationContext = null;
+    private final AuditLog                  auditLog;
 
 
     /*
@@ -63,16 +69,37 @@ public class IntegrationConnectorHandler implements Serializable
     /**
      * Constructor creates the integration connector and manages it state.
      *
-     * @param integrationConnectorConfig  the configuration for this connector
+     * @param connectorId identifier of the connector (for controlling event receipts)
+     * @param connectorGUID unique identifier of metadata entity for the connector (maybe null)
+     * @param connectorName name of the connector (for logging)
+     * @param connectorUserId userId to query and maintain metadata on behalf of this connector
+     * @param startDate earliest time that the connector can run.
+     * @param stopDate latest time that the connector can run.
+     * @param minMinutesBetweenRefresh minimum number of minutes between each call to the connector's refresh() method
+     * @param metadataSourceQualifiedName qualified name of software capability entity describing metadata source being synchronized
+     * @param connection connection used to create the integration connector
+     * @param usesBlockingCalls does the connector use blocking calls (in which case engage() is called in a dedicated thread, rather than the
+     *                          refresh() method).
+     * @param permittedSynchronization what is the direction that metadata can be synchronized - affects the methods available through the context
+     * @param generateIntegrationReport should the connector generate an integration reports?
      * @param integrationServiceFullName full name of the integration service - used for messages
-     * @param integrationServiceOptions options from the integration service configuration
      * @param integrationDaemonName name of the integration daemon - used for messages
-     * @param contextManager the specialized context manager ofr this connector's integration service
+     * @param contextManager the specialized context manager for this connector's integration service
      * @param auditLog logging destination
      */
-    IntegrationConnectorHandler(IntegrationConnectorConfig integrationConnectorConfig,
+    IntegrationConnectorHandler(String                     connectorId,
+                                String                     connectorGUID,
+                                String                     connectorName,
+                                String                     connectorUserId,
+                                Date                       startDate,
+                                Date                       stopDate,
+                                long                       minMinutesBetweenRefresh,
+                                String                     metadataSourceQualifiedName,
+                                Connection                 connection,
+                                boolean                    usesBlockingCalls,
+                                PermittedSynchronization   permittedSynchronization,
+                                boolean                    generateIntegrationReport,
                                 String                     integrationServiceFullName,
-                                Map<String, Object>        integrationServiceOptions,
                                 String                     integrationDaemonName,
                                 IntegrationContextManager  contextManager,
                                 AuditLog                   auditLog)
@@ -80,15 +107,19 @@ public class IntegrationConnectorHandler implements Serializable
         final String actionDescription = "Initializing integration connector";
 
         this.integrationServiceFullName  = integrationServiceFullName;
-        this.integrationServiceOptions   = integrationServiceOptions;
         this.integrationDaemonName       = integrationDaemonName;
-        this.integrationConnectorId      = integrationConnectorConfig.getConnectorId();
-        this.integrationConnectorName    = integrationConnectorConfig.getConnectorName();
-        this.metadataSourceQualifiedName = integrationConnectorConfig.getMetadataSourceQualifiedName();
-        this.minMinutesBetweenRefresh    = integrationConnectorConfig.getRefreshTimeInterval();
-        this.connection                  = integrationConnectorConfig.getConnection();
-        this.needDedicatedThread         = integrationConnectorConfig.getUsesBlockingCalls();
-        this.permittedSynchronization    = integrationConnectorConfig.getPermittedSynchronization();
+        this.integrationConnectorId      = connectorId;
+        this.integrationConnectorGUID    = connectorGUID;
+        this.integrationConnectorName    = connectorName;
+        this.integrationConnectorUserId  = connectorUserId;
+        this.startDate                   = startDate;
+        this.stopDate                    = stopDate;
+        this.metadataSourceQualifiedName = metadataSourceQualifiedName;
+        this.minMinutesBetweenRefresh    = minMinutesBetweenRefresh;
+        this.connection                  = connection;
+        this.needDedicatedThread         = usesBlockingCalls;
+        this.permittedSynchronization    = permittedSynchronization;
+        this.generateIntegrationReport   = generateIntegrationReport;
         this.contextManager              = contextManager;
         this.auditLog                    = auditLog;
 
@@ -97,7 +128,7 @@ public class IntegrationConnectorHandler implements Serializable
 
 
     /**
-     * Return the unique identifier of the connector from the configuration.
+     * Return the unique identifier of the connector from the configuration or the integration group definition.
      *
      * @return String name
      */
@@ -144,6 +175,38 @@ public class IntegrationConnectorHandler implements Serializable
         return null;
     }
 
+
+    /**
+     * Does the connector need to run in a dedicated thread.
+     *
+     * @return boolean
+     */
+    public boolean needsDedicatedThread()
+    {
+        return needDedicatedThread;
+    }
+
+
+    /**
+     * Return the earliest time that this connector can run. (Null means no restriction.)
+     *
+     * @return date
+     */
+    public Date getStartDate()
+    {
+        return startDate;
+    }
+
+
+    /**
+     * Return the latest time that this connector can run. (Null means no restriction.)
+     *
+     * @return date
+     */
+    public Date getStopDate()
+    {
+        return stopDate;
+    }
 
     /**
      * Return the status for the integration connector.
@@ -266,7 +329,7 @@ public class IntegrationConnectorHandler implements Serializable
                                                                                                                        integrationDaemonName,
                                                                                                                        permittedSynchronization.getName()));
 
-        integrationConnector = null;
+        genericConnector = null;
         integrationConnector = null;
 
         try
@@ -299,11 +362,14 @@ public class IntegrationConnectorHandler implements Serializable
 
         try
         {
-            contextManager.setContext(integrationConnectorId,
-                                      integrationConnectorName,
-                                      metadataSourceQualifiedName,
-                                      integrationConnector,
-                                      permittedSynchronization);
+            this.integrationContext = contextManager.setContext(integrationConnectorId,
+                                                                integrationConnectorName,
+                                                                integrationConnectorUserId,
+                                                                integrationConnector,
+                                                                integrationConnectorGUID,
+                                                                permittedSynchronization,
+                                                                generateIntegrationReport,
+                                                                metadataSourceQualifiedName);
 
             this.updateStatus(IntegrationConnectorStatus.INITIALIZED);
         }
@@ -316,9 +382,7 @@ public class IntegrationConnectorHandler implements Serializable
         {
             if (needDedicatedThread)
             {
-                integrationConnectorDedicatedThread = new IntegrationConnectorDedicatedThread(integrationDaemonName,
-                                                                                              this,
-                                                                                              auditLog);
+                integrationConnectorDedicatedThread = new IntegrationConnectorDedicatedThread(integrationDaemonName, this, auditLog);
 
                 integrationConnectorDedicatedThread.start();
             }
@@ -413,7 +477,7 @@ public class IntegrationConnectorHandler implements Serializable
 
 
     /**
-     * Call the engage() method of the integration connector.  This
+     * Call engage() method of the integration connector.  This is called in a separate thread.
      *
      * @param actionDescription external caller's activity
      */
@@ -444,7 +508,7 @@ public class IntegrationConnectorHandler implements Serializable
 
 
     /**
-     * Call refresh on the connector provided it is in the correct state.
+     * Call refresh() on the connector provided it is in the correct state.
      *
      * @param actionDescription external caller's activity
      * @param firstCall is this the first call to refresh?
@@ -484,7 +548,9 @@ public class IntegrationConnectorHandler implements Serializable
                     }
                 }
 
+                integrationContext.startRecording();
                 integrationConnector.refresh();
+                integrationContext.publishReport();
 
                 if (auditLog != null)
                 {
@@ -502,6 +568,39 @@ public class IntegrationConnectorHandler implements Serializable
         catch (Exception error)
         {
             processConnectorException(actionDescription, operationName, error);
+        }
+    }
+
+
+    /**
+     * Update the connector properties with as little disruption to the running connector.
+     *
+     * @param registeredIntegrationConnectorElement new configuration information from the server
+     */
+    public synchronized void updateConnectorDetails(RegisteredIntegrationConnectorElement registeredIntegrationConnectorElement)
+    {
+        final String methodName = "updateConnectorDetails";
+
+        integrationConnectorGUID = registeredIntegrationConnectorElement.getElementHeader().getGUID();
+        integrationConnectorName = registeredIntegrationConnectorElement.getRegistrationProperties().getConnectorName();
+        integrationConnectorUserId = registeredIntegrationConnectorElement.getRegistrationProperties().getConnectorUserId();
+        startDate = registeredIntegrationConnectorElement.getRegistrationProperties().getStartDate();
+        stopDate = registeredIntegrationConnectorElement.getRegistrationProperties().getStopDate();
+        metadataSourceQualifiedName = registeredIntegrationConnectorElement.getRegistrationProperties().getMetadataSourceQualifiedName();
+        permittedSynchronization = registeredIntegrationConnectorElement.getRegistrationProperties().getPermittedSynchronization();
+        minMinutesBetweenRefresh = registeredIntegrationConnectorElement.getRegistrationProperties().getRefreshTimeInterval();
+
+        if ((! connection.equals(registeredIntegrationConnectorElement.getProperties().getConnection())) &&
+                (registeredIntegrationConnectorElement.getProperties().getConnection() != null))
+        {
+            connection = registeredIntegrationConnectorElement.getProperties().getConnection();
+            reinitializeConnector(methodName);
+        }
+
+        if (needDedicatedThread != registeredIntegrationConnectorElement.getProperties().getUsesBlockingCalls())
+        {
+            needDedicatedThread = registeredIntegrationConnectorElement.getProperties().getUsesBlockingCalls();
+            reinitializeConnector(methodName);
         }
     }
 
@@ -545,6 +644,7 @@ public class IntegrationConnectorHandler implements Serializable
             processConnectorException(actionDescription, operationName, error);
         }
     }
+
 
 
     /**
@@ -609,22 +709,20 @@ public class IntegrationConnectorHandler implements Serializable
         {
             auditLog.logMessage(actionDescription,
                                 IntegrationDaemonServicesAuditCode.CONFIG_ERROR.getMessageDefinition(integrationConnectorName,
-                                                                                                        operationName,
-                                                                                                        error.getClass().getName(),
-                                                                                                        error.getMessage()));
+                                                                                                     operationName,
+                                                                                                     error.getClass().getName(),
+                                                                                                     error.getMessage()));
         }
         else
         {
             auditLog.logException(actionDescription,
                                   IntegrationDaemonServicesAuditCode.CONFIG_ERROR.getMessageDefinition(integrationConnectorName,
-                                                                                                          operationName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          error.getMessage()),
+                                                                                                       operationName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       error.getMessage()),
                                   error);
         }
     }
-
-
 
 
     /**
@@ -693,9 +791,6 @@ public class IntegrationConnectorHandler implements Serializable
                                   error);
         }
     }
-
-
-
 
 
     /**

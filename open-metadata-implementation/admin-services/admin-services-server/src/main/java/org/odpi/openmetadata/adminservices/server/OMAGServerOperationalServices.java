@@ -22,10 +22,11 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.gaf.admin.GAFMetadataOperationalServices;
+import org.odpi.openmetadata.frameworkservices.gaf.admin.GAFMetadataOperationalServices;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerPlatformInstanceMap;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
+import org.odpi.openmetadata.frameworkservices.oif.admin.OIFMetadataOperationalServices;
 import org.odpi.openmetadata.governanceservers.enginehostservices.server.EngineHostOperationalServices;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonOperationalServices;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -391,6 +392,26 @@ public class OMAGServerOperationalServices
 
                     instance.setOperationalGAFMetadataServices(operationalGAFMetadataServices);
                     activatedServiceList.add(CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceName());
+
+                    /*
+                     * The enterprise repository services have been requested so OIF metadata management can also be started.
+                     */
+                    OIFMetadataOperationalServices operationalOIFMetadataServices;
+
+                    instance.setServerServiceActiveStatus(CommonServicesDescription.OIF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.STARTING);
+                    operationalOIFMetadataServices = new OIFMetadataOperationalServices(configuration.getLocalServerName(),
+                                                                                        enterpriseRepositoryConnector,
+                                                                                        operationalRepositoryServices.getAuditLog(
+                                                                                                CommonServicesDescription.OIF_METADATA_MANAGEMENT.getServiceCode(),
+                                                                                                CommonServicesDescription.OIF_METADATA_MANAGEMENT.getServiceDevelopmentStatus(),
+                                                                                                CommonServicesDescription.OIF_METADATA_MANAGEMENT.getServiceName(),
+                                                                                                CommonServicesDescription.OIF_METADATA_MANAGEMENT.getServiceDescription(),
+                                                                                                CommonServicesDescription.OIF_METADATA_MANAGEMENT.getServiceWiki()),
+                                                                                        configuration.getLocalServerUserId(),
+                                                                                        configuration.getMaxPageSize());
+
+                    instance.setOperationalOIFMetadataServices(operationalOIFMetadataServices);
+                    activatedServiceList.add(CommonServicesDescription.OIF_METADATA_MANAGEMENT.getServiceName());
                 }
 
                 /*
@@ -506,7 +527,7 @@ public class OMAGServerOperationalServices
 
                 /*
                  * Governance servers are varied in nature.  Many host connectors that exchange metadata with third party technologies.
-                 * However they may also host specific types of engines, or provide an implementation of a complete governance service.
+                 * However, they may also host specific types of engines, or provide an implementation of a complete governance service.
                  * Because of this variety, Egeria does not (yet) provide any specialist frameworks for supporting the governance servers.
                  * all the implementation is in the governance services subsystems initialized below.
                  *
@@ -1101,12 +1122,13 @@ public class OMAGServerOperationalServices
 
             instance.setOperationalIntegrationDaemon(integrationDaemonOperationalServices);
             List<String> integrationServices = integrationDaemonOperationalServices.initialize(configuration.getIntegrationServicesConfig(),
-                                                            operationalRepositoryServices.getAuditLog(
-                                                               GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceCode(),
-                                                               GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceDevelopmentStatus(),
-                                                               GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceName(),
-                                                               GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceDescription(),
-                                                               GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceWiki()));
+                                                                                               configuration.getDynamicIntegrationGroupsConfig(),
+                                                                                               operationalRepositoryServices.getAuditLog(
+                                                                                                       GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceCode(),
+                                                                                                       GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceDevelopmentStatus(),
+                                                                                                       GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceName(),
+                                                                                                       GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceDescription(),
+                                                                                                       GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceWiki()));
 
             activatedServiceList.addAll(integrationServices);
             activatedServiceList.add(GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceName());
@@ -1272,6 +1294,18 @@ public class OMAGServerOperationalServices
                     instance.getOperationalGAFMetadataServices().shutdown();
 
                     instance.setServerServiceActiveStatus(CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.INACTIVE);
+                }
+
+                /*
+                 * Shutdown the OIF metadata management services
+                 */
+                if (instance.getOperationalOIFMetadataServices() != null)
+                {
+                    instance.setServerServiceActiveStatus(CommonServicesDescription.OIF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.STOPPING);
+
+                    instance.getOperationalOIFMetadataServices().shutdown();
+
+                    instance.setServerServiceActiveStatus(CommonServicesDescription.OIF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.INACTIVE);
                 }
 
                 /*

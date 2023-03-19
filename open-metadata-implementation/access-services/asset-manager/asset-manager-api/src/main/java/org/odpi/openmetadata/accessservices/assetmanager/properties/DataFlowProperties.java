@@ -23,6 +23,7 @@ public class DataFlowProperties extends RelationshipProperties
     private String               qualifiedName = null;
     private String               description   = null;
     private String               formula       = null;
+    private String               formulaType   = null;
 
 
     /**
@@ -35,7 +36,7 @@ public class DataFlowProperties extends RelationshipProperties
 
 
     /**
-     * Copy/clone constructor.  Retrieves values from the supplied template
+     * Copy/clone constructor.  Retrieves from the supplied template
      *
      * @param template element to copy
      */
@@ -48,6 +49,7 @@ public class DataFlowProperties extends RelationshipProperties
             qualifiedName = template.getQualifiedName();
             description   = template.getDescription();
             formula       = template.getFormula();
+            formulaType   = template.getFormulaType();
         }
     }
 
@@ -120,6 +122,28 @@ public class DataFlowProperties extends RelationshipProperties
 
 
     /**
+     * Return the specification language for the formula.
+     *
+     * @return string description
+     */
+    public String getFormulaType()
+    {
+        return formulaType;
+    }
+
+
+    /**
+     * Set up  the specification language for the formula.
+     *
+     * @param formulaType string description
+     */
+    public void setFormulaType(String formulaType)
+    {
+        this.formulaType = formulaType;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -131,6 +155,7 @@ public class DataFlowProperties extends RelationshipProperties
                        "qualifiedName='" + qualifiedName + '\'' +
                        ", description='" + description + '\'' +
                        ", formula='" + formula + '\'' +
+                       ", formulaType='" + formulaType + '\'' +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +
                        '}';
@@ -161,7 +186,8 @@ public class DataFlowProperties extends RelationshipProperties
         DataFlowProperties that = (DataFlowProperties) objectToCompare;
         return Objects.equals(qualifiedName, that.qualifiedName) &&
                        Objects.equals(description, that.description) &&
-                       Objects.equals(formula, that.formula);
+                       Objects.equals(formula, that.formula) &&
+                       Objects.equals(formulaType, that.formulaType);
     }
 
 
@@ -173,6 +199,6 @@ public class DataFlowProperties extends RelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), qualifiedName, description, formula);
+        return Objects.hash(super.hashCode(), qualifiedName, description, formula, formulaType);
     }
 }

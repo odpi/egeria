@@ -10,7 +10,9 @@ import org.odpi.openmetadata.fvt.utilities.FVTResults;
  */
 public class FVTTestFailureException extends Exception
 {
-    private FVTResults results;
+    private static final long     serialVersionUID = 1L;
+
+    private final FVTResults results;
 
     /**
      * Simple constructor

@@ -3,7 +3,6 @@
 
 package org.odpi.openmetadata.adapters.connectors.integration.openapis;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import org.odpi.openmetadata.accessservices.datamanager.api.DataManagerEventListener;
@@ -33,7 +32,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * OpenAPIMonitorIntegrationConnector provides common methods for the connectors in this module.
  */
@@ -48,20 +46,6 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
 
     private APIIntegratorContext myContext = null;
     public static final ObjectReader OBJECT_READER = new ObjectMapper().reader();
-
-    /**
-     * Initialize the connector.
-     *
-     * @param connectorInstanceId - unique id for the connector instance - useful for messages etc
-     * @param connectionProperties - POJO for the configuration used to create the connector.
-     */
-    @Override
-    public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties)
-    {
-        super.initialize(connectorInstanceId, connectionProperties);
-
-
-    }
 
 
     /**

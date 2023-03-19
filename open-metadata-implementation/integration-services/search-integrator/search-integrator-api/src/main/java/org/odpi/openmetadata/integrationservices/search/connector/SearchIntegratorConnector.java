@@ -5,7 +5,7 @@ package org.odpi.openmetadata.integrationservices.search.connector;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogEvent;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.integrationservices.search.ffdc.SearchIntegratorAuditCode;
 import org.odpi.openmetadata.integrationservices.search.ffdc.SearchIntegratorErrorCode;
 
@@ -23,7 +23,7 @@ public abstract class SearchIntegratorConnector extends IntegrationConnectorBase
     }
 
     public SearchIntegratorConnector(SearchIntegratorContext context) {
-        super();
+        super.setContext(context);
         this.context = context;
     }
 
@@ -33,6 +33,7 @@ public abstract class SearchIntegratorConnector extends IntegrationConnectorBase
      * @param context context for this connector's private use.
      */
     public synchronized void setContext(SearchIntegratorContext context) {
+        super.setContext(context);
         this.context = context;
     }
 

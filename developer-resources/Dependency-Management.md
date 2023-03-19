@@ -107,7 +107,7 @@ MAVEN_OPTS="-Xmx5000M -Xss512M -XX:MaxPermSize=2048M -XX:+CMSClassUnloadingEnabl
 
 may be needed due to the memory requirements of a security scan.
 
-For more information on how potential security issues are handled, see [Security Hardening](Security-Hardening.md).
+For more information on how potential security issues are handled, see [Security Hardening](https://egeria-project.org/guides/contributor/process/#security-hardening).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

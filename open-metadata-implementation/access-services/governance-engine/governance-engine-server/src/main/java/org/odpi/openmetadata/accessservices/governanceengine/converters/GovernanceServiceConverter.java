@@ -40,7 +40,7 @@ public class GovernanceServiceConverter<B> extends GovernanceEngineOMASConverter
     /**
      * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
      * a connection bean which made up of 3 entities (Connection, ConnectorType and Endpoint) plus the
-     * relationships between them.  The relationships may be omitted if they do not have an properties.
+     * relationships between them.  The relationships may be omitted if they do not have any properties.
      *
      * @param beanClass name of the class to create
      * @param primaryEntity entity that is the root of the cluster of entities that make up the

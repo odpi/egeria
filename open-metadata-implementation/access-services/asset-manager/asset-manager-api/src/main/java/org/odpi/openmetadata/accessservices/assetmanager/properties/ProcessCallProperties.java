@@ -25,6 +25,7 @@ public class ProcessCallProperties extends RelationshipProperties
     private String               qualifiedName = null;
     private String               description   = null;
     private String               formula       = null;
+    private String               formulaType   = null;
 
 
     /**
@@ -50,6 +51,7 @@ public class ProcessCallProperties extends RelationshipProperties
             qualifiedName = template.getQualifiedName();
             description   = template.getDescription();
             formula       = template.getFormula();
+            formulaType   = template.getFormulaType();
         }
     }
 
@@ -122,6 +124,28 @@ public class ProcessCallProperties extends RelationshipProperties
 
 
     /**
+     * Return the specification language for the formula.
+     *
+     * @return string description
+     */
+    public String getFormulaType()
+    {
+        return formulaType;
+    }
+
+
+    /**
+     * Set up  the specification language for the formula.
+     *
+     * @param formulaType string description
+     */
+    public void setFormulaType(String formulaType)
+    {
+        this.formulaType = formulaType;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -133,6 +157,7 @@ public class ProcessCallProperties extends RelationshipProperties
                        "qualifiedName='" + qualifiedName + '\'' +
                        ", description='" + description + '\'' +
                        ", formula='" + formula + '\'' +
+                       ", formulaType='" + formulaType + '\'' +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +
                        '}';
@@ -163,7 +188,8 @@ public class ProcessCallProperties extends RelationshipProperties
         ProcessCallProperties that = (ProcessCallProperties) objectToCompare;
         return Objects.equals(qualifiedName, that.qualifiedName) &&
                        Objects.equals(description, that.description) &&
-                       Objects.equals(formula, that.formula);
+                       Objects.equals(formula, that.formula) &&
+                       Objects.equals(formulaType, that.formulaType);
     }
 
 
@@ -175,6 +201,6 @@ public class ProcessCallProperties extends RelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), qualifiedName, description, formula);
+        return Objects.hash(super.hashCode(), qualifiedName, description, formula, formulaType);
     }
 }

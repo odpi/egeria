@@ -11,6 +11,11 @@ import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext;
+import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 
 import java.util.List;
 import java.util.Map;
@@ -20,56 +25,65 @@ import java.util.Map;
  * It provides the simplified interface to open metadata needed by the FilesIntegratorConnector.
  * It is designed to be used either for cataloguing folders and files
  */
-public class FilesIntegratorContext
+public class FilesIntegratorContext extends IntegrationContext
 {
     private final ConnectionManagerClient connectionManagerClient;
     private final FilesAndFoldersClient   filesAndFoldersClient;
     private final DataManagerEventClient  eventClient;
-    private final String                  userId;
-    private final String                  fileServerCapabilityGUID;
-    private final String                  fileServerCapabilityName;
 
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
+     * @param connectorId unique identifier of the connector (used to configure the event listener)
+     * @param connectorName name of connector from config
+     * @param connectorUserId userId for the connector
+     * @param serverName name of the integration daemon
+     * @param openIntegrationClient client for calling the metadata server
+     * @param openMetadataStoreClient client for calling the metadata server
      * @param filesAndFoldersClient client to map request to
      * @param connectionManagerClient client for managing connections
      * @param eventClient client to register for events
-     * @param userId integration daemon's userId
-     * @param fileServerCapabilityGUID unique identifier of the software server capability for the file manager (or null)
-     * @param fileServerCapabilityName unique name of the software server capability for the file manager (or null)
+     * @param generateIntegrationReport should the connector generate an integration reports?
+     * @param permittedSynchronization the direction of integration permitted by the integration connector
+     * @param integrationConnectorGUID unique identifier for the integration connector if it is started via an integration group (otherwise it is
+     *                                 null).
+     * @param integrationGovernanceContext populated governance context for the connector's use
+     * @param externalSourceGUID unique identifier of the software server capability for the asset manager
+     * @param externalSourceName unique name of the software server capability for the asset manager
      */
-    public FilesIntegratorContext(FilesAndFoldersClient   filesAndFoldersClient,
-                                  ConnectionManagerClient connectionManagerClient,
-                                  DataManagerEventClient  eventClient,
-                                  String                  userId,
-                                  String                  fileServerCapabilityGUID,
-                                  String                  fileServerCapabilityName)
+    public FilesIntegratorContext(String                       connectorId,
+                                  String                       connectorName,
+                                  String                       connectorUserId,
+                                  String                       serverName,
+                                  OpenIntegrationClient        openIntegrationClient,
+                                  OpenMetadataClient           openMetadataStoreClient,
+                                  FilesAndFoldersClient        filesAndFoldersClient,
+                                  ConnectionManagerClient      connectionManagerClient,
+                                  DataManagerEventClient       eventClient,
+                                  boolean                      generateIntegrationReport,
+                                  PermittedSynchronization     permittedSynchronization,
+                                  String                       integrationConnectorGUID,
+                                  IntegrationGovernanceContext integrationGovernanceContext,
+                                  String                       externalSourceGUID,
+                                  String                       externalSourceName)
     {
+        super(connectorId,
+              connectorName,
+              connectorUserId,
+              serverName,
+              openIntegrationClient,
+              openMetadataStoreClient,
+              generateIntegrationReport,
+              permittedSynchronization,
+              externalSourceGUID,
+              externalSourceName,
+              integrationConnectorGUID,
+              integrationGovernanceContext);
+
         this.filesAndFoldersClient    = filesAndFoldersClient;
         this.connectionManagerClient  = connectionManagerClient;
         this.eventClient              = eventClient;
-        this.userId                   = userId;
-        this.fileServerCapabilityGUID = fileServerCapabilityGUID;
-        this.fileServerCapabilityName = fileServerCapabilityName;
-    }
-
-
-    /* ========================================================
-     * Returning the file server name from the configuration
-     */
-
-
-    /**
-     * Return the qualified name of the file server that is supplied in the configuration
-     * document.
-     *
-     * @return string name
-     */
-    public String getFileServerName()
-    {
-        return fileServerCapabilityName;
     }
 
 
@@ -124,7 +138,7 @@ public class FilesIntegratorContext
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        return filesAndFoldersClient.createNestedFolders(userId, fileServerCapabilityGUID, fileServerCapabilityName, parentGUID, pathName);
+        return filesAndFoldersClient.createNestedFolders(userId, externalSourceGUID, externalSourceName, parentGUID, pathName);
     }
 
 
@@ -143,7 +157,7 @@ public class FilesIntegratorContext
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
     {
-        filesAndFoldersClient.attachTopLevelFolder(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileSystemGUID, folderGUID);
+        filesAndFoldersClient.attachTopLevelFolder(userId, externalSourceGUID, externalSourceName, fileSystemGUID, folderGUID);
     }
 
 
@@ -162,7 +176,7 @@ public class FilesIntegratorContext
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
     {
-        filesAndFoldersClient.detachTopLevelFolder(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileSystemGUID, folderGUID);
+        filesAndFoldersClient.detachTopLevelFolder(userId, externalSourceGUID, externalSourceName, fileSystemGUID, folderGUID);
     }
 
 
@@ -187,7 +201,7 @@ public class FilesIntegratorContext
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
-        return filesAndFoldersClient.addDataFileToCatalog(userId, fileServerCapabilityGUID, fileServerCapabilityName, dataFileProperties, connectorProviderName);
+        return filesAndFoldersClient.addDataFileToCatalog(userId, externalSourceGUID, externalSourceName, dataFileProperties, connectorProviderName);
     }
 
 
@@ -212,7 +226,7 @@ public class FilesIntegratorContext
                                                                                                        UserNotAuthorizedException,
                                                                                                        PropertyServerException
     {
-        return filesAndFoldersClient.addDataFileToCatalogFromTemplate(userId, fileServerCapabilityGUID, fileServerCapabilityName, templateGUID, templateProperties);
+        return filesAndFoldersClient.addDataFileToCatalogFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateProperties);
     }
 
 
@@ -233,7 +247,7 @@ public class FilesIntegratorContext
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        filesAndFoldersClient.updateDataFileInCatalog(userId, fileServerCapabilityGUID, fileServerCapabilityName, dataFileGUID, isMergeUpdate, dataFileProperties);
+        filesAndFoldersClient.updateDataFileInCatalog(userId, externalSourceGUID, externalSourceName, dataFileGUID, isMergeUpdate, dataFileProperties);
     }
 
 
@@ -252,7 +266,7 @@ public class FilesIntegratorContext
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        filesAndFoldersClient.archiveDataFileInCatalog(userId, fileServerCapabilityGUID, fileServerCapabilityName, dataFileGUID, archiveProperties);
+        filesAndFoldersClient.archiveDataFileInCatalog(userId, externalSourceGUID, externalSourceName, dataFileGUID, archiveProperties);
     }
 
 
@@ -271,7 +285,7 @@ public class FilesIntegratorContext
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
-        filesAndFoldersClient.deleteDataFileFromCatalog(userId, fileServerCapabilityGUID, fileServerCapabilityName, dataFileGUID, fullPathname);
+        filesAndFoldersClient.deleteDataFileFromCatalog(userId, externalSourceGUID, externalSourceName, dataFileGUID, fullPathname);
     }
 
 
@@ -298,7 +312,7 @@ public class FilesIntegratorContext
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        return filesAndFoldersClient.addDataFolderToCatalog(userId, fileServerCapabilityGUID, fileServerCapabilityName, fileFolderProperties, connectorProviderName);
+        return filesAndFoldersClient.addDataFolderToCatalog(userId, externalSourceGUID, externalSourceName, fileFolderProperties, connectorProviderName);
     }
 
 
@@ -323,7 +337,7 @@ public class FilesIntegratorContext
                                                                                                          UserNotAuthorizedException,
                                                                                                          PropertyServerException
     {
-        return filesAndFoldersClient.addDataFolderToCatalogFromTemplate(userId, fileServerCapabilityGUID, fileServerCapabilityName, templateGUID, templateProperties);
+        return filesAndFoldersClient.addDataFolderToCatalogFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateProperties);
     }
 
 
@@ -344,7 +358,7 @@ public class FilesIntegratorContext
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        filesAndFoldersClient.updateDataFolderInCatalog(userId, fileServerCapabilityGUID, fileServerCapabilityName, dataFolderGUID, isMergeUpdate, fileFolderProperties);
+        filesAndFoldersClient.updateDataFolderInCatalog(userId, externalSourceGUID, externalSourceName, dataFolderGUID, isMergeUpdate, fileFolderProperties);
     }
 
 
@@ -363,7 +377,7 @@ public class FilesIntegratorContext
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        filesAndFoldersClient.archiveDataFolderInCatalog(userId, fileServerCapabilityGUID, fileServerCapabilityName, dataFolderGUID, archiveProperties);
+        filesAndFoldersClient.archiveDataFolderInCatalog(userId, externalSourceGUID, externalSourceName, dataFolderGUID, archiveProperties);
     }
 
 
@@ -383,7 +397,7 @@ public class FilesIntegratorContext
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        filesAndFoldersClient.attachDataFileAssetToFolder(userId, fileServerCapabilityGUID, fileServerCapabilityName, folderGUID, fileGUID);
+        filesAndFoldersClient.attachDataFileAssetToFolder(userId, externalSourceGUID, externalSourceName, folderGUID, fileGUID);
     }
 
 
@@ -404,7 +418,7 @@ public class FilesIntegratorContext
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
-        filesAndFoldersClient.detachDataFileAssetFromFolder(userId, fileServerCapabilityGUID, fileServerCapabilityName, folderGUID, fileGUID);
+        filesAndFoldersClient.detachDataFileAssetFromFolder(userId, externalSourceGUID, externalSourceName, folderGUID, fileGUID);
     }
 
 
@@ -595,7 +609,7 @@ public class FilesIntegratorContext
                                                                                                        UserNotAuthorizedException,
                                                                                                        PropertyServerException
     {
-        return filesAndFoldersClient.createPrimitiveSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaTypeProperties);
+        return filesAndFoldersClient.createPrimitiveSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties);
     }
 
 
@@ -614,7 +628,7 @@ public class FilesIntegratorContext
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
     {
-        return filesAndFoldersClient.createLiteralSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaTypeProperties);
+        return filesAndFoldersClient.createLiteralSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties);
     }
 
 
@@ -635,7 +649,7 @@ public class FilesIntegratorContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return filesAndFoldersClient.createEnumSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaTypeProperties, validValuesSetGUID);
+        return filesAndFoldersClient.createEnumSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties, validValuesSetGUID);
     }
 
 
@@ -702,7 +716,7 @@ public class FilesIntegratorContext
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        return filesAndFoldersClient.createStructSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaTypeProperties);
+        return filesAndFoldersClient.createStructSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties);
     }
 
 
@@ -723,7 +737,7 @@ public class FilesIntegratorContext
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        return filesAndFoldersClient.createSchemaTypeChoice(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaTypeProperties, schemaTypeOptionGUIDs);
+        return filesAndFoldersClient.createSchemaTypeChoice(userId, externalSourceGUID, externalSourceName, schemaTypeProperties, schemaTypeOptionGUIDs);
     }
 
 
@@ -746,7 +760,7 @@ public class FilesIntegratorContext
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        return filesAndFoldersClient.createMapSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaTypeProperties, mapFromSchemaTypeGUID, mapToSchemaTypeGUID);
+        return filesAndFoldersClient.createMapSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties, mapFromSchemaTypeGUID, mapToSchemaTypeGUID);
     }
 
 
@@ -767,7 +781,7 @@ public class FilesIntegratorContext
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        return filesAndFoldersClient.createSchemaTypeFromTemplate(userId, fileServerCapabilityGUID, fileServerCapabilityName, templateGUID, templateProperties);
+        return filesAndFoldersClient.createSchemaTypeFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateProperties);
     }
 
 
@@ -789,7 +803,7 @@ public class FilesIntegratorContext
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        filesAndFoldersClient.updateSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaTypeGUID, isMergeUpdate, schemaTypeProperties);
+        filesAndFoldersClient.updateSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeGUID, isMergeUpdate, schemaTypeProperties);
     }
 
 
@@ -806,7 +820,7 @@ public class FilesIntegratorContext
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
     {
-        filesAndFoldersClient.removeSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaTypeGUID);
+        filesAndFoldersClient.removeSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeGUID);
     }
 
 
@@ -831,7 +845,7 @@ public class FilesIntegratorContext
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        filesAndFoldersClient.setupSchemaElementRelationship(userId, fileServerCapabilityGUID, fileServerCapabilityName, endOneGUID, endTwoGUID, relationshipTypeName, properties);
+        filesAndFoldersClient.setupSchemaElementRelationship(userId, externalSourceGUID, externalSourceName, endOneGUID, endTwoGUID, relationshipTypeName, properties);
     }
 
 
@@ -852,7 +866,7 @@ public class FilesIntegratorContext
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        filesAndFoldersClient.clearSchemaElementRelationship(userId, fileServerCapabilityGUID, fileServerCapabilityName, endOneGUID, endTwoGUID, relationshipTypeName);
+        filesAndFoldersClient.clearSchemaElementRelationship(userId, externalSourceGUID, externalSourceName, endOneGUID, endTwoGUID, relationshipTypeName);
     }
 
 
@@ -988,7 +1002,7 @@ public class FilesIntegratorContext
                                                                                                     UserNotAuthorizedException,
                                                                                                     PropertyServerException
     {
-        return filesAndFoldersClient.createSchemaAttribute(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaElementGUID, schemaAttributeProperties);
+        return filesAndFoldersClient.createSchemaAttribute(userId, externalSourceGUID, externalSourceName, schemaElementGUID, schemaAttributeProperties);
     }
 
 
@@ -1011,7 +1025,8 @@ public class FilesIntegratorContext
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        return filesAndFoldersClient.createSchemaAttributeFromTemplate(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaElementGUID, templateGUID, templateProperties);
+        return filesAndFoldersClient.createSchemaAttributeFromTemplate(userId, externalSourceGUID, externalSourceName, schemaElementGUID,
+                                                                       templateGUID, templateProperties);
     }
 
 
@@ -1032,7 +1047,7 @@ public class FilesIntegratorContext
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
     {
-        filesAndFoldersClient.setupSchemaType(userId, fileServerCapabilityGUID, fileServerCapabilityName, relationshipTypeName, schemaAttributeGUID, schemaTypeGUID);
+        filesAndFoldersClient.setupSchemaType(userId, externalSourceGUID, externalSourceName, relationshipTypeName, schemaAttributeGUID, schemaTypeGUID);
     }
 
 
@@ -1049,7 +1064,7 @@ public class FilesIntegratorContext
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        filesAndFoldersClient.clearSchemaTypes(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaAttributeGUID);
+        filesAndFoldersClient.clearSchemaTypes(userId, externalSourceGUID, externalSourceName, schemaAttributeGUID);
     }
 
 
@@ -1070,7 +1085,7 @@ public class FilesIntegratorContext
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        filesAndFoldersClient.updateSchemaAttribute(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaAttributeGUID, isMergeUpdate, schemaAttributeProperties);
+        filesAndFoldersClient.updateSchemaAttribute(userId, externalSourceGUID, externalSourceName, schemaAttributeGUID, isMergeUpdate, schemaAttributeProperties);
     }
 
 
@@ -1087,7 +1102,7 @@ public class FilesIntegratorContext
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        filesAndFoldersClient.removeSchemaAttribute(userId, fileServerCapabilityGUID, fileServerCapabilityName, schemaAttributeGUID);
+        filesAndFoldersClient.removeSchemaAttribute(userId, externalSourceGUID, externalSourceName, schemaAttributeGUID);
     }
 
 
@@ -1206,7 +1221,7 @@ public class FilesIntegratorContext
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        return connectionManagerClient.createConnection(userId, fileServerCapabilityGUID, fileServerCapabilityName, connectionProperties);
+        return connectionManagerClient.createConnection(userId, externalSourceGUID, externalSourceName, connectionProperties);
     }
 
 
@@ -1227,7 +1242,7 @@ public class FilesIntegratorContext
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        return connectionManagerClient.createConnectionFromTemplate(userId, fileServerCapabilityGUID, fileServerCapabilityName, templateGUID, templateProperties);
+        return connectionManagerClient.createConnectionFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateProperties);
     }
 
 
@@ -1249,7 +1264,7 @@ public class FilesIntegratorContext
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        connectionManagerClient.updateConnection(userId, fileServerCapabilityGUID, fileServerCapabilityName, connectionGUID, isMergeUpdate, connectionProperties);
+        connectionManagerClient.updateConnection(userId, externalSourceGUID, externalSourceName, connectionGUID, isMergeUpdate, connectionProperties);
     }
 
 
@@ -1268,7 +1283,7 @@ public class FilesIntegratorContext
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
     {
-        connectionManagerClient.setupConnectorType(userId, fileServerCapabilityGUID, fileServerCapabilityName, connectionGUID, connectorTypeGUID);
+        connectionManagerClient.setupConnectorType(userId, externalSourceGUID, externalSourceName, connectionGUID, connectorTypeGUID);
     }
 
 
@@ -1287,7 +1302,7 @@ public class FilesIntegratorContext
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        connectionManagerClient.clearConnectorType(userId, fileServerCapabilityGUID, fileServerCapabilityName, connectionGUID, connectorTypeGUID);
+        connectionManagerClient.clearConnectorType(userId, externalSourceGUID, externalSourceName, connectionGUID, connectorTypeGUID);
     }
 
 
@@ -1306,7 +1321,7 @@ public class FilesIntegratorContext
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
     {
-        connectionManagerClient.setupEndpoint(userId, fileServerCapabilityGUID, fileServerCapabilityName, connectionGUID, endpointGUID);
+        connectionManagerClient.setupEndpoint(userId, externalSourceGUID, externalSourceName, connectionGUID, endpointGUID);
     }
 
 
@@ -1325,7 +1340,7 @@ public class FilesIntegratorContext
                                                           UserNotAuthorizedException,
                                                           PropertyServerException
     {
-        connectionManagerClient.clearEndpoint(userId, fileServerCapabilityGUID, fileServerCapabilityName, connectionGUID, endpointGUID);
+        connectionManagerClient.clearEndpoint(userId, externalSourceGUID, externalSourceName, connectionGUID, endpointGUID);
     }
 
 
@@ -1350,7 +1365,7 @@ public class FilesIntegratorContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        connectionManagerClient.setupEmbeddedConnection(userId, fileServerCapabilityGUID, fileServerCapabilityName, connectionGUID, position, displayName, arguments, embeddedConnectionGUID);
+        connectionManagerClient.setupEmbeddedConnection(userId, externalSourceGUID, externalSourceName, connectionGUID, position, displayName, arguments, embeddedConnectionGUID);
     }
 
 
@@ -1369,7 +1384,7 @@ public class FilesIntegratorContext
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        connectionManagerClient.clearEmbeddedConnection(userId, fileServerCapabilityGUID, fileServerCapabilityName, connectionGUID, embeddedConnectionGUID);
+        connectionManagerClient.clearEmbeddedConnection(userId, externalSourceGUID, externalSourceName, connectionGUID, embeddedConnectionGUID);
     }
 
 
@@ -1390,7 +1405,7 @@ public class FilesIntegratorContext
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        connectionManagerClient.setupAssetConnection(userId, fileServerCapabilityGUID, fileServerCapabilityName, assetGUID, assetSummary, connectionGUID);
+        connectionManagerClient.setupAssetConnection(userId, externalSourceGUID, externalSourceName, assetGUID, assetSummary, connectionGUID);
     }
 
 
@@ -1409,7 +1424,7 @@ public class FilesIntegratorContext
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
-        connectionManagerClient.clearAssetConnection(userId, fileServerCapabilityGUID, fileServerCapabilityName, assetGUID, connectionGUID);
+        connectionManagerClient.clearAssetConnection(userId, externalSourceGUID, externalSourceName, assetGUID, connectionGUID);
     }
 
 
@@ -1427,7 +1442,7 @@ public class FilesIntegratorContext
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
     {
-        connectionManagerClient.removeConnection(userId, fileServerCapabilityGUID, fileServerCapabilityName, connectionGUID);
+        connectionManagerClient.removeConnection(userId, externalSourceGUID, externalSourceName, connectionGUID);
     }
 
 
@@ -1513,7 +1528,7 @@ public class FilesIntegratorContext
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        return connectionManagerClient.createEndpoint(userId, fileServerCapabilityGUID, fileServerCapabilityName, endpointProperties);
+        return connectionManagerClient.createEndpoint(userId, externalSourceGUID, externalSourceName, endpointProperties);
     }
 
 
@@ -1536,12 +1551,12 @@ public class FilesIntegratorContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return connectionManagerClient.createEndpointFromTemplate(userId, fileServerCapabilityGUID, fileServerCapabilityName, networkAddress, templateGUID, templateProperties);
+        return connectionManagerClient.createEndpointFromTemplate(userId, externalSourceGUID, externalSourceName, networkAddress, templateGUID, templateProperties);
     }
 
 
     /**
-     * Update the metadata element representing a endpoint.  It is possible to use the subtype property classes or
+     * Update the metadata element representing an endpoint.  It is possible to use the subtype property classes or
      * set up specialized properties in extended properties.
      *
      * @param endpointGUID unique identifier of the metadata element to update
@@ -1558,7 +1573,7 @@ public class FilesIntegratorContext
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        connectionManagerClient.updateEndpoint(userId, fileServerCapabilityGUID, fileServerCapabilityName, isMergeUpdate, endpointGUID, endpointProperties);
+        connectionManagerClient.updateEndpoint(userId, externalSourceGUID, externalSourceName, isMergeUpdate, endpointGUID, endpointProperties);
     }
 
 
@@ -1577,7 +1592,7 @@ public class FilesIntegratorContext
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
     {
-        connectionManagerClient.removeEndpoint(userId, fileServerCapabilityGUID, fileServerCapabilityName, endpointGUID);
+        connectionManagerClient.removeEndpoint(userId, externalSourceGUID, externalSourceName, endpointGUID);
     }
 
 

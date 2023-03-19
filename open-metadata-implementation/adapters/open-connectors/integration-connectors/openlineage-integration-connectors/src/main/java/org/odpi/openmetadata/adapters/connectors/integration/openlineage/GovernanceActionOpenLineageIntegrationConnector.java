@@ -10,7 +10,6 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Govern
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GovernanceActionProperties;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorConnector;
@@ -47,8 +46,8 @@ public class GovernanceActionOpenLineageIntegrationConnector extends LineageInte
     private static final String invalidGovernanceActionStatus    = "Invalid";
     private static final String failedGovernanceActionStatus     = "Failed";
 
-    private static URI                      producer  = URI.create("https://egeria-project.org/");
-    private final  ZoneId                   zoneId    = ZoneId.systemDefault();
+    private static final URI    producer = URI.create("https://egeria-project.org/");
+    private final        ZoneId zoneId   = ZoneId.systemDefault();
     private        LineageIntegratorContext myContext = null;
 
 
@@ -57,20 +56,6 @@ public class GovernanceActionOpenLineageIntegrationConnector extends LineageInte
      */
     public GovernanceActionOpenLineageIntegrationConnector()
     {
-    }
-
-
-    /**
-     * Call made by the ConnectorProvider to initialize the Connector with the base services.
-     *
-     * @param connectorInstanceId   unique id for the connector instance   useful for messages etc
-     * @param connectionProperties   POJO for the configuration used to create the connector.
-     */
-    @Override
-    public void initialize(String               connectorInstanceId,
-                           ConnectionProperties connectionProperties)
-    {
-        super.initialize(connectorInstanceId, connectionProperties);
     }
 
 

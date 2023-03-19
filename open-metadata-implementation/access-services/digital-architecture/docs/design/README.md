@@ -11,7 +11,7 @@ The module structure for the Digital Architecture OMAS follows the standard patt
 * [digital-architecture-spring](../../digital-architecture-spring) supports
 the REST API using the [Spring](../../../../../developer-resources/Spring.md) libraries.
 
-It makes use of the [ocf-metadata-management](../../../../common-services/ocf-metadata-management)
+It makes use of the [ocf-metadata-management](../../../../framework-services/ocf-metadata-management)
 for its server side interaction with the metadata repository and so the
 primary function of the Digital Architecture OMAS is to manage the
 APIs for the architects and translate between them and

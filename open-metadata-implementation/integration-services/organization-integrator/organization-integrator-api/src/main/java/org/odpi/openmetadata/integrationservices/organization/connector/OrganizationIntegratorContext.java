@@ -28,6 +28,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext;
+import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 
 import java.util.Date;
 import java.util.List;
@@ -36,53 +41,75 @@ import java.util.List;
  * OrganizationIntegratorContext provides a wrapper around the Community Profile OMAS client.
  * It provides the simplified interface to open metadata needed by the OrganizationIntegratorConnector.
  */
-public class OrganizationIntegratorContext
+public class OrganizationIntegratorContext extends IntegrationContext
 {
     private final OrganizationManagement      organizationClient;
     private final SecurityGroupManagement     securityGroupClient;
     private final UserIdentityManagement      userIdentityClient;
     private final CommunityProfileEventClient eventClient;
 
-    private final String   userId;
-    private final String   externalSourceGUID;
-    private final String   externalSourceName;
-    private final String   connectorName;
+
     private final AuditLog auditLog;
 
 
     /**
      * Create a new client to exchange data asset content with open metadata.
      *
+     * @param connectorId unique identifier of the connector (used to configure the event listener)
+     * @param connectorName name of connector from config
+     * @param connectorUserId userId for the connector
+     * @param serverName name of the integration daemon
+     * @param openIntegrationClient client for calling the metadata server
+     * @param openMetadataStoreClient client for calling the metadata server
      * @param organizationManagement client for exchange requests
      * @param securityGroupManagement client for exchange requests
      * @param userIdentityManagement client for exchange requests
      * @param eventClient client for registered listeners
-     * @param userId integration daemon's userId
+     * @param generateIntegrationReport should the connector generate an integration reports?
+     * @param permittedSynchronization the direction of integration permitted by the integration connector
+     * @param integrationConnectorGUID unique identifier for the integration connector if it is started via an integration group (otherwise it is
+     *                                 null).
+     * @param integrationGovernanceContext populated governance context for the connector's use
      * @param externalSourceGUID unique identifier of the software server capability for the asset manager
      * @param externalSourceName unique name of the software server capability for the asset manager
-     * @param connectorName name of the connector using this context
      * @param auditLog logging destination
      */
-    public OrganizationIntegratorContext(OrganizationManagement      organizationManagement,
-                                         SecurityGroupManagement     securityGroupManagement,
-                                         UserIdentityManagement      userIdentityManagement,
-                                         CommunityProfileEventClient eventClient,
-                                         String                      userId,
-                                         String                      externalSourceGUID,
-                                         String                      externalSourceName,
-                                         String                      connectorName,
-                                         AuditLog                    auditLog)
+    public OrganizationIntegratorContext(String                       connectorId,
+                                         String                       connectorName,
+                                         String                       connectorUserId,
+                                         String                       serverName,
+                                         OpenIntegrationClient        openIntegrationClient,
+                                         OpenMetadataClient           openMetadataStoreClient,
+                                         OrganizationManagement       organizationManagement,
+                                         SecurityGroupManagement      securityGroupManagement,
+                                         UserIdentityManagement       userIdentityManagement,
+                                         CommunityProfileEventClient  eventClient,
+                                         boolean                      generateIntegrationReport,
+                                         PermittedSynchronization     permittedSynchronization,
+                                         String                       integrationConnectorGUID,
+                                         IntegrationGovernanceContext integrationGovernanceContext,
+                                         String                       externalSourceGUID,
+                                         String                       externalSourceName,
+                                         AuditLog                     auditLog)
     {
+        super(connectorId,
+              connectorName,
+              connectorUserId,
+              serverName,
+              openIntegrationClient,
+              openMetadataStoreClient,
+              generateIntegrationReport,
+              permittedSynchronization,
+              externalSourceGUID,
+              externalSourceName,
+              integrationConnectorGUID,
+              integrationGovernanceContext);
+
         this.organizationClient  = organizationManagement;
         this.securityGroupClient = securityGroupManagement;
         this.userIdentityClient  = userIdentityManagement;
         this.eventClient         = eventClient;
-
-        this.userId             = userId;
-        this.externalSourceGUID = externalSourceGUID;
-        this.externalSourceName = externalSourceName;
-        this.connectorName      = connectorName;
-        this.auditLog           = auditLog;
+        this.auditLog            = auditLog;
     }
 
 

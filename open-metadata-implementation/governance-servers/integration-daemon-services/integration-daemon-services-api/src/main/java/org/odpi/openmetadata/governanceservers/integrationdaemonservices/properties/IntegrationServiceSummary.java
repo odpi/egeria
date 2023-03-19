@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -22,7 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class IntegrationServiceSummary implements Serializable
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private int                              integrationServiceId          = 0;
     private String                           integrationServiceFullName    = null;
@@ -175,11 +177,9 @@ public class IntegrationServiceSummary implements Serializable
 
 
     /**
-     * Return the OCF Connection for the topic used to pass requests to this integration service.
-     * The default values are constructed from the integration service name.
-     * If this value is set to null then the integration service ignores incoming events.
+     * Return the status of the connectors running under this integration service.
      *
-     * @return list of connector configurations
+     * @return Connector status
      */
     public List<IntegrationConnectorReport> getIntegrationConnectorReports()
     {
@@ -188,9 +188,7 @@ public class IntegrationServiceSummary implements Serializable
 
 
     /**
-     * Set up the OCF Connection for the topic used to pass requests to this integration service.
-     * The default values are constructed from the integration service name.
-     * If this value is set to null then the integration service ignores incoming events.
+     * Return the status of the connectors running under this integration service.
      *
      * @param integrationConnectorReports Connector status
      */

@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class ConformanceServicesInstanceMap
 {
-    private static Map<String, ConformanceServicesInstance> instanceMap = new HashMap<>();
+    private static final Map<String, ConformanceServicesInstance> instanceMap = new HashMap<>();
 
 
 

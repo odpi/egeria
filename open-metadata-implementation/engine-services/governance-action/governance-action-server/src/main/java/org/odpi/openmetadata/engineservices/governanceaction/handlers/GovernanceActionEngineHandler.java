@@ -5,7 +5,7 @@ package org.odpi.openmetadata.engineservices.governanceaction.handlers;
 import org.odpi.openmetadata.accessservices.governanceengine.client.*;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
-import org.odpi.openmetadata.engineservices.governanceaction.context.GovernanceListenerManager;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceListenerManager;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogGovernanceEvent;
@@ -74,6 +74,8 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
         this.partnerURLRoot = partnerURLRoot;
 
         this.governanceListenerManager = new GovernanceListenerManager(auditLog, engineConfig.getEngineQualifiedName());
+
+        this.governanceEngineClient.setListenerManager(governanceListenerManager, engineConfig.getEngineQualifiedName());
     }
 
 
@@ -142,7 +144,6 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
                                                                                                                partnerServerName,
                                                                                                                partnerURLRoot,
                                                                                                                governanceEngineClient,
-                                                                                                               governanceListenerManager,
                                                                                                                auditLog);
 
             Thread thread = new Thread(governanceActionServiceHandler, governanceServiceCache.getGovernanceServiceName() + governanceActionGUID + new Date());

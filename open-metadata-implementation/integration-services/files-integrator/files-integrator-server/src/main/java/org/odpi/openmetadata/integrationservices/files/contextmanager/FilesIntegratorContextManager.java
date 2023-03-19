@@ -3,19 +3,17 @@
 
 package org.odpi.openmetadata.integrationservices.files.contextmanager;
 
-import org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient;
-import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient;
-import org.odpi.openmetadata.accessservices.datamanager.client.FilesAndFoldersClient;
-import org.odpi.openmetadata.accessservices.datamanager.client.MetadataSourceClient;
+import org.odpi.openmetadata.accessservices.datamanager.client.*;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
-import org.odpi.openmetadata.accessservices.datamanager.properties.FileSystemProperties;
-import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext;
+import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnector;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager.IntegrationContextManager;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector;
+import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
 import org.odpi.openmetadata.integrationservices.files.connector.FilesIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.files.connector.FilesIntegratorContext;
@@ -34,7 +32,6 @@ public class FilesIntegratorContextManager extends IntegrationContextManager
     private ConnectionManagerClient connectionManagerClient = null;
     private MetadataSourceClient    metadataSourceClient    = null;
     private DataManagerRESTClient   restClient              = null;
-    private String                  metadataSourceGUID      = null;
 
     /**
      * Default constructor
@@ -48,7 +45,7 @@ public class FilesIntegratorContextManager extends IntegrationContextManager
      * Initialize server properties for the context manager.
      *
      * @param partnerOMASServerName name of the server to connect to
-     * @param partnerOMASPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param partnerOMASPlatformRootURL the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @param serviceOptions options from the integration service's configuration
@@ -80,6 +77,9 @@ public class FilesIntegratorContextManager extends IntegrationContextManager
     @Override
     public void createClients() throws InvalidParameterException
     {
+        super.openIntegrationClient = new OpenIntegrationServiceClient(partnerOMASServerName, partnerOMASPlatformRootURL);
+        super.openMetadataStoreClient = new OpenMetadataStoreClient(partnerOMASServerName, partnerOMASPlatformRootURL);
+
         if (localServerPassword == null)
         {
             restClient = new DataManagerRESTClient(partnerOMASServerName,
@@ -114,58 +114,33 @@ public class FilesIntegratorContextManager extends IntegrationContextManager
 
 
     /**
-     * Retrieve the metadata source's unique identifier (GUID) or if it is not defined, create the software server capability
-     * for this integrator.
-     *
-     * @param metadataSourceQualifiedName unique name of the software server capability that represents this integration
-     *                                service
-     * @throws InvalidParameterException one of the parameters passed (probably on initialize) is invalid
-     * @throws UserNotAuthorizedException the integration daemon's userId does not have access to the partner OMAS
-     * @throws PropertyServerException there is a problem in the remote server running the partner OMAS
-     */
-    private void setUpMetadataSource(String   metadataSourceQualifiedName) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
-    {
-        if (metadataSourceQualifiedName != null)
-        {
-            this.metadataSourceGUID = metadataSourceClient.getMetadataSourceGUID(localServerUserId, metadataSourceQualifiedName);
-
-            if (this.metadataSourceGUID == null)
-            {
-                FileSystemProperties properties = new FileSystemProperties();
-
-                properties.setQualifiedName(metadataSourceQualifiedName);
-                properties.setDisplayName(IntegrationServiceDescription.FILES_INTEGRATOR_OMIS.getIntegrationServiceFullName());
-                properties.setDescription(IntegrationServiceDescription.FILES_INTEGRATOR_OMIS.getIntegrationServiceDescription());
-
-                this.metadataSourceGUID = metadataSourceClient.createFileSystem(localServerUserId, null, null, properties);
-            }
-        }
-    }
-
-
-    /**
      * Set up the context in the supplied connector. This is called between initialize() and start() on the connector.
      *
      * @param connectorId unique identifier of the connector (used to configure the event listener)
      * @param connectorName name of connector from config
-     * @param metadataSourceQualifiedName unique name of the software server capability that represents the metadata source.
+     * @param connectorUserId userId for the connector
      * @param integrationConnector connector created from connection integration service configuration
+     * @param integrationConnectorGUID unique identifier of the integration connector entity (only set if working with integration groups)
      * @param permittedSynchronization controls the direction(s) that metadata is allowed to flow
+     * @param generateIntegrationReport should the connector generate an integration reports?
+     * @param metadataSourceQualifiedName unique name of the software server capability that represents the metadata source.
      *
+     * @return the new integration context
      * @throws InvalidParameterException the connector is not of the correct type
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
     @Override
-    public void setContext(String                   connectorId,
-                           String                   connectorName,
-                           String                   metadataSourceQualifiedName,
-                           IntegrationConnector     integrationConnector,
-                           PermittedSynchronization permittedSynchronization) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public IntegrationContext setContext(String                   connectorId,
+                                         String                   connectorName,
+                                         String                   connectorUserId,
+                                         IntegrationConnector     integrationConnector,
+                                         String                   integrationConnectorGUID,
+                                         PermittedSynchronization permittedSynchronization,
+                                         boolean                  generateIntegrationReport,
+                                         String                   metadataSourceQualifiedName) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
     {
         final String  methodName = "setContext";
 
@@ -193,7 +168,20 @@ public class FilesIntegratorContextManager extends IntegrationContextManager
 
             FilesIntegratorConnector serviceSpecificConnector = (FilesIntegratorConnector)integrationConnector;
 
-            this.setUpMetadataSource(metadataSourceQualifiedName);
+            String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName, "DataManager", "FileSystem");
+            String externalSourceName = metadataSourceQualifiedName;
+
+            if (externalSourceGUID == null)
+            {
+                externalSourceName = null;
+            }
+
+            IntegrationGovernanceContext integrationGovernanceContext = constructIntegrationGovernanceContext(openMetadataStoreClient,
+                                                                                                              connectorUserId,
+                                                                                                              externalSourceGUID,
+                                                                                                              externalSourceName);
+
+
 
             DataManagerEventClient dataManagerEventClient = new DataManagerEventClient(partnerOMASServerName,
                                                                                        partnerOMASPlatformRootURL,
@@ -202,12 +190,25 @@ public class FilesIntegratorContextManager extends IntegrationContextManager
                                                                                        auditLog,
                                                                                        connectorId);
 
-            serviceSpecificConnector.setContext(new FilesIntegratorContext(filesAndFoldersClient,
-                                                                           connectionManagerClient,
-                                                                           dataManagerEventClient,
-                                                                           localServerUserId,
-                                                                           metadataSourceGUID,
-                                                                           metadataSourceQualifiedName));
+            FilesIntegratorContext integratorContext = new FilesIntegratorContext(connectorId,
+                                                                                  connectorName,
+                                                                                  connectorUserId,
+                                                                                  partnerOMASServerName,
+                                                                                  openIntegrationClient,
+                                                                                  openMetadataStoreClient,
+                                                                                  filesAndFoldersClient,
+                                                                                  connectionManagerClient,
+                                                                                  dataManagerEventClient,
+                                                                                  generateIntegrationReport,
+                                                                                  permittedSynchronization,
+                                                                                  integrationConnectorGUID,
+                                                                                  integrationGovernanceContext,
+                                                                                  externalSourceGUID,
+                                                                                  externalSourceName);
+            serviceSpecificConnector.setContext(integratorContext);
+            integrationConnector.setConnectorName(connectorName);
+
+            return integratorContext;
         }
         else
         {

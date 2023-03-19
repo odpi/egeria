@@ -20,6 +20,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext;
+import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 
 import java.util.Date;
 import java.util.List;
@@ -29,44 +34,66 @@ import java.util.List;
  * SecurityIntegratorContext provides a wrapper around the Security Manager OMAS client.
  * It provides the simplified interface to open metadata needed by the SecurityIntegratorConnector.
  */
-public class SecurityIntegratorContext
+public class SecurityIntegratorContext extends IntegrationContext
 {
     private final SecurityManagerClient      securityManagerClient;
     private final SecurityManagerEventClient eventClient;
 
-    private final String   userId;
-    private final String   securityManagerGUID;
-    private final String   securityManagerName;
-    private final String   connectorName;
     private final AuditLog auditLog;
 
 
     /**
      * Create a new client to exchange data asset content with open metadata.
      *
+     * @param connectorId unique identifier of the connector (used to configure the event listener)
+     * @param connectorName name of connector from config
+     * @param connectorUserId userId for the connector
+     * @param serverName name of the integration daemon
+     * @param openIntegrationClient client for calling the metadata server
+     * @param openMetadataStoreClient client for calling the metadata server
      * @param securityManagerClient client for exchange requests
      * @param eventClient client for registered listeners
-     * @param userId integration daemon's userId
-     * @param securityManagerGUID unique identifier of the software server capability for the asset manager
-     * @param securityManagerName unique name of the software server capability for the asset manager
-     * @param connectorName name of the connector using this context
+     * @param generateIntegrationReport should the connector generate an integration reports?
+     * @param permittedSynchronization the direction of integration permitted by the integration connector
+     * @param integrationConnectorGUID unique identifier for the integration connector if it is started via an integration group (otherwise it is
+     *                                 null).
+     * @param integrationGovernanceContext populated governance context for the connector's use
+     * @param externalSourceGUID unique identifier of the software server capability for the asset manager
+     * @param externalSourceName unique name of the software server capability for the asset manager
      * @param auditLog logging destination
      */
-    public SecurityIntegratorContext(SecurityManagerClient      securityManagerClient,
-                                     SecurityManagerEventClient eventClient,
-                                     String                     userId,
-                                     String                     securityManagerGUID,
-                                     String                     securityManagerName,
-                                     String                     connectorName,
-                                     AuditLog                   auditLog)
+    public SecurityIntegratorContext(String                       connectorId,
+                                     String                       connectorName,
+                                     String                       connectorUserId,
+                                     String                       serverName,
+                                     OpenIntegrationClient        openIntegrationClient,
+                                     OpenMetadataClient           openMetadataStoreClient,
+                                     SecurityManagerClient        securityManagerClient,
+                                     SecurityManagerEventClient   eventClient,
+                                     boolean                      generateIntegrationReport,
+                                     PermittedSynchronization     permittedSynchronization,
+                                     String                       integrationConnectorGUID,
+                                     IntegrationGovernanceContext integrationGovernanceContext,
+                                     String                       externalSourceGUID,
+                                     String                       externalSourceName,
+                                     AuditLog                     auditLog)
     {
+        super(connectorId,
+              connectorName,
+              connectorUserId,
+              serverName,
+              openIntegrationClient,
+              openMetadataStoreClient,
+              generateIntegrationReport,
+              permittedSynchronization,
+              externalSourceGUID,
+              externalSourceName,
+              integrationConnectorGUID,
+              integrationGovernanceContext);
+
         this.securityManagerClient = securityManagerClient;
         this.eventClient = eventClient;
 
-        this.userId              = userId;
-        this.securityManagerGUID = securityManagerGUID;
-        this.securityManagerName = securityManagerName;
-        this.connectorName       = connectorName;
         this.auditLog            = auditLog;
     }
 
@@ -82,9 +109,9 @@ public class SecurityIntegratorContext
      *
      * @return string name
      */
-    public String getSecurityManagerName()
+    public String getExternalSourceName()
     {
-        return securityManagerName;
+        return externalSourceName;
     }
 
 
@@ -177,7 +204,7 @@ public class SecurityIntegratorContext
 
 
     /**
-     * Return the list of security groups associated with a unique distinguishedName.  In an ideal world, the should be only one.
+     * Return the list of security groups associated with a unique distinguishedName.  In an ideal world, there should be only one.
      *
      * @param distinguishedName unique name of the security group
      * @param startFrom where to start from in the list of definitions
@@ -264,7 +291,7 @@ public class SecurityIntegratorContext
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
     {
-        return securityManagerClient.createUserIdentity(userId, securityManagerGUID, securityManagerName, newIdentity);
+        return securityManagerClient.createUserIdentity(userId, externalSourceGUID, externalSourceName, newIdentity);
     }
 
 
@@ -285,7 +312,7 @@ public class SecurityIntegratorContext
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException
     {
-        securityManagerClient.updateUserIdentity(userId, securityManagerGUID, securityManagerName, userIdentityGUID, isMergeUpdate, properties);
+        securityManagerClient.updateUserIdentity(userId, externalSourceGUID, externalSourceName, userIdentityGUID, isMergeUpdate, properties);
     }
 
 
@@ -303,7 +330,7 @@ public class SecurityIntegratorContext
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
     {
-        securityManagerClient.deleteUserIdentity(userId, securityManagerGUID, securityManagerName, userIdentityGUID);
+        securityManagerClient.deleteUserIdentity(userId, externalSourceGUID, externalSourceName, userIdentityGUID);
     }
 
 

@@ -6,23 +6,19 @@
 This page contains resources to help developers working on the Egeria project.
 It supplements the general [Community Guide](https://egeria-project.org/guides/community/).
 
-* [Programming Languages](languages)
+* [Programming Languages](https://egeria-project.org/guides/contributor/languages/)
 
-* [Tools and Technology Summaries](tools)
+* [Tools and Technology Summaries](https://egeria-project.org/guides/contributor/development/)
 
-* [Developer Guidelines](Developer-Guidelines.md)
-    * [Why the DCO?](why-the-dco.md)
-    * [Reviewing Code Changes](Reviewing-Code-Changes.md)
-    * [Creating Postman samples](Postman-Samples.md)
-    * [Dependency Management](Dependency-Management.md)
-    * [Developer import of Egeria content using Gradle](Consuming-Egeria-Using_Gradle.md)
+* [Developer Guidelines](https://egeria-project.org/guides/contributor/guidelines/)
 
-* Project Processes
-    * [Issue Tracking](Issue-Tracking.md)
-    * [Release Process](Release-Process.md)
-    * [Security Hardening](Security-Hardening.md)
-    * [Feature Branches](Feature-Branch.md)
-    * [Acclaim Badges](badges)
+* [Project Processes](https://egeria-project.org/guides/contributor/process/)
+    * Issue Tracking
+    * Release Process
+    * Security Hardening
+    * Feature Branches
+
+* [Acclaim Badges](https://egeria-project.org/guides/contributor/badges/overview/)
 
 The [Egeria Dojo](https://egeria-project.org/education/egeria-dojo/) provides education
 on how to make a contribution to Egeria. 

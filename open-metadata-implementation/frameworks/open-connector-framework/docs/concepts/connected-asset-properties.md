@@ -105,7 +105,7 @@ same open metadata repository where the OMAS is running.
 
 The Connected Asset Properties
 are retrieved from the open metadata repositories by
-[OCF Metadata Management](../../../../common-services/ocf-metadata-management).
+[OCF Metadata Management](../../../../framework-services/ocf-metadata-management).
 It will use the same user id that was used to create the
 connector.
 

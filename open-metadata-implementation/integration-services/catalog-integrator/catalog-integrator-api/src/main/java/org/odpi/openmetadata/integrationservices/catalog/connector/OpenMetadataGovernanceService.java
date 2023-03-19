@@ -4,9 +4,9 @@
 package org.odpi.openmetadata.integrationservices.catalog.connector;
 
 import org.odpi.openmetadata.accessservices.assetmanager.client.OpenMetadataStoreClient;
-import org.odpi.openmetadata.commonservices.gaf.properties.TranslationDetail;
-import org.odpi.openmetadata.commonservices.gaf.properties.ValidMetadataValue;
-import org.odpi.openmetadata.commonservices.gaf.properties.ValidMetadataValueDetail;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.TranslationDetail;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValue;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValueDetail;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;

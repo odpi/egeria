@@ -7,7 +7,8 @@
 dependencies {
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
-    implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-api')
+    implementation project(':open-metadata-implementation:frameworks:open-integration-framework')
+    implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-api')

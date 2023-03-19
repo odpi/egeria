@@ -185,15 +185,15 @@ public class ConfigRepositoryServicesResource
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param connectionName name of the audit log destination connection to be deleted
+     * @param connectionName qualified name of the audit log destination connection to be deleted.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName.
      */
     @DeleteMapping(path = "/audit-log-destinations/connection/{connectionName}")
     public VoidResponse clearAuditLogDestination(@PathVariable String     userId,
-                                                  @PathVariable String     serverName,
-                                                  @PathVariable String     connectionName)
+                                                 @PathVariable String     serverName,
+                                                 @PathVariable String     connectionName)
     {
         return adminAPI.clearAuditLogDestination(userId, serverName, connectionName);
     }

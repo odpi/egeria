@@ -3,18 +3,18 @@
 
 package org.odpi.openmetadata.integrationservices.security.contextmanager;
 
-import org.odpi.openmetadata.accessservices.securitymanager.client.MetadataSourceClient;
-import org.odpi.openmetadata.accessservices.securitymanager.client.SecurityManagerClient;
-import org.odpi.openmetadata.accessservices.securitymanager.client.SecurityManagerEventClient;
+import org.odpi.openmetadata.accessservices.securitymanager.client.*;
 import org.odpi.openmetadata.accessservices.securitymanager.client.rest.SecurityManagerRESTClient;
 import org.odpi.openmetadata.accessservices.securitymanager.properties.SecurityManagerProperties;
-import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext;
+import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnector;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager.IntegrationContextManager;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector;
+import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
 import org.odpi.openmetadata.integrationservices.security.connector.SecurityIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.security.connector.SecurityIntegratorContext;
@@ -45,7 +45,7 @@ public class SecurityIntegratorContextManager extends IntegrationContextManager
      * Initialize server properties for the context manager.
      *
      * @param partnerOMASServerName name of the server to connect to
-     * @param partnerOMASPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param partnerOMASPlatformRootURL the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @param serviceOptions options from the integration service's configuration
@@ -77,6 +77,9 @@ public class SecurityIntegratorContextManager extends IntegrationContextManager
     @Override
     public  void createClients() throws InvalidParameterException
     {
+        super.openIntegrationClient = new OpenIntegrationServiceClient(partnerOMASServerName, partnerOMASPlatformRootURL);
+        super.openMetadataStoreClient = new OpenMetadataStoreClient(partnerOMASServerName, partnerOMASPlatformRootURL);
+
         SecurityManagerRESTClient restClient;
 
         if (localServerPassword == null)
@@ -147,22 +150,29 @@ public class SecurityIntegratorContextManager extends IntegrationContextManager
      *
      * @param connectorId unique identifier of the connector (used to configure the event listener)
      * @param connectorName name of connector from config
-     * @param metadataSourceQualifiedName unique name of the software server capability that represents the metadata source.
+     * @param connectorUserId userId for the connector
      * @param integrationConnector connector created from connection integration service configuration
+     * @param integrationConnectorGUID unique identifier of the integration connector entity (only set if working with integration groups)
      * @param permittedSynchronization controls the direction(s) that metadata is allowed to flow
+     * @param generateIntegrationReport should the connector generate an integration reports?
+     * @param metadataSourceQualifiedName unique name of the software server capability that represents the metadata source.
      *
+     * @return the new integration context
      * @throws InvalidParameterException the connector is not of the correct type
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
     @Override
-    public void setContext(String                   connectorId,
-                           String                   connectorName,
-                           String                   metadataSourceQualifiedName,
-                           IntegrationConnector     integrationConnector,
-                           PermittedSynchronization permittedSynchronization) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public IntegrationContext setContext(String                   connectorId,
+                                         String                   connectorName,
+                                         String                   connectorUserId,
+                                         IntegrationConnector     integrationConnector,
+                                         String                   integrationConnectorGUID,
+                                         PermittedSynchronization permittedSynchronization,
+                                         boolean                  generateIntegrationReport,
+                                         String                   metadataSourceQualifiedName) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
     {
         final String  methodName = "setContext";
 
@@ -188,6 +198,20 @@ public class SecurityIntegratorContextManager extends IntegrationContextManager
                                                                                                                 permittedSynchronizationName,
                                                                                                                 serviceOptionsString));
 
+            String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName, "AccessControlManager", null);
+            String externalSourceName = metadataSourceQualifiedName;
+
+            if (externalSourceGUID == null)
+            {
+                externalSourceName = null;
+            }
+
+            IntegrationGovernanceContext integrationGovernanceContext = constructIntegrationGovernanceContext(openMetadataStoreClient,
+                                                                                                              connectorUserId,
+                                                                                                              externalSourceGUID,
+                                                                                                              externalSourceName);
+
+
             SecurityManagerEventClient eventClient = new SecurityManagerEventClient(partnerOMASServerName,
                                                                                     partnerOMASPlatformRootURL,
                                                                                     localServerUserId,
@@ -196,15 +220,25 @@ public class SecurityIntegratorContextManager extends IntegrationContextManager
 
             SecurityIntegratorConnector serviceSpecificConnector = (SecurityIntegratorConnector)integrationConnector;
 
-            String metadataSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName);
+            SecurityIntegratorContext integratorContext = new SecurityIntegratorContext(connectorId,
+                                                                                        connectorName,
+                                                                                        connectorUserId,
+                                                                                        partnerOMASServerName,
+                                                                                        openIntegrationClient,
+                                                                                        openMetadataStoreClient,
+                                                                                        securityManagerClient,
+                                                                                        eventClient,
+                                                                                        generateIntegrationReport,
+                                                                                        permittedSynchronization,
+                                                                                        integrationConnectorGUID,
+                                                                                        integrationGovernanceContext,
+                                                                                        externalSourceGUID,
+                                                                                        externalSourceName,
+                                                                                        auditLog);
+            serviceSpecificConnector.setContext(integratorContext);
+            integrationConnector.setConnectorName(connectorName);
 
-            serviceSpecificConnector.setContext(new SecurityIntegratorContext(securityManagerClient,
-                                                                              eventClient,
-                                                                              localServerUserId,
-                                                                              metadataSourceGUID,
-                                                                              metadataSourceQualifiedName,
-                                                                              connectorName,
-                                                                              auditLog));
+            return integratorContext;
         }
         else
         {

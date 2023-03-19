@@ -4,21 +4,20 @@
 package org.odpi.openmetadata.integrationservices.search.contextmanager;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalog;
-import org.odpi.openmetadata.accessservices.assetmanager.client.ExternalAssetManagerClient;
-import org.odpi.openmetadata.integrationservices.search.client.AssetCatalogOutTopicEventListener;
+import org.odpi.openmetadata.accessservices.assetcatalog.OpenIntegrationServiceClient;
+import org.odpi.openmetadata.accessservices.assetcatalog.OpenMetadataStoreClient;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext;
 import org.odpi.openmetadata.accessservices.assetcatalog.eventclient.AssetCatalogEventClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
-import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnector;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager.IntegrationContextManager;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector;
+import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
 import org.odpi.openmetadata.integrationservices.search.connector.SearchIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.search.connector.SearchIntegratorContext;
@@ -32,9 +31,7 @@ import java.util.Map;
  * SearchIntegratorContextManager provides the bridge between the integration daemon services and
  * the specific implementation of an integration service
  */
-public class SearchIntegratorContextManager extends IntegrationContextManager
-{
-    private ExternalAssetManagerClient        assetManagerClient = null;
+public class SearchIntegratorContextManager extends IntegrationContextManager {
     private AssetCatalogEventClient           assetCatalogEventClient;
     private AssetCatalogOutTopicEventListener eventListener;
 
@@ -49,7 +46,7 @@ public class SearchIntegratorContextManager extends IntegrationContextManager
      * Initialize server properties for the context manager.
      *
      * @param partnerOMASServerName name of the server to connect to
-     * @param partnerOMASPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param partnerOMASPlatformRootURL the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @param serviceOptions options from the integration service's configuration
@@ -81,6 +78,9 @@ public class SearchIntegratorContextManager extends IntegrationContextManager
     @Override
     public void createClients() throws InvalidParameterException {
         final String methodName = "createClients";
+        super.openIntegrationClient = new OpenIntegrationServiceClient(partnerOMASServerName, partnerOMASPlatformRootURL);
+        super.openMetadataStoreClient = new OpenMetadataStoreClient(partnerOMASServerName, partnerOMASPlatformRootURL);
+
         AssetCatalog restClient;
         if (localServerPassword == null) {
             restClient = new AssetCatalog(partnerOMASServerName, partnerOMASPlatformRootURL);
@@ -105,86 +105,38 @@ public class SearchIntegratorContextManager extends IntegrationContextManager
         } catch (ConnectionCheckedException | ConnectorCheckedException | PropertyServerException | UserNotAuthorizedException e) {
             auditLog.logException(methodName,SearchIntegratorAuditCode.REGISTER_CATALOG_LISTENER_ERROR.getMessageDefinition(IntegrationServiceDescription.SEARCH_INTEGRATOR_OMIS.getIntegrationServiceFullName()),e);
         }
-
-        AssetManagerRESTClient assetManagerRestClient;
-        if (localServerPassword == null) {
-            assetManagerRestClient = new AssetManagerRESTClient(partnerOMASServerName,
-                    partnerOMASPlatformRootURL,
-                    auditLog);
-        } else {
-            assetManagerRestClient = new AssetManagerRESTClient(partnerOMASServerName,
-                    partnerOMASPlatformRootURL,
-                    localServerUserId,
-                    localServerPassword,
-                    auditLog);
-        }
-
-        assetManagerClient = new ExternalAssetManagerClient(partnerOMASServerName,
-                                                            partnerOMASPlatformRootURL,
-                                                            assetManagerRestClient,
-                                                            maxPageSize,
-                                                            auditLog);
     }
 
-
-    /**
-     * Retrieve the metadata source's unique identifier (GUID) or if it is not defined, create the software server capability
-     * for this integrator.
-     *
-     * @param metadataSourceQualifiedName unique name of the software server capability that represents this integration service
-     * @return unique identifier of the metadata source
-     * @throws InvalidParameterException  one of the parameters passed (probably on initialize) is invalid
-     * @throws UserNotAuthorizedException the integration daemon's userId does not have access to the partner OMAS
-     * @throws PropertyServerException    there is a problem in the remote server running the partner OMAS
-     */
-    private String setUpMetadataSource(String metadataSourceQualifiedName) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            PropertyServerException {
-        final String metadataSourceQualifiedNameParameterName = "metadataSourceQualifiedName";
-        final String methodName = "setUpMetadataSource";
-
-        InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-
-        invalidParameterHandler.validateName(metadataSourceQualifiedName,
-                metadataSourceQualifiedNameParameterName,
-                methodName);
-
-
-        String metadataSourceGUID = assetManagerClient.getExternalAssetManagerGUID(localServerUserId, metadataSourceQualifiedName);
-
-        if (metadataSourceGUID == null) {
-            AssetManagerProperties properties = new AssetManagerProperties();
-
-            properties.setQualifiedName(metadataSourceQualifiedName);
-
-            metadataSourceGUID = assetManagerClient.createExternalAssetManager(localServerUserId, properties);
-        }
-
-        return metadataSourceGUID;
-    }
 
 
     /**
      * Set up the context in the supplied connector. This is called between initialize() and start() on the connector.
      *
-     * @param connectorId                 unique identifier of the connector (used to configure the event listener)
-     * @param connectorName               name of connector from config
-     * @param metadataSourceQualifiedName unique name of the software server capability that represents the metadata source.
+     * @param connectorId unique identifier of the connector (used to configure the event listener)
+     * @param connectorName name of connector from config
+     * @param connectorUserId userId for the connector
      * @param integrationConnector connector created from connection integration service configuration
+     * @param integrationConnectorGUID unique identifier of the integration connector entity (only set if working with integration groups)
      * @param permittedSynchronization controls the direction(s) that metadata is allowed to flow
+     * @param generateIntegrationReport should the connector generate an integration reports?
+     * @param metadataSourceQualifiedName unique name of the software server capability that represents the metadata source.
      *
+     * @return the new integration context
      * @throws InvalidParameterException the connector is not of the correct type
      * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
+     * @throws PropertyServerException problem accessing the property server
      */
     @Override
-    public void setContext(String connectorId,
-                           String connectorName,
-                           String metadataSourceQualifiedName,
-                           IntegrationConnector integrationConnector,
-                           PermittedSynchronization permittedSynchronization) throws InvalidParameterException,
-            UserNotAuthorizedException,
-            PropertyServerException {
+    public IntegrationContext setContext(String                   connectorId,
+                                         String                   connectorName,
+                                         String                   connectorUserId,
+                                         IntegrationConnector     integrationConnector,
+                                         String                   integrationConnectorGUID,
+                                         PermittedSynchronization permittedSynchronization,
+                                         boolean                  generateIntegrationReport,
+                                         String                   metadataSourceQualifiedName) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException {
         final String methodName = "setContext";
 
         String permittedSynchronizationName = PermittedSynchronization.BOTH_DIRECTIONS.getName();
@@ -208,17 +160,35 @@ public class SearchIntegratorContextManager extends IntegrationContextManager
 
             SearchIntegratorConnector serviceSpecificConnector = (SearchIntegratorConnector) integrationConnector;
 
-            String metadataSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName);
+            String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName, null, null);
+            String externalSourceName = metadataSourceQualifiedName;
+            if (externalSourceGUID == null) {
+                externalSourceName = null;
+            }
+
+            IntegrationGovernanceContext integrationGovernanceContext = constructIntegrationGovernanceContext(openMetadataStoreClient, connectorUserId, externalSourceGUID, externalSourceName);
 
             eventListener.setSearchIntegratorConnector(serviceSpecificConnector);
-            serviceSpecificConnector.setContext(new SearchIntegratorContext(localServerUserId,
-                    metadataSourceGUID,
-                    metadataSourceQualifiedName,
-                    connectorName,
-                    assetCatalogEventClient,
-                    IntegrationServiceDescription.SEARCH_INTEGRATOR_OMIS.getIntegrationServiceFullName(),
-                    auditLog));
 
+            SearchIntegratorContext integratorContext = new SearchIntegratorContext(connectorId,
+                                                                                    connectorName,
+                                                                                    connectorUserId,
+                                                                                    partnerOMASServerName,
+                                                                                    openIntegrationClient,
+                                                                                    openMetadataStoreClient,
+                                                                                    assetCatalogEventClient,
+                                                                                    generateIntegrationReport,
+                                                                                    permittedSynchronization,
+                                                                                    integrationConnectorGUID,
+                                                                                    integrationGovernanceContext,
+                                                                                    externalSourceGUID,
+                                                                                    externalSourceName,
+                                                                                    IntegrationServiceDescription.SEARCH_INTEGRATOR_OMIS.getIntegrationServiceFullName(),
+                                                                                    auditLog);
+            serviceSpecificConnector.setContext(integratorContext);
+            integrationConnector.setConnectorName(connectorName);
+
+            return integratorContext;
 
         } else {
             final String parameterName = "integrationConnector";

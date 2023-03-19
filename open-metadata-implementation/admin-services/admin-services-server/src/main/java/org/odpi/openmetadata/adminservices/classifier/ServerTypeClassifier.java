@@ -22,8 +22,8 @@ public class ServerTypeClassifier
     private static final String INTEGRATION_SERVICES_NAME = "Open Metadata Integration Services (OMIS)";
     private static final String VIEW_SERVICES_NAME        = "Open Metadata View Services (OMVS)";
 
-    private OMAGServerConfig  configurationDocument;
-    private String            serverName;
+    private final OMAGServerConfig configurationDocument;
+    private final String           serverName;
 
     /**
      * Constructor
@@ -55,19 +55,21 @@ public class ServerTypeClassifier
 
         this.validateConfigurationDocumentNotNull(serverName, configurationDocument, methodName);
 
-        RepositoryServicesConfig        repositoryServicesConfig        = configurationDocument.getRepositoryServicesConfig();
-        List<AccessServiceConfig>       accessServiceConfigList         = configurationDocument.getAccessServicesConfig();
-        List<IntegrationServiceConfig>  integrationServiceConfigList    = configurationDocument.getIntegrationServicesConfig();
-        List<ViewServiceConfig>         viewServiceConfigList           = configurationDocument.getViewServicesConfig();
-        ConformanceSuiteConfig          conformanceSuiteConfig          = configurationDocument.getConformanceSuiteConfig();
-        EngineHostServicesConfig        engineHostServicesConfig        = configurationDocument.getEngineHostServicesConfig();
-        OpenLineageServerConfig         openLineageServerConfig         = configurationDocument.getOpenLineageServerConfig();
-        DataEngineProxyConfig           dataEngineProxyConfig           = configurationDocument.getDataEngineProxyConfig();
+        RepositoryServicesConfig        repositoryServicesConfig          = configurationDocument.getRepositoryServicesConfig();
+        List<AccessServiceConfig>       accessServiceConfigList           = configurationDocument.getAccessServicesConfig();
+        List<IntegrationServiceConfig>  integrationServiceConfigList      = configurationDocument.getIntegrationServicesConfig();
+        List<IntegrationGroupConfig>    dynamicIntegrationGroupConfigList = configurationDocument.getDynamicIntegrationGroupsConfig();
+        List<ViewServiceConfig>         viewServiceConfigList             = configurationDocument.getViewServicesConfig();
+        ConformanceSuiteConfig          conformanceSuiteConfig            = configurationDocument.getConformanceSuiteConfig();
+        EngineHostServicesConfig        engineHostServicesConfig          = configurationDocument.getEngineHostServicesConfig();
+        OpenLineageServerConfig         openLineageServerConfig           = configurationDocument.getOpenLineageServerConfig();
+        DataEngineProxyConfig           dataEngineProxyConfig             = configurationDocument.getDataEngineProxyConfig();
 
         if ((repositoryServicesConfig == null) &&
                 (accessServiceConfigList == null) &&
                 (engineHostServicesConfig == null) &&
                 (integrationServiceConfigList == null) &&
+                (dynamicIntegrationGroupConfigList == null) &&
                 (viewServiceConfigList == null) &&
                 (conformanceSuiteConfig == null) &&
                 (openLineageServerConfig == null) &&
@@ -255,7 +257,7 @@ public class ServerTypeClassifier
                                                 openLineageServerConfig);
         }
 
-        if (integrationServiceConfigList != null)
+        if ((integrationServiceConfigList != null) || (dynamicIntegrationGroupConfigList != null))
         {
             serverTypeClassification = ServerTypeClassification.INTEGRATION_DAEMON;
 
@@ -409,6 +411,7 @@ public class ServerTypeClassifier
                                                     methodName);
         }
     }
+
 
     /**
      * Checks that a classification has been derived for a configuration document.

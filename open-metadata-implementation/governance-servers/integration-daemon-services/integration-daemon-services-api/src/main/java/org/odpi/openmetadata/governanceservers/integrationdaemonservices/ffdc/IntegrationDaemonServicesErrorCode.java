@@ -61,15 +61,6 @@ public enum IntegrationDaemonServicesErrorCode implements ExceptionMessageSet
                                 "there is at least one connection for an integration connector listed.  Once the configuration document is set up " +
                                 "correctly, restart the integration daemon."),
 
-    NULL_CONTEXT_MANAGER(400, "INTEGRATION-DAEMON-SERVICES-400-005",
-                         "The integration service {0} has been configured with a null context manager class in integration daemon {1}",
-                         "The integration service fails to start because it is not able to initialize any integration " +
-                                 "connectors.",
-                         "The standard integration services are registered in a static method by the IntegrationDaemonHandler.  " +
-                                 "If this integration service is one of these services, correct the logic to include the " +
-                                 "context manager name.  If this integration service comes from a third party, make sure the class name " +
-                                 "is specified when the third party integration service is configured."),
-
     INVALID_CONTEXT_MANAGER(400, "INTEGRATION-DAEMON-SERVICES-400-006",
                             "The integration service {0} has been configured with a context manager class of {1} which can not be " +
                                     "used by the class loader.  The {2} exception was returned with message {3}",
@@ -179,6 +170,44 @@ public enum IntegrationDaemonServicesErrorCode implements ExceptionMessageSet
                                         "If all of this is correct then it may be a code error in the integration daemon services and you need to " +
                                         "raise an issue to get it fixed.  Once the cause is resolved, retry the request."),
 
+    UNKNOWN_GOVERNANCE_ENGINE_CONFIG(400, "INTEGRATION-DAEMON-SERVICES-400-032",
+                                     "Properties for integration group called {0} have not been returned by open metadata server {1} to integration" +
+                                             " daemon services in server {2}",
+                                     "The integration daemon is still not able to initialize the integration group and so it will not be " +
+                                             "able to support any integration connectors for this group.",
+                                     "This may be a configuration error or the metadata server may be down.  Look for other error messages and review the " +
+                                             "configuration of the integration daemon.  If the name of the group needs to change, restart the " +
+                                             "server."),
+
+    INTEGRATION_GROUP_NOT_INITIALIZED(400,"INTEGRATION-DAEMON-SERVICES-400-033",
+                                      "Integration daemon {0} is unable to process connectors from integration group {1} because it is " +
+                                              "unable to retrieve its configuration from the metadata server",
+                                      "The integration daemon is not able to run any integration connector from this group until it is able to " +
+                                              "retrieve the group's configuration.",
+                                      "Use the configuration interface of the Governance Engine OMAS to create a definition of the integration" +
+                                              " group."),
+
+    UNKNOWN_GROUP_NAME(400, "INTEGRATION-DAEMON-SERVICES-400-034",
+                       "Integration group named {0} is not running in the integration daemon {1}",
+                       "The integration group specified on a request is not known to the integration daemon.",
+                       "This may be a configuration error in the integration daemon or an error in the caller.  " +
+                                "The supported integration groups are listed in the integration daemon's configuration.  " +
+                                "Check the configuration document for the daemon and then its start up messages to ensure the correct " +
+                                "integration groups are started successfully.  " +
+                                "Look for other error messages that indicate that an error occurred during " +
+                                "start up.  If the integration daemon is running the correct integration groups then validate that " +
+                                "the caller has passed the correct name." +
+                                "If all of this is correct then it may be a code error in the integration daemon services and you need to " +
+                                "raise an issue to get it fixed.  Once the cause is resolved, retry the request."),
+
+    NO_INTEGRATION_GROUPS(400, "INTEGRATION-DAEMON-SERVICES-400-035",
+                          "No integration groups are running in the integration daemon {0}",
+                          "The call to the integration daemon fails and an exception is returned to the caller.",
+                          "This is either a configuration error or a logic error.  If this is a configuration error, add the required integration " +
+                                  "groups to the configuration document.  " +
+                                  "If there are no errors in the configuration, raise an issue to get help to fix this."),
+
+
     /*
      * Internal logic errors
      */
@@ -191,10 +220,17 @@ public enum IntegrationDaemonServicesErrorCode implements ExceptionMessageSet
                                     "integration daemon will have logged detailed messages to the audit log to describe what is wrong " +
                                     "and how to fix it.  " +
                                     "If there are no errors in the configuration, raise an issue to get help to fix this."),
+
+    NULL_CONTEXT_MANAGER(500, "INTEGRATION-DAEMON-SERVICES-500-002",
+                         "The integration service {0} has been registered with this platform with a null context manager class",
+                         "The integration service is not able to initialize any integration connectors.",
+                         "Integration services register themselves as they are loaded by Springs component scan mechanism.  " +
+                                 "The implementation of the integration service needs to be updated to that it registers correctly with the " +
+                                 "platform."),
     ;
 
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
 
     /**

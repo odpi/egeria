@@ -41,11 +41,11 @@ import java.util.List;
  */
 public class ITProfileManagerClient implements ITProfileManagerInterface
 {
-    private String                     serverName;               /* Initialized in constructor */
-    private String                     serverPlatformURLRoot;    /* Initialized in constructor */
-    private ITInfrastructureRESTClient restClient;               /* Initialized in constructor */
+    private final String                     serverName;               /* Initialized in constructor */
+    private final String                     serverPlatformURLRoot;    /* Initialized in constructor */
+    private final ITInfrastructureRESTClient restClient;               /* Initialized in constructor */
 
-    private InvalidParameterHandler    invalidParameterHandler = new InvalidParameterHandler();
+    private final InvalidParameterHandler    invalidParameterHandler = new InvalidParameterHandler();
 
     private final String urlTemplatePrefix = "/servers/{0}/open-metadata/access-services/it-infrastructure/users/{1}";
 
@@ -53,7 +53,7 @@ public class ITProfileManagerClient implements ITProfileManagerInterface
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      *
      * @throws InvalidParameterException bad input parameters
      */
@@ -74,7 +74,7 @@ public class ITProfileManagerClient implements ITProfileManagerInterface
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
@@ -98,7 +98,7 @@ public class ITProfileManagerClient implements ITProfileManagerInterface
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      *
@@ -124,7 +124,7 @@ public class ITProfileManagerClient implements ITProfileManagerInterface
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @param auditLog logging destination
@@ -152,7 +152,7 @@ public class ITProfileManagerClient implements ITProfileManagerInterface
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param restClient pre-initialized REST client
      * @param maxPageSize pre-initialized parameter limit
      * @throws InvalidParameterException there is a problem with the information about the remote OMAS

@@ -4284,6 +4284,27 @@ public abstract class OpenMetadataAPIGenericConverter<B>
     }
 
 
+    /**
+     * Extract the formulaType property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String getFormulaType(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "getFormulaType";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.getStringProperty(serviceName,
+                                                      OpenMetadataAPIMapper.FORMULA_TYPE_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
+        }
+
+        return null;
+    }
+
 
     /**
      * Extract and delete the formula property from the supplied instance properties.
@@ -4299,6 +4320,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         {
             return repositoryHelper.removeStringProperty(serviceName,
                                                          OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the formulaType property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeFormulaType(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeFormulaType";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.FORMULA_TYPE_PROPERTY_NAME,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -4348,6 +4391,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         }
 
         return null;
+    }
+
+
+    /**
+     * Extract and remove the usesBlockingCalls property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected boolean removeUsesBlockingCalls(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeUsesBlockingCalls";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeBooleanProperty(serviceName,
+                                                          OpenMetadataAPIMapper.USES_BLOCKING_CALLS_PROPERTY_NAME,
+                                                          instanceProperties,
+                                                          methodName);
+        }
+
+        return false;
     }
 
 

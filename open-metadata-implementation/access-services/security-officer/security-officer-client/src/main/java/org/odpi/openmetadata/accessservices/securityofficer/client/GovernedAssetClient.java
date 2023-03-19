@@ -40,7 +40,7 @@ public class GovernedAssetClient extends FFDCRESTClient implements GovernedAsset
      * Create a new Governance Engine client.
      *
      * @param serverName            name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @throws InvalidParameterException if parameter validation fails
      */
     public GovernedAssetClient(String serverName, String serverPlatformURLRoot) throws InvalidParameterException {

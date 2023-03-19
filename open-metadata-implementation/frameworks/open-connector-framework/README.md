@@ -57,7 +57,7 @@ The role of the OCF is to bridge from the Asset access requests to the GAF where
 Therefore the OCF provides a standard interface for accessing these properties.
 Different providers of these properties can plug into the OCF.
 Egeria provides an implementation of this interface to supply Asset properties stored in open metadata repositories
-in the [OCF Metadata Management modules](../../common-services/ocf-metadata-management) service.
+in the [OCF Metadata Management modules](../../framework-services/ocf-metadata-management) service.
 
 ## Terminology
 

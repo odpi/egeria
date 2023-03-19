@@ -43,7 +43,7 @@ These next two methods enable the caller to extract the unique identifier
   [REST](../../../asset-consumer-server/docs/user/get-asset-for-connection-name-with-rest.md)
 
 This method uses the guid of the asset to retrieve properties about the asset.  It is implemented
-by the [OCF Metadata Management](../../../../../common-services/ocf-metadata-management) module
+by the [OCF Metadata Management](../../../../../framework-services/ocf-metadata-management) module
 which is why there is no REST implementation.
 
 * **getAssetProperties** - returns a comprehensive collection of properties about the requested asset.

@@ -20,12 +20,12 @@ import java.util.List;
  */
 public class EngineHostClient
 {
-    private String               serverName;               /* Initialized in constructor */
-    private String               serverPlatformRootURL;    /* Initialized in constructor */
-    private EngineHostRESTClient restClient;               /* Initialized in constructor */
+    private final String               serverName;               /* Initialized in constructor */
+    private final String               serverPlatformRootURL;    /* Initialized in constructor */
+    private final EngineHostRESTClient restClient;               /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private RESTExceptionHandler    exceptionHandler        = new RESTExceptionHandler();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final RESTExceptionHandler    exceptionHandler        = new RESTExceptionHandler();
 
 
     /**
@@ -77,10 +77,10 @@ public class EngineHostClient
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    GovernanceEngineSummary getGovernanceEngineSummary(String userId,
-                                                       String governanceEngineName) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+    public GovernanceEngineSummary getGovernanceEngineSummary(String userId,
+                                                              String governanceEngineName) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
     {
         final String   methodName = "getGovernanceEngineSummaries";
         final String   urlTemplate = "/servers/{0}/open-metadata/engine-host-services/users/{1}/governance-engines/{2}/summary";
@@ -112,10 +112,10 @@ public class EngineHostClient
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    List<GovernanceEngineSummary> getGovernanceEngineSummaries(String userId,
-                                                               String serviceURLMarker) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
+    public List<GovernanceEngineSummary> getGovernanceEngineSummaries(String userId,
+                                                                      String serviceURLMarker) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
     {
         final String   methodName = "getGovernanceEngineSummaries";
         final String   urlTemplate = "/servers/{0}/open-metadata/engine-host-services/users/{1}/{2}/governance-engines/summary";
@@ -145,9 +145,9 @@ public class EngineHostClient
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    List<GovernanceEngineSummary> getGovernanceEngineSummaries(String userId) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public List<GovernanceEngineSummary> getGovernanceEngineSummaries(String userId) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
         final String   methodName = "getGovernanceEngineSummaries";
         final String   urlTemplate = "/servers/{0}/open-metadata/engine-host-services/users/{1}/governance-engines/summary";

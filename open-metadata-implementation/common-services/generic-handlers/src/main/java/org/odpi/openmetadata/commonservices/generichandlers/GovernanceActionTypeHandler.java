@@ -490,6 +490,7 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                                        methodName);
     }
 
+
     /**
      * Remove the metadata element representing a governance action type.
      *

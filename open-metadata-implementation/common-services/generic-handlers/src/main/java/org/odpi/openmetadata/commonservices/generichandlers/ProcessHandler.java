@@ -157,6 +157,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param versionIdentifier the stored version identifier property for the process
      * @param technicalDescription the stored description property associated with the process
      * @param formula the formula that characterize the processing behavior of the process
+     * @param formulaType the language of the formula
      * @param implementationLanguage the implementation language used to create the process
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param suppliedTypeName name of the type that is a subtype of asset - or null to create standard type
@@ -181,6 +182,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                 String              versionIdentifier,
                                 String              technicalDescription,
                                 String              formula,
+                                String              formulaType,
                                 String              implementationLanguage,
                                 Map<String, String> additionalProperties,
                                 String              suppliedTypeName,
@@ -216,6 +218,16 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
             }
 
             extendedProperties.put(OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME, formula);
+        }
+
+        if (formulaType != null)
+        {
+            if (extendedProperties == null)
+            {
+                extendedProperties = new HashMap<>();
+            }
+
+            extendedProperties.put(OpenMetadataAPIMapper.FORMULA_TYPE_PROPERTY_NAME, formulaType);
         }
 
         if (implementationLanguage != null)

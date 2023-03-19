@@ -10,6 +10,11 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.Synchronizat
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext;
+import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorAuditCode;
 import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorErrorCode;
 
@@ -19,9 +24,8 @@ import java.util.List;
  * CatalogIntegratorContext provides a wrapper around the Asset Manager OMAS client.
  * It provides the simplified interface to open metadata needed by the CatalogIntegratorConnector.
  */
-public class CatalogIntegratorContext
+public class CatalogIntegratorContext extends IntegrationContext
 {
-    public final static String openMetadataExchangeServiceName      = "OpenMetadataExchangeService";
     public final static String connectorFactoryServiceName          = "ConnectorFactoryExchangeService";
     public final static String collaborationExchangeServiceName     = "CollaborationExchangeService";
     public final static String connectionExchangeServiceName        = "ConnectionExchangeService";
@@ -37,9 +41,7 @@ public class CatalogIntegratorContext
 
     private final ExternalAssetManagerClient       assetManagerClient;
     private final AssetManagerEventClient          eventClient;
-    private final OpenMetadataGovernanceService    openMetadataGovernanceService;
     private final ConnectorFactoryService          connectorFactoryService;
-    private final OpenMetadataExchangeService      openMetadataExchangeService;
     private final CollaborationExchangeService     collaborationExchangeService;
     private final ConnectionExchangeService        connectionExchangeService;
     private final DataAssetExchangeService         dataAssetExchangeService;
@@ -50,14 +52,11 @@ public class CatalogIntegratorContext
     private final LineageExchangeService           lineageExchangeService;
     private final StewardshipExchangeService       stewardshipExchangeService;
     private final ValidValuesExchangeService       validValuesExchangeService;
-    private final String                           userId;
     private final String                           assetManagerGUID;
     private final String                           assetManagerName;
-    private final String                           connectorName;
     private final String                           integrationServiceName;
 
     private boolean connectorFactoryActive          = true;
-    private boolean openMetadataStoreActive         = true;
     private boolean glossaryExchangeActive          = true;
     private boolean externalReferenceExchangeActive = true;
     private boolean dataAssetExchangeActive         = true;
@@ -73,10 +72,15 @@ public class CatalogIntegratorContext
     /**
      * Create a new context for a connector.
      *
+     * @param connectorId unique identifier of the connector (used to configure the event listener)
+     * @param connectorName name of connector from config
+     * @param connectorUserId userId for the connector
+     * @param serverName name of the integration daemon
+     * @param openIntegrationClient client for calling the metadata server
+     * @param openMetadataStoreClient client for calling the metadata server
      * @param assetManagerClient common client to map requests to
      * @param eventClient client to register for events
      * @param connectedAssetClient client for connectors
-     * @param openMetadataStoreClient generic client
      * @param collaborationExchangeClient client for collaboration requests
      * @param connectionExchangeClient client for connection requests
      * @param dataAssetExchangeClient client for asset requests
@@ -87,19 +91,26 @@ public class CatalogIntegratorContext
      * @param lineageExchangeClient client for lineage requests
      * @param stewardshipExchangeClient client for stewardship requests
      * @param validValuesExchangeClient client for valid values requests
-     * @param userId integration daemon's userId
      * @param assetManagerGUID unique identifier of the software server capability for the asset manager
      * @param assetManagerName unique name of the software server capability for the asset manager
-     * @param connectorName name of the connector using this context
-     * @param synchronizationDirection controls the direction of synchronization that should be allowed
+     * @param generateIntegrationReport should the connector generate an integration reports?
+     * @param permittedSynchronization the direction of integration permitted by the integration connector
+     * @param integrationConnectorGUID unique identifier for the integration connector if it is started via an integration group (otherwise it is
+     *                                 null).
+     * @param integrationGovernanceContext populated governance context for the connector's use
      * @param disabledExchangeServices option from the integration service's configuration
      * @param integrationServiceName name of this service
      * @param auditLog logging destination
      */
-    public CatalogIntegratorContext(ExternalAssetManagerClient      assetManagerClient,
+    public CatalogIntegratorContext(String                          connectorId,
+                                    String                          connectorName,
+                                    String                          connectorUserId,
+                                    String                          serverName,
+                                    OpenIntegrationClient           openIntegrationClient,
+                                    OpenMetadataClient              openMetadataStoreClient,
+                                    ExternalAssetManagerClient      assetManagerClient,
                                     AssetManagerEventClient         eventClient,
                                     ConnectedAssetClient            connectedAssetClient,
-                                    OpenMetadataStoreClient         openMetadataStoreClient,
                                     CollaborationExchangeClient     collaborationExchangeClient,
                                     ConnectionExchangeClient        connectionExchangeClient,
                                     DataAssetExchangeClient         dataAssetExchangeClient,
@@ -110,27 +121,36 @@ public class CatalogIntegratorContext
                                     LineageExchangeClient           lineageExchangeClient,
                                     StewardshipExchangeClient       stewardshipExchangeClient,
                                     ValidValuesExchangeClient       validValuesExchangeClient,
-                                    String                          userId,
+                                    boolean                         generateIntegrationReport,
+                                    PermittedSynchronization        permittedSynchronization,
+                                    String                          integrationConnectorGUID,
+                                    IntegrationGovernanceContext    integrationGovernanceContext,
                                     String                          assetManagerGUID,
                                     String                          assetManagerName,
-                                    String                          connectorName,
                                     String                          integrationServiceName,
-                                    SynchronizationDirection        synchronizationDirection,
                                     List<String>                    disabledExchangeServices,
                                     AuditLog                        auditLog)
     {
+        super(connectorId,
+              connectorName,
+              connectorUserId,
+              serverName,
+              openIntegrationClient,
+              openMetadataStoreClient,
+              generateIntegrationReport,
+              permittedSynchronization,
+              assetManagerGUID,
+              assetManagerName,
+              integrationConnectorGUID,
+              integrationGovernanceContext);
+
         final String methodName = "CatalogIntegratorContext";
+
+        SynchronizationDirection synchronizationDirection =   getSynchronizationDirection(permittedSynchronization);
 
         this.assetManagerClient       = assetManagerClient;
         this.eventClient              = eventClient;
 
-        this.openMetadataGovernanceService = new OpenMetadataGovernanceService(openMetadataStoreClient, userId, connectorName);
-        this.openMetadataExchangeService   = new OpenMetadataExchangeService(openMetadataStoreClient,
-                                                                             synchronizationDirection,
-                                                                             userId,
-                                                                             assetManagerGUID,
-                                                                             assetManagerName,
-                                                                             connectorName);
         this.connectorFactoryService       = new ConnectorFactoryService(connectedAssetClient, userId);
         this.collaborationExchangeService  = new CollaborationExchangeService(collaborationExchangeClient,
                                                                               synchronizationDirection,
@@ -202,25 +222,19 @@ public class CatalogIntegratorContext
                                                                           assetManagerName,
                                                                           connectorName,
                                                                           auditLog);
-        this.userId                   = userId;
         this.assetManagerGUID         = assetManagerGUID;
         this.assetManagerName         = assetManagerName;
-        this.connectorName            = connectorName;
         this.integrationServiceName   = integrationServiceName;
 
         auditLog.logMessage(methodName,
                             CatalogIntegratorAuditCode.PERMITTED_SYNCHRONIZATION.getMessageDefinition(connectorName,
-                                                                                                      synchronizationDirection.getName()));
+                                                                                                      permittedSynchronization.getName()));
 
         if (disabledExchangeServices != null)
         {
             for (String exchangeServiceName : disabledExchangeServices)
             {
-                if (openMetadataExchangeServiceName.equals(exchangeServiceName))
-                {
-                    openMetadataStoreActive = false;
-                }
-                else if (connectorFactoryServiceName.equals(exchangeServiceName))
+                if (connectorFactoryServiceName.equals(exchangeServiceName))
                 {
                     connectorFactoryActive = false;
                 }
@@ -267,6 +281,38 @@ public class CatalogIntegratorContext
             }
         }
     }
+
+
+    /**
+     * Convert permitted synchronization from the configuration into the SynchronizationDirection enum.
+     * The default is BOTH_DIRECTIONS which effectively enforces no restriction.
+     *
+     * @param permittedSynchronization value from the configuration
+     * @return synchronization direction enum
+     */
+    private SynchronizationDirection getSynchronizationDirection(PermittedSynchronization permittedSynchronization)
+    {
+        if (permittedSynchronization != null)
+        {
+            switch (permittedSynchronization)
+            {
+                case TO_THIRD_PARTY:
+                    return SynchronizationDirection.TO_THIRD_PARTY;
+
+                case FROM_THIRD_PARTY:
+                    return SynchronizationDirection.FROM_THIRD_PARTY;
+
+                case BOTH_DIRECTIONS:
+                    return SynchronizationDirection.BOTH_DIRECTIONS;
+
+                case OTHER:
+                    return SynchronizationDirection.OTHER;
+            }
+        }
+
+        return SynchronizationDirection.BOTH_DIRECTIONS;
+    }
+
 
 
     /* ========================================================
@@ -448,44 +494,6 @@ public class CatalogIntegratorContext
                                                                                  PropertyServerException
     {
         return assetManagerClient.getElementsForExternalIdentifier(userId, assetManagerGUID, assetManagerName, externalIdentifier, startFrom, pageSize);
-    }
-
-
-    /**
-     * Return the interface for working with connectors to digital resources.
-     *
-     * @return collaboration exchange service
-     * @throws UserNotAuthorizedException this option is not enabled in the configuration
-     */
-    public OpenMetadataGovernanceService getOpenMetadataGovernanceService() throws UserNotAuthorizedException
-    {
-        return openMetadataGovernanceService;
-    }
-
-
-    /**
-     * Return the interface for working with native metadata elements.
-     *
-     * @return collaboration exchange service
-     * @throws UserNotAuthorizedException this option is not enabled in the configuration
-     */
-    public OpenMetadataExchangeService getOpenMetadataExchangeService() throws UserNotAuthorizedException
-    {
-        final String methodName = "getOpenMetadataExchangeService";
-
-        if (openMetadataStoreActive)
-        {
-            return openMetadataExchangeService;
-        }
-        else
-        {
-            throw new UserNotAuthorizedException(
-                    CatalogIntegratorErrorCode.DISABLED_EXCHANGE_SERVICE.getMessageDefinition(openMetadataExchangeServiceName,
-                                                                                              integrationServiceName),
-                    this.getClass().getName(),
-                    methodName,
-                    userId);
-        }
     }
 
 

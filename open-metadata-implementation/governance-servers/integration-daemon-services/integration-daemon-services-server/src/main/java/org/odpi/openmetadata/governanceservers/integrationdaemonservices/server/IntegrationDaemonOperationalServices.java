@@ -2,6 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.server;
 
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
+import org.odpi.openmetadata.accessservices.governanceengine.client.IntegrationGroupConfigurationClient;
+import org.odpi.openmetadata.accessservices.governanceengine.client.rest.GovernanceEngineRESTClient;
+import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationGroupConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
@@ -9,10 +13,12 @@ import org.odpi.openmetadata.adminservices.properties.OMAGServerServiceStatus;
 import org.odpi.openmetadata.adminservices.properties.ServerActiveStatus;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager.IntegrationContextManager;
+import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesErrorCode;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationConnectorCacheMap;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationConnectorHandler;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationGroupHandler;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationServiceHandler;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads.IntegrationDaemonThread;
 
@@ -29,15 +35,15 @@ import java.util.Map;
  */
 public class IntegrationDaemonOperationalServices
 {
-    private String                         localServerName;               /* Initialized in constructor */
-    private String                         localServerUserId;             /* Initialized in constructor */
-    private String                         localServerPassword;           /* Initialized in constructor */
-    private int                            maxPageSize;                   /* Initialized in constructor */
+    private final String                         localServerName;               /* Initialized in constructor */
+    private final String                         localServerUserId;             /* Initialized in constructor */
+    private final String                         localServerPassword;           /* Initialized in constructor */
+    private final int                            maxPageSize;                   /* Initialized in constructor */
 
 
     private AuditLog                        auditLog                  = null;
     private IntegrationDaemonInstance       integrationDaemonInstance = null;
-    private Map<String, ServerActiveStatus> serviceStatusMap          = new HashMap<>();
+    private final Map<String, ServerActiveStatus> serviceStatusMap          = new HashMap<>();
 
 
     /**
@@ -63,13 +69,15 @@ public class IntegrationDaemonOperationalServices
     /**
      * Initialize the service.
      *
-     * @param configuration config properties
+     * @param staticConfiguration config properties for static integration services
+     * @param dynamicConfiguration config properties for dynamic integration groups
      * @param auditLog destination for audit log messages.
      *
      * @return activated services list
      * @throws OMAGConfigurationErrorException error in configuration preventing startup
      */
-    public List<String> initialize(List<IntegrationServiceConfig> configuration,
+    public List<String> initialize(List<IntegrationServiceConfig> staticConfiguration,
+                                   List<IntegrationGroupConfig>   dynamicConfiguration,
                                    AuditLog                       auditLog) throws OMAGConfigurationErrorException
     {
         final String             actionDescription = "initialize";
@@ -84,13 +92,13 @@ public class IntegrationDaemonOperationalServices
             /*
              * Handover problem between the admin services and the integration services if the config is null.
              */
-            if (configuration == null)
+            if (staticConfiguration == null)
             {
                 throw new OMAGConfigurationErrorException(IntegrationDaemonServicesErrorCode.NO_CONFIG_DOC.getMessageDefinition(localServerName),
                                                           this.getClass().getName(),
                                                           methodName);
             }
-            else if (configuration.isEmpty())
+            else if (staticConfiguration.isEmpty())
             {
                 throw new OMAGConfigurationErrorException(IntegrationDaemonServicesErrorCode.NO_INTEGRATION_SERVICES_CONFIGURED.getMessageDefinition(localServerName),
                                                           this.getClass().getName(),
@@ -101,10 +109,10 @@ public class IntegrationDaemonOperationalServices
              * Initialize each of the integration services and accumulate the integration connector handlers for the
              * integration daemon handler.
              */
-            List<IntegrationConnectorHandler>      daemonConnectorHandlers = new ArrayList<>();
+            IntegrationConnectorCacheMap           daemonConnectorHandlers      = new IntegrationConnectorCacheMap();
             Map<String, IntegrationServiceHandler> integrationServiceHandlerMap = new HashMap<>();
 
-            for (IntegrationServiceConfig integrationServiceConfig : configuration)
+            for (IntegrationServiceConfig integrationServiceConfig : staticConfiguration)
             {
                 if (integrationServiceConfig != null)
                 {
@@ -154,7 +162,10 @@ public class IntegrationDaemonOperationalServices
                     List<IntegrationConnectorHandler> serviceConnectorHandlers = integrationServiceHandler.initialize();
                     if (serviceConnectorHandlers != null)
                     {
-                        daemonConnectorHandlers.addAll(serviceConnectorHandlers);
+                        for (IntegrationConnectorHandler connectorHandler : serviceConnectorHandlers)
+                        {
+                            daemonConnectorHandlers.putHandlerByConnectorId(connectorHandler.getIntegrationConnectorId(), connectorHandler);
+                        }
                     }
 
                     integrationServiceHandlerMap.put(integrationServiceURLMarker, integrationServiceHandler);
@@ -162,13 +173,46 @@ public class IntegrationDaemonOperationalServices
                 }
             }
 
+            Map<String, IntegrationGroupHandler> integrationGroupHandlerMap = new HashMap<>();
+
+            if (dynamicConfiguration != null)
+            {
+
+                for (IntegrationGroupConfig integrationGroupConfig : dynamicConfiguration)
+                {
+                    if (integrationGroupConfig != null)
+                    {
+                        String partnerOMASRootURL    = this.getPartnerOMASRootURL(integrationGroupConfig);
+                        String partnerOMASServerName = this.getPartnerOMASServerName(integrationGroupConfig);
+                        String groupName             = this.getIntegrationGroupName(integrationGroupConfig);
+
+                        GovernanceEngineRESTClient restClient = new GovernanceEngineRESTClient(partnerOMASServerName, partnerOMASRootURL, auditLog);
+                        GovernanceEngineClient serverClient = new GovernanceEngineClient(partnerOMASServerName, partnerOMASRootURL, restClient, maxPageSize);
+                        IntegrationGroupConfigurationClient configurationClient = new IntegrationGroupConfigurationClient(partnerOMASServerName,
+                                                                                                                          partnerOMASRootURL,
+                                                                                                                          restClient,
+                                                                                                                          maxPageSize,
+                                                                                                                          auditLog);
+
+                        IntegrationGroupHandler groupHandler = new IntegrationGroupHandler(integrationGroupConfig.getIntegrationGroupQualifiedName(),
+                                                                                           integrationServiceHandlerMap,
+                                                                                           daemonConnectorHandlers,
+                                                                                           localServerName,
+                                                                                           localServerUserId,
+                                                                                           configurationClient,
+                                                                                           serverClient,
+                                                                                           auditLog,
+                                                                                           maxPageSize);
+
+                        integrationGroupHandlerMap.put(groupName, groupHandler);
+                    }
+                }
+            }
+
             /*
              * Create the thread that calls refresh on all the connectors.
              */
-            IntegrationDaemonThread integrationDaemonThread = new IntegrationDaemonThread(localServerName,
-                                                                                          daemonConnectorHandlers,
-                                                                                          auditLog);
-
+            IntegrationDaemonThread integrationDaemonThread = new IntegrationDaemonThread(localServerName, daemonConnectorHandlers, auditLog);
             integrationDaemonThread.start();
 
             /*
@@ -180,9 +224,9 @@ public class IntegrationDaemonOperationalServices
                                                                       localServerUserId,
                                                                       maxPageSize,
                                                                       integrationDaemonThread,
-                                                                      integrationServiceHandlerMap);
-
-
+                                                                      integrationServiceHandlerMap,
+                                                                      integrationGroupHandlerMap,
+                                                                      daemonConnectorHandlers);
 
             auditLog.logMessage(actionDescription, IntegrationDaemonServicesAuditCode.SERVER_INITIALIZED.getMessageDefinition(localServerName));
 
@@ -247,6 +291,34 @@ public class IntegrationDaemonOperationalServices
 
 
     /**
+     * Return an integration group's name from the configuration.
+     *
+     * @param integrationGroupConfig configuration
+     * @return root URL
+     * @throws OMAGConfigurationErrorException No root URL present in the config
+     */
+    private String getIntegrationGroupName(IntegrationGroupConfig integrationGroupConfig) throws OMAGConfigurationErrorException
+    {
+        String integrationGroupName = integrationGroupConfig.getIntegrationGroupQualifiedName();
+
+        if (integrationGroupName == null)
+        {
+            final String actionDescription = "Validate integration group configuration.";
+            final String methodName        = "getIntegrationGroupName";
+
+            auditLog.logMessage(actionDescription,
+                                IntegrationDaemonServicesAuditCode.NO_OMAS_SERVER_URL.getMessageDefinition(localServerName));
+
+            throw new OMAGConfigurationErrorException(IntegrationDaemonServicesErrorCode.NO_OMAS_SERVER_URL.getMessageDefinition(localServerName),
+                                                      this.getClass().getName(),
+                                                      methodName);
+        }
+
+        return integrationGroupName;
+    }
+
+
+    /**
      * Return the open metadata server's root URL from the configuration.
      *
      * @param integrationServicesConfig configuration
@@ -260,10 +332,40 @@ public class IntegrationDaemonOperationalServices
         if (accessServiceRootURL == null)
         {
             final String actionDescription = "Validate integration service configuration.";
-            final String methodName        = "getAccessServiceRootURL";
+            final String methodName        = "getPartnerOMASRootURL";
 
             auditLog.logMessage(actionDescription,
-                                IntegrationDaemonServicesAuditCode.NO_OMAS_SERVER_URL.getMessageDefinition(localServerName));
+                                IntegrationDaemonServicesAuditCode.NO_OMAS_SERVER_URL.getMessageDefinition(localServerName),
+                                integrationServicesConfig.toString());
+
+            throw new OMAGConfigurationErrorException(IntegrationDaemonServicesErrorCode.NO_OMAS_SERVER_URL.getMessageDefinition(localServerName),
+                                                      this.getClass().getName(),
+                                                      methodName);
+        }
+
+        return accessServiceRootURL;
+    }
+
+
+    /**
+     * Return the open metadata server's root URL from the configuration.
+     *
+     * @param integrationGroupConfig configuration
+     * @return root URL
+     * @throws OMAGConfigurationErrorException No root URL present in the config
+     */
+    private String getPartnerOMASRootURL(IntegrationGroupConfig integrationGroupConfig) throws OMAGConfigurationErrorException
+    {
+        String accessServiceRootURL = integrationGroupConfig.getOMAGServerPlatformRootURL();
+
+        if (accessServiceRootURL == null)
+        {
+            final String actionDescription = "Validate integration group configuration.";
+            final String methodName        = "getPartnerOMASRootURL";
+
+            auditLog.logMessage(actionDescription,
+                                IntegrationDaemonServicesAuditCode.NO_OMAS_SERVER_URL.getMessageDefinition(localServerName),
+                                integrationGroupConfig.toString());
 
             throw new OMAGConfigurationErrorException(IntegrationDaemonServicesErrorCode.NO_OMAS_SERVER_URL.getMessageDefinition(localServerName),
                                                       this.getClass().getName(),
@@ -288,10 +390,40 @@ public class IntegrationDaemonOperationalServices
         if (accessServiceServerName == null)
         {
             final String actionDescription = "Validate integration service configuration.";
-            final String methodName        = "getAccessServiceServerName";
+            final String methodName        = "getPartnerOMASServerName";
 
             auditLog.logMessage(actionDescription,
-                                IntegrationDaemonServicesAuditCode.NO_OMAS_SERVER_NAME.getMessageDefinition(localServerName));
+                                IntegrationDaemonServicesAuditCode.NO_OMAS_SERVER_NAME.getMessageDefinition(localServerName),
+                                integrationServicesConfig.toString());
+
+            throw new OMAGConfigurationErrorException(IntegrationDaemonServicesErrorCode.NO_OMAS_SERVER_NAME.getMessageDefinition(localServerName),
+                                                      this.getClass().getName(),
+                                                      methodName);
+        }
+
+        return accessServiceServerName;
+    }
+
+
+    /**
+     * Return the open metadata server's name from the configuration.
+     *
+     * @param integrationGroupConfig configuration
+     * @return server name
+     * @throws OMAGConfigurationErrorException No server name present in the config
+     */
+    private String getPartnerOMASServerName(IntegrationGroupConfig integrationGroupConfig) throws OMAGConfigurationErrorException
+    {
+        String accessServiceServerName = integrationGroupConfig.getOMAGServerName();
+
+        if (accessServiceServerName == null)
+        {
+            final String actionDescription = "Validate integration group configuration.";
+            final String methodName        = "getPartnerOMASServerName";
+
+            auditLog.logMessage(actionDescription,
+                                IntegrationDaemonServicesAuditCode.NO_OMAS_SERVER_NAME.getMessageDefinition(localServerName),
+                                integrationGroupConfig.toString());
 
             throw new OMAGConfigurationErrorException(IntegrationDaemonServicesErrorCode.NO_OMAS_SERVER_NAME.getMessageDefinition(localServerName),
                                                       this.getClass().getName(),
@@ -305,7 +437,7 @@ public class IntegrationDaemonOperationalServices
     /**
      * Return an instance of the context manager class.  This is needed by the integration service handler.
      *
-     * @param integrationServiceConfig configuration for the access service
+     * @param integrationServiceConfig configuration for the integration service
      * @return context manager class for the integration service
      * @throws OMAGConfigurationErrorException if the class is invalid
      */
@@ -364,8 +496,7 @@ public class IntegrationDaemonOperationalServices
                                 integrationServiceConfig.toString());
 
             throw new OMAGConfigurationErrorException(IntegrationDaemonServicesErrorCode.NULL_CONTEXT_MANAGER.
-                                                              getMessageDefinition(integrationServiceConfig.getIntegrationServiceFullName(),
-                                                                                   localServerName),
+                                                              getMessageDefinition(integrationServiceConfig.getIntegrationServiceFullName()),
                                                       this.getClass().getName(),
                                                       methodName);
         }

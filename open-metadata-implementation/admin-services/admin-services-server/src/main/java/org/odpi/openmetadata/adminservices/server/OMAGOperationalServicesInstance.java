@@ -9,10 +9,11 @@ import org.odpi.openmetadata.adminservices.registration.ViewServiceAdmin;
 import org.odpi.openmetadata.adminservices.properties.OMAGServerServiceStatus;
 import org.odpi.openmetadata.adminservices.properties.ServerActiveStatus;
 import org.odpi.openmetadata.adminservices.properties.ServerServicesStatus;
-import org.odpi.openmetadata.commonservices.gaf.admin.GAFMetadataOperationalServices;
+import org.odpi.openmetadata.frameworkservices.gaf.admin.GAFMetadataOperationalServices;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstance;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
+import org.odpi.openmetadata.frameworkservices.oif.admin.OIFMetadataOperationalServices;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.admin.DataEngineProxyOperationalServices;
 import org.odpi.openmetadata.governanceservers.enginehostservices.server.EngineHostOperationalServices;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonOperationalServices;
@@ -31,13 +32,15 @@ import java.util.Map;
 
 class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
 {
-    private ServerActiveStatus                   serverActiveStatus                  = ServerActiveStatus.INACTIVE;
+    private       ServerActiveStatus              serverActiveStatus                  = ServerActiveStatus.INACTIVE;
     private final Map<String, ServerActiveStatus> serviceStatusMap                   = new HashMap<>();
     private final ServerTypeClassification        serverTypeClassification;
+
     private OMAGServerConfig                     operationalConfiguration            = null;
     private OMRSOperationalServices              operationalRepositoryServices       = null;
     private OCFMetadataOperationalServices       operationalOCFMetadataServices      = null;
     private GAFMetadataOperationalServices       operationalGAFMetadataServices      = null;
+    private OIFMetadataOperationalServices       operationalOIFMetadataServices      = null;
     private List<AccessServiceAdmin>             operationalAccessServiceAdminList   = new ArrayList<>();
     private List<ViewServiceAdmin>               operationalViewServiceAdminList     = new ArrayList<>();
     private ConformanceSuiteOperationalServices  operationalConformanceSuiteServices = null;
@@ -207,12 +210,32 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     }
 
 
+    /**
+     * Return the running instance of the Open Integration Framework (OIF) metadata services.
+     *
+     * @return OIFMetadataOperationalServices object
+     */
+    OIFMetadataOperationalServices getOperationalOIFMetadataServices()
+    {
+        return operationalOIFMetadataServices;
+    }
+
+
+    /**
+     * Set up the running instance of the Open Integration Framework (OIF) metadata services.
+     *
+     * @param operationalOIFMetadataServices OIFMetadataOperationalServices object
+     */
+    void setOperationalOIFMetadataServices(OIFMetadataOperationalServices operationalOIFMetadataServices)
+    {
+        this.operationalOIFMetadataServices = operationalOIFMetadataServices;
+    }
 
 
     /**
      * Return the running instance of the Governance Action Framework (GAF) metadata services.
      *
-     * @return OCFMetadataOperationalServices object
+     * @return GAFMetadataOperationalServices object
      */
     GAFMetadataOperationalServices getOperationalGAFMetadataServices()
     {

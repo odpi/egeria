@@ -8,7 +8,7 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
-    implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-api')
+    implementation project(':open-metadata-implementation:frameworks:open-integration-framework')
     implementation project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-api')
     implementation project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-client')
     implementation project(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-api')

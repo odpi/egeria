@@ -6,7 +6,7 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.remediation;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
-import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.governanceaction.RemediationGovernanceActionService;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
@@ -61,7 +61,7 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
                 ActionTargetElement actionTarget = governanceContext.getActionTargetElements().get(0);
                 OpenMetadataElement targetElement = actionTarget.getTargetElement();
 
-                OpenMetadataClient store = (OpenMetadataClient) governanceContext.getOpenMetadataStore();
+                OpenMetadataStore store = governanceContext.getOpenMetadataStore();
 
                 String qualifiedName = targetElement.getElementProperties().getPropertyValueMap().get(QUALIFIED_NAME_PROPERTY).valueAsString();
                 SearchProperties searchProperties = getSearchProperties(qualifiedName);
@@ -93,7 +93,7 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
                             continue;
                         }
 
-                        store.linkElementsAsPeerDuplicates(targetElementGUID,
+                        governanceContext.linkElementsAsPeerDuplicates(targetElementGUID,
                                                            duplicateAssetGUID,
                                                            1,
                                                            null,

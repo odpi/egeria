@@ -20,7 +20,6 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.Co
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ControlFlowElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DataAssetElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DataFlowElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DeployedCapabilityElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DeploymentElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.EndpointElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.HostElement;
@@ -40,6 +39,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext;
+import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 
 import java.util.Date;
 import java.util.List;
@@ -49,7 +53,7 @@ import java.util.Map;
  * InfrastructureIntegratorContext provides a wrapper around the IT Infrastructure OMAS client.
  * It provides the simplified interface to open metadata needed by the InfrastructureIntegratorConnector.
  */
-public class InfrastructureIntegratorContext
+public class InfrastructureIntegratorContext extends IntegrationContext
 {
     private final CapabilityManagerClient     capabilityManagerClient;
     private final ConnectionManagerClient     connectionManagerClient;
@@ -62,61 +66,88 @@ public class InfrastructureIntegratorContext
     private final ProcessManagerClient        processManagerClient;
     private final ServerManagerClient         serverManagerClient;
     private final ITInfrastructureEventClient eventClient;
-    private final String                      userId;
-    private final String                      infrastructureManagerGUID;
-    private final String                      infrastructureManagerName;
 
     private boolean     infrastructureManagerIsHome = true;
 
     static final String assetTypeName         = "Asset";
 
 
-    public InfrastructureIntegratorContext(CapabilityManagerClient     capabilityManagerClient,
-                                           ConnectionManagerClient     connectionManagerClient,
-                                           ConnectorTypeManagerClient  connectorTypeManagerClient,
-                                           DataAssetManagerClient      dataAssetManagerClient,
-                                           EndpointManagerClient       endpointManagerClient,
-                                           HostManagerClient           hostManagerClient,
-                                           ITProfileManagerClient      itProfileManagerClient,
-                                           PlatformManagerClient       platformManagerClient,
-                                           ProcessManagerClient        processManagerClient,
-                                           ServerManagerClient         serverManagerClient,
-                                           ITInfrastructureEventClient eventClient,
-                                           String                      userId,
-                                           String                      infrastructureManagerGUID,
-                                           String                      infrastructureManagerName)
-    {
-        this.capabilityManagerClient = capabilityManagerClient;
-        this.connectionManagerClient = connectionManagerClient;
-        this.connectorTypeManagerClient = connectorTypeManagerClient;
-        this.dataAssetManagerClient = dataAssetManagerClient;
-        this.endpointManagerClient = endpointManagerClient;
-        this.hostManagerClient = hostManagerClient;
-        this.itProfileManagerClient = itProfileManagerClient;
-        this.platformManagerClient = platformManagerClient;
-        this.processManagerClient = processManagerClient;
-        this.serverManagerClient = serverManagerClient;
-        this.eventClient = eventClient;
-        this.userId = userId;
-        this.infrastructureManagerGUID = infrastructureManagerGUID;
-        this.infrastructureManagerName = infrastructureManagerName;
-    }
-
-
-    /* ========================================================
-     * Returning the infrastructure manager name from the configuration
-     */
-
-
     /**
-     * Return the qualified name of the infrastructure manager that is supplied in the configuration
-     * document.
+     * Create a new context for a connector.
      *
-     * @return string name
+     * @param connectorId unique identifier of the connector (used to configure the event listener)
+     * @param connectorName name of connector from config
+     * @param connectorUserId userId for the connector
+     * @param serverName name of the integration daemon
+     * @param openIntegrationClient client for calling the metadata server
+     * @param openMetadataStoreClient client for calling the metadata server
+     * @param capabilityManagerClient client for software capabilities
+     * @param connectionManagerClient client for connections
+     * @param connectorTypeManagerClient client for connector types
+     * @param dataAssetManagerClient clients for data stores, data sets and data feeds
+     * @param endpointManagerClient client for endpoints
+     * @param hostManagerClient client for hosts
+     * @param itProfileManagerClient client for IT profiles
+     * @param platformManagerClient client for software platforms
+     * @param processManagerClient client for processes
+     * @param serverManagerClient client for software servers
+     * @param eventClient client for receiving events
+     * @param generateIntegrationReport should the connector generate an integration reports?
+     * @param permittedSynchronization the direction of integration permitted by the integration connector
+     * @param integrationConnectorGUID unique identifier for the integration connector if it is started via an integration group (otherwise it is
+     *                                 null).
+     * @param integrationGovernanceContext populated governance context for the connector's use
+     * @param externalSourceGUID unique identifier of the software server capability for the asset manager
+     * @param externalSourceName unique name of the software server capability for the asset manager
      */
-    public String getInfrastructureManagerName()
+    public InfrastructureIntegratorContext(String                       connectorId,
+                                           String                       connectorName,
+                                           String                       connectorUserId,
+                                           String                       serverName,
+                                           OpenIntegrationClient        openIntegrationClient,
+                                           OpenMetadataClient           openMetadataStoreClient,
+                                           CapabilityManagerClient      capabilityManagerClient,
+                                           ConnectionManagerClient      connectionManagerClient,
+                                           ConnectorTypeManagerClient   connectorTypeManagerClient,
+                                           DataAssetManagerClient       dataAssetManagerClient,
+                                           EndpointManagerClient        endpointManagerClient,
+                                           HostManagerClient            hostManagerClient,
+                                           ITProfileManagerClient       itProfileManagerClient,
+                                           PlatformManagerClient        platformManagerClient,
+                                           ProcessManagerClient         processManagerClient,
+                                           ServerManagerClient          serverManagerClient,
+                                           ITInfrastructureEventClient  eventClient,
+                                           boolean                      generateIntegrationReport,
+                                           PermittedSynchronization     permittedSynchronization,
+                                           String                       integrationConnectorGUID,
+                                           IntegrationGovernanceContext integrationGovernanceContext,
+                                           String                       externalSourceGUID,
+                                           String                       externalSourceName)
     {
-        return infrastructureManagerName;
+        super(connectorId,
+              connectorName,
+              connectorUserId,
+              serverName,
+              openIntegrationClient,
+              openMetadataStoreClient,
+              generateIntegrationReport,
+              permittedSynchronization,
+              externalSourceGUID,
+              externalSourceName,
+              integrationConnectorGUID,
+              integrationGovernanceContext);
+
+        this.capabilityManagerClient    = capabilityManagerClient;
+        this.connectionManagerClient    = connectionManagerClient;
+        this.connectorTypeManagerClient = connectorTypeManagerClient;
+        this.dataAssetManagerClient     = dataAssetManagerClient;
+        this.endpointManagerClient      = endpointManagerClient;
+        this.hostManagerClient          = hostManagerClient;
+        this.itProfileManagerClient     = itProfileManagerClient;
+        this.platformManagerClient      = platformManagerClient;
+        this.processManagerClient       = processManagerClient;
+        this.serverManagerClient        = serverManagerClient;
+        this.eventClient                = eventClient;
     }
 
 
@@ -184,7 +215,7 @@ public class InfrastructureIntegratorContext
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
-        return hostManagerClient.createHost(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, hostProperties);
+        return hostManagerClient.createHost(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, hostProperties);
     }
 
 
@@ -205,7 +236,7 @@ public class InfrastructureIntegratorContext
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        return hostManagerClient.createHostFromTemplate(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, templateGUID, templateProperties);
+        return hostManagerClient.createHostFromTemplate(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, templateGUID, templateProperties);
     }
 
 
@@ -226,12 +257,12 @@ public class InfrastructureIntegratorContext
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        hostManagerClient.updateHost(userId, infrastructureManagerGUID, infrastructureManagerName, hostGUID, isMergeUpdate, hostProperties);
+        hostManagerClient.updateHost(userId, externalSourceGUID, externalSourceName, hostGUID, isMergeUpdate, hostProperties);
     }
 
 
     /**
-     * Create a relationship between a host and an cluster member host.
+     * Create a relationship between a host and a cluster member host.
      *
      * @param hostGUID unique identifier of the host
      * @param clusterMemberGUID unique identifier of the cluster member host
@@ -249,12 +280,12 @@ public class InfrastructureIntegratorContext
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
     {
-        hostManagerClient.setupClusterMember(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, hostGUID, clusterMemberGUID, effectiveFrom, effectiveTo);
+        hostManagerClient.setupClusterMember(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, hostGUID, clusterMemberGUID, effectiveFrom, effectiveTo);
     }
 
 
     /**
-     * Remove a relationship between a host and an cluster member host.
+     * Remove a relationship between a host and a cluster member host.
      *
      * @param hostGUID unique identifier of the host
      * @param clusterMemberGUID unique identifier of the cluster member host
@@ -270,7 +301,7 @@ public class InfrastructureIntegratorContext
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
     {
-        hostManagerClient.clearClusterMember(userId, infrastructureManagerGUID, infrastructureManagerName, hostGUID, clusterMemberGUID, effectiveTime);
+        hostManagerClient.clearClusterMember(userId, externalSourceGUID, externalSourceName, hostGUID, clusterMemberGUID, effectiveTime);
     }
 
 
@@ -326,7 +357,7 @@ public class InfrastructureIntegratorContext
                                                    UserNotAuthorizedException,
                                                    PropertyServerException
     {
-        hostManagerClient.removeHost(userId, infrastructureManagerGUID, infrastructureManagerName, hostGUID);
+        hostManagerClient.removeHost(userId, externalSourceGUID, externalSourceName, hostGUID);
     }
 
 
@@ -402,7 +433,8 @@ public class InfrastructureIntegratorContext
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        return hostManagerClient.getHostsForInfrastructureManager(userId, infrastructureManagerGUID, infrastructureManagerName, effectiveTime, startFrom, pageSize);
+        return hostManagerClient.getHostsForInfrastructureManager(userId, externalSourceGUID, externalSourceName, effectiveTime, startFrom,
+                                                                  pageSize);
     }
 
 
@@ -471,7 +503,7 @@ public class InfrastructureIntegratorContext
                                                                                                            UserNotAuthorizedException,
                                                                                                            PropertyServerException
     {
-        return platformManagerClient.createSoftwareServerPlatform(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, platformProperties);
+        return platformManagerClient.createSoftwareServerPlatform(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, platformProperties);
     }
 
 
@@ -492,7 +524,7 @@ public class InfrastructureIntegratorContext
                                                                                                          UserNotAuthorizedException,
                                                                                                          PropertyServerException
     {
-        return platformManagerClient.createSoftwareServerPlatformFromTemplate(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, templateGUID, templateProperties);
+        return platformManagerClient.createSoftwareServerPlatformFromTemplate(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, templateGUID, templateProperties);
     }
 
 
@@ -514,7 +546,7 @@ public class InfrastructureIntegratorContext
                                                                                                          PropertyServerException
 
     {
-        platformManagerClient.updateSoftwareServerPlatform(userId, infrastructureManagerGUID, infrastructureManagerName, platformGUID, isMergeUpdate, platformProperties);
+        platformManagerClient.updateSoftwareServerPlatform(userId, externalSourceGUID, externalSourceName, platformGUID, isMergeUpdate, platformProperties);
     }
 
 
@@ -571,7 +603,7 @@ public class InfrastructureIntegratorContext
                                                                          PropertyServerException
 
     {
-        platformManagerClient.removeSoftwareServerPlatform(userId, infrastructureManagerGUID, infrastructureManagerName, platformGUID);
+        platformManagerClient.removeSoftwareServerPlatform(userId, externalSourceGUID, externalSourceName, platformGUID);
     }
 
 
@@ -649,7 +681,7 @@ public class InfrastructureIntegratorContext
                                                                                                                           PropertyServerException
 
     {
-        return platformManagerClient.getSoftwareServerPlatformsForInfrastructureManager(userId, infrastructureManagerGUID, infrastructureManagerName, effectiveTime, startFrom, pageSize);
+        return platformManagerClient.getSoftwareServerPlatformsForInfrastructureManager(userId, externalSourceGUID, externalSourceName, effectiveTime, startFrom, pageSize);
     }
 
 
@@ -693,7 +725,7 @@ public class InfrastructureIntegratorContext
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        return serverManagerClient.createSoftwareServer(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, softwareServerProperties);
+        return serverManagerClient.createSoftwareServer(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, softwareServerProperties);
     }
 
 
@@ -715,7 +747,7 @@ public class InfrastructureIntegratorContext
                                                                                                  PropertyServerException
 
     {
-        return serverManagerClient.createSoftwareServerFromTemplate(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, templateGUID, templateProperties);
+        return serverManagerClient.createSoftwareServerFromTemplate(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, templateGUID, templateProperties);
     }
 
 
@@ -736,7 +768,7 @@ public class InfrastructureIntegratorContext
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        serverManagerClient.updateSoftwareServer(userId, infrastructureManagerGUID, infrastructureManagerName, softwareServerGUID, isMergeUpdate, softwareServerProperties);
+        serverManagerClient.updateSoftwareServer(userId, externalSourceGUID, externalSourceName, softwareServerGUID, isMergeUpdate, softwareServerProperties);
     }
 
 
@@ -791,7 +823,7 @@ public class InfrastructureIntegratorContext
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        serverManagerClient.removeSoftwareServer(userId, infrastructureManagerGUID, infrastructureManagerName, softwareServerGUID);
+        serverManagerClient.removeSoftwareServer(userId, externalSourceGUID, externalSourceName, softwareServerGUID);
     }
 
 
@@ -868,7 +900,8 @@ public class InfrastructureIntegratorContext
                                                                                                           PropertyServerException
 
     {
-        return serverManagerClient.getSoftwareServersForInfrastructureManager(userId, infrastructureManagerGUID, infrastructureManagerName, effectiveTime, startFrom, pageSize);
+        return serverManagerClient.getSoftwareServersForInfrastructureManager(userId, externalSourceGUID, externalSourceName, effectiveTime,
+                                                                              startFrom, pageSize);
     }
 
 
@@ -917,7 +950,7 @@ public class InfrastructureIntegratorContext
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        serverManagerClient.addServerPurpose(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, itAssetGUID, classificationName, effectiveFrom, effectiveTo, classificationProperties);
+        serverManagerClient.addServerPurpose(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, itAssetGUID, classificationName, effectiveFrom, effectiveTo, classificationProperties);
     }
 
 
@@ -945,7 +978,7 @@ public class InfrastructureIntegratorContext
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        serverManagerClient.updateServerPurpose(userId, infrastructureManagerGUID, infrastructureManagerName, assetTypeName, assetGUID, classificationName, effectiveFrom, effectiveTo, isMergeUpdate, classificationProperties);
+        serverManagerClient.updateServerPurpose(userId, externalSourceGUID, externalSourceName, assetTypeName, assetGUID, classificationName, effectiveFrom, effectiveTo, isMergeUpdate, classificationProperties);
     }
 
 
@@ -966,7 +999,7 @@ public class InfrastructureIntegratorContext
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
     {
-        serverManagerClient.clearServerPurpose(userId, infrastructureManagerGUID, infrastructureManagerName, assetTypeName, assetGUID, classificationName, effectiveTime);
+        serverManagerClient.clearServerPurpose(userId, externalSourceGUID, externalSourceName, assetTypeName, assetGUID, classificationName, effectiveTime);
     }
 
 
@@ -987,7 +1020,7 @@ public class InfrastructureIntegratorContext
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        serverManagerClient.deployITAsset(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome,  itAssetGUID, destinationGUID, deploymentProperties);
+        serverManagerClient.deployITAsset(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, itAssetGUID, destinationGUID, deploymentProperties);
     }
 
 
@@ -1009,7 +1042,7 @@ public class InfrastructureIntegratorContext
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        serverManagerClient.updateITAssetDeployment(userId, infrastructureManagerGUID, infrastructureManagerName, deploymentGUID, isMergeUpdate, deploymentProperties);
+        serverManagerClient.updateITAssetDeployment(userId, externalSourceGUID, externalSourceName, deploymentGUID, isMergeUpdate, deploymentProperties);
     }
 
 
@@ -1030,7 +1063,7 @@ public class InfrastructureIntegratorContext
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
     {
-        serverManagerClient.clearDeployment(userId, infrastructureManagerGUID, infrastructureManagerName, itAssetGUID, destinationGUID, effectiveTime);
+        serverManagerClient.clearDeployment(userId, externalSourceGUID, externalSourceName, itAssetGUID, destinationGUID, effectiveTime);
     }
 
 
@@ -1105,7 +1138,7 @@ public class InfrastructureIntegratorContext
                                                                                                      UserNotAuthorizedException,
                                                                                                      PropertyServerException
     {
-        return capabilityManagerClient.createSoftwareCapability(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, classificationName, capabilityProperties);
+        return capabilityManagerClient.createSoftwareCapability(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, classificationName, capabilityProperties);
     }
 
 
@@ -1126,7 +1159,7 @@ public class InfrastructureIntegratorContext
                                                                                                      UserNotAuthorizedException,
                                                                                                      PropertyServerException
     {
-        return capabilityManagerClient.createSoftwareCapabilityFromTemplate(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, templateGUID, templateProperties);
+        return capabilityManagerClient.createSoftwareCapabilityFromTemplate(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, templateGUID, templateProperties);
     }
 
 
@@ -1147,7 +1180,7 @@ public class InfrastructureIntegratorContext
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
     {
-        capabilityManagerClient.updateSoftwareCapability(userId, infrastructureManagerGUID, infrastructureManagerName, capabilityGUID, isMergeUpdate, capabilityProperties);
+        capabilityManagerClient.updateSoftwareCapability(userId, externalSourceGUID, externalSourceName, capabilityGUID, isMergeUpdate, capabilityProperties);
     }
 
 
@@ -1170,7 +1203,7 @@ public class InfrastructureIntegratorContext
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        capabilityManagerClient.deployCapability(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, capabilityGUID, infrastructureAssetGUID, deploymentProperties);
+        capabilityManagerClient.deployCapability(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, capabilityGUID, infrastructureAssetGUID, deploymentProperties);
     }
 
 
@@ -1191,7 +1224,7 @@ public class InfrastructureIntegratorContext
                                                                                                        UserNotAuthorizedException,
                                                                                                        PropertyServerException
     {
-        capabilityManagerClient.updateCapabilityDeployment(userId, infrastructureManagerGUID, infrastructureManagerName, deploymentGUID, isMergeUpdate, deploymentProperties);
+        capabilityManagerClient.updateCapabilityDeployment(userId, externalSourceGUID, externalSourceName, deploymentGUID, isMergeUpdate, deploymentProperties);
     }
 
 
@@ -1212,7 +1245,7 @@ public class InfrastructureIntegratorContext
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
-        capabilityManagerClient.removeCapabilityDeployment(userId, infrastructureManagerGUID, infrastructureManagerName, itAssetGUID, capabilityGUID, effectiveTime);
+        capabilityManagerClient.removeCapabilityDeployment(userId, externalSourceGUID, externalSourceName, itAssetGUID, capabilityGUID, effectiveTime);
     }
 
 
@@ -1230,7 +1263,7 @@ public class InfrastructureIntegratorContext
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        capabilityManagerClient.removeSoftwareCapability(userId, infrastructureManagerGUID, infrastructureManagerName, capabilityGUID);
+        capabilityManagerClient.removeSoftwareCapability(userId, externalSourceGUID, externalSourceName, capabilityGUID);
     }
 
 
@@ -1355,7 +1388,8 @@ public class InfrastructureIntegratorContext
                                                                                                                    UserNotAuthorizedException,
                                                                                                                    PropertyServerException
     {
-        return capabilityManagerClient.getSoftwareCapabilitiesForInfrastructureManager(userId, infrastructureManagerGUID, infrastructureManagerName, effectiveTime, startFrom, pageSize);
+        return capabilityManagerClient.getSoftwareCapabilitiesForInfrastructureManager(userId, externalSourceGUID, externalSourceName,
+                                                                                       effectiveTime, startFrom, pageSize);
     }
 
 
@@ -1403,7 +1437,7 @@ public class InfrastructureIntegratorContext
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        return capabilityManagerClient.createServerAssetUse(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, capabilityGUID, assetGUID, properties);
+        return capabilityManagerClient.createServerAssetUse(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, capabilityGUID, assetGUID, properties);
     }
 
 
@@ -1424,7 +1458,7 @@ public class InfrastructureIntegratorContext
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        capabilityManagerClient.updateServerAssetUse(userId, infrastructureManagerGUID, infrastructureManagerName, serverAssetUseGUID, isMergeUpdate, properties);
+        capabilityManagerClient.updateServerAssetUse(userId, externalSourceGUID, externalSourceName, serverAssetUseGUID, isMergeUpdate, properties);
     }
 
 
@@ -1441,7 +1475,7 @@ public class InfrastructureIntegratorContext
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        capabilityManagerClient.removeServerAssetUse(userId, infrastructureManagerGUID, infrastructureManagerName, serverAssetUseGUID);
+        capabilityManagerClient.removeServerAssetUse(userId, externalSourceGUID, externalSourceName, serverAssetUseGUID);
     }
 
 
@@ -1568,7 +1602,7 @@ public class InfrastructureIntegratorContext
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
-        return dataAssetManagerClient.createDataAsset(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, dataAssetProperties);
+        return dataAssetManagerClient.createDataAsset(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, dataAssetProperties);
     }
 
 
@@ -1591,7 +1625,7 @@ public class InfrastructureIntegratorContext
                                                                                             PropertyServerException
 
     {
-        return dataAssetManagerClient.createDataAssetFromTemplate(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, templateGUID, templateProperties);
+        return dataAssetManagerClient.createDataAssetFromTemplate(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, templateGUID, templateProperties);
     }
 
 
@@ -1612,7 +1646,7 @@ public class InfrastructureIntegratorContext
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        dataAssetManagerClient.updateDataAsset(userId, infrastructureManagerGUID, infrastructureManagerName, assetGUID, isMergeUpdate, dataAssetProperties);
+        dataAssetManagerClient.updateDataAsset(userId, externalSourceGUID, externalSourceName, assetGUID, isMergeUpdate, dataAssetProperties);
     }
 
 
@@ -1634,7 +1668,7 @@ public class InfrastructureIntegratorContext
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        dataAssetManagerClient.setDataAssetAsReferenceData(userId, infrastructureManagerGUID, infrastructureManagerName, assetGUID, effectiveFrom, effectiveTo);
+        dataAssetManagerClient.setDataAssetAsReferenceData(userId, externalSourceGUID, externalSourceName, assetGUID, effectiveFrom, effectiveTo);
     }
 
 
@@ -1653,7 +1687,7 @@ public class InfrastructureIntegratorContext
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        dataAssetManagerClient.clearDataAssetAsReferenceData(userId, infrastructureManagerGUID, infrastructureManagerName, assetGUID, effectiveTime);
+        dataAssetManagerClient.clearDataAssetAsReferenceData(userId, externalSourceGUID, externalSourceName, assetGUID, effectiveTime);
     }
 
 
@@ -1711,7 +1745,7 @@ public class InfrastructureIntegratorContext
                                                          UserNotAuthorizedException,
                                                          PropertyServerException
     {
-        dataAssetManagerClient.removeDataAsset(userId, infrastructureManagerGUID, infrastructureManagerName, assetGUID);
+        dataAssetManagerClient.removeDataAsset(userId, externalSourceGUID, externalSourceName, assetGUID);
     }
 
 
@@ -1790,7 +1824,7 @@ public class InfrastructureIntegratorContext
                                                                                                 PropertyServerException
 
     {
-        return dataAssetManagerClient.getDataAssetsForInfrastructureManager(userId, infrastructureManagerGUID, infrastructureManagerName, effectiveTime, startFrom, pageSize);
+        return dataAssetManagerClient.getDataAssetsForInfrastructureManager(userId, externalSourceGUID, externalSourceName, effectiveTime, startFrom, pageSize);
     }
 
 
@@ -1836,7 +1870,7 @@ public class InfrastructureIntegratorContext
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
     {
-        return processManagerClient.createProcess(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, processStatus, processProperties);
+        return processManagerClient.createProcess(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, processStatus, processProperties);
     }
 
 
@@ -1858,7 +1892,7 @@ public class InfrastructureIntegratorContext
                                                                                           PropertyServerException
 
     {
-        return processManagerClient.createProcessFromTemplate(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, templateGUID, templateProperties);
+        return processManagerClient.createProcessFromTemplate(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, templateGUID, templateProperties);
     }
 
 
@@ -1880,7 +1914,7 @@ public class InfrastructureIntegratorContext
                                                                           PropertyServerException
 
     {
-        processManagerClient.updateProcess(userId, infrastructureManagerGUID, infrastructureManagerName, processGUID, isMergeUpdate, processProperties);
+        processManagerClient.updateProcess(userId, externalSourceGUID, externalSourceName, processGUID, isMergeUpdate, processProperties);
     }
 
 
@@ -1899,7 +1933,7 @@ public class InfrastructureIntegratorContext
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
-        processManagerClient.updateProcessStatus(userId, infrastructureManagerGUID, infrastructureManagerName, processGUID, processStatus);
+        processManagerClient.updateProcessStatus(userId, externalSourceGUID, externalSourceName, processGUID, processStatus);
     }
 
 
@@ -1924,7 +1958,7 @@ public class InfrastructureIntegratorContext
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        processManagerClient.setupProcessParent(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, parentProcessGUID, childProcessGUID, containmentType, effectiveFrom, effectiveTo);
+        processManagerClient.setupProcessParent(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, parentProcessGUID, childProcessGUID, containmentType, effectiveFrom, effectiveTo);
     }
 
 
@@ -1945,7 +1979,7 @@ public class InfrastructureIntegratorContext
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
     {
-        processManagerClient.clearProcessParent(userId, infrastructureManagerGUID, infrastructureManagerName, parentProcessGUID, childProcessGUID, effectiveTime);
+        processManagerClient.clearProcessParent(userId, externalSourceGUID, externalSourceName, parentProcessGUID, childProcessGUID, effectiveTime);
     }
 
 
@@ -2002,7 +2036,7 @@ public class InfrastructureIntegratorContext
                                                          UserNotAuthorizedException,
                                                          PropertyServerException
     {
-        processManagerClient.removeProcess(userId, infrastructureManagerGUID, infrastructureManagerName, processGUID);
+        processManagerClient.removeProcess(userId, externalSourceGUID, externalSourceName, processGUID);
     }
 
 
@@ -2079,7 +2113,7 @@ public class InfrastructureIntegratorContext
                                                                                              PropertyServerException
 
     {
-        return processManagerClient.getProcessesForInfrastructureManager(userId, infrastructureManagerGUID, infrastructureManagerName, effectiveTime, startFrom, pageSize);
+        return processManagerClient.getProcessesForInfrastructureManager(userId, externalSourceGUID, externalSourceName, effectiveTime, startFrom, pageSize);
     }
 
 
@@ -2155,7 +2189,7 @@ public class InfrastructureIntegratorContext
 
 
     /**
-     * Classify a port, process or asset as "BusinessSignificant" (this may effect the way that lineage is displayed).
+     * Classify a port, process or asset as "BusinessSignificant" (this may affect the way that lineage is displayed).
      *
      * @param elementGUID unique identifier of the metadata element to update
      * @param effectiveFrom time when this hosting is effective - null means immediately
@@ -2171,7 +2205,7 @@ public class InfrastructureIntegratorContext
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
-        processManagerClient.setBusinessSignificant(userId, infrastructureManagerGUID, infrastructureManagerName, elementGUID, effectiveFrom, effectiveTo);
+        processManagerClient.setBusinessSignificant(userId, externalSourceGUID, externalSourceName, elementGUID, effectiveFrom, effectiveTo);
     }
 
 
@@ -2190,7 +2224,7 @@ public class InfrastructureIntegratorContext
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
-        processManagerClient.clearBusinessSignificant(userId, infrastructureManagerGUID, infrastructureManagerName, elementGUID, effectiveTime);
+        processManagerClient.clearBusinessSignificant(userId, externalSourceGUID, externalSourceName, elementGUID, effectiveTime);
     }
 
 
@@ -2216,7 +2250,7 @@ public class InfrastructureIntegratorContext
                                                                           PropertyServerException
 
     {
-        return processManagerClient.setupDataFlow(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, dataSupplierGUID, dataConsumerGUID, properties, effectiveTime);
+        return processManagerClient.setupDataFlow(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, dataSupplierGUID, dataConsumerGUID, properties, effectiveTime);
     }
 
 
@@ -2266,7 +2300,7 @@ public class InfrastructureIntegratorContext
                                                                         PropertyServerException
 
     {
-        processManagerClient.updateDataFlow(userId, infrastructureManagerGUID, infrastructureManagerName, dataFlowGUID, properties, effectiveTime);
+        processManagerClient.updateDataFlow(userId, externalSourceGUID, externalSourceName, dataFlowGUID, properties, effectiveTime);
     }
 
 
@@ -2286,7 +2320,7 @@ public class InfrastructureIntegratorContext
                                                            PropertyServerException
 
     {
-        processManagerClient.clearDataFlow(userId, infrastructureManagerGUID, infrastructureManagerName, dataFlowGUID, effectiveTime);
+        processManagerClient.clearDataFlow(userId, externalSourceGUID, externalSourceName, dataFlowGUID, effectiveTime);
     }
 
 
@@ -2364,7 +2398,7 @@ public class InfrastructureIntegratorContext
                                                                                 PropertyServerException
 
     {
-        return processManagerClient.setupControlFlow(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, currentStepGUID, nextStepGUID, properties, effectiveTime);
+        return processManagerClient.setupControlFlow(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, currentStepGUID, nextStepGUID, properties, effectiveTime);
     }
 
 
@@ -2414,7 +2448,7 @@ public class InfrastructureIntegratorContext
                                                                               PropertyServerException
 
     {
-        processManagerClient.updateControlFlow(userId, infrastructureManagerGUID, infrastructureManagerName, controlFlowGUID, properties, effectiveTime);
+        processManagerClient.updateControlFlow(userId, externalSourceGUID, externalSourceName, controlFlowGUID, properties, effectiveTime);
     }
 
 
@@ -2434,7 +2468,7 @@ public class InfrastructureIntegratorContext
                                                               PropertyServerException
 
     {
-        processManagerClient.clearControlFlow(userId, infrastructureManagerGUID, infrastructureManagerName, controlFlowGUID, effectiveTime);
+        processManagerClient.clearControlFlow(userId, externalSourceGUID, externalSourceName, controlFlowGUID, effectiveTime);
     }
 
 
@@ -2512,7 +2546,7 @@ public class InfrastructureIntegratorContext
                                                                                PropertyServerException
 
     {
-        return processManagerClient.setupProcessCall(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, callerGUID, calledGUID, properties, effectiveTime);
+        return processManagerClient.setupProcessCall(userId, externalSourceGUID, externalSourceName, infrastructureManagerIsHome, callerGUID, calledGUID, properties, effectiveTime);
     }
 
 
@@ -2561,7 +2595,7 @@ public class InfrastructureIntegratorContext
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        processManagerClient.updateProcessCall(userId, infrastructureManagerGUID, infrastructureManagerName, processCallGUID, properties, effectiveTime);
+        processManagerClient.updateProcessCall(userId, externalSourceGUID, externalSourceName, processCallGUID, properties, effectiveTime);
     }
 
 
@@ -2581,7 +2615,7 @@ public class InfrastructureIntegratorContext
                                                               PropertyServerException
 
     {
-        processManagerClient.clearProcessCall(userId, infrastructureManagerGUID, infrastructureManagerName, processCallGUID, effectiveTime);
+        processManagerClient.clearProcessCall(userId, externalSourceGUID, externalSourceName, processCallGUID, effectiveTime);
     }
 
 
@@ -2705,7 +2739,7 @@ public class InfrastructureIntegratorContext
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        processManagerClient.updateLineageMapping(userId, infrastructureManagerGUID, infrastructureManagerName, lineageMappingGUID, properties, effectiveTime);
+        processManagerClient.updateLineageMapping(userId, externalSourceGUID, externalSourceName, lineageMappingGUID, properties, effectiveTime);
     }
 
 
@@ -2798,7 +2832,7 @@ public class InfrastructureIntegratorContext
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        return connectionManagerClient.createConnection(userId, infrastructureManagerGUID, infrastructureManagerName, connectionProperties);
+        return connectionManagerClient.createConnection(userId, externalSourceGUID, externalSourceName, connectionProperties);
     }
 
 
@@ -2819,7 +2853,7 @@ public class InfrastructureIntegratorContext
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        return connectionManagerClient.createConnectionFromTemplate(userId, infrastructureManagerGUID, infrastructureManagerName, templateGUID, templateProperties);
+        return connectionManagerClient.createConnectionFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateProperties);
     }
 
 
@@ -2841,7 +2875,7 @@ public class InfrastructureIntegratorContext
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        connectionManagerClient.updateConnection(userId, infrastructureManagerGUID, infrastructureManagerName, connectionGUID, isMergeUpdate, connectionProperties);
+        connectionManagerClient.updateConnection(userId, externalSourceGUID, externalSourceName, connectionGUID, isMergeUpdate, connectionProperties);
     }
 
 
@@ -2860,7 +2894,7 @@ public class InfrastructureIntegratorContext
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
     {
-        connectionManagerClient.setupConnectorType(userId, infrastructureManagerGUID, infrastructureManagerName, connectionGUID, connectorTypeGUID);
+        connectionManagerClient.setupConnectorType(userId, externalSourceGUID, externalSourceName, connectionGUID, connectorTypeGUID);
     }
 
 
@@ -2879,7 +2913,7 @@ public class InfrastructureIntegratorContext
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        connectionManagerClient.clearConnectorType(userId, infrastructureManagerGUID, infrastructureManagerName, connectionGUID, connectorTypeGUID);
+        connectionManagerClient.clearConnectorType(userId, externalSourceGUID, externalSourceName, connectionGUID, connectorTypeGUID);
     }
 
 
@@ -2898,7 +2932,7 @@ public class InfrastructureIntegratorContext
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
     {
-        connectionManagerClient.setupEndpoint(userId, infrastructureManagerGUID, infrastructureManagerName, connectionGUID, endpointGUID);
+        connectionManagerClient.setupEndpoint(userId, externalSourceGUID, externalSourceName, connectionGUID, endpointGUID);
     }
 
 
@@ -2917,7 +2951,7 @@ public class InfrastructureIntegratorContext
                                                           UserNotAuthorizedException,
                                                           PropertyServerException
     {
-        connectionManagerClient.clearEndpoint(userId, infrastructureManagerGUID, infrastructureManagerName, connectionGUID, endpointGUID);
+        connectionManagerClient.clearEndpoint(userId, externalSourceGUID, externalSourceName, connectionGUID, endpointGUID);
     }
 
 
@@ -2942,7 +2976,7 @@ public class InfrastructureIntegratorContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        connectionManagerClient.setupEmbeddedConnection(userId, infrastructureManagerGUID, infrastructureManagerName, connectionGUID, position, displayName, arguments, embeddedConnectionGUID);
+        connectionManagerClient.setupEmbeddedConnection(userId, externalSourceGUID, externalSourceName, connectionGUID, position, displayName, arguments, embeddedConnectionGUID);
     }
 
 
@@ -2961,7 +2995,7 @@ public class InfrastructureIntegratorContext
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        connectionManagerClient.clearEmbeddedConnection(userId, infrastructureManagerGUID, infrastructureManagerName, connectionGUID, embeddedConnectionGUID);
+        connectionManagerClient.clearEmbeddedConnection(userId, externalSourceGUID, externalSourceName, connectionGUID, embeddedConnectionGUID);
     }
 
 
@@ -2982,7 +3016,7 @@ public class InfrastructureIntegratorContext
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        connectionManagerClient.setupAssetConnection(userId, infrastructureManagerGUID, infrastructureManagerName, assetGUID, assetSummary, connectionGUID);
+        connectionManagerClient.setupAssetConnection(userId, externalSourceGUID, externalSourceName, assetGUID, assetSummary, connectionGUID);
     }
 
 
@@ -3001,7 +3035,7 @@ public class InfrastructureIntegratorContext
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
-        connectionManagerClient.clearAssetConnection(userId, infrastructureManagerGUID, infrastructureManagerName, assetGUID, connectionGUID);
+        connectionManagerClient.clearAssetConnection(userId, externalSourceGUID, externalSourceName, assetGUID, connectionGUID);
     }
 
 
@@ -3018,7 +3052,7 @@ public class InfrastructureIntegratorContext
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
     {
-        connectionManagerClient.removeConnection(userId, infrastructureManagerGUID, infrastructureManagerName, connectionGUID);
+        connectionManagerClient.removeConnection(userId, externalSourceGUID, externalSourceName, connectionGUID);
     }
 
 
@@ -3141,7 +3175,7 @@ public class InfrastructureIntegratorContext
 
 
     /**
-     * Update the metadata element representing a endpoint.  It is possible to use the subtype property classes or
+     * Update the metadata element representing an endpoint.  It is possible to use the subtype property classes or
      * set up specialized properties in extended properties.
      *
      * @param endpointGUID unique identifier of the metadata element to update
@@ -3158,7 +3192,7 @@ public class InfrastructureIntegratorContext
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        endpointManagerClient.updateEndpoint(userId, infrastructureManagerGUID, infrastructureManagerName, isMergeUpdate, endpointGUID, endpointProperties);
+        endpointManagerClient.updateEndpoint(userId, externalSourceGUID, externalSourceName, isMergeUpdate, endpointGUID, endpointProperties);
     }
 
 
@@ -3177,7 +3211,7 @@ public class InfrastructureIntegratorContext
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
     {
-        endpointManagerClient.removeEndpoint(userId, infrastructureManagerGUID, infrastructureManagerName, endpointGUID);
+        endpointManagerClient.removeEndpoint(userId, externalSourceGUID, externalSourceName, endpointGUID);
     }
 
 
@@ -3316,7 +3350,7 @@ public class InfrastructureIntegratorContext
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
-        return connectorTypeManagerClient.createConnectorType(userId, infrastructureManagerGUID, infrastructureManagerName, connectorTypeProperties);
+        return connectorTypeManagerClient.createConnectorType(userId, externalSourceGUID, externalSourceName, connectorTypeProperties);
     }
 
 
@@ -3337,7 +3371,7 @@ public class InfrastructureIntegratorContext
                                                                                                 UserNotAuthorizedException,
                                                                                                 PropertyServerException
     {
-        return connectorTypeManagerClient.createConnectorTypeFromTemplate(userId, infrastructureManagerGUID, infrastructureManagerName, templateGUID, templateProperties);
+        return connectorTypeManagerClient.createConnectorTypeFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateProperties);
     }
 
 
@@ -3359,7 +3393,7 @@ public class InfrastructureIntegratorContext
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        connectorTypeManagerClient.updateConnectorType(userId, infrastructureManagerGUID, infrastructureManagerName, isMergeUpdate, connectorTypeGUID, connectorTypeProperties);
+        connectorTypeManagerClient.updateConnectorType(userId, externalSourceGUID, externalSourceName, isMergeUpdate, connectorTypeGUID, connectorTypeProperties);
     }
 
 
@@ -3376,7 +3410,7 @@ public class InfrastructureIntegratorContext
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
     {
-        connectorTypeManagerClient.removeConnectorType(userId, infrastructureManagerGUID, infrastructureManagerName, connectorTypeGUID);
+        connectorTypeManagerClient.removeConnectorType(userId, externalSourceGUID, externalSourceName, connectorTypeGUID);
     }
 
 
@@ -3462,8 +3496,8 @@ public class InfrastructureIntegratorContext
      * @param infrastructureManagerGUID   guid of the software server capability entity that represented the external source - null for local
      * @param infrastructureManagerName   name of the software server capability entity that represented the external source
      * @param itInfrastructureGUID unique identifier of the piece of IT infrastructure that is described by the new IT profile.
-     * @param itUserId            user Id used by the IT Infrastructure
-     * @param properties          properties for a IT profile
+     * @param itUserId            userId used by the IT Infrastructure
+     * @param properties          properties for an IT profile
      *
      * @return unique identifier of IT profile
      *
@@ -3604,7 +3638,7 @@ public class InfrastructureIntegratorContext
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        itProfileManagerClient.linkITInfrastructureToProfile(userId, infrastructureManagerGUID, infrastructureManagerName, itInfrastructureGUID, itProfileGUID, effectiveFrom, effectiveTo);
+        itProfileManagerClient.linkITInfrastructureToProfile(userId, externalSourceGUID, externalSourceName, itInfrastructureGUID, itProfileGUID, effectiveFrom, effectiveTo);
     }
 
 
@@ -3627,7 +3661,7 @@ public class InfrastructureIntegratorContext
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        itProfileManagerClient.updateITInfrastructureToProfile(userId, infrastructureManagerGUID, infrastructureManagerName, itInfrastructureGUID, itProfileGUID, effectiveFrom, effectiveTo);
+        itProfileManagerClient.updateITInfrastructureToProfile(userId, externalSourceGUID, externalSourceName, itInfrastructureGUID, itProfileGUID, effectiveFrom, effectiveTo);
     }
 
 
@@ -3648,7 +3682,7 @@ public class InfrastructureIntegratorContext
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        itProfileManagerClient.unlinkITInfrastructureFromProfile(userId, infrastructureManagerGUID, infrastructureManagerName, itInfrastructureGUID, itProfileGUID, effectiveTime);
+        itProfileManagerClient.unlinkITInfrastructureFromProfile(userId, externalSourceGUID, externalSourceName, itInfrastructureGUID, itProfileGUID, effectiveTime);
     }
 
 
@@ -3757,7 +3791,7 @@ public class InfrastructureIntegratorContext
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
     {
-        return itProfileManagerClient.createUserIdentity(userId, infrastructureManagerGUID, infrastructureManagerName, newIdentity);
+        return itProfileManagerClient.createUserIdentity(userId, externalSourceGUID, externalSourceName, newIdentity);
     }
 
 
@@ -3778,7 +3812,7 @@ public class InfrastructureIntegratorContext
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException
     {
-        itProfileManagerClient.updateUserIdentity(userId, infrastructureManagerGUID, infrastructureManagerName, userIdentityGUID, isMergeUpdate, properties);
+        itProfileManagerClient.updateUserIdentity(userId, externalSourceGUID, externalSourceName, userIdentityGUID, isMergeUpdate, properties);
     }
 
 
@@ -3796,7 +3830,7 @@ public class InfrastructureIntegratorContext
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
     {
-        itProfileManagerClient.deleteUserIdentity(userId, infrastructureManagerGUID, infrastructureManagerName, userIdentityGUID);
+        itProfileManagerClient.deleteUserIdentity(userId, externalSourceGUID, externalSourceName, userIdentityGUID);
     }
 
 
@@ -3818,7 +3852,7 @@ public class InfrastructureIntegratorContext
                                                                                   PropertyServerException,
                                                                                   UserNotAuthorizedException
     {
-        itProfileManagerClient.addIdentityToProfile(userId, infrastructureManagerGUID, infrastructureManagerName, userIdentityGUID, profileGUID, properties);
+        itProfileManagerClient.addIdentityToProfile(userId, externalSourceGUID, externalSourceName, userIdentityGUID, profileGUID, properties);
     }
 
 
@@ -3841,7 +3875,7 @@ public class InfrastructureIntegratorContext
                                                                                    PropertyServerException,
                                                                                    UserNotAuthorizedException
     {
-        itProfileManagerClient.updateProfileIdentity(userId, infrastructureManagerGUID, infrastructureManagerName, userIdentityGUID, profileGUID, isMergeUpdate, properties);
+        itProfileManagerClient.updateProfileIdentity(userId, externalSourceGUID, externalSourceName, userIdentityGUID, profileGUID, isMergeUpdate, properties);
     }
 
 
@@ -3860,7 +3894,7 @@ public class InfrastructureIntegratorContext
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
     {
-        itProfileManagerClient.removeIdentityFromProfile(userId, infrastructureManagerGUID, infrastructureManagerName, userIdentityGUID, profileGUID);
+        itProfileManagerClient.removeIdentityFromProfile(userId, externalSourceGUID, externalSourceName, userIdentityGUID, profileGUID);
     }
 
 

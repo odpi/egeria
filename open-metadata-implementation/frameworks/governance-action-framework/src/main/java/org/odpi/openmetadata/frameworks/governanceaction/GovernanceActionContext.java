@@ -6,6 +6,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.client.OpenGovernanceClient;
+import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
@@ -54,11 +56,13 @@ public class GovernanceActionContext implements GovernanceContext,
     private final List<ActionTargetElement>  actionTargetElements;
 
 
-    private volatile CompletionStatus  completionStatus = null;
+    private volatile CompletionStatus        completionStatus = null;
 
-    private final String                     governanceActionGUID;
-    private final OpenMetadataClient         openMetadataStore;
-    private final PropertyHelper             propertyHelper = new PropertyHelper();
+    private final String               governanceActionGUID;
+    private final OpenGovernanceClient openGovernanceClient;
+    private final OpenMetadataClient   openMetadataClient;
+    private final OpenMetadataStore    openMetadataStore;
+    private final PropertyHelper       propertyHelper = new PropertyHelper();
 
 
     /**
@@ -70,7 +74,7 @@ public class GovernanceActionContext implements GovernanceContext,
      * @param requestParameters name-value properties to control the governance action service
      * @param requestSourceElements metadata elements associated with the request to the governance action service
      * @param actionTargetElements metadata elements that need to be worked on by the governance action service
-     * @param openMetadataStore client to the metadata store for use by the governance action service
+     * @param openGovernanceClient client to the metadata store for use by the governance action service
      */
     public GovernanceActionContext(String                     userId,
                                    String                     governanceActionGUID,
@@ -78,7 +82,8 @@ public class GovernanceActionContext implements GovernanceContext,
                                    Map<String, String>        requestParameters,
                                    List<RequestSourceElement> requestSourceElements,
                                    List<ActionTargetElement>  actionTargetElements,
-                                   OpenMetadataClient         openMetadataStore)
+                                   OpenMetadataClient         openMetadataClient,
+                                   OpenGovernanceClient       openGovernanceClient)
     {
         this.userId = userId;
         this.governanceActionGUID = governanceActionGUID;
@@ -86,7 +91,9 @@ public class GovernanceActionContext implements GovernanceContext,
         this.requestParameters = requestParameters;
         this.requestSourceElements = requestSourceElements;
         this.actionTargetElements = actionTargetElements;
-        this.openMetadataStore = openMetadataStore;
+        this.openMetadataClient = openMetadataClient;
+        this.openGovernanceClient = openGovernanceClient;
+        this.openMetadataStore = new OpenMetadataStore(openMetadataClient, userId);
     }
 
 
@@ -194,13 +201,15 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        return openMetadataStore.createIncidentReport(qualifiedName,
-                                                      domainIdentifier,
-                                                      background,
-                                                      impactedResources,
-                                                      previousIncidents,
-                                                      incidentClassifiers,
-                                                      additionalProperties);
+        return openMetadataClient.createIncidentReport(userId,
+                                                         qualifiedName,
+                                                         domainIdentifier,
+                                                         background,
+                                                         impactedResources,
+                                                         previousIncidents,
+                                                         incidentClassifiers,
+                                                         additionalProperties,
+                                                         governanceActionGUID);
     }
 
 
@@ -229,7 +238,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        openMetadataStore.updateActionTargetStatus(actionTargetGUID, status, startDate, completionDate, completionMessage);
+        openGovernanceClient.updateActionTargetStatus(userId, actionTargetGUID, status, startDate, completionDate, completionMessage);
     }
 
 
@@ -252,7 +261,7 @@ public class GovernanceActionContext implements GovernanceContext,
     {
         this.completionStatus = status;
 
-        openMetadataStore.recordCompletionStatus(status, outputGuards, requestParameters, null, null);
+        openGovernanceClient.recordCompletionStatus(userId, governanceActionGUID, requestParameters, status, outputGuards, null, null);
     }
 
 
@@ -272,12 +281,12 @@ public class GovernanceActionContext implements GovernanceContext,
     public synchronized  void recordCompletionStatus(CompletionStatus      status,
                                                      List<String>          outputGuards,
                                                      List<NewActionTarget> newActionTargets) throws InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
     {
         this.completionStatus = status;
 
-        openMetadataStore.recordCompletionStatus(status, outputGuards, requestParameters, newActionTargets, null);
+        openGovernanceClient.recordCompletionStatus(userId, governanceActionGUID, requestParameters, status, outputGuards, newActionTargets, null);
     }
 
 
@@ -343,7 +352,13 @@ public class GovernanceActionContext implements GovernanceContext,
             combinedRequestParameters.putAll(newRequestParameters);
         }
 
-        openMetadataStore.recordCompletionStatus(status, outputGuards, combinedRequestParameters, newActionTargets, completionMessage);
+        openGovernanceClient.recordCompletionStatus(userId,
+                                                    governanceActionGUID,
+                                                    combinedRequestParameters,
+                                                    status,
+                                                    outputGuards,
+                                                    newActionTargets,
+                                                    completionMessage);
     }
 
 
@@ -428,7 +443,7 @@ public class GovernanceActionContext implements GovernanceContext,
 
         ElementProperties properties = packBasicProperties(qualifiedName, name, null, description, null, methodName);
 
-        return openMetadataStore.createMetadataElementInStore(assetTypeName, ElementStatus.ACTIVE, null, null, properties, null);
+        return openMetadataClient.createMetadataElementInStore(userId, assetTypeName, ElementStatus.ACTIVE, null, null, properties, null);
     }
 
 
@@ -462,7 +477,7 @@ public class GovernanceActionContext implements GovernanceContext,
 
         ElementProperties properties = packBasicProperties(qualifiedName, name, versionIdentifier, description, extendedProperties, methodName);
 
-        return openMetadataStore.createMetadataElementInStore(assetTypeName, ElementStatus.ACTIVE, null, null, properties, null);
+        return openMetadataClient.createMetadataElementInStore(userId, assetTypeName, ElementStatus.ACTIVE, null, null, properties, null);
     }
 
 
@@ -494,7 +509,7 @@ public class GovernanceActionContext implements GovernanceContext,
 
         ElementProperties properties = packBasicProperties(qualifiedName, name, null, description, null, methodName);
 
-        return openMetadataStore.createMetadataElementInStore("Asset", ElementStatus.ACTIVE, null, null, properties, templateGUID);
+        return openMetadataClient.createMetadataElementInStore(userId, "Asset", ElementStatus.ACTIVE, null, null, properties, templateGUID);
     }
 
 
@@ -538,7 +553,13 @@ public class GovernanceActionContext implements GovernanceContext,
 
         ElementProperties properties = packBasicProperties(qualifiedName, name, versionIdentifier, description, extendedProperties, methodName);
 
-        return openMetadataStore.createMetadataElementInStore(metadataElementTypeName, ElementStatus.ACTIVE, null, null, properties, templateGUID);
+        return openMetadataClient.createMetadataElementInStore(userId,
+                                                                 metadataElementTypeName,
+                                                                 ElementStatus.ACTIVE,
+                                                                 null,
+                                                                 null,
+                                                                 properties,
+                                                                 templateGUID);
     }
 
 
@@ -570,12 +591,13 @@ public class GovernanceActionContext implements GovernanceContext,
 
         ElementProperties properties = packBasicProperties(qualifiedName, name, null, description, null, methodName);
 
-        return openMetadataStore.createMetadataElementInStore(processTypeName,
-                                                              initialStatus,
-                                                              null,
-                                                              null,
-                                                              properties,
-                                                              null);
+        return openMetadataClient.createMetadataElementInStore(userId,
+                                                                 processTypeName,
+                                                                 initialStatus,
+                                                                 null,
+                                                                 null,
+                                                                 properties,
+                                                                 null);
     }
 
 
@@ -615,12 +637,13 @@ public class GovernanceActionContext implements GovernanceContext,
 
         properties = propertyHelper.addStringProperty(properties, "formula", formula);
 
-        return openMetadataStore.createMetadataElementInStore(processTypeName,
-                                                              initialStatus,
-                                                              null,
-                                                              null,
-                                                              properties,
-                                                              null);
+        return openMetadataClient.createMetadataElementInStore(userId,
+                                                                 processTypeName,
+                                                                 initialStatus,
+                                                                 null,
+                                                                 null,
+                                                                 properties,
+                                                                 null);
     }
 
 
@@ -653,12 +676,13 @@ public class GovernanceActionContext implements GovernanceContext,
 
         ElementProperties properties = packBasicProperties(qualifiedName, name, null, description, null, methodName);
 
-        return openMetadataStore.createMetadataElementInStore(null,
-                                                              initialStatus,
-                                                              null,
-                                                              null,
-                                                              properties,
-                                                              templateGUID);
+        return openMetadataClient.createMetadataElementInStore(userId,
+                                                                 null,
+                                                                 initialStatus,
+                                                                 null,
+                                                                 null,
+                                                                 properties,
+                                                                 templateGUID);
     }
 
 
@@ -699,12 +723,13 @@ public class GovernanceActionContext implements GovernanceContext,
 
         properties = propertyHelper.addStringProperty(properties, "formula", formula);
 
-        return openMetadataStore.createMetadataElementInStore(null,
-                                                              initialStatus,
-                                                              null,
-                                                              null,
-                                                              properties,
-                                                              templateGUID);
+        return openMetadataClient.createMetadataElementInStore(userId,
+                                                                 null,
+                                                                 initialStatus,
+                                                                 null,
+                                                                 null,
+                                                                 properties,
+                                                                 templateGUID);
     }
 
 
@@ -738,12 +763,13 @@ public class GovernanceActionContext implements GovernanceContext,
 
         ElementProperties properties = packBasicProperties(qualifiedName, name, null, description, null, methodName);
 
-        String processGUID = openMetadataStore.createMetadataElementInStore(processTypeName,
-                                                                            initialStatus,
-                                                                            null,
-                                                                            null,
-                                                                            properties,
-                                                                            null);
+        String processGUID = openMetadataClient.createMetadataElementInStore(userId,
+                                                                               processTypeName,
+                                                                               initialStatus,
+                                                                               null,
+                                                                               null,
+                                                                               properties,
+                                                                               null);
 
         if (processGUID != null)
         {
@@ -752,15 +778,16 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                                       "ProcessContainmentType",
                                                                                       "OWNED");
 
-            openMetadataStore.createRelatedElementsInStore("ProcessHierarchy",
-                                                           parentGUID,
-                                                           processGUID,
-                                                           true,
-                                                           false,
-                                                           null,
-                                                           null,
-                                                           relationshipProperties,
-                                                           new Date());
+            openMetadataClient.createRelatedElementsInStore(userId,
+                                                              "ProcessHierarchy",
+                                                              parentGUID,
+                                                              processGUID,
+                                                              true,
+                                                              false,
+                                                              null,
+                                                              null,
+                                                              relationshipProperties,
+                                                              new Date());
         }
 
         return processGUID;
@@ -806,12 +833,13 @@ public class GovernanceActionContext implements GovernanceContext,
 
         properties = propertyHelper.addStringProperty(properties, "formula", formula);
 
-        String processGUID = openMetadataStore.createMetadataElementInStore(processTypeName,
-                                                                            initialStatus,
-                                                                            null,
-                                                                            null,
-                                                                            properties,
-                                                                            null);
+        String processGUID = openMetadataClient.createMetadataElementInStore(userId,
+                                                                               processTypeName,
+                                                                               initialStatus,
+                                                                               null,
+                                                                               null,
+                                                                               properties,
+                                                                               null);
 
         if (processGUID != null)
         {
@@ -820,15 +848,16 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                                       "ProcessContainmentType",
                                                                                       "OWNED");
 
-            openMetadataStore.createRelatedElementsInStore("ProcessHierarchy",
-                                                           parentGUID,
-                                                           processGUID,
-                                                           true,
-                                                           false,
-                                                           null,
-                                                           null,
-                                                           relationshipProperties,
-                                                           new Date());
+            openMetadataClient.createRelatedElementsInStore(userId,
+                                                              "ProcessHierarchy",
+                                                              parentGUID,
+                                                              processGUID,
+                                                              true,
+                                                              false,
+                                                              null,
+                                                              null,
+                                                              relationshipProperties,
+                                                              new Date());
         }
 
         return processGUID;
@@ -884,9 +913,24 @@ public class GovernanceActionContext implements GovernanceContext,
             properties = propertyHelper.addEnumProperty(properties, portTypePropertyName, portTypeTypeName, portType.getOpenTypeSymbolicName());
         }
 
-        String portGUID = openMetadataStore.createMetadataElementInStore(portTypeName, ElementStatus.ACTIVE, null, null, properties, templateGUID);
+        String portGUID = openMetadataClient.createMetadataElementInStore(userId,
+                                                                            portTypeName,
+                                                                            ElementStatus.ACTIVE,
+                                                                            null,
+                                                                            null,
+                                                                            properties,
+                                                                            templateGUID);
 
-        openMetadataStore.createRelatedElementsInStore(processPortTypeName, processGUID, portGUID, true, false, null, null, null, new Date());
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                          processPortTypeName,
+                                                          processGUID,
+                                                          portGUID,
+                                                          true,
+                                                          false,
+                                                          null,
+                                                          null,
+                                                          null,
+                                                          new Date());
 
         return portGUID;
     }
@@ -920,7 +964,16 @@ public class GovernanceActionContext implements GovernanceContext,
         propertyHelper.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
         propertyHelper.validateGUID(targetElementGUID, targetElementGUIDParameterName, methodName);
 
-        return openMetadataStore.createRelatedElementsInStore(lineageMappingTypeName, sourceElementGUID, targetElementGUID, true, false, null, null, null, new Date());
+        return openMetadataClient.createRelatedElementsInStore(userId,
+                                                                 lineageMappingTypeName,
+                                                                 sourceElementGUID,
+                                                                 targetElementGUID,
+                                                                 true,
+                                                                 false,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 new Date());
     }
 
 
@@ -965,27 +1018,29 @@ public class GovernanceActionContext implements GovernanceContext,
 
         if (relationshipName == null)
         {
-            return openMetadataStore.createRelatedElementsInStore(lineageMappingTypeName,
-                                                                  sourceElementGUID,
-                                                                  targetElementGUID,
-                                                                  true,
-                                                                  false,
-                                                                  null,
-                                                                  null,
-                                                                  relationshipProperties,
-                                                                  new Date());
+            return openMetadataClient.createRelatedElementsInStore(userId,
+                                                                     lineageMappingTypeName,
+                                                                     sourceElementGUID,
+                                                                     targetElementGUID,
+                                                                     true,
+                                                                     false,
+                                                                     null,
+                                                                     null,
+                                                                     relationshipProperties,
+                                                                     new Date());
         }
         else
         {
-            return openMetadataStore.createRelatedElementsInStore(relationshipName,
-                                                                  sourceElementGUID,
-                                                                  targetElementGUID,
-                                                                  true,
-                                                                  false,
-                                                                  null,
-                                                                  null,
-                                                                  relationshipProperties,
-                                                                  new Date());
+            return openMetadataClient.createRelatedElementsInStore(userId,
+                                                                     relationshipName,
+                                                                     sourceElementGUID,
+                                                                     targetElementGUID,
+                                                                     true,
+                                                                     false,
+                                                                     null,
+                                                                     null,
+                                                                     relationshipProperties,
+                                                                     new Date());
         }
     }
 
@@ -1017,7 +1072,13 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        return openMetadataStore.createMetadataElementInStore(metadataElementTypeName, ElementStatus.ACTIVE, null, null, properties, templateGUID);
+        return openMetadataClient.createMetadataElementInStore(userId,
+                                                                 metadataElementTypeName,
+                                                                 ElementStatus.ACTIVE,
+                                                                 null,
+                                                                 null,
+                                                                 properties,
+                                                                 templateGUID);
     }
 
 
@@ -1051,7 +1112,13 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        return openMetadataStore.createMetadataElementInStore(metadataElementTypeName, initialStatus, effectiveFrom, effectiveTo, properties, templateGUID);
+        return openMetadataClient.createMetadataElementInStore(userId,
+                                                                 metadataElementTypeName,
+                                                                 initialStatus,
+                                                                 effectiveFrom,
+                                                                 effectiveTo,
+                                                                 properties,
+                                                                 templateGUID);
     }
 
 
@@ -1082,12 +1149,13 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        openMetadataStore.updateMetadataElementInStore(metadataElementGUID,
-                                                       replaceProperties,
-                                                       forLineage,
-                                                       forDuplicateProcessing,
-                                                       properties,
-                                                       effectiveTime);
+        openMetadataClient.updateMetadataElementInStore(userId,
+                                                          metadataElementGUID,
+                                                          replaceProperties,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          properties,
+                                                          effectiveTime);
     }
 
 
@@ -1115,11 +1183,12 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        openMetadataStore.updateMetadataElementStatusInStore(metadataElementGUID,
-                                                             forLineage,
-                                                             forDuplicateProcessing,
-                                                             newElementStatus,
-                                                             effectiveTime);
+        openMetadataClient.updateMetadataElementStatusInStore(userId,
+                                                                metadataElementGUID,
+                                                                forLineage,
+                                                                forDuplicateProcessing,
+                                                                newElementStatus,
+                                                                effectiveTime);
     }
 
 
@@ -1149,12 +1218,13 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        openMetadataStore.updateMetadataElementEffectivityInStore(metadataElementGUID,
-                                                                  forLineage,
-                                                                  forDuplicateProcessing,
-                                                                  effectiveFrom,
-                                                                  effectiveTo,
-                                                                  effectiveTime);
+        openMetadataClient.updateMetadataElementEffectivityInStore(userId,
+                                                                     metadataElementGUID,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     effectiveFrom,
+                                                                     effectiveTo,
+                                                                     effectiveTime);
     }
 
 
@@ -1178,10 +1248,11 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        openMetadataStore.deleteMetadataElementInStore(metadataElementGUID,
-                                                       forLineage,
-                                                       forDuplicateProcessing,
-                                                       effectiveTime);
+        openMetadataClient.deleteMetadataElementInStore(userId,
+                                                          metadataElementGUID,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          effectiveTime);
     }
 
 
@@ -1212,14 +1283,15 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        openMetadataStore.classifyMetadataElementInStore(metadataElementGUID,
-                                                         classificationName,
-                                                         forLineage,
-                                                         forDuplicateProcessing,
-                                                         null,
-                                                         null,
-                                                         properties,
-                                                         effectiveTime);
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                            metadataElementGUID,
+                                                            classificationName,
+                                                            forLineage,
+                                                            forDuplicateProcessing,
+                                                            null,
+                                                            null,
+                                                            properties,
+                                                            effectiveTime);
     }
 
 
@@ -1254,14 +1326,15 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        openMetadataStore.classifyMetadataElementInStore(metadataElementGUID,
-                                                         classificationName,
-                                                         forLineage,
-                                                         forDuplicateProcessing,
-                                                         effectiveFrom,
-                                                         effectiveTo,
-                                                         properties,
-                                                         effectiveTime);
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                            metadataElementGUID,
+                                                            classificationName,
+                                                            forLineage,
+                                                            forDuplicateProcessing,
+                                                            effectiveFrom,
+                                                            effectiveTo,
+                                                            properties,
+                                                            effectiveTime);
     }
 
 
@@ -1293,13 +1366,14 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
-        openMetadataStore.reclassifyMetadataElementInStore(metadataElementGUID,
-                                                           classificationName,
-                                                           replaceProperties,
-                                                           forLineage,
-                                                           forDuplicateProcessing,
-                                                           properties,
-                                                           effectiveTime);
+        openMetadataClient.reclassifyMetadataElementInStore(userId,
+                                                              metadataElementGUID,
+                                                              classificationName,
+                                                              replaceProperties,
+                                                              forLineage,
+                                                              forDuplicateProcessing,
+                                                              properties,
+                                                              effectiveTime);
     }
 
 
@@ -1331,13 +1405,14 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        openMetadataStore.updateClassificationEffectivityInStore(metadataElementGUID,
-                                                                 classificationName,
-                                                                 forLineage,
-                                                                 forDuplicateProcessing,
-                                                                 effectiveFrom,
-                                                                 effectiveTo,
-                                                                 effectiveTime);
+        openMetadataClient.updateClassificationEffectivityInStore(userId,
+                                                                    metadataElementGUID,
+                                                                    classificationName,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    effectiveFrom,
+                                                                    effectiveTo,
+                                                                    effectiveTime);
     }
 
 
@@ -1355,7 +1430,7 @@ public class GovernanceActionContext implements GovernanceContext,
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
-    public void unclassifyMetadataElement(String  metadataElementGUID,
+    public void declassifyMetadataElement(String  metadataElementGUID,
                                           String  classificationName,
                                           boolean forLineage,
                                           boolean forDuplicateProcessing,
@@ -1363,11 +1438,12 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
-        openMetadataStore.unclassifyMetadataElementInStore(metadataElementGUID,
-                                                           classificationName,
-                                                           forLineage,
-                                                           forDuplicateProcessing,
-                                                           effectiveTime);
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                              metadataElementGUID,
+                                                              classificationName,
+                                                              forLineage,
+                                                              forDuplicateProcessing,
+                                                              effectiveTime);
     }
 
 
@@ -1402,15 +1478,16 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        return openMetadataStore.createRelatedElementsInStore(relationshipTypeName,
-                                                              metadataElement1GUID,
-                                                              metadataElement2GUID,
-                                                              forLineage,
-                                                              forDuplicateProcessing,
-                                                              null,
-                                                              null,
-                                                              properties,
-                                                              effectiveTime);
+        return openMetadataClient.createRelatedElementsInStore(userId,
+                                                                 relationshipTypeName,
+                                                                 metadataElement1GUID,
+                                                                 metadataElement2GUID,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 null,
+                                                                 null,
+                                                                 properties,
+                                                                 effectiveTime);
     }
 
 
@@ -1449,15 +1526,16 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        return openMetadataStore.createRelatedElementsInStore(relationshipTypeName,
-                                                              metadataElement1GUID,
-                                                              metadataElement2GUID,
-                                                              forLineage,
-                                                              forDuplicateProcessing,
-                                                              effectiveFrom,
-                                                              effectiveTo,
-                                                              properties,
-                                                              effectiveTime);
+        return openMetadataClient.createRelatedElementsInStore(userId,
+                                                                 relationshipTypeName,
+                                                                 metadataElement1GUID,
+                                                                 metadataElement2GUID,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 effectiveFrom,
+                                                                 effectiveTo,
+                                                                 properties,
+                                                                 effectiveTime);
     }
 
 
@@ -1487,7 +1565,13 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        openMetadataStore.updateRelatedElementsInStore(relationshipGUID, replaceProperties, forLineage, forDuplicateProcessing, properties, effectiveTime);
+        openMetadataClient.updateRelatedElementsInStore(userId,
+                                                          relationshipGUID,
+                                                          replaceProperties,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          properties,
+                                                          effectiveTime);
     }
 
 
@@ -1516,7 +1600,13 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        openMetadataStore.updateRelatedElementsEffectivityInStore(relationshipGUID, forLineage, forDuplicateProcessing, effectiveFrom, effectiveTo, effectiveTime);
+        openMetadataClient.updateRelatedElementsEffectivityInStore(userId,
+                                                                     relationshipGUID,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     effectiveFrom,
+                                                                     effectiveTo,
+                                                                     effectiveTime);
     }
 
 
@@ -1540,7 +1630,11 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        openMetadataStore.deleteRelatedElementsInStore(relationshipGUID, forLineage, forDuplicateProcessing, effectiveTime);
+        openMetadataClient.deleteRelatedElementsInStore(userId,
+                                                          relationshipGUID,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          effectiveTime);
     }
 
 
@@ -1574,15 +1668,16 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        openMetadataStore.linkElementsAsPeerDuplicates(metadataElement1GUID,
-                                                       metadataElement2GUID,
-                                                       statusIdentifier,
-                                                       steward,
-                                                       stewardTypeName,
-                                                       stewardPropertyName,
-                                                       source,
-                                                       notes,
-                                                       setKnownDuplicate);
+        openGovernanceClient.linkElementsAsPeerDuplicates(userId,
+                                                          metadataElement1GUID,
+                                                          metadataElement2GUID,
+                                                          statusIdentifier,
+                                                          steward,
+                                                          stewardTypeName,
+                                                          stewardPropertyName,
+                                                          source,
+                                                          notes,
+                                                          setKnownDuplicate);
     }
 
 
@@ -1615,14 +1710,15 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
-        openMetadataStore.linkConsolidatedDuplicate(consolidatedElementGUID,
-                                                    statusIdentifier,
-                                                    steward,
-                                                    stewardTypeName,
-                                                    stewardPropertyName,
-                                                    source,
-                                                    notes,
-                                                    sourceElementGUIDs);
+        openGovernanceClient.linkConsolidatedDuplicate(userId,
+                                                       consolidatedElementGUID,
+                                                       statusIdentifier,
+                                                       steward,
+                                                       stewardTypeName,
+                                                       stewardPropertyName,
+                                                       source,
+                                                       notes,
+                                                       sourceElementGUIDs);
     }
 
 
@@ -1696,18 +1792,19 @@ public class GovernanceActionContext implements GovernanceContext,
         /*
          * Validate that there is a person role to assign the "to do" to
          */
-        List<OpenMetadataElement> personRoleMatches = openMetadataStore.findMetadataElements(personRoleTypeName,
-                                                                                             null,
-                                                                                             searchProperties,
-                                                                                             null,
-                                                                                             null,
-                                                                                             null,
-                                                                                             null,
-                                                                                             false,
-                                                                                             false,
-                                                                                             new Date(),
-                                                                                             0,
-                                                                                             0);
+        List<OpenMetadataElement> personRoleMatches = openMetadataClient.findMetadataElements(userId,
+                                                                                                personRoleTypeName,
+                                                                                                null,
+                                                                                                searchProperties,
+                                                                                                null,
+                                                                                                null,
+                                                                                                null,
+                                                                                                null,
+                                                                                                false,
+                                                                                                false,
+                                                                                                new Date(),
+                                                                                                0,
+                                                                                                0);
 
         if ((personRoleMatches == null) || personRoleMatches.isEmpty())
         {
@@ -1770,12 +1867,21 @@ public class GovernanceActionContext implements GovernanceContext,
         properties = propertyHelper.addIntProperty(properties, priorityPropertyName, priority);
         properties = propertyHelper.addEnumProperty(properties, statusPropertyName, statusPropertyTypeName, openEnumPropertyValue);
 
-        String todoGUID = openMetadataStore.createMetadataElementInStore(todoTypeName, ElementStatus.ACTIVE, null, null, properties, null);
+        String todoGUID = openMetadataClient.createMetadataElementInStore(userId, todoTypeName, ElementStatus.ACTIVE, null, null, properties, null);
 
         /*
          * Link the "to do" and the person role
          */
-        openMetadataStore.createRelatedElementsInStore(actionAssignmentTypeName, personRoleGUID, todoGUID, false, false,null, null, null, new Date());
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                          actionAssignmentTypeName,
+                                                          personRoleGUID,
+                                                          todoGUID,
+                                                          false,
+                                                          false,
+                                                          null,
+                                                          null,
+                                                          null,
+                                                          new Date());
 
         return todoGUID;
     }
@@ -1821,7 +1927,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                  List<String>               interestingMetadataTypes,
                                  String                     specificInstance) throws InvalidParameterException
     {
-        openMetadataStore.registerListener(listener, interestingEventTypes, interestingMetadataTypes, specificInstance);
+        openGovernanceClient.registerListener(listener, interestingEventTypes, interestingMetadataTypes, specificInstance);
     }
 
 
@@ -1831,7 +1937,7 @@ public class GovernanceActionContext implements GovernanceContext,
     @Override
     public void disconnectListener()
     {
-        openMetadataStore.disconnectListener();
+        openGovernanceClient.disconnectListener();
     }
 
 
@@ -1871,17 +1977,22 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return openMetadataStore.initiateGovernanceAction(qualifiedName,
-                                                          domainIdentifier,
-                                                          displayName,
-                                                          description,
-                                                          requestSourceGUIDs,
-                                                          actionTargets,
-                                                          startTime,
-                                                          governanceEngineName,
-                                                          requestType,
-                                                          requestParameters,
-                                                          null);
+        return openGovernanceClient.initiateGovernanceAction(userId,
+                                                             qualifiedName,
+                                                             domainIdentifier,
+                                                             displayName,
+                                                             description,
+                                                             requestSourceGUIDs,
+                                                             actionTargets,
+                                                             null,
+                                                             startTime,
+                                                             governanceEngineName,
+                                                             requestType,
+                                                             requestParameters,
+                                                             null,
+                                                             null,
+                                                             governanceActionGUID,
+                                                             governanceEngineName);
     }
 
 
@@ -1923,17 +2034,22 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        return openMetadataStore.initiateGovernanceAction(qualifiedName,
-                                                          domainIdentifier,
-                                                          displayName,
-                                                          description,
-                                                          requestSourceGUIDs,
-                                                          actionTargets,
-                                                          startTime,
-                                                          governanceEngineName,
-                                                          requestType,
-                                                          requestParameters,
-                                                          processName);
+        return openGovernanceClient.initiateGovernanceAction(userId,
+                                                             qualifiedName,
+                                                             domainIdentifier,
+                                                             displayName,
+                                                             description,
+                                                             requestSourceGUIDs,
+                                                             actionTargets,
+                                                             null,
+                                                             startTime,
+                                                             governanceEngineName,
+                                                             requestType,
+                                                             requestParameters,
+                                                             processName,
+                                                             null,
+                                                             governanceActionGUID,
+                                                             governanceEngineName);
     }
 
 
@@ -1961,7 +2077,14 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        return openMetadataStore.initiateGovernanceActionProcess(processQualifiedName, requestParameters, requestSourceGUIDs, actionTargets, startTime);
+        return openGovernanceClient.initiateGovernanceActionProcess(userId,
+                                                                    processQualifiedName,
+                                                                    requestSourceGUIDs,
+                                                                    actionTargets,
+                                                                    startTime,
+                                                                    requestParameters,
+                                                                    null,
+                                                                    null);
     }
 
 
@@ -1980,7 +2103,7 @@ public class GovernanceActionContext implements GovernanceContext,
                        ", requestSourceElements=" + requestSourceElements +
                        ", actionTargetElements=" + actionTargetElements +
                        ", completionStatus=" + completionStatus +
-                       ", openMetadataStore=" + openMetadataStore +
+                       ", openMetadataStore=" + openGovernanceClient +
                        ", propertyHelper=" + propertyHelper +
                        '}';
     }

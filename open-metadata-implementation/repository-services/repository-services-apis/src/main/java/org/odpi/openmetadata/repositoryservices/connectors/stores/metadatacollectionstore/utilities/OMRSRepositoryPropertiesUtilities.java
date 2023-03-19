@@ -866,7 +866,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
     }
 
 
-
     /**
      * Return the requested property or 0 if property is not found.  If the property is not
      * an int property then a logic exception is thrown.
@@ -943,6 +942,93 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
         if (properties != null)
         {
             retrievedProperty = this.getIntProperty(sourceName, propertyName, properties, methodName);
+
+            this.removeProperty(propertyName, properties);
+            log.debug("Properties left: " + properties);
+        }
+
+        log.debug("Retrieved " + propertyName + " property: " + retrievedProperty);
+        return retrievedProperty;
+    }
+
+
+
+    /**
+     * Return the requested property or 0 if property is not found.  If the property is not
+     * a long property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested property
+     * @param properties properties from the instance.
+     * @param methodName method of caller
+     * @return string property value or null
+     */
+    @Override
+    public long   getLongProperty(String             sourceName,
+                                  String             propertyName,
+                                  InstanceProperties properties,
+                                  String             methodName)
+    {
+        final String  thisMethodName = "getLongProperty";
+
+        if (properties != null)
+        {
+            InstancePropertyValue instancePropertyValue = properties.getPropertyValue(propertyName);
+
+            if (instancePropertyValue != null)
+            {
+                try
+                {
+                    if (instancePropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE)
+                    {
+                        PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) instancePropertyValue;
+
+                        if (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG)
+                        {
+                            log.debug("Retrieved long property " + propertyName);
+
+                            if (primitivePropertyValue.getPrimitiveValue() != null)
+                            {
+                                return Long.parseLong(primitivePropertyValue.getPrimitiveValue().toString());
+                            }
+                        }
+                    }
+                }
+                catch (Exception error)
+                {
+                    throwHelperLogicError(sourceName, methodName, thisMethodName);
+                }
+            }
+        }
+
+        log.debug("Long property " + propertyName + " not present");
+
+        return 0;
+    }
+
+
+    /**
+     * Return the requested property or 0 if property is not found.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a long property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return string property value or null
+     */
+    @Override
+    public long   removeLongProperty(String             sourceName,
+                                     String             propertyName,
+                                     InstanceProperties properties,
+                                     String             methodName)
+    {
+        long  retrievedProperty = 0;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getLongProperty(sourceName, propertyName, properties, methodName);
 
             this.removeProperty(propertyName, properties);
             log.debug("Properties left: " + properties);

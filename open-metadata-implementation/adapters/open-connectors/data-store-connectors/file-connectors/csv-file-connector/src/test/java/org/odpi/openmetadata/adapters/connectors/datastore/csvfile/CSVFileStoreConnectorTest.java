@@ -16,7 +16,7 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Test that the CSVFileStoreConnector can respond sensibility to many different file states.
+ * Test that the CSVFileStoreConnector can respond sensibility to different file states.
  */
 public class CSVFileStoreConnectorTest
 {

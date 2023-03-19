@@ -9,6 +9,7 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handler
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -18,9 +19,9 @@ public class IntegrationConnectorDedicatedThread implements Runnable
 {
     private static final Logger log = LoggerFactory.getLogger(IntegrationConnectorDedicatedThread.class);
 
-    private String                      integrationDaemonName;
-    private IntegrationConnectorHandler connectorHandler;
-    private AuditLog                    auditLog;
+    private final String                      integrationDaemonName;
+    private final IntegrationConnectorHandler connectorHandler;
+    private final AuditLog                    auditLog;
 
     private final AtomicBoolean running = new AtomicBoolean(false);
 
@@ -79,11 +80,18 @@ public class IntegrationConnectorDedicatedThread implements Runnable
 
         while (running.get())
         {
-            connectorHandler.engageConnector(actionDescription);
+            Date now = new Date();
 
-            auditLog.logMessage(actionDescription,
-                                IntegrationDaemonServicesAuditCode.ENGAGE_RETURNED.getMessageDefinition(connectorHandler.getIntegrationConnectorName(),
-                                                                                                        integrationDaemonName));
+            if (((connectorHandler.getStartDate() == null) || now.after(connectorHandler.getStartDate())) &&
+                ((connectorHandler.getStopDate() == null)  || now.before(connectorHandler.getStopDate())))
+            {
+                connectorHandler.engageConnector(actionDescription);
+
+                auditLog.logMessage(actionDescription,
+                                    IntegrationDaemonServicesAuditCode.ENGAGE_RETURNED.getMessageDefinition(connectorHandler.getIntegrationConnectorName(),
+                                                                                                            integrationDaemonName));
+
+            }
 
             waitToRetry();
         }

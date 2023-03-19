@@ -16,12 +16,16 @@ import java.util.List;
 import java.util.Map;
 
 
+/**
+ * GovernanceEngineConfiguration supports the configuration of governance engine and governance services.
+ */
 public interface GovernanceEngineConfiguration
 {
     /**
      * Create a new governance engine definition.
      *
      * @param userId identifier of calling user
+     * @param governanceEngineType type of governance engine to create
      * @param qualifiedName unique name for the governance engine.
      * @param displayName display name for messages and user interfaces.
      * @param description description of the types of governance services that will be associated with
@@ -34,6 +38,7 @@ public interface GovernanceEngineConfiguration
      * @throws PropertyServerException problem storing the governance engine definition.
      */
     String  createGovernanceEngine(String  userId,
+                                   String  governanceEngineType,
                                    String  qualifiedName,
                                    String  displayName,
                                    String  description) throws InvalidParameterException,
@@ -79,6 +84,7 @@ public interface GovernanceEngineConfiguration
      * Return the list of governance engine definitions that are stored.
      *
      * @param userId identifier of calling user
+     * @param governanceEngineType type of governance engine to create
      * @param startingFrom initial position in the stored list.
      * @param maximumResults maximum number of definitions to return on this call.
      * @return list of governance engine definitions.
@@ -88,6 +94,7 @@ public interface GovernanceEngineConfiguration
      * @throws PropertyServerException problem retrieving the governance engine definitions.
      */
     List<GovernanceEngineElement> getAllGovernanceEngines(String  userId,
+                                                          String  governanceEngineType,
                                                           int     startingFrom,
                                                           int     maximumResults) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
@@ -154,10 +161,11 @@ public interface GovernanceEngineConfiguration
      * governance engines.
      *
      * @param userId identifier of calling user
+     * @param governanceServiceType type of the governance service to create
      * @param qualifiedName  unique name for the governance service.
      * @param displayName   display name for the governance service.
      * @param description  description of the analysis provided by the governance service.
-     * @param connection   connection to instanciate the governance service implementation.
+     * @param connection   connection to instantiate the governance service implementation.
      *
      * @return unique identifier of the governance service.
      *
@@ -166,6 +174,7 @@ public interface GovernanceEngineConfiguration
      * @throws PropertyServerException problem storing the governance service definition.
      */
     String  createGovernanceService(String     userId,
+                                    String     governanceServiceType,
                                     String     qualifiedName,
                                     String     displayName,
                                     String     description,
@@ -320,6 +329,30 @@ public interface GovernanceEngineConfiguration
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException;
 
+    /**
+     * Register a governance service with a specific governance engine.
+     *
+     * @param userId identifier of calling user
+     * @param governanceEngineGUID unique identifier of the governance engine.
+     * @param governanceServiceGUID unique identifier of the governance service.
+     * @param governanceRequestType governance request type used by caller.
+     * @param serviceRequestType mapped governance request type that this governance service is able to process.
+     * @param requestParameters list of parameters that are passed to the governance service (via
+     *                                  the governance context).  These values can be overridden on the actual governance request.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the governance service and/or governance engine definitions.
+     */
+    void registerGovernanceServiceWithEngine(String               userId,
+                                             String               governanceEngineGUID,
+                                             String               governanceServiceGUID,
+                                             String               governanceRequestType,
+                                             String               serviceRequestType,
+                                             Map<String, String>  requestParameters) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException;
+
 
     /**
      * Retrieve a specific governance service registered with a governance engine.
@@ -355,12 +388,12 @@ public interface GovernanceEngineConfiguration
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the governance service and/or governance engine definitions.
      */
-    List<String>  getRegisteredGovernanceServices(String userId,
-                                                  String governanceEngineGUID,
-                                                  int    startingFrom,
-                                                  int    maximumResults) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException;
+    List<RegisteredGovernanceServiceElement>  getRegisteredGovernanceServices(String userId,
+                                                                              String governanceEngineGUID,
+                                                                              int    startingFrom,
+                                                                              int    maximumResults) throws InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException;
 
 
     /**

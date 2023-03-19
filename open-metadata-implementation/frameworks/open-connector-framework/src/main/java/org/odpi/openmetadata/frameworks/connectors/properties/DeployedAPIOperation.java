@@ -123,7 +123,7 @@ public  class DeployedAPIOperation extends APIOperation
                        ", isDeprecated=" + getIsDeprecated() +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
-                       ", calculatedValue=" + isCalculatedValue() +
+                       ", calculatedValue=" + getIsCalculatedValue() +
                        ", expression='" + getExpression() + '\'' +
                        ", formula='" + getFormula() + '\'' +
                        ", queries=" + getQueries() +

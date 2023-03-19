@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration;
 
-import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 
 import java.io.Serializable;
@@ -109,7 +109,7 @@ public enum IntegrationServiceDescription implements Serializable
                               "analytics-integrator",
                               "Exchange metadata with third party analytics tools.",
                               "https://egeria-project.org/services/omis/analytics-integrator/overview/",
-                              "Analytics Modeling OMAS",
+                              "Data Science OMAS",
                               PermittedSynchronization.BOTH_DIRECTIONS),
 
     SEARCH_INTEGRATOR_OMIS(610,

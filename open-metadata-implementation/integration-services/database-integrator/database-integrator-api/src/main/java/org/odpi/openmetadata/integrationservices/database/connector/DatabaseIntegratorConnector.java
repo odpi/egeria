@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.integrationservices.database.connector;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.integrationservices.database.ffdc.DatabaseIntegratorAuditCode;
 import org.odpi.openmetadata.integrationservices.database.ffdc.DatabaseIntegratorErrorCode;
 
@@ -23,6 +23,7 @@ public abstract class DatabaseIntegratorConnector extends IntegrationConnectorBa
      */
     public synchronized void setContext(DatabaseIntegratorContext context)
     {
+        super.setContext(context);
         this.context = context;
     }
 

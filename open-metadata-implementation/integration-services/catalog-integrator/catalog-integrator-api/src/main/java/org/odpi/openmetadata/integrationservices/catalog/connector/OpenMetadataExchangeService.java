@@ -899,7 +899,7 @@ public class OpenMetadataExchangeService
 
         if (assetManagerIsHome)
         {
-            openMetadataStoreClient.unclassifyMetadataElementInStore(userId,
+            openMetadataStoreClient.declassifyMetadataElementInStore(userId,
                                                                      assetManagerGUID,
                                                                      assetManagerName,
                                                                      metadataElementGUID,
@@ -910,7 +910,7 @@ public class OpenMetadataExchangeService
         }
         else
         {
-            openMetadataStoreClient.unclassifyMetadataElementInStore(userId,
+            openMetadataStoreClient.declassifyMetadataElementInStore(userId,
                                                                      metadataElementGUID,
                                                                      classificationName,
                                                                      forLineage,

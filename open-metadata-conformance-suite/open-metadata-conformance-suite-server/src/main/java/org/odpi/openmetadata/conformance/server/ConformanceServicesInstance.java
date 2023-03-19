@@ -15,11 +15,11 @@ import java.util.List;
  */
 public class ConformanceServicesInstance
 {
-    private OMRSAuditLog               auditLog;                       /* Initialized in constructor */
-    private ConformanceSuiteConfig     conformanceSuiteConfig;         /* Initialized in constructor */
+    private final OMRSAuditLog               auditLog;                       /* Initialized in constructor */
+    private final ConformanceSuiteConfig     conformanceSuiteConfig;         /* Initialized in constructor */
 
-    private TechnologyUnderTestWorkPad workPad;                        /* Initialized in constructor */
-    private List<OpenMetadataConformanceWorkbench> runningWorkbenches; /* Initialized in constructor */
+    private final TechnologyUnderTestWorkPad workPad;                        /* Initialized in constructor */
+    private final List<OpenMetadataConformanceWorkbench> runningWorkbenches; /* Initialized in constructor */
 
     /**
      * Constructor

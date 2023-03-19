@@ -14,7 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnectorProvider;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 
 import java.lang.reflect.InvocationTargetException;
 

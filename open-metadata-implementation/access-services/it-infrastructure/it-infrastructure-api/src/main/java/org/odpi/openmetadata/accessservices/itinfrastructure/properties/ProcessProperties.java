@@ -26,9 +26,11 @@ public class ProcessProperties extends AssetProperties
     private static final long     serialVersionUID = 1L;
 
     private static final String formulaProperty                = "formula";
+    private static final String formulaTypeProperty            = "formulaType";
     private static final String implementationLanguageProperty = "implementationLanguage";
 
     private String        formula                = null;
+    private String        formulaType            = null;
     private String        implementationLanguage = null;
 
     /**
@@ -52,6 +54,7 @@ public class ProcessProperties extends AssetProperties
         if (template != null)
         {
             formula = template.getFormula();
+            formulaType = template.getFormulaType();
             implementationLanguage = template.getImplementationLanguage();
         }
     }
@@ -76,6 +79,12 @@ public class ProcessProperties extends AssetProperties
                 {
                     formula = assetExtendedProperties.get(formulaProperty).toString();
                     assetExtendedProperties.remove(formulaProperty);
+                }
+
+                if (assetExtendedProperties.get(formulaTypeProperty) != null)
+                {
+                    formulaType = assetExtendedProperties.get(formulaTypeProperty).toString();
+                    assetExtendedProperties.remove(formulaTypeProperty);
                 }
 
                 if (assetExtendedProperties.get(implementationLanguageProperty) != null)
@@ -112,6 +121,11 @@ public class ProcessProperties extends AssetProperties
             extendedProperties.put(formulaProperty, formula);
         }
 
+        if (formulaType != null)
+        {
+            extendedProperties.put(formulaTypeProperty, formulaType);
+        }
+
         if (implementationLanguage != null)
         {
             extendedProperties.put(implementationLanguageProperty, implementationLanguage);
@@ -142,6 +156,28 @@ public class ProcessProperties extends AssetProperties
     public void setFormula(String formula)
     {
         this.formula = formula;
+    }
+
+
+    /**
+     * Return the specification language for the formula.
+     *
+     * @return string description
+     */
+    public String getFormulaType()
+    {
+        return formulaType;
+    }
+
+
+    /**
+     * Set up  the specification language for the formula.
+     *
+     * @param formulaType string description
+     */
+    public void setFormulaType(String formulaType)
+    {
+        this.formulaType = formulaType;
     }
 
 
@@ -183,6 +219,7 @@ public class ProcessProperties extends AssetProperties
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +
                        ", formula='" + formula + '\'' +
+                       ", formulaType='" + formulaType + '\'' +
                        ", implementationLanguage='" + implementationLanguage + '\'' +
                        ", cloneToAsset=" + cloneToAsset() +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
@@ -216,7 +253,7 @@ public class ProcessProperties extends AssetProperties
             return false;
         }
         ProcessProperties that = (ProcessProperties) objectToCompare;
-        return Objects.equals(formula, that.formula) &&
+        return Objects.equals(formula, that.formula) && Objects.equals(formulaType, that.formulaType) &&
                        Objects.equals(implementationLanguage, that.implementationLanguage);
     }
 
@@ -229,6 +266,6 @@ public class ProcessProperties extends AssetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getFormula(), getImplementationLanguage());
+        return Objects.hash(super.hashCode(), getFormula(), getFormulaType(), getImplementationLanguage());
     }
 }

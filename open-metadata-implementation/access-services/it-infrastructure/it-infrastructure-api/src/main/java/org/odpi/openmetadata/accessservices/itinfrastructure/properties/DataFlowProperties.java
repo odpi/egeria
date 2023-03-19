@@ -25,6 +25,7 @@ public class DataFlowProperties extends ConfigurationItemRelationshipProperties
     private String               qualifiedName = null;
     private String               description   = null;
     private String               formula       = null;
+    private String               formulaType   = null;
 
 
     /**
@@ -48,6 +49,7 @@ public class DataFlowProperties extends ConfigurationItemRelationshipProperties
             qualifiedName = template.getQualifiedName();
             description   = template.getDescription();
             formula       = template.getFormula();
+            formulaType   = template.getFormulaType();
         }
     }
 
@@ -120,6 +122,28 @@ public class DataFlowProperties extends ConfigurationItemRelationshipProperties
 
 
     /**
+     * Return the specification language for the formula.
+     *
+     * @return string description
+     */
+    public String getFormulaType()
+    {
+        return formulaType;
+    }
+
+
+    /**
+     * Set up  the specification language for the formula.
+     *
+     * @param formulaType string description
+     */
+    public void setFormulaType(String formulaType)
+    {
+        this.formulaType = formulaType;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -131,6 +155,7 @@ public class DataFlowProperties extends ConfigurationItemRelationshipProperties
                        "qualifiedName='" + qualifiedName + '\'' +
                        ", description='" + description + '\'' +
                        ", formula='" + formula + '\'' +
+                       ", formulaType='" + formulaType + '\'' +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +
                        '}';
@@ -157,7 +182,8 @@ public class DataFlowProperties extends ConfigurationItemRelationshipProperties
         DataFlowProperties that = (DataFlowProperties) objectToCompare;
         return Objects.equals(getQualifiedName(), that.getQualifiedName()) &&
                        Objects.equals(getDescription(), that.getDescription()) &&
-                       Objects.equals(getFormula(), that.getFormula());
+                       Objects.equals(getFormula(), that.getFormula()) &&
+                       Objects.equals(getFormulaType(), that.getFormulaType());
     }
 
 
@@ -169,6 +195,6 @@ public class DataFlowProperties extends ConfigurationItemRelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, description, formula);
+        return Objects.hash(qualifiedName, description, formula, formulaType);
     }
 }

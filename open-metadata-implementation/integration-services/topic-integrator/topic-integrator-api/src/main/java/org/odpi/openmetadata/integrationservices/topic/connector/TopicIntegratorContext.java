@@ -42,6 +42,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext;
+import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 
 import java.util.List;
 import java.util.Map;
@@ -50,44 +55,68 @@ import java.util.Map;
 /**
  * TopicIntegratorContext is the context for cataloging topics from an event broker server.
  */
-public class TopicIntegratorContext
+public class TopicIntegratorContext extends IntegrationContext
 {
     private final ConnectionManagerClient connectionManagerClient;
     private final ValidValueManagement    validValueManagement;
     private final EventBrokerClient       eventBrokerClient;
     private final DataManagerEventClient  eventClient;
-    private final String                  userId;
-    private final String                  eventBrokerGUID;
-    private final String                  eventBrokerName;
-
-    private boolean                 eventBrokerIsHome = true;
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
+     * @param connectorId unique identifier of the connector (used to configure the event listener)
+     * @param connectorName name of connector from config
+     * @param connectorUserId userId for the connector
+     * @param serverName name of the integration daemon
+     * @param openIntegrationClient client for calling the metadata server
+     * @param openMetadataStoreClient client for calling the metadata server
      * @param eventBrokerClient client to map request to
      * @param connectionManagerClient client for managing connections
      * @param validValueManagement client for managing valid value sets and definitions
      * @param eventClient client to register for events
-     * @param userId integration daemon's userId
-     * @param eventBrokerGUID unique identifier of the software server capability for the event broker
-     * @param eventBrokerName unique name of the software server capability for the event broker
+     * @param generateIntegrationReport should the connector generate an integration reports?
+     * @param permittedSynchronization the direction of integration permitted by the integration connector
+     * @param integrationConnectorGUID unique identifier for the integration connector if it is started via an integration group (otherwise it is
+     *                                 null).
+     * @param integrationGovernanceContext populated governance context for the connector's use
+     * @param externalSourceGUID unique identifier of the software server capability for the asset manager
+     * @param externalSourceName unique name of the software server capability for the asset manager
      */
-    public TopicIntegratorContext(EventBrokerClient       eventBrokerClient,
-                                  ConnectionManagerClient connectionManagerClient,
-                                  ValidValueManagement    validValueManagement,
-                                  DataManagerEventClient  eventClient,
-                                  String                  userId,
-                                  String                  eventBrokerGUID,
-                                  String                  eventBrokerName)
+    public TopicIntegratorContext(String                       connectorId,
+                                  String                       connectorName,
+                                  String                       connectorUserId,
+                                  String                       serverName,
+                                  OpenIntegrationClient        openIntegrationClient,
+                                  OpenMetadataClient           openMetadataStoreClient,
+                                  EventBrokerClient            eventBrokerClient,
+                                  ConnectionManagerClient      connectionManagerClient,
+                                  ValidValueManagement         validValueManagement,
+                                  DataManagerEventClient       eventClient,
+                                  boolean                      generateIntegrationReport,
+                                  PermittedSynchronization     permittedSynchronization,
+                                  String                       integrationConnectorGUID,
+                                  IntegrationGovernanceContext integrationGovernanceContext,
+                                  String                       externalSourceGUID,
+                                  String                       externalSourceName)
     {
+        super(connectorId,
+              connectorName,
+              connectorUserId,
+              serverName,
+              openIntegrationClient,
+              openMetadataStoreClient,
+              generateIntegrationReport,
+              permittedSynchronization,
+              externalSourceGUID,
+              externalSourceName,
+              integrationConnectorGUID,
+              integrationGovernanceContext);
+
         this.eventBrokerClient       = eventBrokerClient;
         this.connectionManagerClient = connectionManagerClient;
         this.validValueManagement    = validValueManagement;
         this.eventClient             = eventClient;
-        this.userId                  = userId;
-        this.eventBrokerGUID         = eventBrokerGUID;
-        this.eventBrokerName         = eventBrokerName;
     }
 
 
@@ -104,7 +133,7 @@ public class TopicIntegratorContext
      */
     public String getEventBrokerName()
     {
-        return eventBrokerName;
+        return externalSourceName;
     }
 
 
@@ -115,7 +144,7 @@ public class TopicIntegratorContext
      */
     public String getEventBrokerGUID()
     {
-        return eventBrokerGUID;
+        return externalSourceGUID;
     }
 
 
@@ -131,7 +160,7 @@ public class TopicIntegratorContext
      */
     public void setEventBrokerIsHome(boolean eventBrokerIsHome)
     {
-        this.eventBrokerIsHome = eventBrokerIsHome;
+        super.externalSourceIsHome = eventBrokerIsHome;
     }
 
 
@@ -182,7 +211,7 @@ public class TopicIntegratorContext
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
-        return eventBrokerClient.createTopic(userId, eventBrokerGUID, eventBrokerName, eventBrokerIsHome, topicProperties);
+        return eventBrokerClient.createTopic(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, topicProperties);
     }
 
 
@@ -203,7 +232,7 @@ public class TopicIntegratorContext
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        return eventBrokerClient.createTopicFromTemplate(userId, eventBrokerGUID, eventBrokerName, eventBrokerIsHome, templateGUID, templateProperties);
+        return eventBrokerClient.createTopicFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, templateProperties);
     }
 
 
@@ -224,7 +253,7 @@ public class TopicIntegratorContext
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        eventBrokerClient.updateTopic(userId, eventBrokerGUID, eventBrokerName, topicGUID, isMergeUpdate, topicProperties);
+        eventBrokerClient.updateTopic(userId, externalSourceGUID, externalSourceName, topicGUID, isMergeUpdate, topicProperties);
     }
 
 
@@ -281,7 +310,7 @@ public class TopicIntegratorContext
                                                          UserNotAuthorizedException,
                                                          PropertyServerException
     {
-        eventBrokerClient.removeTopic(userId, eventBrokerGUID, eventBrokerName, topicGUID, qualifiedName);
+        eventBrokerClient.removeTopic(userId, externalSourceGUID, externalSourceName, topicGUID, qualifiedName);
     }
 
 
@@ -350,7 +379,7 @@ public class TopicIntegratorContext
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        return eventBrokerClient.getTopicsForEventBroker(userId, eventBrokerGUID, eventBrokerName, startFrom, pageSize);
+        return eventBrokerClient.getTopicsForEventBroker(userId, externalSourceGUID, externalSourceName, startFrom, pageSize);
     }
 
 
@@ -394,9 +423,9 @@ public class TopicIntegratorContext
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        if (eventBrokerIsHome)
+        if (externalSourceIsHome)
         {
-            return eventBrokerClient.createEventType(userId, eventBrokerGUID, eventBrokerName, topicGUID, properties);
+            return eventBrokerClient.createEventType(userId, externalSourceGUID, externalSourceName, topicGUID, properties);
         }
         else
         {
@@ -425,9 +454,9 @@ public class TopicIntegratorContext
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        if (eventBrokerIsHome)
+        if (externalSourceIsHome)
         {
-            return eventBrokerClient.createEventTypeFromTemplate(userId, eventBrokerGUID, eventBrokerName, templateGUID, topicGUID, templateProperties);
+            return eventBrokerClient.createEventTypeFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, topicGUID, templateProperties);
         }
         else
         {
@@ -453,7 +482,7 @@ public class TopicIntegratorContext
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        eventBrokerClient.updateEventType(userId, eventBrokerGUID, eventBrokerName, eventTypeGUID, isMergeUpdate, properties);
+        eventBrokerClient.updateEventType(userId, externalSourceGUID, externalSourceName, eventTypeGUID, isMergeUpdate, properties);
     }
 
 
@@ -472,7 +501,7 @@ public class TopicIntegratorContext
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
     {
-        eventBrokerClient.removeEventType(userId, eventBrokerGUID, eventBrokerName, eventTypeGUID, qualifiedName);
+        eventBrokerClient.removeEventType(userId, externalSourceGUID, externalSourceName, eventTypeGUID, qualifiedName);
     }
 
 
@@ -609,9 +638,9 @@ public class TopicIntegratorContext
                                                                                                        UserNotAuthorizedException,
                                                                                                        PropertyServerException
     {
-        if (eventBrokerIsHome)
+        if (externalSourceIsHome)
         {
-            return eventBrokerClient.createPrimitiveSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeProperties);
+            return eventBrokerClient.createPrimitiveSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties);
         }
         else
         {
@@ -635,9 +664,9 @@ public class TopicIntegratorContext
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
     {
-        if (eventBrokerIsHome)
+        if (externalSourceIsHome)
         {
-            return eventBrokerClient.createLiteralSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeProperties);
+            return eventBrokerClient.createLiteralSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties);
         }
         else
         {
@@ -663,9 +692,9 @@ public class TopicIntegratorContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        if (eventBrokerIsHome)
+        if (externalSourceIsHome)
         {
-            return eventBrokerClient.createEnumSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeProperties, validValuesSetGUID);
+            return eventBrokerClient.createEnumSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties, validValuesSetGUID);
         }
         else
         {
@@ -737,9 +766,9 @@ public class TopicIntegratorContext
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        if (eventBrokerIsHome)
+        if (externalSourceIsHome)
         {
-            return eventBrokerClient.createStructSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeProperties);
+            return eventBrokerClient.createStructSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties);
         }
         else
         {
@@ -765,9 +794,9 @@ public class TopicIntegratorContext
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        if (eventBrokerIsHome)
+        if (externalSourceIsHome)
         {
-            return eventBrokerClient.createSchemaTypeChoice(userId, eventBrokerGUID, eventBrokerName, schemaTypeProperties, schemaTypeOptionGUIDs);
+            return eventBrokerClient.createSchemaTypeChoice(userId, externalSourceGUID, externalSourceName, schemaTypeProperties, schemaTypeOptionGUIDs);
         }
         else
         {
@@ -795,9 +824,9 @@ public class TopicIntegratorContext
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        if (eventBrokerIsHome)
+        if (externalSourceIsHome)
         {
-            return eventBrokerClient.createMapSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeProperties, mapFromSchemaTypeGUID, mapToSchemaTypeGUID);
+            return eventBrokerClient.createMapSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties, mapFromSchemaTypeGUID, mapToSchemaTypeGUID);
         }
         else
         {
@@ -823,9 +852,9 @@ public class TopicIntegratorContext
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        if (eventBrokerIsHome)
+        if (externalSourceIsHome)
         {
-            return eventBrokerClient.createSchemaTypeFromTemplate(userId, eventBrokerGUID, eventBrokerName, templateGUID, templateProperties);
+            return eventBrokerClient.createSchemaTypeFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateProperties);
         }
         else
         {
@@ -852,7 +881,7 @@ public class TopicIntegratorContext
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        eventBrokerClient.updateSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeGUID, isMergeUpdate, schemaTypeProperties);
+        eventBrokerClient.updateSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeGUID, isMergeUpdate, schemaTypeProperties);
     }
 
 
@@ -869,7 +898,7 @@ public class TopicIntegratorContext
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
     {
-        eventBrokerClient.removeSchemaType(userId, eventBrokerGUID, eventBrokerName, schemaTypeGUID);
+        eventBrokerClient.removeSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeGUID);
     }
 
 
@@ -893,7 +922,7 @@ public class TopicIntegratorContext
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        eventBrokerClient.setupSchemaElementRelationship(userId, eventBrokerGUID, eventBrokerName, endOneGUID, endTwoGUID, relationshipTypeName, properties);
+        eventBrokerClient.setupSchemaElementRelationship(userId, externalSourceGUID, externalSourceName, endOneGUID, endTwoGUID, relationshipTypeName, properties);
     }
 
 
@@ -914,7 +943,7 @@ public class TopicIntegratorContext
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        eventBrokerClient.clearSchemaElementRelationship(userId, eventBrokerGUID, eventBrokerName, endOneGUID, endTwoGUID, relationshipTypeName);
+        eventBrokerClient.clearSchemaElementRelationship(userId, externalSourceGUID, externalSourceName, endOneGUID, endTwoGUID, relationshipTypeName);
     }
 
 
@@ -1050,9 +1079,9 @@ public class TopicIntegratorContext
                                                                                                     UserNotAuthorizedException,
                                                                                                     PropertyServerException
     {
-        if (eventBrokerIsHome)
+        if (externalSourceIsHome)
         {
-            return eventBrokerClient.createSchemaAttribute(userId, eventBrokerGUID, eventBrokerName, schemaElementGUID, schemaAttributeProperties);
+            return eventBrokerClient.createSchemaAttribute(userId, externalSourceGUID, externalSourceName, schemaElementGUID, schemaAttributeProperties);
         }
         else
         {
@@ -1080,9 +1109,9 @@ public class TopicIntegratorContext
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        if (eventBrokerIsHome)
+        if (externalSourceIsHome)
         {
-            return eventBrokerClient.createSchemaAttributeFromTemplate(userId, eventBrokerGUID, eventBrokerName, schemaElementGUID, templateGUID, templateProperties);
+            return eventBrokerClient.createSchemaAttributeFromTemplate(userId, externalSourceGUID, externalSourceName, schemaElementGUID, templateGUID, templateProperties);
         }
         else
         {
@@ -1108,9 +1137,9 @@ public class TopicIntegratorContext
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
     {
-        if (eventBrokerIsHome)
+        if (externalSourceIsHome)
         {
-            eventBrokerClient.setupSchemaType(userId, eventBrokerGUID, eventBrokerName, relationshipTypeName, schemaAttributeGUID, schemaTypeGUID);
+            eventBrokerClient.setupSchemaType(userId, externalSourceGUID, externalSourceName, relationshipTypeName, schemaAttributeGUID, schemaTypeGUID);
         }
         else
         {
@@ -1132,7 +1161,7 @@ public class TopicIntegratorContext
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        eventBrokerClient.clearSchemaTypes(userId, eventBrokerGUID, eventBrokerName, schemaAttributeGUID);
+        eventBrokerClient.clearSchemaTypes(userId, externalSourceGUID, externalSourceName, schemaAttributeGUID);
     }
 
 
@@ -1153,7 +1182,7 @@ public class TopicIntegratorContext
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        eventBrokerClient.updateSchemaAttribute(userId, eventBrokerGUID, eventBrokerName, schemaAttributeGUID, isMergeUpdate, schemaAttributeProperties);
+        eventBrokerClient.updateSchemaAttribute(userId, externalSourceGUID, externalSourceName, schemaAttributeGUID, isMergeUpdate, schemaAttributeProperties);
     }
 
 
@@ -1170,7 +1199,7 @@ public class TopicIntegratorContext
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        eventBrokerClient.removeSchemaAttribute(userId, eventBrokerGUID, eventBrokerName, schemaAttributeGUID);
+        eventBrokerClient.removeSchemaAttribute(userId, externalSourceGUID, externalSourceName, schemaAttributeGUID);
     }
 
 
@@ -1332,7 +1361,7 @@ public class TopicIntegratorContext
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        connectionManagerClient.updateConnection(userId, eventBrokerGUID, eventBrokerName, connectionGUID, isMergeUpdate, connectionProperties);
+        connectionManagerClient.updateConnection(userId, externalSourceGUID, externalSourceName, connectionGUID, isMergeUpdate, connectionProperties);
     }
 
 
@@ -1370,7 +1399,7 @@ public class TopicIntegratorContext
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        connectionManagerClient.clearConnectorType(userId, eventBrokerGUID, eventBrokerName, connectionGUID, connectorTypeGUID);
+        connectionManagerClient.clearConnectorType(userId, externalSourceGUID, externalSourceName, connectionGUID, connectorTypeGUID);
     }
 
 
@@ -1408,7 +1437,7 @@ public class TopicIntegratorContext
                                                           UserNotAuthorizedException,
                                                           PropertyServerException
     {
-        connectionManagerClient.clearEndpoint(userId, eventBrokerGUID, eventBrokerName, connectionGUID, endpointGUID);
+        connectionManagerClient.clearEndpoint(userId, externalSourceGUID, externalSourceName, connectionGUID, endpointGUID);
     }
 
 
@@ -1452,7 +1481,7 @@ public class TopicIntegratorContext
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        connectionManagerClient.clearEmbeddedConnection(userId, eventBrokerGUID, eventBrokerName, connectionGUID, embeddedConnectionGUID);
+        connectionManagerClient.clearEmbeddedConnection(userId, externalSourceGUID, externalSourceName, connectionGUID, embeddedConnectionGUID);
     }
 
 
@@ -1492,7 +1521,7 @@ public class TopicIntegratorContext
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
-        connectionManagerClient.clearAssetConnection(userId, eventBrokerGUID, eventBrokerName, assetGUID, connectionGUID);
+        connectionManagerClient.clearAssetConnection(userId, externalSourceGUID, externalSourceName, assetGUID, connectionGUID);
     }
 
 
@@ -1510,7 +1539,7 @@ public class TopicIntegratorContext
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
     {
-        connectionManagerClient.removeConnection(userId, eventBrokerGUID, eventBrokerName, connectionGUID);
+        connectionManagerClient.removeConnection(userId, externalSourceGUID, externalSourceName, connectionGUID);
     }
 
 
@@ -1641,7 +1670,7 @@ public class TopicIntegratorContext
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        connectionManagerClient.updateEndpoint(userId, eventBrokerGUID, eventBrokerName, isMergeUpdate, endpointGUID, endpointProperties);
+        connectionManagerClient.updateEndpoint(userId, externalSourceGUID, externalSourceName, isMergeUpdate, endpointGUID, endpointProperties);
     }
 
 
@@ -1660,7 +1689,7 @@ public class TopicIntegratorContext
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
     {
-        connectionManagerClient.removeEndpoint(userId, eventBrokerGUID, eventBrokerName, endpointGUID);
+        connectionManagerClient.removeEndpoint(userId, externalSourceGUID, externalSourceName, endpointGUID);
     }
 
 
@@ -1819,7 +1848,7 @@ public class TopicIntegratorContext
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        return validValueManagement.createValidValue(userId, eventBrokerGUID, eventBrokerName, validValueProperties);
+        return validValueManagement.createValidValue(userId, externalSourceGUID, externalSourceName, validValueProperties);
     }
 
 
@@ -1841,7 +1870,7 @@ public class TopicIntegratorContext
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        validValueManagement.updateValidValue(userId, eventBrokerGUID, eventBrokerName, validValueGUID, isMergeUpdate, validValueProperties);
+        validValueManagement.updateValidValue(userId, externalSourceGUID, externalSourceName, validValueGUID, isMergeUpdate, validValueProperties);
     }
 
 
@@ -1862,7 +1891,7 @@ public class TopicIntegratorContext
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        validValueManagement.setupValidValueMember(userId, eventBrokerGUID, eventBrokerName, validValueSetGUID, properties, validValueMemberGUID);
+        validValueManagement.setupValidValueMember(userId, externalSourceGUID, externalSourceName, validValueSetGUID, properties, validValueMemberGUID);
     }
 
 
@@ -1881,7 +1910,7 @@ public class TopicIntegratorContext
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        validValueManagement.clearValidValueMember(userId, eventBrokerGUID, eventBrokerName, validValueSetGUID, validValueMemberGUID);
+        validValueManagement.clearValidValueMember(userId, externalSourceGUID, externalSourceName, validValueSetGUID, validValueMemberGUID);
     }
 
 
@@ -1903,7 +1932,7 @@ public class TopicIntegratorContext
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        validValueManagement.setupValidValues(userId, eventBrokerGUID, eventBrokerName, elementGUID, properties, validValueGUID);
+        validValueManagement.setupValidValues(userId, externalSourceGUID, externalSourceName, elementGUID, properties, validValueGUID);
     }
 
 
@@ -1922,7 +1951,7 @@ public class TopicIntegratorContext
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
     {
-        validValueManagement.clearValidValues(userId, eventBrokerGUID, eventBrokerName, elementGUID, validValueGUID);
+        validValueManagement.clearValidValues(userId, externalSourceGUID, externalSourceName, elementGUID, validValueGUID);
     }
 
 
@@ -1944,7 +1973,7 @@ public class TopicIntegratorContext
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        validValueManagement.setupReferenceValueTag(userId, eventBrokerGUID, eventBrokerName, elementGUID, properties, validValueGUID);
+        validValueManagement.setupReferenceValueTag(userId, externalSourceGUID, externalSourceName, elementGUID, properties, validValueGUID);
     }
 
 
@@ -1963,7 +1992,7 @@ public class TopicIntegratorContext
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
     {
-        validValueManagement.clearReferenceValueTag(userId, eventBrokerGUID, eventBrokerName, elementGUID, validValueGUID);
+        validValueManagement.clearReferenceValueTag(userId, externalSourceGUID, externalSourceName, elementGUID, validValueGUID);
     }
 
 
@@ -1980,7 +2009,7 @@ public class TopicIntegratorContext
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
     {
-        validValueManagement.removeValidValue(userId, eventBrokerGUID, eventBrokerName, validValueGUID);
+        validValueManagement.removeValidValue(userId, externalSourceGUID, externalSourceName, validValueGUID);
     }
 
 

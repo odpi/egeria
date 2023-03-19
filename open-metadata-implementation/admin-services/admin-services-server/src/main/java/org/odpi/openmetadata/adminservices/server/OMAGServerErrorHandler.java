@@ -130,6 +130,25 @@ public class OMAGServerErrorHandler
 
 
     /**
+     * Validate that the server name is not null and save it in the config.
+     *
+     * @param serverName  serverName passed on a request
+     * @param integrationGroupConfig  integration service config
+     * @param methodName  method receiving the call
+     * @throws OMAGInvalidParameterException null server name
+     */
+    void validateIntegrationGroupConfig(String                 serverName,
+                                        IntegrationGroupConfig integrationGroupConfig,
+                                        String                 methodName) throws OMAGInvalidParameterException
+    {
+        final String qualifiedNamePropertyName = "integrationGroupConfig.integrationGroupQualifiedName";
+
+        this.validateOMAGServerClientConfig(serverName, integrationGroupConfig, methodName);
+        this.validatePropertyNotNull(integrationGroupConfig.getIntegrationGroupQualifiedName(), qualifiedNamePropertyName, serverName, methodName);
+    }
+
+
+    /**
      * Make sure the event bus properties are set before allowing configuration that is dependent on it to
      * be set.
      *

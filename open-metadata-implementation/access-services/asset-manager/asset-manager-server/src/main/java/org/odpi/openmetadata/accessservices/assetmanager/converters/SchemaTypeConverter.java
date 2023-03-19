@@ -215,6 +215,7 @@ public class SchemaTypeConverter<B> extends AssetManagerOMASConverter<B>
                                                       schemaRootClassifications);
 
             returnBean.setFormula(this.getFormula(classificationProperties));
+            returnBean.setFormulaType(this.getFormulaType(classificationProperties));
         }
 
         return returnBean;

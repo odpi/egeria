@@ -40,7 +40,7 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
      * Create a new OpenLineage client.
      *
      * @param serverName            name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException if parameter validation fails
      */
     public OpenLineageClient(String serverName, String serverPlatformURLRoot)

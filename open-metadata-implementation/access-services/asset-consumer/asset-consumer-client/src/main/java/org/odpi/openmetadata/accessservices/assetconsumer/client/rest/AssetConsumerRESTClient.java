@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermListR
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermResponse;
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.TagResponse;
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.TagsResponse;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;

@@ -36,19 +36,6 @@ public class OpenLineageEventReceiverIntegrationConnector extends LineageIntegra
 
 
     /**
-     * Initialize the connector.
-     *
-     * @param connectorInstanceId - unique id for the connector instance - useful for messages etc
-     * @param connectionProperties - POJO for the configuration used to create the connector.
-     */
-    @Override
-    public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties)
-    {
-        super.initialize(connectorInstanceId, connectionProperties);
-    }
-
-
-    /**
      * Indicates that the connector is completely configured and can begin processing.
      * This call can be used to register with non-blocking services.
      *
