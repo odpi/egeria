@@ -6,8 +6,13 @@ import org.odpi.openmetadata.commonservices.multitenant.GovernanceServerServiceI
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesErrorCode;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationConnectorCacheMap;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationConnectorHandler;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationGroupHandler;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationServiceHandler;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupSummary;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads.IntegrationDaemonThread;
 
 import java.util.ArrayList;
@@ -21,9 +26,10 @@ import java.util.Map;
  */
 public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
 {
-    private IntegrationDaemonThread                integrationDaemonThread;
-    private Map<String, IntegrationServiceHandler> integrationServiceHandlers;
-
+    private final IntegrationDaemonThread                integrationDaemonThread;
+    private final Map<String, IntegrationServiceHandler> integrationServiceHandlers;
+    private final Map<String, IntegrationGroupHandler>   integrationGroupHandlers;
+    private final IntegrationConnectorCacheMap           integrationConnectorCacheMap;
 
     /**
      * Constructor where REST Services used.
@@ -42,12 +48,16 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
                               String                                 localServerUserId,
                               int                                    maxPageSize,
                               IntegrationDaemonThread                integrationDaemonThread,
-                              Map<String, IntegrationServiceHandler> integrationServiceHandlers)
+                              Map<String, IntegrationServiceHandler> integrationServiceHandlers,
+                              Map<String, IntegrationGroupHandler>   integrationGroupHandlers,
+                              IntegrationConnectorCacheMap           integrationConnectorCacheMap)
     {
         super(serverName, serviceName, auditLog, localServerUserId, maxPageSize);
 
         this.integrationDaemonThread = integrationDaemonThread;
         this.integrationServiceHandlers = integrationServiceHandlers;
+        this.integrationGroupHandlers = integrationGroupHandlers;
+        this.integrationConnectorCacheMap = integrationConnectorCacheMap;
     }
 
 
@@ -62,9 +72,7 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
     {
         if ((integrationServiceHandlers == null) || (integrationServiceHandlers.isEmpty()))
         {
-            throw new PropertyServerException(IntegrationDaemonServicesErrorCode.NO_INTEGRATION_SERVICES.getMessageDefinition(serverName),
-                                              this.getClass().getName(),
-                                              serviceOperationName);
+            return null;
         }
 
         return new ArrayList<>(integrationServiceHandlers.values());
@@ -99,24 +107,126 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
 
 
     /**
-     * Shutdown the integration services
+     * Retrieve all the definitions for the requested integration group from the Governance Engine OMAS
+     * running in a metadata server.
+     *
+     * @param integrationGroupName qualifiedName of the requested integration group
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     *
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    void  refreshConfig(String integrationGroupName,
+                        String serviceOperationName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
+    {
+        final String integrationGroupParameterName = "integrationGroupName";
+
+        invalidParameterHandler.validateName(integrationGroupName, integrationGroupParameterName, serviceOperationName);
+
+        if ((integrationGroupHandlers == null) || (integrationGroupHandlers.isEmpty()))
+        {
+            throw new PropertyServerException(IntegrationDaemonServicesErrorCode.NO_INTEGRATION_GROUPS.getMessageDefinition(serverName),
+                                              this.getClass().getName(),
+                                              serviceOperationName);
+        }
+
+        IntegrationGroupHandler handler = integrationGroupHandlers.get(integrationGroupName);
+
+        if (handler == null)
+        {
+            throw new InvalidParameterException(IntegrationDaemonServicesErrorCode.UNKNOWN_GROUP_NAME.getMessageDefinition(serverName, integrationGroupName),
+                                                this.getClass().getName(),
+                                                serviceOperationName,
+                                                integrationGroupParameterName);
+        }
+
+        handler.refreshConfig();
+    }
+
+
+    /**
+     * Return a summary of the requested engine's status.
+     *
+     * @param integrationGroupName qualifiedName of the requested integration group
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     *
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    IntegrationGroupSummary getIntegrationGroupSummary(String integrationGroupName,
+                                                       String serviceOperationName) throws InvalidParameterException,
+                                                                                           PropertyServerException
+    {
+        final String integrationGroupParameterName = "integrationGroupName";
+
+        invalidParameterHandler.validateName(integrationGroupName, integrationGroupParameterName, serviceOperationName);
+
+        if ((integrationGroupHandlers == null) || (integrationGroupHandlers.isEmpty()))
+        {
+            throw new PropertyServerException(IntegrationDaemonServicesErrorCode.NO_INTEGRATION_GROUPS.getMessageDefinition(serverName),
+                                              this.getClass().getName(),
+                                              serviceOperationName);
+        }
+
+        IntegrationGroupHandler handler = integrationGroupHandlers.get(integrationGroupName);
+
+        if (handler == null)
+        {
+            throw new InvalidParameterException(IntegrationDaemonServicesErrorCode.UNKNOWN_GROUP_NAME.getMessageDefinition(serverName, integrationGroupName),
+                                                this.getClass().getName(),
+                                                serviceOperationName,
+                                                integrationGroupParameterName);
+        }
+
+        return handler.getSummary();
+    }
+
+
+    /**
+     * Return a summary of all the engine statuses for the integration daemon.
+     *
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     *
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    List<IntegrationGroupSummary> getIntegrationGroupSummaries(String serviceOperationName) throws InvalidParameterException,
+                                                                                                   PropertyServerException
+    {
+        if ((integrationGroupHandlers == null) || (integrationGroupHandlers.isEmpty()))
+        {
+            return null;
+        }
+
+        List<IntegrationGroupSummary> summaries = new ArrayList<>();
+
+        for (String integrationGroupName : integrationGroupHandlers.keySet())
+        {
+            if (integrationGroupName != null)
+            {
+                summaries.add(this.getIntegrationGroupSummary(integrationGroupName, serviceOperationName));
+            }
+        }
+
+        if (summaries.isEmpty())
+        {
+            return null;
+        }
+
+        return summaries;
+    }
+    
+
+    /**
+     * Shutdown the integration daemon
      */
     @Override
     public void shutdown()
     {
-        if ((integrationServiceHandlers != null) && (! integrationServiceHandlers.isEmpty()))
-        {
-            for (IntegrationServiceHandler handler : integrationServiceHandlers.values())
-            {
-                if (handler != null)
-                {
-                    /*
-                     * This shuts down the connectors
-                     */
-                    handler.shutdown();
-                }
-            }
-        }
+        final String actionDescription = "Server shutdown";
 
         /*
          * Shutdown the threads running the connectors.
@@ -124,6 +234,21 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
         if (integrationDaemonThread != null)
         {
             integrationDaemonThread.stop();
+        }
+
+        /*
+         * This shuts down the connectors and stops any dedicated threads.
+         */
+        if (integrationConnectorCacheMap != null)
+        {
+            for (String connectorId : integrationConnectorCacheMap.getConnectorIds())
+            {
+                IntegrationConnectorHandler handler = integrationConnectorCacheMap.getHandlerByConnectorId(connectorId);
+                if (handler != null)
+                {
+                    handler.shutdown(actionDescription);
+                }
+            }
         }
 
         super.shutdown();

@@ -6,6 +6,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
@@ -21,10 +22,26 @@ import java.util.List;
  * abstract class OpenMetadataClient and used by all the governance action services to retrieve metadata.
  *
  * The concrete class for OpenMetadataClient is implemented by a metadata repository provider. In Egeria, this class is
- * implemented in the Governance Engine OMAS client.
+ * implemented in the GAF Metadata Management Services.
  */
-public interface OpenMetadataStore
+public class OpenMetadataStore
 {
+    private final OpenMetadataClient openMetadataClient;
+    private final String             userId;
+
+    /**
+     * Construct the open metadata store wrapper around the open metadata client.
+     *
+     * @param openMetadataClient client to retrieve values from the
+     * @param userId userId for the governance service
+     */
+    public OpenMetadataStore(OpenMetadataClient openMetadataClient, String userId)
+    {
+        this.openMetadataClient = openMetadataClient;
+        this.userId             = userId;
+    }
+
+
     /**
      * Retrieve the metadata element using its unique identifier.
      *
@@ -38,12 +55,19 @@ public interface OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    OpenMetadataElement getMetadataElementByGUID(String  elementGUID,
-                                                 boolean forLineage,
-                                                 boolean forDuplicateProcessing,
-                                                 Date    effectiveTime) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException;
+    public OpenMetadataElement getMetadataElementByGUID(String  elementGUID,
+                                                        boolean forLineage,
+                                                        boolean forDuplicateProcessing,
+                                                        Date    effectiveTime) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        return openMetadataClient.getMetadataElementByGUID(userId,
+                                                           elementGUID,
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           effectiveTime);
+    }
 
 
     /**
@@ -60,13 +84,21 @@ public interface OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    OpenMetadataElement getMetadataElementByUniqueName(String  uniqueName,
-                                                       String  uniquePropertyName,
-                                                       boolean forLineage,
-                                                       boolean forDuplicateProcessing,
-                                                       Date    effectiveTime) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException;
+    public OpenMetadataElement getMetadataElementByUniqueName(String  uniqueName,
+                                                              String  uniquePropertyName,
+                                                              boolean forLineage,
+                                                              boolean forDuplicateProcessing,
+                                                              Date    effectiveTime) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        return openMetadataClient.getMetadataElementByUniqueName(userId,
+                                                                 uniqueName,
+                                                                 uniquePropertyName,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 effectiveTime);
+    }
 
 
     /**
@@ -83,13 +115,21 @@ public interface OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    String getMetadataElementGUIDByUniqueName(String  uniqueName,
-                                              String  uniquePropertyName,
-                                              boolean forLineage,
-                                              boolean forDuplicateProcessing,
-                                              Date    effectiveTime) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException;
+    public String getMetadataElementGUIDByUniqueName(String  uniqueName,
+                                                     String  uniquePropertyName,
+                                                     boolean forLineage,
+                                                     boolean forDuplicateProcessing,
+                                                     Date    effectiveTime) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        return openMetadataClient.getMetadataElementGUIDByUniqueName(userId,
+                                                                     uniqueName,
+                                                                     uniquePropertyName,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     effectiveTime);
+    }
 
 
     /**
@@ -107,14 +147,23 @@ public interface OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    List<OpenMetadataElement> findMetadataElementsWithString(String  searchString,
-                                                             boolean forLineage,
-                                                             boolean forDuplicateProcessing,
-                                                             Date    effectiveTime,
-                                                             int     startFrom,
-                                                             int     pageSize) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException;
+    public List<OpenMetadataElement> findMetadataElementsWithString(String  searchString,
+                                                                    boolean forLineage,
+                                                                    boolean forDuplicateProcessing,
+                                                                    Date    effectiveTime,
+                                                                    int     startFrom,
+                                                                    int     pageSize) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        return openMetadataClient.findMetadataElementsWithString(userId,
+                                                                 searchString,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 effectiveTime,
+                                                                 startFrom,
+                                                                 pageSize);
+    }
 
 
     /**
@@ -134,16 +183,27 @@ public interface OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    List<RelatedMetadataElement> getRelatedMetadataElements(String  elementGUID,
-                                                            int     startingAtEnd,
-                                                            String  relationshipTypeName,
-                                                            boolean forLineage,
-                                                            boolean forDuplicateProcessing,
-                                                            Date    effectiveTime,
-                                                            int     startFrom,
-                                                            int     pageSize) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException;
+    public List<RelatedMetadataElement> getRelatedMetadataElements(String  elementGUID,
+                                                                   int     startingAtEnd,
+                                                                   String  relationshipTypeName,
+                                                                   boolean forLineage,
+                                                                   boolean forDuplicateProcessing,
+                                                                   Date    effectiveTime,
+                                                                   int     startFrom,
+                                                                   int     pageSize) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        return openMetadataClient.getRelatedMetadataElements(userId,
+                                                             elementGUID,
+                                                             startingAtEnd,
+                                                             relationshipTypeName,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime,
+                                                             startFrom,
+                                                             pageSize);
+    }
 
 
     /**
@@ -154,7 +214,7 @@ public interface OpenMetadataStore
      *                           include in the search results. Null means all subtypes.
      * @param searchProperties Optional list of entity property conditions to match.
      * @param limitResultsByStatus By default, entities in all statuses (other than DELETE) are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
+     *                             to specify a list of statuses (e.g. ACTIVE) to restrict the results to.  Null means all status values.
      * @param matchClassifications Optional list of classifications to match.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
      *                           Null means do not sequence on a property name (see SequencingOrder).
@@ -170,20 +230,35 @@ public interface OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    List<OpenMetadataElement> findMetadataElements(String                metadataElementTypeName,
-                                                   List<String>          metadataElementSubtypeName,
-                                                   SearchProperties      searchProperties,
-                                                   List<ElementStatus>   limitResultsByStatus,
-                                                   SearchClassifications matchClassifications,
-                                                   String                sequencingProperty,
-                                                   SequencingOrder       sequencingOrder,
-                                                   boolean               forLineage,
-                                                   boolean               forDuplicateProcessing,
-                                                   Date                  effectiveTime,
-                                                   int                   startFrom,
-                                                   int                   pageSize) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException;
+    public List<OpenMetadataElement> findMetadataElements(String                metadataElementTypeName,
+                                                          List<String>          metadataElementSubtypeName,
+                                                          SearchProperties      searchProperties,
+                                                          List<ElementStatus>   limitResultsByStatus,
+                                                          SearchClassifications matchClassifications,
+                                                          String                sequencingProperty,
+                                                          SequencingOrder       sequencingOrder,
+                                                          boolean               forLineage,
+                                                          boolean               forDuplicateProcessing,
+                                                          Date                  effectiveTime,
+                                                          int                   startFrom,
+                                                          int                   pageSize) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        return openMetadataClient.findMetadataElements(userId,
+                                                       metadataElementTypeName,
+                                                       metadataElementSubtypeName,
+                                                       searchProperties,
+                                                       limitResultsByStatus,
+                                                       matchClassifications,
+                                                       sequencingProperty,
+                                                       sequencingOrder,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       effectiveTime,
+                                                       startFrom,
+                                                       pageSize);
+    }
 
 
     /**
@@ -206,15 +281,27 @@ public interface OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    List<RelatedMetadataElements> findRelationshipsBetweenMetadataElements(String           relationshipTypeName,
-                                                                           SearchProperties searchProperties,
-                                                                           String           sequencingProperty,
-                                                                           SequencingOrder  sequencingOrder,
-                                                                           boolean          forLineage,
-                                                                           boolean          forDuplicateProcessing,
-                                                                           Date             effectiveTime,
-                                                                           int              startFrom,
-                                                                           int              pageSize) throws InvalidParameterException,
-                                                                                                             UserNotAuthorizedException,
-                                                                                                             PropertyServerException;
+    public List<RelatedMetadataElements> findRelationshipsBetweenMetadataElements(String           relationshipTypeName,
+                                                                                  SearchProperties searchProperties,
+                                                                                  String           sequencingProperty,
+                                                                                  SequencingOrder  sequencingOrder,
+                                                                                  boolean          forLineage,
+                                                                                  boolean          forDuplicateProcessing,
+                                                                                  Date             effectiveTime,
+                                                                                  int              startFrom,
+                                                                                  int              pageSize) throws InvalidParameterException,
+                                                                                                                    UserNotAuthorizedException,
+                                                                                                                    PropertyServerException
+    {
+        return openMetadataClient.findRelationshipsBetweenMetadataElements(userId,
+                                                                           relationshipTypeName,
+                                                                           searchProperties,
+                                                                           sequencingProperty,
+                                                                           sequencingOrder,
+                                                                           forLineage,
+                                                                           forDuplicateProcessing,
+                                                                           effectiveTime,
+                                                                           startFrom,
+                                                                           pageSize);
+    }
 }

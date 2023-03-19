@@ -43,7 +43,7 @@ public class GovernanceEngineOutTopicPublisher
 
 
     /**
-     * Send a publish refresh event for the governance engine.
+     * Send publish refresh event for the governance engine.
      *
      * @param governanceEngineGUID unique identifier for the governance engine
      * @param governanceEngineName unique name for the governance engine
@@ -81,7 +81,7 @@ public class GovernanceEngineOutTopicPublisher
 
 
     /**
-     * Send a publish refresh event for the registered governance service.
+     * Send publish refresh event for the registered governance service.
      *
      * @param governanceEngineGUID unique identifier for the governance engine
      * @param governanceEngineName unique name for the governance engine

@@ -64,7 +64,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.ConnectionResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;

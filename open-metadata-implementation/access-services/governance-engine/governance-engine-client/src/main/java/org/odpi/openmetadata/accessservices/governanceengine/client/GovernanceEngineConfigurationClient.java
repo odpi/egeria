@@ -2,13 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.client;
 
+import org.odpi.openmetadata.accessservices.governanceengine.api.GovernanceEngineConfiguration;
 import org.odpi.openmetadata.accessservices.governanceengine.client.rest.GovernanceEngineRESTClient;
-import org.odpi.openmetadata.accessservices.governanceengine.connectors.outtopic.GovernanceEngineOutTopicClientConnector;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceEngineElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceServiceElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RegisteredGovernanceServiceElement;
 import org.odpi.openmetadata.accessservices.governanceengine.rest.*;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
@@ -27,26 +26,24 @@ import java.util.Map;
 /**
  * GovernanceEngineConfigurationClient supports the configuration of governance engine and governance services.
  */
-public class GovernanceEngineConfigurationClient
+public class GovernanceEngineConfigurationClient implements GovernanceEngineConfiguration
 {
-    private String                     serverName;               /* Initialized in constructor */
-    private String                     serverPlatformURLRoot;    /* Initialized in constructor */
-    private GovernanceEngineRESTClient restClient;               /* Initialized in constructor */
+    private final String                                  serverName;               /* Initialized in constructor */
+    private final String                                  serverPlatformURLRoot;    /* Initialized in constructor */
+    private final GovernanceEngineRESTClient              restClient;               /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private RESTExceptionHandler    exceptionHandler        = new RESTExceptionHandler();
-    private NullRequestBody         nullRequestBody         = new NullRequestBody();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final RESTExceptionHandler    exceptionHandler = new RESTExceptionHandler();
+    private final NullRequestBody         nullRequestBody  = new NullRequestBody();
 
     private AuditLog auditLog = null;
 
-    private static final String  serviceName = AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceFullName();
-    private GovernanceEngineOutTopicClientConnector configurationEventTopicConnector = null;
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
@@ -68,7 +65,7 @@ public class GovernanceEngineConfigurationClient
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
@@ -94,7 +91,7 @@ public class GovernanceEngineConfigurationClient
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param restClient pre-initialized REST client
      * @param maxPageSize pre-initialized parameter limit
      * @param auditLog logging destination
@@ -145,6 +142,7 @@ public class GovernanceEngineConfigurationClient
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem storing the governance engine definition.
      */
+    @Override
     public String createGovernanceEngine(String userId,
                                          String governanceEngineType,
                                          String qualifiedName,
@@ -189,6 +187,7 @@ public class GovernanceEngineConfigurationClient
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the governance engine definition.
      */
+    @Override
     public GovernanceEngineElement getGovernanceEngineByGUID(String    userId,
                                                              String    guid) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
@@ -222,6 +221,7 @@ public class GovernanceEngineConfigurationClient
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the governance engine definition.
      */
+    @Override
     public  GovernanceEngineElement getGovernanceEngineByName(String    userId,
                                                               String    name) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
@@ -256,6 +256,7 @@ public class GovernanceEngineConfigurationClient
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the governance engine definitions.
      */
+    @Override
     public  List<GovernanceEngineElement> getAllGovernanceEngines(String userId,
                                                                   String governanceEngineType,
                                                                   int    startingFrom,
@@ -304,6 +305,7 @@ public class GovernanceEngineConfigurationClient
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem storing the governance engine definition.
      */
+    @Override
     public  void    updateGovernanceEngine(String                userId,
                                            String                guid,
                                            String                qualifiedName,
@@ -359,6 +361,7 @@ public class GovernanceEngineConfigurationClient
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the governance engine definition.
      */
+    @Override
     public  void   deleteGovernanceEngine(String  userId,
                                           String  guid,
                                           String  qualifiedName) throws InvalidParameterException,
@@ -395,7 +398,7 @@ public class GovernanceEngineConfigurationClient
      * @param qualifiedName  unique name for the governance service.
      * @param displayName   display name for the governance service.
      * @param description  description of the analysis provided by the governance service.
-     * @param connection   connection to instanciate the governance service implementation.
+     * @param connection   connection to instantiate the governance service implementation.
      *
      * @return unique identifier of the governance service.
      *
@@ -403,6 +406,7 @@ public class GovernanceEngineConfigurationClient
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem storing the governance service definition.
      */
+    @Override
     public String  createGovernanceService(String     userId,
                                            String     governanceServiceType,
                                            String     qualifiedName,
@@ -452,6 +456,7 @@ public class GovernanceEngineConfigurationClient
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the governance service definition.
      */
+    @Override
     public GovernanceServiceElement getGovernanceServiceByGUID(String userId,
                                                                String guid) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
@@ -486,6 +491,7 @@ public class GovernanceEngineConfigurationClient
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the governance engine definition.
      */
+    @Override
     public  GovernanceServiceElement getGovernanceServiceByName(String    userId,
                                                                 String    name) throws InvalidParameterException,
                                                                                        UserNotAuthorizedException,
@@ -521,6 +527,7 @@ public class GovernanceEngineConfigurationClient
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the governance service definitions.
      */
+    @Override
     public  List<GovernanceServiceElement> getAllGovernanceServices(String  userId,
                                                                     int     startingFrom,
                                                                     int     maximumResults) throws InvalidParameterException,
@@ -556,6 +563,7 @@ public class GovernanceEngineConfigurationClient
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the governance service and/or governance engine definitions.
      */
+    @Override
     public  List<String>  getGovernanceServiceRegistrations(String   userId,
                                                             String   governanceServiceGUID) throws InvalidParameterException,
                                                                                                    UserNotAuthorizedException,
@@ -596,6 +604,7 @@ public class GovernanceEngineConfigurationClient
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem storing the governance service definition.
      */
+    @Override
     public void updateGovernanceService(String              userId,
                                         String              guid,
                                         String              qualifiedName,
@@ -648,6 +657,7 @@ public class GovernanceEngineConfigurationClient
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the governance service definition.
      */
+    @Override
     public void deleteGovernanceService(String  userId,
                                         String  guid,
                                         String  qualifiedName) throws InvalidParameterException,
@@ -690,6 +700,7 @@ public class GovernanceEngineConfigurationClient
      * @throws PropertyServerException problem retrieving the governance service and/or governance engine definitions.
      */
     @Deprecated
+    @Override
     public void registerGovernanceServiceWithEngine(String               userId,
                                                     String               governanceEngineGUID,
                                                     String               governanceServiceGUID,
@@ -717,6 +728,7 @@ public class GovernanceEngineConfigurationClient
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the governance service and/or governance engine definitions.
      */
+    @Override
     public void registerGovernanceServiceWithEngine(String               userId,
                                                     String               governanceEngineGUID,
                                                     String               governanceServiceGUID,
@@ -769,6 +781,7 @@ public class GovernanceEngineConfigurationClient
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the governance service and/or governance engine definitions.
      */
+    @Override
     public RegisteredGovernanceServiceElement getRegisteredGovernanceService(String  userId,
                                                                              String  governanceEngineGUID,
                                                                              String  governanceServiceGUID) throws InvalidParameterException,
@@ -809,6 +822,7 @@ public class GovernanceEngineConfigurationClient
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the governance service and/or governance engine definitions.
      */
+    @Override
     public List<RegisteredGovernanceServiceElement> getRegisteredGovernanceServices(String  userId,
                                                                                     String  governanceEngineGUID,
                                                                                     int     startingFrom,
@@ -847,6 +861,7 @@ public class GovernanceEngineConfigurationClient
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the governance service and/or governance engine definitions.
      */
+    @Override
     public void unregisterGovernanceServiceFromEngine(String userId,
                                                       String governanceEngineGUID,
                                                       String governanceServiceGUID) throws InvalidParameterException,

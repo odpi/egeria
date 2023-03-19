@@ -10,6 +10,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.IntegrationDaemonStatusResponse;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.IntegrationGroupSummariesResponse;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.IntegrationGroupSummaryResponse;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.IntegrationServiceSummaryResponse;
 
 /**
  * IntegrationDaemonServicesRESTClient is responsible for issuing the REST API calls
@@ -93,7 +96,7 @@ class IntegrationDaemonServicesRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns a IntegrationDaemonStatusResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return IntegrationDaemonStatusResponse
@@ -119,10 +122,97 @@ class IntegrationDaemonServicesRESTClient extends FFDCRESTClient
 
 
     /**
+     * Issue a GET REST call that returns a IntegrationDaemonStatusResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return IntegrationDaemonStatusResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    IntegrationServiceSummaryResponse callIntegrationServiceStatusGetRESTCall(String    methodName,
+                                                                              String    urlTemplate,
+                                                                              Object... params) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        IntegrationServiceSummaryResponse restResult = this.callGetRESTCall(methodName,
+                                                                            IntegrationServiceSummaryResponse.class,
+                                                                            urlTemplate,
+                                                                            params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a IntegrationGroupSummaryResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    IntegrationGroupSummaryResponse callIntegrationGroupSummaryGetRESTCall(String    methodName,
+                                                                           String    urlTemplate,
+                                                                           Object... params) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
+    {
+        IntegrationGroupSummaryResponse restResult = this.callGetRESTCall(methodName,
+                                                                          IntegrationGroupSummaryResponse.class,
+                                                                          urlTemplate,
+                                                                          params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a IntegrationGroupSummariesResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    IntegrationGroupSummariesResponse callIntegrationGroupSummariesGetRESTCall(String    methodName,
+                                                                               String    urlTemplate,
+                                                                               Object... params) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
+    {
+        IntegrationGroupSummariesResponse restResult = this.callGetRESTCall(methodName,
+                                                                            IntegrationGroupSummariesResponse.class,
+                                                                            urlTemplate,
+                                                                            params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
      * Issue a GET REST call that returns a PropertiesResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return PropertiesResponse

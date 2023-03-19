@@ -27,13 +27,13 @@ import java.util.*;
  */
 public class OMAGServerAdminForIntegrationServices
 {
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminForIntegrationServices.class),
-                                                                      CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminForIntegrationServices.class),
+                                                                            CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
     
 
-    private OMAGServerAdminStoreServices   configStore = new OMAGServerAdminStoreServices();
-    private OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
-    private OMAGServerExceptionHandler     exceptionHandler = new OMAGServerExceptionHandler();
+    private final OMAGServerAdminStoreServices   configStore = new OMAGServerAdminStoreServices();
+    private final OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
+    private final OMAGServerExceptionHandler     exceptionHandler = new OMAGServerExceptionHandler();
 
 
     /**
@@ -133,7 +133,7 @@ public class OMAGServerAdminForIntegrationServices
      * @param userId calling user
      * @param serverName name of server
      *
-     * @return list of access service configurations
+     * @return list of integration service configurations
      */
     public IntegrationServicesResponse getIntegrationServicesConfiguration(String userId,
                                                                            String serverName)
@@ -418,11 +418,6 @@ public class OMAGServerAdminForIntegrationServices
 
             newList.add(integrationServiceConfig);
 
-            if (newList.isEmpty())
-            {
-                return null;
-            }
-
             return newList;
         }
     }
@@ -584,16 +579,15 @@ public class OMAGServerAdminForIntegrationServices
 
             if (integrationServicesConfig == null)
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for integration services.");
+                configAuditTrail.add(new Date() + " " + userId + " removed configuration for integration services.");
             }
             else if (serviceURLMarker == null)
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for integration services.");
+                configAuditTrail.add(new Date() + " " + userId + " updated configuration for integration services.");
             }
             else
             {
-                configAuditTrail.add(new Date().toString() + " " + userId +
-                                             " updated configuration for integration service " + serviceURLMarker + ".");
+                configAuditTrail.add(new Date() + " " + userId + " updated configuration for integration service " + serviceURLMarker + ".");
             }
 
             serverConfig.setAuditTrail(configAuditTrail);

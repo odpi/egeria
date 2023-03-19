@@ -82,7 +82,7 @@ public class ElementStubConverter<B> extends GovernanceProgramOMASConverter<B>
      *
      * @param beanClass name of the class to create
      * @param relationship relationship containing the properties
-     * @param useEnd1 should the
+     * @param useEnd1 should the proxy come from end 1
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
@@ -113,7 +113,7 @@ public class ElementStubConverter<B> extends GovernanceProgramOMASConverter<B>
      *
      * @param beanClass name of the class to create
      * @param relationships list of relationships containing the properties
-     * @param useEnd1 should the
+     * @param useEnd1 should the proxy come from end 1
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean

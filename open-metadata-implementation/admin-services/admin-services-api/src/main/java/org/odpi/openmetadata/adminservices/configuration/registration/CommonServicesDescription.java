@@ -54,6 +54,14 @@ public enum CommonServicesDescription implements Serializable
                                       "platform-services",
                                       "Provides information about the registered services and connectors available in an OMAG Server Platform.",
                                       "https://egeria-project.org/services/platform-services/overview"),
+
+    OIF_METADATA_MANAGEMENT          (186,
+                                      ComponentDevelopmentStatus.STABLE,
+                                      "Open Integration Service",
+                                      "open-integration-service",
+                                      "Provides operational support for the integration connectors.",
+                                      "https://egeria-project.org/services/oif-metadata-management"),
+
     ;
 
 

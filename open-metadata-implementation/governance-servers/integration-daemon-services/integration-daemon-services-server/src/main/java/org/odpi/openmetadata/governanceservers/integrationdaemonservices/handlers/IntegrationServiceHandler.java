@@ -8,7 +8,7 @@ import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationS
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager.IntegrationContextManager;
+import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesErrorCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorReport;
@@ -27,17 +27,17 @@ import java.util.Map;
  */
 public class IntegrationServiceHandler
 {
-    private String                    localServerName;               /* Initialized in constructor */
-    private IntegrationServiceConfig  serviceConfig;                 /* Initialized in constructor */
-    private IntegrationContextManager contextManager;                /* Initialized in constructor */
-    private AuditLog                  auditLog;                      /* Initialized in constructor */
+    private final String                    localServerName;               /* Initialized in constructor */
+    private final IntegrationServiceConfig  serviceConfig;                 /* Initialized in constructor */
+    private final IntegrationContextManager contextManager;                /* Initialized in constructor */
+    private final AuditLog                  auditLog;                      /* Initialized in constructor */
 
     private final InvalidParameterHandler     invalidParameterHandler = new InvalidParameterHandler();
-    private List<IntegrationConnectorHandler> connectorHandlers = new ArrayList<>();
+    private final List<IntegrationConnectorHandler> connectorHandlers = new ArrayList<>();
 
     /**
      * Constructor passes the service config. It is just saved at this point. Interesting things
-     * start to happen on the initialize() call
+     * start to happen on initialize().
      *
      * @param localServerName name of the local server
      * @param serviceConfig configuration for this specific integration service
@@ -68,6 +68,17 @@ public class IntegrationServiceHandler
 
 
     /**
+     * Return the full name of the service.
+     *
+     * @return stirng name
+     */
+    public String getIntegrationServiceFullName()
+    {
+        return serviceConfig.getIntegrationServiceFullName();
+    }
+
+
+    /**
      * Create connector handlers for each of the connections listed in the configuration and
      * return them to the caller.  When the connector handlers are returned, the integration connectors
      * within them are fully initialized and have their context set.  They are ready to be called
@@ -90,9 +101,19 @@ public class IntegrationServiceHandler
                         connectorConfig.setPermittedSynchronization(serviceConfig.getDefaultPermittedSynchronization());
                     }
 
-                    IntegrationConnectorHandler connectorHandler = new IntegrationConnectorHandler(connectorConfig,
+                    IntegrationConnectorHandler connectorHandler = new IntegrationConnectorHandler(connectorConfig.getConnectorId(),
+                                                                                                   null,
+                                                                                                   connectorConfig.getConnectorName(),
+                                                                                                   connectorConfig.getConnectorUserId(),
+                                                                                                   null,
+                                                                                                   null,
+                                                                                                   connectorConfig.getRefreshTimeInterval(),
+                                                                                                   connectorConfig.getMetadataSourceQualifiedName(),
+                                                                                                   connectorConfig.getConnection(),
+                                                                                                   connectorConfig.getUsesBlockingCalls(),
+                                                                                                   connectorConfig.getPermittedSynchronization(),
+                                                                                                   connectorConfig.getGenerateIntegrationReports(),
                                                                                                    serviceConfig.getIntegrationServiceFullName(),
-                                                                                                   serviceConfig.getIntegrationServiceOptions(),
                                                                                                    localServerName,
                                                                                                    contextManager,
                                                                                                    auditLog);
@@ -120,7 +141,7 @@ public class IntegrationServiceHandler
      *
      * @return Status summary for this integration service
      */
-    public IntegrationServiceSummary getSummary()
+    public IntegrationServiceSummary getIntegrationServiceSummary()
     {
         IntegrationServiceSummary summary = new IntegrationServiceSummary();
 
@@ -347,30 +368,6 @@ public class IntegrationServiceHandler
                                                 this.getClass().getName(),
                                                 actionDescription,
                                                 parameterName);
-        }
-    }
-
-
-    /**
-     * Step through all the connector handlers and disconnect the integration connectors
-     */
-    public void shutdown()
-    {
-        final String actionDescription = "Server shutdown";
-
-        /*
-        if the server hosting  integration daemon has encountered a problem
-        when starting then the connectorHandlers can be null
-         */
-        if(connectorHandlers != null)
-        {
-            for (IntegrationConnectorHandler connectorHandler : connectorHandlers)
-            {
-                if (connectorHandler != null)
-                {
-                    connectorHandler.shutdown(actionDescription);
-                }
-            }
         }
     }
 }

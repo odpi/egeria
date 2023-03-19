@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.securitymanager.client.rest;
 
 
 import org.odpi.openmetadata.accessservices.securitymanager.rest.*;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;

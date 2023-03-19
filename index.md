@@ -29,7 +29,7 @@ We believe in the **open metadata and governance manifesto**:
  * Wherever possible, discovery and maintenance of metadata has to be an integral part of all tools that access, change and move information.
 
 We also believe that code talks. 
-Egeria provides an Apache 2.0 licensed platform to support vendors that sign up to the open metadata and governance
+Egeria provides an Apache-2.0 licensed platform to support vendors that sign up to the open metadata and governance
 manifesto.
 
 Figure 1 shows Egeria in action.   Today's organizations have their tools and technologies distributed across

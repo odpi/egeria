@@ -2,24 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.converters;
 
-import org.odpi.openmetadata.commonservices.gaf.converters.OpenMetadataStoreConverter;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ArrayTypePropertyValue;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.search.EnumTypePropertyValue;
-import org.odpi.openmetadata.frameworks.governanceaction.search.MapTypePropertyValue;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PrimitiveTypeCategory;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PrimitiveTypePropertyValue;
-import org.odpi.openmetadata.frameworks.governanceaction.search.StructTypePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
+import org.odpi.openmetadata.frameworkservices.gaf.converters.OpenMetadataStoreConverter;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+
 import java.util.List;
 import java.util.Map;
 
@@ -32,8 +20,6 @@ import java.util.Map;
  */
 public class GovernanceEngineOMASConverter<B> extends OpenMetadataStoreConverter<B>
 {
-    private static final Logger log = LoggerFactory.getLogger(GovernanceEngineOMASConverter.class);
-
     /**
      * Constructor
      *
@@ -42,8 +28,8 @@ public class GovernanceEngineOMASConverter<B> extends OpenMetadataStoreConverter
      * @param serverName name of this server
      */
     public GovernanceEngineOMASConverter(OMRSRepositoryHelper repositoryHelper,
-                                         String serviceName,
-                                         String serverName)
+                                         String               serviceName,
+                                         String               serverName)
     {
         super(repositoryHelper, serviceName, serverName);
     }
@@ -149,7 +135,6 @@ public class GovernanceEngineOMASConverter<B> extends OpenMetadataStoreConverter
 
         return governanceActionStatus;
     }
-
 
 
     /**

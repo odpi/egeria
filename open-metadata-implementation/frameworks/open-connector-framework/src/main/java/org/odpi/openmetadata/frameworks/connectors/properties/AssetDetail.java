@@ -291,7 +291,7 @@ public class AssetDetail extends AssetSummary
                        ", schema=" + schema +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", shortDescription='" + getConnectionDescription() + '\'' +
-                       ", description='" + getDescription() + '\'' +
+                       ", description='" + getDisplayDescription() + '\'' +
                        ", owner='" + getOwner() + '\'' +
                        ", ownerTypeName='" + getOwnerTypeName() + '\'' +
                        ", ownerPropertyName='" + getOwnerPropertyName() + '\'' +

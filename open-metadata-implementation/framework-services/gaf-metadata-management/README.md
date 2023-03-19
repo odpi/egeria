@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
+![Stable](../../../images/egeria-content-status-released.png#pagewidth)
 
 # Metadata Store Service
 
@@ -9,18 +9,17 @@ The **Metadata Store Service** supports the implementation of a [governance prog
 by providing the metadata services for running
 **[governance engines](https://egeria-project.org/concepts/governance-engine)**.
 
-* [Documentation](https://egeria-project.org/services/omas/governance-engine/overview)
+* [Documentation](https://egeria-project.org/services/gaf-metadata-management)
 
 
 ## Design Information
 
 The module structure for the Metadata Store Service is as follows:
 
-* [governance-engine-client](gaf-metadata-client) supports the client library.
-* [governance-engine-api](gaf-metadata-api) supports the common Java classes that are used both by the client and the server.
-* [governance-engine-topic-connectors](gaf-metadata-topic-connectors) provides access to this modules In and Out Topics.
-* [governance-engine-server](gaf-metadata-server) supports in implementation of the access service and its related event management.
-* [governance-engine-spring](gaf-metadata-spring) supports the REST API using the [Spring](../../../developer-resources/Spring.md) libraries.
+* [gaf-metadata-client](gaf-metadata-client) supports the client library.
+* [gaf-metadata-api](gaf-metadata-api) supports the common Java classes that are used both by the client and the server.
+* [gaf-metadata-server](gaf-metadata-server) supports in implementation of the access service and its related event management.
+* [gaf-metadata-spring](gaf-metadata-spring) supports the REST API using the [Spring](https://egeria-project.org/guides/contributor/runtime/#spring) libraries.
 
 
 ----

@@ -4,13 +4,14 @@
 package org.odpi.openmetadata.accessservices.assetowner.fvt.validmetadatavalues;
 
 import org.odpi.openmetadata.accessservices.assetowner.client.OpenMetadataStoreClient;
-import org.odpi.openmetadata.commonservices.gaf.properties.ValidMetadataValue;
-import org.odpi.openmetadata.commonservices.gaf.properties.ValidMetadataValueDetail;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValue;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValueDetail;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
 
 import java.util.List;
+
 
 /**
  * ValidMetadataValuesTest sets up a list of valid values for the projectType property of ProjectCharter.
@@ -49,7 +50,7 @@ public class ValidMetadataValuesTest
 
 
     /**
-     * Run all of the tests in this class.
+     * Run the tests in this class.
      *
      * @param serverPlatformRootURL root url of the server
      * @param serverName name of the server

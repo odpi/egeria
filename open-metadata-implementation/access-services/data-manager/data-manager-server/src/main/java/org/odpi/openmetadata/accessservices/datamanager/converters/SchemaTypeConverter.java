@@ -172,6 +172,7 @@ public class SchemaTypeConverter<B> extends DataManagerOMASConverter<B>
                                                                   schemaRootClassifications);
 
                     bean.setFormula(this.getFormula(classificationProperties));
+                    bean.setFormulaType(this.getFormulaType(classificationProperties));
 
                     if (queryTargetRelationships != null)
                     {

@@ -47,7 +47,7 @@ public class OpenMetadataTypesArchive
     private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.CONTENT_PACK;
     private static final String                  archiveVersion     = "4.0";
     private static final String                  originatorName     = "Egeria";
-    private static final String                  originatorLicense  = "Apache 2.0";
+    private static final String                  originatorLicense  = "Apache-2.0";
     private static final Date                    creationDate       = new Date(1588261366992L);
 
     /*
@@ -169,9 +169,11 @@ public class OpenMetadataTypesArchive
         add0224TableDataSet();
         add0239DeployedReportType();
         update0462GovernanceActionType();
+        create0464DynamicIntegrationGroups();
         update0470IncidentClassifierSet();
         update0484AgreementActor();
         update0720InformationSupplyChains();
+        addFormulaTypeAttribute();
     }
 
     /*
@@ -623,6 +625,594 @@ public class OpenMetadataTypesArchive
 
         return typeDefPatch;
     }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void create0464DynamicIntegrationGroups()
+    {
+        this.archiveBuilder.addEntityDef(addIntegrationGroupEntity());
+        this.archiveBuilder.addEntityDef(addIntegrationConnectorEntity());
+        this.archiveBuilder.addEntityDef(addIntegrationReportEntity());
+        this.archiveBuilder.addRelationshipDef(addRegisteredIntegrationConnectorRelationship());
+        this.archiveBuilder.addRelationshipDef(addCatalogTargetRelationship());
+        this.archiveBuilder.addRelationshipDef(addRelatedIntegrationReportRelationship());
+    }
+
+
+    private EntityDef addIntegrationGroupEntity()
+    {
+        final String guid            = "4d7c43ec-983b-40e4-af78-6fb66c4f5136";
+        final String name            = "IntegrationGroup";
+        final String description     = "A collection of integration connectors to run together.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "SoftwareServerCapability";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+    }
+
+    private EntityDef addIntegrationConnectorEntity()
+    {
+        final String guid            = "759da11b-ebb6-4382-bdc9-72adc7c922db";
+        final String name            = "IntegrationConnector";
+        final String description     = "A definition to control the execution of an integration connector.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "DeployedConnector";
+
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
+                                                                name,
+                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                description,
+                                                                descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "usesBlockingCalls";
+        final String attribute1Description     = "The integration connector needs to use blocking calls to a third party technology and so needs to" +
+                " run in its own thread.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute1Name,
+                                                            attribute1Description,
+                                                            attribute1DescriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+    private EntityDef addIntegrationReportEntity()
+    {
+        final String guid            = "b8703d3f-8668-4e6a-bf26-27db1607220d";
+        final String name            = "IntegrationReport";
+        final String description     = "Details of the metadata changes made by the execution of the refresh() method by an integration connector.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "OpenMetadataRoot";
+
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
+                                                                name,
+                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                description,
+                                                                descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "connectorName";
+        final String attribute1Description     = "Name of the integration connector for logging purposes.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "connectorId";
+        final String attribute2Description     = "Unique identifier of the integration connector deployment.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "serverName";
+        final String attribute3Description     = "Name of the integration daemon where the integration connector is/was running.";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "refreshStartDate";
+        final String attribute4Description     = "Date/time when the refresh() call was made.";
+        final String attribute4DescriptionGUID = null;
+        final String attribute5Name            = "refreshCompletionDate";
+        final String attribute5Description     = "Date/time when the integration connector returned from the refresh() call.";
+        final String attribute5DescriptionGUID = null;
+        final String attribute6Name            = "createdElements";
+        final String attribute6Description     = "List of elements that were created.";
+        final String attribute6DescriptionGUID = null;
+        final String attribute7Name            = "updatedElements";
+        final String attribute7Description     = "List of elements that were updated.";
+        final String attribute7DescriptionGUID = null;
+        final String attribute8Name            = "deletedElements";
+        final String attribute8Description     = "List of elements that were deleted.";
+        final String attribute8DescriptionGUID = null;
+        final String attribute9Name            = "additionalProperties";
+        final String attribute9Description     = "Additional properties of importance to the integration connector.";
+        final String attribute9DescriptionGUID = null;
+
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getDateTypeDefAttribute(attribute4Name,
+                                                         attribute4Description,
+                                                         attribute4DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getDateTypeDefAttribute(attribute5Name,
+                                                         attribute5Description,
+                                                         attribute5DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getArrayStringTypeDefAttribute(attribute6Name,
+                                                                attribute6Description,
+                                                                attribute6DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getArrayStringTypeDefAttribute(attribute7Name,
+                                                                attribute7Description,
+                                                                attribute7DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getArrayStringTypeDefAttribute(attribute8Name,
+                                                                attribute8Description,
+                                                                attribute8DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute9Name,
+                                                                    attribute9Description,
+                                                                    attribute9DescriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+    private RelationshipDef addRegisteredIntegrationConnectorRelationship()
+    {
+        final String guid            = "7528bcd4-ae4c-47d0-a33f-4aeebbaa92c2";
+        final String name            = "RegisteredIntegrationConnector";
+        final String description     = "A link between an integration group and an integration connector that is part of the group.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "IntegrationGroup";
+        final String                     end1AttributeName            = "includedInIntegrationGroups";
+        final String                     end1AttributeDescription     = "An integration group that this integration connector is a member of.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "IntegrationConnector";
+        final String                     end2AttributeName            = "registeredIntegrationConnectors";
+        final String                     end2AttributeDescription     = "An integration connector that should run as part of the integration group.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "connectorName";
+        final String attribute1Description     = "Name of the connector for logging purposes.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "connectorUserId";
+        final String attribute2Description     = "UserId for the integration connector to use when working with open metadata.  The default userId " +
+                "comes from the hosting server if this value is blank.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "metadataSourceQualifiedName";
+        final String attribute3Description     = "Qualified name of a software server capability that is the owner/home of the metadata catalogued " +
+                "by the integration connector.";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "startDate";
+        final String attribute4Description     = "Earliest time that the connector can run.";
+        final String attribute4DescriptionGUID = null;
+        final String attribute5Name            = "stopTime";
+        final String attribute5Description     = "Latest time that the connector can run.";
+        final String attribute5DescriptionGUID = null;
+        final String attribute6Name            = "refreshTimeInterval";
+        final String attribute6Description     = "Describes how frequently the integration connector should run - in minutes.";
+        final String attribute6DescriptionGUID = null;
+        final String attribute7Name            = "permittedSynchronization";
+        final String attribute7Description     = "Defines the permitted directions of flow of metadata updates between open metadata and a third party technology.";
+        final String attribute7DescriptionGUID = null;
+        final String attribute8Name            = "generateIntegrationReport";
+        final String attribute8Description     = "Should the integration daemon create integration reports based on the integration connector's " +
+                "activity? (Default is true.)";
+        final String attribute8DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getDateTypeDefAttribute(attribute4Name,
+                                                         attribute4Description,
+                                                         attribute4DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getDateTypeDefAttribute(attribute5Name,
+                                                         attribute5Description,
+                                                         attribute5DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getLongTypeDefAttribute(attribute6Name,
+                                                         attribute6Description,
+                                                         attribute6DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getEnumTypeDefAttribute("PermittedSynchronization",
+                                                         attribute7Name,
+                                                         attribute7Description,
+                                                         attribute7DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute8Name,
+                                                            attribute8Description,
+                                                            attribute8DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+    }
+
+    private RelationshipDef addCatalogTargetRelationship()
+    {
+        final String guid            = "bc5a5eb1-881b-4055-aa2c-78f314282ac2";
+        final String name            = "CatalogTarget";
+        final String description     = "Identifies an element that an integration connector is to work with.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "IntegrationConnector";
+        final String                     end1AttributeName            = "cataloguedByConnectors";
+        final String                     end1AttributeDescription     = "An integration connector managing metadata synchronization.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "OpenMetadataRoot";
+        final String                     end2AttributeName            = "catalogTargets";
+        final String                     end2AttributeDescription     = "An open metadata element that the integration connector is working on.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "catalogTargetName";
+        final String attribute1Description     = "Symbolic name of the catalog target to help the integration connector to choose when to use it.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+    }
+
+
+    private RelationshipDef addRelatedIntegrationReportRelationship()
+    {
+        final String guid            = "83d12156-f8f3-4b4b-b31b-18c140df9aa3";
+        final String name            = "RelatedIntegrationReport";
+        final String description     = "Links an integration report to the anchor entity it describes.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "OpenMetadataRoot";
+        final String                     end1AttributeName            = "anchorSubject";
+        final String                     end1AttributeDescription     = "The anchor entity that the integration report describes.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "IntegrationReport";
+        final String                     end2AttributeName            = "integrationReports";
+        final String                     end2AttributeDescription     = "A description of the changes made to the anchor entity by an integration " +
+                "report.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        return relationshipDef;
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void addFormulaTypeAttribute()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateDataSet());
+        this.archiveBuilder.addTypeDefPatch(updateProcess());
+        this.archiveBuilder.addTypeDefPatch(updateCalculatedValue());
+        this.archiveBuilder.addTypeDefPatch(updateProcessCall());
+        this.archiveBuilder.addTypeDefPatch(updateDataFlow());
+    }
+
+
+    private TypeDefPatch updateDataSet()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "DataSet";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "formulaType";
+        final String attribute1Description     = "Format of the expression provided in the formula attribute.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateProcess()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "Process";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "formulaType";
+        final String attribute1Description     = "Format of the expression provided in the formula attribute.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateCalculatedValue()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "CalculatedValue";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "formulaType";
+        final String attribute1Description     = "Format of the expression provided in the formula attribute.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch updateProcessCall()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "ProcessCall";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "formulaType";
+        final String attribute1Description     = "Format of the expression provided in the formula attribute.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateDataFlow()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "DataFlow";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "formulaType";
+        final String attribute1Description     = "Format of the expression provided in the formula attribute.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
 
     /*
      * -------------------------------------------------------------------------------------------------------

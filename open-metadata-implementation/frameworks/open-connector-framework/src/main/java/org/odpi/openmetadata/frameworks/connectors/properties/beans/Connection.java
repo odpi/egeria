@@ -77,7 +77,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *      </li>
  *  </ul>
  *
- * The connection class is simply used to cache the properties for an connection.
+ * The connection class is simply used to cache the properties for a connection.
  * It is used by other classes to exchange this information between a metadata repository and a consumer.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -155,6 +155,7 @@ public class Connection extends Referenceable
         {
             displayName = template.getDisplayName();
             description = template.getDescription();
+            assetSummary = template.getAssetSummary();
             userId = template.getUserId();
             clearPassword = template.getClearPassword();
             encryptedPassword = template.getEncryptedPassword();
@@ -168,7 +169,7 @@ public class Connection extends Referenceable
 
     /**
      * Returns the stored display name property for the connection.
-     * Null means no displayName is available.
+     * Null means that no displayName is available.
      *
      * @return displayName
      */
@@ -347,9 +348,9 @@ public class Connection extends Referenceable
 
 
     /**
-     * Return a copy of the configuration properties.  Null means no secured properties are available.
+     * Return a copy of the configuration properties.  Null means no configuration properties are available.
      *
-     * @return secured properties typically user credentials for the connection
+     * @return configuration properties typically controlling the behaviour for the connector
      */
     public Map<String, Object> getConfigurationProperties()
     {

@@ -10,7 +10,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * GovernanceConfigurationResource provides the Spring wrapper for the Governance Engine Configuration Services
+ * EngineConfigurationResource provides the Spring wrapper for the Governance Engine Configuration Services
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/governance-engine/users/{userId}")

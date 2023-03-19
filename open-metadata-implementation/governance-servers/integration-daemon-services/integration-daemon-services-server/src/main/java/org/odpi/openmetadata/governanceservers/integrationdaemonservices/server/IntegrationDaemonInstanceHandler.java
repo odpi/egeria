@@ -5,8 +5,9 @@ package org.odpi.openmetadata.governanceservers.integrationdaemonservices.server
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.commonservices.multitenant.GovernanceServerServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager.IntegrationContextManager;
+import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationServiceHandler;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupSummary;
 
 import java.util.List;
 
@@ -100,8 +101,8 @@ public class IntegrationDaemonInstanceHandler extends GovernanceServerServiceIns
                                                                          String serverName,
                                                                          String serviceURLMarker,
                                                                          String serviceOperationName) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
+                                                                                                             UserNotAuthorizedException,
+                                                                                                             PropertyServerException
     {
         IntegrationDaemonInstance instance = (IntegrationDaemonInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
@@ -113,6 +114,92 @@ public class IntegrationDaemonInstanceHandler extends GovernanceServerServiceIns
             {
                 return handler.getContextManager();
             }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve all the definitions for the requested integration group from the Governance Engine OMAS.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param integrationGroupName qualifiedName of the requested integration group
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     *
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    void  refreshConfig(String userId,
+                        String serverName,
+                        String integrationGroupName,
+                        String serviceOperationName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
+    {
+        IntegrationDaemonInstance instance = (IntegrationDaemonInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            instance.refreshConfig(integrationGroupName, serviceOperationName);
+        }
+    }
+
+
+    /**
+     * Return a summary of the requested engine's status.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param integrationGroupName qualifiedName of the requested integration group
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     *
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    IntegrationGroupSummary getIntegrationGroupSummary(String userId,
+                                                       String serverName,
+                                                       String integrationGroupName,
+                                                       String serviceOperationName) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        IntegrationDaemonInstance instance = (IntegrationDaemonInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getIntegrationGroupSummary(integrationGroupName, serviceOperationName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return a summary of all the engine statuses for the integration daemon.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     *
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    List<IntegrationGroupSummary> getIntegrationGroupSummaries(String userId,
+                                                               String serverName,
+                                                               String serviceOperationName) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        IntegrationDaemonInstance instance = (IntegrationDaemonInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getIntegrationGroupSummaries(serviceOperationName);
         }
 
         return null;

@@ -343,7 +343,7 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
     ;
 
 
-    AuditLogMessageDefinition messageDefinition;
+    final AuditLogMessageDefinition messageDefinition;
 
 
 

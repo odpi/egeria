@@ -12,6 +12,7 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registr
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceRegistry;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonInstanceHandler;
 
+import org.odpi.openmetadata.integrationservices.catalog.api.CatalogIntegratorAPI;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.catalog.contextmanager.CatalogIntegratorContextManager;
 import org.slf4j.LoggerFactory;
@@ -37,7 +38,8 @@ public class CatalogIntegratorRESTServices
     public CatalogIntegratorRESTServices()
     {
         IntegrationServiceRegistry.registerIntegrationService(IntegrationServiceDescription.CATALOG_INTEGRATOR_OMIS,
-                                                              CatalogIntegratorContextManager.class.getName());
+                                                              CatalogIntegratorContextManager.class.getName(),
+                                                              CatalogIntegratorAPI.class.getName());
     }
 
 

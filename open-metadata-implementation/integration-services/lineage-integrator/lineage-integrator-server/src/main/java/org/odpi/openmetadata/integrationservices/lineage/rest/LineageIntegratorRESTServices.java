@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceRegistry;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonInstanceHandler;
+import org.odpi.openmetadata.integrationservices.lineage.api.LineageIntegratorAPI;
 import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.lineage.contextmanager.LineageIntegratorContextManager;
 import org.slf4j.LoggerFactory;
@@ -37,7 +38,8 @@ public class LineageIntegratorRESTServices
     public LineageIntegratorRESTServices()
     {
         IntegrationServiceRegistry.registerIntegrationService(IntegrationServiceDescription.LINEAGE_INTEGRATOR_OMIS,
-                                                              LineageIntegratorContextManager.class.getName());
+                                                              LineageIntegratorContextManager.class.getName(),
+                                                              LineageIntegratorAPI.class.getName());
     }
 
 

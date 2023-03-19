@@ -6,8 +6,10 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationDaemonStatus;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationServiceSummary;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -24,9 +26,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  */
 public class IntegrationDaemonStatusResponse extends FFDCResponseBase
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-    private List<IntegrationServiceSummary> integrationServiceSummaries = null;
+    private IntegrationDaemonStatus integrationDaemonStatus = null;
 
 
     /**
@@ -46,39 +49,30 @@ public class IntegrationDaemonStatusResponse extends FFDCResponseBase
     {
         if (template != null)
         {
-            integrationServiceSummaries = template.getIntegrationServiceSummaries();
+            integrationDaemonStatus = template.getIntegrationDaemonStatus();
         }
     }
 
 
     /**
-     * Return the summary of each discovery engine assigned to the discovery server.
+     * Return the summary of the services and groups running in the integration daemon.
      *
      * @return list of summaries
      */
-    public List<IntegrationServiceSummary> getIntegrationServiceSummaries()
+    public IntegrationDaemonStatus getIntegrationDaemonStatus()
     {
-        if (integrationServiceSummaries == null)
-        {
-            return null;
-        }
-        else if (integrationServiceSummaries.isEmpty())
-        {
-            return null;
-        }
-
-        return integrationServiceSummaries;
+        return integrationDaemonStatus;
     }
 
 
     /**
-     * Set up the list of summaries for the discovery engine.
+     * Set up the summary of the services and groups running in the integration daemon.
      *
-     * @param integrationServiceSummaries list of summaries
+     * @param integrationDaemonStatus list of summaries
      */
-    public void setIntegrationServiceSummaries(List<IntegrationServiceSummary> integrationServiceSummaries)
+    public void setIntegrationDaemonStatus(IntegrationDaemonStatus integrationDaemonStatus)
     {
-        this.integrationServiceSummaries = integrationServiceSummaries;
+        this.integrationDaemonStatus = integrationDaemonStatus;
     }
 
 
@@ -91,7 +85,7 @@ public class IntegrationDaemonStatusResponse extends FFDCResponseBase
     public String toString()
     {
         return "IntegrationDaemonStatusResponse{" +
-                "integrationServiceSummaries=" + integrationServiceSummaries +
+                "integrationServiceSummaries=" + integrationDaemonStatus +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                 ", actionDescription='" + getActionDescription() + '\'' +
@@ -128,7 +122,7 @@ public class IntegrationDaemonStatusResponse extends FFDCResponseBase
             return false;
         }
         IntegrationDaemonStatusResponse that = (IntegrationDaemonStatusResponse) objectToCompare;
-        return Objects.equals(integrationServiceSummaries, that.integrationServiceSummaries);
+        return Objects.equals(integrationDaemonStatus, that.integrationDaemonStatus);
     }
 
 
@@ -140,6 +134,6 @@ public class IntegrationDaemonStatusResponse extends FFDCResponseBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), integrationServiceSummaries);
+        return Objects.hash(super.hashCode(), integrationDaemonStatus);
     }
 }

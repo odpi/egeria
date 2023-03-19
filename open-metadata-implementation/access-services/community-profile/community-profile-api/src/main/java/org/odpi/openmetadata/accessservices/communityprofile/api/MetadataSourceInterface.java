@@ -83,9 +83,9 @@ public interface MetadataSourceInterface
      * @throws PropertyServerException    problem accessing the property server
      */
     void  addUserProfileManagerClassification(String userId,
-                                                String metadataSourceGUID) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException;
+                                              String metadataSourceGUID) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException;
 
 
     /**

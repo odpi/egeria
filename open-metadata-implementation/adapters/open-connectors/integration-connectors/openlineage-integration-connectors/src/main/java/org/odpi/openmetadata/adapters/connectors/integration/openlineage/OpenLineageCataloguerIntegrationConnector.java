@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessPrope
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessStatus;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeProperties;
 import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorContext;
@@ -41,16 +40,14 @@ public class OpenLineageCataloguerIntegrationConnector extends LineageIntegrator
 
 
     /**
-     * Call made by the ConnectorProvider to initialize the Connector with the base services.
+     * Indicates that the connector is completely configured and can begin processing.
      *
-     * @param connectorInstanceId   unique id for the connector instance   useful for messages etc
-     * @param connectionProperties   POJO for the configuration used to create the connector.
+     * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public void initialize(String               connectorInstanceId,
-                           ConnectionProperties connectionProperties)
+    public synchronized void start() throws ConnectorCheckedException
     {
-        super.initialize(connectorInstanceId, connectionProperties);
+        super.start();
 
         if (connectionProperties != null)
         {
@@ -68,18 +65,6 @@ public class OpenLineageCataloguerIntegrationConnector extends LineageIntegrator
                 }
             }
         }
-    }
-
-
-    /**
-     * Indicates that the connector is completely configured and can begin processing.
-     *
-     * @throws ConnectorCheckedException there is a problem within the connector.
-     */
-    @Override
-    public synchronized void start() throws ConnectorCheckedException
-    {
-        super.start();
 
         myContext = super.getContext();
 

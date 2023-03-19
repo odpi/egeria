@@ -46,10 +46,11 @@ public abstract class SchemaElement extends GovernedReferenceable
     /*
      * Some schema elements are calculated values rather than stored values.  These values are stored in the CalculatedValue
      * classification.  They logically belong to the SchemaType, but they appear on the Schema Attribute if the type information
-     * us stored in TypeEmbeddedAttribute classification
+     * is stored in TypeEmbeddedAttribute classification
      */
     protected boolean isCalculatedValue = false;
     protected String  expression        = null;
+    protected String  expressionType    = null;
 
 
     /**
@@ -75,8 +76,9 @@ public abstract class SchemaElement extends GovernedReferenceable
             isDeprecated = template.getIsDeprecated();
             displayName = template.getDisplayName();
             description = template.getDescription();
-            isCalculatedValue = template.isCalculatedValue();
+            isCalculatedValue = template.getIsCalculatedValue();
             expression = template.getExpression();
+            expression = template.getExpressionType();
         }
     }
 
@@ -150,7 +152,7 @@ public abstract class SchemaElement extends GovernedReferenceable
      *
      * @return boolean true for calculated value; false for stored value
      */
-    public boolean isCalculatedValue()
+    public boolean getIsCalculatedValue()
     {
         return isCalculatedValue;
     }
@@ -162,7 +164,7 @@ public abstract class SchemaElement extends GovernedReferenceable
      *
      * @param calculatedValue boolean true for calculated value; false for stored value
      */
-    public void setCalculatedValue(boolean calculatedValue)
+    public void setIsCalculatedValue(boolean calculatedValue)
     {
         isCalculatedValue = calculatedValue;
     }
@@ -190,6 +192,29 @@ public abstract class SchemaElement extends GovernedReferenceable
     }
 
 
+
+    /**
+     * Return the specification language for the expression.
+     *
+     * @return string description
+     */
+    public String getExpressionType()
+    {
+        return expressionType;
+    }
+
+
+    /**
+     * Set up the specification language for the expression.
+     *
+     * @param expressionType string description
+     */
+    public void setExpressionType(String expressionType)
+    {
+        this.expressionType = expressionType;
+    }
+
+    
     /**
      * Return a clone of this schema element.  This method is needed because schema element
      * is abstract.
@@ -213,6 +238,7 @@ public abstract class SchemaElement extends GovernedReferenceable
                 ", description='" + description + '\'' +
                 ", isCalculatedValue=" + isCalculatedValue +
                 ", expression='" + expression + '\'' +
+                ", expressionType='" + expressionType + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", meanings=" + getMeanings() +
@@ -250,8 +276,11 @@ public abstract class SchemaElement extends GovernedReferenceable
         }
         SchemaElement that = (SchemaElement) objectToCompare;
         return isDeprecated == that.isDeprecated &&
+                isCalculatedValue == that.isCalculatedValue &&
                 Objects.equals(displayName, that.displayName) &&
-                Objects.equals(description, that.description);
+                Objects.equals(description, that.description) &&
+                Objects.equals(expression, that.expression) &&
+                Objects.equals(expressionType, that.expressionType);
     }
 
 
@@ -263,6 +292,6 @@ public abstract class SchemaElement extends GovernedReferenceable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), isDeprecated, displayName, description);
+        return Objects.hash(super.hashCode(), isDeprecated, displayName, description, expression, expressionType);
     }
 }

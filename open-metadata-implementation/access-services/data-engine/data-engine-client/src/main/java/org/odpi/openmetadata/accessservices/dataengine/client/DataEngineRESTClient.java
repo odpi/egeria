@@ -40,7 +40,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -114,7 +114,7 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
      * Create a new client without authentication.
      *
      * @param serverName            name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST services
      *
      * @throws InvalidParameterException null URL or server name
      */
@@ -130,7 +130,7 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName            name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST services
      * @param userId                caller's userId embedded in all HTTP requests
      * @param password              caller's userId embedded in all HTTP requests
      *

@@ -10,6 +10,11 @@ import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventC
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext;
+import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 
 import java.util.List;
 import java.util.Map;
@@ -18,39 +23,66 @@ import java.util.Map;
 /**
  * DatabaseIntegratorContext is the context for managing resources from a relational database server.
  */
-public class DatabaseIntegratorContext
+public class DatabaseIntegratorContext extends IntegrationContext
 {
     private final ConnectionManagerClient connectionManagerClient;
     private final DatabaseManagerClient   databaseManagerClient;
     private final DataManagerEventClient  eventClient;
-    private final String                  userId;
-    private final String                  databaseManagerGUID;
-    private final String                  databaseManagerName;
+
 
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
+     * @param connectorId unique identifier of the connector (used to configure the event listener)
+     * @param connectorName name of connector from config
+     * @param connectorUserId userId for the connector
+     * @param serverName name of the integration daemon
+     * @param openIntegrationClient client for calling the metadata server
+     * @param openMetadataStoreClient client for calling the metadata server
      * @param databaseManagerClient client to managing database metadata
      * @param connectionManagerClient client for managing connections
      * @param eventClient client to register for events
-     * @param userId integration daemon's userId
-     * @param databaseManagerGUID unique identifier of the software server capability for the database manager
-     * @param databaseManagerName unique name of the software server capability for the database manager
+     * @param generateIntegrationReport should the connector generate an integration reports?
+     * @param permittedSynchronization the direction of integration permitted by the integration connector
+     * @param integrationConnectorGUID unique identifier for the integration connector if it is started via an integration group (otherwise it is
+     *                                 null).
+     * @param integrationGovernanceContext populated governance context for the connector's use
+     * @param externalSourceGUID unique identifier of the software server capability for the database manager
+     * @param externalSourceName unique name of the software server capability for the database manager
      */
-    public DatabaseIntegratorContext(DatabaseManagerClient   databaseManagerClient,
-                                     ConnectionManagerClient connectionManagerClient,
-                                     DataManagerEventClient  eventClient,
-                                     String                  userId,
-                                     String                  databaseManagerGUID,
-                                     String                  databaseManagerName)
+    public DatabaseIntegratorContext(String                       connectorId,
+                                     String                       connectorName,
+                                     String                       connectorUserId,
+                                     String                       serverName,
+                                     OpenIntegrationClient        openIntegrationClient,
+                                     OpenMetadataClient           openMetadataStoreClient,
+                                     DatabaseManagerClient        databaseManagerClient,
+                                     ConnectionManagerClient      connectionManagerClient,
+                                     DataManagerEventClient       eventClient,
+                                     boolean                      generateIntegrationReport,
+                                     PermittedSynchronization     permittedSynchronization,
+                                     String                       integrationConnectorGUID,
+                                     IntegrationGovernanceContext integrationGovernanceContext,
+                                     String                       externalSourceGUID,
+                                     String                       externalSourceName)
     {
+        super(connectorId,
+              connectorName,
+              connectorUserId,
+              serverName,
+              openIntegrationClient,
+              openMetadataStoreClient,
+              generateIntegrationReport,
+              permittedSynchronization,
+              externalSourceGUID,
+              externalSourceName,
+              integrationConnectorGUID,
+              integrationGovernanceContext);
+
         this.databaseManagerClient   = databaseManagerClient;
         this.eventClient             = eventClient;
-        this.userId                  = userId;
         this.connectionManagerClient = connectionManagerClient;
-        this.databaseManagerGUID     = databaseManagerGUID;
-        this.databaseManagerName     = databaseManagerName;
     }
 
 
@@ -65,9 +97,9 @@ public class DatabaseIntegratorContext
      *
      * @return string name
      */
-    public String getDatabaseManagerName()
+    public String getExternalSourceName()
     {
-        return databaseManagerName;
+        return externalSourceName;
     }
 
 
@@ -119,7 +151,7 @@ public class DatabaseIntegratorContext
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        return databaseManagerClient.createDatabase(userId, databaseManagerGUID, databaseManagerName, databaseProperties);
+        return databaseManagerClient.createDatabase(userId, externalSourceGUID, externalSourceName, databaseProperties);
     }
 
 
@@ -140,7 +172,7 @@ public class DatabaseIntegratorContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return databaseManagerClient.createDatabaseFromTemplate(userId, databaseManagerGUID, databaseManagerName, templateGUID, templateProperties);
+        return databaseManagerClient.createDatabaseFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateProperties);
     }
 
 
@@ -160,7 +192,7 @@ public class DatabaseIntegratorContext
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        databaseManagerClient.updateDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID, false, databaseProperties);
+        databaseManagerClient.updateDatabase(userId, externalSourceGUID, externalSourceName, databaseGUID, false, databaseProperties);
     }
 
 
@@ -181,7 +213,7 @@ public class DatabaseIntegratorContext
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        databaseManagerClient.updateDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID, isMergeUpdate, databaseProperties);
+        databaseManagerClient.updateDatabase(userId, externalSourceGUID, externalSourceName, databaseGUID, isMergeUpdate, databaseProperties);
     }
 
 
@@ -240,7 +272,7 @@ public class DatabaseIntegratorContext
                                                             UserNotAuthorizedException,
                                                             PropertyServerException
     {
-        databaseManagerClient.removeDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID);
+        databaseManagerClient.removeDatabase(userId, externalSourceGUID, externalSourceName, databaseGUID);
     }
 
 
@@ -257,7 +289,7 @@ public class DatabaseIntegratorContext
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
     {
-        databaseManagerClient.removeDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID);
+        databaseManagerClient.removeDatabase(userId, externalSourceGUID, externalSourceName, databaseGUID);
     }
 
 
@@ -326,7 +358,7 @@ public class DatabaseIntegratorContext
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        return databaseManagerClient.getDatabasesForDatabaseManager(userId, databaseManagerGUID, databaseManagerName, startFrom, pageSize);
+        return databaseManagerClient.getDatabasesForDatabaseManager(userId, externalSourceGUID, externalSourceName, startFrom, pageSize);
     }
 
 
@@ -370,7 +402,7 @@ public class DatabaseIntegratorContext
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        return databaseManagerClient.createDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseGUID, databaseSchemaProperties);
+        return databaseManagerClient.createDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseGUID, databaseSchemaProperties);
     }
 
 
@@ -393,7 +425,7 @@ public class DatabaseIntegratorContext
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        return databaseManagerClient.createDatabaseSchemaFromTemplate(userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseGUID, templateProperties);
+        return databaseManagerClient.createDatabaseSchemaFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, databaseGUID, templateProperties);
     }
 
 
@@ -413,7 +445,7 @@ public class DatabaseIntegratorContext
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        databaseManagerClient.updateDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, false, databaseSchemaProperties);
+        databaseManagerClient.updateDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID, false, databaseSchemaProperties);
     }
 
 
@@ -434,7 +466,7 @@ public class DatabaseIntegratorContext
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        databaseManagerClient.updateDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, isMergeUpdate, databaseSchemaProperties);
+        databaseManagerClient.updateDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID, isMergeUpdate, databaseSchemaProperties);
     }
 
 
@@ -493,7 +525,7 @@ public class DatabaseIntegratorContext
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
-        databaseManagerClient.removeDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID);
+        databaseManagerClient.removeDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID);
     }
 
 
@@ -510,7 +542,7 @@ public class DatabaseIntegratorContext
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        databaseManagerClient.removeDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID);
+        databaseManagerClient.removeDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID);
     }
 
 
@@ -623,7 +655,7 @@ public class DatabaseIntegratorContext
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
-        return databaseManagerClient.createDatabaseSchemaType(userId, databaseManagerGUID, databaseManagerName, qualifiedName);
+        return databaseManagerClient.createDatabaseSchemaType(userId, externalSourceGUID, externalSourceName, qualifiedName);
     }
 
 
@@ -642,7 +674,7 @@ public class DatabaseIntegratorContext
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
     {
-        databaseManagerClient.attachSchemaTypeToDatabaseAsset(userId, databaseManagerGUID, databaseManagerName, databaseAssetGUID, schemaTypeGUID);
+        databaseManagerClient.attachSchemaTypeToDatabaseAsset(userId, externalSourceGUID, externalSourceName, databaseAssetGUID, schemaTypeGUID);
     }
 
 
@@ -663,7 +695,7 @@ public class DatabaseIntegratorContext
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
-        return databaseManagerClient.createDatabaseTable(userId, databaseManagerGUID, databaseManagerName, databaseAssetGUID, databaseTableProperties);
+        return databaseManagerClient.createDatabaseTable(userId, externalSourceGUID, externalSourceName, databaseAssetGUID, databaseTableProperties);
     }
 
 
@@ -686,7 +718,7 @@ public class DatabaseIntegratorContext
                                                                                                 UserNotAuthorizedException,
                                                                                                 PropertyServerException
     {
-        return databaseManagerClient.createDatabaseTableFromTemplate(userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseAssetGUID, templateProperties);
+        return databaseManagerClient.createDatabaseTableFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, databaseAssetGUID, templateProperties);
     }
 
 
@@ -707,7 +739,7 @@ public class DatabaseIntegratorContext
                                                                                                            UserNotAuthorizedException,
                                                                                                            PropertyServerException
     {
-        return databaseManagerClient.createDatabaseTableForSchemaType(userId, databaseManagerGUID, databaseManagerName, databaseSchemaTypeGUID, databaseTableProperties);
+        return databaseManagerClient.createDatabaseTableForSchemaType(userId, externalSourceGUID, externalSourceName, databaseSchemaTypeGUID, databaseTableProperties);
     }
 
 
@@ -727,7 +759,7 @@ public class DatabaseIntegratorContext
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        databaseManagerClient.updateDatabaseTable(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID, false, databaseTableProperties);
+        databaseManagerClient.updateDatabaseTable(userId, externalSourceGUID, externalSourceName, databaseTableGUID, false, databaseTableProperties);
     }
 
 
@@ -748,7 +780,7 @@ public class DatabaseIntegratorContext
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        databaseManagerClient.updateDatabaseTable(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID, isMergeUpdate, databaseTableProperties);
+        databaseManagerClient.updateDatabaseTable(userId, externalSourceGUID, externalSourceName, databaseTableGUID, isMergeUpdate, databaseTableProperties);
     }
 
 
@@ -769,7 +801,7 @@ public class DatabaseIntegratorContext
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        databaseManagerClient.removeDatabaseTable(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID);
+        databaseManagerClient.removeDatabaseTable(userId, externalSourceGUID, externalSourceName, databaseTableGUID);
     }
 
 
@@ -787,7 +819,7 @@ public class DatabaseIntegratorContext
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        databaseManagerClient.removeDatabaseTable(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID);
+        databaseManagerClient.removeDatabaseTable(userId, externalSourceGUID, externalSourceName, databaseTableGUID);
     }
 
 
@@ -922,7 +954,7 @@ public class DatabaseIntegratorContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return databaseManagerClient.createDatabaseView(userId, databaseManagerGUID, databaseManagerName, databaseAssetGUID, databaseViewProperties);
+        return databaseManagerClient.createDatabaseView(userId, externalSourceGUID, externalSourceName, databaseAssetGUID, databaseViewProperties);
     }
 
 
@@ -945,7 +977,7 @@ public class DatabaseIntegratorContext
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        return databaseManagerClient.createDatabaseViewFromTemplate(userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseAssetGUID, templateProperties);
+        return databaseManagerClient.createDatabaseViewFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, databaseAssetGUID, templateProperties);
     }
 
 
@@ -966,7 +998,7 @@ public class DatabaseIntegratorContext
                                                                                                         UserNotAuthorizedException,
                                                                                                         PropertyServerException
     {
-        return databaseManagerClient.createDatabaseViewForSchemaType(userId, databaseManagerGUID, databaseManagerName, databaseSchemaTypeGUID, databaseViewProperties);
+        return databaseManagerClient.createDatabaseViewForSchemaType(userId, externalSourceGUID, externalSourceName, databaseSchemaTypeGUID, databaseViewProperties);
     }
 
 
@@ -986,7 +1018,7 @@ public class DatabaseIntegratorContext
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        databaseManagerClient.updateDatabaseView(userId, databaseManagerGUID, databaseManagerName, databaseViewGUID, false, databaseViewProperties);
+        databaseManagerClient.updateDatabaseView(userId, externalSourceGUID, externalSourceName, databaseViewGUID, false, databaseViewProperties);
     }
 
 
@@ -1008,7 +1040,7 @@ public class DatabaseIntegratorContext
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        databaseManagerClient.updateDatabaseView(userId, databaseManagerGUID, databaseManagerName, databaseViewGUID, isMergeUpdate, databaseViewProperties);
+        databaseManagerClient.updateDatabaseView(userId, externalSourceGUID, externalSourceName, databaseViewGUID, isMergeUpdate, databaseViewProperties);
     }
 
 
@@ -1030,7 +1062,7 @@ public class DatabaseIntegratorContext
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
     {
-        databaseManagerClient.removeDatabaseView(userId, databaseManagerGUID, databaseManagerName, databaseViewGUID);
+        databaseManagerClient.removeDatabaseView(userId, externalSourceGUID, externalSourceName, databaseViewGUID);
     }
 
 
@@ -1048,7 +1080,7 @@ public class DatabaseIntegratorContext
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
-        databaseManagerClient.removeDatabaseView(userId, databaseManagerGUID, databaseManagerName, databaseViewGUID);
+        databaseManagerClient.removeDatabaseView(userId, externalSourceGUID, externalSourceName, databaseViewGUID);
     }
 
 
@@ -1190,7 +1222,7 @@ public class DatabaseIntegratorContext
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        return databaseManagerClient.createDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID, databaseColumnProperties);
+        return databaseManagerClient.createDatabaseColumn(userId, externalSourceGUID, externalSourceName, databaseTableGUID, databaseColumnProperties);
     }
 
 
@@ -1213,7 +1245,7 @@ public class DatabaseIntegratorContext
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        return databaseManagerClient.createDatabaseColumnFromTemplate(userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseTableGUID, templateProperties);
+        return databaseManagerClient.createDatabaseColumnFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, databaseTableGUID, templateProperties);
     }
 
 
@@ -1233,7 +1265,7 @@ public class DatabaseIntegratorContext
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        databaseManagerClient.updateDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID, false, databaseColumnProperties);
+        databaseManagerClient.updateDatabaseColumn(userId, externalSourceGUID, externalSourceName, databaseColumnGUID, false, databaseColumnProperties);
     }
 
 
@@ -1254,7 +1286,7 @@ public class DatabaseIntegratorContext
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        databaseManagerClient.updateDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID, isMergeUpdate, databaseColumnProperties);
+        databaseManagerClient.updateDatabaseColumn(userId, externalSourceGUID, externalSourceName, databaseColumnGUID, isMergeUpdate, databaseColumnProperties);
     }
 
 
@@ -1275,7 +1307,7 @@ public class DatabaseIntegratorContext
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
-        databaseManagerClient.removeDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID);
+        databaseManagerClient.removeDatabaseColumn(userId, externalSourceGUID, externalSourceName, databaseColumnGUID);
     }
 
 
@@ -1292,7 +1324,7 @@ public class DatabaseIntegratorContext
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        databaseManagerClient.removeDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID);
+        databaseManagerClient.removeDatabaseColumn(userId, externalSourceGUID, externalSourceName, databaseColumnGUID);
     }
 
 
@@ -1406,7 +1438,7 @@ public class DatabaseIntegratorContext
                                                                                                         UserNotAuthorizedException,
                                                                                                         PropertyServerException
     {
-        databaseManagerClient.setPrimaryKeyOnColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID, databasePrimaryKeyProperties);
+        databaseManagerClient.setPrimaryKeyOnColumn(userId, externalSourceGUID, externalSourceName, databaseColumnGUID, databasePrimaryKeyProperties);
     }
 
 
@@ -1423,7 +1455,7 @@ public class DatabaseIntegratorContext
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        databaseManagerClient.removePrimaryKeyFromColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID);
+        databaseManagerClient.removePrimaryKeyFromColumn(userId, externalSourceGUID, externalSourceName, databaseColumnGUID);
     }
 
 
@@ -1445,7 +1477,8 @@ public class DatabaseIntegratorContext
                                                                                                             UserNotAuthorizedException,
                                                                                                             PropertyServerException
     {
-        databaseManagerClient.addForeignKeyRelationship(userId, databaseManagerGUID, databaseManagerName, primaryKeyColumnGUID, foreignKeyColumnGUID, databaseForeignKeyProperties);
+        databaseManagerClient.addForeignKeyRelationship(userId, externalSourceGUID, externalSourceName, primaryKeyColumnGUID, foreignKeyColumnGUID
+                , databaseForeignKeyProperties);
     }
 
 
@@ -1464,7 +1497,7 @@ public class DatabaseIntegratorContext
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
-        databaseManagerClient.removeForeignKeyRelationship(userId, databaseManagerGUID, databaseManagerName, primaryKeyColumnGUID, foreignKeyColumnGUID);
+        databaseManagerClient.removeForeignKeyRelationship(userId, externalSourceGUID, externalSourceName, primaryKeyColumnGUID, foreignKeyColumnGUID);
     }
 
 
@@ -1531,7 +1564,7 @@ public class DatabaseIntegratorContext
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        connectionManagerClient.updateConnection(userId, databaseManagerGUID, databaseManagerName, connectionGUID, isMergeUpdate, connectionProperties);
+        connectionManagerClient.updateConnection(userId, externalSourceGUID, externalSourceName, connectionGUID, isMergeUpdate, connectionProperties);
     }
 
 
@@ -1569,7 +1602,7 @@ public class DatabaseIntegratorContext
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        connectionManagerClient.clearConnectorType(userId, databaseManagerGUID, databaseManagerName, connectionGUID, connectorTypeGUID);
+        connectionManagerClient.clearConnectorType(userId, externalSourceGUID, externalSourceName, connectionGUID, connectorTypeGUID);
     }
 
 
@@ -1607,7 +1640,7 @@ public class DatabaseIntegratorContext
                                                           UserNotAuthorizedException,
                                                           PropertyServerException
     {
-        connectionManagerClient.clearEndpoint(userId, databaseManagerGUID, databaseManagerName, connectionGUID, endpointGUID);
+        connectionManagerClient.clearEndpoint(userId, externalSourceGUID, externalSourceName, connectionGUID, endpointGUID);
     }
 
 
@@ -1651,7 +1684,7 @@ public class DatabaseIntegratorContext
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        connectionManagerClient.clearEmbeddedConnection(userId, databaseManagerGUID, databaseManagerName, connectionGUID, embeddedConnectionGUID);
+        connectionManagerClient.clearEmbeddedConnection(userId, externalSourceGUID, externalSourceName, connectionGUID, embeddedConnectionGUID);
     }
 
 
@@ -1691,7 +1724,7 @@ public class DatabaseIntegratorContext
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
-        connectionManagerClient.clearAssetConnection(userId, databaseManagerGUID, databaseManagerName, assetGUID, connectionGUID);
+        connectionManagerClient.clearAssetConnection(userId, externalSourceGUID, externalSourceName, assetGUID, connectionGUID);
     }
 
 
@@ -1708,7 +1741,7 @@ public class DatabaseIntegratorContext
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
     {
-        connectionManagerClient.removeConnection(userId, databaseManagerGUID, databaseManagerName, connectionGUID);
+        connectionManagerClient.removeConnection(userId, externalSourceGUID, externalSourceName, connectionGUID);
     }
 
 
@@ -1817,7 +1850,8 @@ public class DatabaseIntegratorContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return connectionManagerClient.createEndpointFromTemplate(userId, databaseManagerGUID, databaseManagerName, networkAddress, templateGUID, templateProperties);
+        return connectionManagerClient.createEndpointFromTemplate(userId, externalSourceGUID, externalSourceName, networkAddress, templateGUID,
+                                                                  templateProperties);
     }
 
 
@@ -1839,7 +1873,7 @@ public class DatabaseIntegratorContext
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        connectionManagerClient.updateEndpoint(userId, databaseManagerGUID, databaseManagerName, isMergeUpdate, endpointGUID, endpointProperties);
+        connectionManagerClient.updateEndpoint(userId, externalSourceGUID, externalSourceName, isMergeUpdate, endpointGUID, endpointProperties);
     }
 
 
@@ -1858,7 +1892,7 @@ public class DatabaseIntegratorContext
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
     {
-        connectionManagerClient.removeEndpoint(userId, databaseManagerGUID, databaseManagerName, endpointGUID);
+        connectionManagerClient.removeEndpoint(userId, externalSourceGUID, externalSourceName, endpointGUID);
     }
 
 

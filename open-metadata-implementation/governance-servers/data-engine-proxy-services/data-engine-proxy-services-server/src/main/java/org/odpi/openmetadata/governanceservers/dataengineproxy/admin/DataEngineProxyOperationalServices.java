@@ -9,7 +9,7 @@ import org.odpi.openmetadata.accessservices.dataengine.connectors.intopic.DataEn
 import org.odpi.openmetadata.adminservices.configuration.properties.DataEngineProxyConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.ConnectionResponse;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;

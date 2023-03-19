@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.dataengine.client;
 
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.ConnectionResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -23,7 +23,7 @@ public class DataEngineRESTConfigurationClient extends DataEngineRESTClient {
      * Create DataEngineRESTConfigurationClient with unauthenticated access to the DE OMAS server.
      *
      * @param serverName            the server name
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST services
      *
      * @throws InvalidParameterException null URL or server name
      */
@@ -37,7 +37,7 @@ public class DataEngineRESTConfigurationClient extends DataEngineRESTClient {
     /**
      * Instantiates a new Data Engine REST configuration client.
      * @param serverName            name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST services
      * @param userId                caller's userId embedded in all HTTP requests
      * @param password              caller's userId embedded in all HTTP requests
      *

@@ -86,6 +86,7 @@ public class DataFlowConverter<B> extends AssetManagerOMASConverter<B>
                     dataFlowProperties.setQualifiedName(this.getQualifiedName(instanceProperties));
                     dataFlowProperties.setDescription(this.getDescription(instanceProperties));
                     dataFlowProperties.setFormula(this.getFormula(instanceProperties));
+                    dataFlowProperties.setFormulaType(this.getFormulaType(instanceProperties));
 
                     bean.setDataFlowProperties(dataFlowProperties);
                 }

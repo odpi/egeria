@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.integrationservices.display.connector;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.integrationservices.display.ffdc.DisplayIntegratorAuditCode;
 import org.odpi.openmetadata.integrationservices.display.ffdc.DisplayIntegratorErrorCode;
 
@@ -23,6 +23,7 @@ public abstract class DisplayIntegratorConnector extends IntegrationConnectorBas
      */
     public synchronized void setContext(DisplayIntegratorContext context)
     {
+        super.setContext(context);
         this.context = context;
     }
 

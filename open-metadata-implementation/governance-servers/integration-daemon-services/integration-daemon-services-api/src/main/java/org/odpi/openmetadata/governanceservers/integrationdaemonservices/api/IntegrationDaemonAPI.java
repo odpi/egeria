@@ -2,10 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.api;
 
-import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationDaemonStatus;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupSummary;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationServiceSummary;
 
 import java.util.List;
@@ -119,17 +120,83 @@ public interface IntegrationDaemonAPI
 
 
     /**
-     * Return a summary of each of the integration services' status.
+     * Return a summary of each of the integration services' and integration groups' status.
      *
      * @param userId calling user
      *
-     * @return list of statuses - on for each assigned integration services or
+     * @return list of statuses - on for each assigned integration services or integration group
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException there was a problem detected by the integration daemon
      */
-    List<IntegrationServiceSummary> getIntegrationDaemonStatus(String   userId) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException;
+    IntegrationDaemonStatus getIntegrationDaemonStatus(String   userId) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException;
+
+
+    /**
+     * Return a summary of each of the integration services' status.
+     *
+     * @param userId calling user
+     *
+     * @return list of statuses - on for each assigned integration services
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException there was a problem detected by the integration daemon
+     */
+    List<IntegrationServiceSummary> getIntegrationServicesSummaries(String   userId) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException;
+
+
+    /**
+     * Retrieve the description and status of the requested integration group.
+     *
+     * @param userId calling user
+     * @param integrationGroupName qualifiedName of the integration group to target
+     *
+     * @return integration group summary
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    IntegrationGroupSummary getIntegrationGroupSummary(String userId,
+                                                       String integrationGroupName) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException;
+
+
+    /**
+     * Retrieve the description and status of all configured integration groups.
+     *
+     * @param userId calling user
+     * @return list of integration group summaries
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    List<IntegrationGroupSummary> getIntegrationGroupSummaries(String userId) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException;
+
+
+    /**
+     * Request that the integration group refresh its configuration by calling the metadata server.
+     * This request is useful if the metadata server has an outage, particularly while the
+     * integration daemon is initializing.  This request just ensures that the latest configuration
+     * is in use.
+     *
+     * @param userId identifier of calling user
+     * @param integrationGroupName qualifiedName of the integration group to target
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the integration group.
+     */
+    void refreshConfig(String userId,
+                       String integrationGroupName) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException;
 }

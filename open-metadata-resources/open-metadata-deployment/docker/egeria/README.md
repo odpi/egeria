@@ -8,7 +8,7 @@
 
 # Egeria - Open Metadata and Governance
   
-Egeria provides the Apache 2.0 licensed open metadata and governance 
+Egeria provides the Apache-2.0 licensed open metadata and governance 
 type system, frameworks, APIs, event payloads and interchange protocols to enable tools,
 engines and platforms to exchange metadata in order to get the best
 value from data whilst ensuring it is properly governed.

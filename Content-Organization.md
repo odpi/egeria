@@ -74,7 +74,6 @@ The Egeria core repository contains the core Egeria functionality, and is organi
     * **[generic-handlers](open-metadata-implementation/common-services/generic-handlers)** - provides support for metadata management for open metadata types including visibility and authorization checking, anchor management and provenance recording.
     * **[metadata-security](open-metadata-implementation/common-services/metadata-security)** - provides integration points for fine-grained security for metadata.
     * **[multi-tenant](open-metadata-implementation/common-services/multi-tenant)** - provides management of server instances within the OMAG Server Platform.
-    * **[ocf-metadata-management](open-metadata-implementation/common-services/ocf-metadata-management)** - provides metadata management for the [Open Connector Framework (OCF)](open-metadata-implementation/frameworks/open-connector-framework) properties and APIs.
     * **[repository-handler](open-metadata-implementation/common-services/repository-handler)** - provides an enhanced set of services for accessing metadata from the [repository services](open-metadata-implementation/repository-services).
   
   * **[engine-services](open-metadata-implementation/engine-services)** - services that host data management and governance engines.  These run in the [Engine Host](https://egeria-project.org/concepts/engine-host) OMAG Server.
@@ -88,7 +87,12 @@ The Egeria core repository contains the core Egeria functionality, and is organi
     * **[open-discovery-framework](open-metadata-implementation/frameworks/open-discovery-framework)** provides the interfaces and base implementations for components (called discovery services) that access data-related assets and extract characteristics about the data that can be stored in an open metadata repository.
     * **[governance-action-framework](open-metadata-implementation/frameworks/governance-action-framework)** provides the interfaces and base implementations for components (called governance actions) that take action to correct a situation that is harmful the data, or the organization in some way.
  
-  * **[governance-servers](open-metadata-implementation/governance-servers)** - servers and daemons to run open metadata and governance function.
+  * **[framework-services](open-metadata-implementation/framework-services)** - client support for the frameworks
+    * **[ocf-metadata-management](open-metadata-implementation/framework-services/ocf-metadata-management)** - provides metadata management for the [Open Connector Framework (OCF)](open-metadata-implementation/frameworks/open-connector-framework) properties and APIs.
+    * **[oif-metadata-management](open-metadata-implementation/framework-services/oif-metadata-management)** - provides metadata management for the [Open Integration Framework (OCF)](open-metadata-implementation/frameworks/open-integration-framework) properties and APIs.
+    * **[gaf-metadata-management](open-metadata-implementation/framework-services/gaf-metadata-management)** - provides metadata management for the [Governance Action Framework (GAF)](open-metadata-implementation/frameworks/governance-action-framework) properties and APIs.
+
+* **[governance-servers](open-metadata-implementation/governance-servers)** - servers and daemons to run open metadata and governance function.
     * **[data-engine-proxy-services](open-metadata-implementation/governance-servers/data-engine-proxy-services)** - supports automated metadata cataloguing from data engines.
     * **[engine-host-services](open-metadata-implementation/governance-servers/engine-host-services)** - supports the core function of the [Engine Host](https://egeria-project.org/concepts/engine-host) OMAG Server.
     * **[integration-daemon-services](open-metadata-implementation/governance-servers/integration-daemon-services)** - supports the core function of the [Integration Daemon](https://egeria-project.org/concepts/integration-daemon) OMAG Server.

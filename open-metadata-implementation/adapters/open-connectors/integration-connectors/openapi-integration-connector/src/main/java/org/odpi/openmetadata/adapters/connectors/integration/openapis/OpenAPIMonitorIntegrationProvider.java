@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.integration.openapis;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnectorProvider;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 
 import java.util.ArrayList;
 import java.util.List;

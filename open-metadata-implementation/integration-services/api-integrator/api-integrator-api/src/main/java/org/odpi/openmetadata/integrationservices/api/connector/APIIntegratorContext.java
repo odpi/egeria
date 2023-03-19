@@ -11,6 +11,11 @@ import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext;
+import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 
 import java.util.List;
 
@@ -18,40 +23,64 @@ import java.util.List;
 /**
  * APIIntegratorContext is the context for managing resources from a relational api server.
  */
-public class APIIntegratorContext
+public class APIIntegratorContext extends IntegrationContext
 {
     private final APIManagerClient        apiManagerClient;
     private final ConnectionManagerClient connectionManagerClient;
     private final DataManagerEventClient  eventClient;
-    private final String                  userId;
-    private final String                  apiManagerGUID;
-    private final String                  apiManagerName;
 
-    private boolean                apiManagerIsHome = true;
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
+     * @param connectorId unique identifier of the connector (used to configure the event listener)
+     * @param connectorName name of connector from config
+     * @param connectorUserId userId for the connector
+     * @param serverName name of the integration daemon
+     * @param openIntegrationClient client for calling the metadata server
+     * @param openMetadataStoreClient client for calling the metadata server
      * @param apiManagerClient client to map request to
      * @param connectionManagerClient client to manage connections in the metadata server
      * @param eventClient client to register for events
-     * @param userId integration daemon's userId
-     * @param apiManagerGUID unique identifier of the software server capability for the api manager
-     * @param apiManagerName unique name of the software server capability for the api manager
+     * @param permittedSynchronization the direction of integration permitted by the integration connector
+     * @param integrationConnectorGUID unique identifier for the integration connector if it is started via an integration group (otherwise it is
+     *                                 null).
+     * @param integrationGovernanceContext populated governance context for the connector's use
+     * @param externalSourceGUID unique identifier of the software server capability for the api manager
+     * @param externalSourceName unique name of the software server capability for the api manager
      */
-    public APIIntegratorContext(APIManagerClient        apiManagerClient,
-                                ConnectionManagerClient connectionManagerClient,
-                                DataManagerEventClient  eventClient,
-                                String                  userId,
-                                String                  apiManagerGUID,
-                                String                  apiManagerName)
+    public APIIntegratorContext(String                       connectorId,
+                                String                       connectorName,
+                                String                       connectorUserId,
+                                String                       serverName,
+                                OpenIntegrationClient        openIntegrationClient,
+                                OpenMetadataClient           openMetadataStoreClient,
+                                APIManagerClient             apiManagerClient,
+                                ConnectionManagerClient      connectionManagerClient,
+                                DataManagerEventClient       eventClient,
+                                boolean                      generateIntegrationReport,
+                                PermittedSynchronization     permittedSynchronization,
+                                String                       integrationConnectorGUID,
+                                IntegrationGovernanceContext integrationGovernanceContext,
+                                String                       externalSourceGUID,
+                                String                       externalSourceName)
     {
+        super(connectorId,
+              connectorName,
+              connectorUserId,
+              serverName,
+              openIntegrationClient,
+              openMetadataStoreClient,
+              generateIntegrationReport,
+              permittedSynchronization,
+              externalSourceGUID,
+              externalSourceName,
+              integrationConnectorGUID,
+              integrationGovernanceContext);
+
         this.apiManagerClient        = apiManagerClient;
         this.connectionManagerClient = connectionManagerClient;
         this.eventClient             = eventClient;
-        this.userId                  = userId;
-        this.apiManagerGUID          = apiManagerGUID;
-        this.apiManagerName          = apiManagerName;
     }
 
 
@@ -69,7 +98,7 @@ public class APIIntegratorContext
      */
     public String getAPIManagerName()
     {
-        return apiManagerName;
+        return externalSourceName;
     }
 
 
@@ -85,7 +114,7 @@ public class APIIntegratorContext
      */
     public void setAPIManagerIsHome(boolean apiManagerIsHome)
     {
-        this.apiManagerIsHome = apiManagerIsHome;
+        this.externalSourceIsHome = apiManagerIsHome;
     }
 
 
@@ -166,7 +195,7 @@ public class APIIntegratorContext
 
 
     /**
-     * Update the metadata element representing a endpoint.  It is possible to use the subtype property classes or
+     * Update the metadata element representing an endpoint.  It is possible to use the subtype property classes or
      * set up specialized properties in extended properties.
      *
      * @param endpointGUID unique identifier of the metadata element to update
@@ -183,14 +212,12 @@ public class APIIntegratorContext
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        connectionManagerClient.updateEndpoint(userId, apiManagerGUID, apiManagerName, isMergeUpdate, endpointGUID, endpointProperties);
+        connectionManagerClient.updateEndpoint(userId, externalSourceGUID, externalSourceName, isMergeUpdate, endpointGUID, endpointProperties);
     }
 
 
-
-
     /**
-     * Remove the metadata element representing a endpoint.
+     * Remove the metadata element representing an endpoint.
      *
      * @param endpointGUID unique identifier of the metadata element to remove
      *
@@ -202,7 +229,7 @@ public class APIIntegratorContext
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
     {
-        connectionManagerClient.removeEndpoint(userId, apiManagerGUID, apiManagerName, endpointGUID);
+        connectionManagerClient.removeEndpoint(userId, externalSourceGUID, externalSourceName, endpointGUID);
     }
 
 
@@ -295,7 +322,7 @@ public class APIIntegratorContext
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
     {
-        return apiManagerClient.createAPI(userId, apiManagerGUID, apiManagerName, apiManagerIsHome, endpointGUID, apiProperties);
+        return apiManagerClient.createAPI(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, endpointGUID, apiProperties);
     }
 
 
@@ -318,7 +345,13 @@ public class APIIntegratorContext
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        return apiManagerClient.createAPIFromTemplate(userId, apiManagerGUID, apiManagerName, apiManagerIsHome, endpointGUID, templateGUID, templateProperties);
+        return apiManagerClient.createAPIFromTemplate(userId,
+                                                      externalSourceGUID,
+                                                      externalSourceName,
+                                                      externalSourceIsHome,
+                                                      endpointGUID,
+                                                      templateGUID,
+                                                      templateProperties);
     }
 
 
@@ -339,7 +372,7 @@ public class APIIntegratorContext
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
     {
-        apiManagerClient.updateAPI(userId, apiManagerGUID, apiManagerName, apiGUID, isMergeUpdate, apiProperties);
+        apiManagerClient.updateAPI(userId, externalSourceGUID, externalSourceName, apiGUID, isMergeUpdate, apiProperties);
     }
 
 
@@ -396,7 +429,7 @@ public class APIIntegratorContext
                                                        UserNotAuthorizedException,
                                                        PropertyServerException
     {
-        apiManagerClient.removeAPI(userId, apiManagerGUID, apiManagerName, apiGUID, qualifiedName);
+        apiManagerClient.removeAPI(userId, externalSourceGUID, externalSourceName, apiGUID, qualifiedName);
     }
 
 
@@ -465,7 +498,11 @@ public class APIIntegratorContext
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
     {
-        return apiManagerClient.getAPIsForAPIManager(userId, apiManagerGUID, apiManagerName, startFrom, pageSize);
+        return apiManagerClient.getAPIsForAPIManager(userId,
+                                                     externalSourceGUID,
+                                                     externalSourceName,
+                                                     startFrom,
+                                                     pageSize);
     }
 
 
@@ -509,9 +546,9 @@ public class APIIntegratorContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        if (apiManagerIsHome)
+        if (externalSourceIsHome)
         {
-            return apiManagerClient.createAPIOperation(userId, apiManagerGUID, apiManagerName, apiGUID, apiOperationProperties);
+            return apiManagerClient.createAPIOperation(userId, externalSourceGUID, externalSourceName, apiGUID, apiOperationProperties);
         }
         else
         {
@@ -539,9 +576,9 @@ public class APIIntegratorContext
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        if (apiManagerIsHome)
+        if (externalSourceIsHome)
         {
-            return apiManagerClient.createAPIOperationFromTemplate(userId, apiManagerGUID, apiManagerName, templateGUID, apiGUID, templateProperties);
+            return apiManagerClient.createAPIOperationFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, apiGUID, templateProperties);
         }
         else
         {
@@ -567,7 +604,7 @@ public class APIIntegratorContext
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        apiManagerClient.updateAPIOperation(userId, apiManagerGUID, apiManagerName, apiOperationGUID, isMergeUpdate, apiOperationProperties);
+        apiManagerClient.updateAPIOperation(userId, externalSourceGUID, externalSourceName, apiOperationGUID, isMergeUpdate, apiOperationProperties);
     }
 
 
@@ -586,7 +623,7 @@ public class APIIntegratorContext
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
     {
-        apiManagerClient.removeAPIOperation(userId, apiManagerGUID, apiManagerName, apiOperationGUID, qualifiedName);
+        apiManagerClient.removeAPIOperation(userId, externalSourceGUID, externalSourceName, apiOperationGUID, qualifiedName);
     }
 
 
@@ -706,9 +743,9 @@ public class APIIntegratorContext
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        if (apiManagerIsHome)
+        if (externalSourceIsHome)
         {
-            return apiManagerClient.createAPIParameterList(userId, apiManagerGUID, apiManagerName, apiOperationGUID, parameterListType, properties);
+            return apiManagerClient.createAPIParameterList(userId, externalSourceGUID, externalSourceName, apiOperationGUID, parameterListType, properties);
         }
         else
         {
@@ -718,7 +755,7 @@ public class APIIntegratorContext
 
 
     /**
-     * Create a new metadata element to represent a an API Parameter List using an existing API Parameter List as a template.
+     * Create a new metadata element to represent an API Parameter List using an existing API Parameter List as a template.
      *
      * @param templateGUID unique identifier of the metadata element to copy
      * @param apiOperationGUID unique identifier of the API where the API Operation is located
@@ -738,9 +775,9 @@ public class APIIntegratorContext
                                                                                                      UserNotAuthorizedException,
                                                                                                      PropertyServerException
     {
-        if (apiManagerIsHome)
+        if (externalSourceIsHome)
         {
-            return apiManagerClient.createAPIParameterListFromTemplate(userId, apiManagerGUID, apiManagerName, templateGUID, apiOperationGUID, parameterListType, templateProperties);
+            return apiManagerClient.createAPIParameterListFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, apiOperationGUID, parameterListType, templateProperties);
         }
         else
         {
@@ -767,7 +804,7 @@ public class APIIntegratorContext
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        apiManagerClient.updateAPIParameterList(userId, apiManagerGUID, apiManagerName, apiParameterListGUID, isMergeUpdate, properties);
+        apiManagerClient.updateAPIParameterList(userId, externalSourceGUID, externalSourceName, apiParameterListGUID, isMergeUpdate, properties);
     }
 
 
@@ -786,7 +823,7 @@ public class APIIntegratorContext
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        apiManagerClient.removeAPIParameterList(userId, apiManagerGUID, apiManagerName, apiParameterListGUID, qualifiedName);
+        apiManagerClient.removeAPIParameterList(userId, externalSourceGUID, externalSourceName, apiParameterListGUID, qualifiedName);
     }
 
 
@@ -902,9 +939,9 @@ public class APIIntegratorContext
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
-        if (apiManagerIsHome)
+        if (externalSourceIsHome)
         {
-            return apiManagerClient.createAPIParameter(userId, apiManagerGUID, apiManagerName, schemaElementGUID, apiParameterProperties);
+            return apiManagerClient.createAPIParameter(userId, externalSourceGUID, externalSourceName, schemaElementGUID, apiParameterProperties);
         }
         else
         {
@@ -932,9 +969,9 @@ public class APIIntegratorContext
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        if (apiManagerIsHome)
+        if (externalSourceIsHome)
         {
-            return apiManagerClient.createAPIParameterFromTemplate(userId, apiManagerGUID, apiManagerName, schemaElementGUID, templateGUID, templateProperties);
+            return apiManagerClient.createAPIParameterFromTemplate(userId, externalSourceGUID, externalSourceName, schemaElementGUID, templateGUID, templateProperties);
         }
         else
         {
@@ -944,7 +981,7 @@ public class APIIntegratorContext
 
 
     /**
-     * Connect a schema type to a API parameter.
+     * Connect a schema type to an API parameter.
      *
      * @param relationshipTypeName name of relationship to create
      * @param apiParameterGUID unique identifier of the API parameter
@@ -960,9 +997,9 @@ public class APIIntegratorContext
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
     {
-        if (apiManagerIsHome)
+        if (externalSourceIsHome)
         {
-            apiManagerClient.setupSchemaType(userId, apiManagerGUID, apiManagerName, relationshipTypeName, apiParameterGUID, schemaTypeGUID);
+            apiManagerClient.setupSchemaType(userId, externalSourceGUID, externalSourceName, relationshipTypeName, apiParameterGUID, schemaTypeGUID);
         }
         else
         {
@@ -972,7 +1009,7 @@ public class APIIntegratorContext
 
 
     /**
-     * Remove the linked schema types from a API parameter.
+     * Remove the linked schema types from an API parameter.
      *
      * @param apiParameterGUID unique identifier of the API parameter
      *
@@ -984,12 +1021,12 @@ public class APIIntegratorContext
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        apiManagerClient.clearSchemaTypes(userId, apiManagerGUID, apiManagerName, apiParameterGUID);
+        apiManagerClient.clearSchemaTypes(userId, externalSourceGUID, externalSourceName, apiParameterGUID);
     }
 
 
     /**
-     * Update the properties of the metadata element representing a API parameter.
+     * Update the properties of the metadata element representing an API parameter.
      *
      * @param apiParameterGUID unique identifier of the API parameter to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
@@ -1005,7 +1042,7 @@ public class APIIntegratorContext
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        apiManagerClient.updateAPIParameter(userId, apiManagerGUID, apiManagerName, apiParameterGUID, isMergeUpdate, apiParameterProperties);
+        apiManagerClient.updateAPIParameter(userId, externalSourceGUID, externalSourceName, apiParameterGUID, isMergeUpdate, apiParameterProperties);
     }
 
 
@@ -1022,7 +1059,7 @@ public class APIIntegratorContext
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
-        apiManagerClient.removeAPIParameter(userId, apiManagerGUID, apiManagerName, apiParameterGUID);
+        apiManagerClient.removeAPIParameter(userId, externalSourceGUID, externalSourceName, apiParameterGUID);
     }
 
 
@@ -1140,9 +1177,9 @@ public class APIIntegratorContext
                                                                                                        UserNotAuthorizedException,
                                                                                                        PropertyServerException
     {
-        if (apiManagerIsHome)
+        if (externalSourceIsHome)
         {
-            return apiManagerClient.createPrimitiveSchemaType(userId, apiManagerGUID, apiManagerName, schemaTypeProperties);
+            return apiManagerClient.createPrimitiveSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties);
         }
         else
         {
@@ -1166,9 +1203,9 @@ public class APIIntegratorContext
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
     {
-        if (apiManagerIsHome)
+        if (externalSourceIsHome)
         {
-            return apiManagerClient.createLiteralSchemaType(userId, apiManagerGUID, apiManagerName, schemaTypeProperties);
+            return apiManagerClient.createLiteralSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties);
         }
         else
         {
@@ -1194,9 +1231,9 @@ public class APIIntegratorContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        if (apiManagerIsHome)
+        if (externalSourceIsHome)
         {
-            return apiManagerClient.createEnumSchemaType(userId, apiManagerGUID, apiManagerName, schemaTypeProperties, validValuesSetGUID);
+            return apiManagerClient.createEnumSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties, validValuesSetGUID);
         }
         else
         {
@@ -1268,9 +1305,9 @@ public class APIIntegratorContext
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        if (apiManagerIsHome)
+        if (externalSourceIsHome)
         {
-            return apiManagerClient.createStructSchemaType(userId, apiManagerGUID, apiManagerName, schemaTypeProperties);
+            return apiManagerClient.createStructSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties);
         }
         else
         {
@@ -1296,9 +1333,9 @@ public class APIIntegratorContext
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        if (apiManagerIsHome)
+        if (externalSourceIsHome)
         {
-            return apiManagerClient.createSchemaTypeChoice(userId, apiManagerGUID, apiManagerName, schemaTypeProperties, schemaTypeOptionGUIDs);
+            return apiManagerClient.createSchemaTypeChoice(userId, externalSourceGUID, externalSourceName, schemaTypeProperties, schemaTypeOptionGUIDs);
         }
         else
         {
@@ -1326,9 +1363,9 @@ public class APIIntegratorContext
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        if (apiManagerIsHome)
+        if (externalSourceIsHome)
         {
-            return apiManagerClient.createMapSchemaType(userId, apiManagerGUID, apiManagerName, schemaTypeProperties, mapFromSchemaTypeGUID, mapToSchemaTypeGUID);
+            return apiManagerClient.createMapSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties, mapFromSchemaTypeGUID, mapToSchemaTypeGUID);
         }
         else
         {
@@ -1354,9 +1391,9 @@ public class APIIntegratorContext
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        if (apiManagerIsHome)
+        if (externalSourceIsHome)
         {
-            return apiManagerClient.createSchemaTypeFromTemplate(userId, apiManagerGUID, apiManagerName, templateGUID, templateProperties);
+            return apiManagerClient.createSchemaTypeFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateProperties);
         }
         else
         {
@@ -1383,7 +1420,7 @@ public class APIIntegratorContext
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        apiManagerClient.updateSchemaType(userId, apiManagerGUID, apiManagerName, schemaTypeGUID, isMergeUpdate, schemaTypeProperties);
+        apiManagerClient.updateSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeGUID, isMergeUpdate, schemaTypeProperties);
     }
 
 
@@ -1400,7 +1437,7 @@ public class APIIntegratorContext
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
     {
-        apiManagerClient.removeSchemaType(userId, apiManagerGUID, apiManagerName, schemaTypeGUID);
+        apiManagerClient.removeSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeGUID);
     }
 
 
@@ -1424,7 +1461,7 @@ public class APIIntegratorContext
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        apiManagerClient.setupSchemaElementRelationship(userId, apiManagerGUID, apiManagerName, endOneGUID, endTwoGUID, relationshipTypeName, properties);
+        apiManagerClient.setupSchemaElementRelationship(userId, externalSourceGUID, externalSourceName, endOneGUID, endTwoGUID, relationshipTypeName, properties);
     }
 
 
@@ -1445,7 +1482,7 @@ public class APIIntegratorContext
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        apiManagerClient.clearSchemaElementRelationship(userId, apiManagerGUID, apiManagerName, endOneGUID, endTwoGUID, relationshipTypeName);
+        apiManagerClient.clearSchemaElementRelationship(userId, externalSourceGUID, externalSourceName, endOneGUID, endTwoGUID, relationshipTypeName);
     }
 
 

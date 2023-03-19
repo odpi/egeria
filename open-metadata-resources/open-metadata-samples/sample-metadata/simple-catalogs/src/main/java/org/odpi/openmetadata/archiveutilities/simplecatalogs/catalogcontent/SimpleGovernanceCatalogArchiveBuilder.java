@@ -23,7 +23,7 @@ public class SimpleGovernanceCatalogArchiveBuilder
      */
     private static final String                  archiveGUID        = "e915f2fa-aaac-4396-8bde-bcd65e642b1d";
     private static final String                  archiveName        = "SimpleGovernanceCatalog";
-    private static final String                  archiveLicense     = "Apache 2.0";
+    private static final String                  archiveLicense     = "Apache-2.0";
     private static final String                  archiveDescription = "Sample metadata showing governance definitions and linking relationships.";
     private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.REPOSITORY_BACKUP;
     private static final String                  originatorName     = "Egeria";

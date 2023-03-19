@@ -11558,7 +11558,17 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                   PropertyServerException,
                                                                   UserNotAuthorizedException
     {
-        return getBeansByType(userId, resultTypeGUID, resultTypeName, sequencingPropertyName, forLineage, forDuplicateProcessing, supportedZones, startFrom, pageSize, effectiveTime, methodName);
+        return getBeansByType(userId,
+                              resultTypeGUID,
+                              resultTypeName,
+                              sequencingPropertyName,
+                              forLineage,
+                              forDuplicateProcessing,
+                              supportedZones,
+                              startFrom,
+                              pageSize,
+                              effectiveTime,
+                              methodName);
     }
 
 

@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceRegistry;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonInstanceHandler;
+import org.odpi.openmetadata.integrationservices.api.api.APIIntegratorAPI;
 import org.odpi.openmetadata.integrationservices.api.connector.APIIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.api.contextmanager.APIIntegratorContextManager;
 import org.slf4j.LoggerFactory;
@@ -36,7 +37,8 @@ public class APIIntegratorRESTServices
     public APIIntegratorRESTServices()
     {
         IntegrationServiceRegistry.registerIntegrationService(IntegrationServiceDescription.API_INTEGRATOR_OMIS,
-                                                              APIIntegratorContextManager.class.getName());
+                                                              APIIntegratorContextManager.class.getName(),
+                                                              APIIntegratorAPI.class.getName());
     }
 
 

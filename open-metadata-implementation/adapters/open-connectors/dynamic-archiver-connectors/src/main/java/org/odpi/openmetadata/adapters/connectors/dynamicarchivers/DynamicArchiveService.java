@@ -43,7 +43,7 @@ public abstract class DynamicArchiveService extends RepositoryGovernanceServiceC
      */
     protected static final String                  archiveGUID        = "9cbd2b33-e80f-4df2-adc6-d859ebff4c34";
     protected static final String                  archiveName        = "CocoGovernanceEngineDefinitions";
-    protected static final String                  archiveLicense     = "Apache 2.0";
+    protected static final String                  archiveLicense     = "Apache-2.0";
     protected static final String                  archiveDescription = "Governance Engines for Coco Pharmaceuticals.";
     protected static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.CONTENT_PACK;
     protected static final String                  originatorName     = "Egeria Project";

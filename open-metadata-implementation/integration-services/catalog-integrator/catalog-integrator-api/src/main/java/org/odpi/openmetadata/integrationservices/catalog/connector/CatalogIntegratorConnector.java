@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.integrationservices.catalog.connector;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorAuditCode;
 import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorErrorCode;
 
@@ -23,6 +23,7 @@ public abstract class CatalogIntegratorConnector extends IntegrationConnectorBas
      */
     public synchronized void setContext(CatalogIntegratorContext context)
     {
+        super.setContext(context);
         this.context = context;
     }
 

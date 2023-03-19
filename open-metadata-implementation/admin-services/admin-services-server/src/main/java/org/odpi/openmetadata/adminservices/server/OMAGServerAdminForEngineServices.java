@@ -34,13 +34,13 @@ public class OMAGServerAdminForEngineServices
     private static final String serviceName    = GovernanceServicesDescription.ENGINE_HOST_SERVICES.getServiceName();
     private static final String accessService  = AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceName();
 
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminForEngineServices.class),
-                                                                      CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminForEngineServices.class),
+                                                                            CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
     
 
-    private OMAGServerAdminStoreServices   configStore = new OMAGServerAdminStoreServices();
-    private OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
-    private OMAGServerExceptionHandler     exceptionHandler = new OMAGServerExceptionHandler();
+    private final OMAGServerAdminStoreServices   configStore = new OMAGServerAdminStoreServices();
+    private final OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
+    private final OMAGServerExceptionHandler     exceptionHandler = new OMAGServerExceptionHandler();
 
 
     /**
@@ -313,11 +313,11 @@ public class OMAGServerAdminForEngineServices
 
             if (accessServiceRootURL == null)
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for " + serviceName + " access service root url.");
+                configAuditTrail.add(new Date() + " " + userId + " removed configuration for " + serviceName + " access service root url.");
             }
             else
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for " + serviceName + " access service root url to " + accessServiceRootURL + ".");
+                configAuditTrail.add(new Date() + " " + userId + " updated configuration for " + serviceName + " access service root url to " + accessServiceRootURL + ".");
             }
 
             serverConfig.setAuditTrail(configAuditTrail);
@@ -548,11 +548,6 @@ public class OMAGServerAdminForEngineServices
             }
 
             newList.add(newEngineServiceConfig);
-
-            if (newList.isEmpty())
-            {
-                return null;
-            }
 
             return newList;
         }
@@ -900,16 +895,15 @@ public class OMAGServerAdminForEngineServices
 
             if ((engineServicesConfig == null) || (engineServicesConfig.isEmpty()))
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for engine services.");
+                configAuditTrail.add(new Date() + " " + userId + " removed configuration for engine services.");
             }
             else if (serviceURLMarker == null)
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for engine services.");
+                configAuditTrail.add(new Date() + " " + userId + " updated configuration for engine services.");
             }
             else
             {
-                configAuditTrail.add(new Date().toString() + " " + userId +
-                                             " updated configuration for engine service " + serviceURLMarker + ".");
+                configAuditTrail.add(new Date() + " " + userId + " updated configuration for engine service " + serviceURLMarker + ".");
             }
 
             serverConfig.setAuditTrail(configAuditTrail);

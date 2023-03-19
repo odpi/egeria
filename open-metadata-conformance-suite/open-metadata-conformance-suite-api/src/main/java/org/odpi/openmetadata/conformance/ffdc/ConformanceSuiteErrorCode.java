@@ -173,11 +173,11 @@ public enum ConformanceSuiteErrorCode
             "The error message should indicate the cause of the error.  Otherwise look for errors in the remote server's audit log and console to understand and correct the source of the error.")
             ;
 
-    private int    httpErrorCode;
-    private String errorMessageId;
-    private String errorMessage;
-    private String systemAction;
-    private String userAction;
+    private final int    httpErrorCode;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
 
     private static final Logger log = LoggerFactory.getLogger(ConformanceSuiteErrorCode.class);
     private static final long   serialVersionUID = 1L;

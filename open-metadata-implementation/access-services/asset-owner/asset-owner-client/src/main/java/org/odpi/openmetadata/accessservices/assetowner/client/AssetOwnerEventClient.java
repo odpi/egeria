@@ -7,8 +7,8 @@ import org.odpi.openmetadata.accessservices.assetowner.api.AssetOwnerEventListen
 import org.odpi.openmetadata.accessservices.assetowner.connectors.outtopic.AssetOwnerOutTopicClientConnector;
 import org.odpi.openmetadata.accessservices.assetowner.ffdc.AssetOwnerErrorCode;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.ConnectionResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
@@ -44,7 +44,7 @@ public class AssetOwnerEventClient implements AssetOwnerEventInterface
      * Create a new client that is to be used within an OMAG Server.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param serverUserId this server's userId
      * @param serverPassword this server's userId
      * @param maxPageSize pre-initialized parameter limit

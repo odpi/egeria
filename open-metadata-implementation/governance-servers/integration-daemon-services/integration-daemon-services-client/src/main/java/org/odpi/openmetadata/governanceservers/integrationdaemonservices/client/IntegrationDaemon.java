@@ -12,9 +12,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.api.IntegrationDaemonAPI;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationDaemonStatus;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupSummary;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationServiceSummary;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.ConnectorConfigPropertiesRequestBody;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.IntegrationDaemonStatusResponse;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.*;
 
 import java.util.List;
 import java.util.Map;
@@ -31,18 +32,18 @@ import java.util.Map;
  */
 public class IntegrationDaemon implements IntegrationDaemonAPI
 {
-    private IntegrationDaemonServicesRESTClient restClient;               /* Initialized in constructor */
-    private String                              serverName;
-    private String                              serverPlatformRootURL;
+    private final IntegrationDaemonServicesRESTClient restClient;               /* Initialized in constructor */
+    private final String                              serverName;
+    private final String                              serverPlatformRootURL;
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private static NullRequestBody  nullRequestBody         = new NullRequestBody();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final static NullRequestBody  nullRequestBody         = new NullRequestBody();
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST services
      * @param auditLog logging destination
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
@@ -63,7 +64,7 @@ public class IntegrationDaemon implements IntegrationDaemonAPI
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST services
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
@@ -82,7 +83,7 @@ public class IntegrationDaemon implements IntegrationDaemonAPI
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @param auditLog logging destination
@@ -108,7 +109,7 @@ public class IntegrationDaemon implements IntegrationDaemonAPI
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
@@ -309,17 +310,17 @@ public class IntegrationDaemon implements IntegrationDaemonAPI
 
 
     /**
-     * Return a summary of each of the integration services' status.
+     * Return a summary of each of the integration services' and integration groups' status.
      *
      * @param userId calling user
      *
-     * @return list of statuses - on for each assigned integration services or
+     * @return list of statuses - one for each assigned integration service or integration group
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException there was a problem detected by the integration daemon
      */
-    public List<IntegrationServiceSummary> getIntegrationDaemonStatus(String   userId) throws InvalidParameterException,
+    public IntegrationDaemonStatus getIntegrationDaemonStatus(String   userId) throws InvalidParameterException,
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
@@ -333,6 +334,127 @@ public class IntegrationDaemon implements IntegrationDaemonAPI
                                                                                                        serverName,
                                                                                                        userId);
 
+        return restResult.getIntegrationDaemonStatus();
+    }
+
+
+    /**
+     * Return a summary of each of the integration services' status.
+     *
+     * @param userId calling user
+     *
+     * @return list of statuses - one for each assigned integration services or
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException there was a problem detected by the integration daemon
+     */
+    public List<IntegrationServiceSummary> getIntegrationServicesSummaries(String   userId) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        final String   methodName = "getIntegrationServicesSummaries";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/users/{1}/integration-services/summary";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        IntegrationServiceSummaryResponse restResult = restClient.callIntegrationServiceStatusGetRESTCall(methodName,
+                                                                                                          serverPlatformRootURL + urlTemplate,
+                                                                                                          serverName,
+                                                                                                          userId);
+
         return restResult.getIntegrationServiceSummaries();
+    }
+
+
+    /**
+     * Retrieve the description and status of the requested integration group.
+     *
+     * @param userId calling user
+     * @param integrationGroupName qualifiedName of the integration group to target
+     *
+     * @return integration group summary
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    public IntegrationGroupSummary getIntegrationGroupSummary(String userId,
+                                                              String integrationGroupName) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        final String   methodName = "getIntegrationGroupSummary";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon-services/users/{1}/integration-groups/{2}/summary";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        IntegrationGroupSummaryResponse restResult = restClient.callIntegrationGroupSummaryGetRESTCall(methodName,
+                                                                                                       serverPlatformRootURL + urlTemplate,
+                                                                                                       serverName,
+                                                                                                       userId,
+                                                                                                       integrationGroupName);
+
+        return restResult.getIntegrationGroupSummary();
+    }
+
+
+    /**
+     * Retrieve the description and status of each integration group assigned to the Integration Daemon.
+     *
+     * @param userId calling user
+     * @return list of integration group summaries
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    public List<IntegrationGroupSummary> getIntegrationGroupSummaries(String userId) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        final String   methodName = "getIntegrationGroupSummaries";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon-services/users/{1}/integration-groups/summary";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        IntegrationGroupSummariesResponse restResult = restClient.callIntegrationGroupSummariesGetRESTCall(methodName,
+                                                                                                           serverPlatformRootURL + urlTemplate,
+                                                                                                           serverName,
+                                                                                                           userId);
+
+
+        return restResult.getIntegrationGroupSummaries();
+    }
+
+
+    /**
+     * Request that the integration group refresh its configuration by calling the metadata server.
+     * This request is useful if the metadata server has an outage, particularly while the
+     * integration daemon is initializing.  This request just ensures that the latest configuration
+     * is in use.
+     *
+     * @param userId identifier of calling user
+     * @param integrationGroupName qualifiedName of the integration group to target
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the integration group.
+     */
+    public  void refreshConfig(String userId,
+                               String integrationGroupName) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        final String   methodName = "refreshConfig";
+        final String   integrationGroupParameterName = "integrationGroupName";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon-services/users/{1}/integration-groups/{2}/refresh-config";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(integrationGroupName, integrationGroupParameterName, methodName);
+
+        restClient.callVoidGetRESTCall(methodName,
+                                       serverPlatformRootURL + urlTemplate,
+                                       serverName,
+                                       userId,
+                                       integrationGroupName);
     }
 }

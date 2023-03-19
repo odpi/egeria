@@ -249,11 +249,11 @@ public class AssetUniverse extends AssetDetail
                        ", knownLocations=" + knownLocations +
                        ", lineage=" + lineage +
                        ", relatedAssets=" + relatedAssets +
-                       ", name='" + getName() + '\'' +
+                       ", name='" + getResourceName() + '\'' +
                        ", versionIdentifier='" + getVersionIdentifier() + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", shortDescription='" + getConnectionDescription() + '\'' +
-                       ", description='" + getDescription() + '\'' +
+                       ", description='" + getDisplayDescription() + '\'' +
                        ", ownerTypeName='" + getOwnerTypeName() + '\'' +
                        ", ownerPropertyName='" + getOwnerPropertyName() + '\'' +
                        ", ownerType=" + getOwnerType() +

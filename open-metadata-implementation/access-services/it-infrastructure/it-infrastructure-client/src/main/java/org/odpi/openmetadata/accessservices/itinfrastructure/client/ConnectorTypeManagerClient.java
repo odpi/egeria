@@ -41,7 +41,7 @@ public class ConnectorTypeManagerClient implements ConnectorTypeManagerInterface
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
@@ -65,7 +65,7 @@ public class ConnectorTypeManagerClient implements ConnectorTypeManagerInterface
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
@@ -89,7 +89,7 @@ public class ConnectorTypeManagerClient implements ConnectorTypeManagerInterface
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
@@ -117,7 +117,7 @@ public class ConnectorTypeManagerClient implements ConnectorTypeManagerInterface
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @param auditLog logging destination
@@ -146,7 +146,7 @@ public class ConnectorTypeManagerClient implements ConnectorTypeManagerInterface
      * Create a new client that is going to be used in an OMAG Server.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param restClient client that issues the REST API calls
      * @param maxPageSize maximum number of results supported by this server
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any

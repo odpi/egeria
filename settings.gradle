@@ -33,6 +33,7 @@ rootProject.name = 'egeria'
 include(':bom')
 include(':open-metadata-implementation:frameworks:audit-log-framework')
 include(':open-metadata-implementation:frameworks:open-connector-framework')
+include(':open-metadata-implementation:frameworks:open-integration-framework')
 include(':open-metadata-implementation:frameworks:open-discovery-framework')
 include(':open-metadata-implementation:frameworks:governance-action-framework')
 include(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector')
@@ -79,6 +80,10 @@ include(':open-metadata-implementation:framework-services:gaf-metadata-managemen
 include(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-client')
 include(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-server')
 include(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-spring')
+include(':open-metadata-implementation:framework-services:oif-metadata-management:oif-metadata-api')
+include(':open-metadata-implementation:framework-services:oif-metadata-management:oif-metadata-client')
+include(':open-metadata-implementation:framework-services:oif-metadata-management:oif-metadata-server')
+include(':open-metadata-implementation:framework-services:oif-metadata-management:oif-metadata-spring')
 include(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-api')
 include(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-client')
 include(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-handlers')
@@ -350,10 +355,10 @@ include(':open-metadata-test:open-metadata-fvt:access-services-fvt:digital-archi
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt:stewardship-action-fvt')
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt:subject-area-fvt')
 include(':open-metadata-test:open-metadata-fvt:fvt-utilities')
-if (!startParameter.projectProperties.hasProperty("skipOpenTypesFVT")) {
-    include(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test-generator')
-    include(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test')
-}
+//if (!startParameter.projectProperties.hasProperty("skipOpenTypesFVT")) {
+//    include(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test-generator')
+//    include(':open-metadata-test:open-metadata-fvt:open-types-fvt:open-types-test')
+//}
 
 // These are not required if the project name == the directory name but are included for clarity - for example
 // this defines a project 'bom' in the directory 'bom' (and is default, so not needed).

@@ -10,8 +10,10 @@ package org.odpi.openmetadata.fvt.utilities.exceptions;
  */
 public class FVTUnexpectedCondition extends Exception
 {
-    private String    testCaseName;
-    private String    activityDescription;
+    private static final long     serialVersionUID = 1L;
+
+    private final String    testCaseName;
+    private final String    activityDescription;
     private Throwable caughtException     = null;
 
     /**

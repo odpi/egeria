@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.integrationservices.api.connector;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.integrationservices.api.ffdc.APIIntegratorAuditCode;
 import org.odpi.openmetadata.integrationservices.api.ffdc.APIIntegratorErrorCode;
 
@@ -23,6 +23,7 @@ public abstract class APIIntegratorConnector extends IntegrationConnectorBase im
      */
     public synchronized void setContext(APIIntegratorContext context)
     {
+        super.setContext(context);
         this.context = context;
     }
 

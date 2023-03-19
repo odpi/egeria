@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -43,6 +44,7 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
     private long                     refreshTimeInterval         = 0L;
     private boolean                  usesBlockingCalls           = false;
     private PermittedSynchronization permittedSynchronization    = null;
+    private boolean                  generateIntegrationReports  = true;
 
 
     /**
@@ -72,6 +74,7 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
             refreshTimeInterval         = template.getRefreshTimeInterval();
             usesBlockingCalls           = template.getUsesBlockingCalls();
             permittedSynchronization    = template.getPermittedSynchronization();
+            generateIntegrationReports  = template.getGenerateIntegrationReports();
         }
     }
 
@@ -221,7 +224,7 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Return if the connector should be started in its own thread to allow it is block on a listening call.
+     * Return if the connector should be started in its own thread to allow it to block on a listening call.
      *
      * @return boolean flag
      */
@@ -232,7 +235,7 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Set up if the connector should be started in its own thread to allow it is block on a listening call.
+     * Set up if the connector should be started in its own thread to allow it to block on a listening call.
      *
      * @param usesBlockingCalls boolean flag
      */
@@ -267,6 +270,28 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
 
 
     /**
+     * Return a flag indicating whether the integration connector should create an integration report.
+     *
+     * @return boolean flag (default = true)
+     */
+    public boolean getGenerateIntegrationReports()
+    {
+        return generateIntegrationReports;
+    }
+
+
+    /**
+     * Set up a flag indicating whether the integration connector should create an integration report.
+     *
+     * @param generateIntegrationReports boolean flag
+     */
+    public void setGenerateIntegrationReports(boolean generateIntegrationReports)
+    {
+        this.generateIntegrationReports = generateIntegrationReports;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
@@ -283,6 +308,7 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
                        ", refreshTimeInterval=" + refreshTimeInterval +
                        ", usesBlockingCalls=" + usesBlockingCalls +
                        ", permittedSynchronization=" + permittedSynchronization +
+                       ", generateIntegrationReports=" + generateIntegrationReports +
                        '}';
     }
 
@@ -307,6 +333,7 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
         IntegrationConnectorConfig that = (IntegrationConnectorConfig) objectToCompare;
         return getRefreshTimeInterval() == that.getRefreshTimeInterval() &&
                        getUsesBlockingCalls() == that.getUsesBlockingCalls() &&
+                       getGenerateIntegrationReports() == that.getGenerateIntegrationReports() &&
                        Objects.equals(getConnectorId(), that.getConnectorId()) &&
                        Objects.equals(getConnectorName(), that.getConnectorName()) &&
                        Objects.equals(getConnectorUserId(), that.getConnectorUserId()) &&
@@ -325,6 +352,6 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
     public int hashCode()
     {
         return Objects.hash(connectorId, connectorName, connectorUserId, connection, metadataSourceQualifiedName, refreshTimeInterval,
-                            usesBlockingCalls, permittedSynchronization);
+                            usesBlockingCalls, permittedSynchronization, generateIntegrationReports);
     }
 }

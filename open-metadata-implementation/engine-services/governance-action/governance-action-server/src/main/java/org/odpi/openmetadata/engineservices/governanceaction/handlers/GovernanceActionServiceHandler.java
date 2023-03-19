@@ -3,9 +3,8 @@
 package org.odpi.openmetadata.engineservices.governanceaction.handlers;
 
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
+import org.odpi.openmetadata.accessservices.governanceengine.client.OpenMetadataStoreClient;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceEngineProperties;
-import org.odpi.openmetadata.engineservices.governanceaction.context.GovernanceListenerManager;
-import org.odpi.openmetadata.engineservices.governanceaction.context.OpenMetadataStoreClient;
 import org.odpi.openmetadata.engineservices.governanceaction.ffdc.GovernanceActionErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.engineservices.governanceaction.ffdc.GovernanceActionAuditCode;
@@ -51,7 +50,6 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
      * @param partnerServerName name of the metadata server used by the governance service
      * @param partnerServerPlatformURLRoot location of the metadata server used by the governance service
      * @param governanceEngineClient client for use by the engine host services
-     * @param governanceListenerManager listener manager for Watchdog Governance Services
      * @param auditLog destination for log messages
      * @throws InvalidParameterException problem with the governance service definitions
      */
@@ -70,7 +68,6 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                                    String                     partnerServerName,
                                    String                     partnerServerPlatformURLRoot,
                                    GovernanceEngineClient     governanceEngineClient,
-                                   GovernanceListenerManager  governanceListenerManager,
                                    AuditLog                   auditLog) throws InvalidParameterException
     {
         super(governanceActionEngineProperties,
@@ -96,12 +93,9 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
 
         try
         {
-            OpenMetadataClient openMetadataClient = new OpenMetadataStoreClient(partnerServerName,
-                                                                                partnerServerPlatformURLRoot,
-                                                                                governanceEngineClient,
-                                                                                governanceListenerManager,
-                                                                                this,
-                                                                                governanceActionUserId);
+            OpenMetadataStoreClient openMetadataClient = new OpenMetadataStoreClient(partnerServerName,
+                                                                                     partnerServerPlatformURLRoot);
+
 
             if (governanceActionServiceConnector instanceof GovernanceActionServiceConnector)
             {
@@ -111,7 +105,8 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                                                                               requestParameters,
                                                                               requestSourceElements,
                                                                               actionTargetElements,
-                                                                              openMetadataClient);
+                                                                              openMetadataClient,
+                                                                              governanceEngineClient);
 
                 GovernanceActionServiceConnector service = (GovernanceActionServiceConnector) governanceActionServiceConnector;
 

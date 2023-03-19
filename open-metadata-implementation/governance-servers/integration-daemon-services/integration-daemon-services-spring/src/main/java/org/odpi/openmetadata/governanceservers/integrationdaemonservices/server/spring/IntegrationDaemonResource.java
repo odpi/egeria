@@ -8,8 +8,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.ConnectorConfigPropertiesRequestBody;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.IntegrationDaemonStatusResponse;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.*;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -157,11 +156,11 @@ public class IntegrationDaemonResource
 
 
     /**
-     * Return a summary of each of the integration services' status.
+     * Return a summary of each of the integration services' and integration groups' status.
      *
      * @param serverName integration daemon name
      * @param userId calling user
-     * @return list of statuses - on for each assigned integration services or
+     * @return list of statuses - one for each assigned integration services or integration group
      *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
@@ -173,5 +172,92 @@ public class IntegrationDaemonResource
                                                                       @PathVariable String   userId)
     {
         return restAPI.getIntegrationDaemonStatus(serverName, userId);
+    }
+
+
+    /**
+     * Return a summary of each of the integration services' status.
+     *
+     * @param serverName integration daemon name
+     * @param userId calling user
+     * @return list of statuses - on for each assigned integration services
+     *
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  PropertyServerException there was a problem detected by the integration daemon.
+     */
+    @GetMapping(path = "/integration-services/summary")
+
+    public IntegrationServiceSummaryResponse getIntegrationServicesSummaries(@PathVariable String   serverName,
+                                                                             @PathVariable String   userId)
+    {
+        return restAPI.getIntegrationServicesSummaries(serverName, userId);
+    }
+
+
+    /**
+     * Retrieve the description and status of the requested integration group.
+     *
+     * @param serverName integration daemon server name
+     * @param userId calling user
+     * @param integrationGroupName name of integration group of interest
+     * @return list of statuses - on for each assigned integration groups or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     */
+    @GetMapping(path = "/integration-groups/{integrationGroupName}/summary")
+
+    public IntegrationGroupSummaryResponse getIntegrationGroupSummary(@PathVariable String serverName,
+                                                                      @PathVariable String userId,
+                                                                      @PathVariable String integrationGroupName)
+    {
+        return restAPI.getIntegrationGroupSummary(serverName, userId, integrationGroupName);
+    }
+
+
+
+    /**
+     * Return a summary of each of the integration groups running in the integration daemon.
+     *
+     * @param serverName integration daemon server name
+     * @param userId calling user
+     * @return list of statuses - one for each assigned integration groups
+     *
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     */
+    @GetMapping(path = "/integration-groups/summary")
+
+    public IntegrationGroupSummariesResponse getIntegrationGroupSummaries(@PathVariable String serverName,
+                                                                          @PathVariable String userId)
+    {
+        return restAPI.getIntegrationGroupSummaries(serverName, userId);
+    }
+
+
+    /**
+     * Request that the integration group refresh its configuration by calling the metadata server.
+     * This request is useful if the metadata server has an outage, particularly while the
+     * integration daemon is initializing.  This request just ensures that the latest configuration
+     * is in use.
+     *
+     * @param serverName name of the governance server
+     * @param userId identifier of calling user
+     * @param integrationGroupName unique name of the integration group
+     *
+     * @return void or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  IntegrationGroupException there was a problem detected by the integration group.
+     */
+    @GetMapping(path = "/integration-groups/{integrationGroupName}/refresh-config")
+
+    public  VoidResponse refreshConfig(@PathVariable String                       serverName,
+                                       @PathVariable String                       userId,
+                                       @PathVariable String                       integrationGroupName)
+    {
+        return restAPI.refreshConfig(serverName, userId, integrationGroupName);
     }
 }

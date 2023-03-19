@@ -12,7 +12,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/asset-consumer/connected-asset/users/{{user}}/connections/{{guid}}",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/asset-consumer/connected-asset/users/{{user}}/connections/{{guid}}",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -94,7 +94,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/asset-consumer/connected-asset/users/{{user}}/assets/by-connection/{{guid}}",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/asset-consumer/connected-asset/users/{{user}}/assets/by-connection/{{guid}}",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -149,7 +149,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/asset-consumer/connected-asset/users/{{user}}/assets/{{assetGUID}}/connection",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/asset-consumer/connected-asset/users/{{user}}/assets/{{assetGUID}}/connection",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -177,7 +177,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/asset-consumer/connected-asset/users/{{user}}/assets/{{assetGUID}}/via-connection/{{guid}}",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/asset-consumer/connected-asset/users/{{user}}/assets/{{assetGUID}}/via-connection/{{guid}}",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -206,7 +206,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/asset-consumer/connected-asset/users/{{user}}/assets/{{assetGUID}}",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/asset-consumer/connected-asset/users/{{user}}/assets/{{assetGUID}}",
 					"host": [
 						"{{baseURL}}"
 					],

@@ -1,0 +1,153 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+
+package org.odpi.openmetadata.frameworks.integration.properties;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.Objects;
+
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
+/**
+ * IntegrationReport contains the properties for one of the integration connector's integration report.
+ */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class IntegrationReport implements Serializable
+{
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    private ElementHeader               elementHeader = null;
+    private IntegrationReportProperties properties    = null;
+
+
+    /**
+     * Default constructor
+     */
+    public IntegrationReport()
+    {
+        super();
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public IntegrationReport(IntegrationReport template)
+    {
+        if (template != null)
+        {
+            elementHeader = template.getElementHeader();
+            properties = template.getProperties();
+        }
+    }
+
+
+    /**
+     * Return the element header associated with the properties.
+     *
+     * @return element header object
+     */
+    public ElementHeader getElementHeader()
+    {
+        return elementHeader;
+    }
+
+
+    /**
+     * Set up the element header associated with the properties.
+     *
+     * @param elementHeader element header object
+     */
+    public void setElementHeader(ElementHeader elementHeader)
+    {
+        this.elementHeader = elementHeader;
+    }
+
+
+    /**
+     * Return the properties of the report.
+     *
+     * @return string
+     */
+    public IntegrationReportProperties getProperties()
+    {
+        return properties;
+    }
+
+
+    /**
+     * Set up the properties of the report.
+     *
+     * @param properties string
+     */
+    public void setProperties(IntegrationReportProperties properties)
+    {
+        this.properties = properties;
+    }
+
+
+    /**
+     * JSON-style toString
+     *
+     * @return return string containing the property names and values
+     */
+    @Override
+    public String toString()
+    {
+        return "IntegrationReport{" +
+                "properties=" + properties +
+                ", elementHeader=" + elementHeader +
+                '}';
+    }
+
+
+    /**
+     * Return comparison result based on the content of the properties.
+     *
+     * @param objectToCompare test object
+     * @return result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        IntegrationReport that = (IntegrationReport) objectToCompare;
+        return Objects.equals(properties, that.properties) &&
+                Objects.equals(elementHeader, that.elementHeader);
+    }
+
+
+    /**
+     * Return hash code for this object
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), properties, elementHeader);
+    }
+}

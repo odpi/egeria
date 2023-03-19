@@ -86,6 +86,7 @@ public class ProcessCallConverter<B> extends AssetManagerOMASConverter<B>
                     processCallProperties.setQualifiedName(this.getQualifiedName(instanceProperties));
                     processCallProperties.setDescription(this.getDescription(instanceProperties));
                     processCallProperties.setFormula(this.getFormula(instanceProperties));
+                    processCallProperties.setFormulaType(this.getFormulaType(instanceProperties));
 
                     bean.setProcessCallProperties(processCallProperties);
                 }

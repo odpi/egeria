@@ -302,6 +302,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                                           processProperties.getVersionIdentifier(),
                                                           processProperties.getTechnicalDescription(),
                                                           processProperties.getFormula(),
+                                                          processProperties.getFormulaType(),
                                                           processProperties.getImplementationLanguage(),
                                                           processProperties.getAdditionalProperties(),
                                                           typeName,

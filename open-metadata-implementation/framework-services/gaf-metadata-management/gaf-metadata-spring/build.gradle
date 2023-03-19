@@ -5,6 +5,7 @@
 
 
 dependencies {
+    implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
     implementation project(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-server')
     implementation project(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-api')
     implementation 'org.springframework:spring-web'

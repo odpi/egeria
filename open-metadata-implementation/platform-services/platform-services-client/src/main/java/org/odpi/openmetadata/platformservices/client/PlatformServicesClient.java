@@ -57,7 +57,7 @@ public class PlatformServicesClient
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param platformName name of the platform to connect to
-     * @param platformRootURL the network address of the server running the OMAS REST servers
+     * @param platformRootURL the network address of the server running the OMAS REST services
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */

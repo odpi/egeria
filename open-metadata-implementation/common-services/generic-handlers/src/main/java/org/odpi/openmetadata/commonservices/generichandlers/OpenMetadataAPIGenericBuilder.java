@@ -47,11 +47,11 @@ public class OpenMetadataAPIGenericBuilder
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    protected OpenMetadataAPIGenericBuilder(String               typeGUID,
-                                            String               typeName,
-                                            OMRSRepositoryHelper repositoryHelper,
-                                            String               serviceName,
-                                            String               serverName)
+    public OpenMetadataAPIGenericBuilder(String typeGUID,
+                                         String typeName,
+                                         OMRSRepositoryHelper repositoryHelper,
+                                         String serviceName,
+                                         String serverName)
     {
         this(typeGUID,
              typeName,

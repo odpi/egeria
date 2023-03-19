@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.digitalservice.client;
 
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 
@@ -24,7 +24,7 @@ public class ConnectedAssetClient extends ConnectedAssetClientBase
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param auditLog logging destination
      *
      * @throws InvalidParameterException null URL or server name
@@ -41,7 +41,7 @@ public class ConnectedAssetClient extends ConnectedAssetClientBase
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @throws InvalidParameterException null URL or server name
      */
     public ConnectedAssetClient(String serverName,
@@ -56,7 +56,7 @@ public class ConnectedAssetClient extends ConnectedAssetClientBase
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @param auditLog logging destination
@@ -77,7 +77,7 @@ public class ConnectedAssetClient extends ConnectedAssetClientBase
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @throws InvalidParameterException null URL or server name

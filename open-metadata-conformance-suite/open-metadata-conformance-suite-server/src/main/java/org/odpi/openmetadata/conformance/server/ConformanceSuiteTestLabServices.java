@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class ConformanceSuiteTestLabServices
 {
-    private static ConformanceServicesInstanceMap instanceMap   = new ConformanceServicesInstanceMap();
+    private static final ConformanceServicesInstanceMap instanceMap   = new ConformanceServicesInstanceMap();
 
     private static final Logger log = LoggerFactory.getLogger(ConformanceSuiteTestLabServices.class);
 

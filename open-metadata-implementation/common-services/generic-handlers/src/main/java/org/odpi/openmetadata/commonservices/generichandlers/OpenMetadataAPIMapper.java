@@ -38,6 +38,7 @@ public class OpenMetadataAPIMapper
     public static final String NAME_PROPERTY_NAME                        = "name";                                 /* from Asset entity */
     public static final String VERSION_IDENTIFIER_PROPERTY_NAME          = "versionIdentifier";                    /* from Asset entity */
     public static final String FORMULA_PROPERTY_NAME                     = "formula";                              /* from Process entity */
+    public static final String FORMULA_TYPE_PROPERTY_NAME                = "formulaType";                          /* from Process entity */
 
     public static final String IS_PUBLIC_PROPERTY_NAME                   = "isPublic";              /* from feedback relationships - Area 1 */
     public static final String DISPLAY_NAME_PROPERTY_NAME                = "displayName";           /* from many entities */
@@ -137,7 +138,7 @@ public class OpenMetadataAPIMapper
     public static final String EXTERNAL_ID_SCOPE_TYPE_NAME               = "ExternalIdScope";
     /* End1 = Referenceable; End 2 = ExternalId */
 
-    public static final String PERMITTED_SYNC_PROPERTY_NAME              = "permittedSynchronization";             /* from ExternalId entity */
+    public static final String PERMITTED_SYNC_PROPERTY_NAME  = "permittedSynchronization"; /* from ExternalId and RegisteredIntegrationConnector */
     /* Enum type PermittedSynchronization */
 
     public static final String PERMITTED_SYNC_ENUM_TYPE_GUID  = "973a9f4c-93fa-43a5-a0c5-d97dbd164e78";
@@ -1791,7 +1792,7 @@ public class OpenMetadataAPIMapper
     public static final String GOVERNANCE_ACTION_TYPE_NAME_PROPERTY_NAME = "governanceActionTypeName"; /* from GovernanceAction entity */
     public static final String MANDATORY_GUARDS_PROPERTY_NAME            = "mandatoryGuards";          /* from GovernanceAction entity */
     public static final String RECEIVED_GUARDS_PROPERTY_NAME             = "receivedGuards";           /* from GovernanceAction entity */
-    public static final String START_DATE_PROPERTY_NAME                  = "startDate";              /* from GovernanceAction and Project entity */
+    public static final String START_DATE_PROPERTY_NAME                  = "startDate";               /* from GovernanceAction and Project entity and RegisteredIntegrationConnector relationship*/
     public static final String PLANNED_END_DATE_PROPERTY_NAME            = "plannedEndDate";         /* from Project entity */
     public static final String ACTION_STATUS_PROPERTY_NAME               = "actionStatus";           /* from GovernanceAction entity */
     public static final String PROCESSING_ENGINE_USER_ID_PROPERTY_NAME   = "processingEngineUserId"; /* from GovernanceAction entity */
@@ -1821,6 +1822,47 @@ public class OpenMetadataAPIMapper
     public static final String GOVERNANCE_ACTION_EXECUTOR_TYPE_GUID      = "e690ab17-6779-46b4-a8f1-6872d88c1bbb";
     public static final String GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME      = "GovernanceActionExecutor";
     /* End1 = GovernanceAction; End 2 = GovernanceEngine */
+
+
+    public static final String INTEGRATION_GROUP_TYPE_GUID                = "4d7c43ec-983b-40e4-af78-6fb66c4f5136";
+    public static final String INTEGRATION_GROUP_TYPE_NAME                = "IntegrationGroup";
+
+    public static final String INTEGRATION_CONNECTOR_TYPE_GUID            = "759da11b-ebb6-4382-bdc9-72adc7c922db";
+    public static final String INTEGRATION_CONNECTOR_TYPE_NAME            = "IntegrationConnector";
+
+    public static final String USES_BLOCKING_CALLS_PROPERTY_NAME          = "usesBlockingCalls";     /* from IntegrationConnector entity */
+
+    public static final String REGISTERED_INTEGRATION_CONNECTOR_TYPE_GUID = "7528bcd4-ae4c-47d0-a33f-4aeebbaa92c2";
+    public static final String REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME = "RegisteredIntegrationConnector";
+    /* End1 = IntegrationGroup; End 2 = IntegrationConnector */
+
+    public static final String CONNECTOR_NAME_PROPERTY_NAME               = "connectorName";  /* from RegisteredIntegrationConnector relationship */
+    public static final String CONNECTOR_USER_ID_PROPERTY_NAME            = "connectorUserId";/* from RegisteredIntegrationConnector  relationship */
+    public static final String METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME = "metadataSourceQualifiedName";  /* from RegisteredIntegrationConnector relationship */
+    public static final String STOP_DATE_PROPERTY_NAME                    = "stopDate";       /* from RegisteredIntegrationConnector relationship */
+    public static final String REFRESH_TIME_INTERVAL_PROPERTY_NAME        = "refreshTimeInterval"; /* from RegisteredIntegrationConnector relationship */
+    public static final String GENERATE_INTEGRATION_REPORT_PROPERTY_NAME  = "generateIntegrationReport"; /* from RegisteredIntegrationConnector relationship */
+
+    public static final String CATALOG_TARGET_RELATIONSHIP_TYPE_GUID      = "bc5a5eb1-881b-4055-aa2c-78f314282ac2";
+    public static final String CATALOG_TARGET_RELATIONSHIP_TYPE_NAME      = "CatalogTarget";
+    /* End1 = IntegrationConnector; End 2 = OpenMetadataRoot */
+
+    public static final String CATALOG_TARGET_NAME_PROPERTY_NAME         = "catalogTargetName";     /* from CatalogTarget relationship */
+
+    public static final String INTEGRATION_REPORT_TYPE_GUID              = "b8703d3f-8668-4e6a-bf26-27db1607220d";
+    public static final String INTEGRATION_REPORT_TYPE_NAME              = "IntegrationReport";
+
+    public static final String SERVER_NAME_PROPERTY_NAME                 = "serverName";             /* from IntegrationReport entity */
+    public static final String CONNECTOR_ID_PROPERTY_NAME                = "connectorId";            /* from IntegrationReport entity */
+    public static final String REFRESH_START_DATE_PROPERTY_NAME          = "refreshStartDate";       /* from IntegrationReport entity */
+    public static final String REFRESH_COMPLETION_DATE_PROPERTY_NAME     = "refreshCompletionDate";  /* from IntegrationReport entity */
+    public static final String CREATED_ELEMENTS_PROPERTY_NAME            = "createdElements";        /* from IntegrationReport entity */
+    public static final String UPDATED_ELEMENTS_PROPERTY_NAME            = "updatedElements";        /* from IntegrationReport entity */
+    public static final String DELETED_ELEMENTS_PROPERTY_NAME            = "deletedElements";        /* from IntegrationReport entity */
+
+    public static final String RELATED_INTEGRATION_REPORT_TYPE_GUID      = "83d12156-f8f3-4b4b-b31b-18c140df9aa3";
+    public static final String RELATED_INTEGRATION_REPORT_TYPE_NAME      = "RelatedIntegrationReport";
+    /* End1 = OpenMetadataRoot; End 2 = IntegrationReport */
 
     public static final String KNOWN_DUPLICATE_CLASSIFICATION_TYPE_GUID  = "e55062b2-907f-44bd-9831-255642285731";
     public static final String KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME  = "KnownDuplicate";

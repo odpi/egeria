@@ -2981,7 +2981,7 @@ public class OMAGServerAdminServices
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param suppliedConnectionName name of the audit log destination to be deleted
+     * @param suppliedConnectionName qualified name of the audit log destination to be deleted
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or suppliedConnectionName parameter.

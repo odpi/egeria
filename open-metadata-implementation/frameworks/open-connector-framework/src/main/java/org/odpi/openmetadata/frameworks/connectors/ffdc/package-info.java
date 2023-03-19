@@ -1,6 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.frameworks.connectors.ffdc;
 
 /**
  * This package provides the first failure data capture support for the OCF module.
@@ -29,3 +28,4 @@ package org.odpi.openmetadata.frameworks.connectors.ffdc;
  * There is also care to ensure that an error message is passed to the super class as the default
  * behaviour is to use toString() to populate the error message.
  */
+package org.odpi.openmetadata.frameworks.connectors.ffdc;

@@ -10,85 +10,79 @@ import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext;
+import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 
 import java.util.List;
 
 
 /**
- * DisplayIntegratorContext is the context for cataloging topics from an display application server.
+ * DisplayIntegratorContext is the context for cataloging topics from a display application server.
  */
-public class DisplayIntegratorContext
+public class DisplayIntegratorContext extends IntegrationContext
 {
     private final DisplayApplicationClient client;
     private final DataManagerEventClient   eventClient;
-    private final String                   userId;
-    private final String                   applicationGUID;
-    private final String                   applicationName;
-
-    private boolean                  applicationIsHome = true;
 
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
-     * @param client client to map request to
+     * @param connectorId unique identifier of the connector (used to configure the event listener)
+     * @param connectorName name of connector from config
+     * @param connectorUserId userId for the connector
+     * @param serverName name of the integration daemon
+     * @param openIntegrationClient client for calling the metadata server
+     * @param openMetadataStoreClient client for calling the metadata server
+     * @param displayApplicationClient client to map request to
      * @param eventClient client to register for events
-     * @param userId integration daemon's userId
-     * @param applicationGUID unique identifier of the software server capability for the display application
-     * @param applicationName unique name of the software server capability for the display application
+     * @param generateIntegrationReport should the connector generate an integration reports?
+     * @param permittedSynchronization the direction of integration permitted by the integration connector
+     * @param integrationConnectorGUID unique identifier for the integration connector if it is started via an integration group (otherwise it is
+     *                                 null).
+     * @param integrationGovernanceContext populated governance context for the connector's use
+     * @param externalSourceGUID unique identifier of the software server capability for the asset manager
+     * @param externalSourceName unique name of the software server capability for the asset manager
      */
-    public DisplayIntegratorContext(DisplayApplicationClient client,
-                                    DataManagerEventClient   eventClient,
-                                    String                   userId,
-                                    String                   applicationGUID,
-                                    String                   applicationName)
+    public DisplayIntegratorContext(String                       connectorId,
+                                    String                       connectorName,
+                                    String                       connectorUserId,
+                                    String                       serverName,
+                                    OpenIntegrationClient        openIntegrationClient,
+                                    OpenMetadataClient           openMetadataStoreClient,
+                                    DisplayApplicationClient     displayApplicationClient,
+                                    DataManagerEventClient       eventClient,
+                                    boolean                      generateIntegrationReport,
+                                    PermittedSynchronization     permittedSynchronization,
+                                    String                       integrationConnectorGUID,
+                                    IntegrationGovernanceContext integrationGovernanceContext,
+                                    String                       externalSourceGUID,
+                                    String                       externalSourceName)
     {
-        this.client          = client;
+        super(connectorId,
+              connectorName,
+              connectorUserId,
+              serverName,
+              openIntegrationClient,
+              openMetadataStoreClient,
+              generateIntegrationReport,
+              permittedSynchronization,
+              externalSourceGUID,
+              externalSourceName,
+              integrationConnectorGUID,
+              integrationGovernanceContext);
+
+        this.client          = displayApplicationClient;
         this.eventClient     = eventClient;
-        this.userId          = userId;
-        this.applicationGUID = applicationGUID;
-        this.applicationName = applicationName;
-    }
-
-
-
-    /* ========================================================
-     * Returning the application name from the configuration
-     */
-
-
-    /**
-     * Return the qualified name of the application that is supplied in the configuration
-     * document.
-     *
-     * @return string name
-     */
-    public String getApplicationName()
-    {
-        return applicationName;
-    }
-
-
-    /* ========================================================
-     * Set up whether the metadata is owned by the display application
-     */
-
-
-    /**
-     * Set up the flag that controls the ownership of metadata created for this Application. Default is true.
-     *
-     * @param applicationIsHome should the topic metadata be marked as owned by the display application so others can not update?
-     */
-    public void setApplicationIsHome(boolean applicationIsHome)
-    {
-        this.applicationIsHome = applicationIsHome;
     }
 
 
     /* ========================================================
      * Register for inbound events from the Data Manager OMAS OutTopic
      */
-
 
     /**
      * Register a listener object that will be passed each of the events published by the Data Manager OMAS.
@@ -132,7 +126,7 @@ public class DisplayIntegratorContext
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
-        return client.createForm(userId, applicationGUID, applicationName, applicationIsHome, formProperties);
+        return client.createForm(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, formProperties);
     }
 
 
@@ -153,7 +147,7 @@ public class DisplayIntegratorContext
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        return client.createFormFromTemplate(userId, applicationGUID, applicationName, applicationIsHome, templateGUID, templateProperties);
+        return client.createFormFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, templateProperties);
     }
 
 
@@ -174,7 +168,7 @@ public class DisplayIntegratorContext
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        client.updateForm(userId, applicationGUID, applicationName, formGUID, isMergeUpdate, formProperties);
+        client.updateForm(userId, externalSourceGUID, externalSourceName, formGUID, isMergeUpdate, formProperties);
     }
 
 
@@ -231,7 +225,7 @@ public class DisplayIntegratorContext
                                                         UserNotAuthorizedException,
                                                         PropertyServerException
     {
-        client.removeForm(userId, applicationGUID, applicationName, formGUID, qualifiedName);
+        client.removeForm(userId, externalSourceGUID, externalSourceName, formGUID, qualifiedName);
     }
 
 
@@ -300,7 +294,7 @@ public class DisplayIntegratorContext
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
     {
-        return client.getFormsForApplication(userId, applicationGUID, applicationName, startFrom, pageSize);
+        return client.getFormsForApplication(userId, externalSourceGUID, externalSourceName, startFrom, pageSize);
     }
 
 
@@ -338,7 +332,7 @@ public class DisplayIntegratorContext
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        return client.createReport(userId, applicationGUID, applicationName, applicationIsHome, reportProperties);
+        return client.createReport(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, reportProperties);
     }
 
 
@@ -359,7 +353,7 @@ public class DisplayIntegratorContext
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        return client.createReportFromTemplate(userId, applicationGUID, applicationName, applicationIsHome, templateGUID, templateProperties);
+        return client.createReportFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, templateProperties);
     }
 
 
@@ -380,7 +374,7 @@ public class DisplayIntegratorContext
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        client.updateReport(userId, applicationGUID, applicationName, reportGUID, isMergeUpdate, reportProperties);
+        client.updateReport(userId, externalSourceGUID, externalSourceName, reportGUID, isMergeUpdate, reportProperties);
     }
 
 
@@ -512,7 +506,7 @@ public class DisplayIntegratorContext
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        return client.getReportsForApplication(userId, applicationGUID, applicationName, startFrom, pageSize);
+        return client.getReportsForApplication(userId, externalSourceGUID, externalSourceName, startFrom, pageSize);
     }
 
 
@@ -550,7 +544,7 @@ public class DisplayIntegratorContext
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
-        return client.createQuery(userId, applicationGUID, applicationName, applicationIsHome, queryProperties);
+        return client.createQuery(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, queryProperties);
     }
 
 
@@ -571,7 +565,7 @@ public class DisplayIntegratorContext
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        return client.createQueryFromTemplate(userId, applicationGUID, applicationName, applicationIsHome, templateGUID, templateProperties);
+        return client.createQueryFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, templateProperties);
     }
 
 
@@ -592,7 +586,7 @@ public class DisplayIntegratorContext
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        client.updateQuery(userId, applicationGUID, applicationName, queryGUID, isMergeUpdate, queryProperties);
+        client.updateQuery(userId, externalSourceGUID, externalSourceName, queryGUID, isMergeUpdate, queryProperties);
     }
 
 
@@ -724,7 +718,7 @@ public class DisplayIntegratorContext
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        return client.getQueriesForApplication(userId, applicationGUID, applicationName, startFrom, pageSize);
+        return client.getQueriesForApplication(userId, externalSourceGUID, externalSourceName, startFrom, pageSize);
     }
 
 
@@ -770,7 +764,7 @@ public class DisplayIntegratorContext
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
-        return client.createDataContainer(userId, applicationGUID, applicationName, applicationIsHome, parentElementGUID, dataContainerProperties);
+        return client.createDataContainer(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, parentElementGUID, dataContainerProperties);
     }
 
 
@@ -793,7 +787,7 @@ public class DisplayIntegratorContext
                                                                                                 UserNotAuthorizedException,
                                                                                                 PropertyServerException
     {
-        return client.createDataContainerFromTemplate(userId, applicationGUID, applicationName, applicationIsHome, parentElementGUID, templateGUID, templateProperties);
+        return client.createDataContainerFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, parentElementGUID, templateGUID, templateProperties);
     }
 
 
@@ -815,7 +809,7 @@ public class DisplayIntegratorContext
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        client.updateDataContainer(userId, applicationGUID, applicationName, dataContainerGUID, isMergeUpdate, dataContainerProperties);
+        client.updateDataContainer(userId, externalSourceGUID, externalSourceName, dataContainerGUID, isMergeUpdate, dataContainerProperties);
     }
 
 
@@ -834,7 +828,7 @@ public class DisplayIntegratorContext
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
     {
-        client.removeDataContainer(userId, applicationGUID, applicationName, dataContainerGUID);
+        client.removeDataContainer(userId, externalSourceGUID, externalSourceName, dataContainerGUID);
     }
 
 
@@ -970,7 +964,7 @@ public class DisplayIntegratorContext
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        return client.createDataField(userId, applicationGUID, applicationName, applicationIsHome, parentElementGUID, properties);
+        return client.createDataField(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, parentElementGUID, properties);
     }
 
 
@@ -993,7 +987,7 @@ public class DisplayIntegratorContext
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        return client.createDataFieldFromTemplate(userId, applicationGUID, applicationName, applicationIsHome, templateGUID, reportGUID, templateProperties);
+        return client.createDataFieldFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, reportGUID, templateProperties);
     }
 
 
@@ -1014,7 +1008,7 @@ public class DisplayIntegratorContext
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
     {
-        client.setupSchemaType(userId, applicationGUID, applicationName, applicationIsHome, relationshipTypeName, apiParameterGUID, schemaTypeGUID);
+        client.setupSchemaType(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, relationshipTypeName, apiParameterGUID, schemaTypeGUID);
     }
 
 
@@ -1035,7 +1029,7 @@ public class DisplayIntegratorContext
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        client.updateDataField(userId, applicationGUID, applicationName, dataFieldGUID, isMergeUpdate, properties);
+        client.updateDataField(userId, externalSourceGUID, externalSourceName, dataFieldGUID, isMergeUpdate, properties);
     }
 
 
@@ -1087,7 +1081,7 @@ public class DisplayIntegratorContext
 
 
     /**
-     * Return the list of data-fields associated with a element.
+     * Return the list of data-fields associated with an element.
      *
      * @param parentElementGUID unique identifier of the element to query
      * @param startFrom paging start point

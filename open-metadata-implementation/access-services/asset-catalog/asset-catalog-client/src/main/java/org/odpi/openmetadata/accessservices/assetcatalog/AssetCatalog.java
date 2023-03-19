@@ -14,7 +14,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.Re
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipResponse;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 
@@ -56,7 +56,7 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
      * Create a new AssetCatalog client.
      *
      * @param serverName            name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @throws InvalidParameterException if parameter validation fails
      */
     public AssetCatalog(String serverName, String serverPlatformURLRoot) throws InvalidParameterException {

@@ -7,8 +7,8 @@ import org.odpi.openmetadata.accessservices.governanceengine.client.rest.Governa
 import org.odpi.openmetadata.accessservices.governanceengine.connectors.outtopic.GovernanceEngineOutTopicClientConnector;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.ffdc.OMAGOCFErrorCode;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.ffdc.OMAGOCFErrorCode;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.ConnectionResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
@@ -39,7 +39,7 @@ public class GovernanceEngineEventClient
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param restClient pre-initialized REST client
      * @param maxPageSize pre-initialized parameter limit
      * @param auditLog logging destination

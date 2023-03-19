@@ -504,10 +504,8 @@ public class PropertyHelper
                     resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
                     propertyCount++;
                 }
-                else if (mapPropertyValue instanceof List)
+                else if (mapPropertyValue instanceof List propertyAsList)
                 {
-                    List propertyAsList = (List)mapPropertyValue;
-
                     ArrayTypePropertyValue arrayTypePropertyValue = new ArrayTypePropertyValue();
 
                     if (propertyAsList.size() != 0)
@@ -923,10 +921,10 @@ public class PropertyHelper
      * @param methodName method of caller
      * @return string property value or null
      */
-    public String getStringProperty(String             sourceName,
-                                    String             propertyName,
+    public String getStringProperty(String            sourceName,
+                                    String            propertyName,
                                     ElementProperties properties,
-                                    String             methodName)
+                                    String            methodName)
     {
         final String  thisMethodName = "getStringProperty";
 

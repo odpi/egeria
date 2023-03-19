@@ -19,12 +19,12 @@ import static org.testng.Assert.*;
  */
 public class OCFCheckedExceptionBasedTest
 {
-    private String    reportingClassName         = "TestClassName";
-    private String    reportingActionDescription = "TestActionDescription";
-    private Throwable reportedCaughtException    = new Exception("TestReportedCaughtException");
-    private ExceptionMessageDefinition messageDefinition;
-    private Map<String, Object>  reportedRelatedProperties = new HashMap<>();
-    private Map<String, Object>  emptyRelatedProperties = new HashMap<>();
+    private final String                     reportingClassName         = "TestClassName";
+    private final String                     reportingActionDescription = "TestActionDescription";
+    private final Throwable                  reportedCaughtException    = new Exception("TestReportedCaughtException");
+    private final ExceptionMessageDefinition messageDefinition;
+    private final Map<String, Object>        reportedRelatedProperties  = new HashMap<>();
+    private final Map<String, Object>        emptyRelatedProperties     = new HashMap<>();
 
     /**
      * Constructor
@@ -56,13 +56,12 @@ public class OCFCheckedExceptionBasedTest
      * @param <T> class name
      * @return new instance
      */
-    @SuppressWarnings(value = "unchecked")
     private <T> T getBasicException(Class<T>            exceptionClass,
                                     Throwable           wrappedException,
                                     Map<String, Object> relatedProperties)
     {
-        Constructor constructor;
-        T           exception = null;
+        Constructor<T> constructor;
+        T              exception = null;
 
         try
         {
@@ -71,9 +70,9 @@ public class OCFCheckedExceptionBasedTest
                 constructor = exceptionClass.getConstructor(ExceptionMessageDefinition.class,
                                                             String.class,
                                                             String.class);
-                exception   = (T) constructor.newInstance(messageDefinition,
-                                                          reportingClassName,
-                                                          reportingActionDescription);
+                exception   = constructor.newInstance(messageDefinition,
+                                                      reportingClassName,
+                                                      reportingActionDescription);
             }
             else if ((wrappedException != null) && (relatedProperties != null))
             {
@@ -82,11 +81,11 @@ public class OCFCheckedExceptionBasedTest
                                                             String.class,
                                                             Throwable.class,
                                                             Map.class);
-                exception   = (T) constructor.newInstance(messageDefinition,
-                                                          reportingClassName,
-                                                          reportingActionDescription,
-                                                          wrappedException,
-                                                          relatedProperties);
+                exception   = constructor.newInstance(messageDefinition,
+                                                      reportingClassName,
+                                                      reportingActionDescription,
+                                                      wrappedException,
+                                                      relatedProperties);
             }
             else if (wrappedException != null)
             {
@@ -94,10 +93,10 @@ public class OCFCheckedExceptionBasedTest
                                                             String.class,
                                                             String.class,
                                                             Throwable.class);
-                exception   = (T) constructor.newInstance(messageDefinition,
-                                                          reportingClassName,
-                                                          reportingActionDescription,
-                                                          wrappedException);
+                exception   = constructor.newInstance(messageDefinition,
+                                                      reportingClassName,
+                                                      reportingActionDescription,
+                                                      wrappedException);
             }
             else
             {
@@ -105,10 +104,10 @@ public class OCFCheckedExceptionBasedTest
                                                             String.class,
                                                             String.class,
                                                             Map.class);
-                exception   = (T) constructor.newInstance(messageDefinition,
-                                                          reportingClassName,
-                                                          reportingActionDescription,
-                                                          relatedProperties);
+                exception   = constructor.newInstance(messageDefinition,
+                                                      reportingClassName,
+                                                      reportingActionDescription,
+                                                      relatedProperties);
             }
 
         }
@@ -130,14 +129,13 @@ public class OCFCheckedExceptionBasedTest
      * @param <T> class name
      * @return new instance
      */
-    @SuppressWarnings(value = "unchecked")
     private <T> T getEnhancedException(Class<T>            exceptionClass,
                                        String              additionalProperty,
                                        Throwable           wrappedException,
                                        Map<String, Object> relatedProperties)
     {
-        Constructor constructor;
-        T           exception = null;
+        Constructor<T> constructor;
+        T              exception = null;
 
         try
         {
@@ -147,10 +145,10 @@ public class OCFCheckedExceptionBasedTest
                                                             String.class,
                                                             String.class,
                                                             String.class);
-                exception   = (T) constructor.newInstance(messageDefinition,
-                                                          reportingClassName,
-                                                          reportingActionDescription,
-                                                          additionalProperty);
+                exception   = constructor.newInstance(messageDefinition,
+                                                      reportingClassName,
+                                                      reportingActionDescription,
+                                                      additionalProperty);
             }
             else if ((wrappedException != null) && (relatedProperties != null))
             {
@@ -160,12 +158,12 @@ public class OCFCheckedExceptionBasedTest
                                                             Throwable.class,
                                                             String.class,
                                                             Map.class);
-                exception   = (T) constructor.newInstance(messageDefinition,
-                                                          reportingClassName,
-                                                          reportingActionDescription,
-                                                          wrappedException,
-                                                          additionalProperty,
-                                                          relatedProperties);
+                exception   = constructor.newInstance(messageDefinition,
+                                                      reportingClassName,
+                                                      reportingActionDescription,
+                                                      wrappedException,
+                                                      additionalProperty,
+                                                      relatedProperties);
             }
             else if (wrappedException != null)
             {
@@ -174,11 +172,11 @@ public class OCFCheckedExceptionBasedTest
                                                             String.class,
                                                             Throwable.class,
                                                             String.class);
-                exception   = (T) constructor.newInstance(messageDefinition,
-                                                          reportingClassName,
-                                                          reportingActionDescription,
-                                                          wrappedException,
-                                                          additionalProperty);
+                exception   = constructor.newInstance(messageDefinition,
+                                                      reportingClassName,
+                                                      reportingActionDescription,
+                                                      wrappedException,
+                                                      additionalProperty);
             }
             else
             {
@@ -187,11 +185,11 @@ public class OCFCheckedExceptionBasedTest
                                                             String.class,
                                                             String.class,
                                                             Map.class);
-                exception   = (T) constructor.newInstance(messageDefinition,
-                                                          reportingClassName,
-                                                          reportingActionDescription,
-                                                          additionalProperty,
-                                                          relatedProperties);
+                exception   = constructor.newInstance(messageDefinition,
+                                                      reportingClassName,
+                                                      reportingActionDescription,
+                                                      additionalProperty,
+                                                      relatedProperties);
             }
 
         }

@@ -1300,6 +1300,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param extendedProperties properties from any subtype
      * @param effectiveFrom      starting time for this relationship (null for all time)
      * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param isMergeUpdate should the supplied properties be merged with existing properties (true) only replacing the properties with
+     *                      matching names, or should the entire properties of the instance be replaced?
      * @param connection connection associated with the asset
      * @param assetSummary description of the asset from the perspective of the connection
      * @param forLineage return elements marked with the Memento classification?
@@ -1326,6 +1328,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                           Map<String, Object>  extendedProperties,
                                           Date                 effectiveFrom,
                                           Date                 effectiveTo,
+                                          boolean              isMergeUpdate,
                                           String               assetSummary,
                                           Connection           connection,
                                           boolean              forLineage,
@@ -1350,7 +1353,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                          extendedProperties,
                          effectiveFrom,
                          effectiveTo,
-                         false,
+                         isMergeUpdate,
                          forLineage,
                          forDuplicateProcessing,
                          effectiveTime,

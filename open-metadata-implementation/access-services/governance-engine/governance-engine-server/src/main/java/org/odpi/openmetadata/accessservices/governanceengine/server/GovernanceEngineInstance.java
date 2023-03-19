@@ -35,13 +35,13 @@ import java.util.List;
  */
 public class GovernanceEngineInstance extends OMASServiceInstance
 {
-    private static AccessServiceDescription myDescription = AccessServiceDescription.GOVERNANCE_ENGINE_OMAS;
+    private static final AccessServiceDescription myDescription = AccessServiceDescription.GOVERNANCE_ENGINE_OMAS;
 
-    private GovernanceConfigurationHandler                           governanceConfigurationHandler;
-    private MetadataElementHandler<OpenMetadataElement>              metadataElementHandler;
-    private GovernanceActionHandler<GovernanceActionElement>         governanceActionHandler;
-    private AssetHandler<GovernanceActionProcessElement>             governanceActionProcessHandler;
-    private GovernanceActionTypeHandler<GovernanceActionTypeElement> governanceActionTypeHandler;
+    private final GovernanceConfigurationHandler                           governanceConfigurationHandler;
+    private final MetadataElementHandler<OpenMetadataElement>              metadataElementHandler;
+    private final GovernanceActionHandler<GovernanceActionElement>         governanceActionHandler;
+    private final AssetHandler<GovernanceActionProcessElement>             governanceActionProcessHandler;
+    private final GovernanceActionTypeHandler<GovernanceActionTypeElement> governanceActionTypeHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.

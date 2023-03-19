@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the Egeria project. -->
 
-# Containerized deployment of ODPi Egeria
+# Containerized deployment of Egeria
 
 This module contains resources to assist in deployment of Egeria and related components. They are intended to
 facilitate developer usage and technology demonstrations and will need further work to be suitable for production.

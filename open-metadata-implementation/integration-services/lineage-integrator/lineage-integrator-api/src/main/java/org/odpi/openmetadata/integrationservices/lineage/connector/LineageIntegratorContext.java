@@ -18,6 +18,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext;
+import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent;
 
 
@@ -28,7 +33,7 @@ import java.util.List;
  * LineageIntegratorContext provides a wrapper around the Asset Manager OMAS client.
  * It provides the simplified interface to open metadata needed by the LineageIntegratorConnector.
  */
-public class LineageIntegratorContext implements OpenLineageListenerManager
+public class LineageIntegratorContext extends IntegrationContext implements OpenLineageListenerManager
 {
     private final OpenLineageListenerManager openLineageListenerManager;
     private final DataAssetExchangeClient    dataAssetExchangeClient;
@@ -36,10 +41,6 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
     private final GovernanceExchangeClient   governanceExchangeClient;
     private final StewardshipExchangeClient  stewardshipExchangeClient;
     private final AssetManagerEventClient    eventClient;
-    private final String                     userId;
-    private final String                     assetManagerGUID;
-    private final String                     assetManagerName;
-    private final String                     connectorName;
     private final String                     integrationServiceName;
     private final AuditLog                   auditLog;
 
@@ -49,42 +50,68 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
     /**
      * Create a new context for a connector.
      *
+     * @param connectorId unique identifier of the connector (used to configure the event listener)
+     * @param connectorName name of connector from config
+     * @param connectorUserId userId for the connector
+     * @param serverName name of the integration daemon
+     * @param openIntegrationClient client for calling the metadata server
+     * @param openMetadataStoreClient client for calling the metadata server
      * @param openLineageListenerManager object responsible for managing open lineage listeners
      * @param dataAssetExchangeClient client for data asset requests
      * @param lineageExchangeClient client for lineage requests
      * @param governanceExchangeClient client for governance actions and related elements
      * @param stewardshipExchangeClient client for attaching governance metadata
      * @param eventClient client managing listeners for the OMAS OutTopic
-     * @param userId integration daemon's userId
-     * @param assetManagerGUID unique identifier of the software server capability for the asset manager
-     * @param assetManagerName unique name of the software server capability for the asset manager
-     * @param connectorName name of the connector using this context
+     * @param generateIntegrationReport should the connector generate an integration reports?
+     * @param permittedSynchronization the direction of integration permitted by the integration connector
+     * @param integrationConnectorGUID unique identifier for the integration connector if it is started via an integration group (otherwise it is
+     *                                 null).
+     * @param integrationGovernanceContext populated governance context for the connector's use
+     * @param externalSourceGUID unique identifier of the software server capability for the asset manager
+     * @param externalSourceName unique name of the software server capability for the asset manager
      * @param integrationServiceName name of this service
      * @param auditLog logging destination
      */
-    public LineageIntegratorContext(OpenLineageListenerManager openLineageListenerManager,
-                                    DataAssetExchangeClient    dataAssetExchangeClient,
-                                    LineageExchangeClient      lineageExchangeClient,
-                                    GovernanceExchangeClient   governanceExchangeClient,
-                                    StewardshipExchangeClient  stewardshipExchangeClient,
-                                    AssetManagerEventClient    eventClient,
-                                    String                     userId,
-                                    String                     assetManagerGUID,
-                                    String                     assetManagerName,
-                                    String                     connectorName,
-                                    String                     integrationServiceName,
-                                    AuditLog                   auditLog)
+    public LineageIntegratorContext(String                       connectorId,
+                                    String                       connectorName,
+                                    String                       connectorUserId,
+                                    String                       serverName,
+                                    OpenIntegrationClient        openIntegrationClient,
+                                    OpenMetadataClient           openMetadataStoreClient,
+                                    OpenLineageListenerManager   openLineageListenerManager,
+                                    DataAssetExchangeClient      dataAssetExchangeClient,
+                                    LineageExchangeClient        lineageExchangeClient,
+                                    GovernanceExchangeClient     governanceExchangeClient,
+                                    StewardshipExchangeClient    stewardshipExchangeClient,
+                                    AssetManagerEventClient      eventClient,
+                                    boolean                      generateIntegrationReport,
+                                    PermittedSynchronization     permittedSynchronization,
+                                    String                       integrationConnectorGUID,
+                                    IntegrationGovernanceContext integrationGovernanceContext,
+                                    String                       externalSourceGUID,
+                                    String                       externalSourceName,
+                                    String                       integrationServiceName,
+                                    AuditLog                     auditLog)
     {
+        super(connectorId,
+              connectorName,
+              connectorUserId,
+              serverName,
+              openIntegrationClient,
+              openMetadataStoreClient,
+              generateIntegrationReport,
+              permittedSynchronization,
+              externalSourceGUID,
+              externalSourceName,
+              integrationConnectorGUID,
+              integrationGovernanceContext);
+
         this.openLineageListenerManager = openLineageListenerManager;
         this.dataAssetExchangeClient    = dataAssetExchangeClient;
         this.lineageExchangeClient      = lineageExchangeClient;
         this.governanceExchangeClient   = governanceExchangeClient;
         this.stewardshipExchangeClient  = stewardshipExchangeClient;
         this.eventClient                = eventClient;
-        this.userId                     = userId;
-        this.assetManagerGUID           = assetManagerGUID;
-        this.assetManagerName           = assetManagerName;
-        this.connectorName              = connectorName;
         this.integrationServiceName     = integrationServiceName;
         this.auditLog                   = auditLog;
     }
@@ -217,8 +244,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                               PropertyServerException
     {
         return dataAssetExchangeClient.createDataAsset(userId,
-                                                       assetManagerGUID,
-                                                       assetManagerName,
+                                                       externalSourceGUID,
+                                                       externalSourceName,
                                                        assetManagerIsHome,
                                                        null,
                                                        assetProperties);
@@ -246,8 +273,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                             PropertyServerException
     {
         return dataAssetExchangeClient.createDataAssetFromTemplate(userId,
-                                                                   assetManagerGUID,
-                                                                   assetManagerName,
+                                                                   externalSourceGUID,
+                                                                   externalSourceName,
                                                                    assetManagerIsHome,
                                                                    templateGUID,
                                                                    null,
@@ -275,8 +302,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                           PropertyServerException
     {
         dataAssetExchangeClient.updateDataAsset(userId,
-                                                assetManagerGUID,
-                                                assetManagerName,
+                                                externalSourceGUID,
+                                                externalSourceName,
                                                 assetGUID,
                                                 null,
                                                 isMergeUpdate,
@@ -305,8 +332,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                               PropertyServerException
     {
         dataAssetExchangeClient.publishDataAsset(userId,
-                                                 assetManagerGUID,
-                                                 assetManagerName,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
                                                  assetGUID,
                                                  effectiveTime,
                                                  forLineage,
@@ -332,8 +359,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                PropertyServerException
     {
         dataAssetExchangeClient.withdrawDataAsset(userId,
-                                                  assetManagerGUID,
-                                                  assetManagerName,
+                                                  externalSourceGUID,
+                                                  externalSourceName,
                                                   assetGUID,
                                                   effectiveTime,
                                                   forLineage,
@@ -358,8 +385,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                              PropertyServerException
     {
         dataAssetExchangeClient.removeDataAsset(userId,
-                                                assetManagerGUID,
-                                                assetManagerName,
+                                                externalSourceGUID,
+                                                externalSourceName,
                                                 assetGUID,
                                                 null,
                                                 effectiveTime,
@@ -384,8 +411,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                          PropertyServerException
     {
         dataAssetExchangeClient.setDataAssetAsReferenceData(userId,
-                                                            assetManagerGUID,
-                                                            assetManagerName,
+                                                            externalSourceGUID,
+                                                            externalSourceName,
                                                             assetGUID,
                                                             null,
                                                             effectiveTime,
@@ -410,8 +437,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                            PropertyServerException
     {
         dataAssetExchangeClient.clearDataAssetAsReferenceData(userId,
-                                                              assetManagerGUID,
-                                                              assetManagerName,
+                                                              externalSourceGUID,
+                                                              externalSourceName,
                                                               assetGUID,
                                                               null,
                                                               effectiveTime,
@@ -442,7 +469,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        return dataAssetExchangeClient.findDataAssets(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize, effectiveTime, forLineage,
+        return dataAssetExchangeClient.findDataAssets(userId, externalSourceGUID, externalSourceName, searchString, startFrom, pageSize, effectiveTime, forLineage,
                                                       forDuplicateProcessing);
     }
 
@@ -469,7 +496,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        return dataAssetExchangeClient.getDataAssetsByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize, effectiveTime, forLineage,
+        return dataAssetExchangeClient.getDataAssetsByName(userId, externalSourceGUID, externalSourceName, name, startFrom, pageSize, effectiveTime
+                , forLineage,
                                                            forDuplicateProcessing);
     }
 
@@ -493,7 +521,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        return dataAssetExchangeClient.getDataAssetsForAssetManager(userId, assetManagerGUID, assetManagerName, startFrom, pageSize, effectiveTime, forLineage,
+        return dataAssetExchangeClient.getDataAssetsForAssetManager(userId, externalSourceGUID, externalSourceName, startFrom, pageSize, effectiveTime, forLineage,
                                                                     forDuplicateProcessing);
     }
 
@@ -515,7 +543,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
     {
-        return dataAssetExchangeClient.getDataAssetByGUID(userId, assetManagerGUID, assetManagerName, openMetadataGUID, effectiveTime, forLineage,
+        return dataAssetExchangeClient.getDataAssetByGUID(userId, externalSourceGUID, externalSourceName, openMetadataGUID, effectiveTime, forLineage,
                                                           forDuplicateProcessing);
     }
 
@@ -544,8 +572,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                      PropertyServerException
     {
         return dataAssetExchangeClient.createSchemaType(userId,
-                                                        assetManagerGUID,
-                                                        assetManagerName,
+                                                        externalSourceGUID,
+                                                        externalSourceName,
                                                         assetManagerIsHome,
                                                         null,
                                                         forLineage,
@@ -574,8 +602,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                              PropertyServerException
     {
         return dataAssetExchangeClient.createSchemaTypeFromTemplate(userId,
-                                                                    assetManagerGUID,
-                                                                    assetManagerName,
+                                                                    externalSourceGUID,
+                                                                    externalSourceName,
                                                                     assetManagerIsHome,
                                                                     templateGUID,
                                                                     null,
@@ -603,8 +631,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                             PropertyServerException
     {
         dataAssetExchangeClient.updateSchemaType(userId,
-                                                 assetManagerGUID,
-                                                 assetManagerName,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
                                                  schemaTypeGUID,
                                                  null,
                                                  isMergeUpdate,
@@ -639,8 +667,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                    PropertyServerException
     {
         dataAssetExchangeClient.setupSchemaTypeParent(userId,
-                                                      assetManagerGUID,
-                                                      assetManagerName,
+                                                      externalSourceGUID,
+                                                      externalSourceName,
                                                       assetManagerIsHome,
                                                       schemaTypeGUID,
                                                       parentElementGUID,
@@ -672,8 +700,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                    PropertyServerException
     {
         dataAssetExchangeClient.clearSchemaTypeParent(userId,
-                                                      assetManagerGUID,
-                                                      assetManagerName,
+                                                      externalSourceGUID,
+                                                      externalSourceName,
                                                       schemaTypeGUID,
                                                       parentElementGUID,
                                                       parentElementTypeName,
@@ -708,8 +736,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                          PropertyServerException
     {
         dataAssetExchangeClient.setupSchemaElementRelationship(userId,
-                                                               assetManagerGUID,
-                                                               assetManagerName,
+                                                               externalSourceGUID,
+                                                               externalSourceName,
                                                                assetManagerIsHome,
                                                                endOneGUID,
                                                                endTwoGUID,
@@ -741,8 +769,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                              PropertyServerException
     {
         dataAssetExchangeClient.clearSchemaElementRelationship(userId,
-                                                               assetManagerGUID,
-                                                               assetManagerName,
+                                                               externalSourceGUID,
+                                                               externalSourceName,
                                                                endOneGUID,
                                                                endTwoGUID,
                                                                relationshipName,
@@ -768,8 +796,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                               PropertyServerException
     {
         dataAssetExchangeClient.removeSchemaType(userId,
-                                                 assetManagerGUID,
-                                                 assetManagerName,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
                                                  schemaTypeGUID,
                                                  null,
                                                  effectiveTime,
@@ -801,8 +829,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                PropertyServerException
     {
         return dataAssetExchangeClient.findSchemaType(userId,
-                                                      assetManagerGUID,
-                                                      assetManagerName,
+                                                      externalSourceGUID,
+                                                      externalSourceName,
                                                       searchString,
                                                       startFrom,
                                                       pageSize,
@@ -832,8 +860,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                   PropertyServerException
     {
         return dataAssetExchangeClient.getSchemaTypeForElement(userId,
-                                                               assetManagerGUID,
-                                                               assetManagerName,
+                                                               externalSourceGUID,
+                                                               externalSourceName,
                                                                parentElementGUID,
                                                                parentElementTypeName,
                                                                effectiveTime,
@@ -865,8 +893,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                       PropertyServerException
     {
         return dataAssetExchangeClient.getSchemaTypeByName(userId,
-                                                           assetManagerGUID,
-                                                           assetManagerName,
+                                                           externalSourceGUID,
+                                                           externalSourceName,
                                                            name,
                                                            startFrom,
                                                            pageSize,
@@ -893,7 +921,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        return dataAssetExchangeClient.getSchemaTypeByGUID(userId, assetManagerGUID, assetManagerName, schemaTypeGUID, effectiveTime, forLineage,
+        return dataAssetExchangeClient.getSchemaTypeByGUID(userId, externalSourceGUID, externalSourceName, schemaTypeGUID, effectiveTime, forLineage,
                                                            forDuplicateProcessing);
     }
 
@@ -915,7 +943,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        return dataAssetExchangeClient.getSchemaTypeParent(userId, assetManagerGUID, assetManagerName, schemaTypeGUID, effectiveTime, forLineage,
+        return dataAssetExchangeClient.getSchemaTypeParent(userId, externalSourceGUID, externalSourceName, schemaTypeGUID, effectiveTime, forLineage,
                                                            forDuplicateProcessing);
     }
 
@@ -946,8 +974,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                         PropertyServerException
     {
         return dataAssetExchangeClient.createSchemaAttribute(userId,
-                                                             assetManagerGUID,
-                                                             assetManagerName,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
                                                              assetManagerIsHome,
                                                              schemaElementGUID,
                                                              null,
@@ -982,8 +1010,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                              PropertyServerException
     {
         return dataAssetExchangeClient.createSchemaAttributeFromTemplate(userId,
-                                                                         assetManagerGUID,
-                                                                         assetManagerName,
+                                                                         externalSourceGUID,
+                                                                         externalSourceName,
                                                                          assetManagerIsHome,
                                                                          schemaElementGUID,
                                                                          templateGUID,
@@ -1015,8 +1043,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                       PropertyServerException
     {
         dataAssetExchangeClient.updateSchemaAttribute(userId,
-                                                      assetManagerGUID,
-                                                      assetManagerName,
+                                                      externalSourceGUID,
+                                                      externalSourceName,
                                                       schemaAttributeGUID,
                                                       null,
                                                       isMergeUpdate,
@@ -1047,8 +1075,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                 PropertyServerException
     {
         dataAssetExchangeClient.setSchemaElementAsCalculatedValue(userId,
-                                                                  assetManagerGUID,
-                                                                  assetManagerName,
+                                                                  externalSourceGUID,
+                                                                  externalSourceName,
                                                                   assetManagerIsHome,
                                                                   schemaElementGUID,
                                                                   null,
@@ -1075,8 +1103,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                  PropertyServerException
     {
         dataAssetExchangeClient.clearSchemaElementAsCalculatedValue(userId,
-                                                                    assetManagerGUID,
-                                                                    assetManagerName,
+                                                                    externalSourceGUID,
+                                                                    externalSourceName,
                                                                     schemaElementGUID,
                                                                     null,
                                                                     effectiveTime,
@@ -1109,8 +1137,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                          PropertyServerException
     {
         dataAssetExchangeClient.setupColumnAsPrimaryKey(userId,
-                                                        assetManagerGUID,
-                                                        assetManagerName,
+                                                        externalSourceGUID,
+                                                        externalSourceName,
                                                         assetManagerIsHome,
                                                         schemaAttributeGUID,
                                                         schemaAttributeExternalIdentifier,
@@ -1138,8 +1166,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                      PropertyServerException
     {
         dataAssetExchangeClient.clearColumnAsPrimaryKey(userId,
-                                                        assetManagerGUID,
-                                                        assetManagerName,
+                                                        externalSourceGUID,
+                                                        externalSourceName,
                                                         schemaAttributeGUID,
                                                         null,
                                                         effectiveTime,
@@ -1170,8 +1198,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                        PropertyServerException
     {
         dataAssetExchangeClient.setupForeignKeyRelationship(userId,
-                                                            assetManagerGUID,
-                                                            assetManagerName,
+                                                            externalSourceGUID,
+                                                            externalSourceName,
                                                             assetManagerIsHome,
                                                             primaryKeyGUID,
                                                             foreignKeyGUID,
@@ -1202,8 +1230,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                         PropertyServerException
     {
         dataAssetExchangeClient.updateForeignKeyRelationship(userId,
-                                                             assetManagerGUID,
-                                                             assetManagerName,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
                                                              primaryKeyGUID,
                                                              foreignKeyGUID,
                                                              foreignKeyProperties,
@@ -1231,8 +1259,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                          PropertyServerException
     {
         dataAssetExchangeClient.clearForeignKeyRelationship(userId,
-                                                            assetManagerGUID,
-                                                            assetManagerName,
+                                                            externalSourceGUID,
+                                                            externalSourceName,
                                                             primaryKeyGUID,
                                                             foreignKeyGUID,
                                                             effectiveTime,
@@ -1257,8 +1285,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                    PropertyServerException
     {
         dataAssetExchangeClient.removeSchemaAttribute(userId,
-                                                      assetManagerGUID,
-                                                      assetManagerName,
+                                                      externalSourceGUID,
+                                                      externalSourceName,
                                                       schemaAttributeGUID,
                                                       null,
                                                       effectiveTime,
@@ -1289,7 +1317,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        return dataAssetExchangeClient.findSchemaAttributes(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize, effectiveTime, forLineage,
+        return dataAssetExchangeClient.findSchemaAttributes(userId, externalSourceGUID, externalSourceName, searchString, startFrom, pageSize, effectiveTime, forLineage,
                                                             forDuplicateProcessing);
     }
 
@@ -1315,7 +1343,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        return dataAssetExchangeClient.getNestedSchemaAttributes(userId, assetManagerGUID, assetManagerName, parentSchemaElementGUID, startFrom, pageSize, effectiveTime, forLineage,
+        return dataAssetExchangeClient.getNestedSchemaAttributes(userId, externalSourceGUID, externalSourceName, parentSchemaElementGUID, startFrom
+                , pageSize, effectiveTime, forLineage,
                                                                  forDuplicateProcessing);
     }
 
@@ -1342,7 +1371,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        return dataAssetExchangeClient.getSchemaAttributesByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize, effectiveTime, forLineage,
+        return dataAssetExchangeClient.getSchemaAttributesByName(userId, externalSourceGUID, externalSourceName, name, startFrom, pageSize, effectiveTime, forLineage,
                                                                  forDuplicateProcessing);
     }
 
@@ -1364,7 +1393,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        return dataAssetExchangeClient.getSchemaAttributeByGUID(userId, assetManagerGUID, assetManagerName, schemaAttributeGUID, effectiveTime, forLineage,
+        return dataAssetExchangeClient.getSchemaAttributeByGUID(userId, externalSourceGUID, externalSourceName, schemaAttributeGUID, effectiveTime, forLineage,
                                                                 forDuplicateProcessing);
     }
 
@@ -1393,8 +1422,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                             PropertyServerException
     {
         return lineageExchangeClient.createProcess(userId,
-                                                   assetManagerGUID,
-                                                   assetManagerName,
+                                                   externalSourceGUID,
+                                                   externalSourceName,
                                                    assetManagerIsHome,
                                                    null,
                                                    processStatus,
@@ -1422,8 +1451,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                           PropertyServerException
     {
         return lineageExchangeClient.createProcessFromTemplate(userId,
-                                                               assetManagerGUID,
-                                                               assetManagerName,
+                                                               externalSourceGUID,
+                                                               externalSourceName,
                                                                assetManagerIsHome,
                                                                templateGUID,
                                                                null,
@@ -1451,8 +1480,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                       PropertyServerException
     {
         lineageExchangeClient.updateProcess(userId,
-                                            assetManagerGUID,
-                                            assetManagerName,
+                                            externalSourceGUID,
+                                            externalSourceName,
                                             processGUID,
                                             null,
                                             isMergeUpdate,
@@ -1481,8 +1510,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                         PropertyServerException
     {
         lineageExchangeClient.updateProcessStatus(userId,
-                                                  assetManagerGUID,
-                                                  assetManagerName,
+                                                  externalSourceGUID,
+                                                  externalSourceName,
                                                   processGUID,
                                                   null,
                                                   processStatus,
@@ -1550,8 +1579,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                 PropertyServerException
     {
         lineageExchangeClient.clearProcessParent(userId,
-                                                 assetManagerGUID,
-                                                 assetManagerName,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
                                                  parentProcessGUID,
                                                  childProcessGUID,
                                                  effectiveTime,
@@ -1578,8 +1607,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                             PropertyServerException
     {
         lineageExchangeClient.publishProcess(userId,
-                                             assetManagerGUID,
-                                             assetManagerName,
+                                             externalSourceGUID,
+                                             externalSourceName,
                                              processGUID,
                                              effectiveTime,
                                              forLineage,
@@ -1605,8 +1634,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                              PropertyServerException
     {
         lineageExchangeClient.withdrawProcess(userId,
-                                              assetManagerGUID,
-                                              assetManagerName,
+                                              externalSourceGUID,
+                                              externalSourceName,
                                               processGUID,
                                               effectiveTime,
                                               forLineage,
@@ -1632,8 +1661,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                            PropertyServerException
     {
         lineageExchangeClient.removeProcess(userId,
-                                            assetManagerGUID,
-                                            assetManagerName,
+                                            externalSourceGUID,
+                                            externalSourceName,
                                             processGUID,
                                             processExternalIdentifier,
                                             effectiveTime,
@@ -1664,7 +1693,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        return lineageExchangeClient.findProcesses(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize, effectiveTime, forLineage,
+        return lineageExchangeClient.findProcesses(userId, externalSourceGUID, externalSourceName, searchString, startFrom, pageSize, effectiveTime, forLineage,
                                                    forDuplicateProcessing);
     }
 
@@ -1688,7 +1717,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return lineageExchangeClient.getProcessesForAssetManager(userId, assetManagerGUID, assetManagerName, startFrom, pageSize, effectiveTime, forLineage,
+        return lineageExchangeClient.getProcessesForAssetManager(userId, externalSourceGUID, externalSourceName, startFrom, pageSize, effectiveTime, forLineage,
                                                                  forDuplicateProcessing);
     }
 
@@ -1715,7 +1744,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
-        return lineageExchangeClient.getProcessesByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize, effectiveTime, forLineage,
+        return lineageExchangeClient.getProcessesByName(userId, externalSourceGUID, externalSourceName, name, startFrom, pageSize, effectiveTime, forLineage,
                                                         forDuplicateProcessing);
     }
 
@@ -1738,8 +1767,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                         PropertyServerException
     {
         return lineageExchangeClient.getProcessByGUID(userId,
-                                                      assetManagerGUID,
-                                                      assetManagerName,
+                                                      externalSourceGUID,
+                                                      externalSourceName,
                                                       processGUID,
                                                       effectiveTime,
                                                       forLineage,
@@ -1765,8 +1794,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                         PropertyServerException
     {
         return lineageExchangeClient.getProcessParent(userId,
-                                                      assetManagerGUID,
-                                                      assetManagerName,
+                                                      externalSourceGUID,
+                                                      externalSourceName,
                                                       processGUID,
                                                       effectiveTime,
                                                       forLineage,
@@ -1796,8 +1825,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                              PropertyServerException
     {
         return lineageExchangeClient.getSubProcesses(userId,
-                                                     assetManagerGUID,
-                                                     assetManagerName,
+                                                     externalSourceGUID,
+                                                     externalSourceName,
                                                      processGUID,
                                                      startFrom,
                                                      pageSize,
@@ -1833,8 +1862,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                        PropertyServerException
     {
         return lineageExchangeClient.createPort(userId,
-                                                assetManagerGUID,
-                                                assetManagerName,
+                                                externalSourceGUID,
+                                                externalSourceName,
                                                 assetManagerIsHome,
                                                 processGUID,
                                                 null,
@@ -1864,8 +1893,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                 PropertyServerException
     {
         lineageExchangeClient.updatePort(userId,
-                                         assetManagerGUID,
-                                         assetManagerName,
+                                         externalSourceGUID,
+                                         externalSourceName,
                                          portGUID,
                                          null,
                                          portProperties,
@@ -1895,8 +1924,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                PropertyServerException
     {
         lineageExchangeClient.setupProcessPort(userId,
-                                               assetManagerGUID,
-                                               assetManagerName,
+                                               externalSourceGUID,
+                                               externalSourceName,
                                                assetManagerIsHome,
                                                processGUID,
                                                portGUID,
@@ -1924,8 +1953,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                               PropertyServerException
     {
         lineageExchangeClient.clearProcessPort(userId,
-                                               assetManagerGUID,
-                                               assetManagerName,
+                                               externalSourceGUID,
+                                               externalSourceName,
                                                processGUID,
                                                portGUID,
                                                effectiveTime,
@@ -1955,8 +1984,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                   PropertyServerException
     {
         lineageExchangeClient.setupPortDelegation(userId,
-                                                  assetManagerGUID,
-                                                  assetManagerName,
+                                                  externalSourceGUID,
+                                                  externalSourceName,
                                                   assetManagerIsHome,
                                                   portOneGUID,
                                                   portTwoGUID,
@@ -1984,8 +2013,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                  PropertyServerException
     {
         lineageExchangeClient.clearPortDelegation(userId,
-                                                  assetManagerGUID,
-                                                  assetManagerName,
+                                                  externalSourceGUID,
+                                                  externalSourceName,
                                                   portOneGUID,
                                                   portTwoGUID,
                                                   effectiveTime,
@@ -2014,8 +2043,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                   PropertyServerException
     {
         lineageExchangeClient.setupPortSchemaType(userId,
-                                                  assetManagerGUID,
-                                                  assetManagerName,
+                                                  externalSourceGUID,
+                                                  externalSourceName,
                                                   assetManagerIsHome,
                                                   portGUID,
                                                   schemaTypeGUID,
@@ -2043,8 +2072,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                  PropertyServerException
     {
         lineageExchangeClient.clearPortSchemaType(userId,
-                                                  assetManagerGUID,
-                                                  assetManagerName,
+                                                  externalSourceGUID,
+                                                  externalSourceName,
                                                   portGUID,
                                                   schemaTypeGUID,
                                                   effectiveTime,
@@ -2069,8 +2098,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                         PropertyServerException
     {
         lineageExchangeClient.removePort(userId,
-                                         assetManagerGUID,
-                                         assetManagerName,
+                                         externalSourceGUID,
+                                         externalSourceName,
                                          portGUID,
                                          null,
                                          effectiveTime,
@@ -2101,7 +2130,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
-        return lineageExchangeClient.findPorts(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize, effectiveTime, forLineage,
+        return lineageExchangeClient.findPorts(userId, externalSourceGUID, externalSourceName, searchString, startFrom, pageSize, effectiveTime, forLineage,
                                                forDuplicateProcessing);
     }
 
@@ -2127,7 +2156,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        return lineageExchangeClient.getPortsForProcess(userId, assetManagerGUID, assetManagerName, processGUID, startFrom, pageSize, effectiveTime, forLineage,
+        return lineageExchangeClient.getPortsForProcess(userId, externalSourceGUID, externalSourceName, processGUID, startFrom, pageSize, effectiveTime, forLineage,
                                                         forDuplicateProcessing);
     }
 
@@ -2153,7 +2182,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
-        return lineageExchangeClient.getPortUse(userId, assetManagerGUID, assetManagerName, portGUID, startFrom, pageSize, effectiveTime, forLineage,
+        return lineageExchangeClient.getPortUse(userId, externalSourceGUID, externalSourceName, portGUID, startFrom, pageSize, effectiveTime, forLineage,
                                                 forDuplicateProcessing);
     }
 
@@ -2175,7 +2204,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
-        return lineageExchangeClient.getPortDelegation(userId, assetManagerGUID, assetManagerName, portGUID, effectiveTime, forLineage,
+        return lineageExchangeClient.getPortDelegation(userId, externalSourceGUID, externalSourceName, portGUID, effectiveTime, forLineage,
                                                        forDuplicateProcessing);
     }
 
@@ -2202,7 +2231,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        return lineageExchangeClient.getPortsByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize, effectiveTime, forLineage,
+        return lineageExchangeClient.getPortsByName(userId, externalSourceGUID, externalSourceName, name, startFrom, pageSize, effectiveTime, forLineage,
                                                     forDuplicateProcessing);
     }
 
@@ -2224,7 +2253,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
-        return lineageExchangeClient.getPortByGUID(userId, assetManagerGUID, assetManagerName, portGUID, effectiveTime, forLineage,
+        return lineageExchangeClient.getPortByGUID(userId, externalSourceGUID, externalSourceName, portGUID, effectiveTime, forLineage,
                                                    forDuplicateProcessing);
     }
 
@@ -2250,8 +2279,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                     PropertyServerException
     {
         lineageExchangeClient.setBusinessSignificant(userId,
-                                                     assetManagerGUID,
-                                                     assetManagerName,
+                                                     externalSourceGUID,
+                                                     externalSourceName,
                                                      elementGUID,
                                                      null,
                                                      effectiveTime,
@@ -2276,8 +2305,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                       PropertyServerException
     {
         lineageExchangeClient.clearBusinessSignificant(userId,
-                                                       assetManagerGUID,
-                                                       assetManagerName,
+                                                       externalSourceGUID,
+                                                       externalSourceName,
                                                        elementGUID,
                                                        null,
                                                        effectiveTime,
@@ -2310,8 +2339,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                          PropertyServerException
     {
         return lineageExchangeClient.setupDataFlow(userId,
-                                                   assetManagerGUID,
-                                                   assetManagerName,
+                                                   externalSourceGUID,
+                                                   externalSourceName,
                                                    assetManagerIsHome,
                                                    dataSupplierGUID,
                                                    dataConsumerGUID,
@@ -2345,7 +2374,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        return lineageExchangeClient.getDataFlow(userId, assetManagerGUID, assetManagerName, dataSupplierGUID, dataConsumerGUID, qualifiedName, effectiveTime, forLineage,
+        return lineageExchangeClient.getDataFlow(userId, externalSourceGUID, externalSourceName, dataSupplierGUID, dataConsumerGUID, qualifiedName, effectiveTime, forLineage,
                                                  forDuplicateProcessing);
     }
 
@@ -2368,8 +2397,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                         PropertyServerException
     {
         lineageExchangeClient.updateDataFlow(userId,
-                                             assetManagerGUID,
-                                             assetManagerName,
+                                             externalSourceGUID,
+                                             externalSourceName,
                                              dataFlowGUID,
                                              properties,
                                              effectiveTime,
@@ -2394,8 +2423,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                            PropertyServerException
     {
         lineageExchangeClient.clearDataFlow(userId,
-                                            assetManagerGUID,
-                                            assetManagerName,
+                                            externalSourceGUID,
+                                            externalSourceName,
                                             dataFlowGUID,
                                             effectiveTime,
                                             forLineage,
@@ -2425,7 +2454,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        return lineageExchangeClient.getDataFlowConsumers(userId, assetManagerGUID, assetManagerName, dataSupplierGUID, startFrom, pageSize, effectiveTime, forLineage,
+        return lineageExchangeClient.getDataFlowConsumers(userId, externalSourceGUID, externalSourceName, dataSupplierGUID, startFrom, pageSize, effectiveTime, forLineage,
                                                           forDuplicateProcessing);
     }
 
@@ -2451,7 +2480,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        return lineageExchangeClient.getDataFlowSuppliers(userId, assetManagerGUID, assetManagerName, dataConsumerGUID, startFrom, pageSize, effectiveTime, forLineage,
+        return lineageExchangeClient.getDataFlowSuppliers(userId, externalSourceGUID, externalSourceName, dataConsumerGUID, startFrom, pageSize, effectiveTime, forLineage,
                                                           forDuplicateProcessing);
     }
 
@@ -2480,8 +2509,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                PropertyServerException
     {
         return lineageExchangeClient.setupControlFlow(userId,
-                                                      assetManagerGUID,
-                                                      assetManagerName,
+                                                      externalSourceGUID,
+                                                      externalSourceName,
                                                       assetManagerIsHome,
                                                       currentStepGUID,
                                                       nextStepGUID,
@@ -2515,7 +2544,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        return lineageExchangeClient.getControlFlow(userId, assetManagerGUID, assetManagerName, currentStepGUID, nextStepGUID, qualifiedName, effectiveTime, forLineage,
+        return lineageExchangeClient.getControlFlow(userId, externalSourceGUID, externalSourceName, currentStepGUID, nextStepGUID, qualifiedName, effectiveTime, forLineage,
                                                     forDuplicateProcessing);
     }
 
@@ -2538,8 +2567,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                               PropertyServerException
     {
         lineageExchangeClient.updateControlFlow(userId,
-                                                assetManagerGUID,
-                                                assetManagerName,
+                                                externalSourceGUID,
+                                                externalSourceName,
                                                 controlFlowGUID,
                                                 properties,
                                                 effectiveTime,
@@ -2564,8 +2593,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                               PropertyServerException
     {
         lineageExchangeClient.clearControlFlow(userId,
-                                               assetManagerGUID,
-                                               assetManagerName,
+                                               externalSourceGUID,
+                                               externalSourceName,
                                                controlFlowGUID,
                                                effectiveTime,
                                                forLineage,
@@ -2595,7 +2624,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        return lineageExchangeClient.getControlFlowNextSteps(userId, assetManagerGUID, assetManagerName, currentStepGUID, startFrom, pageSize, effectiveTime, forLineage,
+        return lineageExchangeClient.getControlFlowNextSteps(userId, externalSourceGUID, externalSourceName, currentStepGUID, startFrom, pageSize, effectiveTime, forLineage,
                                                              forDuplicateProcessing);
     }
 
@@ -2621,7 +2650,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        return lineageExchangeClient.getControlFlowPreviousSteps(userId, assetManagerGUID, assetManagerName, currentStepGUID, startFrom, pageSize, effectiveTime, forLineage,
+        return lineageExchangeClient.getControlFlowPreviousSteps(userId, externalSourceGUID, externalSourceName, currentStepGUID, startFrom, pageSize, effectiveTime, forLineage,
                                                                  forDuplicateProcessing);
     }
 
@@ -2650,8 +2679,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                PropertyServerException
     {
         return lineageExchangeClient.setupProcessCall(userId,
-                                                      assetManagerGUID,
-                                                      assetManagerName,
+                                                      externalSourceGUID,
+                                                      externalSourceName,
                                                       assetManagerIsHome,
                                                       callerGUID,
                                                       calledGUID,
@@ -2685,7 +2714,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        return lineageExchangeClient.getProcessCall(userId, assetManagerGUID, assetManagerName, callerGUID, calledGUID, qualifiedName, effectiveTime, forLineage,
+        return lineageExchangeClient.getProcessCall(userId, externalSourceGUID, externalSourceName, callerGUID, calledGUID, qualifiedName, effectiveTime, forLineage,
                                                     forDuplicateProcessing);
     }
 
@@ -2708,8 +2737,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                               PropertyServerException
     {
         lineageExchangeClient.updateProcessCall(userId,
-                                                assetManagerGUID,
-                                                assetManagerName,
+                                                externalSourceGUID,
+                                                externalSourceName,
                                                 processCallGUID,
                                                 properties,
                                                 effectiveTime,
@@ -2734,8 +2763,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                               PropertyServerException
     {
         lineageExchangeClient.clearProcessCall(userId,
-                                               assetManagerGUID,
-                                               assetManagerName,
+                                               externalSourceGUID,
+                                               externalSourceName,
                                                processCallGUID,
                                                effectiveTime,
                                                forLineage,
@@ -2764,7 +2793,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
-        return lineageExchangeClient.getProcessCalled(userId, assetManagerGUID, assetManagerName, callerGUID, startFrom, pageSize, effectiveTime, forLineage,
+        return lineageExchangeClient.getProcessCalled(userId, externalSourceGUID, externalSourceName, callerGUID, startFrom, pageSize, effectiveTime, forLineage,
                                                       forDuplicateProcessing);
     }
 
@@ -2790,7 +2819,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        return lineageExchangeClient.getProcessCallers(userId, assetManagerGUID, assetManagerName, calledGUID, startFrom, pageSize, effectiveTime, forLineage,
+        return lineageExchangeClient.getProcessCallers(userId, externalSourceGUID, externalSourceName, calledGUID, startFrom, pageSize, effectiveTime, forLineage,
                                                        forDuplicateProcessing);
     }
 
@@ -2817,8 +2846,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                    PropertyServerException
     {
         lineageExchangeClient.setupLineageMapping(userId,
-                                                  assetManagerGUID,
-                                                  assetManagerName,
+                                                  externalSourceGUID,
+                                                  externalSourceName,
                                                   sourceElementGUID,
                                                   destinationElementGUID,
                                                   properties,
@@ -2846,8 +2875,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                     PropertyServerException
     {
          lineageExchangeClient.updateLineageMapping(userId,
-                                                    assetManagerGUID,
-                                                    assetManagerName,
+                                                    externalSourceGUID,
+                                                    externalSourceName,
                                                     lineageMappingGUID,
                                                     properties,
                                                     effectiveTime,
@@ -2872,8 +2901,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                  PropertyServerException
     {
         lineageExchangeClient.clearLineageMapping(userId,
-                                                  assetManagerGUID,
-                                                  assetManagerName,
+                                                  externalSourceGUID,
+                                                  externalSourceName,
                                                   lineageMappingGUID,
                                                   effectiveTime,
                                                   forLineage,
@@ -2902,7 +2931,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
     {
-        return lineageExchangeClient.getDestinationLineageMappings(userId, assetManagerGUID, assetManagerName, sourceElementGUID, startFrom, pageSize, effectiveTime, forLineage,
+        return lineageExchangeClient.getDestinationLineageMappings(userId, externalSourceGUID, externalSourceName, sourceElementGUID, startFrom, pageSize, effectiveTime, forLineage,
                                                                    forDuplicateProcessing);
     }
 
@@ -2928,7 +2957,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        return lineageExchangeClient.getSourceLineageMappings(userId, assetManagerGUID, assetManagerName, destinationElementGUID, startFrom, pageSize, effectiveTime, forLineage,
+        return lineageExchangeClient.getSourceLineageMappings(userId, externalSourceGUID, externalSourceName, destinationElementGUID, startFrom, pageSize, effectiveTime, forLineage,
                                                               forDuplicateProcessing);
     }
 
@@ -2952,8 +2981,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                       PropertyServerException
     {
         stewardshipExchangeClient.addMementoClassification(userId,
-                                                           assetManagerGUID,
-                                                           assetManagerName,
+                                                           externalSourceGUID,
+                                                           externalSourceName,
                                                            elementGUID,
                                                            elementExternalIdentifier,
                                                            effectiveTime,
@@ -2980,8 +3009,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                                     PropertyServerException
     {
         stewardshipExchangeClient.clearMementoClassification(userId,
-                                                             assetManagerGUID,
-                                                             assetManagerName,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
                                                              elementGUID,
                                                              elementExternalIdentifier,
                                                              effectiveTime,
@@ -3008,8 +3037,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                          PropertyServerException
     {
         stewardshipExchangeClient.addIncompleteClassification(userId,
-                                                              assetManagerGUID,
-                                                              assetManagerName,
+                                                              externalSourceGUID,
+                                                              externalSourceName,
                                                               elementGUID,
                                                               elementExternalIdentifier,
                                                               effectiveTime,
@@ -3036,8 +3065,8 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                                            PropertyServerException
     {
         stewardshipExchangeClient.clearIncompleteClassification(userId,
-                                                                assetManagerGUID,
-                                                                assetManagerName,
+                                                                externalSourceGUID,
+                                                                externalSourceName,
                                                                 elementGUID,
                                                                 elementExternalIdentifier,
                                                                 effectiveTime,

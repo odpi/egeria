@@ -103,6 +103,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private EventBusConfig                  eventBusConfig                  = null;
     private List<AccessServiceConfig>       accessServicesConfig            = null;
     private List<IntegrationServiceConfig>  integrationServicesConfig       = null;
+    private List<IntegrationGroupConfig>    dynamicIntegrationGroupsConfig  = null;
     private List<ViewServiceConfig>         viewServicesConfig              = null;
     private RepositoryServicesConfig        repositoryServicesConfig        = null;
     private ConformanceSuiteConfig          conformanceSuiteConfig          = null;
@@ -146,6 +147,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             eventBusConfig                  = template.getEventBusConfig();
             accessServicesConfig            = template.getAccessServicesConfig();
             integrationServicesConfig       = template.getIntegrationServicesConfig();
+            dynamicIntegrationGroupsConfig  = template.getDynamicIntegrationGroupsConfig();
             engineHostServicesConfig        = template.getEngineHostServicesConfig();
             viewServicesConfig              = template.getViewServicesConfig();
             repositoryServicesConfig        = template.getRepositoryServicesConfig();
@@ -372,7 +374,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Set up the  maximum page size supported by this server.
+     * Set up the maximum page size supported by this server.
      *
      * @param maxPageSize int number of elements
      */
@@ -428,7 +430,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     }
 
     /**
-     * Return the configuration for the registered Open Metadata Access Services (OMASs).
+     * Return the configuration for the registered Open Metadata Access Services (OMASs).  Used in a metadata access server.
      *
      * @return array of configuration properties, one for each OMAS
      */
@@ -439,7 +441,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Set up the configuration for the registered Open Metadata Access Services (OMASs).
+     * Set up the configuration for the registered Open Metadata Access Services (OMASs).  Used in a metadata access server.
      *
      * @param accessServicesConfig array of configuration properties, one for each OMAS
      */
@@ -450,7 +452,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Return the configuration for the registered Open Metadata Integration Services (OMISs).
+     * Return the configuration for the registered Open Metadata Integration Services (OMISs).  Used in an integration daemon.
      *
      * @return array of configuration properties, one for each OMIS
      */
@@ -461,7 +463,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Set up the configuration for the registered Open Metadata Integration Services (OMISs).
+     * Set up the configuration for the registered Open Metadata Integration Services (OMISs).  Used in an integration daemon.
      *
      * @param integrationServicesConfig array of configuration properties, one for each OMIS
      */
@@ -472,7 +474,29 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Return the configuration for the registered Open Metadata View Services (OMVSs).
+     * Return the optional list of dynamic integration groups.  Used in an integration daemon.
+     *
+     * @return array of configuration properties, one for each integration group
+     */
+    public List<IntegrationGroupConfig> getDynamicIntegrationGroupsConfig()
+    {
+        return dynamicIntegrationGroupsConfig;
+    }
+
+
+    /**
+     * Set up the optional list of dynamic integration groups.  Used in an integration daemon.
+     *
+     * @param dynamicIntegrationGroupsConfig array of configuration properties, one for each integration group
+     */
+    public void setDynamicIntegrationGroupsConfig(List<IntegrationGroupConfig> dynamicIntegrationGroupsConfig)
+    {
+        this.dynamicIntegrationGroupsConfig = dynamicIntegrationGroupsConfig;
+    }
+
+
+    /**
+     * Return the configuration for the registered Open Metadata View Services (OMVSs).  Used in a view server.
      *
      * @return array of configuration properties, one for each OMVS
      */
@@ -483,7 +507,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Set up the configuration for the registered Open Metadata View Services (OMVSs).
+     * Set up the configuration for the registered Open Metadata View Services (OMVSs).  Used in a view server.
      *
      * @param viewServicesConfig array of configuration properties, one for each OMVS
      */
@@ -516,7 +540,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Return the configuration for the open metadata conformance suite services.
+     * Return the configuration for the open metadata conformance suite services.  Used in a conformance test server.
      *
      * @return configuration properties that control the operation of the open metadata test labs.
      */
@@ -527,7 +551,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Set up the configuration for the open metadata conformance suite services.
+     * Set up the configuration for the open metadata conformance suite services.  Used in a conformance test server.
      *
      * @param conformanceSuiteConfig configuration properties that control the operation of the open metadata test labs.
      */

@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.integrationservices.files.connector;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.integrationservices.files.ffdc.FilesIntegratorAuditCode;
 import org.odpi.openmetadata.integrationservices.files.ffdc.FilesIntegratorErrorCode;
 
@@ -22,6 +22,7 @@ public abstract class FilesIntegratorConnector extends IntegrationConnectorBase 
      */
     public synchronized void setContext(FilesIntegratorContext context)
     {
+        super.setContext(context);
         this.context = context;
     }
 

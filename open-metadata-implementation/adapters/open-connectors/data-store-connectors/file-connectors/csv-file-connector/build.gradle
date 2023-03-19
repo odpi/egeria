@@ -5,11 +5,14 @@
 
 
 dependencies {
-    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
-    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
     implementation 'org.slf4j:slf4j-api'
     testImplementation 'org.testng:testng'
+    testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    testImplementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     testImplementation project(':open-metadata-test:open-metadata-ut')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 

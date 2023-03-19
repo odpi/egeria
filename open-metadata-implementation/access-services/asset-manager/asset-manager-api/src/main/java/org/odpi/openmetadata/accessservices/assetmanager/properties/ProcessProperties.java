@@ -22,6 +22,7 @@ public class ProcessProperties extends AssetProperties
     private static final long     serialVersionUID = 1L;
 
     private String        formula                = null;
+    private String        formulaType            = null;
     private String        implementationLanguage = null;
 
     /**
@@ -45,6 +46,7 @@ public class ProcessProperties extends AssetProperties
         if (template != null)
         {
             formula = template.getFormula();
+            formulaType = template.getFormulaType();
             implementationLanguage = template.getImplementationLanguage();
         }
     }
@@ -66,6 +68,28 @@ public class ProcessProperties extends AssetProperties
     public void setFormula(String formula)
     {
         this.formula = formula;
+    }
+
+
+    /**
+     * Return the specification language for the formula.
+     *
+     * @return string description
+     */
+    public String getFormulaType()
+    {
+        return formulaType;
+    }
+
+
+    /**
+     * Set up  the specification language for the formula.
+     *
+     * @param formulaType string description
+     */
+    public void setFormulaType(String formulaType)
+    {
+        this.formulaType = formulaType;
     }
 
 

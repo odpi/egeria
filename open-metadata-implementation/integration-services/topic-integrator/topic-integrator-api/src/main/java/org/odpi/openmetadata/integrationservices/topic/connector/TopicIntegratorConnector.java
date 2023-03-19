@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.integrationservices.topic.connector;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.integrationservices.topic.ffdc.TopicIntegratorAuditCode;
 import org.odpi.openmetadata.integrationservices.topic.ffdc.TopicIntegratorErrorCode;
 
@@ -23,6 +23,7 @@ public abstract class TopicIntegratorConnector extends IntegrationConnectorBase 
      */
     public synchronized void setContext(TopicIntegratorContext context)
     {
+        super.setContext(context);
         this.context = context;
     }
 

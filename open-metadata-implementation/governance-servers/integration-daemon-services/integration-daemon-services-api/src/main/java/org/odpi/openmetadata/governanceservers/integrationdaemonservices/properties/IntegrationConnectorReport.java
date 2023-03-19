@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
@@ -24,7 +25,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class IntegrationConnectorReport implements Serializable
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private String                     connectorId              = null;
     private String                     connectorName            = null;
@@ -55,7 +57,7 @@ public class IntegrationConnectorReport implements Serializable
     {
         if (template != null)
         {
-            connectorInstanceId      = template.getConnectorId();
+            connectorId              = template.getConnectorId();
             connectorName            = template.getConnectorName();
             connection               = template.getConnection();
             connectorInstanceId      = template.getConnectorInstanceId();
@@ -286,7 +288,7 @@ public class IntegrationConnectorReport implements Serializable
 
 
     /**
-     * Set up if the connector should be started in its own thread to allow it is block on a listening call.
+     * Set up if the connector should be started in its own thread to allow it to block on a listening call.
      *
      * @param statistics boolean flag
      */

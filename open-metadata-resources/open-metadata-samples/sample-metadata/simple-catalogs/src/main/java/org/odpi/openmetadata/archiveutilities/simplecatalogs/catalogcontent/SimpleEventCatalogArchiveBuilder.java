@@ -25,7 +25,7 @@ public class SimpleEventCatalogArchiveBuilder
      */
     private static final String                  archiveGUID        = "e5114849-4341-4eab-b1b7-5a4b037363c4";
     private static final String                  archiveName        = "SimpleEventCatalog";
-    private static final String                  archiveLicense     = "Apache 2.0";
+    private static final String                  archiveLicense     = "Apache-2.0";
     private static final String                  archiveDescription = "Sample metadata showing topic assets and event types.";
     private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.REPOSITORY_BACKUP;
     private static final String                  originatorName     = "Egeria";

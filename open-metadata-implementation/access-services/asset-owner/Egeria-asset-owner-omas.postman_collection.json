@@ -251,7 +251,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/asset-owner/connected-asset/users/{{user}}/assets/{{assetGUID}}/connection",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/asset-owner/connected-asset/users/{{user}}/assets/{{assetGUID}}/connection",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -278,7 +278,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/common-services/asset-owner/connected-asset/users/{{user}}/assets/schemas/{{guid}}/schema-attributes?elementStart=0&maxElements=100",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/asset-owner/connected-asset/users/{{user}}/assets/schemas/{{guid}}/schema-attributes?elementStart=0&maxElements=100",
 					"host": [
 						"{{baseURL}}"
 					],

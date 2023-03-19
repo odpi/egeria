@@ -42,6 +42,7 @@ public class SchemaTypeProperties extends SchemaElementProperties
      * Values for when the schemaType is derived from other values rather than stored
      */
     private String                                       formula = null;
+    private String                                       formulaType = null;
     private List<DerivedSchemaTypeQueryTargetProperties> queries = null;
 
     /**
@@ -70,6 +71,7 @@ public class SchemaTypeProperties extends SchemaElementProperties
             encodingStandard = template.getEncodingStandard();
             namespace = template.getNamespace();
             formula = template.getFormula();
+            formulaType = template.getFormulaType();
             queries = template.getQueries();
         }
     }
@@ -197,6 +199,28 @@ public class SchemaTypeProperties extends SchemaElementProperties
 
 
     /**
+     * Return the specification language for the formula.
+     *
+     * @return string description
+     */
+    public String getFormulaType()
+    {
+        return formulaType;
+    }
+
+
+    /**
+     * Set up  the specification language for the formula.
+     *
+     * @param formulaType string description
+     */
+    public void setFormulaType(String formulaType)
+    {
+        this.formulaType = formulaType;
+    }
+
+
+    /**
      * Return the list of queries that are used to create the derived schema element.
      *
      * @return list of queries
@@ -245,6 +269,7 @@ public class SchemaTypeProperties extends SchemaElementProperties
                 ", encodingStandard='" + encodingStandard + '\'' +
                 ", namespace='" + namespace + '\'' +
                 ", formula='" + formula + '\'' +
+                ", formulaType='" + formulaType + '\'' +
                 ", queries=" + queries +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
@@ -285,6 +310,7 @@ public class SchemaTypeProperties extends SchemaElementProperties
                 Objects.equals(encodingStandard, that.encodingStandard) &&
                 Objects.equals(namespace, that.namespace) &&
                 Objects.equals(formula, that.formula) &&
+                Objects.equals(formulaType, that.formulaType) &&
                 Objects.equals(queries, that.queries);
     }
 
@@ -297,6 +323,6 @@ public class SchemaTypeProperties extends SchemaElementProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), versionNumber, author, usage, encodingStandard, namespace, formula, queries);
+        return Objects.hash(super.hashCode(), versionNumber, author, usage, encodingStandard, namespace, formula, formulaType, queries);
     }
 }

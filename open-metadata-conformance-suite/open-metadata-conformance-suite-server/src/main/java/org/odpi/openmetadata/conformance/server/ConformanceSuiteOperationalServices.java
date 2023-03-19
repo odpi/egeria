@@ -30,12 +30,12 @@ import java.util.List;
  */
 public class ConformanceSuiteOperationalServices
 {
-    private ConformanceServicesInstanceMap instanceMap = new ConformanceServicesInstanceMap();
+    private final ConformanceServicesInstanceMap instanceMap = new ConformanceServicesInstanceMap();
 
-    private String                  localServerName;               /* Initialized in constructor */
-    private String                  localServerUserId;             /* Initialized in constructor */
-    private String                  localServerPassword;           /* Initialized in constructor */
-    private int                     maxPageSize;                   /* Initialized in constructor */
+    private final String                  localServerName;               /* Initialized in constructor */
+    private final String                  localServerUserId;             /* Initialized in constructor */
+    private final String                  localServerPassword;           /* Initialized in constructor */
+    private final int                     maxPageSize;                   /* Initialized in constructor */
 
 
     /**

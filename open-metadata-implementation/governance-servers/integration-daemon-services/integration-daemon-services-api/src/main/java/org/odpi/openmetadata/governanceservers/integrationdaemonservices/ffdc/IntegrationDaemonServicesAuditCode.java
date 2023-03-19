@@ -218,20 +218,6 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                     "Use the message from the exception and knowledge of the integration connector's behavior to " +
                             "track down and resolve the cause of the error and then, if appropriate, restart the connector."),
 
-
-    ENGAGE_IMPLEMENTATION_MISSING("INTEGRATION-DAEMON-SERVICES-0033",
-                    OMRSAuditLogRecordSeverity.INFO,
-                    "The integration connector {0} has been configured to have its own thread to issue blocking calls but has not " +
-                                          "implemented the engage() method",
-                    "The integration daemon created a separate thread for this connector to enable it to issue blocking calls.  " +
-                                          "It called the engage() method on this thread.  However, the default implementation of the " +
-                                          "engage() method has been invoked suggesting that either the dedicated thread is not needed or " +
-                                          "there is an error in the implementation of the connector.  The integration daemon " +
-                                          "will terminate the thread once the engage() method returns.",
-                    "If the connector does not need to issue blocking calls update the configuration to remove the need for the " +
-                                          "dedicated thread.  Otherwise update the integration connector's implementation to override " +
-                                          "the default engage() method implementation."),
-
     ENGAGE_RETURNED("INTEGRATION-DAEMON-SERVICES-0034",
                     OMRSAuditLogRecordSeverity.INFO,
                     "The integration connector {0} has returned from the engage() method in integration daemon {1}",
@@ -321,11 +307,56 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                   "permissive access, you could consider isolating it in its own integration daemon that has a more powerful userId, " +
                                   "leaving the rest of the integration connectors working with the current userId."),
 
+    CLEARING_ALL_GOVERNANCE_SERVICE_CONFIG("INTEGRATION-DAEMON-SERVICES-0051",
+                                           OMRSAuditLogRecordSeverity.INFO,
+                                           "All integration connector configuration is being refreshed for integration group {0}",
+                                           "The integration daemon services will call the Governance Engine OMAS in the metadata server to " +
+                                                   "retrieve details of all the integration connectors configured for this integration group." +
+                                                   "During this process, some refresh requests may fail if the associated integration" +
+                                                   "connector is only partially configured.",
+                                           "Monitor the integration daemon services to ensure all the integration connectors are retrieved. " +
+                                                   "Then it is ready to process new refresh requests."),
 
+    GROUP_SHUTDOWN("INTEGRATION-DAEMON-SERVICES-0052",
+                   OMRSAuditLogRecordSeverity.SHUTDOWN,
+                   "The integration group {0} in server {1} is shutting down",
+                   "The local administrator has requested shut down of this integration group.  No more governance requests will be processed by this engine.",
+                   "Verify that this shutdown is intended and the integration group is no longer needed."),
+
+    GROUP_CHANGE_FAILED("INTEGRATION-DAEMON-SERVICES-0053",
+                        OMRSAuditLogRecordSeverity.EXCEPTION,
+                        "Failed to process a change to integration group {0}.  The exception was {1} with error message {2}",
+                        "The integration daemon is unable to process the change to a governance group.  The exception explains the reason.",
+                        "Review the error messages and resolve the cause of the problem.  Once resolved, it is possible to " +
+                                     "refresh the configuration of the integration group by calling the integration daemon's refreshConfig service."),
+
+    CONNECTOR_CHANGE_FAILED("INTEGRATION-DAEMON-SERVICES-0054",
+                        OMRSAuditLogRecordSeverity.EXCEPTION,
+                        "Failed to process a change to integration connector {0}.  The exception was {1} with error message {2}",
+                        "The integration daemon is unable to process the change to a integration connector.  The exception explains the reason.",
+                        "Review the error messages and resolve the cause of the problem.  Once resolved, it is possible to " +
+                                "refresh the configuration of the integration group by calling the integration daemon's refreshConfig service."),
+
+    UNKNOWN_CONNECTOR_INTERFACE("INTEGRATION-DAEMON-SERVICES-0055",
+                            OMRSAuditLogRecordSeverity.ERROR,
+                            "Failed to start up integration connector {0} because it interface does not match to an integration service connector " +
+                                        "interface that is supported by this server",
+                            "The integration connector is ignored.",
+                            "Review the implementation of the integration connector and ensure it is implementing an appropriate interface.  Once " +
+                                        "resolved, the integration daemon's platform needs to be restarted to load the new implementation for the " +
+                                        "integration connector."),
+
+    FINISHED_ALL_INTEGRATION_CONNECTOR_CONFIG("INTEGRATION-DAEMON-SERVICES-0056",
+                                              OMRSAuditLogRecordSeverity.INFO,
+                                              "Refresh of all integration connector configuration has being completed for integration group {0}",
+                                              "The integration connectors for this integration group are running with the latest configuration.",
+                                              "No action is required as long as all the expected integration connectors are started." +
+                                                   "If there are any errors reported by the integration connectors then validate the configuration " +
+                                                   "of the integration connector and its associated integration group in the metadata server."),
     ;
 
 
-    AuditLogMessageDefinition messageDefinition;
+    private final AuditLogMessageDefinition messageDefinition;
 
 
 

@@ -58,7 +58,7 @@ public class EngineConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Return the unique identifier for this engine.  It is used when registering a listener with the one of
+     * Return the unique identifier for this governance engine.  It is used when registering a listener with the one of
      * the OutTopics of the metadata services access services.
      *
      * @return String identifier
@@ -70,7 +70,7 @@ public class EngineConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Set up the unique identifier for this engine.  It is used when registering a listener with the one of
+     * Set up the unique identifier for this governance engine.  It is used when registering a listener with the one of
      * the OutTopics of the metadata services access services.
      *
      * @param engineId String identifier
@@ -80,8 +80,9 @@ public class EngineConfig extends AdminServicesConfigHeader
         this.engineId = engineId;
     }
 
+
     /**
-     * Return the name of the engine.  This is the qualified name of the SoftwareCapability entity in the metadata repository that
+     * Return the name of the governance engine.  This is the qualified name of the GovernanceEngine entity in the metadata repository that
      * represents the engine.
      *
      * @return String name
@@ -93,7 +94,7 @@ public class EngineConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Set up the name of the engine service.   This is the qualified name of the SoftwareCapability entity in the metadata repository that
+     * Set up the name of the governance engine.   This is the qualified name of the GovernanceEngine entity in the metadata repository that
      * represents the engine.
      *
      * @param engineQualifiedName String name
@@ -105,7 +106,7 @@ public class EngineConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Return the userId that the engine should use when calling the metadata server. (Null means use the Engine Host's userId.)
+     * Return the userId that the governance engine should use when calling the metadata server. (Null means use the Engine Host's userId.)
      *
      * @return string userId
      */
@@ -116,7 +117,7 @@ public class EngineConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Set up the userId that the engine should use when calling the metadata server. (Null means use the Engine Host's userId.)
+     * Set up the userId that the governance engine should use when calling the metadata server. (Null means use the Engine Host's userId.)
      *
      * @param engineUserId string userId
      */

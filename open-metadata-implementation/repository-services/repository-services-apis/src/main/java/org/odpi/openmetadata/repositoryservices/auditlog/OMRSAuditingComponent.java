@@ -145,7 +145,7 @@ public enum OMRSAuditingComponent implements ComponentDescription
                                   "https://egeria-project.org/concepts/event-mapper-connector/"),
 
     ARCHIVE_STORE_CONNECTOR(22,
-                            ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                            ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                             "Open Metadata Archive Store Connector",
                             "Reads and writes open metadata types and instances to an open metadata archive.",
                             "https://egeria-project.org/concepts/open-metadata-archive-store-connector/"),
@@ -188,7 +188,7 @@ public enum OMRSAuditingComponent implements ComponentDescription
                                      "https://egeria-project.org/guides/developer/open-discovery-services/overview/"),
 
     GOVERNANCE_ACTION_SERVICE_CONNECTOR(29,
-                                        ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                        ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                                         "Governance Action Service Connector",
                                         "A connector that coordinates governance of digital resources and metadata.",
                                         "https://egeria-project.org/guides/developer/governance-action-services/overview/"),
@@ -200,19 +200,19 @@ public enum OMRSAuditingComponent implements ComponentDescription
                                             "https://egeria-project.org/guides/developer/repository-governance-services/overview/"),
 
     INTEGRATION_CONNECTOR(31,
-                          ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                          ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                           "Integration Connector",
                           "Connector that manages metadata exchange with a third party technology.",
                           "https://egeria-project.org/concepts/integration-connector/"),
 
     PLATFORM_SECURITY_CONNECTOR(32,
-                                ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                                 "Platform Metadata Security Connector",
                                 "Connector that manages authorization requests to the OMAG Server Platform.",
                                 "https://egeria-project.org/concepts/platform-metadata-security-connector/"),
 
     SERVER_SECURITY_CONNECTOR(33,
-                              ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                              ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                               "Server Metadata Security Connector",
                               "Connector that manages authorization requests to the OMAG Server.",
                               "https://egeria-project.org/concepts/server-metadata-security-connector/"),

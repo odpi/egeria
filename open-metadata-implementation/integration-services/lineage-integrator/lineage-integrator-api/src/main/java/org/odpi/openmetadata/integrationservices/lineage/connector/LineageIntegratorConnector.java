@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.integrationservices.lineage.connector;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.integrationservices.lineage.ffdc.LineageIntegratorAuditCode;
 import org.odpi.openmetadata.integrationservices.lineage.ffdc.LineageIntegratorErrorCode;
 
@@ -23,6 +23,7 @@ public abstract class LineageIntegratorConnector extends IntegrationConnectorBas
      */
     public synchronized void setContext(LineageIntegratorContext context)
     {
+        super.setContext(context);
         this.context = context;
     }
 

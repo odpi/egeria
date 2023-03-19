@@ -28,7 +28,7 @@ public class SimpleAPICatalogArchiveBuilder
      */
     private static final String                  archiveGUID        = "9e594f24-2494-4000-ac20-59f374eaa0e6";
     private static final String                  archiveName        = "SimpleAPICatalog";
-    private static final String                  archiveLicense     = "Apache 2.0";
+    private static final String                  archiveLicense     = "Apache-2.0";
     private static final String                  archiveDescription = "Sample metadata showing API assets and their payloads.";
     private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.REPOSITORY_BACKUP;
     private static final String                  originatorName     = "Egeria";
