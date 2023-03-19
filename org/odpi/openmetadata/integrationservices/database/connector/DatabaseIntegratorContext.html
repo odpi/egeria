@@ -45,7 +45,7 @@ loadScripts(document, 'script');</script>
 <ul class="sub-nav-list">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
 </ul>
@@ -72,16 +72,27 @@ loadScripts(document, 'script');</script>
 <h1 title="Class DatabaseIntegratorContext" class="title">Class DatabaseIntegratorContext</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance"><a href="../../../frameworks/integration/context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">org.odpi.openmetadata.frameworks.integration.context.IntegrationContext</a>
 <div class="inheritance">org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext</div>
+</div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">DatabaseIntegratorContext</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<span class="extends-implements">extends <a href="../../../frameworks/integration/context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a></span></div>
 <div class="block">DatabaseIntegratorContext is the context for managing resources from a relational database server.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
+<!-- =========== FIELD SUMMARY =========== -->
+<li>
+<section class="field-summary" id="field-summary">
+<h2>Field Summary</h2>
+<div class="inherited-list">
+<h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.integration.context.IntegrationContext">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.context.<a href="../../../frameworks/integration/context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a></h3>
+<code><a href="../../../frameworks/integration/context/IntegrationContext.html#externalSourceGUID">externalSourceGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#externalSourceIsHome">externalSourceIsHome</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#externalSourceName">externalSourceName</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#integrationConnectorGUID">integrationConnectorGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#openIntegrationClient">openIntegrationClient</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#openMetadataStoreClient">openMetadataStoreClient</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#permittedSynchronization">permittedSynchronization</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#userId">userId</a></code></div>
+</section>
+</li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <li>
 <section class="constructor-summary" id="constructor-summary">
@@ -90,12 +101,21 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.accessservices.datamanager.client.DatabaseManagerClient,org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient,org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">DatabaseIntegratorContext</a><wbr>(<a href="../../../accessservices/datamanager/client/DatabaseManagerClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">DatabaseManagerClient</a>&nbsp;databaseManagerClient,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient,org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient,org.odpi.openmetadata.accessservices.datamanager.client.DatabaseManagerClient,org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient,org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient,boolean,org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization,java.lang.String,org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext,java.lang.String,java.lang.String)" class="member-name-link">DatabaseIntegratorContext</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorUserId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../../../frameworks/integration/client/OpenIntegrationClient.html" title="class in org.odpi.openmetadata.frameworks.integration.client">OpenIntegrationClient</a>&nbsp;openIntegrationClient,
+ <a href="../../../frameworks/governanceaction/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenMetadataClient</a>&nbsp;openMetadataStoreClient,
+ <a href="../../../accessservices/datamanager/client/DatabaseManagerClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">DatabaseManagerClient</a>&nbsp;databaseManagerClient,
  <a href="../../../accessservices/datamanager/client/ConnectionManagerClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">ConnectionManagerClient</a>&nbsp;connectionManagerClient,
  <a href="../../../accessservices/datamanager/client/DataManagerEventClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">DataManagerEventClient</a>&nbsp;eventClient,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;databaseManagerGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;databaseManagerName)</code></div>
+ boolean&nbsp;generateIntegrationReport,
+ <a href="../../../frameworks/integration/contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a>&nbsp;permittedSynchronization,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationConnectorGUID,
+ <a href="../../../frameworks/integration/context/IntegrationGovernanceContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationGovernanceContext</a>&nbsp;integrationGovernanceContext,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 </div>
@@ -357,66 +377,66 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of database column metadata elements with a matching qualified or display name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDatabaseManagerName()" class="member-name-link">getDatabaseManagerName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the qualified name of the database manager that is supplied in the configuration
- document.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/datamanager/metadataelements/DatabaseElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDatabasesByName(java.lang.String,int,int)" class="member-name-link">getDatabasesByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/datamanager/metadataelements/DatabaseElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseElement</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDatabasesByName(java.lang.String,int,int)" class="member-name-link">getDatabasesByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of database metadata elements with a matching qualified or display name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/datamanager/metadataelements/DatabaseSchemaElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseSchemaElement</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDatabaseSchemaByGUID(java.lang.String)" class="member-name-link">getDatabaseSchemaByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/datamanager/metadataelements/DatabaseSchemaElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseSchemaElement</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDatabaseSchemaByGUID(java.lang.String)" class="member-name-link">getDatabaseSchemaByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the database schema metadata element with the supplied unique identifier.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/datamanager/metadataelements/DatabaseSchemaElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseSchemaElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDatabaseSchemasByName(java.lang.String,int,int)" class="member-name-link">getDatabaseSchemasByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/datamanager/metadataelements/DatabaseSchemaElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseSchemaElement</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDatabaseSchemasByName(java.lang.String,int,int)" class="member-name-link">getDatabaseSchemasByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of database schema metadata elements with a matching qualified or display name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/datamanager/metadataelements/DatabaseTableElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseTableElement</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDatabaseTableByGUID(java.lang.String)" class="member-name-link">getDatabaseTableByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/datamanager/metadataelements/DatabaseTableElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseTableElement</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDatabaseTableByGUID(java.lang.String)" class="member-name-link">getDatabaseTableByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the database table metadata element with the supplied unique identifier.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/datamanager/metadataelements/DatabaseTableElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseTableElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDatabaseTablesByName(java.lang.String,int,int)" class="member-name-link">getDatabaseTablesByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/datamanager/metadataelements/DatabaseTableElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseTableElement</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDatabaseTablesByName(java.lang.String,int,int)" class="member-name-link">getDatabaseTablesByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of database table metadata elements with a matching qualified or display name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/datamanager/metadataelements/DatabaseViewElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseViewElement</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDatabaseViewByGUID(java.lang.String)" class="member-name-link">getDatabaseViewByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/datamanager/metadataelements/DatabaseViewElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseViewElement</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDatabaseViewByGUID(java.lang.String)" class="member-name-link">getDatabaseViewByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the database view metadata element with the supplied unique identifier.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/datamanager/metadataelements/DatabaseViewElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseViewElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDatabaseViewsByName(java.lang.String,int,int)" class="member-name-link">getDatabaseViewsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/datamanager/metadataelements/DatabaseViewElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseViewElement</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDatabaseViewsByName(java.lang.String,int,int)" class="member-name-link">getDatabaseViewsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of database view metadata elements with a matching qualified or display name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/datamanager/metadataelements/EndpointElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">EndpointElement</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEndpointByGUID(java.lang.String)" class="member-name-link">getEndpointByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endpointGUID)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/datamanager/metadataelements/EndpointElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">EndpointElement</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEndpointByGUID(java.lang.String)" class="member-name-link">getEndpointByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endpointGUID)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the endpoint metadata element with the supplied unique identifier.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/datamanager/metadataelements/EndpointElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">EndpointElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEndpointsByName(java.lang.String,int,int)" class="member-name-link">getEndpointsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/datamanager/metadataelements/EndpointElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">EndpointElement</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEndpointsByName(java.lang.String,int,int)" class="member-name-link">getEndpointsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of endpoint metadata elements with a matching qualified or display name.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalSourceName()" class="member-name-link">getExternalSourceName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the qualified name of the database manager that is supplied in the configuration
+ document.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/datamanager/metadataelements/DatabaseElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseElement</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMyDatabases(int,int)" class="member-name-link">getMyDatabases</a><wbr>(int&nbsp;startFrom,
@@ -678,6 +698,9 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.context.IntegrationContext">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.context.<a href="../../../frameworks/integration/context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a></h3>
+<code><a href="../../../frameworks/integration/context/IntegrationContext.html#getCatalogTargets(int,int)">getCatalogTargets</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getIntegrationGovernanceContext()">getIntegrationGovernanceContext</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getMetadataSourceQualifiedName()">getMetadataSourceQualifiedName</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getPermittedSynchronization()">getPermittedSynchronization</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#publishReport()">publishReport</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportAnchorGUID(java.lang.String,java.lang.String)">reportAnchorGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportElementCreation(java.lang.String)">reportElementCreation</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportElementDelete(java.lang.String)">reportElementDelete</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportElementUpdate(java.lang.String)">reportElementUpdate</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportParentGUID(java.lang.String,java.lang.String)">reportParentGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#setActiveReportPublishing(boolean)">setActiveReportPublishing</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#startRecording()">startRecording</a></code></div>
+<div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
 </section>
@@ -692,23 +715,42 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.accessservices.datamanager.client.DatabaseManagerClient,org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient,org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient,java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient,org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient,org.odpi.openmetadata.accessservices.datamanager.client.DatabaseManagerClient,org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient,org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient,boolean,org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization,java.lang.String,org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext,java.lang.String,java.lang.String)">
 <h3>DatabaseIntegratorContext</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">DatabaseIntegratorContext</span><wbr><span class="parameters">(<a href="../../../accessservices/datamanager/client/DatabaseManagerClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">DatabaseManagerClient</a>&nbsp;databaseManagerClient,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">DatabaseIntegratorContext</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorUserId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../../../frameworks/integration/client/OpenIntegrationClient.html" title="class in org.odpi.openmetadata.frameworks.integration.client">OpenIntegrationClient</a>&nbsp;openIntegrationClient,
+ <a href="../../../frameworks/governanceaction/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenMetadataClient</a>&nbsp;openMetadataStoreClient,
+ <a href="../../../accessservices/datamanager/client/DatabaseManagerClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">DatabaseManagerClient</a>&nbsp;databaseManagerClient,
  <a href="../../../accessservices/datamanager/client/ConnectionManagerClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">ConnectionManagerClient</a>&nbsp;connectionManagerClient,
  <a href="../../../accessservices/datamanager/client/DataManagerEventClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">DataManagerEventClient</a>&nbsp;eventClient,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;databaseManagerGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;databaseManagerName)</span></div>
+ boolean&nbsp;generateIntegrationReport,
+ <a href="../../../frameworks/integration/contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a>&nbsp;permittedSynchronization,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationConnectorGUID,
+ <a href="../../../frameworks/integration/context/IntegrationGovernanceContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationGovernanceContext</a>&nbsp;integrationGovernanceContext,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName)</span></div>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>connectorId</code> - unique identifier of the connector (used to configure the event listener)</dd>
+<dd><code>connectorName</code> - name of connector from config</dd>
+<dd><code>connectorUserId</code> - userId for the connector</dd>
+<dd><code>serverName</code> - name of the integration daemon</dd>
+<dd><code>openIntegrationClient</code> - client for calling the metadata server</dd>
+<dd><code>openMetadataStoreClient</code> - client for calling the metadata server</dd>
 <dd><code>databaseManagerClient</code> - client to managing database metadata</dd>
 <dd><code>connectionManagerClient</code> - client for managing connections</dd>
 <dd><code>eventClient</code> - client to register for events</dd>
-<dd><code>userId</code> - integration daemon's userId</dd>
-<dd><code>databaseManagerGUID</code> - unique identifier of the software server capability for the database manager</dd>
-<dd><code>databaseManagerName</code> - unique name of the software server capability for the database manager</dd>
+<dd><code>generateIntegrationReport</code> - should the connector generate an integration reports?</dd>
+<dd><code>permittedSynchronization</code> - the direction of integration permitted by the integration connector</dd>
+<dd><code>integrationConnectorGUID</code> - unique identifier for the integration connector if it is started via an integration group (otherwise it is
+                                 null).</dd>
+<dd><code>integrationGovernanceContext</code> - populated governance context for the connector's use</dd>
+<dd><code>externalSourceGUID</code> - unique identifier of the software server capability for the database manager</dd>
+<dd><code>externalSourceName</code> - unique name of the software server capability for the database manager</dd>
 </dl>
 </section>
 </li>
@@ -721,9 +763,9 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getDatabaseManagerName()">
-<h3>getDatabaseManagerName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDatabaseManagerName</span>()</div>
+<section class="detail" id="getExternalSourceName()">
+<h3>getExternalSourceName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getExternalSourceName</span>()</div>
 <div class="block">Return the qualified name of the database manager that is supplied in the configuration
  document.</div>
 <dl class="notes">

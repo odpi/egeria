@@ -75,9 +75,14 @@ loadScripts(document, 'script');</script>
 <div class="inheritance">org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient</div>
 </div>
 <section class="class-description" id="class-description">
+<dl class="notes">
+<dt>All Implemented Interfaces:</dt>
+<dd><code><a href="../api/GovernanceEngineConfiguration.html" title="interface in org.odpi.openmetadata.accessservices.governanceengine.api">GovernanceEngineConfiguration</a></code></dd>
+</dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">GovernanceEngineConfigurationClient</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
+implements <a href="../api/GovernanceEngineConfiguration.html" title="interface in org.odpi.openmetadata.accessservices.governanceengine.api">GovernanceEngineConfiguration</a></span></div>
 <div class="block">GovernanceEngineConfigurationClient supports the configuration of governance engine and governance services.</div>
 </section>
 <section class="summary">
@@ -302,7 +307,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
-<dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
+<dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST services</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
@@ -322,7 +327,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
-<dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
+<dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST services</dd>
 <dd><code>userId</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
 <dt>Throws:</dt>
@@ -345,7 +350,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
-<dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
+<dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST services</dd>
 <dd><code>restClient</code> - pre-initialized REST client</dd>
 <dd><code>maxPageSize</code> - pre-initialized parameter limit</dd>
 <dd><code>auditLog</code> - logging destination</dd>
@@ -386,6 +391,8 @@ loadScripts(document, 'script');</script>
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Create a new governance engine definition.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../api/GovernanceEngineConfiguration.html#createGovernanceEngine(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">createGovernanceEngine</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceEngineConfiguration.html" title="interface in org.odpi.openmetadata.accessservices.governanceengine.api">GovernanceEngineConfiguration</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>governanceEngineType</code> - type of governance engine to create</dd>
@@ -412,6 +419,8 @@ loadScripts(document, 'script');</script>
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Return the properties from a governance engine definition.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../api/GovernanceEngineConfiguration.html#getGovernanceEngineByGUID(java.lang.String,java.lang.String)">getGovernanceEngineByGUID</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceEngineConfiguration.html" title="interface in org.odpi.openmetadata.accessservices.governanceengine.api">GovernanceEngineConfiguration</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>guid</code> - unique identifier (guid) of the governance engine definition.</dd>
@@ -434,6 +443,8 @@ loadScripts(document, 'script');</script>
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Return the properties from a governance engine definition.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../api/GovernanceEngineConfiguration.html#getGovernanceEngineByName(java.lang.String,java.lang.String)">getGovernanceEngineByName</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceEngineConfiguration.html" title="interface in org.odpi.openmetadata.accessservices.governanceengine.api">GovernanceEngineConfiguration</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>name</code> - qualified name or display name (if unique).</dd>
@@ -458,6 +469,8 @@ loadScripts(document, 'script');</script>
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Return the list of governance engine definitions that are stored.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../api/GovernanceEngineConfiguration.html#getAllGovernanceEngines(java.lang.String,java.lang.String,int,int)">getAllGovernanceEngines</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceEngineConfiguration.html" title="interface in org.odpi.openmetadata.accessservices.governanceengine.api">GovernanceEngineConfiguration</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>governanceEngineType</code> - type of governance engine to create</dd>
@@ -493,6 +506,8 @@ loadScripts(document, 'script');</script>
  keep a property value the same, or use the new value.  Null means remove the property from
  the definition.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../api/GovernanceEngineConfiguration.html#updateGovernanceEngine(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.util.Map)">updateGovernanceEngine</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceEngineConfiguration.html" title="interface in org.odpi.openmetadata.accessservices.governanceengine.api">GovernanceEngineConfiguration</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>guid</code> - unique identifier of the governance engine - used to locate the definition.</dd>
@@ -524,6 +539,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove the properties of the governance engine.  Both the guid and the qualified name is supplied
  to validate that the correct governance engine is being deleted.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../api/GovernanceEngineConfiguration.html#deleteGovernanceEngine(java.lang.String,java.lang.String,java.lang.String)">deleteGovernanceEngine</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceEngineConfiguration.html" title="interface in org.odpi.openmetadata.accessservices.governanceengine.api">GovernanceEngineConfiguration</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>guid</code> - unique identifier of the governance engine - used to locate the definition.</dd>
@@ -550,13 +567,15 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a governance service definition.  The same governance service can be associated with multiple
  governance engines.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../api/GovernanceEngineConfiguration.html#createGovernanceService(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">createGovernanceService</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceEngineConfiguration.html" title="interface in org.odpi.openmetadata.accessservices.governanceengine.api">GovernanceEngineConfiguration</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>governanceServiceType</code> - type of the governance service to create</dd>
 <dd><code>qualifiedName</code> - unique name for the governance service.</dd>
 <dd><code>displayName</code> - display name for the governance service.</dd>
 <dd><code>description</code> - description of the analysis provided by the governance service.</dd>
-<dd><code>connection</code> - connection to instanciate the governance service implementation.</dd>
+<dd><code>connection</code> - connection to instantiate the governance service implementation.</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of the governance service.</dd>
 <dt>Throws:</dt>
@@ -576,6 +595,8 @@ loadScripts(document, 'script');</script>
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Return the properties from a governance service definition.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../api/GovernanceEngineConfiguration.html#getGovernanceServiceByGUID(java.lang.String,java.lang.String)">getGovernanceServiceByGUID</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceEngineConfiguration.html" title="interface in org.odpi.openmetadata.accessservices.governanceengine.api">GovernanceEngineConfiguration</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>guid</code> - unique identifier (guid) of the governance service definition.</dd>
@@ -598,6 +619,8 @@ loadScripts(document, 'script');</script>
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Return the properties from a governance service definition.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../api/GovernanceEngineConfiguration.html#getGovernanceServiceByName(java.lang.String,java.lang.String)">getGovernanceServiceByName</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceEngineConfiguration.html" title="interface in org.odpi.openmetadata.accessservices.governanceengine.api">GovernanceEngineConfiguration</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>name</code> - qualified name or display name (if unique).</dd>
@@ -621,6 +644,8 @@ loadScripts(document, 'script');</script>
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Return the list of governance services definitions that are stored.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../api/GovernanceEngineConfiguration.html#getAllGovernanceServices(java.lang.String,int,int)">getAllGovernanceServices</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceEngineConfiguration.html" title="interface in org.odpi.openmetadata.accessservices.governanceengine.api">GovernanceEngineConfiguration</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>startingFrom</code> - initial position in the stored list.</dd>
@@ -644,6 +669,8 @@ loadScripts(document, 'script');</script>
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Return the list of governance engines that a specific governance service is registered with.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../api/GovernanceEngineConfiguration.html#getGovernanceServiceRegistrations(java.lang.String,java.lang.String)">getGovernanceServiceRegistrations</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceEngineConfiguration.html" title="interface in org.odpi.openmetadata.accessservices.governanceengine.api">GovernanceEngineConfiguration</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>governanceServiceGUID</code> - governance service to search for.</dd>
@@ -674,6 +701,8 @@ loadScripts(document, 'script');</script>
  keep a property value the same, or use the new value.  Null means remove the property from
  the definition.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../api/GovernanceEngineConfiguration.html#updateGovernanceService(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,java.util.Map,java.util.Map)">updateGovernanceService</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceEngineConfiguration.html" title="interface in org.odpi.openmetadata.accessservices.governanceengine.api">GovernanceEngineConfiguration</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>guid</code> - unique identifier of the governance service - used to locate the definition.</dd>
@@ -703,6 +732,8 @@ loadScripts(document, 'script');</script>
  to validate that the correct governance service is being deleted.  The governance service is also
  unregistered from its governance engines.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../api/GovernanceEngineConfiguration.html#deleteGovernanceService(java.lang.String,java.lang.String,java.lang.String)">deleteGovernanceService</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceEngineConfiguration.html" title="interface in org.odpi.openmetadata.accessservices.governanceengine.api">GovernanceEngineConfiguration</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>guid</code> - unique identifier of the governance service - used to locate the definition.</dd>
@@ -729,6 +760,8 @@ loadScripts(document, 'script');</script>
 <div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">Register a governance service with a specific governance engine.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../api/GovernanceEngineConfiguration.html#registerGovernanceServiceWithEngine(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">registerGovernanceServiceWithEngine</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceEngineConfiguration.html" title="interface in org.odpi.openmetadata.accessservices.governanceengine.api">GovernanceEngineConfiguration</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>governanceEngineGUID</code> - unique identifier of the governance engine.</dd>
@@ -757,6 +790,8 @@ loadScripts(document, 'script');</script>
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Register a governance service with a specific governance engine.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../api/GovernanceEngineConfiguration.html#registerGovernanceServiceWithEngine(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">registerGovernanceServiceWithEngine</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceEngineConfiguration.html" title="interface in org.odpi.openmetadata.accessservices.governanceengine.api">GovernanceEngineConfiguration</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>governanceEngineGUID</code> - unique identifier of the governance engine.</dd>
@@ -783,6 +818,8 @@ loadScripts(document, 'script');</script>
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve a specific governance service registered with a governance engine.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../api/GovernanceEngineConfiguration.html#getRegisteredGovernanceService(java.lang.String,java.lang.String,java.lang.String)">getRegisteredGovernanceService</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceEngineConfiguration.html" title="interface in org.odpi.openmetadata.accessservices.governanceengine.api">GovernanceEngineConfiguration</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>governanceEngineGUID</code> - unique identifier of the governance engine.</dd>
@@ -808,6 +845,8 @@ loadScripts(document, 'script');</script>
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve the identifiers of the governance services registered with a governance engine.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../api/GovernanceEngineConfiguration.html#getRegisteredGovernanceServices(java.lang.String,java.lang.String,int,int)">getRegisteredGovernanceServices</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceEngineConfiguration.html" title="interface in org.odpi.openmetadata.accessservices.governanceengine.api">GovernanceEngineConfiguration</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>governanceEngineGUID</code> - unique identifier of the governance engine.</dd>
@@ -833,6 +872,8 @@ loadScripts(document, 'script');</script>
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Unregister a governance service from the governance engine.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../api/GovernanceEngineConfiguration.html#unregisterGovernanceServiceFromEngine(java.lang.String,java.lang.String,java.lang.String)">unregisterGovernanceServiceFromEngine</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceEngineConfiguration.html" title="interface in org.odpi.openmetadata.accessservices.governanceengine.api">GovernanceEngineConfiguration</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>governanceEngineGUID</code> - unique identifier of the governance engine.</dd>

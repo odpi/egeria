@@ -72,14 +72,14 @@ loadScripts(document, 'script');</script>
 <h1 title="Class SearchIntegratorContextManager" class="title">Class SearchIntegratorContextManager</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance"><a href="../../../governanceservers/integrationdaemonservices/contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager">org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager.IntegrationContextManager</a>
+<div class="inheritance"><a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.frameworks.integration.contextmanager">org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager</a>
 <div class="inheritance">org.odpi.openmetadata.integrationservices.search.contextmanager.SearchIntegratorContextManager</div>
 </div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">SearchIntegratorContextManager</span>
-<span class="extends-implements">extends <a href="../../../governanceservers/integrationdaemonservices/contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager">IntegrationContextManager</a></span></div>
+<span class="extends-implements">extends <a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.frameworks.integration.contextmanager">IntegrationContextManager</a></span></div>
 <div class="block">SearchIntegratorContextManager provides the bridge between the integration daemon services and
  the specific implementation of an integration service</div>
 </section>
@@ -90,8 +90,8 @@ loadScripts(document, 'script');</script>
 <section class="field-summary" id="field-summary">
 <h2>Field Summary</h2>
 <div class="inherited-list">
-<h3 id="fields-inherited-from-class-org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager.IntegrationContextManager">Fields inherited from class&nbsp;org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager.<a href="../../../governanceservers/integrationdaemonservices/contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager">IntegrationContextManager</a></h3>
-<code><a href="../../../governanceservers/integrationdaemonservices/contextmanager/IntegrationContextManager.html#auditLog">auditLog</a>, <a href="../../../governanceservers/integrationdaemonservices/contextmanager/IntegrationContextManager.html#localServerPassword">localServerPassword</a>, <a href="../../../governanceservers/integrationdaemonservices/contextmanager/IntegrationContextManager.html#localServerUserId">localServerUserId</a>, <a href="../../../governanceservers/integrationdaemonservices/contextmanager/IntegrationContextManager.html#maxPageSize">maxPageSize</a>, <a href="../../../governanceservers/integrationdaemonservices/contextmanager/IntegrationContextManager.html#partnerOMASPlatformRootURL">partnerOMASPlatformRootURL</a>, <a href="../../../governanceservers/integrationdaemonservices/contextmanager/IntegrationContextManager.html#partnerOMASServerName">partnerOMASServerName</a>, <a href="../../../governanceservers/integrationdaemonservices/contextmanager/IntegrationContextManager.html#serviceOptions">serviceOptions</a></code></div>
+<h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.contextmanager.<a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.frameworks.integration.contextmanager">IntegrationContextManager</a></h3>
+<code><a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html#auditLog">auditLog</a>, <a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html#localServerPassword">localServerPassword</a>, <a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html#localServerUserId">localServerUserId</a>, <a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html#maxPageSize">maxPageSize</a>, <a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html#openIntegrationClient">openIntegrationClient</a>, <a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html#openMetadataStoreClient">openMetadataStoreClient</a>, <a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html#partnerOMASPlatformRootURL">partnerOMASPlatformRootURL</a>, <a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html#partnerOMASServerName">partnerOMASServerName</a>, <a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html#serviceOptions">serviceOptions</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -136,18 +136,24 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Initialize server properties for the context manager.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setContext(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnector,org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization)" class="member-name-link">setContext</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/integration/context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setContext(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector,java.lang.String,org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization,boolean,java.lang.String)" class="member-name-link">setContext</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataSourceQualifiedName,
- <a href="../../../governanceservers/integrationdaemonservices/connectors/IntegrationConnector.html" title="interface in org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors">IntegrationConnector</a>&nbsp;integrationConnector,
- <a href="../../../adminservices/configuration/properties/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.properties">PermittedSynchronization</a>&nbsp;permittedSynchronization)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorUserId,
+ <a href="../../../frameworks/integration/connectors/IntegrationConnector.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnector</a>&nbsp;integrationConnector,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationConnectorGUID,
+ <a href="../../../frameworks/integration/contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a>&nbsp;permittedSynchronization,
+ boolean&nbsp;generateIntegrationReport,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataSourceQualifiedName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the context in the supplied connector.</div>
 </div>
 </div>
 </div>
 </div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.contextmanager.<a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.frameworks.integration.contextmanager">IntegrationContextManager</a></h3>
+<code><a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html#constructIntegrationGovernanceContext(org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient,java.lang.String,java.lang.String,java.lang.String)">constructIntegrationGovernanceContext</a>, <a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html#setUpMetadataSource(java.lang.String,java.lang.String,java.lang.String)">setUpMetadataSource</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -190,10 +196,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Initialize server properties for the context manager.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../../../governanceservers/integrationdaemonservices/contextmanager/IntegrationContextManager.html#initializeContextManager(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">initializeContextManager</a></code>&nbsp;in class&nbsp;<code><a href="../../../governanceservers/integrationdaemonservices/contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager">IntegrationContextManager</a></code></dd>
+<dd><code><a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html#initializeContextManager(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">initializeContextManager</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.frameworks.integration.contextmanager">IntegrationContextManager</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>partnerOMASServerName</code> - name of the server to connect to</dd>
-<dd><code>partnerOMASPlatformRootURL</code> - the network address of the server running the OMAS REST servers</dd>
+<dd><code>partnerOMASPlatformRootURL</code> - the network address of the server running the OMAS REST services</dd>
 <dd><code>userId</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>serviceOptions</code> - options from the integration service's configuration</dd>
@@ -209,34 +215,42 @@ loadScripts(document, 'script');</script>
                    throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Suggestion for subclass to create client(s) to partner OMAS.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../governanceservers/integrationdaemonservices/contextmanager/IntegrationContextManager.html#createClients()">createClients</a></code>&nbsp;in class&nbsp;<code><a href="../../../governanceservers/integrationdaemonservices/contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager">IntegrationContextManager</a></code></dd>
+<dt>Overrides:</dt>
+<dd><code><a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html#createClients()">createClients</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.frameworks.integration.contextmanager">IntegrationContextManager</a></code></dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the subclass is not able to create one of its clients</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setContext(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnector,org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization)">
+<section class="detail" id="setContext(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector,java.lang.String,org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization,boolean,java.lang.String)">
 <h3>setContext</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setContext</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/integration/context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a></span>&nbsp;<span class="element-name">setContext</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataSourceQualifiedName,
- <a href="../../../governanceservers/integrationdaemonservices/connectors/IntegrationConnector.html" title="interface in org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors">IntegrationConnector</a>&nbsp;integrationConnector,
- <a href="../../../adminservices/configuration/properties/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.properties">PermittedSynchronization</a>&nbsp;permittedSynchronization)</span>
-                throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorUserId,
+ <a href="../../../frameworks/integration/connectors/IntegrationConnector.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnector</a>&nbsp;integrationConnector,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationConnectorGUID,
+ <a href="../../../frameworks/integration/contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a>&nbsp;permittedSynchronization,
+ boolean&nbsp;generateIntegrationReport,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataSourceQualifiedName)</span>
+                              throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Set up the context in the supplied connector. This is called between initialize() and start() on the connector.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../governanceservers/integrationdaemonservices/contextmanager/IntegrationContextManager.html#setContext(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnector,org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization)">setContext</a></code>&nbsp;in class&nbsp;<code><a href="../../../governanceservers/integrationdaemonservices/contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager">IntegrationContextManager</a></code></dd>
+<dt>Overrides:</dt>
+<dd><code><a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html#setContext(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector,java.lang.String,org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization,boolean,java.lang.String)">setContext</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.frameworks.integration.contextmanager">IntegrationContextManager</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>connectorId</code> - unique identifier of the connector (used to configure the event listener)</dd>
 <dd><code>connectorName</code> - name of connector from config</dd>
-<dd><code>metadataSourceQualifiedName</code> - unique name of the software server capability that represents the metadata source.</dd>
+<dd><code>connectorUserId</code> - userId for the connector</dd>
 <dd><code>integrationConnector</code> - connector created from connection integration service configuration</dd>
+<dd><code>integrationConnectorGUID</code> - unique identifier of the integration connector entity (only set if working with integration groups)</dd>
 <dd><code>permittedSynchronization</code> - controls the direction(s) that metadata is allowed to flow</dd>
+<dd><code>generateIntegrationReport</code> - should the connector generate an integration reports?</dd>
+<dd><code>metadataSourceQualifiedName</code> - unique name of the software server capability that represents the metadata source.</dd>
+<dt>Returns:</dt>
+<dd>the new integration context</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the connector is not of the correct type</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>

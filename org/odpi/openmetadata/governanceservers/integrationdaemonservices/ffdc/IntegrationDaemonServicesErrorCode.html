@@ -125,15 +125,19 @@ implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#INTEGRATION_DAEMON_INSTANCE_FAILURE" class="member-name-link">INTEGRATION_DAEMON_INSTANCE_FAILURE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#INVALID_CONTEXT_MANAGER" class="member-name-link">INVALID_CONTEXT_MANAGER</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#INTEGRATION_GROUP_NOT_INITIALIZED" class="member-name-link">INTEGRATION_GROUP_NOT_INITIALIZED</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NO_CONFIG_DOC" class="member-name-link">NO_CONFIG_DOC</a></code></div>
+<div class="col-first even-row-color"><code><a href="#INVALID_CONTEXT_MANAGER" class="member-name-link">INVALID_CONTEXT_MANAGER</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NO_INTEGRATION_CONNECTORS_CONFIGURED" class="member-name-link">NO_INTEGRATION_CONNECTORS_CONFIGURED</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#NO_CONFIG_DOC" class="member-name-link">NO_CONFIG_DOC</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NO_INTEGRATION_DAEMON_CLIENT" class="member-name-link">NO_INTEGRATION_DAEMON_CLIENT</a></code></div>
+<div class="col-first even-row-color"><code><a href="#NO_INTEGRATION_CONNECTORS_CONFIGURED" class="member-name-link">NO_INTEGRATION_CONNECTORS_CONFIGURED</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NO_INTEGRATION_DAEMONS_STARTED" class="member-name-link">NO_INTEGRATION_DAEMONS_STARTED</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#NO_INTEGRATION_DAEMON_CLIENT" class="member-name-link">NO_INTEGRATION_DAEMON_CLIENT</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#NO_INTEGRATION_DAEMONS_STARTED" class="member-name-link">NO_INTEGRATION_DAEMONS_STARTED</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#NO_INTEGRATION_GROUPS" class="member-name-link">NO_INTEGRATION_GROUPS</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="#NO_INTEGRATION_SERVICES" class="member-name-link">NO_INTEGRATION_SERVICES</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
@@ -152,6 +156,10 @@ implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet
 <div class="col-first odd-row-color"><code><a href="#SERVICE_INSTANCE_FAILURE" class="member-name-link">SERVICE_INSTANCE_FAILURE</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="#UNKNOWN_CONNECTOR_NAME" class="member-name-link">UNKNOWN_CONNECTOR_NAME</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#UNKNOWN_GOVERNANCE_ENGINE_CONFIG" class="member-name-link">UNKNOWN_GOVERNANCE_ENGINE_CONFIG</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#UNKNOWN_GROUP_NAME" class="member-name-link">UNKNOWN_GROUP_NAME</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="#UNKNOWN_INTEGRATION_DAEMON_CONFIG" class="member-name-link">UNKNOWN_INTEGRATION_DAEMON_CONFIG</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
@@ -246,12 +254,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="NULL_CONTEXT_MANAGER">
-<h3>NULL_CONTEXT_MANAGER</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">NULL_CONTEXT_MANAGER</span></div>
-</section>
-</li>
-<li>
 <section class="detail" id="INVALID_CONTEXT_MANAGER">
 <h3>INVALID_CONTEXT_MANAGER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">INVALID_CONTEXT_MANAGER</span></div>
@@ -330,9 +332,39 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="UNKNOWN_GOVERNANCE_ENGINE_CONFIG">
+<h3>UNKNOWN_GOVERNANCE_ENGINE_CONFIG</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_GOVERNANCE_ENGINE_CONFIG</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="INTEGRATION_GROUP_NOT_INITIALIZED">
+<h3>INTEGRATION_GROUP_NOT_INITIALIZED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">INTEGRATION_GROUP_NOT_INITIALIZED</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNKNOWN_GROUP_NAME">
+<h3>UNKNOWN_GROUP_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_GROUP_NAME</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="NO_INTEGRATION_GROUPS">
+<h3>NO_INTEGRATION_GROUPS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">NO_INTEGRATION_GROUPS</span></div>
+</section>
+</li>
+<li>
 <section class="detail" id="NO_INTEGRATION_SERVICES">
 <h3>NO_INTEGRATION_SERVICES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">NO_INTEGRATION_SERVICES</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="NULL_CONTEXT_MANAGER">
+<h3>NULL_CONTEXT_MANAGER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">NULL_CONTEXT_MANAGER</span></div>
 </section>
 </li>
 </ul>

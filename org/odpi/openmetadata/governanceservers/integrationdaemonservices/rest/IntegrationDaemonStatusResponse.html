@@ -130,10 +130,10 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Compare objects</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/IntegrationServiceSummary.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties">IntegrationServiceSummary</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationServiceSummaries()" class="member-name-link">getIntegrationServiceSummaries</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/IntegrationDaemonStatus.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties">IntegrationDaemonStatus</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationDaemonStatus()" class="member-name-link">getIntegrationDaemonStatus</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the summary of each discovery engine assigned to the discovery server.</div>
+<div class="block">Return the summary of the services and groups running in the integration daemon.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
@@ -141,9 +141,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Simple hash for the object</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIntegrationServiceSummaries(java.util.List)" class="member-name-link">setIntegrationServiceSummaries</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/IntegrationServiceSummary.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties">IntegrationServiceSummary</a>&gt;&nbsp;integrationServiceSummaries)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIntegrationDaemonStatus(org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationDaemonStatus)" class="member-name-link">setIntegrationDaemonStatus</a><wbr>(<a href="../properties/IntegrationDaemonStatus.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties">IntegrationDaemonStatus</a>&nbsp;integrationDaemonStatus)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the list of summaries for the discovery engine.</div>
+<div class="block">Set up the summary of the services and groups running in the integration daemon.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -197,10 +197,10 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getIntegrationServiceSummaries()">
-<h3>getIntegrationServiceSummaries</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/IntegrationServiceSummary.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties">IntegrationServiceSummary</a>&gt;</span>&nbsp;<span class="element-name">getIntegrationServiceSummaries</span>()</div>
-<div class="block">Return the summary of each discovery engine assigned to the discovery server.</div>
+<section class="detail" id="getIntegrationDaemonStatus()">
+<h3>getIntegrationDaemonStatus</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/IntegrationDaemonStatus.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties">IntegrationDaemonStatus</a></span>&nbsp;<span class="element-name">getIntegrationDaemonStatus</span>()</div>
+<div class="block">Return the summary of the services and groups running in the integration daemon.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list of summaries</dd>
@@ -208,13 +208,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setIntegrationServiceSummaries(java.util.List)">
-<h3>setIntegrationServiceSummaries</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setIntegrationServiceSummaries</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/IntegrationServiceSummary.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties">IntegrationServiceSummary</a>&gt;&nbsp;integrationServiceSummaries)</span></div>
-<div class="block">Set up the list of summaries for the discovery engine.</div>
+<section class="detail" id="setIntegrationDaemonStatus(org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationDaemonStatus)">
+<h3>setIntegrationDaemonStatus</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setIntegrationDaemonStatus</span><wbr><span class="parameters">(<a href="../properties/IntegrationDaemonStatus.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties">IntegrationDaemonStatus</a>&nbsp;integrationDaemonStatus)</span></div>
+<div class="block">Set up the summary of the services and groups running in the integration daemon.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>integrationServiceSummaries</code> - list of summaries</dd>
+<dd><code>integrationDaemonStatus</code> - list of summaries</dd>
 </dl>
 </section>
 </li>

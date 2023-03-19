@@ -45,7 +45,7 @@ loadScripts(document, 'script');</script>
 <ul class="sub-nav-list">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
 </ul>
@@ -72,16 +72,27 @@ loadScripts(document, 'script');</script>
 <h1 title="Class APIIntegratorContext" class="title">Class APIIntegratorContext</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance"><a href="../../../frameworks/integration/context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">org.odpi.openmetadata.frameworks.integration.context.IntegrationContext</a>
 <div class="inheritance">org.odpi.openmetadata.integrationservices.api.connector.APIIntegratorContext</div>
+</div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">APIIntegratorContext</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<span class="extends-implements">extends <a href="../../../frameworks/integration/context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a></span></div>
 <div class="block">APIIntegratorContext is the context for managing resources from a relational api server.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
+<!-- =========== FIELD SUMMARY =========== -->
+<li>
+<section class="field-summary" id="field-summary">
+<h2>Field Summary</h2>
+<div class="inherited-list">
+<h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.integration.context.IntegrationContext">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.context.<a href="../../../frameworks/integration/context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a></h3>
+<code><a href="../../../frameworks/integration/context/IntegrationContext.html#externalSourceGUID">externalSourceGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#externalSourceIsHome">externalSourceIsHome</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#externalSourceName">externalSourceName</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#integrationConnectorGUID">integrationConnectorGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#openIntegrationClient">openIntegrationClient</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#openMetadataStoreClient">openMetadataStoreClient</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#permittedSynchronization">permittedSynchronization</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#userId">userId</a></code></div>
+</section>
+</li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <li>
 <section class="constructor-summary" id="constructor-summary">
@@ -90,12 +101,21 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.accessservices.datamanager.client.APIManagerClient,org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient,org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">APIIntegratorContext</a><wbr>(<a href="../../../accessservices/datamanager/client/APIManagerClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">APIManagerClient</a>&nbsp;apiManagerClient,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient,org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient,org.odpi.openmetadata.accessservices.datamanager.client.APIManagerClient,org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient,org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient,boolean,org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization,java.lang.String,org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext,java.lang.String,java.lang.String)" class="member-name-link">APIIntegratorContext</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorUserId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../../../frameworks/integration/client/OpenIntegrationClient.html" title="class in org.odpi.openmetadata.frameworks.integration.client">OpenIntegrationClient</a>&nbsp;openIntegrationClient,
+ <a href="../../../frameworks/governanceaction/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenMetadataClient</a>&nbsp;openMetadataStoreClient,
+ <a href="../../../accessservices/datamanager/client/APIManagerClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">APIManagerClient</a>&nbsp;apiManagerClient,
  <a href="../../../accessservices/datamanager/client/ConnectionManagerClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">ConnectionManagerClient</a>&nbsp;connectionManagerClient,
  <a href="../../../accessservices/datamanager/client/DataManagerEventClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">DataManagerEventClient</a>&nbsp;eventClient,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;apiManagerGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;apiManagerName)</code></div>
+ boolean&nbsp;generateIntegrationReport,
+ <a href="../../../frameworks/integration/contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a>&nbsp;permittedSynchronization,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationConnectorGUID,
+ <a href="../../../frameworks/integration/context/IntegrationGovernanceContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationGovernanceContext</a>&nbsp;integrationGovernanceContext,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 </div>
@@ -123,7 +143,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearSchemaTypes(java.lang.String)" class="member-name-link">clearSchemaTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;apiParameterGUID)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Remove the linked schema types from a API parameter.</div>
+<div class="block">Remove the linked schema types from an API parameter.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createAPI(java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.APIProperties)" class="member-name-link">createAPI</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endpointGUID,
@@ -177,7 +197,7 @@ loadScripts(document, 'script');</script>
  <a href="../../../accessservices/datamanager/properties/APIParameterListType.html" title="enum class in org.odpi.openmetadata.accessservices.datamanager.properties">APIParameterListType</a>&nbsp;parameterListType,
  <a href="../../../accessservices/datamanager/properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">TemplateProperties</a>&nbsp;templateProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create a new metadata element to represent a an API Parameter List using an existing API Parameter List as a template.</div>
+<div class="block">Create a new metadata element to represent an API Parameter List using an existing API Parameter List as a template.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createEndpoint(org.odpi.openmetadata.accessservices.datamanager.properties.EndpointProperties)" class="member-name-link">createEndpoint</a><wbr>(<a href="../../../accessservices/datamanager/properties/EndpointProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">EndpointProperties</a>&nbsp;endpointProperties)</code></div>
@@ -444,7 +464,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeEndpoint(java.lang.String)" class="member-name-link">removeEndpoint</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endpointGUID)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Remove the metadata element representing a endpoint.</div>
+<div class="block">Remove the metadata element representing an endpoint.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeSchemaType(java.lang.String)" class="member-name-link">removeSchemaType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID)</code></div>
@@ -469,7 +489,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;apiParameterGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Connect a schema type to a API parameter.</div>
+<div class="block">Connect a schema type to an API parameter.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateAPI(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.APIProperties)" class="member-name-link">updateAPI</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;apiGUID,
@@ -490,7 +510,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;isMergeUpdate,
  <a href="../../../accessservices/datamanager/properties/APIParameterProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">APIParameterProperties</a>&nbsp;apiParameterProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Update the properties of the metadata element representing a API parameter.</div>
+<div class="block">Update the properties of the metadata element representing an API parameter.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateAPIParameterList(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.APIParameterListProperties)" class="member-name-link">updateAPIParameterList</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;apiParameterListGUID,
@@ -504,7 +524,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endpointGUID,
  <a href="../../../accessservices/datamanager/properties/EndpointProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">EndpointProperties</a>&nbsp;endpointProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Update the metadata element representing a endpoint.</div>
+<div class="block">Update the metadata element representing an endpoint.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateSchemaType(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeProperties)" class="member-name-link">updateSchemaType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
@@ -522,6 +542,9 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.context.IntegrationContext">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.context.<a href="../../../frameworks/integration/context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a></h3>
+<code><a href="../../../frameworks/integration/context/IntegrationContext.html#getCatalogTargets(int,int)">getCatalogTargets</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getIntegrationGovernanceContext()">getIntegrationGovernanceContext</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getMetadataSourceQualifiedName()">getMetadataSourceQualifiedName</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getPermittedSynchronization()">getPermittedSynchronization</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#publishReport()">publishReport</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportAnchorGUID(java.lang.String,java.lang.String)">reportAnchorGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportElementCreation(java.lang.String)">reportElementCreation</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportElementDelete(java.lang.String)">reportElementDelete</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportElementUpdate(java.lang.String)">reportElementUpdate</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportParentGUID(java.lang.String,java.lang.String)">reportParentGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#setActiveReportPublishing(boolean)">setActiveReportPublishing</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#startRecording()">startRecording</a></code></div>
+<div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
 </section>
@@ -536,23 +559,41 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.accessservices.datamanager.client.APIManagerClient,org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient,org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient,java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient,org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient,org.odpi.openmetadata.accessservices.datamanager.client.APIManagerClient,org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient,org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient,boolean,org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization,java.lang.String,org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext,java.lang.String,java.lang.String)">
 <h3>APIIntegratorContext</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">APIIntegratorContext</span><wbr><span class="parameters">(<a href="../../../accessservices/datamanager/client/APIManagerClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">APIManagerClient</a>&nbsp;apiManagerClient,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">APIIntegratorContext</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorUserId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../../../frameworks/integration/client/OpenIntegrationClient.html" title="class in org.odpi.openmetadata.frameworks.integration.client">OpenIntegrationClient</a>&nbsp;openIntegrationClient,
+ <a href="../../../frameworks/governanceaction/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenMetadataClient</a>&nbsp;openMetadataStoreClient,
+ <a href="../../../accessservices/datamanager/client/APIManagerClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">APIManagerClient</a>&nbsp;apiManagerClient,
  <a href="../../../accessservices/datamanager/client/ConnectionManagerClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">ConnectionManagerClient</a>&nbsp;connectionManagerClient,
  <a href="../../../accessservices/datamanager/client/DataManagerEventClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">DataManagerEventClient</a>&nbsp;eventClient,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;apiManagerGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;apiManagerName)</span></div>
+ boolean&nbsp;generateIntegrationReport,
+ <a href="../../../frameworks/integration/contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a>&nbsp;permittedSynchronization,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationConnectorGUID,
+ <a href="../../../frameworks/integration/context/IntegrationGovernanceContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationGovernanceContext</a>&nbsp;integrationGovernanceContext,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName)</span></div>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>connectorId</code> - unique identifier of the connector (used to configure the event listener)</dd>
+<dd><code>connectorName</code> - name of connector from config</dd>
+<dd><code>connectorUserId</code> - userId for the connector</dd>
+<dd><code>serverName</code> - name of the integration daemon</dd>
+<dd><code>openIntegrationClient</code> - client for calling the metadata server</dd>
+<dd><code>openMetadataStoreClient</code> - client for calling the metadata server</dd>
 <dd><code>apiManagerClient</code> - client to map request to</dd>
 <dd><code>connectionManagerClient</code> - client to manage connections in the metadata server</dd>
 <dd><code>eventClient</code> - client to register for events</dd>
-<dd><code>userId</code> - integration daemon's userId</dd>
-<dd><code>apiManagerGUID</code> - unique identifier of the software server capability for the api manager</dd>
-<dd><code>apiManagerName</code> - unique name of the software server capability for the api manager</dd>
+<dd><code>permittedSynchronization</code> - the direction of integration permitted by the integration connector</dd>
+<dd><code>integrationConnectorGUID</code> - unique identifier for the integration connector if it is started via an integration group (otherwise it is
+                                 null).</dd>
+<dd><code>integrationGovernanceContext</code> - populated governance context for the connector's use</dd>
+<dd><code>externalSourceGUID</code> - unique identifier of the software server capability for the api manager</dd>
+<dd><code>externalSourceName</code> - unique name of the software server capability for the api manager</dd>
 </dl>
 </section>
 </li>
@@ -664,7 +705,7 @@ loadScripts(document, 'script');</script>
                     throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
-<div class="block">Update the metadata element representing a endpoint.  It is possible to use the subtype property classes or
+<div class="block">Update the metadata element representing an endpoint.  It is possible to use the subtype property classes or
  set up specialized properties in extended properties.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -685,7 +726,7 @@ loadScripts(document, 'script');</script>
                     throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
-<div class="block">Remove the metadata element representing a endpoint.</div>
+<div class="block">Remove the metadata element representing an endpoint.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>endpointGUID</code> - unique identifier of the metadata element to remove</dd>
@@ -1204,7 +1245,7 @@ loadScripts(document, 'script');</script>
                                           throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
-<div class="block">Create a new metadata element to represent a an API Parameter List using an existing API Parameter List as a template.</div>
+<div class="block">Create a new metadata element to represent an API Parameter List using an existing API Parameter List as a template.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>templateGUID</code> - unique identifier of the metadata element to copy</dd>
@@ -1411,7 +1452,7 @@ loadScripts(document, 'script');</script>
                      throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
-<div class="block">Connect a schema type to a API parameter.</div>
+<div class="block">Connect a schema type to an API parameter.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>relationshipTypeName</code> - name of relationship to create</dd>
@@ -1431,7 +1472,7 @@ loadScripts(document, 'script');</script>
                       throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
-<div class="block">Remove the linked schema types from a API parameter.</div>
+<div class="block">Remove the linked schema types from an API parameter.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>apiParameterGUID</code> - unique identifier of the API parameter</dd>
@@ -1451,7 +1492,7 @@ loadScripts(document, 'script');</script>
                         throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
-<div class="block">Update the properties of the metadata element representing a API parameter.</div>
+<div class="block">Update the properties of the metadata element representing an API parameter.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>apiParameterGUID</code> - unique identifier of the API parameter to update</dd>

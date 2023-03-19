@@ -118,7 +118,11 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#BAD_INTEGRATION_CONNECTION" class="member-name-link">BAD_INTEGRATION_CONNECTION</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#CONFIG_ERROR" class="member-name-link">CONFIG_ERROR</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#CLEARING_ALL_GOVERNANCE_SERVICE_CONFIG" class="member-name-link">CLEARING_ALL_GOVERNANCE_SERVICE_CONFIG</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#CONFIG_ERROR" class="member-name-link">CONFIG_ERROR</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#CONNECTOR_CHANGE_FAILED" class="member-name-link">CONNECTOR_CHANGE_FAILED</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="#CONNECTOR_ERROR" class="member-name-link">CONNECTOR_ERROR</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
@@ -148,9 +152,13 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="#DAEMON_THREAD_TERMINATING" class="member-name-link">DAEMON_THREAD_TERMINATING</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#ENGAGE_IMPLEMENTATION_MISSING" class="member-name-link">ENGAGE_IMPLEMENTATION_MISSING</a></code></div>
+<div class="col-first even-row-color"><code><a href="#ENGAGE_RETURNED" class="member-name-link">ENGAGE_RETURNED</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#ENGAGE_RETURNED" class="member-name-link">ENGAGE_RETURNED</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#FINISHED_ALL_INTEGRATION_CONNECTOR_CONFIG" class="member-name-link">FINISHED_ALL_INTEGRATION_CONNECTOR_CONFIG</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#GROUP_CHANGE_FAILED" class="member-name-link">GROUP_CHANGE_FAILED</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#GROUP_SHUTDOWN" class="member-name-link">GROUP_SHUTDOWN</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="#INITIALIZE_ERROR" class="member-name-link">INITIALIZE_ERROR</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
@@ -192,6 +200,8 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="#SERVICE_SHUTTING_DOWN" class="member-name-link">SERVICE_SHUTTING_DOWN</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#UNKNOWN_CONNECTOR_INTERFACE" class="member-name-link">UNKNOWN_CONNECTOR_INTERFACE</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -409,12 +419,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="ENGAGE_IMPLEMENTATION_MISSING">
-<h3>ENGAGE_IMPLEMENTATION_MISSING</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">ENGAGE_IMPLEMENTATION_MISSING</span></div>
-</section>
-</li>
-<li>
 <section class="detail" id="ENGAGE_RETURNED">
 <h3>ENGAGE_RETURNED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">ENGAGE_RETURNED</span></div>
@@ -478,6 +482,42 @@ the order they are declared.</div>
 <section class="detail" id="SERVER_NOT_AUTHORIZED">
 <h3>SERVER_NOT_AUTHORIZED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">SERVER_NOT_AUTHORIZED</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="CLEARING_ALL_GOVERNANCE_SERVICE_CONFIG">
+<h3>CLEARING_ALL_GOVERNANCE_SERVICE_CONFIG</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">CLEARING_ALL_GOVERNANCE_SERVICE_CONFIG</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="GROUP_SHUTDOWN">
+<h3>GROUP_SHUTDOWN</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">GROUP_SHUTDOWN</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="GROUP_CHANGE_FAILED">
+<h3>GROUP_CHANGE_FAILED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">GROUP_CHANGE_FAILED</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="CONNECTOR_CHANGE_FAILED">
+<h3>CONNECTOR_CHANGE_FAILED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">CONNECTOR_CHANGE_FAILED</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNKNOWN_CONNECTOR_INTERFACE">
+<h3>UNKNOWN_CONNECTOR_INTERFACE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">UNKNOWN_CONNECTOR_INTERFACE</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="FINISHED_ALL_INTEGRATION_CONNECTOR_CONFIG">
+<h3>FINISHED_ALL_INTEGRATION_CONNECTOR_CONFIG</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">FINISHED_ALL_INTEGRATION_CONNECTOR_CONFIG</span></div>
 </section>
 </li>
 </ul>

@@ -163,51 +163,61 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the user id for the connector - if this is null, the integration daemon's userId is used
  on requests to the Open Metadata Access Service (OMAS).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataSourceQualifiedName()" class="member-name-link">getMetadataSourceQualifiedName</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGenerateIntegrationReports()" class="member-name-link">getGenerateIntegrationReports</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return a flag indicating whether the integration connector should create an integration report.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataSourceQualifiedName()" class="member-name-link">getMetadataSourceQualifiedName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the qualified name of the metadata source for this integration connector.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.properties">PermittedSynchronization</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPermittedSynchronization()" class="member-name-link">getPermittedSynchronization</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/integration/contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPermittedSynchronization()" class="member-name-link">getPermittedSynchronization</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the permitted direction of metadata flow (see the enum definition for more details).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRefreshTimeInterval()" class="member-name-link">getRefreshTimeInterval</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRefreshTimeInterval()" class="member-name-link">getRefreshTimeInterval</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the number of minutes between each call to the connector to refresh the metadata.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUsesBlockingCalls()" class="member-name-link">getUsesBlockingCalls</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return if the connector should be started in its own thread to allow it is block on a listening call.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUsesBlockingCalls()" class="member-name-link">getUsesBlockingCalls</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return if the connector should be started in its own thread to allow it to block on a listening call.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a hash code based on the values of this object.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConnection(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">setConnection</a><wbr>(<a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConnection(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">setConnection</a><wbr>(<a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the connection for the integration connector.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConnectorId(java.lang.String)" class="member-name-link">setConnectorId</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConnectorId(java.lang.String)" class="member-name-link">setConnectorId</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the unique identifier of this connector.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConnectorName(java.lang.String)" class="member-name-link">setConnectorName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConnectorName(java.lang.String)" class="member-name-link">setConnectorName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the name of the connector.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConnectorUserId(java.lang.String)" class="member-name-link">setConnectorUserId</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorUserId)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConnectorUserId(java.lang.String)" class="member-name-link">setConnectorUserId</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorUserId)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the user id for the connector - if this is null, the integration daemon's userId is used
  on requests to the Open Metadata Access Service (OMAS).</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGenerateIntegrationReports(boolean)" class="member-name-link">setGenerateIntegrationReports</a><wbr>(boolean&nbsp;generateIntegrationReports)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up a flag indicating whether the integration connector should create an integration report.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMetadataSourceQualifiedName(java.lang.String)" class="member-name-link">setMetadataSourceQualifiedName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataSourceQualifiedName)</code></div>
@@ -215,7 +225,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the qualified name of the metadata source for this integration connector.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPermittedSynchronization(org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization)" class="member-name-link">setPermittedSynchronization</a><wbr>(<a href="PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.properties">PermittedSynchronization</a>&nbsp;permittedSynchronization)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPermittedSynchronization(org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization)" class="member-name-link">setPermittedSynchronization</a><wbr>(<a href="../../../frameworks/integration/contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a>&nbsp;permittedSynchronization)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the permitted direction of metadata flow (see the enum definition for more details).</div>
 </div>
@@ -227,7 +237,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUsesBlockingCalls(boolean)" class="member-name-link">setUsesBlockingCalls</a><wbr>(boolean&nbsp;usesBlockingCalls)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up if the connector should be started in its own thread to allow it is block on a listening call.</div>
+<div class="block">Set up if the connector should be started in its own thread to allow it to block on a listening call.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -425,7 +435,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getUsesBlockingCalls()">
 <h3>getUsesBlockingCalls</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getUsesBlockingCalls</span>()</div>
-<div class="block">Return if the connector should be started in its own thread to allow it is block on a listening call.</div>
+<div class="block">Return if the connector should be started in its own thread to allow it to block on a listening call.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>boolean flag</dd>
@@ -436,7 +446,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setUsesBlockingCalls(boolean)">
 <h3>setUsesBlockingCalls</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setUsesBlockingCalls</span><wbr><span class="parameters">(boolean&nbsp;usesBlockingCalls)</span></div>
-<div class="block">Set up if the connector should be started in its own thread to allow it is block on a listening call.</div>
+<div class="block">Set up if the connector should be started in its own thread to allow it to block on a listening call.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>usesBlockingCalls</code> - boolean flag</dd>
@@ -446,7 +456,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getPermittedSynchronization()">
 <h3>getPermittedSynchronization</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.properties">PermittedSynchronization</a></span>&nbsp;<span class="element-name">getPermittedSynchronization</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/integration/contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a></span>&nbsp;<span class="element-name">getPermittedSynchronization</span>()</div>
 <div class="block">Return the permitted direction of metadata flow (see the enum definition for more details).  Any attempt
  by the connector to send/receive metadata in a direction that is not permitted results in a UserNotAuthorizedException.</div>
 <dl class="notes">
@@ -456,14 +466,36 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setPermittedSynchronization(org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization)">
+<section class="detail" id="setPermittedSynchronization(org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization)">
 <h3>setPermittedSynchronization</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setPermittedSynchronization</span><wbr><span class="parameters">(<a href="PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.properties">PermittedSynchronization</a>&nbsp;permittedSynchronization)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setPermittedSynchronization</span><wbr><span class="parameters">(<a href="../../../frameworks/integration/contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a>&nbsp;permittedSynchronization)</span></div>
 <div class="block">Set up the permitted direction of metadata flow (see the enum definition for more details).  Any attempt
  by the connector to send/receive metadata in a direction that is not permitted results in a UserNotAuthorizedException.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>permittedSynchronization</code> - enum</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getGenerateIntegrationReports()">
+<h3>getGenerateIntegrationReports</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getGenerateIntegrationReports</span>()</div>
+<div class="block">Return a flag indicating whether the integration connector should create an integration report.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>boolean flag (default = true)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setGenerateIntegrationReports(boolean)">
+<h3>setGenerateIntegrationReports</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setGenerateIntegrationReports</span><wbr><span class="parameters">(boolean&nbsp;generateIntegrationReports)</span></div>
+<div class="block">Set up a flag indicating whether the integration connector should create an integration report.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>generateIntegrationReports</code> - boolean flag</dd>
 </dl>
 </section>
 </li>

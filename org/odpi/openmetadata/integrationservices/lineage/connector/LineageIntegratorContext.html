@@ -45,7 +45,7 @@ loadScripts(document, 'script');</script>
 <ul class="sub-nav-list">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
 </ul>
@@ -72,7 +72,9 @@ loadScripts(document, 'script');</script>
 <h1 title="Class LineageIntegratorContext" class="title">Class LineageIntegratorContext</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance"><a href="../../../frameworks/integration/context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">org.odpi.openmetadata.frameworks.integration.context.IntegrationContext</a>
 <div class="inheritance">org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorContext</div>
+</div>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
@@ -81,13 +83,22 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">LineageIntegratorContext</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
+<span class="extends-implements">extends <a href="../../../frameworks/integration/context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a>
 implements <a href="OpenLineageListenerManager.html" title="interface in org.odpi.openmetadata.integrationservices.lineage.connector">OpenLineageListenerManager</a></span></div>
 <div class="block">LineageIntegratorContext provides a wrapper around the Asset Manager OMAS client.
  It provides the simplified interface to open metadata needed by the LineageIntegratorConnector.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
+<!-- =========== FIELD SUMMARY =========== -->
+<li>
+<section class="field-summary" id="field-summary">
+<h2>Field Summary</h2>
+<div class="inherited-list">
+<h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.integration.context.IntegrationContext">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.context.<a href="../../../frameworks/integration/context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a></h3>
+<code><a href="../../../frameworks/integration/context/IntegrationContext.html#externalSourceGUID">externalSourceGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#externalSourceIsHome">externalSourceIsHome</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#externalSourceName">externalSourceName</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#integrationConnectorGUID">integrationConnectorGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#openIntegrationClient">openIntegrationClient</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#openMetadataStoreClient">openMetadataStoreClient</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#permittedSynchronization">permittedSynchronization</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#userId">userId</a></code></div>
+</section>
+</li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <li>
 <section class="constructor-summary" id="constructor-summary">
@@ -96,16 +107,24 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.integrationservices.lineage.connector.OpenLineageListenerManager,org.odpi.openmetadata.accessservices.assetmanager.client.DataAssetExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.LineageExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.GovernanceExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.StewardshipExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerEventClient,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">LineageIntegratorContext</a><wbr>(<a href="OpenLineageListenerManager.html" title="interface in org.odpi.openmetadata.integrationservices.lineage.connector">OpenLineageListenerManager</a>&nbsp;openLineageListenerManager,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient,org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient,org.odpi.openmetadata.integrationservices.lineage.connector.OpenLineageListenerManager,org.odpi.openmetadata.accessservices.assetmanager.client.DataAssetExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.LineageExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.GovernanceExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.StewardshipExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerEventClient,boolean,org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization,java.lang.String,org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">LineageIntegratorContext</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorUserId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../../../frameworks/integration/client/OpenIntegrationClient.html" title="class in org.odpi.openmetadata.frameworks.integration.client">OpenIntegrationClient</a>&nbsp;openIntegrationClient,
+ <a href="../../../frameworks/governanceaction/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenMetadataClient</a>&nbsp;openMetadataStoreClient,
+ <a href="OpenLineageListenerManager.html" title="interface in org.odpi.openmetadata.integrationservices.lineage.connector">OpenLineageListenerManager</a>&nbsp;openLineageListenerManager,
  <a href="../../../accessservices/assetmanager/client/DataAssetExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">DataAssetExchangeClient</a>&nbsp;dataAssetExchangeClient,
  <a href="../../../accessservices/assetmanager/client/LineageExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">LineageExchangeClient</a>&nbsp;lineageExchangeClient,
  <a href="../../../accessservices/assetmanager/client/GovernanceExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">GovernanceExchangeClient</a>&nbsp;governanceExchangeClient,
  <a href="../../../accessservices/assetmanager/client/StewardshipExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">StewardshipExchangeClient</a>&nbsp;stewardshipExchangeClient,
  <a href="../../../accessservices/assetmanager/client/AssetManagerEventClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">AssetManagerEventClient</a>&nbsp;eventClient,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
+ boolean&nbsp;generateIntegrationReport,
+ <a href="../../../frameworks/integration/contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a>&nbsp;permittedSynchronization,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationConnectorGUID,
+ <a href="../../../frameworks/integration/context/IntegrationGovernanceContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationGovernanceContext</a>&nbsp;integrationGovernanceContext,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationServiceName,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
 <div class="col-last even-row-color">
@@ -961,6 +980,9 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </div>
 </div>
 <div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.context.IntegrationContext">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.context.<a href="../../../frameworks/integration/context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a></h3>
+<code><a href="../../../frameworks/integration/context/IntegrationContext.html#getCatalogTargets(int,int)">getCatalogTargets</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getIntegrationGovernanceContext()">getIntegrationGovernanceContext</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getMetadataSourceQualifiedName()">getMetadataSourceQualifiedName</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getPermittedSynchronization()">getPermittedSynchronization</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#publishReport()">publishReport</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportAnchorGUID(java.lang.String,java.lang.String)">reportAnchorGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportElementCreation(java.lang.String)">reportElementCreation</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportElementDelete(java.lang.String)">reportElementDelete</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportElementUpdate(java.lang.String)">reportElementUpdate</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportParentGUID(java.lang.String,java.lang.String)">reportParentGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#setActiveReportPublishing(boolean)">setActiveReportPublishing</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#startRecording()">startRecording</a></code></div>
+<div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
 </section>
@@ -975,33 +997,50 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.integrationservices.lineage.connector.OpenLineageListenerManager,org.odpi.openmetadata.accessservices.assetmanager.client.DataAssetExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.LineageExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.GovernanceExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.StewardshipExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerEventClient,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient,org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient,org.odpi.openmetadata.integrationservices.lineage.connector.OpenLineageListenerManager,org.odpi.openmetadata.accessservices.assetmanager.client.DataAssetExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.LineageExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.GovernanceExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.StewardshipExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerEventClient,boolean,org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization,java.lang.String,org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
 <h3>LineageIntegratorContext</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">LineageIntegratorContext</span><wbr><span class="parameters">(<a href="OpenLineageListenerManager.html" title="interface in org.odpi.openmetadata.integrationservices.lineage.connector">OpenLineageListenerManager</a>&nbsp;openLineageListenerManager,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">LineageIntegratorContext</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorUserId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../../../frameworks/integration/client/OpenIntegrationClient.html" title="class in org.odpi.openmetadata.frameworks.integration.client">OpenIntegrationClient</a>&nbsp;openIntegrationClient,
+ <a href="../../../frameworks/governanceaction/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenMetadataClient</a>&nbsp;openMetadataStoreClient,
+ <a href="OpenLineageListenerManager.html" title="interface in org.odpi.openmetadata.integrationservices.lineage.connector">OpenLineageListenerManager</a>&nbsp;openLineageListenerManager,
  <a href="../../../accessservices/assetmanager/client/DataAssetExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">DataAssetExchangeClient</a>&nbsp;dataAssetExchangeClient,
  <a href="../../../accessservices/assetmanager/client/LineageExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">LineageExchangeClient</a>&nbsp;lineageExchangeClient,
  <a href="../../../accessservices/assetmanager/client/GovernanceExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">GovernanceExchangeClient</a>&nbsp;governanceExchangeClient,
  <a href="../../../accessservices/assetmanager/client/StewardshipExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">StewardshipExchangeClient</a>&nbsp;stewardshipExchangeClient,
  <a href="../../../accessservices/assetmanager/client/AssetManagerEventClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">AssetManagerEventClient</a>&nbsp;eventClient,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
+ boolean&nbsp;generateIntegrationReport,
+ <a href="../../../frameworks/integration/contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a>&nbsp;permittedSynchronization,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationConnectorGUID,
+ <a href="../../../frameworks/integration/context/IntegrationGovernanceContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationGovernanceContext</a>&nbsp;integrationGovernanceContext,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationServiceName,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span></div>
 <div class="block">Create a new context for a connector.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>connectorId</code> - unique identifier of the connector (used to configure the event listener)</dd>
+<dd><code>connectorName</code> - name of connector from config</dd>
+<dd><code>connectorUserId</code> - userId for the connector</dd>
+<dd><code>serverName</code> - name of the integration daemon</dd>
+<dd><code>openIntegrationClient</code> - client for calling the metadata server</dd>
+<dd><code>openMetadataStoreClient</code> - client for calling the metadata server</dd>
 <dd><code>openLineageListenerManager</code> - object responsible for managing open lineage listeners</dd>
 <dd><code>dataAssetExchangeClient</code> - client for data asset requests</dd>
 <dd><code>lineageExchangeClient</code> - client for lineage requests</dd>
 <dd><code>governanceExchangeClient</code> - client for governance actions and related elements</dd>
 <dd><code>stewardshipExchangeClient</code> - client for attaching governance metadata</dd>
 <dd><code>eventClient</code> - client managing listeners for the OMAS OutTopic</dd>
-<dd><code>userId</code> - integration daemon's userId</dd>
-<dd><code>assetManagerGUID</code> - unique identifier of the software server capability for the asset manager</dd>
-<dd><code>assetManagerName</code> - unique name of the software server capability for the asset manager</dd>
-<dd><code>connectorName</code> - name of the connector using this context</dd>
+<dd><code>generateIntegrationReport</code> - should the connector generate an integration reports?</dd>
+<dd><code>permittedSynchronization</code> - the direction of integration permitted by the integration connector</dd>
+<dd><code>integrationConnectorGUID</code> - unique identifier for the integration connector if it is started via an integration group (otherwise it is
+                                 null).</dd>
+<dd><code>integrationGovernanceContext</code> - populated governance context for the connector's use</dd>
+<dd><code>externalSourceGUID</code> - unique identifier of the software server capability for the asset manager</dd>
+<dd><code>externalSourceName</code> - unique name of the software server capability for the asset manager</dd>
 <dd><code>integrationServiceName</code> - name of this service</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 </dl>

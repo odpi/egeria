@@ -106,9 +106,9 @@ implements <a href="../api/ITInfrastructureEventInterface.html" title="interface
 <div class="col-last even-row-color">
 <div class="block">Create a new client that is to be used within an OMAG Server.</div>
 </div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)" class="member-name-link">ITInfrastructureEventClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)" class="member-name-link">ITInfrastructureEventClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
- <a href="../../../commonservices/ocf/metadatamanagement/client/OCFRESTClient.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client">OCFRESTClient</a>&nbsp;restClient,
+ <a href="../../../frameworkservices/ocf/metadatamanagement/client/OCFRESTClient.html" title="class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client">OCFRESTClient</a>&nbsp;restClient,
  int&nbsp;maxPageSize,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerId)</code></div>
@@ -173,7 +173,7 @@ implements <a href="../api/ITInfrastructureEventInterface.html" title="interface
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
-<dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
+<dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST services</dd>
 <dd><code>serverUserId</code> - this server's userId</dd>
 <dd><code>serverPassword</code> - this server's userId</dd>
 <dd><code>maxPageSize</code> - pre-initialized parameter limit</dd>
@@ -185,11 +185,11 @@ implements <a href="../api/ITInfrastructureEventInterface.html" title="interface
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)">
 <h3>ITInfrastructureEventClient</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ITInfrastructureEventClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
- <a href="../../../commonservices/ocf/metadatamanagement/client/OCFRESTClient.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client">OCFRESTClient</a>&nbsp;restClient,
+ <a href="../../../frameworkservices/ocf/metadatamanagement/client/OCFRESTClient.html" title="class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client">OCFRESTClient</a>&nbsp;restClient,
  int&nbsp;maxPageSize,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerId)</span>
@@ -198,7 +198,7 @@ implements <a href="../api/ITInfrastructureEventInterface.html" title="interface
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
-<dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
+<dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST services</dd>
 <dd><code>restClient</code> - pre-initialized REST client</dd>
 <dd><code>maxPageSize</code> - pre-initialized parameter limit</dd>
 <dd><code>auditLog</code> - logging destination</dd>

@@ -93,9 +93,9 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig,org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager.IntegrationContextManager,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">IntegrationServiceHandler</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig,org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">IntegrationServiceHandler</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
  <a href="../../../adminservices/configuration/properties/IntegrationServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationServiceConfig</a>&nbsp;serviceConfig,
- <a href="../contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager">IntegrationContextManager</a>&nbsp;contextManager,
+ <a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.frameworks.integration.contextmanager">IntegrationContextManager</a>&nbsp;contextManager,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Constructor passes the service config.</div>
@@ -120,36 +120,36 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the configuration properties of the named connector.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager">IntegrationContextManager</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.frameworks.integration.contextmanager">IntegrationContextManager</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getContextManager()" class="member-name-link">getContextManager</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the context manager for this service.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/IntegrationServiceSummary.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties">IntegrationServiceSummary</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSummary()" class="member-name-link">getSummary</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationServiceFullName()" class="member-name-link">getIntegrationServiceFullName</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the full name of the service.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/IntegrationServiceSummary.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties">IntegrationServiceSummary</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationServiceSummary()" class="member-name-link">getIntegrationServiceSummary</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the status of this integration service.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="IntegrationConnectorHandler.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers">IntegrationConnectorHandler</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initialize()" class="member-name-link">initialize</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="IntegrationConnectorHandler.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers">IntegrationConnectorHandler</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initialize()" class="member-name-link">initialize</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create connector handlers for each of the connections listed in the configuration and
  return them to the caller.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refreshService(java.lang.String)" class="member-name-link">refreshService</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refreshService(java.lang.String)" class="member-name-link">refreshService</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Refresh all the connectors, or a specific connector if a connector name is supplied.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#restartService(java.lang.String)" class="member-name-link">restartService</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Restart all the connectors, or a specific connector if a connector name is supplied.</div>
-</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shutdown()" class="member-name-link">shutdown</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#restartService(java.lang.String)" class="member-name-link">restartService</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Step through all the connector handlers and disconnect the integration connectors</div>
+<div class="block">Restart all the connectors, or a specific connector if a connector name is supplied.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateConfigurationProperties(java.lang.String,java.lang.String,boolean,java.util.Map)" class="member-name-link">updateConfigurationProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -177,14 +177,14 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig,org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager.IntegrationContextManager,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig,org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
 <h3>IntegrationServiceHandler</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">IntegrationServiceHandler</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
  <a href="../../../adminservices/configuration/properties/IntegrationServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationServiceConfig</a>&nbsp;serviceConfig,
- <a href="../contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager">IntegrationContextManager</a>&nbsp;contextManager,
+ <a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.frameworks.integration.contextmanager">IntegrationContextManager</a>&nbsp;contextManager,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span></div>
 <div class="block">Constructor passes the service config. It is just saved at this point. Interesting things
- start to happen on the initialize() call</div>
+ start to happen on initialize().</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>localServerName</code> - name of the local server</dd>
@@ -205,11 +205,22 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getContextManager()">
 <h3>getContextManager</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager">IntegrationContextManager</a></span>&nbsp;<span class="element-name">getContextManager</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.frameworks.integration.contextmanager">IntegrationContextManager</a></span>&nbsp;<span class="element-name">getContextManager</span>()</div>
 <div class="block">Return the context manager for this service.  Each integration service has its own implementation.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>supplied context manager</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getIntegrationServiceFullName()">
+<h3>getIntegrationServiceFullName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getIntegrationServiceFullName</span>()</div>
+<div class="block">Return the full name of the service.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>stirng name</dd>
 </dl>
 </section>
 </li>
@@ -228,9 +239,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getSummary()">
-<h3>getSummary</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/IntegrationServiceSummary.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties">IntegrationServiceSummary</a></span>&nbsp;<span class="element-name">getSummary</span>()</div>
+<section class="detail" id="getIntegrationServiceSummary()">
+<h3>getIntegrationServiceSummary</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/IntegrationServiceSummary.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties">IntegrationServiceSummary</a></span>&nbsp;<span class="element-name">getIntegrationServiceSummary</span>()</div>
 <div class="block">Retrieve the status of this integration service.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -302,13 +313,6 @@ loadScripts(document, 'script');</script>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the connector name is not recognized</dd>
 </dl>
-</section>
-</li>
-<li>
-<section class="detail" id="shutdown()">
-<h3>shutdown</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">shutdown</span>()</div>
-<div class="block">Step through all the connector handlers and disconnect the integration connectors</div>
 </section>
 </li>
 </ul>

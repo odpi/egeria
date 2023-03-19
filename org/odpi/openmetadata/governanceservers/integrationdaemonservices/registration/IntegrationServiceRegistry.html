@@ -78,7 +78,8 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">IntegrationServiceRegistry</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">IntegrationServiceRegistry maintains the list of registered integration services.</div>
+<div class="block">IntegrationServiceRegistry maintains the list of registered integration services and the mapping to the specialized context manager/integration
+ connector APIs.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -113,13 +114,23 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Retrieve a partially filled configuration properties object for an integration service.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../commonservices/ffdc/rest/RegisteredOMAGService.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RegisteredOMAGService</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getRegisteredIntegrationServices()" class="member-name-link">getRegisteredIntegrationServices</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#registerIntegrationService(org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription,java.lang.String)" class="member-name-link">registerIntegrationService</a><wbr>(<a href="IntegrationServiceDescription.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration">IntegrationServiceDescription</a>&nbsp;serviceDescription,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;contextManagerClass)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getIntegrationServiceURLMarker(java.lang.String)" class="member-name-link">getIntegrationServiceURLMarker</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorProviderClassName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Retrieve the service URL marker for a specific integration connector.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../commonservices/ffdc/rest/RegisteredOMAGService.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RegisteredOMAGService</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getRegisteredIntegrationServices()" class="member-name-link">getRegisteredIntegrationServices</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Return descriptions for the list of registered OMISs for this platform.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#registerIntegrationService(org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription,java.lang.String,java.lang.String)" class="member-name-link">registerIntegrationService</a><wbr>(<a href="IntegrationServiceDescription.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration">IntegrationServiceDescription</a>&nbsp;serviceDescription,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;contextManagerClassName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorClassName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Register an Open Metadata Integration service (OMIS) with the OMAG Server Platform.</div>
+</div>
 </div>
 </div>
 </div>
@@ -152,10 +163,20 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="registerIntegrationService(org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription,java.lang.String)">
+<section class="detail" id="registerIntegrationService(org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription,java.lang.String,java.lang.String)">
 <h3>registerIntegrationService</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerIntegrationService</span><wbr><span class="parameters">(<a href="IntegrationServiceDescription.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration">IntegrationServiceDescription</a>&nbsp;serviceDescription,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;contextManagerClass)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;contextManagerClassName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorClassName)</span></div>
+<div class="block">Register an Open Metadata Integration service (OMIS) with the OMAG Server Platform.  This call is triggered when the OMIS is
+ loaded into the OMAG Server Platform as part of the Spring Component Scan.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serviceDescription</code> - description of the OMIS</dd>
+<dd><code>contextManagerClassName</code> - name of the class that implements a specialized context for the connectors.</dd>
+<dd><code>connectorClassName</code> - name of the specialized connector interface that supports the specialized context.  This is implemented by the
+                       integration connector and links it to a specific integration service.</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -166,7 +187,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
                                                             throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Retrieve a partially filled configuration properties object for an integration service.  It needs the connections for the
- integration connectors to be added.</div>
+ integration connectors to be added.  Called from admin services.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serviceURLMarker</code> - URL marker to identify the service</dd>
@@ -183,6 +204,39 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getRegisteredIntegrationServices()">
 <h3>getRegisteredIntegrationServices</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../commonservices/ffdc/rest/RegisteredOMAGService.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RegisteredOMAGService</a>&gt;</span>&nbsp;<span class="element-name">getRegisteredIntegrationServices</span>()</div>
+<div class="block">Return descriptions for the list of registered OMISs for this platform.  Returned to external caller.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of service descriptions</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getIntegrationServiceURLMarker(java.lang.String)">
+<h3>getIntegrationServiceURLMarker</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getIntegrationServiceURLMarker</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorProviderClassName)</span>
+                                             throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a>,
+<a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
+<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/ClassNotFoundException.html" title="class or interface in java.lang" class="external-link">ClassNotFoundException</a>,
+<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/InstantiationException.html" title="class or interface in java.lang" class="external-link">InstantiationException</a>,
+<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalAccessException.html" title="class or interface in java.lang" class="external-link">IllegalAccessException</a>,
+<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/NoSuchMethodException.html" title="class or interface in java.lang" class="external-link">NoSuchMethodException</a>,
+<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/reflect/InvocationTargetException.html" title="class or interface in java.lang.reflect" class="external-link">InvocationTargetException</a></span></div>
+<div class="block">Retrieve the service URL marker for a specific integration connector.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>connectorProviderClassName</code> - the name of the connector provider's class</dd>
+<dt>Returns:</dt>
+<dd>context manager that matches the capabilities of the connector</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a></code> - the connection passed to the connector provider is not valid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - the connector is not valid</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/ClassNotFoundException.html" title="class or interface in java.lang" class="external-link">ClassNotFoundException</a></code> - when the provided class cannot be found</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/InstantiationException.html" title="class or interface in java.lang" class="external-link">InstantiationException</a></code> - when the provided class cannot be instantiated</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalAccessException.html" title="class or interface in java.lang" class="external-link">IllegalAccessException</a></code> - when there is insufficient access to instantiate the provided class</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/NoSuchMethodException.html" title="class or interface in java.lang" class="external-link">NoSuchMethodException</a></code> - the default constructor is missing</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/reflect/InvocationTargetException.html" title="class or interface in java.lang.reflect" class="external-link">InvocationTargetException</a></code> - unable to call the default constructor</dd>
+</dl>
 </section>
 </li>
 </ul>

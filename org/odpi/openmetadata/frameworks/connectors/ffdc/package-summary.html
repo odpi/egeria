@@ -44,7 +44,7 @@ loadScripts(document, 'script');</script>
 <div>
 <ul class="sub-nav-list">
 <li>Package:&nbsp;</li>
-<li>Description&nbsp;|&nbsp;</li>
+<li><a href="#package-description">Description</a>&nbsp;|&nbsp;</li>
 <li><a href="#related-package-summary">Related Packages</a>&nbsp;|&nbsp;</li>
 <li><a href="#class-summary">Classes and Interfaces</a></li>
 </ul>
@@ -64,6 +64,33 @@ loadScripts(document, 'script');</script>
 </div>
 <hr>
 <div class="package-signature">package <span class="element-name">org.odpi.openmetadata.frameworks.connectors.ffdc</span></div>
+<section class="package-description" id="package-description">
+<div class="block">This package provides the first failure data capture support for the OCF module.
+ This includes an error code enum, a base class for runtime exceptions, a base class for checked exceptions plus
+ implementation of each specific exception.
+
+ The error code enum (OCFErrorCode) has an entry for each unique situation
+ where an exception is returned.  Each entry defines:
+
+ <ul>
+     <li>A unique id for the error</li>
+     <li>An HTTP error code for rest calls</li>
+     <li>A unique message Id</li>
+     <li>Message text with place holders for specific values</li>
+     <li>A description of the cause of the error and system action as a result.</li>
+     <li>A description of how to correct the error (if known)</li>
+ </ul>
+
+ Each exception (whether a checked or runtime exception) has two constructors.
+ The first constructor is used when a new error has been detected.
+ The second constructor is used when another exception has been caught.
+ This caught exception is passed on the constructor so it is effectively
+ embedded in the resulting OCF exception.
+
+ All constructors take the values from the error code enum to define the cause and resolution.
+ There is also care to ensure that an error message is passed to the super class as the default
+ behaviour is to use toString() to populate the error message.</div>
+</section>
 <section class="summary">
 <ul class="summary-list">
 <li>

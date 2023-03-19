@@ -74,8 +74,8 @@ loadScripts(document, 'script');</script>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance"><a href="../../../../commonservices/ffdc/rest/FFDCRESTClientBase.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClientBase</a>
 <div class="inheritance"><a href="../../../../commonservices/ffdc/rest/FFDCRESTClient.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</a>
-<div class="inheritance"><a href="../../../../commonservices/ocf/metadatamanagement/client/OCFRESTClient.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client">org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient</a>
-<div class="inheritance"><a href="../../../../commonservices/gaf/client/rest/OpenMetadataStoreRESTClient.html" title="class in org.odpi.openmetadata.commonservices.gaf.client.rest">org.odpi.openmetadata.commonservices.gaf.client.rest.OpenMetadataStoreRESTClient</a>
+<div class="inheritance"><a href="../../../../frameworkservices/ocf/metadatamanagement/client/OCFRESTClient.html" title="class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client">org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient</a>
+<div class="inheritance"><a href="../../../../frameworkservices/gaf/client/rest/GAFRESTClient.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client.rest">org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient</a>
 <div class="inheritance">org.odpi.openmetadata.accessservices.governanceengine.client.rest.GovernanceEngineRESTClient</div>
 </div>
 </div>
@@ -85,7 +85,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">GovernanceEngineRESTClient</span>
-<span class="extends-implements">extends <a href="../../../../commonservices/gaf/client/rest/OpenMetadataStoreRESTClient.html" title="class in org.odpi.openmetadata.commonservices.gaf.client.rest">OpenMetadataStoreRESTClient</a></span></div>
+<span class="extends-implements">extends <a href="../../../../frameworkservices/gaf/client/rest/GAFRESTClient.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client.rest">GAFRESTClient</a></span></div>
 <div class="block">GovernanceEngineRESTClient is responsible for issuing calls to the OMAS REST APIs.</div>
 </section>
 <section class="summary">
@@ -147,6 +147,20 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/CatalogTargetResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">CatalogTargetResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#callCatalogTargetGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)" class="member-name-link">callCatalogTargetGetRESTCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Issue a GET REST call that returns a CatalogTargetResponse object.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/CatalogTargetsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">CatalogTargetsResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#callCatalogTargetsGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)" class="member-name-link">callCatalogTargetsGetRESTCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Issue a GET REST call that returns a CatalogTargetsResponse object.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/GovernanceActionElementResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">GovernanceActionElementResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#callGovernanceActionGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)" class="member-name-link">callGovernanceActionGetRESTCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
@@ -212,65 +226,99 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Issue a GET REST call that returns a GovernanceEngineElementResponse object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/GovernanceEngineElementResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">GovernanceEngineElementResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#callGovernanceEnginePostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)" class="member-name-link">callGovernanceEnginePostRESTCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/GovernanceEngineElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">GovernanceEngineElementsResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#callGovernanceEnginesGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)" class="member-name-link">callGovernanceEnginesGetRESTCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;requestBody,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Issue a POST REST call that returns a GovernanceEngineElementResponse object.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/GovernanceEngineElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">GovernanceEngineElementsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#callGovernanceEnginesGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)" class="member-name-link">callGovernanceEnginesGetRESTCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Issue a GET REST call that returns a GovernanceEngineElementsResponse object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/GovernanceServiceElementResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">GovernanceServiceElementResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#callGovernanceServiceGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)" class="member-name-link">callGovernanceServiceGetRESTCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/GovernanceServiceElementResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">GovernanceServiceElementResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#callGovernanceServiceGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)" class="member-name-link">callGovernanceServiceGetRESTCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Issue a GET REST call that returns a GovernanceServiceElementResponse object.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/GovernanceServiceElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">GovernanceServiceElementsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#callGovernanceServicesGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)" class="member-name-link">callGovernanceServicesGetRESTCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/GovernanceServiceElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">GovernanceServiceElementsResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#callGovernanceServicesGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)" class="member-name-link">callGovernanceServicesGetRESTCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Issue a GET REST call that returns a GovernanceServiceElementsResponse object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/NextGovernanceActionTypeElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">NextGovernanceActionTypeElementsResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#callNextGovernanceActionTypesGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)" class="member-name-link">callNextGovernanceActionTypesGetRESTCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Issue a GET REST call that returns a NextGovernanceActionTypeElementsResponse object.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/RegisteredGovernanceServiceResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">RegisteredGovernanceServiceResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#callRegisteredGovernanceServiceGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)" class="member-name-link">callRegisteredGovernanceServiceGetRESTCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/IntegrationConnectorElementResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">IntegrationConnectorElementResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#callIntegrationConnectorGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)" class="member-name-link">callIntegrationConnectorGetRESTCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Issue a GET REST call that returns a RegisteredGovernanceServiceResponse object.</div>
+<div class="block">Issue a GET REST call that returns a CntegrationConnectorElementResponse object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/RegisteredGovernanceServicesResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">RegisteredGovernanceServicesResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#callRegisteredGovernanceServicesGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)" class="member-name-link">callRegisteredGovernanceServicesGetRESTCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/IntegrationConnectorElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">IntegrationConnectorElementsResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#callIntegrationConnectorsGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)" class="member-name-link">callIntegrationConnectorsGetRESTCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Issue a GET REST call that returns a IntegrationConnectorElementsResponse object.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/IntegrationGroupElementResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">IntegrationGroupElementResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#callIntegrationGroupGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)" class="member-name-link">callIntegrationGroupGetRESTCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Issue a GET REST call that returns a IntegrationGroupElementResponse object.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/IntegrationGroupElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">IntegrationGroupElementsResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#callIntegrationGroupsGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)" class="member-name-link">callIntegrationGroupsGetRESTCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Issue a GET REST call that returns a IntegrationGroupElementsResponse object.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/NextGovernanceActionTypeElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">NextGovernanceActionTypeElementsResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#callNextGovernanceActionTypesGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)" class="member-name-link">callNextGovernanceActionTypesGetRESTCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Issue a GET REST call that returns a NextGovernanceActionTypeElementsResponse object.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/RegisteredGovernanceServiceResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">RegisteredGovernanceServiceResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#callRegisteredGovernanceServiceGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)" class="member-name-link">callRegisteredGovernanceServiceGetRESTCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Issue a GET REST call that returns a RegisteredGovernanceServiceResponse object.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/RegisteredGovernanceServicesResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">RegisteredGovernanceServicesResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#callRegisteredGovernanceServicesGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)" class="member-name-link">callRegisteredGovernanceServicesGetRESTCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Issue a GET REST call that returns a RegisteredGovernanceServicesResponse object.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/RegisteredIntegrationConnectorResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">RegisteredIntegrationConnectorResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#callRegisteredIntegrationConnectorGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)" class="member-name-link">callRegisteredIntegrationConnectorGetRESTCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Issue a GET REST call that returns a RegisteredIntegrationConnectorResponse object.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/RegisteredIntegrationConnectorsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">RegisteredIntegrationConnectorsResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#callRegisteredIntegrationConnectorsGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)" class="member-name-link">callRegisteredIntegrationConnectorsGetRESTCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Issue a GET REST call that returns a RegisteredIntegrationConnectorsResponse object.</div>
+</div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.commonservices.gaf.client.rest.OpenMetadataStoreRESTClient">Methods inherited from class&nbsp;org.odpi.openmetadata.commonservices.gaf.client.rest.<a href="../../../../commonservices/gaf/client/rest/OpenMetadataStoreRESTClient.html" title="class in org.odpi.openmetadata.commonservices.gaf.client.rest">OpenMetadataStoreRESTClient</a></h3>
-<code><a href="../../../../commonservices/gaf/client/rest/OpenMetadataStoreRESTClient.html#callBooleanGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callBooleanGetRESTCall</a>, <a href="../../../../commonservices/gaf/client/rest/OpenMetadataStoreRESTClient.html#callElementHeaderPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callElementHeaderPostRESTCall</a>, <a href="../../../../commonservices/gaf/client/rest/OpenMetadataStoreRESTClient.html#callElementHeadersPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callElementHeadersPostRESTCall</a>, <a href="../../../../commonservices/gaf/client/rest/OpenMetadataStoreRESTClient.html#callOpenMetadataElementGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callOpenMetadataElementGetRESTCall</a>, <a href="../../../../commonservices/gaf/client/rest/OpenMetadataStoreRESTClient.html#callOpenMetadataElementPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callOpenMetadataElementPostRESTCall</a>, <a href="../../../../commonservices/gaf/client/rest/OpenMetadataStoreRESTClient.html#callOpenMetadataElementsPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callOpenMetadataElementsPostRESTCall</a>, <a href="../../../../commonservices/gaf/client/rest/OpenMetadataStoreRESTClient.html#callRelatedMetadataElementListGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callRelatedMetadataElementListGetRESTCall</a>, <a href="../../../../commonservices/gaf/client/rest/OpenMetadataStoreRESTClient.html#callRelatedMetadataElementListPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callRelatedMetadataElementListPostRESTCall</a>, <a href="../../../../commonservices/gaf/client/rest/OpenMetadataStoreRESTClient.html#callRelatedMetadataElementsListGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callRelatedMetadataElementsListGetRESTCall</a>, <a href="../../../../commonservices/gaf/client/rest/OpenMetadataStoreRESTClient.html#callRelatedMetadataElementsListPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callRelatedMetadataElementsListPostRESTCall</a>, <a href="../../../../commonservices/gaf/client/rest/OpenMetadataStoreRESTClient.html#callTranslationDetailGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callTranslationDetailGetRESTCall</a>, <a href="../../../../commonservices/gaf/client/rest/OpenMetadataStoreRESTClient.html#callTranslationListGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callTranslationListGetRESTCall</a>, <a href="../../../../commonservices/gaf/client/rest/OpenMetadataStoreRESTClient.html#callValidMetadataValueGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callValidMetadataValueGetRESTCall</a>, <a href="../../../../commonservices/gaf/client/rest/OpenMetadataStoreRESTClient.html#callValidMetadataValueListGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callValidMetadataValueListGetRESTCall</a></code></div>
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworkservices.gaf.client.rest.<a href="../../../../frameworkservices/gaf/client/rest/GAFRESTClient.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client.rest">GAFRESTClient</a></h3>
+<code><a href="../../../../frameworkservices/gaf/client/rest/GAFRESTClient.html#callBooleanGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callBooleanGetRESTCall</a>, <a href="../../../../frameworkservices/gaf/client/rest/GAFRESTClient.html#callElementHeaderPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callElementHeaderPostRESTCall</a>, <a href="../../../../frameworkservices/gaf/client/rest/GAFRESTClient.html#callElementHeadersPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callElementHeadersPostRESTCall</a>, <a href="../../../../frameworkservices/gaf/client/rest/GAFRESTClient.html#callOpenMetadataElementGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callOpenMetadataElementGetRESTCall</a>, <a href="../../../../frameworkservices/gaf/client/rest/GAFRESTClient.html#callOpenMetadataElementPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callOpenMetadataElementPostRESTCall</a>, <a href="../../../../frameworkservices/gaf/client/rest/GAFRESTClient.html#callOpenMetadataElementsPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callOpenMetadataElementsPostRESTCall</a>, <a href="../../../../frameworkservices/gaf/client/rest/GAFRESTClient.html#callRelatedMetadataElementListGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callRelatedMetadataElementListGetRESTCall</a>, <a href="../../../../frameworkservices/gaf/client/rest/GAFRESTClient.html#callRelatedMetadataElementListPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callRelatedMetadataElementListPostRESTCall</a>, <a href="../../../../frameworkservices/gaf/client/rest/GAFRESTClient.html#callRelatedMetadataElementsListGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callRelatedMetadataElementsListGetRESTCall</a>, <a href="../../../../frameworkservices/gaf/client/rest/GAFRESTClient.html#callRelatedMetadataElementsListPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callRelatedMetadataElementsListPostRESTCall</a>, <a href="../../../../frameworkservices/gaf/client/rest/GAFRESTClient.html#callTranslationDetailGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callTranslationDetailGetRESTCall</a>, <a href="../../../../frameworkservices/gaf/client/rest/GAFRESTClient.html#callTranslationListGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callTranslationListGetRESTCall</a>, <a href="../../../../frameworkservices/gaf/client/rest/GAFRESTClient.html#callValidMetadataValueGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callValidMetadataValueGetRESTCall</a>, <a href="../../../../frameworkservices/gaf/client/rest/GAFRESTClient.html#callValidMetadataValueListGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callValidMetadataValueListGetRESTCall</a></code></div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient">Methods inherited from class&nbsp;org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.<a href="../../../../commonservices/ocf/metadatamanagement/client/OCFRESTClient.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client">OCFRESTClient</a></h3>
-<code><a href="../../../../commonservices/ocf/metadatamanagement/client/OCFRESTClient.html#callOCFAssetGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callOCFAssetGetRESTCall</a>, <a href="../../../../commonservices/ocf/metadatamanagement/client/OCFRESTClient.html#callOCFAssetsGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callOCFAssetsGetRESTCall</a>, <a href="../../../../commonservices/ocf/metadatamanagement/client/OCFRESTClient.html#callOCFAssetsPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callOCFAssetsPostRESTCall</a>, <a href="../../../../commonservices/ocf/metadatamanagement/client/OCFRESTClient.html#callOCFConnectionGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callOCFConnectionGetRESTCall</a>, <a href="../../../../commonservices/ocf/metadatamanagement/client/OCFRESTClient.html#callOCFTagGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callOCFTagGetRESTCall</a>, <a href="../../../../commonservices/ocf/metadatamanagement/client/OCFRESTClient.html#callOCFTagListGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callOCFTagListGetRESTCall</a>, <a href="../../../../commonservices/ocf/metadatamanagement/client/OCFRESTClient.html#callOCFTagListPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callOCFTagListPostRESTCall</a></code></div>
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.<a href="../../../../frameworkservices/ocf/metadatamanagement/client/OCFRESTClient.html" title="class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client">OCFRESTClient</a></h3>
+<code><a href="../../../../frameworkservices/ocf/metadatamanagement/client/OCFRESTClient.html#callOCFAssetGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callOCFAssetGetRESTCall</a>, <a href="../../../../frameworkservices/ocf/metadatamanagement/client/OCFRESTClient.html#callOCFAssetsGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callOCFAssetsGetRESTCall</a>, <a href="../../../../frameworkservices/ocf/metadatamanagement/client/OCFRESTClient.html#callOCFAssetsPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callOCFAssetsPostRESTCall</a>, <a href="../../../../frameworkservices/ocf/metadatamanagement/client/OCFRESTClient.html#callOCFConnectionGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callOCFConnectionGetRESTCall</a>, <a href="../../../../frameworkservices/ocf/metadatamanagement/client/OCFRESTClient.html#callOCFTagGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callOCFTagGetRESTCall</a>, <a href="../../../../frameworkservices/ocf/metadatamanagement/client/OCFRESTClient.html#callOCFTagListGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callOCFTagListGetRESTCall</a>, <a href="../../../../frameworkservices/ocf/metadatamanagement/client/OCFRESTClient.html#callOCFTagListPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callOCFTagListPostRESTCall</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient">Methods inherited from class&nbsp;org.odpi.openmetadata.commonservices.ffdc.rest.<a href="../../../../commonservices/ffdc/rest/FFDCRESTClient.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCRESTClient</a></h3>
 <code><a href="../../../../commonservices/ffdc/rest/FFDCRESTClient.html#callCountGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callCountGetRESTCall</a>, <a href="../../../../commonservices/ffdc/rest/FFDCRESTClient.html#callGUIDGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callGUIDGetRESTCall</a>, <a href="../../../../commonservices/ffdc/rest/FFDCRESTClient.html#callGUIDListGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callGUIDListGetRESTCall</a>, <a href="../../../../commonservices/ffdc/rest/FFDCRESTClient.html#callGUIDListPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callGUIDListPostRESTCall</a>, <a href="../../../../commonservices/ffdc/rest/FFDCRESTClient.html#callGUIDPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callGUIDPostRESTCall</a>, <a href="../../../../commonservices/ffdc/rest/FFDCRESTClient.html#callNameListGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callNameListGetRESTCall</a>, <a href="../../../../commonservices/ffdc/rest/FFDCRESTClient.html#callOCFConnectorReportGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callOCFConnectorReportGetRESTCall</a>, <a href="../../../../commonservices/ffdc/rest/FFDCRESTClient.html#callStringMapGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callStringMapGetRESTCall</a>, <a href="../../../../commonservices/ffdc/rest/FFDCRESTClient.html#callVoidGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callVoidGetRESTCall</a>, <a href="../../../../commonservices/ffdc/rest/FFDCRESTClient.html#callVoidPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callVoidPostRESTCall</a></code></div>
@@ -306,7 +354,7 @@ loadScripts(document, 'script');</script>
 <dd><code>auditLog</code> - destination for log messages.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
- REST API calls.</dd>
+ REST APIs.</dd>
 </dl>
 </section>
 </li>
@@ -323,7 +371,7 @@ loadScripts(document, 'script');</script>
 <dd><code>serverPlatformURLRoot</code> - URL root of the server manager where the OMAG Server is running.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
- REST API calls.</dd>
+ REST APIs.</dd>
 </dl>
 </section>
 </li>
@@ -346,7 +394,7 @@ loadScripts(document, 'script');</script>
 <dd><code>auditLog</code> - destination for log messages.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
- REST API calls.</dd>
+ REST APIs.</dd>
 </dl>
 </section>
 </li>
@@ -367,7 +415,7 @@ loadScripts(document, 'script');</script>
 <dd><code>password</code> - password for the HTTP request</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
- REST API calls.</dd>
+ REST APIs.</dd>
 </dl>
 </section>
 </li>
@@ -392,33 +440,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>methodName</code> - name of the method being called</dd>
-<dd><code>urlTemplate</code> - template of the URL for the REST API call with place-holders for the parameters</dd>
-<dd><code>params</code> - a list of parameters that are slotted into the url template</dd>
-<dt>Returns:</dt>
-<dd>response object</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the repository is not available or not working properly.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="callGovernanceEnginePostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">
-<h3>callGovernanceEnginePostRESTCall</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/GovernanceEngineElementResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">GovernanceEngineElementResponse</a></span>&nbsp;<span class="element-name">callGovernanceEnginePostRESTCall</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;requestBody,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</span>
-                                                                 throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-<a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-<a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
-<div class="block">Issue a POST REST call that returns a GovernanceEngineElementResponse object.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>methodName</code> - name of the method being called</dd>
-<dd><code>urlTemplate</code> - template of the URL for the REST API call with place-holders for the parameters</dd>
-<dd><code>requestBody</code> - object that passes additional parameters</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API with place-holders for the parameters</dd>
 <dd><code>params</code> - a list of parameters that are slotted into the url template</dd>
 <dt>Returns:</dt>
 <dd>response object</dd>
@@ -442,7 +464,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>methodName</code> - name of the method being called.</dd>
-<dd><code>urlTemplate</code> - template of the URL for the REST API call with place-holders for the parameters.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API with place-holders for the parameters.</dd>
 <dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
 <dt>Returns:</dt>
 <dd>response object</dd>
@@ -466,7 +488,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>methodName</code> - name of the method being called.</dd>
-<dd><code>urlTemplate</code> - template of the URL for the REST API call with place-holders for the parameters.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API with place-holders for the parameters.</dd>
 <dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
 <dt>Returns:</dt>
 <dd>response object</dd>
@@ -490,7 +512,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>methodName</code> - name of the method being called.</dd>
-<dd><code>urlTemplate</code> - template of the URL for the REST API call with place-holders for the parameters.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API with place-holders for the parameters.</dd>
 <dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
 <dt>Returns:</dt>
 <dd>response object</dd>
@@ -514,7 +536,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>methodName</code> - name of the method being called.</dd>
-<dd><code>urlTemplate</code> - template of the URL for the REST API call with place-holders for the parameters.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API with place-holders for the parameters.</dd>
 <dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
 <dt>Returns:</dt>
 <dd>response object</dd>
@@ -562,7 +584,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>methodName</code> - name of the method being called.</dd>
-<dd><code>urlTemplate</code> - template of the URL for the REST API call with place-holders for the parameters.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API with place-holders for the parameters.</dd>
 <dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
 <dt>Returns:</dt>
 <dd>response object</dd>
@@ -586,7 +608,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>methodName</code> - name of the method being called.</dd>
-<dd><code>urlTemplate</code> - template of the URL for the REST API call with place-holders for the parameters.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API with place-holders for the parameters.</dd>
 <dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
 <dt>Returns:</dt>
 <dd>response object</dd>
@@ -610,7 +632,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>methodName</code> - name of the method being called.</dd>
-<dd><code>urlTemplate</code> - template of the URL for the REST API call with place-holders for the parameters.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API with place-holders for the parameters.</dd>
 <dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
 <dt>Returns:</dt>
 <dd>response object</dd>
@@ -634,7 +656,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>methodName</code> - name of the method being called.</dd>
-<dd><code>urlTemplate</code> - template of the URL for the REST API call with place-holders for the parameters.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API with place-holders for the parameters.</dd>
 <dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
 <dt>Returns:</dt>
 <dd>response object</dd>
@@ -659,7 +681,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>methodName</code> - name of the method being called.</dd>
-<dd><code>urlTemplate</code> - template of the URL for the REST API call with place-holders for the parameters.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API with place-holders for the parameters.</dd>
 <dd><code>requestBody</code> - object that passes additional parameters</dd>
 <dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
 <dt>Returns:</dt>
@@ -684,7 +706,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>methodName</code> - name of the method being called.</dd>
-<dd><code>urlTemplate</code> - template of the URL for the REST API call with place-holders for the parameters.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API with place-holders for the parameters.</dd>
 <dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
 <dt>Returns:</dt>
 <dd>response object</dd>
@@ -708,7 +730,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>methodName</code> - name of the method being called.</dd>
-<dd><code>urlTemplate</code> - template of the URL for the REST API call with place-holders for the parameters.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API with place-holders for the parameters.</dd>
 <dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
 <dt>Returns:</dt>
 <dd>response object</dd>
@@ -732,7 +754,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>methodName</code> - name of the method being called.</dd>
-<dd><code>urlTemplate</code> - template of the URL for the REST API call with place-holders for the parameters.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API with place-holders for the parameters.</dd>
 <dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
 <dt>Returns:</dt>
 <dd>response object</dd>
@@ -757,8 +779,200 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>methodName</code> - name of the method being called.</dd>
-<dd><code>urlTemplate</code> - template of the URL for the REST API call with place-holders for the parameters.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API with place-holders for the parameters.</dd>
 <dd><code>requestBody</code> - object that passes additional parameters</dd>
+<dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
+<dt>Returns:</dt>
+<dd>response object</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the repository is not available or not working properly.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="callIntegrationGroupGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">
+<h3>callIntegrationGroupGetRESTCall</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/IntegrationGroupElementResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">IntegrationGroupElementResponse</a></span>&nbsp;<span class="element-name">callIntegrationGroupGetRESTCall</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</span>
+                                                                throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Issue a GET REST call that returns a IntegrationGroupElementResponse object.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>methodName</code> - name of the method being called</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API with place-holders for the parameters</dd>
+<dd><code>params</code> - a list of parameters that are slotted into the url template</dd>
+<dt>Returns:</dt>
+<dd>response object</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the repository is not available or not working properly.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="callIntegrationGroupsGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">
+<h3>callIntegrationGroupsGetRESTCall</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/IntegrationGroupElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">IntegrationGroupElementsResponse</a></span>&nbsp;<span class="element-name">callIntegrationGroupsGetRESTCall</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</span>
+                                                                  throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Issue a GET REST call that returns a IntegrationGroupElementsResponse object.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>methodName</code> - name of the method being called.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API with place-holders for the parameters.</dd>
+<dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
+<dt>Returns:</dt>
+<dd>response object</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the repository is not available or not working properly.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="callIntegrationConnectorGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">
+<h3>callIntegrationConnectorGetRESTCall</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/IntegrationConnectorElementResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">IntegrationConnectorElementResponse</a></span>&nbsp;<span class="element-name">callIntegrationConnectorGetRESTCall</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</span>
+                                                                        throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Issue a GET REST call that returns a CntegrationConnectorElementResponse object.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>methodName</code> - name of the method being called.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API with place-holders for the parameters.</dd>
+<dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
+<dt>Returns:</dt>
+<dd>response object</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the repository is not available or not working properly.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="callIntegrationConnectorsGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">
+<h3>callIntegrationConnectorsGetRESTCall</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/IntegrationConnectorElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">IntegrationConnectorElementsResponse</a></span>&nbsp;<span class="element-name">callIntegrationConnectorsGetRESTCall</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</span>
+                                                                          throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Issue a GET REST call that returns a IntegrationConnectorElementsResponse object.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>methodName</code> - name of the method being called.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API with place-holders for the parameters.</dd>
+<dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
+<dt>Returns:</dt>
+<dd>response object</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the repository is not available or not working properly.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="callRegisteredIntegrationConnectorGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">
+<h3>callRegisteredIntegrationConnectorGetRESTCall</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/RegisteredIntegrationConnectorResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">RegisteredIntegrationConnectorResponse</a></span>&nbsp;<span class="element-name">callRegisteredIntegrationConnectorGetRESTCall</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</span>
+                                                                                     throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Issue a GET REST call that returns a RegisteredIntegrationConnectorResponse object.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>methodName</code> - name of the method being called.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API with place-holders for the parameters.</dd>
+<dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
+<dt>Returns:</dt>
+<dd>response object</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the repository is not available or not working properly.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="callRegisteredIntegrationConnectorsGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">
+<h3>callRegisteredIntegrationConnectorsGetRESTCall</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/RegisteredIntegrationConnectorsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">RegisteredIntegrationConnectorsResponse</a></span>&nbsp;<span class="element-name">callRegisteredIntegrationConnectorsGetRESTCall</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</span>
+                                                                                       throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Issue a GET REST call that returns a RegisteredIntegrationConnectorsResponse object.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>methodName</code> - name of the method being called.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API with place-holders for the parameters.</dd>
+<dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
+<dt>Returns:</dt>
+<dd>response object</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the repository is not available or not working properly.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="callCatalogTargetGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">
+<h3>callCatalogTargetGetRESTCall</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/CatalogTargetResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">CatalogTargetResponse</a></span>&nbsp;<span class="element-name">callCatalogTargetGetRESTCall</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</span>
+                                                   throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Issue a GET REST call that returns a CatalogTargetResponse object.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>methodName</code> - name of the method being called.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API with place-holders for the parameters.</dd>
+<dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
+<dt>Returns:</dt>
+<dd>response object</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the repository is not available or not working properly.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="callCatalogTargetsGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">
+<h3>callCatalogTargetsGetRESTCall</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/CatalogTargetsResponse.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">CatalogTargetsResponse</a></span>&nbsp;<span class="element-name">callCatalogTargetsGetRESTCall</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlTemplate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>...&nbsp;params)</span>
+                                                     throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Issue a GET REST call that returns a CatalogTargetsResponse object.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>methodName</code> - name of the method being called.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API with place-holders for the parameters.</dd>
 <dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
 <dt>Returns:</dt>
 <dd>response object</dd>

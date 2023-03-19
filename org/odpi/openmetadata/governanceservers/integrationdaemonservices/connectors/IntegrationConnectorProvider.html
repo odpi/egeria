@@ -15,11 +15,7 @@
 <script type="text/javascript" src="../../../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="class-declaration-page">
-<script type="text/javascript">var evenRowColor = "even-row-color";
-var oddRowColor = "odd-row-color";
-var tableTab = "table-tab";
-var activeTableTab = "active-table-tab";
-var pathtoroot = "../../../../../../";
+<script type="text/javascript">var pathtoroot = "../../../../../../";
 loadScripts(document, 'script');</script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -53,7 +49,7 @@ loadScripts(document, 'script');</script>
 <li>Detail:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
-<li><a href="#method-detail">Method</a></li>
+<li>Method</li>
 </ul>
 </div>
 <div class="nav-list-search"><label for="search-input">SEARCH:</label>
@@ -74,7 +70,9 @@ loadScripts(document, 'script');</script>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance"><a href="../../../frameworks/connectors/ConnectorProvider.html" title="class in org.odpi.openmetadata.frameworks.connectors">org.odpi.openmetadata.frameworks.connectors.ConnectorProvider</a>
 <div class="inheritance"><a href="../../../frameworks/connectors/ConnectorProviderBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase</a>
+<div class="inheritance"><a href="../../../frameworks/integration/connectors/IntegrationConnectorProvider.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider</a>
 <div class="inheritance">org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnectorProvider</div>
+</div>
 </div>
 </div>
 </div>
@@ -83,13 +81,11 @@ loadScripts(document, 'script');</script>
 <dt>All Implemented Interfaces:</dt>
 <dd><code><a href="../../../frameworks/auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a></code></dd>
 </dl>
-<dl class="notes">
-<dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../../../adapters/connectors/integration/openlineage/APIBasedOpenLineageLogStoreProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">APIBasedOpenLineageLogStoreProvider</a></code>, <code><a href="../../../adapters/connectors/integration/basicfiles/DataFilesMonitorIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFilesMonitorIntegrationProvider</a></code>, <code><a href="../../../adapters/connectors/integration/basicfiles/DataFolderMonitorIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFolderMonitorIntegrationProvider</a></code>, <code><a href="../../../adapters/connectors/integration/openlineage/FileBasedOpenLineageLogStoreProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">FileBasedOpenLineageLogStoreProvider</a></code>, <code><a href="../../../adapters/connectors/integration/openlineage/GovernanceActionOpenLineageIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">GovernanceActionOpenLineageIntegrationProvider</a></code>, <code><a href="../../../adapters/connectors/integration/kafka/KafkaMonitorIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.kafka">KafkaMonitorIntegrationProvider</a></code>, <code><a href="../../../adapters/connectors/integration/openapis/OpenAPIMonitorIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openapis">OpenAPIMonitorIntegrationProvider</a></code>, <code><a href="../../../adapters/connectors/integration/openlineage/OpenLineageCataloguerIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">OpenLineageCataloguerIntegrationProvider</a></code>, <code><a href="../../../adapters/connectors/integration/openlineage/OpenLineageEventReceiverIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">OpenLineageEventReceiverIntegrationProvider</a></code></dd>
-</dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">IntegrationConnectorProvider</span>
-<span class="extends-implements">extends <a href="../../../frameworks/connectors/ConnectorProviderBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorProviderBase</a></span></div>
+<div class="type-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
+</span><span class="modifiers">public class </span><span class="element-name type-name-label">IntegrationConnectorProvider</span>
+<span class="extends-implements">extends <a href="../../../frameworks/integration/connectors/IntegrationConnectorProvider.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnectorProvider</a></span></div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">The IntegrationConnectorProvider provides a base class for the connector provider supporting
  Integration Connectors.
 
@@ -119,9 +115,8 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">IntegrationConnectorProvider</a>()</code></div>
 <div class="col-last even-row-color">
-<div class="block">Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
- discovery service implementation.</div>
-</div>
+<div class="block"><span class="deprecated-label">Deprecated.</span></div>
+&nbsp;</div>
 </div>
 </section>
 </li>
@@ -129,36 +124,9 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
-<div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
-<div id="method-summary-table.tabpanel" role="tabpanel">
-<div class="summary-table three-column-summary" aria-labelledby="method-summary-table-tab0">
-<div class="table-header col-first">Modifier and Type</div>
-<div class="table-header col-second">Method</div>
-<div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRefreshTimeInterval()" class="member-name-link">getRefreshTimeInterval</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the recommended number of minutes between each call to the connector to refresh the metadata.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUsesBlockingCalls()" class="member-name-link">getUsesBlockingCalls</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return if the connector should be started in its own thread to allow it is block on a listening call.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRefreshTimeInterval(long)" class="member-name-link">setRefreshTimeInterval</a><wbr>(long&nbsp;refreshTimeInterval)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the recommended number of minutes between each call to the connector to refresh the metadata.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUsesBlockingCalls(boolean)" class="member-name-link">setUsesBlockingCalls</a><wbr>(boolean&nbsp;usesBlockingCalls)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up if the connector should be started in its own thread to allow it is block on a listening call.</div>
-</div>
-</div>
-</div>
-</div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.connectors.<a href="../../../frameworks/integration/connectors/IntegrationConnectorProvider.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnectorProvider</a></h3>
+<code><a href="../../../frameworks/integration/connectors/IntegrationConnectorProvider.html#getRefreshTimeInterval()">getRefreshTimeInterval</a>, <a href="../../../frameworks/integration/connectors/IntegrationConnectorProvider.html#getUsesBlockingCalls()">getUsesBlockingCalls</a>, <a href="../../../frameworks/integration/connectors/IntegrationConnectorProvider.html#setRefreshTimeInterval(long)">setRefreshTimeInterval</a>, <a href="../../../frameworks/integration/connectors/IntegrationConnectorProvider.html#setUsesBlockingCalls(boolean)">setUsesBlockingCalls</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../frameworks/connectors/ConnectorProviderBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorProviderBase</a></h3>
 <code><a href="../../../frameworks/connectors/ConnectorProviderBase.html#equals(java.lang.Object)">equals</a>, <a href="../../../frameworks/connectors/ConnectorProviderBase.html#getConnector(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">getConnector</a>, <a href="../../../frameworks/connectors/ConnectorProviderBase.html#getConnector(org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">getConnector</a>, <a href="../../../frameworks/connectors/ConnectorProviderBase.html#getConnectorClassName()">getConnectorClassName</a>, <a href="../../../frameworks/connectors/ConnectorProviderBase.html#getConnectorComponentDescription()">getConnectorComponentDescription</a>, <a href="../../../frameworks/connectors/ConnectorProviderBase.html#getConnectorType()">getConnectorType</a>, <a href="../../../frameworks/connectors/ConnectorProviderBase.html#getConnectorTypeProperties()">getConnectorTypeProperties</a>, <a href="../../../frameworks/connectors/ConnectorProviderBase.html#getNewConnectorGUID()">getNewConnectorGUID</a>, <a href="../../../frameworks/connectors/ConnectorProviderBase.html#hashCode()">hashCode</a>, <a href="../../../frameworks/connectors/ConnectorProviderBase.html#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)">setAuditLog</a>, <a href="../../../frameworks/connectors/ConnectorProviderBase.html#setConnectorClassName(java.lang.String)">setConnectorClassName</a>, <a href="../../../frameworks/connectors/ConnectorProviderBase.html#setConnectorComponentDescription(org.odpi.openmetadata.frameworks.auditlog.ComponentDescription)">setConnectorComponentDescription</a>, <a href="../../../frameworks/connectors/ConnectorProviderBase.html#setConnectorTypeProperties(org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType)">setConnectorTypeProperties</a>, <a href="../../../frameworks/connectors/ConnectorProviderBase.html#toString()">toString</a></code></div>
@@ -180,64 +148,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;()">
 <h3>IntegrationConnectorProvider</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">IntegrationConnectorProvider</span>()</div>
-<div class="block">Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
- discovery service implementation.</div>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<!-- ============ METHOD DETAIL ========== -->
-<li>
-<section class="method-details" id="method-detail">
-<h2>Method Details</h2>
-<ul class="member-list">
-<li>
-<section class="detail" id="getRefreshTimeInterval()">
-<h3>getRefreshTimeInterval</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getRefreshTimeInterval</span>()</div>
-<div class="block">Return the recommended number of minutes between each call to the connector to refresh the metadata.  Zero means that refresh
- is only called at server start up and whenever the refresh REST API request is made to the integration daemon.
- If the refresh time interval is greater than 0 then additional calls to refresh are added spaced out by the refresh time interval.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>minute count</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setRefreshTimeInterval(long)">
-<h3>setRefreshTimeInterval</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRefreshTimeInterval</span><wbr><span class="parameters">(long&nbsp;refreshTimeInterval)</span></div>
-<div class="block">Set up the recommended number of minutes between each call to the connector to refresh the metadata.  Zero means that refresh
- is only called at server start up and whenever the refresh REST API request is made to the integration daemon.
- If the refresh time interval is greater than 0 then additional calls to refresh are added spaced out by the refresh time interval.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>refreshTimeInterval</code> - minute count</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getUsesBlockingCalls()">
-<h3>getUsesBlockingCalls</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getUsesBlockingCalls</span>()</div>
-<div class="block">Return if the connector should be started in its own thread to allow it is block on a listening call.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>boolean flag</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setUsesBlockingCalls(boolean)">
-<h3>setUsesBlockingCalls</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setUsesBlockingCalls</span><wbr><span class="parameters">(boolean&nbsp;usesBlockingCalls)</span></div>
-<div class="block">Set up if the connector should be started in its own thread to allow it is block on a listening call.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>usesBlockingCalls</code> - boolean flag</dd>
-</dl>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 </section>
 </li>
 </ul>

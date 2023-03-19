@@ -134,7 +134,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="IntegrationConnectorReport.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties">IntegrationConnectorReport</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationConnectorReports()" class="member-name-link">getIntegrationConnectorReports</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the OCF Connection for the topic used to pass requests to this integration service.</div>
+<div class="block">Return the status of the connectors running under this integration service.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationServiceDescription()" class="member-name-link">getIntegrationServiceDescription</a>()</code></div>
@@ -169,7 +169,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIntegrationConnectorReports(java.util.List)" class="member-name-link">setIntegrationConnectorReports</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="IntegrationConnectorReport.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties">IntegrationConnectorReport</a>&gt;&nbsp;integrationConnectorReports)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the OCF Connection for the topic used to pass requests to this integration service.</div>
+<div class="block">Return the status of the connectors running under this integration service.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIntegrationServiceDescription(java.lang.String)" class="member-name-link">setIntegrationServiceDescription</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationServiceDescription)</code></div>
@@ -360,12 +360,10 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="getIntegrationConnectorReports()">
 <h3>getIntegrationConnectorReports</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="IntegrationConnectorReport.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties">IntegrationConnectorReport</a>&gt;</span>&nbsp;<span class="element-name">getIntegrationConnectorReports</span>()</div>
-<div class="block">Return the OCF Connection for the topic used to pass requests to this integration service.
- The default values are constructed from the integration service name.
- If this value is set to null then the integration service ignores incoming events.</div>
+<div class="block">Return the status of the connectors running under this integration service.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>list of connector configurations</dd>
+<dd>Connector status</dd>
 </dl>
 </section>
 </li>
@@ -373,9 +371,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="setIntegrationConnectorReports(java.util.List)">
 <h3>setIntegrationConnectorReports</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setIntegrationConnectorReports</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="IntegrationConnectorReport.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties">IntegrationConnectorReport</a>&gt;&nbsp;integrationConnectorReports)</span></div>
-<div class="block">Set up the OCF Connection for the topic used to pass requests to this integration service.
- The default values are constructed from the integration service name.
- If this value is set to null then the integration service ignores incoming events.</div>
+<div class="block">Return the status of the connectors running under this integration service.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>integrationConnectorReports</code> - Connector status</dd>

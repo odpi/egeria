@@ -110,7 +110,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#engageConnector(java.lang.String)" class="member-name-link">engageConnector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionDescription)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Call the engage() method of the integration connector.</div>
+<div class="block">Call engage() method of the integration connector.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnection()" class="member-name-link">getConnection</a>()</code></div>
@@ -120,7 +120,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationConnectorId()" class="member-name-link">getIntegrationConnectorId</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the unique identifier of the connector from the configuration.</div>
+<div class="block">Return the unique identifier of the connector from the configuration or the integration group definition.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationConnectorInstanceId()" class="member-name-link">getIntegrationConnectorInstanceId</a>()</code></div>
@@ -142,16 +142,36 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the configured minimum time between calls to refresh.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refreshConnector(java.lang.String,boolean)" class="member-name-link">refreshConnector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionDescription,
- boolean&nbsp;firstCall)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStartDate()" class="member-name-link">getStartDate</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Call refresh on the connector provided it is in the correct state.</div>
+<div class="block">Return the earliest time that this connector can run.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStopDate()" class="member-name-link">getStopDate</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the latest time that this connector can run.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#needsDedicatedThread()" class="member-name-link">needsDedicatedThread</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Does the connector need to run in a dedicated thread.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shutdown(java.lang.String)" class="member-name-link">shutdown</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionDescription)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refreshConnector(java.lang.String,boolean)" class="member-name-link">refreshConnector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionDescription,
+ boolean&nbsp;firstCall)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Call refresh() on the connector provided it is in the correct state.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shutdown(java.lang.String)" class="member-name-link">shutdown</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionDescription)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Shutdown the connector handler.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateConnectorDetails(org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RegisteredIntegrationConnectorElement)" class="member-name-link">updateConnectorDetails</a><wbr>(<a href="../../../accessservices/governanceengine/metadataelements/RegisteredIntegrationConnectorElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">RegisteredIntegrationConnectorElement</a>&nbsp;registeredIntegrationConnectorElement)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the connector properties with as little disruption to the running connector.</div>
 </div>
 </div>
 </div>
@@ -174,7 +194,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="getIntegrationConnectorId()">
 <h3>getIntegrationConnectorId</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getIntegrationConnectorId</span>()</div>
-<div class="block">Return the unique identifier of the connector from the configuration.</div>
+<div class="block">Return the unique identifier of the connector from the configuration or the integration group definition.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>String name</dd>
@@ -216,6 +236,39 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 </section>
 </li>
 <li>
+<section class="detail" id="needsDedicatedThread()">
+<h3>needsDedicatedThread</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">needsDedicatedThread</span>()</div>
+<div class="block">Does the connector need to run in a dedicated thread.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>boolean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getStartDate()">
+<h3>getStartDate</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getStartDate</span>()</div>
+<div class="block">Return the earliest time that this connector can run. (Null means no restriction.)</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>date</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getStopDate()">
+<h3>getStopDate</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getStopDate</span>()</div>
+<div class="block">Return the latest time that this connector can run. (Null means no restriction.)</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>date</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="getLastRefreshTime()">
 <h3>getLastRefreshTime</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getLastRefreshTime</span>()</div>
@@ -242,7 +295,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="engageConnector(java.lang.String)">
 <h3>engageConnector</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">engageConnector</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionDescription)</span></div>
-<div class="block">Call the engage() method of the integration connector.  This</div>
+<div class="block">Call engage() method of the integration connector.  This is called in a separate thread.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>actionDescription</code> - external caller's activity</dd>
@@ -254,11 +307,22 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <h3>refreshConnector</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">refreshConnector</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionDescription,
  boolean&nbsp;firstCall)</span></div>
-<div class="block">Call refresh on the connector provided it is in the correct state.</div>
+<div class="block">Call refresh() on the connector provided it is in the correct state.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>actionDescription</code> - external caller's activity</dd>
 <dd><code>firstCall</code> - is this the first call to refresh?</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="updateConnectorDetails(org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RegisteredIntegrationConnectorElement)">
+<h3>updateConnectorDetails</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateConnectorDetails</span><wbr><span class="parameters">(<a href="../../../accessservices/governanceengine/metadataelements/RegisteredIntegrationConnectorElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">RegisteredIntegrationConnectorElement</a>&nbsp;registeredIntegrationConnectorElement)</span></div>
+<div class="block">Update the connector properties with as little disruption to the running connector.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>registeredIntegrationConnectorElement</code> - new configuration information from the server</dd>
 </dl>
 </section>
 </li>

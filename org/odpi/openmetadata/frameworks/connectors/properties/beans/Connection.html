@@ -161,7 +161,7 @@ loadScripts(document, 'script');</script>
       </li>
   </ul>
 
- The connection class is simply used to cache the properties for an connection.
+ The connection class is simply used to cache the properties for a connection.
  It is used by other classes to exchange this information between a metadata repository and a consumer.</div>
 <dl class="notes">
 <dt>See Also:</dt>
@@ -415,7 +415,7 @@ loadScripts(document, 'script');</script>
 <h3>getDisplayName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDisplayName</span>()</div>
 <div class="block">Returns the stored display name property for the connection.
- Null means no displayName is available.</div>
+ Null means that no displayName is available.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>displayName</dd>
@@ -583,10 +583,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getConfigurationProperties()">
 <h3>getConfigurationProperties</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</span>&nbsp;<span class="element-name">getConfigurationProperties</span>()</div>
-<div class="block">Return a copy of the configuration properties.  Null means no secured properties are available.</div>
+<div class="block">Return a copy of the configuration properties.  Null means no configuration properties are available.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>secured properties typically user credentials for the connection</dd>
+<dd>configuration properties typically controlling the behaviour for the connector</dd>
 </dl>
 </section>
 </li>
