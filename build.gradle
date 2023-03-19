@@ -3,432 +3,187 @@
  * Copyright Contributors to the ODPi Egeria project.
  */
 
-
 /*
  * Plugins for this parent module only - so just high level project related
  */
 plugins {
-    id "io.freefair.aggregate-javadoc" version "6.6.1"
-    id "io.freefair.lombok" version "6.6.1"
+    id "io.freefair.aggregate-javadoc" version "6.6.3"
+    id "io.freefair.lombok" version "6.6.3"
     // Checks for unnecessary dependencies
-    id 'com.autonomousapps.dependency-analysis' version "1.18.0"
+    id 'com.autonomousapps.dependency-analysis' version "1.19.0"
     // helps resolve log implementation clashes
-    id 'dev.jacomet.logging-capabilities' version "0.10.0"
+    id 'dev.jacomet.logging-capabilities' version "0.11.0"
     // This plugin helps resolve jakarta/javax dev.jacomet.logging-capabilities
-    id 'org.gradlex.java-ecosystem-capabilities' version "1.0"
+    id 'org.gradlex.java-ecosystem-capabilities' version "1.1"
+    id 'checkstyle'
 }
 
+/*
+ * See pom/build.gradle for the Egeria BOM - including specification of dependency constraints and versions
+ * This has MOVED from this top level project
+ */
 
 /*
  * Configuration for all projects - INCLUDING this one
  */
-
 allprojects {
-
     group = 'org.odpi.egeria'
     version = '4.0-SNAPSHOT'
 
-    // Mostly java, so default to this for now
-    apply plugin: 'java'
-    apply plugin: 'jacoco'
-    apply plugin: 'org.gradlex.java-ecosystem-capabilities'
-    apply plugin: 'dev.jacomet.logging-capabilities'
-    // As we've migrated from maven - we'll assume all submodules publish directly to maven
+    // Signing/publish used in parent & child projects
     apply plugin: 'maven-publish'
+    apply plugin: 'signing'
 
     // Only use maven central
     repositories {
         mavenCentral()
+        // used by tink (encrypted filestore connector)
+        google()
     }
+} // end of allProjects
 
-    // ensures we pick up the very latest snapshots when built
-    configurations.all {
-        // check for updates every build
-        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-    }
+/*
+ * Configuration for sub projects only
+ */
+subprojects {
+    // TODO: Consider using convention plugins to stylise different profiles of subprojects
 
-    /*
-     * Dependency Management - to fix versions. Pick up maven build settings for now
-     */
-
-    // Assign variables for any constraints
-    ext {
-        lombokVersion= '1.18.24'
-        antlrVersion = '3.5.3'
-        ST4Version = '4.3.4'
-        avroVersion = '1.11.1'
-        classgraphVersion = '4.8.154'
-        classmateVersion = '1.5.1'
-        collections4Version = '4.4'
-        commonscodecVersion = '1.15'
-        commonsconfiguration2Version = '2.8.0'
-        commonsconfigurationVersion = '1.10'
-        commonsioVersion = '2.11.0'
-        commonsloggingVersion = '1.2'
-        commonstextVersion = '1.10.0'
-        commonscliVersion = '1.5.0'
-        elasticsearchVersion = '8.6.1'
-        findbugsVersion = '3.0.2'
-        glassfishVersion = '1.1.4'
-        gremlinVersion = '3.5.2'
-        groovyVersion = '3.0.13'
-        guavaVersion = '31.1-jre'
-        hamcrestVersion = '2.2'
-        hdrhistogramVersion = '2.1.12'
-        hibernatevalidatorVersion = '8.0.0.Final'
-        httpclientVersion = '4.5.14'
-        httpcoreVersion = '4.4.16'
-        jacksonVersion = '2.14.1'
-        jacksonDatabindVersion = '2.14.2'
-        jacksonaslVersion = '1.9.14-atlassian-6'
-        jakartaannotationVersion = '2.1.1'
-        jakartapersistenceVersion = '3.1.0'
-        jakartavalidationVersion = '3.0.2'
-        janusVersion = '0.6.1'
-        javassistVersion = '3.29.2-GA'
-        jaxbVersion = '2.3.1'
-        jenaVersion = '4.2.0'
-        jodatimeVersion = '2.12.2'
-        jsonldVersion = '0.13.4'
-        junitVersion = '4.13.2'
-        junitjupiterVersion = '5.9.2'
-        junitplatformVersion = '1.9.1'
-        jwtVersion = '0.9.1'
-        jwtApiVersion = '0.11.5'
-        jwtImplVersion = '0.11.5'
-        jwtJacksonVersion = '0.11.5'
-        kafkaVersion = '3.3.2'
-        lang3Version = '3.12.0'
-        logbackVersion = '1.2.11'
-        lettuceVersion = '6.2.2.RELEASE'
-        luceneVersion = '8.11.1'
-        openlineageVersion = '0.19.2'
-        ossVersion = '4.15.0'
-        mockitoVersion = '5.1.1'
-        plexusVersion = '3.5.0'
-        prometheusVersion = '1.10.3'
-        nettyVersion = '4.1.87.Final'
-        quartzVersion = '2.3.2'
-        reflectionsVersion = '0.10.2'
-        sanitizerVersion = '1.2.3'
-        servletVersion = '4.0.1'
-        sleepycatVersion = '18.3.12'
-        snakeyamlVersion = '1.33'
-        slf4jVersion = '1.7.36'
-        snappyVersion = '1.1.9.1'
-        springdocVersion = '1.6.13'
-        springbootVersion = '2.7.8'
-        spotbugsVersion = '4.7.3'
-        springdataVersion = '2.7.7'
-        springldapVersion = '2.4.1'
-        springsecurityVersion = '5.8.1'
-        swaggerVersion = '2.2.8'
-        testngVersion = '7.7.1'
-        thriftVersion = '0.17.0'
-        springwebVersion = '5.3.25'
-        tinkVersion = '1.7.0'
-        tomcatVersion = '9.0.71'
-        validationVersion = '2.0.1.Final'
-        gsonVersion = '2.10.1'
-        antVersion = '1.10.13'
-        jnrVersion = '3.1.16'
-        cassandraVersion = '4.1.0'
-        protobufVersion = '3.21.12'
-        osgiVersion = '8.0.0'
-        log4jVersion = '2.19.0'
-        jacksonjdk8Version = '2.14.2'
-        reactivestreamsVersion = '1.0.4'
-    }
-
-    dependencies {
-        constraints {
-            implementation("ch.qos.logback:logback-classic:${logbackVersion}")
-            implementation("ch.qos.logback:logback-core:${logbackVersion}")
-            implementation("com.datastax.oss:java-driver-core:${ossVersion}")
-            implementation("com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}")
-            implementation("com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}")
-            implementation("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
-            implementation("com.fasterxml.jackson.core:jackson-datatype-jsr310:${jacksonVersion}")
-            implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${jacksonVersion}")
-            implementation("com.fasterxml:classmate:${classmateVersion}")
-            implementation("com.github.jsonld-java:jsonld-java:${jsonldVersion}")
-            implementation("com.google.crypto.tink:tink:${tinkVersion}")
-            implementation("com.github.spotbugs:spotbugs-annotations:${spotbugsVersion}")
-            implementation("com.google.code.findbugs:jsr305:${findbugsVersion}")
-            implementation("com.google.guava:guava:${guavaVersion}")
-            implementation("com.mikesamuel:json-sanitizer:${sanitizerVersion}")
-            implementation("com.sleepycat:je:${sleepycatVersion}")
-            implementation("commons-codec:commons-codec:${commonscodecVersion}")
-            implementation("commons-io:commons-io:${commonsioVersion}")
-            implementation("commons-cli:commons-cli:${commonscliVersion}")
-            implementation("commons-logging:commons-logging:${commonsloggingVersion}")
-            implementation("org.apache.commons:commons-text:${commonstextVersion}")
-            implementation("io.github.classgraph:classgraph:${classgraphVersion}")
-            implementation("io.jsonwebtoken:jjwt:${jwtVersion}")
-            implementation("io.jsonwebtoken:jjwt-api:${jwtApiVersion}")
-            implementation("io.lettuce:lettuce-core:${lettuceVersion}")
-            implementation("io.micrometer:micrometer-registry-prometheus:${prometheusVersion}")
-            implementation("io.netty:netty-handler:${nettyVersion}")
-            implementation("io.netty:netty-common:${nettyVersion}")
-            implementation("io.netty:netty-buffer:${nettyVersion}")
-            implementation("io.netty:netty-codec:${nettyVersion}")
-            implementation("io.netty:netty-all:${nettyVersion}")
-            implementation("io.netty:netty-transport:${nettyVersion}")
-            implementation("io.netty:netty-resolver:${nettyVersion}")
-            implementation("io.swagger.core.v3:swagger-annotations:${swaggerVersion}")
-            implementation("io.openlineage:openlineage-java:${openlineageVersion}")
-            implementation("jakarta.persistence:jakarta.persistence-api:${jakartapersistenceVersion}")
-            implementation("jakarta.validation:jakarta.validation-api:${jakartavalidationVersion}")
-            implementation("javax.validation:validation-api:${validationVersion}")
-            implementation("javax.xml.bind:jaxb-api:${jaxbVersion}")
-            implementation("org.apache.avro:avro:${avroVersion}")
-            implementation("org.apache.commons:commons-collections4:${collections4Version}")
-            implementation("org.apache.commons:commons-lang3:${lang3Version}")
-            implementation("org.apache.httpcomponents:httpclient:${httpclientVersion}")
-            implementation("org.apache.httpcomponents:httpcore:${httpcoreVersion}")
-            implementation("org.apache.httpcomponents:httpcore-nio:${httpcoreVersion}")
-            implementation("org.apache.httpcomponents:httpcore-osgi:${httpcoreVersion}")
-            implementation("org.apache.jena:jena-core:${jenaVersion}")
-            implementation("org.apache.kafka:kafka-clients:${kafkaVersion}")
-            implementation("org.apache.lucene:lucene-core:${luceneVersion}")
-            implementation("org.apache.lucene:lucene-analyzers-common:${luceneVersion}")
-            implementation("org.apache.lucene:lucene-queryparser:${luceneVersion}")
-            implementation("org.apache.lucene:lucene-spatial:${luceneVersion}")
-            implementation("org.apache.lucene:lucene-spatial-extras:${luceneVersion}")
-            implementation("org.apache.tinkerpop:tinkergraph-gremlin:${gremlinVersion}")
-            implementation("org.apache.tinkerpop:gremlin-driver:${gremlinVersion}")
-            implementation("org.apache.tinkerpop:gremlin-core:${gremlinVersion}")
-            implementation("org.apache.tinkerpop:gremlin-groovy:${gremlinVersion}")
-            implementation("org.apache.tinkerpop:gremlin-shaded:${gremlinVersion}")
-            implementation("org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}")
-            //TODO May need to exclude tomcat-annotations-api
-            implementation("org.apache.tomcat:tomcat-coyote:${tomcatVersion}")
-            //TODO May need to exclude tomcat-annotations-api
-            implementation("org.codehaus.groovy:groovy:${groovyVersion}")
-            implementation("org.codehaus.groovy:groovy-cli-picocli:${groovyVersion}")
-            implementation("org.codehaus.groovy:groovy-console:${groovyVersion}")
-            implementation("org.codehaus.groovy:groovy-jsr223:${groovyVersion}")
-            implementation("org.codehaus.groovy:groovy-templates:${groovyVersion}")
-            implementation("org.codehaus.groovy:groovysh:${groovyVersion}")
-            compileOnly("org.elasticsearch:elasticsearch:${elasticsearchVersion}")
-            implementation("org.elasticsearch.client:elasticsearch-rest-client:${elasticsearchVersion}")
-            implementation("co.elastic.clients:elasticsearch-java:${elasticsearchVersion}")
-            implementation("org.codehaus.plexus:plexus-utils:${plexusVersion}")
-            implementation("org.hdrhistogram:HdrHistogram:${hdrhistogramVersion}")
-            implementation("org.janusgraph:janusgraph-core:${janusVersion}")
-            implementation("org.janusgraph:janusgraph-inmemory:${janusVersion}")
-            implementation("org.janusgraph:janusgraph-driver:${janusVersion}")
-            implementation("org.javassist:${javassistVersion}")
-            implementation("org.quartz-scheduler:quartz:${quartzVersion}")
-            implementation("org.reflections:reflections:${reflectionsVersion}")
-            implementation("org.springdoc:springdoc-openapi-ui:${springdocVersion}")
-            implementation("org.slf4j:jcl-over-slf4j:${slf4jVersion}")
-            implementation("org.slf4j:slf4j-api:${slf4jVersion}")
-            implementation("org.springframework.boot:spring-boot-autoconfigure:${springbootVersion}")
-            implementation("org.springframework.boot:spring-boot:${springbootVersion}")
-            implementation("org.springframework.boot:spring-boot-starter-web:${springbootVersion}")
-            implementation("org.springframework.boot:spring-boot-starter-validation:${springbootVersion}")
-            implementation("org.springframework.data:spring-data-commons:${springdataVersion}")
-            implementation("org.springframework.boot:spring-boot-test:${springbootVersion}")
-            implementation("org.springframework.boot:spring-boot-starter-test:${springbootVersion}")
-            implementation("org.springframework.boot:spring-boot-starter-security:${springbootVersion}")
-            implementation("org.springframework.boot:spring-boot-starter-data-redis:${springbootVersion}")
-            implementation("org.springframework.boot:spring-boot-starter-actuator:${springbootVersion}")
-            implementation("org.springframework.security:spring-security-config:${springsecurityVersion}")
-            implementation("org.springframework.security:spring-security-core:${springsecurityVersion}")
-            implementation("org.springframework.security:spring-security-ldap:${springsecurityVersion}")
-            implementation("org.springframework.security:spring-security-web:${springsecurityVersion}")
-            implementation("org.springframework:spring-aop:${springwebVersion}")
-            implementation("org.springframework:spring-beans:${springwebVersion}")
-            implementation("org.springframework:spring-context:${springwebVersion}")
-            implementation("org.springframework:spring-expression:${springwebVersion}")
-            implementation("org.springframework:spring-test:${springwebVersion}")
-            implementation("org.springframework:spring-jdbc:${springwebVersion}")
-            implementation("org.springframework:spring-web:${springwebVersion}")
-            implementation("org.springframework:spring-webmvc:${springwebVersion}")
-            implementation("org.springframework:spring-tx:${springwebVersion}")
-            implementation("org.springframework:spring-core:${springwebVersion}")
-            implementation("org.springframework.ldap:ldap-core:${springldapVersion}")
-            implementation("javax.servlet:javax.servlet-api:${servletVersion}")
-            implementation("commons-configuration:commons-configuration:${commonsconfigurationVersion}")
-            implementation("org.apache.commons:commons-configuration2:${commonsconfiguration2Version}")
-            implementation("org.hibernate:hibernate-validator:${hibernatevalidatorVersion}")
-            implementation("org.apache.thrift:libthrift:${thriftVersion}")
-            implementation("org.apache.cassandra:cassandra-all:${cassandraVersion}")
-            implementation("org.apache.ant:ant:${antVersion}")
-            implementation("com.google.protobuf:protobuf-java:${protobufVersion}")
-            implementation("com.google.code.gson:gson:${gsonVersion}")
-            implementation("com.github.jnr:jnr-posix:${jnrVersion}")
-            implementation("org.osgi:org.osgi.core:${osgiVersion}")
-            implementation("org.apache.logging.log4j:log4j-api:${log4jVersion}")
-            implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${jacksonjdk8Version}")
-            implementation("org.reactivestreams:reactive-streams:${reactivestreamsVersion}")
-
-            annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
-            implementation("org.projectlombok:lombok:${lombokVersion}")
+    // The 'bom' project is a special case - we must not apply anything else to it
+    if (project.name != 'bom') {
+        apply plugin: 'java'
+        apply plugin: 'jacoco'
+        apply plugin: 'checkstyle'
+        //apply plugin: 'io.freefair.lombok'
+        apply plugin: 'com.autonomousapps.dependency-analysis'
+        apply plugin: 'dev.jacomet.logging-capabilities'
+        apply plugin: 'org.gradlex.java-ecosystem-capabilities'
 
 
-            // testng also used in our 'source' code to support unit tests
-            implementation("org.testng:testng:${testngVersion}")
-            runtimeOnly("joda-time:joda-time:${jodatimeVersion}")
-            implementation("org.yaml:snakeyaml:${snakeyamlVersion}")
-            runtimeOnly("org.antlr:antlr-runtime:${antlrVersion}")
-            runtimeOnly("org.antlr:ST4:${ST4Version}")
-            runtimeOnly("org.apache.jena:jena-arq:${jenaVersion}")
-            runtimeOnly("org.codehaus.jackson:jackson-mapper-asl:${jacksonaslVersion}")
-            runtimeOnly("org.codehaus.jackson:jackson-core-asl:${jacksonaslVersion}")
-            runtimeOnly("org.janusgraph:janusgraph-berkeleyje:${janusVersion}")
-            runtimeOnly("org.janusgraph:janusgraph-cql:${janusVersion}")
-            runtimeOnly("org.janusgraph:janusgraph-lucene:${janusVersion}")
-            runtimeOnly("org.xerial.snappy:snappy-java:${snappyVersion}")
-            runtimeOnly("org.janusgraph:janusgraph-es:${janusVersion}")
-            runtimeOnly("org.xerial.snappy:snappy-java:${snappyVersion}")
-            runtimeOnly("javax.servlet:javax.servlet-api:${servletVersion}")
-            runtimeOnly("io.jsonwebtoken:jjwt-impl:${jwtImplVersion}")
-            runtimeOnly("io.jsonwebtoken:jjwt-jackson:${jwtJacksonVersion}")
-            testImplementation("junit:junit:${junitVersion}")
-            testImplementation("org.glassfish:javax.json:${glassfishVersion}")
-            testImplementation("org.junit.jupiter:junit-jupiter:${junitjupiterVersion}")
-            testImplementation("org.junit.jupiter:junit-jupiter-api:${junitjupiterVersion}")
-            testImplementation("org.junit.jupiter:junit-jupiter-engine:${junitjupiterVersion}")
-            testImplementation("org.junit.jupiter:junit-platform-runner:${junitplatformVersion}")
-            testImplementation("org.junit.jupiter:junit-platform-suite-api:${junitplatformVersion}")
-            testImplementation("org.junit.vintage:junit-vintage-engine:${junitplatformVersion}")
-            testImplementation("org.mockito:mockito-core:${mockitoVersion}")
-            testImplementation("org.mockito:mockito-junit-jupiter:${mockitoVersion}")
-            testImplementation("org.mockito:mockito-inline:${mockitoVersion}")
-            testImplementation("org.slf4j:slf4j-simple:${slf4jVersion}")
-            testImplementation("org.testng:testng:${testngVersion}")
-            testImplementation("org.hamcrest:hamcrest:${hamcrestVersion}")
-
-            // Explicitly enforced versions of transitive dependencies to mitigate potential CVEs reported by static security scans.
-            //TODO: Remove dependency line below in case the new parent library is updated and pulls good version.
-            runtimeOnly("com.beust:jcommander:1.82")
-            runtimeOnly("org.antlr:antlr4:4.11.1")
-            runtimeOnly("org.apache.ivy:ivy:2.5.1")
-        }
-        implementation platform('net.openhft:chronicle-bom:2.24ea38')
-    }
-
-    /*
-     * Java related configuration
-     */
-    java {
-        withSourcesJar()
-        withJavadocJar()
-    }
-    tasks.withType(JavaCompile) {
-        options.release = 17
-        options.encoding = 'UTF-8'
-        options.incremental = true
-        options.failOnError = true
-        options.compilerArgs << "-Xlint:all"
-    }
-
-    // javadoc
-    javadoc {
-        options.addBooleanOption('html5', true)
-    }
-
-    // code coverage
-    jacoco {
-        toolVersion = "0.8.8"
-    }
-
-    // lombok
-    lombok {
-        version = "${lombokVersion}"
-    }
-    // Testing
-    test {
-        useJUnitPlatform {
-            includeEngines 'junit-jupiter'
-        }
+        // Consistent dependencies, and exceptions
         dependencies {
-            testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
-            testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
-        }
-
-        testLogging {
-            events "passed", "skipped", "failed"
-        }
-
-        reports {
-            html.required = true
-        }
-    }
-    /*
-     * Publishing of maven artifacts -- and signing (only for CI)
-     */
-    apply plugin: 'signing'
-
-
-    publishing {
-        publications {
-            mavenmodule(MavenPublication) {
-                from components.java
-                pom {
-                    url = 'http://egeria.odpi.org'
-                    licenses {
-                        // Code
-                        license {
-                            name = 'The Apache License, Version 2.0'
-                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                        }
-                        // Docs
-                        license {
-                            name = 'Creative Commons Attribution 4.0 International (CC BY 4.0)'
-                            url = 'https://creativecommons.org/licenses/by/4.0'
-                        }
-                    }
-                    developers {
-                        developer {
-                            id = 'planetf1'
-                            name = 'Nigel Jones'
-                            email = 'nigel.l.jones+git@gmail.com'
-                        }
-                    }
-                    scm {
-                        connection = 'scm:git:git://github.com/odpi/egeria.git'
-                        developerConnection = 'scm:git:ssh://github.com/odpi/egeria/egeria.git'
-                        url = 'http://github.com/odpi/egeria'
-                    }
-                }
-                // Override the project name & description for the pom based on properties set in the child build.gradle (hard to default & required for maven central)
-                pom.withXml {
-                    asNode().appendNode('name', "${project.name}")
-                    asNode().appendNode('description', "${project.description}")
+            implementation platform(project(":bom"))
+            // Some nasty clashes we want to avoid (consumers will need to make their own arrangements
+            modules {
+                module('org.glassfish:jakarta.json') {
+                    replacedBy 'jakarta.json:jakarta.json-api', 'use jakarta.json.api instead of glassfish'
                 }
             }
         }
+
+        // we already have bridge modules that implement commons logging, so cannot have another implementation in classpath
+        // we also want to avoid the glassfish implementation of jakarta.json (if we have to, will replace as above)
+        configurations {
+            all {
+                exclude module: 'commons-logging'
+                exclude module: 'org.glassfish:jakarta.json'
+                resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+            }
+        }
+
+        // Maven publishing (to public repo) requires we included source and javadoc jars
+        java {
+            withSourcesJar()
+            withJavadocJar()
+        }
+
+        // compile flags
+        tasks.withType(JavaCompile) {
+            options.release = 17
+            options.encoding = 'UTF-8'
+            options.incremental = true
+            options.failOnError = true
+            options.compilerArgs << "-Xlint:all" << "-Xmaxerrs" << "1000" << "-Xmaxwarns" << "1000"
+        }
+
+        // javadoc
+        javadoc {
+            options.addBooleanOption('html5', true)
+        }
+
+        publishing {
+            {
+                publications {
+                    mavenmodule(MavenPublication) {
+                        from components.java
+                        pom {
+                            url = 'http://egeria.odpi.org'
+                            licenses {
+                                // Code
+                                license {
+                                    name = 'The Apache License, Version 2.0'
+                                    url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                                }
+                                // Docs
+                                license {
+                                    name = 'Creative Commons Attribution 4.0 International (CC BY 4.0)'
+                                    url = 'https://creativecommons.org/licenses/by/4.0'
+                                }
+                            }
+                            developers {
+                                developer {
+                                    id = 'planetf1'
+                                    name = 'Nigel Jones'
+                                    email = 'nigel.l.jones+git@gmail.com'
+                                }
+                            }
+                            scm {
+                                connection = 'scm:git:git://github.com/odpi/egeria.git'
+                                developerConnection = 'scm:git:ssh://github.com/odpi/egeria/egeria.git'
+                                url = 'http://github.com/odpi/egeria'
+                            }
+                        }
+                        // Override the project name & description for the pom based on properties set in the child build.gradle (hard to default & required for maven central)
+                        pom.withXml {
+                            asNode().appendNode('name', "${project.name}")
+                            asNode().appendNode('description', "${project.description}")
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+
+    // Always need these repos
+    publishing {
+
         // Release versions get pushed to staging area on maven central, snapshots to snapshot repo
         // Secrets for credentials
         repositories {
             maven {
-                    name = 'OSSRH'
-                    def releasesRepoUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
-                    def snapshotsRepoUrl = 'https://oss.sonatype.org/content/repositories/snapshots'
-                    url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
-                    // User token (under profile) on oss.sonatype.org
-                    credentials {
-                        username = System.getenv("OSSRH_USERNAME")
-                        password = System.getenv("OSSRH_TOKEN")
-                    }
+                name = 'OSSRH'
+                def releasesRepoUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
+                def snapshotsRepoUrl = 'https://oss.sonatype.org/content/repositories/snapshots'
+                url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+                // User token (under profile) on oss.sonatype.org
+                credentials {
+                    username = System.getenv("OSSRH_USERNAME")
+                    password = System.getenv("OSSRH_TOKEN")
                 }
+            }
         }
     }
 
-    /*
-     * Additional useful tasks
-     */
+    // shorthand for checking dependencies
     task printAllDependencies(type: DependencyReportTask) {}
     task printSubDependencies(type: DependencyReportTask) {}
     task findDependency(type: DependencyInsightReportTask) {}
 
-} // end of allProjects
+    // Checking of javaheaders for license & copyright
+    checkstyle {
+        toolVersion = '10.7.0'
+        showViolations = true
+    }
+}
+
+
+/*
+ * Additional aggregate tasks run only at parent
+ */
 
 // Whilst all modules have their own javadoc, we only build
 // an aggregate for the client and API modules plus the REST calls
+apply plugin: 'java'
 javadoc {
     include("**/api/*.java")
     include("**/client/*.java")
@@ -471,29 +226,16 @@ javadoc {
     include("**/frameworks/**/*.java")
 }
 
-
-/*
- * Configuration for sub projects only
- */
-subprojects {
-    // All tasks currently will run under allProjects - which includes root.
-}
-
-
-/*
- * Additional aggregate tasks run only at parent
- */
-
 // Jacoco reporting -- from gradle docs
 task codeCoverageReport(type: JacocoReport) {
     // Gather execution data from all subprojects
     executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
-
     // Add all relevant sourcesets from the subprojects
     subprojects.each {
-        sourceSets it.sourceSets.main
+        if (it.name != 'bom') {
+            sourceSets it.sourceSets.main
+        }
     }
-
     // enable the different report types (html, xml, csv)
     reports {
         // xml is usually used to integrate code coverage with
@@ -505,7 +247,6 @@ task codeCoverageReport(type: JacocoReport) {
         html.required = true
         csv.required = true
     }
-
 }
 // always run the tests before generating the report
 codeCoverageReport.dependsOn {
@@ -520,7 +261,10 @@ dependencyAnalysis {
                 severity('fail')
             }
             onUnusedDependencies {
-                exclude("junit:junit", "org.junit.jupiter:junit-jupiter-api", "org.junit.jupiter:junit-jupiter-engine", "com.fasterxml.jackson.core:jackson-annotations")
+                exclude("junit:junit", "org.junit.jupiter:junit-jupiter-api",
+                        "org.junit.jupiter:junit-jupiter-engine",
+                        "org.springdoc:springdoc-openapi-starter-webmvc-ui"
+                )
             }
         }
     }

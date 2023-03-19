@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: Apache 2.0 */
+/* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworkservices.oif.converters;
 
@@ -44,6 +44,7 @@ public class CatalogTargetConverter<B> extends OCFConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @SuppressWarnings(value="unchecked")
     public B getNewBean(Class<B>     beanClass,
                         Relationship relationship,
                         String       methodName) throws PropertyServerException

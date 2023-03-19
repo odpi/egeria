@@ -1,0 +1,251 @@
+{
+	"info": {
+		"_postman_id": "eb88dd27-c07b-4760-ad2e-e097cd7051b7",
+		"name": "Egeria-open-integration-service",
+		"description": "This collection provides API calls for the framework services that support the Open Integration Framework (OIF).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "getMetadataSourceGUID",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"class\" : \"NameRequestBody\",\n    \"name\" : \"{{metadataSourceQualifiedName}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{access_service}}/open-integration/users/{{user}}/metadata-sources/by-name",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"framework-services",
+						"{{access_service}}",
+						"open-integration",
+						"users",
+						"{{user}}",
+						"metadata-sources",
+						"by-name"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createMetadataSource",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"class\" : \"MetadataSourceRequestBody\",\n    \"typeName\" : \"{{typeName}}\",\n    \"classificationName\" : \"{{classificationName}}\",\n    \"qualifiedName\" : \"{{metadataSourceQualifiedName}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{access_service}}/open-integration/users/{{user}}/metadata-sources/new",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"framework-services",
+						"{{access_service}}",
+						"open-integration",
+						"users",
+						"{{user}}",
+						"metadata-sources",
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "publishIntegrationReport",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"class\" : \"IntegrationReportProperties\",\n    \"serverName\" : \"{{server}}\",\n    \"connectorId\" : \"{{connectorId}}\",\n    \"connectorName\" : \"{{connectorName}}\",\n    \"refreshStartDate\" : \"{{$isoTimestamp}}\",\n    \"refreshCompletionDate\" : \"{{$isoTimestamp}}\",\n    \"createdElements\" : [\"guid1\", \"guid2\", \"guid3\"],\n    \"updatedElements\" : [\"guid4\", \"guid5\"],\n    \"deletedElements\" : [\"guid6\"],\n    \"additionalProperties\" : {\n        \"prop1\" : \"value 1\",\n        \"prop2\" : \"value 2\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{access_service}}/open-integration/users/{{user}}/integration-reports/{{guid}}/new",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"framework-services",
+						"{{access_service}}",
+						"open-integration",
+						"users",
+						"{{user}}",
+						"integration-reports",
+						"{{guid}}",
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getIntegrationReport",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{access_service}}/open-integration/users/{{user}}/integration-reports/{{reportGUID}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"framework-services",
+						"{{access_service}}",
+						"open-integration",
+						"users",
+						"{{user}}",
+						"integration-reports",
+						"{{reportGUID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getIntegrationReportForElement",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{access_service}}/open-integration/users/{{user}}/integration-reports/for-element/{{guid}}?startingFrom=0&maximumResults=0",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"framework-services",
+						"{{access_service}}",
+						"open-integration",
+						"users",
+						"{{user}}",
+						"integration-reports",
+						"for-element",
+						"{{guid}}"
+					],
+					"query": [
+						{
+							"key": "startingFrom",
+							"value": "0"
+						},
+						{
+							"key": "maximumResults",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getIntegrationReports",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{access_service}}/open-integration/users/{{user}}/integration-reports?startingFrom=0&maximumResults=0",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"framework-services",
+						"{{access_service}}",
+						"open-integration",
+						"users",
+						"{{user}}",
+						"integration-reports"
+					],
+					"query": [
+						{
+							"key": "startingFrom",
+							"value": "0"
+						},
+						{
+							"key": "maximumResults",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getCatalogTargets",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{access_service}}/open-integration/users/{{user}}/integration-connectors/{{guid}}/catalog-targets?startingFrom=0&maximumResults=0",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"framework-services",
+						"{{access_service}}",
+						"open-integration",
+						"users",
+						"{{user}}",
+						"integration-connectors",
+						"{{guid}}",
+						"catalog-targets"
+					],
+					"query": [
+						{
+							"key": "startingFrom",
+							"value": "0"
+						},
+						{
+							"key": "maximumResults",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,5 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.assetcatalog;
+/* Copyright Contributors to the ODPi Egeria project. */
+
 
 import org.junit.Assert;
 import org.junit.Before;

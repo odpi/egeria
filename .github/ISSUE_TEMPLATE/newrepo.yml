@@ -91,7 +91,7 @@ body:
       description: |
         Are all of the following assumptions true? If not please explain why
           - DCO is required
-          - Apache 2.0 / CC-BY-4.0 licensed
+          - Apache-2.0 / CC-BY-4.0 licensed
           - Issue tracking, projects enabled, wikis/discussions disabled
           - Security scanning will be enabled
           - code scanning will be enabled

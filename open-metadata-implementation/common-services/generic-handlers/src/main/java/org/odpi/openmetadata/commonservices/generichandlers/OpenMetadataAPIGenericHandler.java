@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: Apache 2.0 */
+/* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
@@ -12590,10 +12590,6 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                               effectiveTime,
                                                                               methodName);
 
-
-        String actionDescriptionTemplate = "Linking %s %s to %s %s";
-        int actionOrdinal = OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL;
-
         Relationship newRelationship = repositoryHandler.createRelationship(userId,
                                                                             attachmentTypeGUID,
                                                                             externalSourceGUID,
@@ -12605,180 +12601,35 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
         /*
-         * Final stage is to add the latest change classification to the anchor(s).
          * The act of creating the relationship may set up the anchor GUID in either element.
          */
-        String startingElementAnchorGUID;
 
         if (startingElementAnchorEntity == null)
         {
-            startingElementAnchorGUID = this.reEvaluateAnchorGUID(startingGUID,
-                                                                  startingGUIDParameterName,
-                                                                  startingElementTypeName,
-                                                                  startingElementEntity,
-                                                                  null,
-                                                                  forLineage,
-                                                                  forDuplicateProcessing,
-                                                                  effectiveTime,
-                                                                  methodName);
+            this.reEvaluateAnchorGUID(startingGUID,
+                                      startingGUIDParameterName,
+                                      startingElementTypeName,
+                                      startingElementEntity,
+                                      null,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      effectiveTime,
+                                      methodName);
 
-            if (startingElementAnchorGUID != null)
-            {
-                if ((attachingElementAnchorEntity != null) && (attachingElementAnchorEntity.getGUID().equals(startingElementAnchorGUID)))
-                {
-                    startingElementAnchorEntity = attachingElementAnchorEntity;
-                }
-                else
-                {
-                    final String anchorGUIDParameterName = "startingElementAnchorGUID";
-
-                    startingElementAnchorEntity = repositoryHandler.getEntityByGUID(userId,
-                                                                                    startingElementAnchorGUID,
-                                                                                    anchorGUIDParameterName,
-                                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                                    forLineage,
-                                                                                    forDuplicateProcessing,
-                                                                                    effectiveTime,
-                                                                                    methodName);
-                }
-            }
-            else
-            {
-                startingElementAnchorGUID = startingGUID;
-            }
-        }
-        else
-        {
-            startingElementAnchorGUID = startingElementAnchorEntity.getGUID();
         }
 
         if (attachingElementAnchorEntity == null)
         {
-            String attachingElementAnchorGUID = this.reEvaluateAnchorGUID(attachingGUID,
-                                                                          attachingGUIDParameterName,
-                                                                          attachingElementTypeName,
-                                                                          attachingElementEntity,
-                                                                          null,
-                                                                          forLineage,
-                                                                          forDuplicateProcessing,
-                                                                          effectiveTime,
-                                                                          methodName);
+             this.reEvaluateAnchorGUID(attachingGUID,
+                                       attachingGUIDParameterName,
+                                       attachingElementTypeName,
+                                       attachingElementEntity,
+                                       null,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       effectiveTime,
+                                       methodName);
 
-            if (attachingElementAnchorGUID != null)
-            {
-                if (attachingElementAnchorGUID.equals(startingElementAnchorGUID))
-                {
-                    attachingElementAnchorEntity = startingElementAnchorEntity;
-                }
-                else
-                {
-                    final String anchorGUIDParameterName = "attachingElementAnchorGUID";
-
-                    attachingElementAnchorEntity = repositoryHandler.getEntityByGUID(userId,
-                                                                                     attachingElementAnchorGUID,
-                                                                                     anchorGUIDParameterName,
-                                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                                     forLineage,
-                                                                                     forDuplicateProcessing,
-                                                                                     effectiveTime,
-                                                                                     methodName);
-                }
-            }
-        }
-
-
-        /*
-         * Set up LatestChange classification if there are any anchor entities returned from the initial validation.
-         */
-
-        String actionDescription = String.format(actionDescriptionTemplate,
-                                                 startingElementTypeName,
-                                                 startingGUID,
-                                                 attachingElementTypeName,
-                                                 attachingGUID);
-
-        if (startingElementAnchorEntity != null)
-        {
-            this.addLatestChangeToAnchor(startingElementAnchorEntity,
-                                         OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                         actionOrdinal,
-                                         null,
-                                         attachingGUID,
-                                         attachingElementTypeName,
-                                         attachmentTypeName,
-                                         userId,
-                                         actionDescription,
-                                         forLineage,
-                                         forDuplicateProcessing,
-                                         effectiveTime,
-                                         methodName);
-        }
-        else
-        {
-            if (repositoryHelper.isTypeOf(serviceName, startingElementEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
-            {
-                this.addLatestChangeToAnchor(startingElementEntity,
-                                             OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                             actionOrdinal,
-                                             null,
-                                             attachingGUID,
-                                             attachingElementTypeName,
-                                             attachmentTypeName,
-                                             userId,
-                                             actionDescription,
-                                             forLineage,
-                                             forDuplicateProcessing,
-                                             effectiveTime,
-                                             methodName);
-            }
-        }
-
-        if (attachingElementAnchorEntity != null)
-        {
-            /*
-             * Only need to add latestChange if the anchor of the attached element is different from the starting element
-             */
-            if (! attachingElementAnchorEntity.getGUID().equals(startingElementAnchorGUID))
-            {
-                this.addLatestChangeToAnchor(attachingElementAnchorEntity,
-                                             OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                             actionOrdinal,
-                                             null,
-                                             startingGUID,
-                                             startingElementTypeName,
-                                             attachmentTypeName,
-                                             userId,
-                                             actionDescription,
-                                             forLineage,
-                                             forDuplicateProcessing,
-                                             effectiveTime,
-                                             methodName);
-            }
-        }
-        else if (! attachingGUID.equals(startingElementAnchorGUID))
-        {
-            /*
-             * The attaching element does not have an anchor and is different from the starting element's anchor
-             */
-            if (repositoryHelper.isTypeOf(serviceName, attachingElementEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
-            {
-                /*
-                 * The attaching element is an anchor in its own right.
-                 */
-                this.addLatestChangeToAnchor(attachingElementEntity,
-                                             OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
-                                             actionOrdinal,
-                                             null,
-                                             startingGUID,
-                                             startingElementTypeName,
-                                             attachmentTypeName,
-                                             userId,
-                                             actionDescription,
-                                             forLineage,
-                                             forDuplicateProcessing,
-                                             effectiveTime,
-                                             methodName);
-            }
         }
 
         if (newRelationship != null)

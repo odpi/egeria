@@ -31,7 +31,6 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-engine'
     testImplementation localGroovy()
     testImplementation 'org.apache.commons:commons-lang3'
-
 }
 
 description = 'Data Engine OMAS FVT'

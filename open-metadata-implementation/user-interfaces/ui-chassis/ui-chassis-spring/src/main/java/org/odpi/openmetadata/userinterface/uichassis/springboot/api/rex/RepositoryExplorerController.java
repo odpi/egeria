@@ -42,7 +42,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -109,7 +109,7 @@ public class RepositoryExplorerController extends SecureController
      */
 
     @PostMapping( path = "/api/types/rexTypeExplorer")
-    public TypeExplorerResponse rexTypeExplorer(@RequestBody RexTypesRequestBody body, HttpServletRequest request)
+    public TypeExplorerResponse rexTypeExplorer(@RequestBody RexTypesRequestBody body)
     {
         // Look up types in server and construct TEX
         TypeExplorerResponse texResp;

@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: Apache 2.0 */
+/* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.governanceprogram.client;
@@ -207,7 +207,7 @@ public class GovernanceZoneManager extends GovernanceProgramBaseClient implement
         final String methodName = "deleteGovernanceZone";
 
         final String guidParameter = "zoneGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/{2}/delete}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/{2}/delete";
 
         super.removeReferenceable(userId, zoneGUID, guidParameter, urlTemplate, methodName);
     }

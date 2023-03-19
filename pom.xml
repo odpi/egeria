@@ -146,8 +146,8 @@
         <open-metadata.version>${project.version}</open-metadata.version>
 
         <!-- Level of Java -->
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
 
         <!-- Platform encoding -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -165,18 +165,19 @@
         <testng.version>7.7.1</testng.version>
         <jackson.version>2.14.2</jackson.version>
         <jackson.databind.version>2.14.2</jackson.databind.version>
-        <logback.version>1.2.11</logback.version>
-        <kafka.version>3.3.2</kafka.version>
-        <tomcat.version>9.0.71</tomcat.version>
-        <netty.version>4.1.87.Final</netty.version>
-        <spring.ldap.core>2.4.1</spring.ldap.core>
+        <logback.version>1.4.5</logback.version>
+        <kafka.version>3.4.0</kafka.version>
+        <tomcat.version>10.1.5</tomcat.version>
+        <netty.version>4.1.89.Final</netty.version>
+        <spring.ldap.core>3.0.0</spring.ldap.core>
         <janus.version>0.6.1</janus.version>
-        <gremlin.version>3.5.2</gremlin.version>
-        <spring-boot.version>2.7.8</spring-boot.version>
-        <springdoc.version>1.6.12</springdoc.version>
-        <spring-data.version>2.7.7</spring-data.version>
-        <spring.version>5.3.25</spring.version>
-        <spring-security.version>5.8.1</spring-security.version>
+        <gremlin.version>3.5.5</gremlin.version>
+        <spring-boot.version>3.0.2</spring-boot.version>
+        <springdoc.version>1.6.13</springdoc.version>
+        <spring-data.version>3.0.2</spring-data.version>
+        <spring.version>6.0.5</spring.version>
+        <spring-security.version>6.0.1</spring-security.version>
+        <nimbus-jose-jwt.version>9.30.2</nimbus-jose-jwt.version>
         <springdoc-plugin.version>1.4</springdoc-plugin.version>
         <commons-io.version>2.11.0</commons-io.version>
         <commons-cli.version>1.5.0</commons-cli.version>
@@ -184,10 +185,6 @@
         <commons-collections4.version>4.4</commons-collections4.version>
         <jena.version>4.2.0</jena.version>
         <commons-lang.version>3.12.0</commons-lang.version>
-        <jwt.version>0.9.1</jwt.version>
-        <jjwt-api.version>0.11.5</jjwt-api.version>
-        <jjwt-impl.version>0.11.5</jjwt-impl.version>
-        <jjwt-jackson.version>0.11.5</jjwt-jackson.version>
         <jakarta.persistence.version>3.1.0</jakarta.persistence.version>
         <jakarta-validation.version>3.0.2</jakarta-validation.version>
         <javax-validation.version>2.0.1.Final</javax-validation.version>
@@ -200,7 +197,7 @@
         <lucene.version>8.11.1</lucene.version>
         <lucene-analyzers-common.version>8.11.1</lucene-analyzers-common.version>
         <guava.version>31.1-jre</guava.version>
-        <tink.version>1.7.0</tink.version>
+        <tink.version>1.8.0</tink.version>
         <jsonld.version>0.13.4</jsonld.version>
         <commons-logging.version>1.2</commons-logging.version>
         <commons-codec.version>1.15</commons-codec.version>
@@ -215,11 +212,11 @@
         <ST4.version>4.3.4</ST4.version>
         <snappy.version>1.1.9.1</snappy.version>
         <snakeyaml.version>1.33</snakeyaml.version>
-        <swagger.version>2.2.6</swagger.version>
-        <classgraph.version>4.8.154</classgraph.version>
-        <micrometer-registry-prometheus.version>1.10.3</micrometer-registry-prometheus.version>
+        <swagger.version>2.2.8</swagger.version>
+        <classgraph.version>4.8.155</classgraph.version>
+        <micrometer-registry-prometheus.version>1.10.4</micrometer-registry-prometheus.version>
         <jcl-over-slf4j.version>1.7.36</jcl-over-slf4j.version>
-        <groovy.version>3.0.14</groovy.version>
+        <groovy.version>3.0.15</groovy.version>
         <reflections.version>0.10.2</reflections.version>
         <HdrHistogram.version>2.1.12</HdrHistogram.version>
         <glassfish.json.version>1.1.4</glassfish.json.version>
@@ -228,16 +225,16 @@
         <httpclient.version>4.5.14</httpclient.version>
         <commons-configuration.version>1.10</commons-configuration.version>
         <commons-configuration2.version>2.8.0</commons-configuration2.version>
-        <lettuce.version>6.2.2.RELEASE</lettuce.version>
-        <lombok.version>1.18.24</lombok.version>
+        <lettuce.version>6.2.3.RELEASE</lettuce.version>
+        <lombok.version>1.18.26</lombok.version>
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
-        <javax.servlet.version>4.0.1</javax.servlet.version>
-        <thrift.version>0.17.0</thrift.version>
-        <elasticsearch.version>8.6.1</elasticsearch.version>
+        <jakarta.servlet.version>6.0.0</jakarta.servlet.version>
+        <thrift.version>0.18.0</thrift.version>
+        <elasticsearch.version>8.6.2</elasticsearch.version>
         <hibernate-validator.version>8.0.0.Final</hibernate-validator.version>
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
-        <maven-javadoc-plugin.version>3.4.1</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
         <maven-reports-plugin.version>3.4.2</maven-reports-plugin.version>
         <maven-clean-plugin.version>3.2.0</maven-clean-plugin.version>
         <maven-site-plugin.version>3.12.1</maven-site-plugin.version>
@@ -245,41 +242,42 @@
         <maven-install.version>3.1.0</maven-install.version>
         <maven-pmd.version>3.20.0</maven-pmd.version>
         <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
-        <owasp.version>8.0.2</owasp.version>
-        <maven-compiler.version>3.10.1</maven-compiler.version>
+        <maven-compiler.version>3.11.0</maven-compiler.version>
+        <owasp.version>8.1.2</owasp.version>
         <maven-download.version>1.6.8</maven-download.version>
         <spotbugs-maven.version>4.7.3</spotbugs-maven.version>
         <maven-antrun.version>3.1.0</maven-antrun.version>
         <spotify-docker-plugin.version>1.4.13</spotify-docker-plugin.version>
         <maven-enforcer-plugin.version>3.2.1</maven-enforcer-plugin.version>
         <jacoco-plugin.version>0.8.8</jacoco-plugin.version>
-        <maven-assembly-plugin.version>3.4.2</maven-assembly-plugin.version>
+        <maven-assembly-plugin.version>3.5.0</maven-assembly-plugin.version>
         <frontend.plugin.version>1.12.1</frontend.plugin.version>
         <resources.plugin.version>3.3.0</resources.plugin.version>
         <exec.plugin.version>3.1.0</exec.plugin.version>
         <rat-plugin.version>0.15</rat-plugin.version>
         <maven-dependency-plugin.version>3.5.0</maven-dependency-plugin.version>
-        <maven-deploy-plugin.version>3.0.0</maven-deploy-plugin.version>
+        <maven-deploy-plugin.version>3.1.0</maven-deploy-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
         <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
         <nexus-staging-maven-plugin>1.6.13</nexus-staging-maven-plugin>
         <license-plugin.version>2.0.0</license-plugin.version>
         <build-helper.version>3.3.0</build-helper.version>
-        <failsafe-plugin.version>3.0.0-M8</failsafe-plugin.version>
+        <failsafe-plugin.version>3.0.0-M9</failsafe-plugin.version>
         <git-commit-plugin.version>4.9.10</git-commit-plugin.version>
         <process-exec-plugin.version>0.9</process-exec-plugin.version>
         <groovy-plugin.version>2.1.1</groovy-plugin.version>
-        <openlineage.version>0.19.2</openlineage.version>
+        <openlineage.version>0.20.6</openlineage.version>
         <properties.plugin.version>1.1.0</properties.plugin.version>
         <cassandra.version>4.1.0</cassandra.version>
         <gson.version>2.10.1</gson.version>
         <ant.version>1.10.13</ant.version>
-        <protobuf.version>3.21.12</protobuf.version>
+        <protobuf.version>3.22.0</protobuf.version>
         <jnr.version>3.1.16</jnr.version>
         <osgi.version>8.0.0</osgi.version>
         <jacksonjdk8.version>2.14.2</jacksonjdk8.version>
-        <log4j.version>2.19.0</log4j.version>
+        <log4j.version>2.20.0</log4j.version>
         <reactivestreams.version>1.0.4</reactivestreams.version>
+        <errorprone.version>2.16</errorprone.version>
 
         <!-- Configuration of sonar code scanning-->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
@@ -408,12 +406,12 @@
                 <version>${openlineage.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt</artifactId>
-                <scope>compile</scope>
-                <version>${jwt.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>io.jsonwebtoken</groupId>-->
+<!--                <artifactId>jjwt</artifactId>-->
+<!--                <scope>compile</scope>-->
+<!--                <version>${jwt.version}</version>-->
+<!--            </dependency>-->
 
             <dependency>
                 <groupId>jakarta.persistence</groupId>
@@ -443,9 +441,9 @@
             </dependency>
 
            <dependency>
-               <groupId>javax.servlet</groupId>
-               <artifactId>javax.servlet-api</artifactId>
-                <version>${javax.servlet.version}</version>
+               <groupId>jakarta.servlet</groupId>
+               <artifactId>jakarta.servlet-api</artifactId>
+                <version>${jakarta.servlet.version}</version>
            </dependency>
 
             <dependency>
@@ -1948,26 +1946,26 @@
                 <version>${open-metadata.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt-api</artifactId>
-                <scope>compile</scope>
-                <version>${jjwt-api.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>io.jsonwebtoken</groupId>-->
+<!--                <artifactId>jjwt-api</artifactId>-->
+<!--                <scope>compile</scope>-->
+<!--                <version>${jjwt-api.version}</version>-->
+<!--            </dependency>-->
 
-            <dependency>
-                <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt-impl</artifactId>
-                <scope>runtime</scope>
-                <version>${jjwt-impl.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>io.jsonwebtoken</groupId>-->
+<!--                <artifactId>jjwt-impl</artifactId>-->
+<!--                <scope>runtime</scope>-->
+<!--                <version>${jjwt-impl.version}</version>-->
+<!--            </dependency>-->
 
-            <dependency>
-                <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt-jackson</artifactId>
-                <scope>runtime</scope>
-                <version>${jjwt-jackson.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>io.jsonwebtoken</groupId>-->
+<!--                <artifactId>jjwt-jackson</artifactId>-->
+<!--                <scope>runtime</scope>-->
+<!--                <version>${jjwt-jackson.version}</version>-->
+<!--            </dependency>-->
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
@@ -3005,6 +3003,12 @@
              </dependency>
 
             <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-observation</artifactId>
+                <version>${micrometer-registry-prometheus.version}</version>
+             </dependency>
+
+            <dependency>
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-commons</artifactId>
                 <version>${spring-data.version}</version>
@@ -3024,6 +3028,12 @@
 
             <dependency>
                 <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-oauth2-jose</artifactId>
+                <version>${spring-security.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-ldap</artifactId>
                 <version>${spring-security.version}</version>
             </dependency>
@@ -3038,6 +3048,12 @@
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-web</artifactId>
                 <version>${spring-security.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.nimbusds</groupId>
+                <artifactId>nimbus-jose-jwt</artifactId>
+                <version>${nimbus-jose-jwt.version}</version>
             </dependency>
 
             <dependency>
@@ -3450,6 +3466,13 @@
                 <version>${reactivestreams.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.google.errorprone</groupId>
+                <artifactId>error_prone_annotations</artifactId>
+                <version>${errorprone.version}</version>
+            </dependency>
+
+
 
             <!-- Explicitly enforced versions of transitive dependencies to mitigate potential CVEs reported by static security scans. -->
             <!-- TODO: Remove dependency block below in case the new parent library is updated and pulls good version. -->
@@ -3458,7 +3481,7 @@
             <dependency>
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr4</artifactId>
-                <version>4.11.1</version>
+                <version>4.12.0</version>
                 <scope>runtime</scope>
             </dependency>
 
@@ -3466,7 +3489,7 @@
             <dependency>
                 <groupId>net.openhft</groupId>
                 <artifactId>chronicle-bom</artifactId>
-                <version>2.24ea38</version>
+                <version>2.24ea43</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -3798,8 +3821,8 @@
                                 </requireMavenVersion>
                                 <requireJavaVersion>
                                     <level>ERROR</level>
-                                    <version>[11,)</version>
-                                    <message>** JAVA VERSION ERROR ** Java 11 or above is required.
+                                    <version>[17,)</version>
+                                    <message>** JAVA VERSION ERROR ** Java 17 or above is required.
                                     </message>
                                 </requireJavaVersion>
                                 <banDuplicatePomDependencyVersions/>

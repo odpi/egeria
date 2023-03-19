@@ -43,12 +43,27 @@ java {
     withJavadocJar()
 }
 
+
 test {
-    filter {
-        excludeTestsMatching "*.OpenLineageGraphValidationTests"
+filter {
+    excludeTestsMatching "*.OpenLineageGraphValidationTests"
+}
+    useJUnitPlatform {
+        includeEngines 'junit-jupiter'
+    }
+    dependencies {
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    }
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
+    reports {
+        html.required = true
     }
 }
-
 // Resolves logging conflict with Jena
 loggingCapabilities {
     enforceLogback()// Configuration goes here

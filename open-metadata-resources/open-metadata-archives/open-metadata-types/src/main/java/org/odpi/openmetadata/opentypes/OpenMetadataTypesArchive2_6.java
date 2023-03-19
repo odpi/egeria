@@ -39,7 +39,7 @@ public class OpenMetadataTypesArchive2_6
     private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.CONTENT_PACK;
     private static final String                  archiveVersion     = "2.6";
     private static final String                  originatorName     = "ODPi Egeria";
-    private static final String                  originatorLicense  = "Apache 2.0";
+    private static final String                  originatorLicense  = "Apache-2.0";
     private static final Date                    creationDate       = new Date(1588261366992L);
 
     /*

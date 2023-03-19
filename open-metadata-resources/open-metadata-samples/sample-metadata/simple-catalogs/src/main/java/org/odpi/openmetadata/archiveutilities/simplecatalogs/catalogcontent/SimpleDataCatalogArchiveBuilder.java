@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: Apache 2.0 */
+/* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.archiveutilities.simplecatalogs.catalogcontent;
@@ -25,7 +25,7 @@ public class SimpleDataCatalogArchiveBuilder
      */
     private static final String                  archiveGUID        = "2216ab62-176a-46c0-b889-9aa081754b54";
     private static final String                  archiveName        = "SimpleDataCatalog";
-    private static final String                  archiveLicense     = "Apache 2.0";
+    private static final String                  archiveLicense     = "Apache-2.0";
     private static final String                  archiveDescription = "Sample metadata showing data sources and their schemas.";
     private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.REPOSITORY_BACKUP;
     private static final String                  originatorName     = "Egeria";

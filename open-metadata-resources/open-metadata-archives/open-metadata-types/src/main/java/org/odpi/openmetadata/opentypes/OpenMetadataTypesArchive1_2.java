@@ -36,7 +36,7 @@ public class OpenMetadataTypesArchive1_2
     private static final String                  archiveDescription = "Standard types for open metadata repositories.";
     private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.CONTENT_PACK;
     private static final String                  originatorName     = "ODPi Egeria";
-    private static final String                  originatorLicense  = "Apache 2.0";
+    private static final String                  originatorLicense  = "Apache-2.0";
     private static final Date                    creationDate       = new Date(1577886131090L);
 
     /*

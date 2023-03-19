@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: Apache 2.0 */
+/* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.archiveutilities.openconnectors;
 
@@ -32,7 +32,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
      */
     private static final String                  archiveGUID        = "09450b83-20ff-4a8b-a8fb-f9b527bbcba6";
     private static final String                  archiveName        = "OpenConnectorsArchive";
-    private static final String                  archiveLicense     = "Apache 2.0";
+    private static final String                  archiveLicense     = "Apache-2.0";
     private static final String                  archiveDescription = "Connector Types and Categories for connectors from the Egeria project.";
     private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.CONTENT_PACK;
     private static final String                  originatorName     = "Egeria Project";
