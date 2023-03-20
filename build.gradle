@@ -260,12 +260,6 @@ dependencyAnalysis {
             onAny {
                 severity('fail')
             }
-            onUnusedDependencies {
-                exclude("junit:junit", "org.junit.jupiter:junit-jupiter-api",
-                        "org.junit.jupiter:junit-jupiter-engine",
-                        "org.springdoc:springdoc-openapi-starter-webmvc-ui"
-                )
-            }
         }
     }
 }
