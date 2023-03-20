@@ -32,9 +32,8 @@ public class IntegrationContext
     protected final String                   integrationConnectorGUID;
     protected final PermittedSynchronization permittedSynchronization;
 
-    private final IntegrationGovernanceContext integrationGovernanceContext;
-
-    private final IntegrationReportWriter integrationReportWriter;
+    private   final IntegrationGovernanceContext integrationGovernanceContext;
+    protected final IntegrationReportWriter      integrationReportWriter;
 
 
     /**
@@ -51,7 +50,6 @@ public class IntegrationContext
      * @param externalSourceGUID unique identifier of the software server capability for the source of metadata
      * @param externalSourceName unique name of the software server capability for the source of metadata
      * @param integrationConnectorGUID unique identifier of the integration connector entity (maybe null)
-     * @param integrationGovernanceContext populated governance context for the connector's use
      */
     public IntegrationContext(String                       connectorId,
                               String                       connectorName,
@@ -63,8 +61,7 @@ public class IntegrationContext
                               PermittedSynchronization     permittedSynchronization,
                               String                       externalSourceGUID,
                               String                       externalSourceName,
-                              String                       integrationConnectorGUID,
-                              IntegrationGovernanceContext integrationGovernanceContext)
+                              String                       integrationConnectorGUID)
     {
         this.openIntegrationClient        = openIntegrationClient;
         this.openMetadataStoreClient      = openMetadataStoreClient;
@@ -73,7 +70,6 @@ public class IntegrationContext
         this.externalSourceGUID           = externalSourceGUID;
         this.externalSourceName           = externalSourceName;
         this.integrationConnectorGUID     = integrationConnectorGUID;
-        this.integrationGovernanceContext = integrationGovernanceContext;
 
         if (generateIntegrationReport)
         {
@@ -88,7 +84,50 @@ public class IntegrationContext
         {
             this.integrationReportWriter = null;
         }
+
+        this.integrationGovernanceContext = constructIntegrationGovernanceContext(openMetadataStoreClient,
+                                                                                  connectorUserId,
+                                                                                  externalSourceGUID,
+                                                                                  externalSourceName,
+                                                                                  integrationReportWriter);
+
     }
+
+
+
+    /**
+     * Return a new  integrationGovernanceContext for a specific connector.
+     *
+     * @param openMetadataStore client implementation
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier for external source (or null)
+     * @param externalSourceName unique name for external source (or null)
+     * @param integrationReportWriter report writer (maybe null)
+     * @return new context
+     */
+    private IntegrationGovernanceContext constructIntegrationGovernanceContext(OpenMetadataClient      openMetadataStore,
+                                                                               String                  userId,
+                                                                               String                  externalSourceGUID,
+                                                                               String                  externalSourceName,
+                                                                               IntegrationReportWriter integrationReportWriter)
+    {
+        if (openMetadataStoreClient != null)
+        {
+            OpenMetadataAccess      openMetadataAccess      = new OpenMetadataAccess(openMetadataStore,
+                                                                                     userId,
+                                                                                     externalSourceGUID,
+                                                                                     externalSourceName,
+                                                                                     integrationReportWriter);
+            MultiLanguageManagement multiLanguageManagement = new MultiLanguageManagement(openMetadataStore, userId);
+            StewardshipAction       stewardshipAction       = new StewardshipAction(openMetadataStore, userId);
+            ValidMetadataValues     validMetadataValues     = new ValidMetadataValues(openMetadataStore, userId);
+
+            return new IntegrationGovernanceContext(openMetadataAccess, multiLanguageManagement, stewardshipAction, validMetadataValues);
+        }
+
+        return null;
+    }
+
 
 
     /**

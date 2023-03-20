@@ -44,7 +44,7 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
     private long                     refreshTimeInterval         = 0L;
     private boolean                  usesBlockingCalls           = false;
     private PermittedSynchronization permittedSynchronization    = null;
-    private boolean                  generateIntegrationReports  = true;
+    private boolean                  generateIntegrationReports  = false;
 
 
     /**
@@ -272,7 +272,7 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
     /**
      * Return a flag indicating whether the integration connector should create an integration report.
      *
-     * @return boolean flag (default = true)
+     * @return boolean flag (default = false)
      */
     public boolean getGenerateIntegrationReports()
     {

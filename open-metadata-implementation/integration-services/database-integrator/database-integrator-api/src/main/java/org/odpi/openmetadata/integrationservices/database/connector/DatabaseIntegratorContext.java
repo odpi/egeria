@@ -7,13 +7,13 @@ import org.odpi.openmetadata.accessservices.datamanager.api.DataManagerEventList
 import org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.DatabaseManagerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient;
+import org.odpi.openmetadata.accessservices.datamanager.client.ValidValueManagement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
-import org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 
 import java.util.List;
@@ -27,7 +27,8 @@ public class DatabaseIntegratorContext extends IntegrationContext
 {
     private final ConnectionManagerClient connectionManagerClient;
     private final DatabaseManagerClient   databaseManagerClient;
-    private final DataManagerEventClient  eventClient;
+    private final DataManagerEventClient eventClient;
+    private final ValidValueManagement   validValueManagement;
 
 
 
@@ -42,12 +43,12 @@ public class DatabaseIntegratorContext extends IntegrationContext
      * @param openMetadataStoreClient client for calling the metadata server
      * @param databaseManagerClient client to managing database metadata
      * @param connectionManagerClient client for managing connections
+     * @param validValueManagement client for managing valid value sets and definitions
      * @param eventClient client to register for events
      * @param generateIntegrationReport should the connector generate an integration reports?
      * @param permittedSynchronization the direction of integration permitted by the integration connector
      * @param integrationConnectorGUID unique identifier for the integration connector if it is started via an integration group (otherwise it is
      *                                 null).
-     * @param integrationGovernanceContext populated governance context for the connector's use
      * @param externalSourceGUID unique identifier of the software server capability for the database manager
      * @param externalSourceName unique name of the software server capability for the database manager
      */
@@ -59,11 +60,11 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                      OpenMetadataClient           openMetadataStoreClient,
                                      DatabaseManagerClient        databaseManagerClient,
                                      ConnectionManagerClient      connectionManagerClient,
+                                     ValidValueManagement         validValueManagement,
                                      DataManagerEventClient       eventClient,
                                      boolean                      generateIntegrationReport,
                                      PermittedSynchronization     permittedSynchronization,
                                      String                       integrationConnectorGUID,
-                                     IntegrationGovernanceContext integrationGovernanceContext,
                                      String                       externalSourceGUID,
                                      String                       externalSourceName)
     {
@@ -77,29 +78,12 @@ public class DatabaseIntegratorContext extends IntegrationContext
               permittedSynchronization,
               externalSourceGUID,
               externalSourceName,
-              integrationConnectorGUID,
-              integrationGovernanceContext);
+              integrationConnectorGUID);
 
         this.databaseManagerClient   = databaseManagerClient;
         this.eventClient             = eventClient;
         this.connectionManagerClient = connectionManagerClient;
-    }
-
-
-    /* ========================================================
-     * Returning the database manager name from the configuration
-     */
-
-
-    /**
-     * Return the qualified name of the database manager that is supplied in the configuration
-     * document.
-     *
-     * @return string name
-     */
-    public String getExternalSourceName()
-    {
-        return externalSourceName;
+        this.validValueManagement    = validValueManagement;
     }
 
 
@@ -151,7 +135,15 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        return databaseManagerClient.createDatabase(userId, externalSourceGUID, externalSourceName, databaseProperties);
+        String databaseGUID = databaseManagerClient.createDatabase(userId, externalSourceGUID, externalSourceName, databaseProperties);
+
+        if ((databaseGUID != null) &&(integrationReportWriter != null))
+        {
+            integrationReportWriter.setAnchor(databaseGUID, databaseGUID);
+            integrationReportWriter.reportElementCreation(databaseGUID);
+        }
+
+        return databaseGUID;
     }
 
 
@@ -172,7 +164,15 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return databaseManagerClient.createDatabaseFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateProperties);
+        String databaseGUID = databaseManagerClient.createDatabaseFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateProperties);
+
+        if ((databaseGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.setAnchor(databaseGUID, databaseGUID);
+            integrationReportWriter.reportElementCreation(databaseGUID);
+        }
+
+        return databaseGUID;
     }
 
 
@@ -193,6 +193,12 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                              PropertyServerException
     {
         databaseManagerClient.updateDatabase(userId, externalSourceGUID, externalSourceName, databaseGUID, false, databaseProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(databaseGUID, databaseGUID);
+            integrationReportWriter.reportElementUpdate(databaseGUID);
+        }
     }
 
 
@@ -214,6 +220,12 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                              PropertyServerException
     {
         databaseManagerClient.updateDatabase(userId, externalSourceGUID, externalSourceName, databaseGUID, isMergeUpdate, databaseProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(databaseGUID, databaseGUID);
+            integrationReportWriter.reportElementUpdate(databaseGUID);
+        }
     }
 
 
@@ -233,6 +245,12 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                             PropertyServerException
     {
         databaseManagerClient.publishDatabase(userId, databaseGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(databaseGUID, databaseGUID);
+            integrationReportWriter.reportElementUpdate(databaseGUID);
+        }
     }
 
 
@@ -252,6 +270,12 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                              PropertyServerException
     {
         databaseManagerClient.withdrawDatabase(userId, databaseGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(databaseGUID, databaseGUID);
+            integrationReportWriter.reportElementUpdate(databaseGUID);
+        }
     }
 
 
@@ -273,6 +297,12 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                             PropertyServerException
     {
         databaseManagerClient.removeDatabase(userId, externalSourceGUID, externalSourceName, databaseGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(databaseGUID, databaseGUID);
+            integrationReportWriter.reportElementDelete(databaseGUID);
+        }
     }
 
 
@@ -290,6 +320,12 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                            PropertyServerException
     {
         databaseManagerClient.removeDatabase(userId, externalSourceGUID, externalSourceName, databaseGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(databaseGUID, databaseGUID);
+            integrationReportWriter.reportElementDelete(databaseGUID);
+        }
     }
 
 
@@ -402,7 +438,20 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        return databaseManagerClient.createDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseGUID, databaseSchemaProperties);
+        String databaseSchemaGUID = databaseManagerClient.createDatabaseSchema(userId,
+                                                                               externalSourceGUID,
+                                                                               externalSourceName,
+                                                                               databaseGUID,
+                                                                               databaseSchemaProperties);
+
+        if ((databaseSchemaGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.setAnchor(databaseSchemaGUID, databaseSchemaGUID);
+            integrationReportWriter.reportElementUpdate(databaseGUID);
+            integrationReportWriter.reportElementCreation(databaseSchemaGUID);
+        }
+
+        return databaseSchemaGUID;
     }
 
 
@@ -425,7 +474,21 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        return databaseManagerClient.createDatabaseSchemaFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, databaseGUID, templateProperties);
+        String databaseSchemaGUID = databaseManagerClient.createDatabaseSchemaFromTemplate(userId,
+                                                                                           externalSourceGUID,
+                                                                                           externalSourceName,
+                                                                                           templateGUID,
+                                                                                           databaseGUID,
+                                                                                           templateProperties);
+
+        if ((databaseSchemaGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.setAnchor(databaseSchemaGUID, databaseSchemaGUID);
+            integrationReportWriter.reportElementUpdate(databaseGUID);
+            integrationReportWriter.reportElementCreation(databaseSchemaGUID);
+        }
+
+        return databaseSchemaGUID;
     }
 
 
@@ -445,7 +508,18 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        databaseManagerClient.updateDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID, false, databaseSchemaProperties);
+        databaseManagerClient.updateDatabaseSchema(userId,
+                                                   externalSourceGUID,
+                                                   externalSourceName,
+                                                   databaseSchemaGUID,
+                                                   false,
+                                                   databaseSchemaProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(databaseSchemaGUID, databaseSchemaGUID);
+            integrationReportWriter.reportElementUpdate(databaseSchemaGUID);
+        }
     }
 
 
@@ -466,7 +540,18 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        databaseManagerClient.updateDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID, isMergeUpdate, databaseSchemaProperties);
+        databaseManagerClient.updateDatabaseSchema(userId,
+                                                   externalSourceGUID,
+                                                   externalSourceName,
+                                                   databaseSchemaGUID,
+                                                   isMergeUpdate,
+                                                   databaseSchemaProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(databaseSchemaGUID, databaseSchemaGUID);
+            integrationReportWriter.reportElementUpdate(databaseSchemaGUID);
+        }
     }
 
 
@@ -486,6 +571,12 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                         PropertyServerException
     {
         databaseManagerClient.publishDatabaseSchema(userId, databaseSchemaGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(databaseSchemaGUID, databaseSchemaGUID);
+            integrationReportWriter.reportElementUpdate(databaseSchemaGUID);
+        }
     }
 
 
@@ -505,6 +596,12 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                          PropertyServerException
     {
         databaseManagerClient.withdrawDatabaseSchema(userId, databaseSchemaGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(databaseSchemaGUID, databaseSchemaGUID);
+            integrationReportWriter.reportElementUpdate(databaseSchemaGUID);
+        }
     }
 
 
@@ -526,6 +623,12 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                   PropertyServerException
     {
         databaseManagerClient.removeDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(databaseSchemaGUID, databaseSchemaGUID);
+            integrationReportWriter.reportElementDelete(databaseSchemaGUID);
+        }
     }
 
 
@@ -543,6 +646,12 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                        PropertyServerException
     {
         databaseManagerClient.removeDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(databaseSchemaGUID, databaseSchemaGUID);
+            integrationReportWriter.reportElementDelete(databaseSchemaGUID);
+        }
     }
 
 
@@ -655,7 +764,17 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
-        return databaseManagerClient.createDatabaseSchemaType(userId, externalSourceGUID, externalSourceName, qualifiedName);
+        String databaseSchemaTypeGUID = databaseManagerClient.createDatabaseSchemaType(userId,
+                                                                                       externalSourceGUID,
+                                                                                       externalSourceName,
+                                                                                       qualifiedName);
+
+        if ((databaseSchemaTypeGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementCreation(databaseSchemaTypeGUID);
+        }
+
+        return databaseSchemaTypeGUID;
     }
 
 
@@ -675,6 +794,13 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                 UserNotAuthorizedException
     {
         databaseManagerClient.attachSchemaTypeToDatabaseAsset(userId, externalSourceGUID, externalSourceName, databaseAssetGUID, schemaTypeGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(databaseAssetGUID, databaseAssetGUID);
+            integrationReportWriter.setAnchor(schemaTypeGUID, databaseAssetGUID);
+            integrationReportWriter.reportElementUpdate(databaseAssetGUID);
+        }
     }
 
 
@@ -695,7 +821,20 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
-        return databaseManagerClient.createDatabaseTable(userId, externalSourceGUID, externalSourceName, databaseAssetGUID, databaseTableProperties);
+        String databaseTableGUID = databaseManagerClient.createDatabaseTable(userId,
+                                                                             externalSourceGUID,
+                                                                             externalSourceName,
+                                                                             databaseAssetGUID,
+                                                                             databaseTableProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(databaseAssetGUID, databaseAssetGUID);
+            integrationReportWriter.setAnchor(databaseTableGUID, databaseAssetGUID);
+            integrationReportWriter.reportElementCreation(databaseTableGUID);
+        }
+
+        return databaseTableGUID;
     }
 
 
@@ -718,7 +857,21 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                                 UserNotAuthorizedException,
                                                                                                 PropertyServerException
     {
-        return databaseManagerClient.createDatabaseTableFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, databaseAssetGUID, templateProperties);
+        String databaseTableGUID = databaseManagerClient.createDatabaseTableFromTemplate(userId,
+                                                                                         externalSourceGUID,
+                                                                                         externalSourceName,
+                                                                                         templateGUID,
+                                                                                         databaseAssetGUID,
+                                                                                         templateProperties);
+
+        if ((databaseTableGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.setAnchor(databaseAssetGUID, databaseAssetGUID);
+            integrationReportWriter.setAnchor(databaseTableGUID, databaseAssetGUID);
+            integrationReportWriter.reportElementCreation(databaseTableGUID);
+        }
+
+        return databaseTableGUID;
     }
 
 
@@ -739,7 +892,19 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                                            UserNotAuthorizedException,
                                                                                                            PropertyServerException
     {
-        return databaseManagerClient.createDatabaseTableForSchemaType(userId, externalSourceGUID, externalSourceName, databaseSchemaTypeGUID, databaseTableProperties);
+        String databaseTableGUID = databaseManagerClient.createDatabaseTableForSchemaType(userId,
+                                                                                          externalSourceGUID,
+                                                                                          externalSourceName,
+                                                                                          databaseSchemaTypeGUID,
+                                                                                          databaseTableProperties);
+
+        if ((databaseTableGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.setAnchor(databaseTableGUID, databaseSchemaTypeGUID);
+            integrationReportWriter.reportElementCreation(databaseTableGUID);
+        }
+
+        return databaseTableGUID;
     }
 
 
@@ -759,7 +924,17 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        databaseManagerClient.updateDatabaseTable(userId, externalSourceGUID, externalSourceName, databaseTableGUID, false, databaseTableProperties);
+        databaseManagerClient.updateDatabaseTable(userId,
+                                                  externalSourceGUID,
+                                                  externalSourceName,
+                                                  databaseTableGUID,
+                                                  false,
+                                                  databaseTableProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(databaseTableGUID);
+        }
     }
 
 
@@ -780,7 +955,17 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        databaseManagerClient.updateDatabaseTable(userId, externalSourceGUID, externalSourceName, databaseTableGUID, isMergeUpdate, databaseTableProperties);
+        databaseManagerClient.updateDatabaseTable(userId,
+                                                  externalSourceGUID,
+                                                  externalSourceName,
+                                                  databaseTableGUID,
+                                                  isMergeUpdate,
+                                                  databaseTableProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(databaseTableGUID);
+        }
     }
 
 
@@ -802,6 +987,11 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                  PropertyServerException
     {
         databaseManagerClient.removeDatabaseTable(userId, externalSourceGUID, externalSourceName, databaseTableGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(databaseTableGUID);
+        }
     }
 
 
@@ -820,6 +1010,11 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                  PropertyServerException
     {
         databaseManagerClient.removeDatabaseTable(userId, externalSourceGUID, externalSourceName, databaseTableGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(databaseTableGUID);
+        }
     }
 
 
@@ -954,7 +1149,19 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return databaseManagerClient.createDatabaseView(userId, externalSourceGUID, externalSourceName, databaseAssetGUID, databaseViewProperties);
+        String databaseViewGUID = databaseManagerClient.createDatabaseView(userId,
+                                                                           externalSourceGUID,
+                                                                           externalSourceName,
+                                                                           databaseAssetGUID,
+                                                                           databaseViewProperties);
+
+        if ((databaseViewGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.setAnchor(databaseViewGUID, databaseAssetGUID);
+            integrationReportWriter.reportElementCreation(databaseViewGUID);
+        }
+
+        return databaseViewGUID;
     }
 
 
@@ -977,7 +1184,20 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        return databaseManagerClient.createDatabaseViewFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, databaseAssetGUID, templateProperties);
+        String databaseViewGUID = databaseManagerClient.createDatabaseViewFromTemplate(userId,
+                                                                                       externalSourceGUID,
+                                                                                       externalSourceName,
+                                                                                       templateGUID,
+                                                                                       databaseAssetGUID,
+                                                                                       templateProperties);
+
+        if ((databaseViewGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.setAnchor(databaseViewGUID, databaseAssetGUID);
+            integrationReportWriter.reportElementCreation(databaseViewGUID);
+        }
+
+        return databaseViewGUID;
     }
 
 
@@ -998,7 +1218,19 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                                         UserNotAuthorizedException,
                                                                                                         PropertyServerException
     {
-        return databaseManagerClient.createDatabaseViewForSchemaType(userId, externalSourceGUID, externalSourceName, databaseSchemaTypeGUID, databaseViewProperties);
+        String databaseViewGUID = databaseManagerClient.createDatabaseViewForSchemaType(userId,
+                                                                                        externalSourceGUID,
+                                                                                        externalSourceName,
+                                                                                        databaseSchemaTypeGUID,
+                                                                                        databaseViewProperties);
+
+        if ((databaseViewGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.setAnchor(databaseViewGUID, databaseSchemaTypeGUID);
+            integrationReportWriter.reportElementCreation(databaseViewGUID);
+        }
+
+        return databaseViewGUID;
     }
 
 
@@ -1018,9 +1250,18 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        databaseManagerClient.updateDatabaseView(userId, externalSourceGUID, externalSourceName, databaseViewGUID, false, databaseViewProperties);
-    }
+        databaseManagerClient.updateDatabaseView(userId,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 databaseViewGUID,
+                                                 false,
+                                                 databaseViewProperties);
 
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(databaseViewGUID);
+        }
+    }
 
 
     /**
@@ -1040,7 +1281,17 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        databaseManagerClient.updateDatabaseView(userId, externalSourceGUID, externalSourceName, databaseViewGUID, isMergeUpdate, databaseViewProperties);
+        databaseManagerClient.updateDatabaseView(userId,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 databaseViewGUID,
+                                                 isMergeUpdate,
+                                                 databaseViewProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(databaseViewGUID);
+        }
     }
 
 
@@ -1063,8 +1314,12 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                 PropertyServerException
     {
         databaseManagerClient.removeDatabaseView(userId, externalSourceGUID, externalSourceName, databaseViewGUID);
-    }
 
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(databaseViewGUID);
+        }
+    }
 
 
     /**
@@ -1081,6 +1336,11 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                    PropertyServerException
     {
         databaseManagerClient.removeDatabaseView(userId, externalSourceGUID, externalSourceName, databaseViewGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(databaseViewGUID);
+        }
     }
 
 
@@ -1222,7 +1482,19 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        return databaseManagerClient.createDatabaseColumn(userId, externalSourceGUID, externalSourceName, databaseTableGUID, databaseColumnProperties);
+        String databaseColumnGUID = databaseManagerClient.createDatabaseColumn(userId,
+                                                                               externalSourceGUID,
+                                                                               externalSourceName,
+                                                                               databaseTableGUID,
+                                                                               databaseColumnProperties);
+
+        if ((databaseColumnGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.setParent(databaseColumnGUID, databaseTableGUID);
+            integrationReportWriter.reportElementCreation(databaseColumnGUID);
+        }
+
+        return databaseColumnGUID;
     }
 
 
@@ -1245,7 +1517,20 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        return databaseManagerClient.createDatabaseColumnFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, databaseTableGUID, templateProperties);
+        String databaseColumnGUID = databaseManagerClient.createDatabaseColumnFromTemplate(userId,
+                                                                                           externalSourceGUID,
+                                                                                           externalSourceName,
+                                                                                           templateGUID,
+                                                                                           databaseTableGUID,
+                                                                                           templateProperties);
+
+        if ((databaseColumnGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.setParent(databaseColumnGUID, databaseTableGUID);
+            integrationReportWriter.reportElementCreation(databaseColumnGUID);
+        }
+
+        return databaseColumnGUID;
     }
 
 
@@ -1265,7 +1550,17 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        databaseManagerClient.updateDatabaseColumn(userId, externalSourceGUID, externalSourceName, databaseColumnGUID, false, databaseColumnProperties);
+        databaseManagerClient.updateDatabaseColumn(userId,
+                                                   externalSourceGUID,
+                                                   externalSourceName,
+                                                   databaseColumnGUID,
+                                                   false,
+                                                   databaseColumnProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(databaseColumnGUID);
+        }
     }
 
 
@@ -1286,7 +1581,17 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        databaseManagerClient.updateDatabaseColumn(userId, externalSourceGUID, externalSourceName, databaseColumnGUID, isMergeUpdate, databaseColumnProperties);
+        databaseManagerClient.updateDatabaseColumn(userId,
+                                                   externalSourceGUID,
+                                                   externalSourceName,
+                                                   databaseColumnGUID,
+                                                   isMergeUpdate,
+                                                   databaseColumnProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(databaseColumnGUID);
+        }
     }
 
 
@@ -1308,6 +1613,11 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                   PropertyServerException
     {
         databaseManagerClient.removeDatabaseColumn(userId, externalSourceGUID, externalSourceName, databaseColumnGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(databaseColumnGUID);
+        }
     }
 
 
@@ -1325,6 +1635,11 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                        PropertyServerException
     {
         databaseManagerClient.removeDatabaseColumn(userId, externalSourceGUID, externalSourceName, databaseColumnGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(databaseColumnGUID);
+        }
     }
 
 
@@ -1439,6 +1754,11 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                                         PropertyServerException
     {
         databaseManagerClient.setPrimaryKeyOnColumn(userId, externalSourceGUID, externalSourceName, databaseColumnGUID, databasePrimaryKeyProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(databaseColumnGUID);
+        }
     }
 
 
@@ -1456,6 +1776,11 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                              PropertyServerException
     {
         databaseManagerClient.removePrimaryKeyFromColumn(userId, externalSourceGUID, externalSourceName, databaseColumnGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(databaseColumnGUID);
+        }
     }
 
 
@@ -1477,8 +1802,17 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                                             UserNotAuthorizedException,
                                                                                                             PropertyServerException
     {
-        databaseManagerClient.addForeignKeyRelationship(userId, externalSourceGUID, externalSourceName, primaryKeyColumnGUID, foreignKeyColumnGUID
-                , databaseForeignKeyProperties);
+        databaseManagerClient.addForeignKeyRelationship(userId,
+                                                        externalSourceGUID,
+                                                        externalSourceName,
+                                                        primaryKeyColumnGUID,
+                                                        foreignKeyColumnGUID,
+                                                        databaseForeignKeyProperties);
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(primaryKeyColumnGUID);
+            integrationReportWriter.reportElementUpdate(foreignKeyColumnGUID);
+        }
     }
 
 
@@ -1498,6 +1832,12 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                   PropertyServerException
     {
         databaseManagerClient.removeForeignKeyRelationship(userId, externalSourceGUID, externalSourceName, primaryKeyColumnGUID, foreignKeyColumnGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(primaryKeyColumnGUID);
+            integrationReportWriter.reportElementUpdate(foreignKeyColumnGUID);
+        }
     }
 
 
@@ -1521,7 +1861,14 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        return connectionManagerClient.createConnection(userId, null, null, connectionProperties);
+        String connectionGUID = connectionManagerClient.createConnection(userId, null, null, connectionProperties);
+
+        if ((connectionGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementCreation(connectionGUID);
+        }
+
+        return connectionGUID;
     }
 
 
@@ -1542,7 +1889,18 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        return connectionManagerClient.createConnectionFromTemplate(userId, null, null, templateGUID, templateProperties);
+        String connectionGUID = connectionManagerClient.createConnectionFromTemplate(userId,
+                                                                                     null,
+                                                                                     null,
+                                                                                     templateGUID,
+                                                                                     templateProperties);
+
+        if ((connectionGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementCreation(connectionGUID);
+        }
+
+        return connectionGUID;
     }
 
 
@@ -1565,6 +1923,11 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                    PropertyServerException
     {
         connectionManagerClient.updateConnection(userId, externalSourceGUID, externalSourceName, connectionGUID, isMergeUpdate, connectionProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(connectionGUID);
+        }
     }
 
 
@@ -1584,6 +1947,11 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                      PropertyServerException
     {
         connectionManagerClient.setupConnectorType(userId, null, null, connectionGUID, connectorTypeGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(connectionGUID);
+        }
     }
 
 
@@ -1603,6 +1971,11 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                     PropertyServerException
     {
         connectionManagerClient.clearConnectorType(userId, externalSourceGUID, externalSourceName, connectionGUID, connectorTypeGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(connectionGUID);
+        }
     }
 
 
@@ -1622,6 +1995,11 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                            PropertyServerException
     {
         connectionManagerClient.setupEndpoint(userId, null, null, connectionGUID, endpointGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(connectionGUID);
+        }
     }
 
 
@@ -1641,6 +2019,11 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                           PropertyServerException
     {
         connectionManagerClient.clearEndpoint(userId, externalSourceGUID, externalSourceName, connectionGUID, endpointGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(connectionGUID);
+        }
     }
 
 
@@ -1666,6 +2049,12 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                            PropertyServerException
     {
         connectionManagerClient.setupEmbeddedConnection(userId, null, null, connectionGUID, position, displayName, arguments, embeddedConnectionGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setParent(embeddedConnectionGUID, connectionGUID);
+            integrationReportWriter.reportElementUpdate(embeddedConnectionGUID);
+        }
     }
 
 
@@ -1685,6 +2074,12 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                               PropertyServerException
     {
         connectionManagerClient.clearEmbeddedConnection(userId, externalSourceGUID, externalSourceName, connectionGUID, embeddedConnectionGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setParent(embeddedConnectionGUID, connectionGUID);
+            integrationReportWriter.reportElementUpdate(embeddedConnectionGUID);
+        }
     }
 
 
@@ -1706,6 +2101,12 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                     PropertyServerException
     {
         connectionManagerClient.setupAssetConnection(userId, null, null, assetGUID, assetSummary, connectionGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(connectionGUID, assetGUID);
+            integrationReportWriter.reportElementUpdate(connectionGUID);
+        }
     }
 
 
@@ -1725,6 +2126,12 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                    PropertyServerException
     {
         connectionManagerClient.clearAssetConnection(userId, externalSourceGUID, externalSourceName, assetGUID, connectionGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(connectionGUID, assetGUID);
+            integrationReportWriter.reportElementUpdate(connectionGUID);
+        }
     }
 
 
@@ -1827,7 +2234,14 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        return connectionManagerClient.createEndpoint(userId, null, null, endpointProperties);
+        String endpointGUID = connectionManagerClient.createEndpoint(userId, null, null, endpointProperties);
+
+        if ((endpointGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementCreation(endpointGUID);
+        }
+
+        return endpointGUID;
     }
 
 
@@ -1850,8 +2264,19 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return connectionManagerClient.createEndpointFromTemplate(userId, externalSourceGUID, externalSourceName, networkAddress, templateGUID,
-                                                                  templateProperties);
+        String endpointGUID = connectionManagerClient.createEndpointFromTemplate(userId,
+                                                                                 externalSourceGUID,
+                                                                                 externalSourceName,
+                                                                                 networkAddress,
+                                                                                 templateGUID,
+                                                                                 templateProperties);
+
+        if ((endpointGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementCreation(endpointGUID);
+        }
+
+        return endpointGUID;
     }
 
 
@@ -1874,9 +2299,12 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                              PropertyServerException
     {
         connectionManagerClient.updateEndpoint(userId, externalSourceGUID, externalSourceName, isMergeUpdate, endpointGUID, endpointProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(endpointGUID);
+        }
     }
-
-
 
 
     /**
@@ -1893,6 +2321,11 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                            PropertyServerException
     {
         connectionManagerClient.removeEndpoint(userId, externalSourceGUID, externalSourceName, endpointGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(endpointGUID);
+        }
     }
 
 
@@ -2027,5 +2460,456 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                                                                         PropertyServerException
     {
         return connectionManagerClient.getConnectorTypeByGUID(userId, connectorTypeGUID);
+    }
+
+
+    /* =====================================================================================================================
+     * A ValidValue is the top level object for working with valid values
+     */
+
+    /**
+     * Create a new metadata element to represent a valid value.
+     *
+     * @param validValueProperties properties about the valid value to store
+     *
+     * @return unique identifier of the new valid value
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createValidValue(ValidValueProperties validValueProperties) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        String validValueGUID = validValueManagement.createValidValue(userId, externalSourceGUID, externalSourceName, validValueProperties);
+
+        if ((validValueGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementCreation(validValueGUID);
+        }
+
+        return validValueGUID;
+    }
+
+
+    /**
+     * Update the metadata element representing a valid value.  It is possible to use the subtype property classes or
+     * set up specialized properties in extended properties.
+     *
+     * @param validValueGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param validValueProperties new properties for the metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateValidValue(String               validValueGUID,
+                                 boolean              isMergeUpdate,
+                                 ValidValueProperties validValueProperties) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        validValueManagement.updateValidValue(userId, externalSourceGUID, externalSourceName, validValueGUID, isMergeUpdate, validValueProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(validValueGUID);
+        }
+    }
+
+
+    /**
+     * Create a membership relationship between a validValue and a validValueSet that it belongs to.
+     *
+     * @param validValueSetGUID unique identifier of the valid value set
+     * @param properties describes the properties of the membership
+     * @param validValueMemberGUID unique identifier of the member
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupValidValueMember(String                         validValueSetGUID,
+                                      ValidValueMembershipProperties properties,
+                                      String                         validValueMemberGUID) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        validValueManagement.setupValidValueMember(userId, externalSourceGUID, externalSourceName, validValueSetGUID, properties, validValueMemberGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(validValueMemberGUID, validValueSetGUID);
+            integrationReportWriter.reportElementUpdate(validValueSetGUID);
+        }
+    }
+
+
+    /**
+     * Remove a membership relationship between a validValue and a validValueSet that it belongs to.
+     *
+     * @param validValueSetGUID unique identifier of the valid value set
+     * @param validValueMemberGUID unique identifier of the member
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearValidValueMember(String validValueSetGUID,
+                                      String validValueMemberGUID) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        validValueManagement.clearValidValueMember(userId, externalSourceGUID, externalSourceName, validValueSetGUID, validValueMemberGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(validValueMemberGUID, validValueSetGUID);
+            integrationReportWriter.reportElementUpdate(validValueSetGUID);
+        }
+    }
+
+
+    /**
+     * Create a valid value assignment relationship between an element and a valid value (typically, a valid value set) to show that
+     * the valid value defines the values that can be stored in the data item that the element represents.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties describes the permissions that the role has in the validValue
+     * @param validValueGUID unique identifier of the valid value
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupValidValues(String                         elementGUID,
+                                 ValidValueAssignmentProperties properties,
+                                 String                         validValueGUID) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        validValueManagement.setupValidValues(userId, externalSourceGUID, externalSourceName, elementGUID, properties, validValueGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Remove a valid value assignment relationship between an element and a valid value.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param validValueGUID unique identifier of the valid value
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearValidValues(String elementGUID,
+                                 String validValueGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        validValueManagement.clearValidValues(userId, externalSourceGUID, externalSourceName, elementGUID, validValueGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Create a reference value assignment relationship between an element and a valid value to show that
+     * the valid value is a semiformal tag/classification.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties describes the quality of the assignment
+     * @param validValueGUID unique identifier of the valid value
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupReferenceValueTag(String                             elementGUID,
+                                       ReferenceValueAssignmentProperties properties,
+                                       String                             validValueGUID) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        validValueManagement.setupReferenceValueTag(userId, externalSourceGUID, externalSourceName, elementGUID, properties, validValueGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Remove a reference value assignment relationship between an element and a valid value.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param validValueGUID unique identifier of the valid value
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearReferenceValueTag(String elementGUID,
+                                       String validValueGUID) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        validValueManagement.clearReferenceValueTag(userId, externalSourceGUID, externalSourceName, elementGUID, validValueGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Remove the metadata element representing a valid value.
+     *
+     * @param validValueGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeValidValue(String validValueGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        validValueManagement.removeValidValue(userId, externalSourceGUID, externalSourceName, validValueGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(validValueGUID);
+        }
+    }
+
+
+    /**
+     * Retrieve the list of metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ValidValueElement> findValidValues(String searchString,
+                                                   int    startFrom,
+                                                   int    pageSize) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        return validValueManagement.findValidValues(userId, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ValidValueElement> getValidValuesByName(String name,
+                                                        int    startFrom,
+                                                        int    pageSize) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        return validValueManagement.getValidValuesByName(userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of valid values.
+     *
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ValidValueElement> getAllValidValues(int    startFrom,
+                                                     int    pageSize) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        return validValueManagement.getAllValidValues(userId, startFrom, pageSize);
+    }
+
+
+    /**
+     * Page through the members of a valid value set.
+     *
+     * @param validValueSetGUID          unique identifier of the valid value set
+     * @param startFrom                  paging starting point
+     * @param pageSize                   maximum number of return values.
+     * @return list of valid value beans
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException    the repository is not available or not working properly.
+     */
+    public List<ValidValueElement> getValidValueSetMembers(String  validValueSetGUID,
+                                                           int     startFrom,
+                                                           int     pageSize) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        return validValueManagement.getValidValueSetMembers(userId, validValueSetGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Page through the list of valid value sets that a valid value definition/set belongs to.
+     *
+     * @param validValueGUID          unique identifier of valid value to query
+     * @param startFrom               paging starting point
+     * @param pageSize                maximum number of return values.
+     * @return list of valid value beans
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException    the repository is not available or not working properly.
+     */
+    public List<ValidValueElement> getSetsForValidValue(String  validValueGUID,
+                                                        int     startFrom,
+                                                        int     pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        return validValueManagement.getSetsForValidValue(userId, validValueGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return information about the valid value set linked to an element as its set of valid values.
+     *
+     * @param elementGUID unique identifier for the element using the valid value set
+     *
+     * @return list of matching actor profiles (hopefully only one)
+     *
+     * @throws InvalidParameterException guid is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public ValidValueElement getValidValuesForConsumer(String elementGUID) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        return validValueManagement.getValidValuesForConsumer(userId, elementGUID);
+    }
+
+
+    /**
+     * Return information about the consumers linked to a validValue.
+     *
+     * @param validValueGUID unique identifier for the validValue
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching actor profiles (hopefully only one)
+     *
+     * @throws InvalidParameterException guid is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<RelatedElement> getConsumersOfValidValue(String validValueGUID,
+                                                         int    startFrom,
+                                                         int    pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        return validValueManagement.getConsumersOfValidValue(userId, validValueGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return information about the valid values linked as reference value tags to an element.
+     *
+     * @param elementGUID unique identifier for the element
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of valid values
+     *
+     * @throws InvalidParameterException guid is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<ValidValueElement> getReferenceValues(String elementGUID,
+                                                      int    startFrom,
+                                                      int    pageSize) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
+    {
+        return validValueManagement.getReferenceValues(userId, elementGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return information about the person roles linked to a validValue.
+     *
+     * @param validValueGUID unique identifier for the validValue
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching actor profiles (hopefully only one)
+     *
+     * @throws InvalidParameterException guid is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<RelatedElement> getAssigneesOfReferenceValue(String validValueGUID,
+                                                             int    startFrom,
+                                                             int    pageSize) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        return validValueManagement.getAssigneesOfReferenceValue(userId, validValueGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the metadata element with the supplied unique identifier.
+     *
+     * @param validValueGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ValidValueElement getValidValueByGUID(String validValueGUID) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        return validValueManagement.getValidValueByGUID(userId, validValueGUID);
     }
 }

@@ -23,7 +23,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
-import org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 
 import java.util.Date;
@@ -57,7 +56,6 @@ public class SecurityIntegratorContext extends IntegrationContext
      * @param permittedSynchronization the direction of integration permitted by the integration connector
      * @param integrationConnectorGUID unique identifier for the integration connector if it is started via an integration group (otherwise it is
      *                                 null).
-     * @param integrationGovernanceContext populated governance context for the connector's use
      * @param externalSourceGUID unique identifier of the software server capability for the asset manager
      * @param externalSourceName unique name of the software server capability for the asset manager
      * @param auditLog logging destination
@@ -73,7 +71,6 @@ public class SecurityIntegratorContext extends IntegrationContext
                                      boolean                      generateIntegrationReport,
                                      PermittedSynchronization     permittedSynchronization,
                                      String                       integrationConnectorGUID,
-                                     IntegrationGovernanceContext integrationGovernanceContext,
                                      String                       externalSourceGUID,
                                      String                       externalSourceName,
                                      AuditLog                     auditLog)
@@ -88,8 +85,7 @@ public class SecurityIntegratorContext extends IntegrationContext
               permittedSynchronization,
               externalSourceGUID,
               externalSourceName,
-              integrationConnectorGUID,
-              integrationGovernanceContext);
+              integrationConnectorGUID);
 
         this.securityManagerClient = securityManagerClient;
         this.eventClient = eventClient;
