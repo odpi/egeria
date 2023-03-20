@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalog;
 import org.odpi.openmetadata.accessservices.assetcatalog.OpenIntegrationServiceClient;
 import org.odpi.openmetadata.accessservices.assetcatalog.OpenMetadataStoreClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
-import org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext;
 import org.odpi.openmetadata.accessservices.assetcatalog.eventclient.AssetCatalogEventClient;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -166,8 +165,6 @@ public class SearchIntegratorContextManager extends IntegrationContextManager {
                 externalSourceName = null;
             }
 
-            IntegrationGovernanceContext integrationGovernanceContext = constructIntegrationGovernanceContext(openMetadataStoreClient, connectorUserId, externalSourceGUID, externalSourceName);
-
             eventListener.setSearchIntegratorConnector(serviceSpecificConnector);
 
             SearchIntegratorContext integratorContext = new SearchIntegratorContext(connectorId,
@@ -180,7 +177,6 @@ public class SearchIntegratorContextManager extends IntegrationContextManager {
                                                                                     generateIntegrationReport,
                                                                                     permittedSynchronization,
                                                                                     integrationConnectorGUID,
-                                                                                    integrationGovernanceContext,
                                                                                     externalSourceGUID,
                                                                                     externalSourceName,
                                                                                     IntegrationServiceDescription.SEARCH_INTEGRATOR_OMIS.getIntegrationServiceFullName(),

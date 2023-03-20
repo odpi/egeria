@@ -13,7 +13,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
-import org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 
 import java.util.List;
@@ -43,7 +42,6 @@ public class DisplayIntegratorContext extends IntegrationContext
      * @param permittedSynchronization the direction of integration permitted by the integration connector
      * @param integrationConnectorGUID unique identifier for the integration connector if it is started via an integration group (otherwise it is
      *                                 null).
-     * @param integrationGovernanceContext populated governance context for the connector's use
      * @param externalSourceGUID unique identifier of the software server capability for the asset manager
      * @param externalSourceName unique name of the software server capability for the asset manager
      */
@@ -58,7 +56,6 @@ public class DisplayIntegratorContext extends IntegrationContext
                                     boolean                      generateIntegrationReport,
                                     PermittedSynchronization     permittedSynchronization,
                                     String                       integrationConnectorGUID,
-                                    IntegrationGovernanceContext integrationGovernanceContext,
                                     String                       externalSourceGUID,
                                     String                       externalSourceName)
     {
@@ -72,8 +69,7 @@ public class DisplayIntegratorContext extends IntegrationContext
               permittedSynchronization,
               externalSourceGUID,
               externalSourceName,
-              integrationConnectorGUID,
-              integrationGovernanceContext);
+              integrationConnectorGUID);
 
         this.client          = displayApplicationClient;
         this.eventClient     = eventClient;
@@ -126,7 +122,15 @@ public class DisplayIntegratorContext extends IntegrationContext
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
-        return client.createForm(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, formProperties);
+        String formGUID = client.createForm(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, formProperties);
+
+        if ((formGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.setAnchor(formGUID, formGUID);
+            integrationReportWriter.reportElementCreation(formGUID);
+        }
+
+        return formGUID;
     }
 
 
@@ -147,7 +151,20 @@ public class DisplayIntegratorContext extends IntegrationContext
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        return client.createFormFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, templateProperties);
+        String formGUID = client.createFormFromTemplate(userId,
+                                                        externalSourceGUID,
+                                                        externalSourceName,
+                                                        externalSourceIsHome,
+                                                        templateGUID,
+                                                        templateProperties);
+
+        if ((formGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.setAnchor(formGUID, formGUID);
+            integrationReportWriter.reportElementCreation(formGUID);
+        }
+
+        return formGUID;
     }
 
 
@@ -169,6 +186,12 @@ public class DisplayIntegratorContext extends IntegrationContext
                                                                  PropertyServerException
     {
         client.updateForm(userId, externalSourceGUID, externalSourceName, formGUID, isMergeUpdate, formProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(formGUID, formGUID);
+            integrationReportWriter.reportElementUpdate(formGUID);
+        }
     }
 
 
@@ -188,6 +211,12 @@ public class DisplayIntegratorContext extends IntegrationContext
                                                     PropertyServerException
     {
         client.publishForm(userId, formGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(formGUID, formGUID);
+            integrationReportWriter.reportElementUpdate(formGUID);
+        }
     }
 
 
@@ -207,6 +236,12 @@ public class DisplayIntegratorContext extends IntegrationContext
                                                      PropertyServerException
     {
         client.withdrawForm(userId, formGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(formGUID, formGUID);
+            integrationReportWriter.reportElementUpdate(formGUID);
+        }
     }
 
 
@@ -226,6 +261,12 @@ public class DisplayIntegratorContext extends IntegrationContext
                                                         PropertyServerException
     {
         client.removeForm(userId, externalSourceGUID, externalSourceName, formGUID, qualifiedName);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(formGUID, formGUID);
+            integrationReportWriter.reportElementDelete(formGUID);
+        }
     }
 
 
@@ -332,7 +373,19 @@ public class DisplayIntegratorContext extends IntegrationContext
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        return client.createReport(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, reportProperties);
+        String reportGUID = client.createReport(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                externalSourceIsHome,
+                                                reportProperties);
+
+        if ((reportGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.setAnchor(reportGUID, reportGUID);
+            integrationReportWriter.reportElementCreation(reportGUID);
+        }
+
+        return reportGUID;
     }
 
 
@@ -353,7 +406,20 @@ public class DisplayIntegratorContext extends IntegrationContext
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        return client.createReportFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, templateProperties);
+        String reportGUID = client.createReportFromTemplate(userId,
+                                                            externalSourceGUID,
+                                                            externalSourceName,
+                                                            externalSourceIsHome,
+                                                            templateGUID,
+                                                            templateProperties);
+
+        if ((reportGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.setAnchor(reportGUID, reportGUID);
+            integrationReportWriter.reportElementCreation(reportGUID);
+        }
+
+        return reportGUID;
     }
 
 
@@ -375,6 +441,12 @@ public class DisplayIntegratorContext extends IntegrationContext
                                                                        PropertyServerException
     {
         client.updateReport(userId, externalSourceGUID, externalSourceName, reportGUID, isMergeUpdate, reportProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(reportGUID, reportGUID);
+            integrationReportWriter.reportElementUpdate(reportGUID);
+        }
     }
 
 
@@ -394,6 +466,12 @@ public class DisplayIntegratorContext extends IntegrationContext
                                                         PropertyServerException
     {
         client.publishReport(userId, reportGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(reportGUID, reportGUID);
+            integrationReportWriter.reportElementUpdate(reportGUID);
+        }
     }
 
 
@@ -413,6 +491,12 @@ public class DisplayIntegratorContext extends IntegrationContext
                                                          PropertyServerException
     {
         client.withdrawReport(userId, reportGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(reportGUID, reportGUID);
+            integrationReportWriter.reportElementUpdate(reportGUID);
+        }
     }
 
 
@@ -438,6 +522,12 @@ public class DisplayIntegratorContext extends IntegrationContext
                                                           PropertyServerException
     {
         client.removeReport(userId, applicationGUID, applicationName, reportGUID, qualifiedName);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(reportGUID, reportGUID);
+            integrationReportWriter.reportElementDelete(reportGUID);
+        }
     }
 
 
@@ -544,7 +634,19 @@ public class DisplayIntegratorContext extends IntegrationContext
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
-        return client.createQuery(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, queryProperties);
+        String queryGUID = client.createQuery(userId,
+                                              externalSourceGUID,
+                                              externalSourceName,
+                                              externalSourceIsHome,
+                                              queryProperties);
+
+        if ((queryGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.setAnchor(queryGUID, queryGUID);
+            integrationReportWriter.reportElementCreation(queryGUID);
+        }
+
+        return queryGUID;
     }
 
 
@@ -565,7 +667,20 @@ public class DisplayIntegratorContext extends IntegrationContext
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        return client.createQueryFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, templateProperties);
+        String queryGUID = client.createQueryFromTemplate(userId,
+                                                          externalSourceGUID,
+                                                          externalSourceName,
+                                                          externalSourceIsHome,
+                                                          templateGUID,
+                                                          templateProperties);
+
+        if ((queryGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.setAnchor(queryGUID, queryGUID);
+            integrationReportWriter.reportElementCreation(queryGUID);
+        }
+
+        return queryGUID;
     }
 
 
@@ -587,6 +702,12 @@ public class DisplayIntegratorContext extends IntegrationContext
                                                                     PropertyServerException
     {
         client.updateQuery(userId, externalSourceGUID, externalSourceName, queryGUID, isMergeUpdate, queryProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(queryGUID, queryGUID);
+            integrationReportWriter.reportElementUpdate(queryGUID);
+        }
     }
 
 
@@ -606,6 +727,12 @@ public class DisplayIntegratorContext extends IntegrationContext
                                                       PropertyServerException
     {
         client.publishQuery(userId, queryGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(queryGUID, queryGUID);
+            integrationReportWriter.reportElementUpdate(queryGUID);
+        }
     }
 
 
@@ -625,6 +752,12 @@ public class DisplayIntegratorContext extends IntegrationContext
                                                        PropertyServerException
     {
         client.withdrawQuery(userId, queryGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(queryGUID, queryGUID);
+            integrationReportWriter.reportElementUpdate(queryGUID);
+        }
     }
 
 
@@ -650,6 +783,12 @@ public class DisplayIntegratorContext extends IntegrationContext
                                                          PropertyServerException
     {
         client.removeQuery(userId, applicationGUID, applicationName, queryGUID, qualifiedName);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(queryGUID, queryGUID);
+            integrationReportWriter.reportElementDelete(queryGUID);
+        }
     }
 
 
@@ -764,7 +903,20 @@ public class DisplayIntegratorContext extends IntegrationContext
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
-        return client.createDataContainer(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, parentElementGUID, dataContainerProperties);
+        String dataContainerGUID = client.createDataContainer(userId,
+                                                              externalSourceGUID,
+                                                              externalSourceName,
+                                                              externalSourceIsHome,
+                                                              parentElementGUID,
+                                                              dataContainerProperties);
+
+        if ((dataContainerGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.setParent(dataContainerGUID, parentElementGUID);
+            integrationReportWriter.reportElementCreation(dataContainerGUID);
+        }
+
+        return dataContainerGUID;
     }
 
 
@@ -787,7 +939,21 @@ public class DisplayIntegratorContext extends IntegrationContext
                                                                                                 UserNotAuthorizedException,
                                                                                                 PropertyServerException
     {
-        return client.createDataContainerFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, parentElementGUID, templateGUID, templateProperties);
+        String dataContainerGUID = client.createDataContainerFromTemplate(userId,
+                                                                          externalSourceGUID,
+                                                                          externalSourceName,
+                                                                          externalSourceIsHome,
+                                                                          parentElementGUID,
+                                                                          templateGUID,
+                                                                          templateProperties);
+
+        if ((dataContainerGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.setParent(dataContainerGUID, parentElementGUID);
+            integrationReportWriter.reportElementCreation(dataContainerGUID);
+        }
+
+        return dataContainerGUID;
     }
 
 
@@ -810,6 +976,11 @@ public class DisplayIntegratorContext extends IntegrationContext
                                                                                             PropertyServerException
     {
         client.updateDataContainer(userId, externalSourceGUID, externalSourceName, dataContainerGUID, isMergeUpdate, dataContainerProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(dataContainerGUID);
+        }
     }
 
 
@@ -829,6 +1000,11 @@ public class DisplayIntegratorContext extends IntegrationContext
                                                                      PropertyServerException
     {
         client.removeDataContainer(userId, externalSourceGUID, externalSourceName, dataContainerGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(dataContainerGUID);
+        }
     }
 
 
@@ -964,7 +1140,20 @@ public class DisplayIntegratorContext extends IntegrationContext
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        return client.createDataField(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, parentElementGUID, properties);
+        String dataFieldGUID = client.createDataField(userId,
+                                                      externalSourceGUID,
+                                                      externalSourceName,
+                                                      externalSourceIsHome,
+                                                      parentElementGUID,
+                                                      properties);
+
+        if ((dataFieldGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.setParent(dataFieldGUID, parentElementGUID);
+            integrationReportWriter.reportElementCreation(dataFieldGUID);
+        }
+
+        return dataFieldGUID;
     }
 
 
@@ -972,7 +1161,7 @@ public class DisplayIntegratorContext extends IntegrationContext
      * Create a new metadata element to represent a data field using an existing metadata element as a template.
      *
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param reportGUID unique identifier of the report where the data field is located
+     * @param parentElementGUID unique identifier of the report where the data field is located
      * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new data field
@@ -982,12 +1171,26 @@ public class DisplayIntegratorContext extends IntegrationContext
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createDataFieldFromTemplate(String             templateGUID,
-                                              String             reportGUID,
+                                              String             parentElementGUID,
                                               TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        return client.createDataFieldFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, reportGUID, templateProperties);
+        String dataFieldGUID = client.createDataFieldFromTemplate(userId,
+                                                                  externalSourceGUID,
+                                                                  externalSourceName,
+                                                                  externalSourceIsHome,
+                                                                  templateGUID,
+                                                                  parentElementGUID,
+                                                                  templateProperties);
+
+        if ((dataFieldGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.setParent(dataFieldGUID, parentElementGUID);
+            integrationReportWriter.reportElementCreation(dataFieldGUID);
+        }
+
+        return dataFieldGUID;
     }
 
 
@@ -995,7 +1198,7 @@ public class DisplayIntegratorContext extends IntegrationContext
      * Connect a schema type to a data field.
      *
      * @param relationshipTypeName name of relationship to create
-     * @param apiParameterGUID unique identifier of the API parameter
+     * @param dataFieldGUID unique identifier of the data field
      * @param schemaTypeGUID unique identifier of the schema type to connect
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1003,12 +1206,24 @@ public class DisplayIntegratorContext extends IntegrationContext
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void setupSchemaType(String  relationshipTypeName,
-                                String  apiParameterGUID,
+                                String  dataFieldGUID,
                                 String  schemaTypeGUID) throws InvalidParameterException,
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
     {
-        client.setupSchemaType(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, relationshipTypeName, apiParameterGUID, schemaTypeGUID);
+        client.setupSchemaType(userId,
+                               externalSourceGUID,
+                               externalSourceName,
+                               externalSourceIsHome,
+                               relationshipTypeName,
+                               dataFieldGUID,
+                               schemaTypeGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setParent(schemaTypeGUID, dataFieldGUID);
+            integrationReportWriter.reportElementUpdate(dataFieldGUID);
+        }
     }
 
 
@@ -1030,6 +1245,11 @@ public class DisplayIntegratorContext extends IntegrationContext
                                                                        PropertyServerException
     {
         client.updateDataField(userId, externalSourceGUID, externalSourceName, dataFieldGUID, isMergeUpdate, properties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(dataFieldGUID);
+        }
     }
 
 
@@ -1053,6 +1273,11 @@ public class DisplayIntegratorContext extends IntegrationContext
                                                              PropertyServerException
     {
         client.removeDataField(userId, applicationGUID, applicationName, dataFieldGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(dataFieldGUID);
+        }
     }
 
 

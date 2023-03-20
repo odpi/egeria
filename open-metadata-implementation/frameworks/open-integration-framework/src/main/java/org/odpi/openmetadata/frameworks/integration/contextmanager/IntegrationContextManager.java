@@ -78,34 +78,6 @@ public class IntegrationContextManager
 
 
     /**
-     * Return a new  integrationGovernanceContext for a specific connector.
-     *
-     * @param openMetadataStore client implementation
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier for external source (or null)
-     * @param externalSourceName unique name for external source (or null)
-     * @return new context
-     */
-    protected IntegrationGovernanceContext constructIntegrationGovernanceContext(OpenMetadataClient openMetadataStore,
-                                                                                 String             userId,
-                                                                                 String             externalSourceGUID,
-                                                                                 String             externalSourceName)
-    {
-        if (openMetadataStoreClient != null)
-        {
-            OpenMetadataAccess      openMetadataAccess      = new OpenMetadataAccess(openMetadataStore, userId, externalSourceGUID, externalSourceName);
-            MultiLanguageManagement multiLanguageManagement = new MultiLanguageManagement(openMetadataStore, userId);
-            StewardshipAction       stewardshipAction       = new StewardshipAction(openMetadataStore, userId);
-            ValidMetadataValues     validMetadataValues     = new ValidMetadataValues(openMetadataStore, userId);
-
-            return new IntegrationGovernanceContext(openMetadataAccess, multiLanguageManagement, stewardshipAction, validMetadataValues);
-        }
-
-        return null;
-    }
-
-
-    /**
      * Retrieve the metadata source's unique identifier (GUID) or if it is not defined, create the software server capability
      * for this event broker.
      *
@@ -182,11 +154,6 @@ public class IntegrationContextManager
             externalSourceName = null;
         }
 
-        IntegrationGovernanceContext integrationGovernanceContext = constructIntegrationGovernanceContext(openMetadataStoreClient,
-                                                                                                          connectorUserId,
-                                                                                                          externalSourceGUID,
-                                                                                                          externalSourceName);
-
         if ((openIntegrationClient != null) && (openMetadataStoreClient != null))
         {
             integrationContext = new IntegrationContext(connectorId,
@@ -199,8 +166,7 @@ public class IntegrationContextManager
                                                         permittedSynchronization,
                                                         externalSourceGUID,
                                                         externalSourceName,
-                                                        integrationConnectorGUID,
-                                                        integrationGovernanceContext);
+                                                        integrationConnectorGUID);
         }
 
         integrationConnector.setContext(integrationContext);

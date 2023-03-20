@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.ElementPropertie
 import org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifications;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
+import org.odpi.openmetadata.frameworks.integration.reports.IntegrationReportWriter;
 
 import java.util.Date;
 import java.util.List;
@@ -25,10 +26,11 @@ import java.util.List;
  */
 public class OpenMetadataAccess
 {
-    private final OpenMetadataClient openMetadataStore;
-    private final String             userId;
-    private final String             externalSourceGUID;
-    private final String             externalSourceName;
+    private final OpenMetadataClient      openMetadataStore;
+    private final String                  userId;
+    private final String                  externalSourceGUID;
+    private final String                  externalSourceName;
+    private final IntegrationReportWriter reportWriter;
 
 
     /**
@@ -38,16 +40,19 @@ public class OpenMetadataAccess
      * @param userId calling user
      * @param externalSourceGUID unique identifier for external source (or null)
      * @param externalSourceName unique name for external source (or null)
+     * @param reportWriter report writer (maybe null)
      */
-    public OpenMetadataAccess(OpenMetadataClient openMetadataStore,
-                              String             userId,
-                              String             externalSourceGUID,
-                              String             externalSourceName)
+    public OpenMetadataAccess(OpenMetadataClient      openMetadataStore,
+                              String                  userId,
+                              String                  externalSourceGUID,
+                              String                  externalSourceName,
+                              IntegrationReportWriter reportWriter)
     {
         this.openMetadataStore  = openMetadataStore;
         this.userId             = userId;
         this.externalSourceGUID = externalSourceGUID;
         this.externalSourceName = externalSourceName;
+        this.reportWriter       = reportWriter;
     }
 
 
@@ -340,15 +345,22 @@ public class OpenMetadataAccess
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        return openMetadataStore.createMetadataElementInStore(userId,
-                                                              externalSourceGUID,
-                                                              externalSourceName,
-                                                              metadataElementTypeName,
-                                                              initialStatus,
-                                                              effectiveFrom,
-                                                              effectiveTo,
-                                                              properties,
-                                                              templateGUID);
+        String metadataElementGUID = openMetadataStore.createMetadataElementInStore(userId,
+                                                                                    externalSourceGUID,
+                                                                                    externalSourceName,
+                                                                                    metadataElementTypeName,
+                                                                                    initialStatus,
+                                                                                    effectiveFrom,
+                                                                                    effectiveTo,
+                                                                                    properties,
+                                                                                    templateGUID);
+
+        if ((metadataElementGUID != null) && (reportWriter != null))
+        {
+            reportWriter.reportElementCreation(metadataElementGUID);
+        }
+
+        return metadataElementGUID;
     }
 
 
@@ -387,6 +399,11 @@ public class OpenMetadataAccess
                                                        forDuplicateProcessing,
                                                        properties,
                                                        effectiveTime);
+
+        if (reportWriter != null)
+        {
+            reportWriter.reportElementUpdate(metadataElementGUID);
+        }
     }
 
 
@@ -420,6 +437,11 @@ public class OpenMetadataAccess
                                                              forDuplicateProcessing,
                                                              newElementStatus,
                                                              effectiveTime);
+
+        if (reportWriter != null)
+        {
+            reportWriter.reportElementUpdate(metadataElementGUID);
+        }
     }
 
 
@@ -456,6 +478,11 @@ public class OpenMetadataAccess
                                                                   effectiveFrom,
                                                                   effectiveTo,
                                                                   effectiveTime);
+
+        if (reportWriter != null)
+        {
+            reportWriter.reportElementUpdate(metadataElementGUID);
+        }
     }
 
 
@@ -485,6 +512,11 @@ public class OpenMetadataAccess
                                                        forLineage,
                                                        forDuplicateProcessing,
                                                        effectiveTime);
+
+        if (reportWriter != null)
+        {
+            reportWriter.reportElementDelete(metadataElementGUID);
+        }
     }
 
 
@@ -529,6 +561,11 @@ public class OpenMetadataAccess
                                                          effectiveTo,
                                                          properties,
                                                          effectiveTime);
+
+        if (reportWriter != null)
+        {
+            reportWriter.reportElementUpdate(metadataElementGUID);
+        }
     }
 
 
@@ -569,6 +606,11 @@ public class OpenMetadataAccess
                                                            forDuplicateProcessing,
                                                            properties,
                                                            effectiveTime);
+
+        if (reportWriter != null)
+        {
+            reportWriter.reportElementUpdate(metadataElementGUID);
+        }
     }
 
 
@@ -608,6 +650,11 @@ public class OpenMetadataAccess
                                                                  effectiveFrom,
                                                                  effectiveTo,
                                                                  effectiveTime);
+
+        if (reportWriter != null)
+        {
+            reportWriter.reportElementUpdate(metadataElementGUID);
+        }
     }
 
 
@@ -640,6 +687,11 @@ public class OpenMetadataAccess
                                                            forLineage,
                                                            forDuplicateProcessing,
                                                            effectiveTime);
+
+        if (reportWriter != null)
+        {
+            reportWriter.reportElementUpdate(metadataElementGUID);
+        }
     }
 
 
@@ -677,18 +729,25 @@ public class OpenMetadataAccess
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        return openMetadataStore.createRelatedElementsInStore(userId,
-                                                              externalSourceGUID,
-                                                              externalSourceName,
-                                                              relationshipTypeName,
-                                                              metadataElement1GUID,
-                                                              metadataElement2GUID,
-                                                              forLineage,
-                                                              forDuplicateProcessing,
-                                                              effectiveFrom,
-                                                              effectiveTo,
-                                                              properties,
-                                                              effectiveTime);
+        String relationshipGUID = openMetadataStore.createRelatedElementsInStore(userId,
+                                                                                 externalSourceGUID,
+                                                                                 externalSourceName,
+                                                                                 relationshipTypeName,
+                                                                                 metadataElement1GUID,
+                                                                                 metadataElement2GUID,
+                                                                                 forLineage,
+                                                                                 forDuplicateProcessing,
+                                                                                 effectiveFrom,
+                                                                                 effectiveTo,
+                                                                                 properties,
+                                                                                 effectiveTime);
+
+        if ((relationshipGUID != null) && (reportWriter != null))
+        {
+            reportWriter.reportElementCreation(relationshipGUID);
+        }
+
+        return relationshipGUID;
     }
 
 
@@ -726,6 +785,11 @@ public class OpenMetadataAccess
                                                        forDuplicateProcessing,
                                                        properties,
                                                        effectiveTime);
+
+        if (reportWriter != null)
+        {
+            reportWriter.reportElementUpdate(relationshipGUID);
+        }
     }
 
 
@@ -763,6 +827,11 @@ public class OpenMetadataAccess
                                                                   effectiveFrom,
                                                                   effectiveTo,
                                                                   effectiveTime);
+
+        if (reportWriter != null)
+        {
+            reportWriter.reportElementUpdate(relationshipGUID);
+        }
     }
 
 
@@ -792,5 +861,10 @@ public class OpenMetadataAccess
                                                        forLineage,
                                                        forDuplicateProcessing,
                                                        effectiveTime);
+
+        if (reportWriter != null)
+        {
+            reportWriter.reportElementDelete(relationshipGUID);
+        }
     }
 }

@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.datamanager.api.DataManagerEventList
 import org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.FilesAndFoldersClient;
+import org.odpi.openmetadata.accessservices.datamanager.client.ValidValueManagement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
@@ -14,7 +15,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeade
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
-import org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 
 import java.util.List;
@@ -29,7 +29,8 @@ public class FilesIntegratorContext extends IntegrationContext
 {
     private final ConnectionManagerClient connectionManagerClient;
     private final FilesAndFoldersClient   filesAndFoldersClient;
-    private final DataManagerEventClient  eventClient;
+    private final DataManagerEventClient eventClient;
+    private final ValidValueManagement   validValueManagement;
 
 
     /**
@@ -43,12 +44,12 @@ public class FilesIntegratorContext extends IntegrationContext
      * @param openMetadataStoreClient client for calling the metadata server
      * @param filesAndFoldersClient client to map request to
      * @param connectionManagerClient client for managing connections
+     * @param validValueManagement client for managing valid value sets and definitions
      * @param eventClient client to register for events
      * @param generateIntegrationReport should the connector generate an integration reports?
      * @param permittedSynchronization the direction of integration permitted by the integration connector
      * @param integrationConnectorGUID unique identifier for the integration connector if it is started via an integration group (otherwise it is
      *                                 null).
-     * @param integrationGovernanceContext populated governance context for the connector's use
      * @param externalSourceGUID unique identifier of the software server capability for the asset manager
      * @param externalSourceName unique name of the software server capability for the asset manager
      */
@@ -60,11 +61,11 @@ public class FilesIntegratorContext extends IntegrationContext
                                   OpenMetadataClient           openMetadataStoreClient,
                                   FilesAndFoldersClient        filesAndFoldersClient,
                                   ConnectionManagerClient      connectionManagerClient,
+                                  ValidValueManagement         validValueManagement,
                                   DataManagerEventClient       eventClient,
                                   boolean                      generateIntegrationReport,
                                   PermittedSynchronization     permittedSynchronization,
                                   String                       integrationConnectorGUID,
-                                  IntegrationGovernanceContext integrationGovernanceContext,
                                   String                       externalSourceGUID,
                                   String                       externalSourceName)
     {
@@ -78,11 +79,11 @@ public class FilesIntegratorContext extends IntegrationContext
               permittedSynchronization,
               externalSourceGUID,
               externalSourceName,
-              integrationConnectorGUID,
-              integrationGovernanceContext);
+              integrationConnectorGUID);
 
         this.filesAndFoldersClient    = filesAndFoldersClient;
         this.connectionManagerClient  = connectionManagerClient;
+        this.validValueManagement     = validValueManagement;
         this.eventClient              = eventClient;
     }
 
@@ -138,7 +139,28 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        return filesAndFoldersClient.createNestedFolders(userId, externalSourceGUID, externalSourceName, parentGUID, pathName);
+        List<String> nestedFolderGUIDs = filesAndFoldersClient.createNestedFolders(userId,
+                                                                                   externalSourceGUID,
+                                                                                   externalSourceName,
+                                                                                   parentGUID,
+                                                                                   pathName);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(parentGUID, parentGUID);
+            integrationReportWriter.reportElementUpdate(parentGUID);
+
+            if ((nestedFolderGUIDs != null) && (nestedFolderGUIDs.size() > 0))
+            {
+                for (String folderGUID : nestedFolderGUIDs)
+                {
+                    integrationReportWriter.setAnchor(folderGUID, folderGUID);
+                    integrationReportWriter.reportElementCreation(folderGUID);
+                }
+            }
+        }
+
+        return nestedFolderGUIDs;
     }
 
 
@@ -158,6 +180,14 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                PropertyServerException
     {
         filesAndFoldersClient.attachTopLevelFolder(userId, externalSourceGUID, externalSourceName, fileSystemGUID, folderGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(folderGUID, folderGUID);
+            integrationReportWriter.setAnchor(fileSystemGUID, fileSystemGUID);
+            integrationReportWriter.reportElementUpdate(fileSystemGUID);
+            integrationReportWriter.reportElementUpdate(folderGUID);
+        }
     }
 
 
@@ -177,6 +207,14 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                PropertyServerException
     {
         filesAndFoldersClient.detachTopLevelFolder(userId, externalSourceGUID, externalSourceName, fileSystemGUID, folderGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(folderGUID, folderGUID);
+            integrationReportWriter.setAnchor(fileSystemGUID, fileSystemGUID);
+            integrationReportWriter.reportElementUpdate(fileSystemGUID);
+            integrationReportWriter.reportElementUpdate(folderGUID);
+        }
     }
 
 
@@ -201,7 +239,22 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
-        return filesAndFoldersClient.addDataFileToCatalog(userId, externalSourceGUID, externalSourceName, dataFileProperties, connectorProviderName);
+        List<String> nestedFolderGUIDs = filesAndFoldersClient.addDataFileToCatalog(userId,
+                                                                                    externalSourceGUID,
+                                                                                    externalSourceName,
+                                                                                    dataFileProperties,
+                                                                                    connectorProviderName);
+
+        if ((nestedFolderGUIDs != null) && (nestedFolderGUIDs.size() > 0) && (integrationReportWriter != null))
+        {
+            for (String folderGUID : nestedFolderGUIDs)
+            {
+                integrationReportWriter.setAnchor(folderGUID, folderGUID);
+                integrationReportWriter.reportElementCreation(folderGUID);
+            }
+        }
+
+        return nestedFolderGUIDs;
     }
 
 
@@ -226,7 +279,22 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                                        UserNotAuthorizedException,
                                                                                                        PropertyServerException
     {
-        return filesAndFoldersClient.addDataFileToCatalogFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateProperties);
+        List<String> nestedFolderGUIDs = filesAndFoldersClient.addDataFileToCatalogFromTemplate(userId,
+                                                                                                externalSourceGUID,
+                                                                                                externalSourceName,
+                                                                                                templateGUID,
+                                                                                                templateProperties);
+
+        if ((nestedFolderGUIDs != null) && (nestedFolderGUIDs.size() > 0) && (integrationReportWriter != null))
+        {
+            for (String folderGUID : nestedFolderGUIDs)
+            {
+                integrationReportWriter.setAnchor(folderGUID, folderGUID);
+                integrationReportWriter.reportElementCreation(folderGUID);
+            }
+        }
+
+        return nestedFolderGUIDs;
     }
 
 
@@ -247,7 +315,18 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        filesAndFoldersClient.updateDataFileInCatalog(userId, externalSourceGUID, externalSourceName, dataFileGUID, isMergeUpdate, dataFileProperties);
+        filesAndFoldersClient.updateDataFileInCatalog(userId,
+                                                      externalSourceGUID,
+                                                      externalSourceName,
+                                                      dataFileGUID,
+                                                      isMergeUpdate,
+                                                      dataFileProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(dataFileGUID, dataFileGUID);
+            integrationReportWriter.reportElementUpdate(dataFileGUID);
+        }
     }
 
 
@@ -266,7 +345,17 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        filesAndFoldersClient.archiveDataFileInCatalog(userId, externalSourceGUID, externalSourceName, dataFileGUID, archiveProperties);
+        filesAndFoldersClient.archiveDataFileInCatalog(userId,
+                                                       externalSourceGUID,
+                                                       externalSourceName,
+                                                       dataFileGUID,
+                                                       archiveProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(dataFileGUID, dataFileGUID);
+            integrationReportWriter.reportElementDelete(dataFileGUID);
+        }
     }
 
 
@@ -286,6 +375,12 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                       PropertyServerException
     {
         filesAndFoldersClient.deleteDataFileFromCatalog(userId, externalSourceGUID, externalSourceName, dataFileGUID, fullPathname);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(dataFileGUID, dataFileGUID);
+            integrationReportWriter.reportElementDelete(dataFileGUID);
+        }
     }
 
 
@@ -312,7 +407,22 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        return filesAndFoldersClient.addDataFolderToCatalog(userId, externalSourceGUID, externalSourceName, fileFolderProperties, connectorProviderName);
+        List<String> nestedFolderGUIDs = filesAndFoldersClient.addDataFolderToCatalog(userId,
+                                                                                      externalSourceGUID,
+                                                                                      externalSourceName,
+                                                                                      fileFolderProperties,
+                                                                                      connectorProviderName);
+
+        if ((nestedFolderGUIDs != null) && (nestedFolderGUIDs.size() > 0) && (integrationReportWriter != null))
+        {
+            for (String folderGUID : nestedFolderGUIDs)
+            {
+                integrationReportWriter.setAnchor(folderGUID, folderGUID);
+                integrationReportWriter.reportElementCreation(folderGUID);
+            }
+        }
+
+        return nestedFolderGUIDs;
     }
 
 
@@ -337,7 +447,22 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                                          UserNotAuthorizedException,
                                                                                                          PropertyServerException
     {
-        return filesAndFoldersClient.addDataFolderToCatalogFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateProperties);
+        List<String> nestedFolderGUIDs = filesAndFoldersClient.addDataFolderToCatalogFromTemplate(userId,
+                                                                                                  externalSourceGUID,
+                                                                                                  externalSourceName,
+                                                                                                  templateGUID,
+                                                                                                  templateProperties);
+
+        if ((nestedFolderGUIDs != null) && (nestedFolderGUIDs.size() > 0) && (integrationReportWriter != null))
+        {
+            for (String folderGUID : nestedFolderGUIDs)
+            {
+                integrationReportWriter.setAnchor(folderGUID, folderGUID);
+                integrationReportWriter.reportElementCreation(folderGUID);
+            }
+        }
+
+        return nestedFolderGUIDs;
     }
 
 
@@ -358,7 +483,18 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        filesAndFoldersClient.updateDataFolderInCatalog(userId, externalSourceGUID, externalSourceName, dataFolderGUID, isMergeUpdate, fileFolderProperties);
+        filesAndFoldersClient.updateDataFolderInCatalog(userId,
+                                                        externalSourceGUID,
+                                                        externalSourceName,
+                                                        dataFolderGUID,
+                                                        isMergeUpdate,
+                                                        fileFolderProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(dataFolderGUID, dataFolderGUID);
+            integrationReportWriter.reportElementUpdate(dataFolderGUID);
+        }
     }
 
 
@@ -378,6 +514,12 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                        PropertyServerException
     {
         filesAndFoldersClient.archiveDataFolderInCatalog(userId, externalSourceGUID, externalSourceName, dataFolderGUID, archiveProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(dataFolderGUID, dataFolderGUID);
+            integrationReportWriter.reportElementDelete(dataFolderGUID);
+        }
     }
 
 
@@ -398,6 +540,14 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                     PropertyServerException
     {
         filesAndFoldersClient.attachDataFileAssetToFolder(userId, externalSourceGUID, externalSourceName, folderGUID, fileGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(folderGUID, folderGUID);
+            integrationReportWriter.reportElementUpdate(folderGUID);
+            integrationReportWriter.setAnchor(fileGUID, fileGUID);
+            integrationReportWriter.reportElementUpdate(fileGUID);
+        }
     }
 
 
@@ -419,6 +569,14 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                       PropertyServerException
     {
         filesAndFoldersClient.detachDataFileAssetFromFolder(userId, externalSourceGUID, externalSourceName, folderGUID, fileGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(folderGUID, folderGUID);
+            integrationReportWriter.reportElementUpdate(folderGUID);
+            integrationReportWriter.setAnchor(fileGUID, fileGUID);
+            integrationReportWriter.reportElementUpdate(fileGUID);
+        }
     }
 
 
@@ -609,7 +767,22 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                                        UserNotAuthorizedException,
                                                                                                        PropertyServerException
     {
-        return filesAndFoldersClient.createPrimitiveSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties);
+        String schemaTypeGUID;
+        if (externalSourceIsHome)
+        {
+            schemaTypeGUID = filesAndFoldersClient.createPrimitiveSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties);
+        }
+        else
+        {
+            schemaTypeGUID = filesAndFoldersClient.createPrimitiveSchemaType(userId, null, null, schemaTypeProperties);
+        }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(schemaTypeGUID);
+        }
+
+        return schemaTypeGUID;
     }
 
 
@@ -628,7 +801,23 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
     {
-        return filesAndFoldersClient.createLiteralSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties);
+        String schemaTypeGUID;
+
+        if (externalSourceIsHome)
+        {
+            schemaTypeGUID = filesAndFoldersClient.createLiteralSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties);
+        }
+        else
+        {
+            schemaTypeGUID = filesAndFoldersClient.createLiteralSchemaType(userId, null, null, schemaTypeProperties);
+        }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(schemaTypeGUID);
+        }
+
+        return schemaTypeGUID;
     }
 
 
@@ -649,7 +838,31 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return filesAndFoldersClient.createEnumSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties, validValuesSetGUID);
+        String schemaTypeGUID;
+
+        if (externalSourceIsHome)
+        {
+            schemaTypeGUID = filesAndFoldersClient.createEnumSchemaType(userId,
+                                                                        externalSourceGUID,
+                                                                        externalSourceName,
+                                                                        schemaTypeProperties,
+                                                                        validValuesSetGUID);
+        }
+        else
+        {
+            schemaTypeGUID = filesAndFoldersClient.createEnumSchemaType(userId,
+                                                                        null,
+                                                                        null,
+                                                                        schemaTypeProperties,
+                                                                        validValuesSetGUID);
+        }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(schemaTypeGUID);
+        }
+
+        return schemaTypeGUID;
     }
 
 
@@ -716,17 +929,33 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        return filesAndFoldersClient.createStructSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties);
+        String schemaTypeGUID;
+
+        if (externalSourceIsHome)
+        {
+            schemaTypeGUID = filesAndFoldersClient.createStructSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties);
+        }
+        else
+        {
+            schemaTypeGUID =  filesAndFoldersClient.createStructSchemaType(userId, null, null, schemaTypeProperties);
+        }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(schemaTypeGUID);
+        }
+
+        return schemaTypeGUID;
     }
 
 
     /**
-     * Create a new metadata element to represent a list of possible schema types that can be used for the attached schema attribute.
+     * Create a new metadata element to represent a list of possible schema types that can be used for the attached API parameter.
      *
      * @param schemaTypeProperties properties about the schema type to store
      *
      * @return unique identifier of the new schema type
-     * @param schemaTypeOptionGUIDs list of unique identifiers of schema types that represent the options to link to
+     * @param schemaTypeOptionGUIDs list of unique identifiers for schema types to link to
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -737,7 +966,24 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        return filesAndFoldersClient.createSchemaTypeChoice(userId, externalSourceGUID, externalSourceName, schemaTypeProperties, schemaTypeOptionGUIDs);
+        String schemaTypeGUID;
+
+        if (externalSourceIsHome)
+        {
+            schemaTypeGUID = filesAndFoldersClient.createSchemaTypeChoice(userId, externalSourceGUID, externalSourceName, schemaTypeProperties,
+                                                                          schemaTypeOptionGUIDs);
+        }
+        else
+        {
+            schemaTypeGUID = filesAndFoldersClient.createSchemaTypeChoice(userId, null, null, schemaTypeProperties, schemaTypeOptionGUIDs);
+        }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(schemaTypeGUID);
+        }
+
+        return schemaTypeGUID;
     }
 
 
@@ -760,7 +1006,33 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        return filesAndFoldersClient.createMapSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties, mapFromSchemaTypeGUID, mapToSchemaTypeGUID);
+        String schemaTypeGUID;
+
+        if (externalSourceIsHome)
+        {
+            schemaTypeGUID = filesAndFoldersClient.createMapSchemaType(userId,
+                                                                       externalSourceGUID,
+                                                                       externalSourceName,
+                                                                       schemaTypeProperties,
+                                                                       mapFromSchemaTypeGUID,
+                                                                       mapToSchemaTypeGUID);
+        }
+        else
+        {
+            schemaTypeGUID = filesAndFoldersClient.createMapSchemaType(userId,
+                                                                       null,
+                                                                       null,
+                                                                       schemaTypeProperties,
+                                                                       mapFromSchemaTypeGUID,
+                                                                       mapToSchemaTypeGUID);
+        }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(schemaTypeGUID);
+        }
+
+        return schemaTypeGUID;
     }
 
 
@@ -781,7 +1053,31 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        return filesAndFoldersClient.createSchemaTypeFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateProperties);
+        String schemaTypeGUID;
+
+        if (externalSourceIsHome)
+        {
+            schemaTypeGUID = filesAndFoldersClient.createSchemaTypeFromTemplate(userId,
+                                                                                externalSourceGUID,
+                                                                                externalSourceName,
+                                                                                templateGUID,
+                                                                                templateProperties);
+        }
+        else
+        {
+            schemaTypeGUID = filesAndFoldersClient.createSchemaTypeFromTemplate(userId,
+                                                                                null,
+                                                                                null,
+                                                                                templateGUID,
+                                                                                templateProperties);
+        }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(schemaTypeGUID);
+        }
+
+        return schemaTypeGUID;
     }
 
 
@@ -804,6 +1100,11 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                    PropertyServerException
     {
         filesAndFoldersClient.updateSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeGUID, isMergeUpdate, schemaTypeProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(schemaTypeGUID);
+        }
     }
 
 
@@ -821,8 +1122,12 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                PropertyServerException
     {
         filesAndFoldersClient.removeSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeGUID);
-    }
 
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(schemaTypeGUID);
+        }
+    }
 
 
     /**
@@ -845,7 +1150,19 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        filesAndFoldersClient.setupSchemaElementRelationship(userId, externalSourceGUID, externalSourceName, endOneGUID, endTwoGUID, relationshipTypeName, properties);
+        filesAndFoldersClient.setupSchemaElementRelationship(userId,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
+                                                             endOneGUID,
+                                                             endTwoGUID,
+                                                             relationshipTypeName,
+                                                             properties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setParent(endTwoGUID, endOneGUID);
+            integrationReportWriter.reportElementUpdate(endOneGUID);
+        }
     }
 
 
@@ -1002,7 +1319,31 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                                     UserNotAuthorizedException,
                                                                                                     PropertyServerException
     {
-        return filesAndFoldersClient.createSchemaAttribute(userId, externalSourceGUID, externalSourceName, schemaElementGUID, schemaAttributeProperties);
+        String schemaAttributeGUID;
+
+        if (externalSourceIsHome)
+        {
+            schemaAttributeGUID = filesAndFoldersClient.createSchemaAttribute(userId,
+                                                                              externalSourceGUID,
+                                                                              externalSourceName,
+                                                                              schemaElementGUID,
+                                                                              schemaAttributeProperties);
+        }
+        else
+        {
+            schemaAttributeGUID = filesAndFoldersClient.createSchemaAttribute(userId,
+                                                                              null,
+                                                                              null,
+                                                                              schemaElementGUID,
+                                                                              schemaAttributeProperties);
+        }
+
+        if ((schemaAttributeGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementCreation(schemaElementGUID);
+        }
+
+        return schemaAttributeGUID;
     }
 
 
@@ -1025,8 +1366,33 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        return filesAndFoldersClient.createSchemaAttributeFromTemplate(userId, externalSourceGUID, externalSourceName, schemaElementGUID,
-                                                                       templateGUID, templateProperties);
+        String schemaAttributeGUID;
+
+        if (externalSourceIsHome)
+        {
+            schemaAttributeGUID = filesAndFoldersClient.createSchemaAttributeFromTemplate(userId,
+                                                                                          externalSourceGUID,
+                                                                                          externalSourceName,
+                                                                                          schemaElementGUID,
+                                                                                          templateGUID,
+                                                                                          templateProperties);
+        }
+        else
+        {
+            schemaAttributeGUID = filesAndFoldersClient.createSchemaAttributeFromTemplate(userId,
+                                                                                          null,
+                                                                                          null,
+                                                                                          schemaElementGUID,
+                                                                                          templateGUID,
+                                                                                          templateProperties);
+        }
+
+        if ((schemaAttributeGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementCreation(schemaElementGUID);
+        }
+
+        return schemaAttributeGUID;
     }
 
 
@@ -1047,7 +1413,19 @@ public class FilesIntegratorContext extends IntegrationContext
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
     {
-        filesAndFoldersClient.setupSchemaType(userId, externalSourceGUID, externalSourceName, relationshipTypeName, schemaAttributeGUID, schemaTypeGUID);
+        if (externalSourceIsHome)
+        {
+            filesAndFoldersClient.setupSchemaType(userId, externalSourceGUID, externalSourceName, relationshipTypeName, schemaAttributeGUID, schemaTypeGUID);
+        }
+        else
+        {
+            filesAndFoldersClient.setupSchemaType(userId, null, null, relationshipTypeName, schemaAttributeGUID, schemaTypeGUID);
+        }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setParent(schemaTypeGUID, schemaAttributeGUID);
+        }
     }
 
 
@@ -1065,6 +1443,11 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                     PropertyServerException
     {
         filesAndFoldersClient.clearSchemaTypes(userId, externalSourceGUID, externalSourceName, schemaAttributeGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(schemaAttributeGUID);
+        }
     }
 
 
@@ -1085,7 +1468,17 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        filesAndFoldersClient.updateSchemaAttribute(userId, externalSourceGUID, externalSourceName, schemaAttributeGUID, isMergeUpdate, schemaAttributeProperties);
+        filesAndFoldersClient.updateSchemaAttribute(userId,
+                                                    externalSourceGUID,
+                                                    externalSourceName,
+                                                    schemaAttributeGUID,
+                                                    isMergeUpdate,
+                                                    schemaAttributeProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(schemaAttributeGUID);
+        }
     }
 
 
@@ -1103,6 +1496,11 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                          PropertyServerException
     {
         filesAndFoldersClient.removeSchemaAttribute(userId, externalSourceGUID, externalSourceName, schemaAttributeGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(schemaAttributeGUID);
+        }
     }
 
 
@@ -1221,7 +1619,14 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        return connectionManagerClient.createConnection(userId, externalSourceGUID, externalSourceName, connectionProperties);
+        String connectionGUID = connectionManagerClient.createConnection(userId, null, null, connectionProperties);
+
+        if ((connectionGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementCreation(connectionGUID);
+        }
+
+        return connectionGUID;
     }
 
 
@@ -1242,7 +1647,18 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        return connectionManagerClient.createConnectionFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateProperties);
+        String connectionGUID = connectionManagerClient.createConnectionFromTemplate(userId,
+                                                                                     null,
+                                                                                     null,
+                                                                                     templateGUID,
+                                                                                     templateProperties);
+
+        if ((connectionGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementCreation(connectionGUID);
+        }
+
+        return connectionGUID;
     }
 
 
@@ -1265,14 +1681,19 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                    PropertyServerException
     {
         connectionManagerClient.updateConnection(userId, externalSourceGUID, externalSourceName, connectionGUID, isMergeUpdate, connectionProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(connectionGUID);
+        }
     }
 
 
     /**
      * Create a relationship between a connection and a connector type.
      *
-     * @param connectionGUID unique identifier of the connection  
-     * @param connectorTypeGUID unique identifier of the connector type  
+     * @param connectionGUID unique identifier of the connection in the external data manager
+     * @param connectorTypeGUID unique identifier of the connector type in the external data manager
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1283,15 +1704,20 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
     {
-        connectionManagerClient.setupConnectorType(userId, externalSourceGUID, externalSourceName, connectionGUID, connectorTypeGUID);
+        connectionManagerClient.setupConnectorType(userId, null, null, connectionGUID, connectorTypeGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(connectionGUID);
+        }
     }
 
 
     /**
      * Remove a relationship between a connection and a connector type.
      *
-     * @param connectionGUID unique identifier of the connection  
-     * @param connectorTypeGUID unique identifier of the connector type  
+     * @param connectionGUID unique identifier of the connection in the external data manager
+     * @param connectorTypeGUID unique identifier of the connector type in the external data manager
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1303,14 +1729,19 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                     PropertyServerException
     {
         connectionManagerClient.clearConnectorType(userId, externalSourceGUID, externalSourceName, connectionGUID, connectorTypeGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(connectionGUID);
+        }
     }
 
 
     /**
      * Create a relationship between a connection and an endpoint.
      *
-     * @param connectionGUID unique identifier of the connection  
-     * @param endpointGUID unique identifier of the endpoint  
+     * @param connectionGUID unique identifier of the connection in the external data manager
+     * @param endpointGUID unique identifier of the endpoint in the external data manager
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1321,15 +1752,20 @@ public class FilesIntegratorContext extends IntegrationContext
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
     {
-        connectionManagerClient.setupEndpoint(userId, externalSourceGUID, externalSourceName, connectionGUID, endpointGUID);
+        connectionManagerClient.setupEndpoint(userId, null, null, connectionGUID, endpointGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(connectionGUID);
+        }
     }
 
 
     /**
      * Remove a relationship between a connection and an endpoint.
      *
-     * @param connectionGUID unique identifier of the connection  
-     * @param endpointGUID unique identifier of the endpoint  
+     * @param connectionGUID unique identifier of the connection in the external data manager
+     * @param endpointGUID unique identifier of the endpoint in the external data manager
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1341,17 +1777,22 @@ public class FilesIntegratorContext extends IntegrationContext
                                                           PropertyServerException
     {
         connectionManagerClient.clearEndpoint(userId, externalSourceGUID, externalSourceName, connectionGUID, endpointGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(connectionGUID);
+        }
     }
 
 
     /**
      * Create a relationship between a virtual connection and an embedded connection.
      *
-     * @param connectionGUID unique identifier of the virtual connection  
+     * @param connectionGUID unique identifier of the virtual connection in the external data manager
      * @param position which order should this connection be processed
      * @param arguments What additional properties should be passed to the embedded connector via the configuration properties
      * @param displayName what does this connector signify?
-     * @param embeddedConnectionGUID unique identifier of the embedded connection  
+     * @param embeddedConnectionGUID unique identifier of the embedded connection in the external data manager
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1365,15 +1806,21 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        connectionManagerClient.setupEmbeddedConnection(userId, externalSourceGUID, externalSourceName, connectionGUID, position, displayName, arguments, embeddedConnectionGUID);
+        connectionManagerClient.setupEmbeddedConnection(userId, null, null, connectionGUID, position, displayName, arguments, embeddedConnectionGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setParent(embeddedConnectionGUID, connectionGUID);
+            integrationReportWriter.reportElementUpdate(embeddedConnectionGUID);
+        }
     }
 
 
     /**
      * Remove a relationship between a virtual connection and an embedded connection.
      *
-     * @param connectionGUID unique identifier of the virtual connection  
-     * @param embeddedConnectionGUID unique identifier of the embedded connection  
+     * @param connectionGUID unique identifier of the virtual connection in the external data manager
+     * @param embeddedConnectionGUID unique identifier of the embedded connection in the external data manager
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1385,6 +1832,12 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                               PropertyServerException
     {
         connectionManagerClient.clearEmbeddedConnection(userId, externalSourceGUID, externalSourceName, connectionGUID, embeddedConnectionGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setParent(embeddedConnectionGUID, connectionGUID);
+            integrationReportWriter.reportElementUpdate(embeddedConnectionGUID);
+        }
     }
 
 
@@ -1405,7 +1858,13 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        connectionManagerClient.setupAssetConnection(userId, externalSourceGUID, externalSourceName, assetGUID, assetSummary, connectionGUID);
+        connectionManagerClient.setupAssetConnection(userId, null, null, assetGUID, assetSummary, connectionGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(connectionGUID, assetGUID);
+            integrationReportWriter.reportElementUpdate(connectionGUID);
+        }
     }
 
 
@@ -1425,8 +1884,13 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                    PropertyServerException
     {
         connectionManagerClient.clearAssetConnection(userId, externalSourceGUID, externalSourceName, assetGUID, connectionGUID);
-    }
 
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(connectionGUID, assetGUID);
+            integrationReportWriter.reportElementUpdate(connectionGUID);
+        }
+    }
 
 
     /**
@@ -1474,7 +1938,7 @@ public class FilesIntegratorContext extends IntegrationContext
      * Retrieve the list of metadata elements with a matching qualified or display name.
      * There are no wildcards supported on this request.
      *
-     * @param name name of the connection to retrieve
+     * @param name name used to retrieve the connection
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1528,7 +1992,14 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        return connectionManagerClient.createEndpoint(userId, externalSourceGUID, externalSourceName, endpointProperties);
+        String endpointGUID = connectionManagerClient.createEndpoint(userId, null, null, endpointProperties);
+
+        if ((endpointGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementCreation(endpointGUID);
+        }
+
+        return endpointGUID;
     }
 
 
@@ -1551,7 +2022,19 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return connectionManagerClient.createEndpointFromTemplate(userId, externalSourceGUID, externalSourceName, networkAddress, templateGUID, templateProperties);
+        String endpointGUID = connectionManagerClient.createEndpointFromTemplate(userId,
+                                                                                 externalSourceGUID,
+                                                                                 externalSourceName,
+                                                                                 networkAddress,
+                                                                                 templateGUID,
+                                                                                 templateProperties);
+
+        if ((endpointGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementCreation(endpointGUID);
+        }
+
+        return endpointGUID;
     }
 
 
@@ -1574,9 +2057,12 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                              PropertyServerException
     {
         connectionManagerClient.updateEndpoint(userId, externalSourceGUID, externalSourceName, isMergeUpdate, endpointGUID, endpointProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(endpointGUID);
+        }
     }
-
-
 
 
     /**
@@ -1593,6 +2079,11 @@ public class FilesIntegratorContext extends IntegrationContext
                                                            PropertyServerException
     {
         connectionManagerClient.removeEndpoint(userId, externalSourceGUID, externalSourceName, endpointGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(endpointGUID);
+        }
     }
 
 
@@ -1727,5 +2218,456 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                         PropertyServerException
     {
         return connectionManagerClient.getConnectorTypeByGUID(userId, connectorTypeGUID);
+    }
+
+
+    /* =====================================================================================================================
+     * A ValidValue is the top level object for working with valid values
+     */
+
+    /**
+     * Create a new metadata element to represent a valid value.
+     *
+     * @param validValueProperties properties about the valid value to store
+     *
+     * @return unique identifier of the new valid value
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createValidValue(ValidValueProperties validValueProperties) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        String validValueGUID = validValueManagement.createValidValue(userId, externalSourceGUID, externalSourceName, validValueProperties);
+
+        if ((validValueGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementCreation(validValueGUID);
+        }
+
+        return validValueGUID;
+    }
+
+
+    /**
+     * Update the metadata element representing a valid value.  It is possible to use the subtype property classes or
+     * set up specialized properties in extended properties.
+     *
+     * @param validValueGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param validValueProperties new properties for the metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateValidValue(String               validValueGUID,
+                                 boolean              isMergeUpdate,
+                                 ValidValueProperties validValueProperties) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        validValueManagement.updateValidValue(userId, externalSourceGUID, externalSourceName, validValueGUID, isMergeUpdate, validValueProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(validValueGUID);
+        }
+    }
+
+
+    /**
+     * Create a membership relationship between a validValue and a validValueSet that it belongs to.
+     *
+     * @param validValueSetGUID unique identifier of the valid value set
+     * @param properties describes the properties of the membership
+     * @param validValueMemberGUID unique identifier of the member
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupValidValueMember(String                         validValueSetGUID,
+                                      ValidValueMembershipProperties properties,
+                                      String                         validValueMemberGUID) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        validValueManagement.setupValidValueMember(userId, externalSourceGUID, externalSourceName, validValueSetGUID, properties, validValueMemberGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(validValueMemberGUID, validValueSetGUID);
+            integrationReportWriter.reportElementUpdate(validValueSetGUID);
+        }
+    }
+
+
+    /**
+     * Remove a membership relationship between a validValue and a validValueSet that it belongs to.
+     *
+     * @param validValueSetGUID unique identifier of the valid value set
+     * @param validValueMemberGUID unique identifier of the member
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearValidValueMember(String validValueSetGUID,
+                                      String validValueMemberGUID) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        validValueManagement.clearValidValueMember(userId, externalSourceGUID, externalSourceName, validValueSetGUID, validValueMemberGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(validValueMemberGUID, validValueSetGUID);
+            integrationReportWriter.reportElementUpdate(validValueSetGUID);
+        }
+    }
+
+
+    /**
+     * Create a valid value assignment relationship between an element and a valid value (typically, a valid value set) to show that
+     * the valid value defines the values that can be stored in the data item that the element represents.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties describes the permissions that the role has in the validValue
+     * @param validValueGUID unique identifier of the valid value
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupValidValues(String                         elementGUID,
+                                 ValidValueAssignmentProperties properties,
+                                 String                         validValueGUID) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        validValueManagement.setupValidValues(userId, externalSourceGUID, externalSourceName, elementGUID, properties, validValueGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Remove a valid value assignment relationship between an element and a valid value.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param validValueGUID unique identifier of the valid value
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearValidValues(String elementGUID,
+                                 String validValueGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        validValueManagement.clearValidValues(userId, externalSourceGUID, externalSourceName, elementGUID, validValueGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Create a reference value assignment relationship between an element and a valid value to show that
+     * the valid value is a semiformal tag/classification.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties describes the quality of the assignment
+     * @param validValueGUID unique identifier of the valid value
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupReferenceValueTag(String                             elementGUID,
+                                       ReferenceValueAssignmentProperties properties,
+                                       String                             validValueGUID) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        validValueManagement.setupReferenceValueTag(userId, externalSourceGUID, externalSourceName, elementGUID, properties, validValueGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Remove a reference value assignment relationship between an element and a valid value.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param validValueGUID unique identifier of the valid value
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearReferenceValueTag(String elementGUID,
+                                       String validValueGUID) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        validValueManagement.clearReferenceValueTag(userId, externalSourceGUID, externalSourceName, elementGUID, validValueGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Remove the metadata element representing a valid value.
+     *
+     * @param validValueGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeValidValue(String validValueGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        validValueManagement.removeValidValue(userId, externalSourceGUID, externalSourceName, validValueGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(validValueGUID);
+        }
+    }
+
+
+    /**
+     * Retrieve the list of metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ValidValueElement> findValidValues(String searchString,
+                                                   int    startFrom,
+                                                   int    pageSize) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        return validValueManagement.findValidValues(userId, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ValidValueElement> getValidValuesByName(String name,
+                                                        int    startFrom,
+                                                        int    pageSize) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        return validValueManagement.getValidValuesByName(userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of valid values.
+     *
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ValidValueElement> getAllValidValues(int    startFrom,
+                                                     int    pageSize) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        return validValueManagement.getAllValidValues(userId, startFrom, pageSize);
+    }
+
+
+    /**
+     * Page through the members of a valid value set.
+     *
+     * @param validValueSetGUID          unique identifier of the valid value set
+     * @param startFrom                  paging starting point
+     * @param pageSize                   maximum number of return values.
+     * @return list of valid value beans
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException    the repository is not available or not working properly.
+     */
+    public List<ValidValueElement> getValidValueSetMembers(String  validValueSetGUID,
+                                                           int     startFrom,
+                                                           int     pageSize) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        return validValueManagement.getValidValueSetMembers(userId, validValueSetGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Page through the list of valid value sets that a valid value definition/set belongs to.
+     *
+     * @param validValueGUID          unique identifier of valid value to query
+     * @param startFrom               paging starting point
+     * @param pageSize                maximum number of return values.
+     * @return list of valid value beans
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException    the repository is not available or not working properly.
+     */
+    public List<ValidValueElement> getSetsForValidValue(String  validValueGUID,
+                                                        int     startFrom,
+                                                        int     pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        return validValueManagement.getSetsForValidValue(userId, validValueGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return information about the valid value set linked to an element as its set of valid values.
+     *
+     * @param elementGUID unique identifier for the element using the valid value set
+     *
+     * @return list of matching actor profiles (hopefully only one)
+     *
+     * @throws InvalidParameterException guid is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public ValidValueElement getValidValuesForConsumer(String elementGUID) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        return validValueManagement.getValidValuesForConsumer(userId, elementGUID);
+    }
+
+
+    /**
+     * Return information about the consumers linked to a validValue.
+     *
+     * @param validValueGUID unique identifier for the validValue
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching actor profiles (hopefully only one)
+     *
+     * @throws InvalidParameterException guid is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<RelatedElement> getConsumersOfValidValue(String validValueGUID,
+                                                         int    startFrom,
+                                                         int    pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        return validValueManagement.getConsumersOfValidValue(userId, validValueGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return information about the valid values linked as reference value tags to an element.
+     *
+     * @param elementGUID unique identifier for the element
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of valid values
+     *
+     * @throws InvalidParameterException guid is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<ValidValueElement> getReferenceValues(String elementGUID,
+                                                      int    startFrom,
+                                                      int    pageSize) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
+    {
+        return validValueManagement.getReferenceValues(userId, elementGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return information about the person roles linked to a validValue.
+     *
+     * @param validValueGUID unique identifier for the validValue
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching actor profiles (hopefully only one)
+     *
+     * @throws InvalidParameterException guid is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<RelatedElement> getAssigneesOfReferenceValue(String validValueGUID,
+                                                             int    startFrom,
+                                                             int    pageSize) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        return validValueManagement.getAssigneesOfReferenceValue(userId, validValueGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the metadata element with the supplied unique identifier.
+     *
+     * @param validValueGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ValidValueElement getValidValueByGUID(String validValueGUID) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        return validValueManagement.getValidValueByGUID(userId, validValueGUID);
     }
 }
