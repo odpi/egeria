@@ -56,17 +56,6 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                                              PropertyServerException,
                                                              UserNotAuthorizedException
     {
-<<<<<<< HEAD
-        super(assetResponse.getAsset());
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        super(assetResponse.getAsset());
-=======
-=======
->>>>>>> 0818bdd459 (Redesigned ConnectedAssetUniverse instantiation)
         super(assetResponse.getAsset(),
                 null,
                 null,
@@ -81,20 +70,6 @@ public class ConnectedAssetUniverse extends AssetUniverse
                 null,
                 null,
                 null);
-<<<<<<< HEAD
->>>>>>> 0818bdd459 (Redesigned ConnectedAssetUniverse instantiation)
-=======
-        super(assetResponse.getAsset());
->>>>>>> eab584aecc (Updated SchemaAttributes iterator)
-=======
->>>>>>> 0818bdd459 (Redesigned ConnectedAssetUniverse instantiation)
-<<<<<<< HEAD
->>>>>>> 68a043f2b5 (Redesigned ConnectedAssetUniverse instantiation)
-=======
-=======
-        super(assetResponse.getAsset());
->>>>>>> eab584aecc (Updated SchemaAttributes iterator)
->>>>>>> d77cd90acc (Updated SchemaAttributes iterator)
 
         this.processAssetResponse(serviceName,
                                   remoteServerName,
