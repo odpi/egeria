@@ -426,14 +426,14 @@ public class ConnectedAssetUniverse extends AssetUniverse
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     private static AssetResponse getConnectedAssetSummary(String        serviceName,
-                                                   String        remoteServerName,
-                                                   String        omasServerURL,
-                                                   OCFRESTClient restClient,
-                                                   String        userId,
-                                                   String        assetGUID,
-                                                   String        connectionGUID) throws InvalidParameterException,
-                                                                                        PropertyServerException,
-                                                                                        UserNotAuthorizedException
+                                                          String        remoteServerName,
+                                                          String        omasServerURL,
+                                                          OCFRESTClient restClient,
+                                                          String        userId,
+                                                          String        assetGUID,
+                                                          String        connectionGUID) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
     {
         final String   methodName = "getConnectedAssetSummary";
         final String   urlTemplate = "/servers/{0}/open-metadata/framework-services/{1}/connected-asset/users/{2}/assets/{3}/via-connection/{4}";
@@ -486,13 +486,13 @@ public class ConnectedAssetUniverse extends AssetUniverse
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     private static AssetResponse getAssetSummary(String        serviceName,
-                                          String        remoteServerName,
-                                          String        omasServerURL,
-                                          OCFRESTClient restClient,
-                                          String        userId,
-                                          String        assetGUID) throws InvalidParameterException,
-                                                                          PropertyServerException,
-                                                                          UserNotAuthorizedException
+                                                 String        remoteServerName,
+                                                 String        omasServerURL,
+                                                 OCFRESTClient restClient,
+                                                 String        userId,
+                                                 String        assetGUID) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
     {
         final String   methodName = "getAssetSummary";
         final String   urlTemplate = "/servers/{0}/open-metadata/framework-services/{1}/connected-asset/users/{2}/assets/{3}";
