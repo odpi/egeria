@@ -25,6 +25,7 @@ This file recognizes the people who have make an important contribution to Egeri
 | Dan Wolfson | dan.wolfson@pdr-associates.com |
 | Juergen Hemelt | juergenhemelt |
 | Cristian-Mihai Iliescu |  cristianmihaiiliescu@gmail.com  |
+| Krishna Sheth | krishna.sheth@ibm.com |
 
 
 

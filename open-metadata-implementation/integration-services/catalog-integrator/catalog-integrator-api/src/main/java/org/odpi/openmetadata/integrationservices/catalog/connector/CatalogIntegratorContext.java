@@ -13,7 +13,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeade
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
-import org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorAuditCode;
 import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorErrorCode;
@@ -97,7 +96,6 @@ public class CatalogIntegratorContext extends IntegrationContext
      * @param permittedSynchronization the direction of integration permitted by the integration connector
      * @param integrationConnectorGUID unique identifier for the integration connector if it is started via an integration group (otherwise it is
      *                                 null).
-     * @param integrationGovernanceContext populated governance context for the connector's use
      * @param disabledExchangeServices option from the integration service's configuration
      * @param integrationServiceName name of this service
      * @param auditLog logging destination
@@ -124,7 +122,6 @@ public class CatalogIntegratorContext extends IntegrationContext
                                     boolean                         generateIntegrationReport,
                                     PermittedSynchronization        permittedSynchronization,
                                     String                          integrationConnectorGUID,
-                                    IntegrationGovernanceContext    integrationGovernanceContext,
                                     String                          assetManagerGUID,
                                     String                          assetManagerName,
                                     String                          integrationServiceName,
@@ -141,8 +138,7 @@ public class CatalogIntegratorContext extends IntegrationContext
               permittedSynchronization,
               assetManagerGUID,
               assetManagerName,
-              integrationConnectorGUID,
-              integrationGovernanceContext);
+              integrationConnectorGUID);
 
         final String methodName = "CatalogIntegratorContext";
 

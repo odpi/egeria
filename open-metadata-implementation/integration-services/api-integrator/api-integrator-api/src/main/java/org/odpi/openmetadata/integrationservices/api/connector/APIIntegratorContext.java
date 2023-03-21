@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.datamanager.api.DataManagerEventList
 import org.odpi.openmetadata.accessservices.datamanager.client.APIManagerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient;
+import org.odpi.openmetadata.accessservices.datamanager.client.ValidValueManagement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
@@ -14,7 +15,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeade
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
-import org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 
 import java.util.List;
@@ -27,7 +27,8 @@ public class APIIntegratorContext extends IntegrationContext
 {
     private final APIManagerClient        apiManagerClient;
     private final ConnectionManagerClient connectionManagerClient;
-    private final DataManagerEventClient  eventClient;
+    private final DataManagerEventClient eventClient;
+    private final ValidValueManagement   validValueManagement;
 
 
     /**
@@ -41,11 +42,11 @@ public class APIIntegratorContext extends IntegrationContext
      * @param openMetadataStoreClient client for calling the metadata server
      * @param apiManagerClient client to map request to
      * @param connectionManagerClient client to manage connections in the metadata server
+     * @param validValueManagement client for managing valid value sets and definitions
      * @param eventClient client to register for events
      * @param permittedSynchronization the direction of integration permitted by the integration connector
      * @param integrationConnectorGUID unique identifier for the integration connector if it is started via an integration group (otherwise it is
      *                                 null).
-     * @param integrationGovernanceContext populated governance context for the connector's use
      * @param externalSourceGUID unique identifier of the software server capability for the api manager
      * @param externalSourceName unique name of the software server capability for the api manager
      */
@@ -57,11 +58,11 @@ public class APIIntegratorContext extends IntegrationContext
                                 OpenMetadataClient           openMetadataStoreClient,
                                 APIManagerClient             apiManagerClient,
                                 ConnectionManagerClient      connectionManagerClient,
+                                ValidValueManagement         validValueManagement,
                                 DataManagerEventClient       eventClient,
                                 boolean                      generateIntegrationReport,
                                 PermittedSynchronization     permittedSynchronization,
                                 String                       integrationConnectorGUID,
-                                IntegrationGovernanceContext integrationGovernanceContext,
                                 String                       externalSourceGUID,
                                 String                       externalSourceName)
     {
@@ -75,11 +76,11 @@ public class APIIntegratorContext extends IntegrationContext
               permittedSynchronization,
               externalSourceGUID,
               externalSourceName,
-              integrationConnectorGUID,
-              integrationGovernanceContext);
+              integrationConnectorGUID);
 
         this.apiManagerClient        = apiManagerClient;
         this.connectionManagerClient = connectionManagerClient;
+        this.validValueManagement    = validValueManagement;
         this.eventClient             = eventClient;
     }
 
@@ -167,7 +168,14 @@ public class APIIntegratorContext extends IntegrationContext
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        return connectionManagerClient.createEndpoint(userId, null, null, endpointProperties);
+        String endpointGUID =  connectionManagerClient.createEndpoint(userId, null, null, endpointProperties);
+
+        if ((endpointGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementCreation(endpointGUID);
+        }
+
+        return endpointGUID;
     }
 
 
@@ -190,7 +198,19 @@ public class APIIntegratorContext extends IntegrationContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return connectionManagerClient.createEndpointFromTemplate(userId, null, null, networkAddress, templateGUID, templateProperties);
+        String endpointGUID = connectionManagerClient.createEndpointFromTemplate(userId,
+                                                                                 null,
+                                                                                 null,
+                                                                                 networkAddress,
+                                                                                 templateGUID,
+                                                                                 templateProperties);
+
+        if ((endpointGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementCreation(endpointGUID);
+        }
+
+        return endpointGUID;
     }
 
 
@@ -213,6 +233,11 @@ public class APIIntegratorContext extends IntegrationContext
                                                                              PropertyServerException
     {
         connectionManagerClient.updateEndpoint(userId, externalSourceGUID, externalSourceName, isMergeUpdate, endpointGUID, endpointProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(endpointGUID);
+        }
     }
 
 
@@ -230,6 +255,11 @@ public class APIIntegratorContext extends IntegrationContext
                                                            PropertyServerException
     {
         connectionManagerClient.removeEndpoint(userId, externalSourceGUID, externalSourceName, endpointGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(endpointGUID);
+        }
     }
 
 
@@ -322,7 +352,20 @@ public class APIIntegratorContext extends IntegrationContext
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
     {
-        return apiManagerClient.createAPI(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, endpointGUID, apiProperties);
+        String apiGUID = apiManagerClient.createAPI(userId,
+                                                    externalSourceGUID,
+                                                    externalSourceName,
+                                                    externalSourceIsHome,
+                                                    endpointGUID,
+                                                    apiProperties);
+
+        if ((apiGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.setAnchor(apiGUID, apiGUID);
+            integrationReportWriter.reportElementCreation(apiGUID);
+        }
+
+        return apiGUID;
     }
 
 
@@ -345,13 +388,21 @@ public class APIIntegratorContext extends IntegrationContext
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        return apiManagerClient.createAPIFromTemplate(userId,
-                                                      externalSourceGUID,
-                                                      externalSourceName,
-                                                      externalSourceIsHome,
-                                                      endpointGUID,
-                                                      templateGUID,
-                                                      templateProperties);
+        String apiGUID = apiManagerClient.createAPIFromTemplate(userId,
+                                                                externalSourceGUID,
+                                                                externalSourceName,
+                                                                externalSourceIsHome,
+                                                                endpointGUID,
+                                                                templateGUID,
+                                                                templateProperties);
+
+        if ((apiGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.setAnchor(apiGUID, apiGUID);
+            integrationReportWriter.reportElementCreation(apiGUID);
+        }
+
+        return apiGUID;
     }
 
 
@@ -373,6 +424,12 @@ public class APIIntegratorContext extends IntegrationContext
                                                               PropertyServerException
     {
         apiManagerClient.updateAPI(userId, externalSourceGUID, externalSourceName, apiGUID, isMergeUpdate, apiProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(apiGUID, apiGUID);
+            integrationReportWriter.reportElementUpdate(apiGUID);
+        }
     }
 
 
@@ -392,6 +449,12 @@ public class APIIntegratorContext extends IntegrationContext
                                                   PropertyServerException
     {
         apiManagerClient.publishAPI(userId, apiGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(apiGUID, apiGUID);
+            integrationReportWriter.reportElementUpdate(apiGUID);
+        }
     }
 
 
@@ -411,6 +474,12 @@ public class APIIntegratorContext extends IntegrationContext
                                                    PropertyServerException
     {
         apiManagerClient.withdrawAPI(userId, apiGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(apiGUID, apiGUID);
+            integrationReportWriter.reportElementUpdate(apiGUID);
+        }
     }
 
 
@@ -430,6 +499,12 @@ public class APIIntegratorContext extends IntegrationContext
                                                        PropertyServerException
     {
         apiManagerClient.removeAPI(userId, externalSourceGUID, externalSourceName, apiGUID, qualifiedName);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(apiGUID, apiGUID);
+            integrationReportWriter.reportElementDelete(apiGUID);
+        }
     }
 
 
@@ -546,14 +621,24 @@ public class APIIntegratorContext extends IntegrationContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
+        String apiOperationGUID;
         if (externalSourceIsHome)
         {
-            return apiManagerClient.createAPIOperation(userId, externalSourceGUID, externalSourceName, apiGUID, apiOperationProperties);
+            apiOperationGUID =  apiManagerClient.createAPIOperation(userId, externalSourceGUID, externalSourceName, apiGUID, apiOperationProperties);
         }
         else
         {
-            return apiManagerClient.createAPIOperation(userId, null, null, apiGUID, apiOperationProperties);
+            apiOperationGUID = apiManagerClient.createAPIOperation(userId, null, null, apiGUID, apiOperationProperties);
         }
+
+        if ((apiOperationGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.setAnchor(apiGUID, apiGUID);
+            integrationReportWriter.setAnchor(apiOperationGUID, apiGUID);
+            integrationReportWriter.reportElementCreation(apiOperationGUID);
+        }
+
+        return apiOperationGUID;
     }
 
 
@@ -576,14 +661,34 @@ public class APIIntegratorContext extends IntegrationContext
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
+        String apiOperationGUID;
         if (externalSourceIsHome)
         {
-            return apiManagerClient.createAPIOperationFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, apiGUID, templateProperties);
+            apiOperationGUID = apiManagerClient.createAPIOperationFromTemplate(userId,
+                                                                               externalSourceGUID,
+                                                                               externalSourceName,
+                                                                               templateGUID,
+                                                                               apiGUID,
+                                                                               templateProperties);
         }
         else
         {
-            return apiManagerClient.createAPIOperationFromTemplate(userId, null, null, templateGUID, apiGUID, templateProperties);
+            apiOperationGUID = apiManagerClient.createAPIOperationFromTemplate(userId,
+                                                                               null,
+                                                                               null,
+                                                                               templateGUID,
+                                                                               apiGUID,
+                                                                               templateProperties);
         }
+
+        if ((apiOperationGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.setAnchor(apiGUID, apiGUID);
+            integrationReportWriter.setAnchor(apiOperationGUID, apiGUID);
+            integrationReportWriter.reportElementCreation(apiOperationGUID);
+        }
+
+        return apiOperationGUID;
     }
 
 
@@ -605,6 +710,11 @@ public class APIIntegratorContext extends IntegrationContext
                                                                                          PropertyServerException
     {
         apiManagerClient.updateAPIOperation(userId, externalSourceGUID, externalSourceName, apiOperationGUID, isMergeUpdate, apiOperationProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(apiOperationGUID);
+        }
     }
 
 
@@ -624,6 +734,11 @@ public class APIIntegratorContext extends IntegrationContext
                                                                 PropertyServerException
     {
         apiManagerClient.removeAPIOperation(userId, externalSourceGUID, externalSourceName, apiOperationGUID, qualifiedName);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(apiOperationGUID);
+        }
     }
 
 
@@ -743,14 +858,32 @@ public class APIIntegratorContext extends IntegrationContext
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
+        String apiParameterListGUID;
         if (externalSourceIsHome)
         {
-            return apiManagerClient.createAPIParameterList(userId, externalSourceGUID, externalSourceName, apiOperationGUID, parameterListType, properties);
+            apiParameterListGUID = apiManagerClient.createAPIParameterList(userId,
+                                                                           externalSourceGUID,
+                                                                           externalSourceName,
+                                                                           apiOperationGUID,
+                                                                           parameterListType,
+                                                                           properties);
         }
         else
         {
-            return apiManagerClient.createAPIParameterList(userId, null, null, apiOperationGUID, parameterListType, properties);
+            apiParameterListGUID = apiManagerClient.createAPIParameterList(userId,
+                                                                           null,
+                                                                           null,
+                                                                           apiOperationGUID,
+                                                                           parameterListType,
+                                                                           properties);
         }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setParent(apiParameterListGUID, apiOperationGUID);
+        }
+
+        return apiParameterListGUID;
     }
 
 
@@ -775,14 +908,36 @@ public class APIIntegratorContext extends IntegrationContext
                                                                                                      UserNotAuthorizedException,
                                                                                                      PropertyServerException
     {
+        String apiParameterListGUID;
+
         if (externalSourceIsHome)
         {
-            return apiManagerClient.createAPIParameterListFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, apiOperationGUID, parameterListType, templateProperties);
+            apiParameterListGUID = apiManagerClient.createAPIParameterListFromTemplate(userId,
+                                                                                       externalSourceGUID,
+                                                                                       externalSourceName,
+                                                                                       templateGUID,
+                                                                                       apiOperationGUID,
+                                                                                       parameterListType,
+                                                                                       templateProperties);
         }
         else
         {
-            return apiManagerClient.createAPIParameterListFromTemplate(userId, null, null, templateGUID, apiOperationGUID, parameterListType, templateProperties);
+            apiParameterListGUID = apiManagerClient.createAPIParameterListFromTemplate(userId,
+                                                                                       null,
+                                                                                       null,
+                                                                                       templateGUID,
+                                                                                       apiOperationGUID,
+                                                                                       parameterListType,
+                                                                                       templateProperties);
         }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setParent(apiParameterListGUID, apiOperationGUID);
+            integrationReportWriter.reportElementCreation(apiParameterListGUID);
+        }
+
+        return apiParameterListGUID;
     }
 
 
@@ -805,6 +960,11 @@ public class APIIntegratorContext extends IntegrationContext
                                                                                      PropertyServerException
     {
         apiManagerClient.updateAPIParameterList(userId, externalSourceGUID, externalSourceName, apiParameterListGUID, isMergeUpdate, properties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(apiParameterListGUID);
+        }
     }
 
 
@@ -824,6 +984,11 @@ public class APIIntegratorContext extends IntegrationContext
                                                                     PropertyServerException
     {
         apiManagerClient.removeAPIParameterList(userId, externalSourceGUID, externalSourceName, apiParameterListGUID, qualifiedName);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(apiParameterListGUID);
+        }
     }
 
 
@@ -936,17 +1101,35 @@ public class APIIntegratorContext extends IntegrationContext
      */
     public String createAPIParameter(String                 schemaElementGUID,
                                      APIParameterProperties apiParameterProperties) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
     {
+        String apiParameterGUID;
+
         if (externalSourceIsHome)
         {
-            return apiManagerClient.createAPIParameter(userId, externalSourceGUID, externalSourceName, schemaElementGUID, apiParameterProperties);
+            apiParameterGUID =  apiManagerClient.createAPIParameter(userId,
+                                                                    externalSourceGUID,
+                                                                    externalSourceName,
+                                                                    schemaElementGUID,
+                                                                    apiParameterProperties);
         }
         else
         {
-            return apiManagerClient.createAPIParameter(userId, null, null, schemaElementGUID, apiParameterProperties);
+            apiParameterGUID = apiManagerClient.createAPIParameter(userId,
+                                                                   null,
+                                                                   null,
+                                                                   schemaElementGUID,
+                                                                   apiParameterProperties);
         }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setParent(apiParameterGUID, schemaElementGUID);
+            integrationReportWriter.reportElementCreation(apiParameterGUID);
+        }
+
+        return apiParameterGUID;
     }
 
 
@@ -969,14 +1152,34 @@ public class APIIntegratorContext extends IntegrationContext
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
+        String apiParameterGUID;
+
         if (externalSourceIsHome)
         {
-            return apiManagerClient.createAPIParameterFromTemplate(userId, externalSourceGUID, externalSourceName, schemaElementGUID, templateGUID, templateProperties);
+            apiParameterGUID = apiManagerClient.createAPIParameterFromTemplate(userId,
+                                                                               externalSourceGUID,
+                                                                               externalSourceName,
+                                                                               schemaElementGUID,
+                                                                               templateGUID,
+                                                                               templateProperties);
         }
         else
         {
-            return apiManagerClient.createAPIParameterFromTemplate(userId, null, null, schemaElementGUID, templateGUID, templateProperties);
+            apiParameterGUID = apiManagerClient.createAPIParameterFromTemplate(userId,
+                                                                               null,
+                                                                               null,
+                                                                               schemaElementGUID,
+                                                                               templateGUID,
+                                                                               templateProperties);
         }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setParent(apiParameterGUID, schemaElementGUID);
+            integrationReportWriter.reportElementCreation(apiParameterGUID);
+        }
+
+        return apiParameterGUID;
     }
 
 
@@ -1004,6 +1207,11 @@ public class APIIntegratorContext extends IntegrationContext
         else
         {
             apiManagerClient.setupSchemaType(userId, null, null, relationshipTypeName, apiParameterGUID, schemaTypeGUID);
+        }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setParent(schemaTypeGUID, apiParameterGUID);
         }
     }
 
@@ -1043,6 +1251,11 @@ public class APIIntegratorContext extends IntegrationContext
                                                                                          PropertyServerException
     {
         apiManagerClient.updateAPIParameter(userId, externalSourceGUID, externalSourceName, apiParameterGUID, isMergeUpdate, apiParameterProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(apiParameterGUID);
+        }
     }
 
 
@@ -1060,6 +1273,11 @@ public class APIIntegratorContext extends IntegrationContext
                                                                    PropertyServerException
     {
         apiManagerClient.removeAPIParameter(userId, externalSourceGUID, externalSourceName, apiParameterGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(apiParameterGUID);
+        }
     }
 
 
@@ -1177,14 +1395,22 @@ public class APIIntegratorContext extends IntegrationContext
                                                                                                        UserNotAuthorizedException,
                                                                                                        PropertyServerException
     {
+        String schemaTypeGUID;
         if (externalSourceIsHome)
         {
-            return apiManagerClient.createPrimitiveSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties);
+            schemaTypeGUID = apiManagerClient.createPrimitiveSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties);
         }
         else
         {
-            return apiManagerClient.createPrimitiveSchemaType(userId, null, null, schemaTypeProperties);
+            schemaTypeGUID = apiManagerClient.createPrimitiveSchemaType(userId, null, null, schemaTypeProperties);
         }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(schemaTypeGUID);
+        }
+
+        return schemaTypeGUID;
     }
 
 
@@ -1203,14 +1429,23 @@ public class APIIntegratorContext extends IntegrationContext
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
     {
+        String schemaTypeGUID;
+
         if (externalSourceIsHome)
         {
-            return apiManagerClient.createLiteralSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties);
+            schemaTypeGUID = apiManagerClient.createLiteralSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties);
         }
         else
         {
-            return apiManagerClient.createLiteralSchemaType(userId, null, null, schemaTypeProperties);
+            schemaTypeGUID = apiManagerClient.createLiteralSchemaType(userId, null, null, schemaTypeProperties);
         }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(schemaTypeGUID);
+        }
+
+        return schemaTypeGUID;
     }
 
 
@@ -1231,14 +1466,31 @@ public class APIIntegratorContext extends IntegrationContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
+        String schemaTypeGUID;
+
         if (externalSourceIsHome)
         {
-            return apiManagerClient.createEnumSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties, validValuesSetGUID);
+            schemaTypeGUID = apiManagerClient.createEnumSchemaType(userId,
+                                                                   externalSourceGUID,
+                                                                   externalSourceName,
+                                                                   schemaTypeProperties,
+                                                                   validValuesSetGUID);
         }
         else
         {
-            return apiManagerClient.createEnumSchemaType(userId, null, null, schemaTypeProperties, validValuesSetGUID);
+            schemaTypeGUID = apiManagerClient.createEnumSchemaType(userId,
+                                                                   null,
+                                                                   null,
+                                                                   schemaTypeProperties,
+                                                                   validValuesSetGUID);
         }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(schemaTypeGUID);
+        }
+
+        return schemaTypeGUID;
     }
 
 
@@ -1305,14 +1557,23 @@ public class APIIntegratorContext extends IntegrationContext
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
+        String schemaTypeGUID;
+
         if (externalSourceIsHome)
         {
-            return apiManagerClient.createStructSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties);
+            schemaTypeGUID = apiManagerClient.createStructSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties);
         }
         else
         {
-            return apiManagerClient.createStructSchemaType(userId, null, null, schemaTypeProperties);
+            schemaTypeGUID =  apiManagerClient.createStructSchemaType(userId, null, null, schemaTypeProperties);
         }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(schemaTypeGUID);
+        }
+
+        return schemaTypeGUID;
     }
 
 
@@ -1333,14 +1594,24 @@ public class APIIntegratorContext extends IntegrationContext
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
+        String schemaTypeGUID;
+
         if (externalSourceIsHome)
         {
-            return apiManagerClient.createSchemaTypeChoice(userId, externalSourceGUID, externalSourceName, schemaTypeProperties, schemaTypeOptionGUIDs);
+            schemaTypeGUID = apiManagerClient.createSchemaTypeChoice(userId, externalSourceGUID, externalSourceName, schemaTypeProperties,
+                                                                    schemaTypeOptionGUIDs);
         }
         else
         {
-            return apiManagerClient.createSchemaTypeChoice(userId, null, null, schemaTypeProperties, schemaTypeOptionGUIDs);
+            schemaTypeGUID = apiManagerClient.createSchemaTypeChoice(userId, null, null, schemaTypeProperties, schemaTypeOptionGUIDs);
         }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(schemaTypeGUID);
+        }
+
+        return schemaTypeGUID;
     }
 
 
@@ -1363,14 +1634,33 @@ public class APIIntegratorContext extends IntegrationContext
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
+        String schemaTypeGUID;
+
         if (externalSourceIsHome)
         {
-            return apiManagerClient.createMapSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties, mapFromSchemaTypeGUID, mapToSchemaTypeGUID);
+            schemaTypeGUID = apiManagerClient.createMapSchemaType(userId,
+                                                                  externalSourceGUID,
+                                                                  externalSourceName,
+                                                                  schemaTypeProperties,
+                                                                  mapFromSchemaTypeGUID,
+                                                                  mapToSchemaTypeGUID);
         }
         else
         {
-            return apiManagerClient.createMapSchemaType(userId, null, null, schemaTypeProperties, mapFromSchemaTypeGUID, mapToSchemaTypeGUID);
+            schemaTypeGUID = apiManagerClient.createMapSchemaType(userId,
+                                                                  null,
+                                                                  null,
+                                                                  schemaTypeProperties,
+                                                                  mapFromSchemaTypeGUID,
+                                                                  mapToSchemaTypeGUID);
         }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(schemaTypeGUID);
+        }
+
+        return schemaTypeGUID;
     }
 
 
@@ -1391,14 +1681,31 @@ public class APIIntegratorContext extends IntegrationContext
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
+        String schemaTypeGUID;
+
         if (externalSourceIsHome)
         {
-            return apiManagerClient.createSchemaTypeFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateProperties);
+            schemaTypeGUID = apiManagerClient.createSchemaTypeFromTemplate(userId,
+                                                                           externalSourceGUID,
+                                                                           externalSourceName,
+                                                                           templateGUID,
+                                                                           templateProperties);
         }
         else
         {
-            return apiManagerClient.createSchemaTypeFromTemplate(userId, null, null, templateGUID, templateProperties);
+            schemaTypeGUID = apiManagerClient.createSchemaTypeFromTemplate(userId,
+                                                                           null,
+                                                                           null,
+                                                                           templateGUID,
+                                                                           templateProperties);
         }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(schemaTypeGUID);
+        }
+
+        return schemaTypeGUID;
     }
 
 
@@ -1421,6 +1728,11 @@ public class APIIntegratorContext extends IntegrationContext
                                                                                    PropertyServerException
     {
         apiManagerClient.updateSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeGUID, isMergeUpdate, schemaTypeProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(schemaTypeGUID);
+        }
     }
 
 
@@ -1438,6 +1750,11 @@ public class APIIntegratorContext extends IntegrationContext
                                                                PropertyServerException
     {
         apiManagerClient.removeSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(schemaTypeGUID);
+        }
     }
 
 
@@ -1461,7 +1778,19 @@ public class APIIntegratorContext extends IntegrationContext
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        apiManagerClient.setupSchemaElementRelationship(userId, externalSourceGUID, externalSourceName, endOneGUID, endTwoGUID, relationshipTypeName, properties);
+        apiManagerClient.setupSchemaElementRelationship(userId,
+                                                        externalSourceGUID,
+                                                        externalSourceName,
+                                                        endOneGUID,
+                                                        endTwoGUID,
+                                                        relationshipTypeName,
+                                                        properties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setParent(endTwoGUID, endOneGUID);
+            integrationReportWriter.reportElementUpdate(endOneGUID);
+        }
     }
 
 
@@ -1594,5 +1923,455 @@ public class APIIntegratorContext extends IntegrationContext
                                                                            PropertyServerException
     {
         return apiManagerClient.getSchemaTypeParent(userId, schemaTypeGUID);
+    }
+
+    /* =====================================================================================================================
+     * A ValidValue is the top level object for working with valid values
+     */
+
+    /**
+     * Create a new metadata element to represent a valid value.
+     *
+     * @param validValueProperties properties about the valid value to store
+     *
+     * @return unique identifier of the new valid value
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createValidValue(ValidValueProperties validValueProperties) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        String validValueGUID = validValueManagement.createValidValue(userId, externalSourceGUID, externalSourceName, validValueProperties);
+
+        if ((validValueGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementCreation(validValueGUID);
+        }
+
+        return validValueGUID;
+    }
+
+
+    /**
+     * Update the metadata element representing a valid value.  It is possible to use the subtype property classes or
+     * set up specialized properties in extended properties.
+     *
+     * @param validValueGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param validValueProperties new properties for the metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateValidValue(String               validValueGUID,
+                                 boolean              isMergeUpdate,
+                                 ValidValueProperties validValueProperties) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        validValueManagement.updateValidValue(userId, externalSourceGUID, externalSourceName, validValueGUID, isMergeUpdate, validValueProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(validValueGUID);
+        }
+    }
+
+
+    /**
+     * Create a membership relationship between a validValue and a validValueSet that it belongs to.
+     *
+     * @param validValueSetGUID unique identifier of the valid value set
+     * @param properties describes the properties of the membership
+     * @param validValueMemberGUID unique identifier of the member
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupValidValueMember(String                         validValueSetGUID,
+                                      ValidValueMembershipProperties properties,
+                                      String                         validValueMemberGUID) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        validValueManagement.setupValidValueMember(userId, externalSourceGUID, externalSourceName, validValueSetGUID, properties, validValueMemberGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(validValueMemberGUID, validValueSetGUID);
+            integrationReportWriter.reportElementUpdate(validValueSetGUID);
+        }
+    }
+
+
+    /**
+     * Remove a membership relationship between a validValue and a validValueSet that it belongs to.
+     *
+     * @param validValueSetGUID unique identifier of the valid value set
+     * @param validValueMemberGUID unique identifier of the member
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearValidValueMember(String validValueSetGUID,
+                                      String validValueMemberGUID) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        validValueManagement.clearValidValueMember(userId, externalSourceGUID, externalSourceName, validValueSetGUID, validValueMemberGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(validValueMemberGUID, validValueSetGUID);
+            integrationReportWriter.reportElementUpdate(validValueSetGUID);
+        }
+    }
+
+
+    /**
+     * Create a valid value assignment relationship between an element and a valid value (typically, a valid value set) to show that
+     * the valid value defines the values that can be stored in the data item that the element represents.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties describes the permissions that the role has in the validValue
+     * @param validValueGUID unique identifier of the valid value
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupValidValues(String                         elementGUID,
+                                 ValidValueAssignmentProperties properties,
+                                 String                         validValueGUID) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        validValueManagement.setupValidValues(userId, externalSourceGUID, externalSourceName, elementGUID, properties, validValueGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Remove a valid value assignment relationship between an element and a valid value.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param validValueGUID unique identifier of the valid value
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearValidValues(String elementGUID,
+                                 String validValueGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        validValueManagement.clearValidValues(userId, externalSourceGUID, externalSourceName, elementGUID, validValueGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Create a reference value assignment relationship between an element and a valid value to show that
+     * the valid value is a semiformal tag/classification.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties describes the quality of the assignment
+     * @param validValueGUID unique identifier of the valid value
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupReferenceValueTag(String                             elementGUID,
+                                       ReferenceValueAssignmentProperties properties,
+                                       String                             validValueGUID) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        validValueManagement.setupReferenceValueTag(userId, externalSourceGUID, externalSourceName, elementGUID, properties, validValueGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Remove a reference value assignment relationship between an element and a valid value.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param validValueGUID unique identifier of the valid value
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearReferenceValueTag(String elementGUID,
+                                       String validValueGUID) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        validValueManagement.clearReferenceValueTag(userId, externalSourceGUID, externalSourceName, elementGUID, validValueGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Remove the metadata element representing a valid value.
+     *
+     * @param validValueGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeValidValue(String validValueGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        validValueManagement.removeValidValue(userId, externalSourceGUID, externalSourceName, validValueGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(validValueGUID);
+        }
+    }
+
+
+    /**
+     * Retrieve the list of metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ValidValueElement> findValidValues(String searchString,
+                                                   int    startFrom,
+                                                   int    pageSize) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        return validValueManagement.findValidValues(userId, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ValidValueElement> getValidValuesByName(String name,
+                                                        int    startFrom,
+                                                        int    pageSize) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        return validValueManagement.getValidValuesByName(userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of valid values.
+     *
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ValidValueElement> getAllValidValues(int    startFrom,
+                                                     int    pageSize) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        return validValueManagement.getAllValidValues(userId, startFrom, pageSize);
+    }
+
+
+    /**
+     * Page through the members of a valid value set.
+     *
+     * @param validValueSetGUID          unique identifier of the valid value set
+     * @param startFrom                  paging starting point
+     * @param pageSize                   maximum number of return values.
+     * @return list of valid value beans
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException    the repository is not available or not working properly.
+     */
+    public List<ValidValueElement> getValidValueSetMembers(String  validValueSetGUID,
+                                                           int     startFrom,
+                                                           int     pageSize) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        return validValueManagement.getValidValueSetMembers(userId, validValueSetGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Page through the list of valid value sets that a valid value definition/set belongs to.
+     *
+     * @param validValueGUID          unique identifier of valid value to query
+     * @param startFrom               paging starting point
+     * @param pageSize                maximum number of return values.
+     * @return list of valid value beans
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException    the repository is not available or not working properly.
+     */
+    public List<ValidValueElement> getSetsForValidValue(String  validValueGUID,
+                                                        int     startFrom,
+                                                        int     pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        return validValueManagement.getSetsForValidValue(userId, validValueGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return information about the valid value set linked to an element as its set of valid values.
+     *
+     * @param elementGUID unique identifier for the element using the valid value set
+     *
+     * @return list of matching actor profiles (hopefully only one)
+     *
+     * @throws InvalidParameterException guid is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public ValidValueElement getValidValuesForConsumer(String elementGUID) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        return validValueManagement.getValidValuesForConsumer(userId, elementGUID);
+    }
+
+
+    /**
+     * Return information about the consumers linked to a validValue.
+     *
+     * @param validValueGUID unique identifier for the validValue
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching actor profiles (hopefully only one)
+     *
+     * @throws InvalidParameterException guid is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<RelatedElement> getConsumersOfValidValue(String validValueGUID,
+                                                         int    startFrom,
+                                                         int    pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        return validValueManagement.getConsumersOfValidValue(userId, validValueGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return information about the valid values linked as reference value tags to an element.
+     *
+     * @param elementGUID unique identifier for the element
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of valid values
+     *
+     * @throws InvalidParameterException guid is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<ValidValueElement> getReferenceValues(String elementGUID,
+                                                      int    startFrom,
+                                                      int    pageSize) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
+    {
+        return validValueManagement.getReferenceValues(userId, elementGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return information about the person roles linked to a validValue.
+     *
+     * @param validValueGUID unique identifier for the validValue
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching actor profiles (hopefully only one)
+     *
+     * @throws InvalidParameterException guid is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<RelatedElement> getAssigneesOfReferenceValue(String validValueGUID,
+                                                             int    startFrom,
+                                                             int    pageSize) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        return validValueManagement.getAssigneesOfReferenceValue(userId, validValueGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the metadata element with the supplied unique identifier.
+     *
+     * @param validValueGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ValidValueElement getValidValueByGUID(String validValueGUID) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        return validValueManagement.getValidValueByGUID(userId, validValueGUID);
     }
 }

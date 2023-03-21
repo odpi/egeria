@@ -32,6 +32,7 @@ public class APIIntegratorContextManager extends IntegrationContextManager
 {
     private APIManagerClient        apiManagerClient        = null;
     private ConnectionManagerClient connectionManagerClient = null;
+    private ValidValueManagement    validValueManagement    = null;
     private MetadataSourceClient    metadataSourceClient    = null;
     private DataManagerRESTClient   restClient              = null;
     /**
@@ -101,6 +102,11 @@ public class APIIntegratorContextManager extends IntegrationContextManager
                                                               restClient,
                                                               maxPageSize,
                                                               auditLog);
+
+        validValueManagement = new ValidValueManagement(partnerOMASServerName,
+                                                        partnerOMASPlatformRootURL,
+                                                        restClient,
+                                                        maxPageSize);
 
          apiManagerClient= new APIManagerClient(partnerOMASServerName,
                                                 partnerOMASPlatformRootURL,
@@ -212,11 +218,6 @@ public class APIIntegratorContextManager extends IntegrationContextManager
                 externalSourceName = null;
             }
 
-            IntegrationGovernanceContext integrationGovernanceContext = constructIntegrationGovernanceContext(openMetadataStoreClient,
-                                                                                                              connectorUserId,
-                                                                                                              externalSourceGUID,
-                                                                                                              externalSourceName);
-
             DataManagerEventClient dataManagerEventClient = new DataManagerEventClient(partnerOMASServerName,
                                                                                        partnerOMASPlatformRootURL,
                                                                                        restClient,
@@ -232,11 +233,11 @@ public class APIIntegratorContextManager extends IntegrationContextManager
                                                                               openMetadataStoreClient,
                                                                               apiManagerClient,
                                                                               connectionManagerClient,
+                                                                              validValueManagement,
                                                                               dataManagerEventClient,
                                                                               generateIntegrationReport,
                                                                               permittedSynchronization,
                                                                               integrationConnectorGUID,
-                                                                              integrationGovernanceContext,
                                                                               externalSourceGUID,
                                                                               externalSourceName);
             serviceSpecificConnector.setContext(integratorContext);
