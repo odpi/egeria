@@ -278,11 +278,29 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         /*
          * Set default valid instance statuses
          */
-        ArrayList<InstanceStatus> validInstanceStatusList = new ArrayList<>();
-        validInstanceStatusList.add(InstanceStatus.ACTIVE);
-        validInstanceStatusList.add(InstanceStatus.DELETED);
-        entityDef.setValidInstanceStatusList(validInstanceStatusList);
-        entityDef.setInitialStatus(InstanceStatus.ACTIVE);
+        TypeDef superTypeDef = null;
+        if (superType != null)
+        {
+            superTypeDef = this.archiveBuilder.getTypeDefByName(superType.getName());
+        }
+
+        if (superTypeDef != null)
+        {
+            entityDef.setValidInstanceStatusList(superTypeDef.getValidInstanceStatusList());
+            entityDef.setInitialStatus(superTypeDef.getInitialStatus());
+        }
+        else
+        {
+            /*
+             * These are the standard valid instance statuses used by entities
+             */
+            ArrayList<InstanceStatus> validInstanceStatusList = new ArrayList<>();
+            validInstanceStatusList.add(InstanceStatus.ACTIVE);
+            validInstanceStatusList.add(InstanceStatus.DELETED);
+
+            entityDef.setValidInstanceStatusList(validInstanceStatusList);
+            entityDef.setInitialStatus(InstanceStatus.ACTIVE);
+        }
 
         entityDef.setStatus(TypeDefStatus.ACTIVE_TYPEDEF);
 
@@ -885,11 +903,29 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         /*
          * Set default valid instance statuses
          */
-        ArrayList<InstanceStatus>    validInstanceStatusList  = new ArrayList<>();
-        validInstanceStatusList.add(InstanceStatus.ACTIVE);
-        validInstanceStatusList.add(InstanceStatus.DELETED);
-        relationshipDef.setValidInstanceStatusList(validInstanceStatusList);
-        relationshipDef.setInitialStatus(InstanceStatus.ACTIVE);
+        TypeDef superTypeDef = null;
+        if (superType != null)
+        {
+            superTypeDef = this.archiveBuilder.getTypeDefByName(superType.getName());
+        }
+
+        if (superTypeDef != null)
+        {
+            relationshipDef.setValidInstanceStatusList(superTypeDef.getValidInstanceStatusList());
+            relationshipDef.setInitialStatus(superTypeDef.getInitialStatus());
+        }
+        else
+        {
+            /*
+             * These are the standard valid instance statuses used by entities
+             */
+            ArrayList<InstanceStatus> validInstanceStatusList = new ArrayList<>();
+            validInstanceStatusList.add(InstanceStatus.ACTIVE);
+            validInstanceStatusList.add(InstanceStatus.DELETED);
+
+            relationshipDef.setValidInstanceStatusList(validInstanceStatusList);
+            relationshipDef.setInitialStatus(InstanceStatus.ACTIVE);
+        }
 
         /*
          * Use the supplied propagation rule.
@@ -1008,11 +1044,30 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         /*
          * Set default valid instance statuses
          */
-        ArrayList<InstanceStatus>    validInstanceStatusList  = new ArrayList<>();
-        validInstanceStatusList.add(InstanceStatus.ACTIVE);
-        validInstanceStatusList.add(InstanceStatus.DELETED);
-        classificationDef.setValidInstanceStatusList(validInstanceStatusList);
-        classificationDef.setInitialStatus(InstanceStatus.ACTIVE);
+        TypeDef superTypeDef = null;
+        if (superType != null)
+        {
+            superTypeDef = this.archiveBuilder.getTypeDefByName(superType.getName());
+        }
+
+        if (superTypeDef != null)
+        {
+            classificationDef.setValidInstanceStatusList(superTypeDef.getValidInstanceStatusList());
+            classificationDef.setInitialStatus(superTypeDef.getInitialStatus());
+        }
+        else
+        {
+            /*
+             * These are the standard valid instance statuses used by entities
+             */
+            ArrayList<InstanceStatus> validInstanceStatusList = new ArrayList<>();
+            validInstanceStatusList.add(InstanceStatus.ACTIVE);
+            validInstanceStatusList.add(InstanceStatus.DELETED);
+
+            classificationDef.setValidInstanceStatusList(validInstanceStatusList);
+            classificationDef.setInitialStatus(InstanceStatus.ACTIVE);
+        }
+
 
         /*
          * Set up the supplied validEntityTypes and propagatable flag.
