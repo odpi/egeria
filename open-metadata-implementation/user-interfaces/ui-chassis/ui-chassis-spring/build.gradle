@@ -3,22 +3,9 @@
  * Copyright Contributors to the ODPi Egeria project.
  */
 
-buildscript {
-    repositories {
-        mavenCentral()
-        gradlePluginPortal()
-    }
-
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin")
-        classpath("org.springdoc.openapi-gradle-plugin:org.springdoc.openapi-gradle-plugin.gradle.plugin")
-    }
-}
-
 plugins {
     id 'io.freefair.lombok'
     id 'org.springframework.boot'
-    id 'org.springdoc.openapi-gradle-plugin' version("1.6.0")
 }
 
 dependencies {
@@ -88,8 +75,8 @@ dependencies {
     implementation project(':open-metadata-implementation:view-services:dino-view:dino-view-server')
     runtimeOnly project(':open-metadata-implementation:view-services:dino-view:dino-view-spring')
     implementation project(':open-metadata-implementation:admin-services:admin-services-registration')
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui'
-    runtimeOnly 'io.swagger.core.v3:swagger-annotations-jakarta'
+    runtimeOnly 'org.springdoc:springdoc-openapi-starter-webmvc-ui'
+    compileOnly 'io.swagger.core.v3:swagger-annotations-jakarta'
 }
 
 description = 'UI Server Platform Chassis for Spring'

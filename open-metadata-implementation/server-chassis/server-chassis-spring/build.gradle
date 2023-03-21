@@ -3,16 +3,6 @@
  * Copyright Contributors to the ODPi Egeria project.
  */
 
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin")
-    }
-}
-
 plugins {
     id 'org.springframework.boot'
 }
@@ -27,7 +17,6 @@ dependencies {
     implementation 'org.apache.tomcat.embed:tomcat-embed-core'
     //implementation 'org.springframework.boot:spring-boot-starter-tomcat'
     implementation 'jakarta.servlet:jakarta.servlet-api'
-    // Explicitly needed for gradle - added by maven plugin
 
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
     implementation 'org.springframework:spring-beans'
@@ -39,11 +28,11 @@ dependencies {
     runtimeOnly 'ch.qos.logback:logback-classic'
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     implementation 'org.slf4j:slf4j-api'
-    runtimeOnly 'org.springdoc:springdoc-openapi-ui'
-    implementation 'io.swagger.core.v3:swagger-annotations'
     runtimeOnly 'org.hibernate:hibernate-validator'
     runtimeOnly project(':open-metadata-implementation:platform-services:platform-services-spring')
     runtimeOnly project(':open-metadata-implementation:admin-services:admin-services-spring')
+    runtimeOnly 'org.springdoc:springdoc-openapi-starter-webmvc-ui'
+    compileOnly 'io.swagger.core.v3:swagger-annotations-jakarta'
 
     // The following are only included at runtime for the full platform (ie adminChassisOnly is not set as a property)
     if (!project.hasProperty("adminChassisOnly")) {
