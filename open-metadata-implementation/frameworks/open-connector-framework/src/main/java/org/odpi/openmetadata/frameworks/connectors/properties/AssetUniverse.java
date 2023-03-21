@@ -93,7 +93,8 @@ public class AssetUniverse extends AssetDetail
         this.relatedAssets = relatedAssets;
     }
 
-    public AssetUniverse(Asset assetBean) {
+    public AssetUniverse(Asset assetBean)
+    {
         this(assetBean,
                 null,
                 null,

@@ -57,9 +57,9 @@ public abstract class SchemaAttributes extends PropertyIteratorBase implements I
                         /*
                          * Throw runtime exception to show the caller they are not using the list correctly.
                          */
-                        throw new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition(this.getClass().getSimpleName()),
-                                this.getClass().getName(),
-                                "next");
+                        throw new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition(this.getClass().getName()),
+                                                                                                         this.getClass().getName(),
+                                                                                                         "next");
                     }
             }
 
@@ -89,10 +89,10 @@ public abstract class SchemaAttributes extends PropertyIteratorBase implements I
                          * Problem retrieving next cache.  The exception includes a detailed error message,
                          */
                         throw new OCFRuntimeException(OCFErrorCode.PROPERTIES_NOT_AVAILABLE.getMessageDefinition(error.getReportedErrorMessage(),
-                                this.toString()),
-                                this.getClass().getName(),
-                                "next",
-                                error);
+                                                                                                                 this.toString()),
+                                                                                                                 this.getClass().getName(),
+                                                                                                                 "next",
+                                                                                                                 error);
                     }
                 }
 

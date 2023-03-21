@@ -159,7 +159,6 @@ public class EgeriaConnectedAssetProperties extends ConnectedAssetProperties
 
         RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
-        OCFRESTClient restClient;
         try
         {
             if ((localServerUserId != null) && (localServerPassword != null))
