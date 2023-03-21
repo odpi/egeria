@@ -29,11 +29,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum GlossaryTermStatus implements Serializable
 {
-    UNKNOWN   (0,0,  "<Unknown>","Unknown term status."),
-    DRAFT     (1,1,  "Draft",    "The content is incomplete."),
-    PROPOSED  (2,3,  "Proposed", "The content is in review."),
-    APPROVED  (3,4,  "Approved", "The content is approved."),
-    ACTIVE    (4,15, "Active",   "The term is approved and in use.");
+    DRAFT     (1,1,  "Draft",     "The term is incomplete."),
+    PREPARED  (2,2,  "Prepared",  "The term is ready for review."),
+    PROPOSED  (3,3,  "Proposed",  "The term is in review."),
+    APPROVED  (4,4,  "Approved",  "The term is approved and ready to be activated."),
+    REJECTED  (5,5,  "Rejected",  "The term is rejected and should not be used."),
+    ACTIVE    (6,15, "Active",    "The term is approved and in use."),
+    DEPRECATED(7,30, "Deprecated","The term is out of date and should not be used."),
+    OTHER     (8,50, "Other",     "The term is in a locally defined state."),
+    ;
 
 
     private final int    ordinal;
