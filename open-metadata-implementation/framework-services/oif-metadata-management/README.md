@@ -12,7 +12,7 @@ The *Open Integration Service* supports the governance of [integration connector
 
 ## Design Information
 
-The module structure for the Metadata Store Service is as follows:
+The module structure for the Open Integration Service is as follows:
 
 * [oif-metadata-client](oif-metadata-client) supports the client library.
 * [oif-metadata-api](oif-metadata-api) supports the common Java classes that are used both by the client and the server.

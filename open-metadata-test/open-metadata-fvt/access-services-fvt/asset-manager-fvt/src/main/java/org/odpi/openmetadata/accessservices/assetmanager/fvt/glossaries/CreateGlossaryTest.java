@@ -77,6 +77,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
     private final static String controlledGlossaryTermName        = "TestGlossaryCreateControlledTerm";
     private final static String controlledGlossaryTermDisplayName = "ControlledGlossaryTerm displayName";
     private final static String controlledGlossaryTermDescription = "ControlledGlossaryTerm description";
+    private final static String controlledGlossaryTermStatus      = "Awesome";
 
 
 
@@ -195,7 +196,12 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                    glossaryTermName,
                                    glossaryTermDisplayName,
                                    glossaryTermDescription,
+                                   null,
                                    ElementStatus.ACTIVE);
+
+        Map<String, Object> extendedProperties = new HashMap<>();
+
+        extendedProperties.put("userDefinedStatus", controlledGlossaryTermStatus);
 
         thisTest.addTermToCategory(client,
                                    assetManagerGUID,
@@ -206,8 +212,41 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                    controlledGlossaryTermName,
                                    controlledGlossaryTermDisplayName,
                                    controlledGlossaryTermDescription,
+                                   extendedProperties,
                                    ElementStatus.DRAFT);
 
+        activityName = "Bad property("+ glossaryName + ")";
+
+        try
+        {
+            GlossaryTermProperties properties         = new GlossaryTermProperties();
+            extendedProperties = new HashMap<>();
+
+            extendedProperties.put("badPropertyName", controlledGlossaryTermStatus);
+
+            properties.setQualifiedName(controlledGlossaryTermName);
+            properties.setDisplayName(controlledGlossaryTermDisplayName);
+            properties.setDescription(controlledGlossaryTermDescription);
+            properties.setExtendedProperties(extendedProperties);
+
+            glossaryTermGUID = client.createControlledGlossaryTerm(userId,
+                                                                   null,
+                                                                   null,
+                                                                   glossaryGUID,
+                                                                   null,
+                                                                   properties,
+                                                                   GlossaryTermStatus.DRAFT);
+
+            throw new FVTUnexpectedCondition(testCaseName, activityName + " (term created with invalid property " + glossaryTermGUID + ")");
+        }
+        catch (InvalidParameterException unexpectedError)
+        {
+            // all good
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + " => " + glossaryGUID, unexpectedError);
+        }
 
         try
         {
@@ -370,6 +409,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
      * @param qualifiedName expected qualified name of the glossary term
      * @param displayName expected display name of the glossary term
      * @param description expected description of the glossary term
+     * @param extendedProperties additional properties for subtype
      * @param status expected status of the glossary term
      * @throws FVTUnexpectedCondition the test case failed
      */
@@ -382,6 +422,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                    String                 qualifiedName,
                                    String                 displayName,
                                    String                 description,
+                                   Map<String, Object>    extendedProperties,
                                    ElementStatus          status) throws FVTUnexpectedCondition
     {
         final String activityName = "addTermToCategory";
@@ -404,6 +445,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                               qualifiedName,
                                               displayName,
                                               description,
+                                              extendedProperties,
                                               status);
         }
         catch (Exception unexpectedError)
@@ -473,6 +515,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                  glossaryTermName,
                                  glossaryTermDisplayName,
                                  glossaryTermDescription,
+                                 null,
                                  ElementStatus.ACTIVE);
 
             return glossaryTermGUID;
@@ -507,10 +550,14 @@ public class CreateGlossaryTest extends AssetManagerTestBase
         try
         {
             GlossaryTermProperties properties = new GlossaryTermProperties();
+            Map<String, Object>    extendedProperties = new HashMap<>();
+
+            extendedProperties.put("userDefinedStatus", controlledGlossaryTermStatus);
 
             properties.setQualifiedName(controlledGlossaryTermName);
             properties.setDisplayName(controlledGlossaryTermDisplayName);
             properties.setDescription(controlledGlossaryTermDescription);
+            properties.setExtendedProperties(extendedProperties);
 
 
             String glossaryTermGUID = client.createControlledGlossaryTerm(userId,
@@ -536,6 +583,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                  controlledGlossaryTermName,
                                  controlledGlossaryTermDisplayName,
                                  controlledGlossaryTermDescription,
+                                 extendedProperties,
                                  ElementStatus.DRAFT);
 
             client.updateGlossaryTermStatus(userId, null, null, glossaryTermGUID, null, GlossaryTermStatus.PROPOSED, null, false, false);
@@ -550,6 +598,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                  controlledGlossaryTermName,
                                  controlledGlossaryTermDisplayName,
                                  controlledGlossaryTermDescription,
+                                 extendedProperties,
                                  ElementStatus.PROPOSED);
 
             client.updateGlossaryTermStatus(userId, null, null, glossaryTermGUID, null, GlossaryTermStatus.APPROVED, null, false, false);
@@ -564,6 +613,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                  controlledGlossaryTermName,
                                  controlledGlossaryTermDisplayName,
                                  controlledGlossaryTermDescription,
+                                 extendedProperties,
                                  ElementStatus.APPROVED);
 
             client.updateGlossaryTermStatus(userId, null, null, glossaryTermGUID, null, GlossaryTermStatus.ACTIVE, null, false, false);
@@ -578,8 +628,72 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                  controlledGlossaryTermName,
                                  controlledGlossaryTermDisplayName,
                                  controlledGlossaryTermDescription,
+                                 extendedProperties,
                                  ElementStatus.ACTIVE);
 
+            client.updateGlossaryTermStatus(userId, null, null, glossaryTermGUID, null, GlossaryTermStatus.PREPARED, null, false, false);
+
+            validateGlossaryTerm(client,
+                                 userId,
+                                 null,
+                                 activityName,
+                                 glossaryGUID,
+                                 glossaryTermGUID,
+                                 "ControlledGlossaryTerm",
+                                 controlledGlossaryTermName,
+                                 controlledGlossaryTermDisplayName,
+                                 controlledGlossaryTermDescription,
+                                 extendedProperties,
+                                 ElementStatus.PREPARED);
+
+            client.updateGlossaryTermStatus(userId, null, null, glossaryTermGUID, null, GlossaryTermStatus.REJECTED, null, false, false);
+
+            validateGlossaryTerm(client,
+                                 userId,
+                                 null,
+                                 activityName,
+                                 glossaryGUID,
+                                 glossaryTermGUID,
+                                 "ControlledGlossaryTerm",
+                                 controlledGlossaryTermName,
+                                 controlledGlossaryTermDisplayName,
+                                 controlledGlossaryTermDescription,
+                                 extendedProperties,
+                                 ElementStatus.REJECTED);
+
+            client.updateGlossaryTermStatus(userId, null, null, glossaryTermGUID, null, GlossaryTermStatus.OTHER, null, false, false);
+
+            validateGlossaryTerm(client,
+                                 userId,
+                                 null,
+                                 activityName,
+                                 glossaryGUID,
+                                 glossaryTermGUID,
+                                 "ControlledGlossaryTerm",
+                                 controlledGlossaryTermName,
+                                 controlledGlossaryTermDisplayName,
+                                 controlledGlossaryTermDescription,
+                                 extendedProperties,
+                                 ElementStatus.OTHER);
+
+            client.updateGlossaryTermStatus(userId, null, null, glossaryTermGUID, null, GlossaryTermStatus.DEPRECATED, null, false, false);
+
+            validateGlossaryTerm(client,
+                                 userId,
+                                 null,
+                                 activityName,
+                                 glossaryGUID,
+                                 glossaryTermGUID,
+                                 "ControlledGlossaryTerm",
+                                 controlledGlossaryTermName,
+                                 controlledGlossaryTermDisplayName,
+                                 controlledGlossaryTermDescription,
+                                 extendedProperties,
+                                 ElementStatus.DEPRECATED);
+
+            /*
+             * Set the state back to draft for subsequent tests
+             */
             client.updateGlossaryTermStatus(userId, null, null, glossaryTermGUID, null, GlossaryTermStatus.DRAFT, null, false, false);
 
             validateGlossaryTerm(client,
@@ -592,6 +706,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                  controlledGlossaryTermName,
                                  controlledGlossaryTermDisplayName,
                                  controlledGlossaryTermDescription,
+                                 extendedProperties,
                                  ElementStatus.DRAFT);
 
             return glossaryTermGUID;
@@ -617,6 +732,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                       String                 qualifiedName,
                                       String                 displayName,
                                       String                 description,
+                                      Map<String, Object>    extendedProperties,
                                       ElementStatus          status) throws FVTUnexpectedCondition
     {
         try
@@ -636,6 +752,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                         qualifiedName,
                                         displayName,
                                         description,
+                                        extendedProperties,
                                         status);
 
             List<GlossaryTermElement> glossaryTermList = client.getGlossaryTermsByName(userId, assetManagerGUID, assetManagerName, qualifiedName, 0, maxPageSize, null, false, false);
@@ -648,6 +765,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                         qualifiedName,
                                         displayName,
                                         description,
+                                        extendedProperties,
                                         status);
 
             glossaryTermList = client.getGlossaryTermsByName(userId, assetManagerGUID, assetManagerName, displayName, 0, 0, null, false, false);
@@ -660,6 +778,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                          qualifiedName,
                                          displayName,
                                          description,
+                                         extendedProperties,
                                          status);
 
             glossaryTermList = client.getTermsForGlossary(userId, null, null, glossaryGUID, 0, 0, null, false, false);
@@ -672,6 +791,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                          qualifiedName,
                                          displayName,
                                          description,
+                                         extendedProperties,
                                          status);
         }
         catch (FVTUnexpectedCondition testCaseError)
@@ -696,6 +816,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
      * @param qualifiedName expected qualified name
      * @param displayName expected display name
      * @param description expected description
+     * @param extendedProperties additional properties for subtype
      * @param status expected status
      * @throws FVTUnexpectedCondition something was wrong.
      */
@@ -707,6 +828,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                               String                    qualifiedName,
                                               String                    displayName,
                                               String                    description,
+                                              Map<String, Object>       extendedProperties,
                                               ElementStatus             status) throws FVTUnexpectedCondition
     {
         if (retrievedElements == null)
@@ -722,7 +844,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
 
         for (GlossaryTermElement termElement : retrievedElements)
         {
-            if (validateGlossaryTermElement(activityName, stepName, termElement, glossaryTermGUID, typeName, qualifiedName, displayName, description, status))
+            if (validateGlossaryTermElement(activityName, stepName, termElement, glossaryTermGUID, typeName, qualifiedName, displayName, description, extendedProperties, status))
             {
                 elementFound = true;
             }
@@ -746,6 +868,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
      * @param qualifiedName expected qualified name
      * @param displayName expected display name
      * @param description expected description
+     * @param extendedProperties additional properties for subtype
      * @param status expected status
      * @return boolean to indicate that the element matched the supplied GUID
      * @throws FVTUnexpectedCondition something was wrong.
@@ -758,6 +881,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                                 String              qualifiedName,
                                                 String              displayName,
                                                 String              description,
+                                                Map<String, Object> extendedProperties,
                                                 ElementStatus       status) throws FVTUnexpectedCondition
     {
         ElementHeader retrievedHeader = retrievedElement.getElementHeader();
@@ -808,6 +932,39 @@ public class CreateGlossaryTest extends AssetManagerTestBase
         if (! description.equals(retrievedTerm.getDescription()))
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from " + stepName + ": " + retrievedTerm.getDescription() + " rather than " + description + ")");
+        }
+
+        if (extendedProperties != null)
+        {
+            if (retrievedTerm.getExtendedProperties() == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Missing extended properties " + stepName + ")");
+            }
+
+            if (extendedProperties.size() != retrievedTerm.getExtendedProperties().size())
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Wrong number of extended properties " + stepName + ": " + retrievedTerm.getExtendedProperties() + " rather than " + extendedProperties + ")");
+            }
+
+            for (String extendedPropertyName : extendedProperties.keySet())
+            {
+                if (retrievedTerm.getExtendedProperties().get(extendedPropertyName) == null)
+                {
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(Missing " + extendedPropertyName + " extended property " + stepName + ": " + retrievedTerm.getExtendedProperties() + " rather than " + extendedProperties + ")");
+                }
+
+                if (! extendedProperties.get(extendedPropertyName).equals(retrievedTerm.getExtendedProperties().get(extendedPropertyName)))
+                {
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(Mismatched " + extendedPropertyName + " extended property " + stepName + ": " + retrievedTerm.getExtendedProperties() + " rather than " + extendedProperties + ")");
+                }
+            }
+        }
+        else
+        {
+            if (retrievedTerm.getExtendedProperties() != null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Unexpected extended properties " + stepName + ": " + retrievedTerm.getExtendedProperties() + ")");
+            }
         }
 
         return true;

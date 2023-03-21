@@ -1647,14 +1647,27 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                 case DRAFT:
                     return InstanceStatus.DRAFT;
 
-                case APPROVED:
-                    return InstanceStatus.APPROVED;
+                case PREPARED:
+                    return InstanceStatus.PREPARED;
 
                 case PROPOSED:
                     return InstanceStatus.PROPOSED;
 
-                case ACTIVE:
+                case APPROVED:
+                    return InstanceStatus.APPROVED;
+
+                case REJECTED:
+                    return InstanceStatus.REJECTED;
+
+               case ACTIVE:
                     return InstanceStatus.ACTIVE;
+
+                case DEPRECATED:
+                    return InstanceStatus.DEPRECATED;
+
+                case OTHER:
+                    return InstanceStatus.OTHER;
+
             }
         }
 
