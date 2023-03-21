@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.securitymanager.client.*;
 import org.odpi.openmetadata.accessservices.securitymanager.client.rest.SecurityManagerRESTClient;
 import org.odpi.openmetadata.accessservices.securitymanager.properties.SecurityManagerProperties;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
-import org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -206,12 +205,6 @@ public class SecurityIntegratorContextManager extends IntegrationContextManager
                 externalSourceName = null;
             }
 
-            IntegrationGovernanceContext integrationGovernanceContext = constructIntegrationGovernanceContext(openMetadataStoreClient,
-                                                                                                              connectorUserId,
-                                                                                                              externalSourceGUID,
-                                                                                                              externalSourceName);
-
-
             SecurityManagerEventClient eventClient = new SecurityManagerEventClient(partnerOMASServerName,
                                                                                     partnerOMASPlatformRootURL,
                                                                                     localServerUserId,
@@ -231,7 +224,6 @@ public class SecurityIntegratorContextManager extends IntegrationContextManager
                                                                                         generateIntegrationReport,
                                                                                         permittedSynchronization,
                                                                                         integrationConnectorGUID,
-                                                                                        integrationGovernanceContext,
                                                                                         externalSourceGUID,
                                                                                         externalSourceName,
                                                                                         auditLog);

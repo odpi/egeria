@@ -45,7 +45,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeade
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
-import org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 
 import java.util.List;
@@ -79,7 +78,6 @@ public class TopicIntegratorContext extends IntegrationContext
      * @param permittedSynchronization the direction of integration permitted by the integration connector
      * @param integrationConnectorGUID unique identifier for the integration connector if it is started via an integration group (otherwise it is
      *                                 null).
-     * @param integrationGovernanceContext populated governance context for the connector's use
      * @param externalSourceGUID unique identifier of the software server capability for the asset manager
      * @param externalSourceName unique name of the software server capability for the asset manager
      */
@@ -96,7 +94,6 @@ public class TopicIntegratorContext extends IntegrationContext
                                   boolean                      generateIntegrationReport,
                                   PermittedSynchronization     permittedSynchronization,
                                   String                       integrationConnectorGUID,
-                                  IntegrationGovernanceContext integrationGovernanceContext,
                                   String                       externalSourceGUID,
                                   String                       externalSourceName)
     {
@@ -110,8 +107,7 @@ public class TopicIntegratorContext extends IntegrationContext
               permittedSynchronization,
               externalSourceGUID,
               externalSourceName,
-              integrationConnectorGUID,
-              integrationGovernanceContext);
+              integrationConnectorGUID);
 
         this.eventBrokerClient       = eventBrokerClient;
         this.connectionManagerClient = connectionManagerClient;
@@ -211,7 +207,14 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
-        return eventBrokerClient.createTopic(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, topicProperties);
+        String topicGUID = eventBrokerClient.createTopic(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, topicProperties);
+
+        if ((topicGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementCreation(topicGUID);
+        }
+
+        return topicGUID;
     }
 
 
@@ -232,7 +235,19 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        return eventBrokerClient.createTopicFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, templateProperties);
+        String topicGUID = eventBrokerClient.createTopicFromTemplate(userId,
+                                                                     externalSourceGUID,
+                                                                     externalSourceName,
+                                                                     externalSourceIsHome,
+                                                                     templateGUID,
+                                                                     templateProperties);
+
+        if ((topicGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementCreation(topicGUID);
+        }
+
+        return topicGUID;
     }
 
 
@@ -254,6 +269,11 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                     PropertyServerException
     {
         eventBrokerClient.updateTopic(userId, externalSourceGUID, externalSourceName, topicGUID, isMergeUpdate, topicProperties);
+
+        if ((topicGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementUpdate(topicGUID);
+        }
     }
 
 
@@ -273,6 +293,11 @@ public class TopicIntegratorContext extends IntegrationContext
                                                       PropertyServerException
     {
         eventBrokerClient.publishTopic(userId, topicGUID);
+
+        if ((topicGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementUpdate(topicGUID);
+        }
     }
 
 
@@ -292,6 +317,11 @@ public class TopicIntegratorContext extends IntegrationContext
                                                        PropertyServerException
     {
         eventBrokerClient.withdrawTopic(userId, topicGUID);
+
+        if ((topicGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementUpdate(topicGUID);
+        }
     }
 
 
@@ -311,6 +341,11 @@ public class TopicIntegratorContext extends IntegrationContext
                                                          PropertyServerException
     {
         eventBrokerClient.removeTopic(userId, externalSourceGUID, externalSourceName, topicGUID, qualifiedName);
+
+        if ((topicGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementDelete(topicGUID);
+        }
     }
 
 
@@ -423,14 +458,23 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
+        String eventTypeGUID;
         if (externalSourceIsHome)
         {
-            return eventBrokerClient.createEventType(userId, externalSourceGUID, externalSourceName, topicGUID, properties);
+            eventTypeGUID = eventBrokerClient.createEventType(userId, externalSourceGUID, externalSourceName, topicGUID, properties);
         }
         else
         {
-            return eventBrokerClient.createEventType(userId, null, null, topicGUID, properties);
+            eventTypeGUID = eventBrokerClient.createEventType(userId, null, null, topicGUID, properties);
         }
+
+        if ((eventTypeGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.setAnchor(eventTypeGUID, topicGUID);
+            integrationReportWriter.reportElementCreation(eventTypeGUID);
+        }
+
+        return eventTypeGUID;
     }
 
 
@@ -454,14 +498,34 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
+        String eventTypeGUID;
+        
         if (externalSourceIsHome)
         {
-            return eventBrokerClient.createEventTypeFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, topicGUID, templateProperties);
+            eventTypeGUID = eventBrokerClient.createEventTypeFromTemplate(userId,
+                                                                          externalSourceGUID,
+                                                                          externalSourceName,
+                                                                          templateGUID,
+                                                                          topicGUID,
+                                                                          templateProperties);
         }
         else
         {
-            return eventBrokerClient.createEventTypeFromTemplate(userId, null, null, templateGUID, topicGUID, templateProperties);
+            eventTypeGUID = eventBrokerClient.createEventTypeFromTemplate(userId,
+                                                                          null,
+                                                                          null,
+                                                                          templateGUID,
+                                                                          topicGUID,
+                                                                          templateProperties);
         }
+
+        if ((eventTypeGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.setAnchor(eventTypeGUID, topicGUID);
+            integrationReportWriter.reportElementCreation(eventTypeGUID);
+        }
+
+        return eventTypeGUID;
     }
 
 
@@ -483,6 +547,11 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                        PropertyServerException
     {
         eventBrokerClient.updateEventType(userId, externalSourceGUID, externalSourceName, eventTypeGUID, isMergeUpdate, properties);
+        
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(eventTypeGUID);
+        }
     }
 
 
@@ -502,6 +571,11 @@ public class TopicIntegratorContext extends IntegrationContext
                                                              PropertyServerException
     {
         eventBrokerClient.removeEventType(userId, externalSourceGUID, externalSourceName, eventTypeGUID, qualifiedName);
+        
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(eventTypeGUID);
+        }
     }
 
 
@@ -622,7 +696,7 @@ public class TopicIntegratorContext extends IntegrationContext
     /* =====================================================================================================================
      * A schemaType is used to describe complex structures found in the schema of an event type
      */
-
+    
     /**
      * Create a new metadata element to represent a primitive schema type such as a string, integer or character.
      *
@@ -638,14 +712,22 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                                                        UserNotAuthorizedException,
                                                                                                        PropertyServerException
     {
+        String schemaTypeGUID;
         if (externalSourceIsHome)
         {
-            return eventBrokerClient.createPrimitiveSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties);
+            schemaTypeGUID = eventBrokerClient.createPrimitiveSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties);
         }
         else
         {
-            return eventBrokerClient.createPrimitiveSchemaType(userId, null, null, schemaTypeProperties);
+            schemaTypeGUID = eventBrokerClient.createPrimitiveSchemaType(userId, null, null, schemaTypeProperties);
         }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(schemaTypeGUID);
+        }
+
+        return schemaTypeGUID;
     }
 
 
@@ -664,14 +746,23 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
     {
+        String schemaTypeGUID;
+
         if (externalSourceIsHome)
         {
-            return eventBrokerClient.createLiteralSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties);
+            schemaTypeGUID = eventBrokerClient.createLiteralSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties);
         }
         else
         {
-            return eventBrokerClient.createLiteralSchemaType(userId, null, null, schemaTypeProperties);
+            schemaTypeGUID = eventBrokerClient.createLiteralSchemaType(userId, null, null, schemaTypeProperties);
         }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(schemaTypeGUID);
+        }
+
+        return schemaTypeGUID;
     }
 
 
@@ -692,14 +783,31 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
+        String schemaTypeGUID;
+
         if (externalSourceIsHome)
         {
-            return eventBrokerClient.createEnumSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties, validValuesSetGUID);
+            schemaTypeGUID = eventBrokerClient.createEnumSchemaType(userId,
+                                                                   externalSourceGUID,
+                                                                   externalSourceName,
+                                                                   schemaTypeProperties,
+                                                                   validValuesSetGUID);
         }
         else
         {
-            return eventBrokerClient.createEnumSchemaType(userId, null, null, schemaTypeProperties, validValuesSetGUID);
+            schemaTypeGUID = eventBrokerClient.createEnumSchemaType(userId,
+                                                                   null,
+                                                                   null,
+                                                                   schemaTypeProperties,
+                                                                   validValuesSetGUID);
         }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(schemaTypeGUID);
+        }
+
+        return schemaTypeGUID;
     }
 
 
@@ -766,24 +874,33 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
+        String schemaTypeGUID;
+
         if (externalSourceIsHome)
         {
-            return eventBrokerClient.createStructSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties);
+            schemaTypeGUID = eventBrokerClient.createStructSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties);
         }
         else
         {
-            return eventBrokerClient.createStructSchemaType(userId, null, null, schemaTypeProperties);
+            schemaTypeGUID =  eventBrokerClient.createStructSchemaType(userId, null, null, schemaTypeProperties);
         }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(schemaTypeGUID);
+        }
+
+        return schemaTypeGUID;
     }
 
 
     /**
-     * Create a new metadata element to represent a list of possible schema types that can be used for the attached schema attribute.
+     * Create a new metadata element to represent a list of possible schema types that can be used for the attached API parameter.
      *
      * @param schemaTypeProperties properties about the schema type to store
-     * @param schemaTypeOptionGUIDs list of unique identifiers for schema types that represent the options for the schema type choice
      *
      * @return unique identifier of the new schema type
+     * @param schemaTypeOptionGUIDs list of unique identifiers for schema types to link to
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -794,14 +911,24 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
+        String schemaTypeGUID;
+
         if (externalSourceIsHome)
         {
-            return eventBrokerClient.createSchemaTypeChoice(userId, externalSourceGUID, externalSourceName, schemaTypeProperties, schemaTypeOptionGUIDs);
+            schemaTypeGUID = eventBrokerClient.createSchemaTypeChoice(userId, externalSourceGUID, externalSourceName, schemaTypeProperties,
+                                                                     schemaTypeOptionGUIDs);
         }
         else
         {
-            return eventBrokerClient.createSchemaTypeChoice(userId, null, null, schemaTypeProperties, schemaTypeOptionGUIDs);
+            schemaTypeGUID = eventBrokerClient.createSchemaTypeChoice(userId, null, null, schemaTypeProperties, schemaTypeOptionGUIDs);
         }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(schemaTypeGUID);
+        }
+
+        return schemaTypeGUID;
     }
 
 
@@ -824,14 +951,33 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
+        String schemaTypeGUID;
+
         if (externalSourceIsHome)
         {
-            return eventBrokerClient.createMapSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeProperties, mapFromSchemaTypeGUID, mapToSchemaTypeGUID);
+            schemaTypeGUID = eventBrokerClient.createMapSchemaType(userId,
+                                                                  externalSourceGUID,
+                                                                  externalSourceName,
+                                                                  schemaTypeProperties,
+                                                                  mapFromSchemaTypeGUID,
+                                                                  mapToSchemaTypeGUID);
         }
         else
         {
-            return eventBrokerClient.createMapSchemaType(userId, null, null, schemaTypeProperties, mapFromSchemaTypeGUID, mapToSchemaTypeGUID);
+            schemaTypeGUID = eventBrokerClient.createMapSchemaType(userId,
+                                                                  null,
+                                                                  null,
+                                                                  schemaTypeProperties,
+                                                                  mapFromSchemaTypeGUID,
+                                                                  mapToSchemaTypeGUID);
         }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(schemaTypeGUID);
+        }
+
+        return schemaTypeGUID;
     }
 
 
@@ -852,14 +998,31 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
+        String schemaTypeGUID;
+
         if (externalSourceIsHome)
         {
-            return eventBrokerClient.createSchemaTypeFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateProperties);
+            schemaTypeGUID = eventBrokerClient.createSchemaTypeFromTemplate(userId,
+                                                                           externalSourceGUID,
+                                                                           externalSourceName,
+                                                                           templateGUID,
+                                                                           templateProperties);
         }
         else
         {
-            return eventBrokerClient.createSchemaTypeFromTemplate(userId, null, null, templateGUID, templateProperties);
+            schemaTypeGUID = eventBrokerClient.createSchemaTypeFromTemplate(userId,
+                                                                           null,
+                                                                           null,
+                                                                           templateGUID,
+                                                                           templateProperties);
         }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(schemaTypeGUID);
+        }
+
+        return schemaTypeGUID;
     }
 
 
@@ -882,6 +1045,11 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                                    PropertyServerException
     {
         eventBrokerClient.updateSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeGUID, isMergeUpdate, schemaTypeProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(schemaTypeGUID);
+        }
     }
 
 
@@ -899,6 +1067,11 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                PropertyServerException
     {
         eventBrokerClient.removeSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(schemaTypeGUID);
+        }
     }
 
 
@@ -922,7 +1095,19 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        eventBrokerClient.setupSchemaElementRelationship(userId, externalSourceGUID, externalSourceName, endOneGUID, endTwoGUID, relationshipTypeName, properties);
+        eventBrokerClient.setupSchemaElementRelationship(userId,
+                                                        externalSourceGUID,
+                                                        externalSourceName,
+                                                        endOneGUID,
+                                                        endTwoGUID,
+                                                        relationshipTypeName,
+                                                        properties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setParent(endTwoGUID, endOneGUID);
+            integrationReportWriter.reportElementUpdate(endOneGUID);
+        }
     }
 
 
@@ -1079,14 +1264,31 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                                                     UserNotAuthorizedException,
                                                                                                     PropertyServerException
     {
+        String schemaAttributeGUID;
+
         if (externalSourceIsHome)
         {
-            return eventBrokerClient.createSchemaAttribute(userId, externalSourceGUID, externalSourceName, schemaElementGUID, schemaAttributeProperties);
+            schemaAttributeGUID = eventBrokerClient.createSchemaAttribute(userId,
+                                                                          externalSourceGUID,
+                                                                          externalSourceName,
+                                                                          schemaElementGUID,
+                                                                          schemaAttributeProperties);
         }
         else
         {
-            return eventBrokerClient.createSchemaAttribute(userId, null, null, schemaElementGUID, schemaAttributeProperties);
+            schemaAttributeGUID = eventBrokerClient.createSchemaAttribute(userId,
+                                                                          null,
+                                                                          null,
+                                                                          schemaElementGUID,
+                                                                          schemaAttributeProperties);
         }
+
+        if ((schemaAttributeGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementCreation(schemaElementGUID);
+        }
+
+        return schemaAttributeGUID;
     }
 
 
@@ -1109,14 +1311,33 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
+        String schemaAttributeGUID;
+
         if (externalSourceIsHome)
         {
-            return eventBrokerClient.createSchemaAttributeFromTemplate(userId, externalSourceGUID, externalSourceName, schemaElementGUID, templateGUID, templateProperties);
+            schemaAttributeGUID = eventBrokerClient.createSchemaAttributeFromTemplate(userId,
+                                                                                      externalSourceGUID,
+                                                                                      externalSourceName,
+                                                                                      schemaElementGUID,
+                                                                                      templateGUID,
+                                                                                      templateProperties);
         }
         else
         {
-            return eventBrokerClient.createSchemaAttributeFromTemplate(userId, null, null, schemaElementGUID, templateGUID, templateProperties);
+            schemaAttributeGUID = eventBrokerClient.createSchemaAttributeFromTemplate(userId,
+                                                                                      null,
+                                                                                      null,
+                                                                                      schemaElementGUID,
+                                                                                      templateGUID,
+                                                                                      templateProperties);
         }
+
+        if ((schemaAttributeGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementCreation(schemaElementGUID);
+        }
+
+        return schemaAttributeGUID;
     }
 
 
@@ -1145,6 +1366,11 @@ public class TopicIntegratorContext extends IntegrationContext
         {
             eventBrokerClient.setupSchemaType(userId, null, null, relationshipTypeName, schemaAttributeGUID, schemaTypeGUID);
         }
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setParent(schemaTypeGUID, schemaAttributeGUID);
+        }
     }
 
 
@@ -1162,6 +1388,11 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                     PropertyServerException
     {
         eventBrokerClient.clearSchemaTypes(userId, externalSourceGUID, externalSourceName, schemaAttributeGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(schemaAttributeGUID);
+        }
     }
 
 
@@ -1182,7 +1413,17 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        eventBrokerClient.updateSchemaAttribute(userId, externalSourceGUID, externalSourceName, schemaAttributeGUID, isMergeUpdate, schemaAttributeProperties);
+        eventBrokerClient.updateSchemaAttribute(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                schemaAttributeGUID,
+                                                isMergeUpdate,
+                                                schemaAttributeProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(schemaAttributeGUID);
+        }
     }
 
 
@@ -1200,6 +1441,11 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                          PropertyServerException
     {
         eventBrokerClient.removeSchemaAttribute(userId, externalSourceGUID, externalSourceName, schemaAttributeGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(schemaAttributeGUID);
+        }
     }
 
 
@@ -1297,8 +1543,6 @@ public class TopicIntegratorContext extends IntegrationContext
     }
 
 
-
-
     /* =====================================================================================================================
      * A Connection is the top level object for working with connectors
      */
@@ -1318,7 +1562,14 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        return connectionManagerClient.createConnection(userId, null, null, connectionProperties);
+        String connectionGUID = connectionManagerClient.createConnection(userId, null, null, connectionProperties);
+
+        if ((connectionGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementCreation(connectionGUID);
+        }
+
+        return connectionGUID;
     }
 
 
@@ -1339,7 +1590,18 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        return connectionManagerClient.createConnectionFromTemplate(userId, null, null, templateGUID, templateProperties);
+        String connectionGUID = connectionManagerClient.createConnectionFromTemplate(userId,
+                                                                                     null,
+                                                                                     null,
+                                                                                     templateGUID,
+                                                                                     templateProperties);
+
+        if ((connectionGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementCreation(connectionGUID);
+        }
+
+        return connectionGUID;
     }
 
 
@@ -1362,14 +1624,19 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                                    PropertyServerException
     {
         connectionManagerClient.updateConnection(userId, externalSourceGUID, externalSourceName, connectionGUID, isMergeUpdate, connectionProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(connectionGUID);
+        }
     }
 
 
     /**
      * Create a relationship between a connection and a connector type.
      *
-     * @param connectionGUID unique identifier of the connection 
-     * @param connectorTypeGUID unique identifier of the connector type 
+     * @param connectionGUID unique identifier of the connection in the external data manager
+     * @param connectorTypeGUID unique identifier of the connector type in the external data manager
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1381,14 +1648,19 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                      PropertyServerException
     {
         connectionManagerClient.setupConnectorType(userId, null, null, connectionGUID, connectorTypeGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(connectionGUID);
+        }
     }
 
 
     /**
      * Remove a relationship between a connection and a connector type.
      *
-     * @param connectionGUID unique identifier of the connection  
-     * @param connectorTypeGUID unique identifier of the connector type  
+     * @param connectionGUID unique identifier of the connection in the external data manager
+     * @param connectorTypeGUID unique identifier of the connector type in the external data manager
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1400,14 +1672,19 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                     PropertyServerException
     {
         connectionManagerClient.clearConnectorType(userId, externalSourceGUID, externalSourceName, connectionGUID, connectorTypeGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(connectionGUID);
+        }
     }
 
 
     /**
      * Create a relationship between a connection and an endpoint.
      *
-     * @param connectionGUID unique identifier of the connection  
-     * @param endpointGUID unique identifier of the endpoint  
+     * @param connectionGUID unique identifier of the connection in the external data manager
+     * @param endpointGUID unique identifier of the endpoint in the external data manager
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1419,14 +1696,19 @@ public class TopicIntegratorContext extends IntegrationContext
                                                            PropertyServerException
     {
         connectionManagerClient.setupEndpoint(userId, null, null, connectionGUID, endpointGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(connectionGUID);
+        }
     }
 
 
     /**
      * Remove a relationship between a connection and an endpoint.
      *
-     * @param connectionGUID unique identifier of the connection  
-     * @param endpointGUID unique identifier of the endpoint  
+     * @param connectionGUID unique identifier of the connection in the external data manager
+     * @param endpointGUID unique identifier of the endpoint in the external data manager
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1438,17 +1720,22 @@ public class TopicIntegratorContext extends IntegrationContext
                                                           PropertyServerException
     {
         connectionManagerClient.clearEndpoint(userId, externalSourceGUID, externalSourceName, connectionGUID, endpointGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(connectionGUID);
+        }
     }
 
 
     /**
      * Create a relationship between a virtual connection and an embedded connection.
      *
-     * @param connectionGUID unique identifier of the virtual connection  
+     * @param connectionGUID unique identifier of the virtual connection in the external data manager
      * @param position which order should this connection be processed
      * @param arguments What additional properties should be passed to the embedded connector via the configuration properties
      * @param displayName what does this connector signify?
-     * @param embeddedConnectionGUID unique identifier of the embedded connection  
+     * @param embeddedConnectionGUID unique identifier of the embedded connection in the external data manager
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1463,14 +1750,20 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                                            PropertyServerException
     {
         connectionManagerClient.setupEmbeddedConnection(userId, null, null, connectionGUID, position, displayName, arguments, embeddedConnectionGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setParent(embeddedConnectionGUID, connectionGUID);
+            integrationReportWriter.reportElementUpdate(embeddedConnectionGUID);
+        }
     }
 
 
     /**
      * Remove a relationship between a virtual connection and an embedded connection.
      *
-     * @param connectionGUID unique identifier of the virtual connection  
-     * @param embeddedConnectionGUID unique identifier of the embedded connection  
+     * @param connectionGUID unique identifier of the virtual connection in the external data manager
+     * @param embeddedConnectionGUID unique identifier of the embedded connection in the external data manager
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1482,6 +1775,12 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                               PropertyServerException
     {
         connectionManagerClient.clearEmbeddedConnection(userId, externalSourceGUID, externalSourceName, connectionGUID, embeddedConnectionGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setParent(embeddedConnectionGUID, connectionGUID);
+            integrationReportWriter.reportElementUpdate(embeddedConnectionGUID);
+        }
     }
 
 
@@ -1503,6 +1802,12 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                     PropertyServerException
     {
         connectionManagerClient.setupAssetConnection(userId, null, null, assetGUID, assetSummary, connectionGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(connectionGUID, assetGUID);
+            integrationReportWriter.reportElementUpdate(connectionGUID);
+        }
     }
 
 
@@ -1522,8 +1827,13 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                    PropertyServerException
     {
         connectionManagerClient.clearAssetConnection(userId, externalSourceGUID, externalSourceName, assetGUID, connectionGUID);
-    }
 
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(connectionGUID, assetGUID);
+            integrationReportWriter.reportElementUpdate(connectionGUID);
+        }
+    }
 
 
     /**
@@ -1571,7 +1881,7 @@ public class TopicIntegratorContext extends IntegrationContext
      * Retrieve the list of metadata elements with a matching qualified or display name.
      * There are no wildcards supported on this request.
      *
-     * @param name name of the connection to retrieve
+     * @param name name used to retrieve the connection
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1625,7 +1935,14 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        return connectionManagerClient.createEndpoint(userId, null, null, endpointProperties);
+        String endpointGUID = connectionManagerClient.createEndpoint(userId, null, null, endpointProperties);
+
+        if ((endpointGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementCreation(endpointGUID);
+        }
+
+        return endpointGUID;
     }
 
 
@@ -1648,7 +1965,19 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return connectionManagerClient.createEndpointFromTemplate(userId, null, null, networkAddress, templateGUID, templateProperties);
+        String endpointGUID = connectionManagerClient.createEndpointFromTemplate(userId,
+                                                                                 externalSourceGUID,
+                                                                                 externalSourceName,
+                                                                                 networkAddress,
+                                                                                 templateGUID,
+                                                                                 templateProperties);
+
+        if ((endpointGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementCreation(endpointGUID);
+        }
+
+        return endpointGUID;
     }
 
 
@@ -1671,9 +2000,12 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                              PropertyServerException
     {
         connectionManagerClient.updateEndpoint(userId, externalSourceGUID, externalSourceName, isMergeUpdate, endpointGUID, endpointProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(endpointGUID);
+        }
     }
-
-
 
 
     /**
@@ -1690,6 +2022,11 @@ public class TopicIntegratorContext extends IntegrationContext
                                                            PropertyServerException
     {
         connectionManagerClient.removeEndpoint(userId, externalSourceGUID, externalSourceName, endpointGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(endpointGUID);
+        }
     }
 
 
@@ -1827,10 +2164,8 @@ public class TopicIntegratorContext extends IntegrationContext
     }
 
 
-
-
     /* =====================================================================================================================
-     * A ValidValue is the top level object for working with connectors
+     * A ValidValue is the top level object for working with valid values
      */
 
     /**
@@ -1848,7 +2183,14 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        return validValueManagement.createValidValue(userId, externalSourceGUID, externalSourceName, validValueProperties);
+        String validValueGUID = validValueManagement.createValidValue(userId, externalSourceGUID, externalSourceName, validValueProperties);
+
+        if ((validValueGUID != null) && (integrationReportWriter != null))
+        {
+            integrationReportWriter.reportElementCreation(validValueGUID);
+        }
+
+        return validValueGUID;
     }
 
 
@@ -1871,6 +2213,11 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                                    PropertyServerException
     {
         validValueManagement.updateValidValue(userId, externalSourceGUID, externalSourceName, validValueGUID, isMergeUpdate, validValueProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(validValueGUID);
+        }
     }
 
 
@@ -1892,6 +2239,12 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                                                   PropertyServerException
     {
         validValueManagement.setupValidValueMember(userId, externalSourceGUID, externalSourceName, validValueSetGUID, properties, validValueMemberGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(validValueMemberGUID, validValueSetGUID);
+            integrationReportWriter.reportElementUpdate(validValueSetGUID);
+        }
     }
 
 
@@ -1911,6 +2264,12 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                           PropertyServerException
     {
         validValueManagement.clearValidValueMember(userId, externalSourceGUID, externalSourceName, validValueSetGUID, validValueMemberGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(validValueMemberGUID, validValueSetGUID);
+            integrationReportWriter.reportElementUpdate(validValueSetGUID);
+        }
     }
 
 
@@ -1933,6 +2292,11 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                                        PropertyServerException
     {
         validValueManagement.setupValidValues(userId, externalSourceGUID, externalSourceName, elementGUID, properties, validValueGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(elementGUID);
+        }
     }
 
 
@@ -1952,6 +2316,11 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                PropertyServerException
     {
         validValueManagement.clearValidValues(userId, externalSourceGUID, externalSourceName, elementGUID, validValueGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(elementGUID);
+        }
     }
 
 
@@ -1974,6 +2343,11 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                                                  PropertyServerException
     {
         validValueManagement.setupReferenceValueTag(userId, externalSourceGUID, externalSourceName, elementGUID, properties, validValueGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(elementGUID);
+        }
     }
 
 
@@ -1993,6 +2367,11 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                      PropertyServerException
     {
         validValueManagement.clearReferenceValueTag(userId, externalSourceGUID, externalSourceName, elementGUID, validValueGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(elementGUID);
+        }
     }
 
 
@@ -2010,6 +2389,11 @@ public class TopicIntegratorContext extends IntegrationContext
                                                                PropertyServerException
     {
         validValueManagement.removeValidValue(userId, externalSourceGUID, externalSourceName, validValueGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(validValueGUID);
+        }
     }
 
 

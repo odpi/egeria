@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.datamanager.client.*;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
 import org.odpi.openmetadata.accessservices.datamanager.properties.ApplicationProperties;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
-import org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -207,12 +206,6 @@ public class DisplayIntegratorContextManager extends IntegrationContextManager
                 externalSourceName = null;
             }
 
-            IntegrationGovernanceContext integrationGovernanceContext = constructIntegrationGovernanceContext(openMetadataStoreClient,
-                                                                                                              connectorUserId,
-                                                                                                              externalSourceGUID,
-                                                                                                              externalSourceName);
-
-
             DataManagerEventClient dataManagerEventClient = new DataManagerEventClient(partnerOMASServerName,
                                                                                        partnerOMASPlatformRootURL,
                                                                                        restClient,
@@ -231,7 +224,6 @@ public class DisplayIntegratorContextManager extends IntegrationContextManager
                                                                                       generateIntegrationReport,
                                                                                       permittedSynchronization,
                                                                                       integrationConnectorGUID,
-                                                                                      integrationGovernanceContext,
                                                                                       externalSourceGUID,
                                                                                       externalSourceName);
             serviceSpecificConnector.setContext(integratorContext);
