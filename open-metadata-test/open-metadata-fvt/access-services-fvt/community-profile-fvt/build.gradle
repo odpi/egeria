@@ -26,7 +26,7 @@ dependencies {
     testImplementation project(':open-metadata-distribution:open-metadata-assemblies')
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine'
-    compile localGroovy()
+    testImplementation localGroovy()
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     testImplementation("org.junit.jupiter:junit-jupiter-params")
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
@@ -35,12 +35,11 @@ dependencies {
 
 }
 
-description = 'ProjectProperties Profile OMAS FVT'
+description = 'Community Profile OMAS FVT'
 
 java {
     withJavadocJar()
 }
-
 
 // Local properties to use
 ext
@@ -73,7 +72,6 @@ task startServer(dependsOn: ['cleanData',':open-metadata-distribution:open-metad
     stopAfter = test
     waitForPort = 10441
     timeout = 180
-
     //waitForOutput = 'has started'
 }
 
@@ -85,21 +83,9 @@ task configServer(dependsOn: ['startServer','classes'], type: JavaExec) {
     systemProperties = [
             'name': 'Egeria chassis',
             'baseURL': 'https://localhost:10441',
-            'servermem': 'serverinmem',
-            'delay': '2',
+            'server': 'fvtServer',
             'user': 'testUser'
     ]
-}
-
-task prepareDirs {
-    mustRunAfter clean
-    doLast {
-        mkdir layout.buildDirectory.dir('run')
-    }
-}
-
-task cleanData(type: Delete) {
-    delete files("${buildDir}/run/data")
 }
 
 // The actual tests (Integration only)
@@ -113,7 +99,18 @@ test {
     useJUnitPlatform()
     testLogging.showStandardStreams = true
     dependsOn configServer
-errorOutput = layout.buildDirectory.file("chassis-error.log")
+
+}
+
+task prepareDirs {
+    mustRunAfter clean
+    doLast {
+        mkdir layout.buildDirectory.dir('run')
+    }
+}
+
+task cleanData(type: Delete) {
+    delete files("${buildDir}/run/data")
 }
 
 // Resolves logging conflict with Jena
