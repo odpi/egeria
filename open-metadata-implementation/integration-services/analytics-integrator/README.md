@@ -28,7 +28,7 @@ integration connector is able to run under this service.
 * [analytics-integrator-client](analytics-integrator-client) - implements a Java client for the REST API.
 
 
-This integration service is paired with the [Analytics Modeling](../../access-services/analytics-modeling)
+This integration service is paired with the [Data Science](../../access-services/data-science)
 Open Metadata Access Service (OMAS).
 
 ----
