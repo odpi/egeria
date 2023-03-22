@@ -8,11 +8,6 @@ for data tools, engines and platforms to integrate with open metadata.
 
 The access services are as follows:
 
-* **[analytics-modeling](analytics-modeling)** - model analytics and reports.
-
-  The Analytics Modeling OMAS configures and manages metadata for modeling
-analytics and reporting services.
-
 * **[asset-catalog](asset-catalog)** - search for assets.
 
   The Asset Catalog OMAS provides search and query capabilities for tools and applications

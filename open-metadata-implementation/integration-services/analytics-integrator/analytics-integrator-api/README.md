@@ -8,7 +8,7 @@ the specific context for an integration connector that is managed by this integr
 
 The context is the means that the connector has to exchange metadata with the open metadata ecosystem.
 Its methods closely follow the methods of the integration service's partner Open Metadata Access Service (OMAS).
-That is the [Analytics Modeling OMAS](../../../access-services/analytics-modeling) in this case.
+That is the [Data Science OMAS](../../../access-services/data-science) in this case.
 
 
 ----

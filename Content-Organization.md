@@ -18,7 +18,6 @@ The Egeria core repository contains the core Egeria functionality, and is organi
 * **[open-metadata-implementation](open-metadata-implementation)** - implementation of standards, frameworks and connectors.
   
   * **[access-services](open-metadata-implementation/access-services)** - domain specific APIs known as the Open Metadata Access Services (OMAS).
-    * **[analytics-modeling](open-metadata-implementation/access-services/analytics-modeling)** - manage assets for an analytics platform.
     * **[asset-catalog](open-metadata-implementation/access-services/asset-catalog)** - search for assets.
     * **[asset-consumer](open-metadata-implementation/access-services/asset-consumer)** - create connectors to access assets.
     * **[asset-lineage](open-metadata-implementation/access-services/asset-lineage)** - provide lineage reporting.
