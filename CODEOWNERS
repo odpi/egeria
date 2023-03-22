@@ -17,7 +17,6 @@ open-metadata-distribution/ @mandy-chessell @planetf1
 open-metadata-implementation/ @mandy-chessell
 
 open-metadata-implementation/access-services/ @mandy-chessell
-open-metadata-implementation/access-services/analytics-modeling/ @mandy-chessell
 open-metadata-implementation/access-services/asset-catalog/ @alexandra-bucur @lcpopa
 open-metadata-implementation/access-services/asset-consumer/ @mandy-chessell
 open-metadata-implementation/access-services/asset-lineage/ @lcpopa @popa-raluca 
@@ -77,7 +76,6 @@ open-metadata-resources/open-metadata-samples/access-services-samples/subject-ar
 open-metadata-test/ @mandy-chessell
 open-metadata-test/open-metadata-fvt/ @planetf1 @mandy-chessell
 open-metadata-test/open-metadata-fvt/access-services-fvt/ @planetf1 @mandy-chessell
-open-metadata-test/open-metadata-fvt/access-services-fvt/analytics-modeling-fvt/ @mandy-chessell
 open-metadata-test/open-metadata-fvt/access-services-fvt/asset-consumer-fvt/ @mandy-chessell
 open-metadata-test/open-metadata-fvt/access-services-fvt/asset-manager-fvt/ @mandy-chessell
 open-metadata-test/open-metadata-fvt/access-services-fvt/data-engine-fvt/ @alexandra-bucur @lcpopa
