@@ -79,6 +79,11 @@ public class MockSchemaAttributes extends SchemaAttributes
             propertyList.add(new SchemaAttribute());
         }
 
+        if (propertyList.isEmpty())
+        {
+            return null;
+        }
+
         return propertyList;
     }
 }

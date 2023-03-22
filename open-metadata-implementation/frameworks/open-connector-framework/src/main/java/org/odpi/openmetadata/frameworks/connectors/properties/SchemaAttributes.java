@@ -71,7 +71,7 @@ public abstract class SchemaAttributes extends PropertyIteratorBase implements I
                     return false;
                 }
 
-                if (cachedElementStart == cachedElementList.size())
+                if (cachedElementPointer == cachedElementList.size())
                 {
                     try
                     {
