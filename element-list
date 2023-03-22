@@ -103,6 +103,13 @@ org.odpi.openmetadata.accessservices.communityprofile.converters
 org.odpi.openmetadata.accessservices.communityprofile.events
 org.odpi.openmetadata.accessservices.communityprofile.ffdc
 org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions
+org.odpi.openmetadata.accessservices.communityprofile.fvt
+org.odpi.openmetadata.accessservices.communityprofile.fvt.clientconstructors
+org.odpi.openmetadata.accessservices.communityprofile.fvt.errorhandling
+org.odpi.openmetadata.accessservices.communityprofile.fvt.locations
+org.odpi.openmetadata.accessservices.communityprofile.fvt.metadatasources
+org.odpi.openmetadata.accessservices.communityprofile.fvt.profiles
+org.odpi.openmetadata.accessservices.communityprofile.fvt.validvalues
 org.odpi.openmetadata.accessservices.communityprofile.mappers
 org.odpi.openmetadata.accessservices.communityprofile.metadataelements
 org.odpi.openmetadata.accessservices.communityprofile.omrstopic
@@ -221,6 +228,10 @@ org.odpi.openmetadata.accessservices.discoveryengine.client.rest
 org.odpi.openmetadata.accessservices.discoveryengine.converters
 org.odpi.openmetadata.accessservices.discoveryengine.events
 org.odpi.openmetadata.accessservices.discoveryengine.ffdc
+org.odpi.openmetadata.accessservices.discoveryengine.fvt
+org.odpi.openmetadata.accessservices.discoveryengine.fvt.clientconstructors
+org.odpi.openmetadata.accessservices.discoveryengine.fvt.discovery
+org.odpi.openmetadata.accessservices.discoveryengine.fvt.errorhandling
 org.odpi.openmetadata.accessservices.discoveryengine.rest
 org.odpi.openmetadata.accessservices.discoveryengine.server
 org.odpi.openmetadata.accessservices.discoveryengine.server.spring
@@ -239,6 +250,11 @@ org.odpi.openmetadata.accessservices.governanceengine.connectors.outtopic
 org.odpi.openmetadata.accessservices.governanceengine.converters
 org.odpi.openmetadata.accessservices.governanceengine.events
 org.odpi.openmetadata.accessservices.governanceengine.ffdc
+org.odpi.openmetadata.accessservices.governanceengine.fvt
+org.odpi.openmetadata.accessservices.governanceengine.fvt.clientconstructors
+org.odpi.openmetadata.accessservices.governanceengine.fvt.duplicates
+org.odpi.openmetadata.accessservices.governanceengine.fvt.engines
+org.odpi.openmetadata.accessservices.governanceengine.fvt.errorhandling
 org.odpi.openmetadata.accessservices.governanceengine.handlers
 org.odpi.openmetadata.accessservices.governanceengine.metadataelements
 org.odpi.openmetadata.accessservices.governanceengine.outtopic
@@ -252,6 +268,10 @@ org.odpi.openmetadata.accessservices.governanceprogram.client
 org.odpi.openmetadata.accessservices.governanceprogram.client.rest
 org.odpi.openmetadata.accessservices.governanceprogram.converters
 org.odpi.openmetadata.accessservices.governanceprogram.ffdc
+org.odpi.openmetadata.accessservices.governanceprogram.fvt
+org.odpi.openmetadata.accessservices.governanceprogram.fvt.clientconstructors
+org.odpi.openmetadata.accessservices.governanceprogram.fvt.definitions
+org.odpi.openmetadata.accessservices.governanceprogram.fvt.errorhandling
 org.odpi.openmetadata.accessservices.governanceprogram.handlers
 org.odpi.openmetadata.accessservices.governanceprogram.metadataelements
 org.odpi.openmetadata.accessservices.governanceprogram.properties
