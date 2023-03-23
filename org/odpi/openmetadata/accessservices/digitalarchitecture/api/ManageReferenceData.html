@@ -99,12 +99,10 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#assignReferenceValueToItem(java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String)" class="member-name-link">assignReferenceValueToItem</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#assignReferenceValueToItem(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ReferenceValueAssignmentProperties)" class="member-name-link">assignReferenceValueToItem</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;validValueGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;referenceableGUID,
- int&nbsp;confidence,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;steward,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;notes)</code></div>
+ <a href="../properties/ReferenceValueAssignmentProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.properties">ReferenceValueAssignmentProperties</a>&nbsp;properties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Link a valid value as a reference value to a referencable to act as a tag/classification to help with locating and
  grouping the referenceable.</div>
@@ -697,14 +695,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="assignReferenceValueToItem(java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String)">
+<section class="detail" id="assignReferenceValueToItem(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ReferenceValueAssignmentProperties)">
 <h3>assignReferenceValueToItem</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">assignReferenceValueToItem</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;validValueGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;referenceableGUID,
- int&nbsp;confidence,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;steward,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;notes)</span>
+ <a href="../properties/ReferenceValueAssignmentProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.properties">ReferenceValueAssignmentProperties</a>&nbsp;properties)</span>
                          throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
@@ -715,9 +711,7 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - calling user.</dd>
 <dd><code>validValueGUID</code> - unique identifier of the valid value.</dd>
 <dd><code>referenceableGUID</code> - unique identifier of the element to link to.</dd>
-<dd><code>confidence</code> - how confident is the steward that this mapping is correct (0-100).</dd>
-<dd><code>steward</code> - identifier of steward</dd>
-<dd><code>notes</code> - additional notes from the steward</dd>
+<dd><code>properties</code> - details of the relationship</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
