@@ -66,8 +66,6 @@ import java.util.*;
                 url="https://egeria-project.org/concepts/omag-server-platform/")
         )
 
-
-@Configuration
 public class OMAGServerPlatform
 {
     @Value("${strict.ssl}")
@@ -227,7 +225,7 @@ public class OMAGServerPlatform
         FilterRegistrationBean<HttpRequestHeadersFilter> registrationBean = new FilterRegistrationBean<>();
 
         registrationBean.setFilter(new HttpRequestHeadersFilter(headerNames));
-        registrationBean.addUrlPatterns("/*");
+        registrationBean.addUrlPatterns("/open-metadata/*");
         registrationBean.setOrder(1);
 
         return registrationBean;
