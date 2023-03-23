@@ -8,7 +8,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:glossary-view:glossary-view-server')
     implementation project(':open-metadata-implementation:access-services:glossary-view:glossary-view-api')
     implementation 'org.springframework:spring-web'
-    implementation 'javax.validation:validation-api'
+    implementation 'jakarta.validation:jakarta.validation-api'
     implementation 'org.springframework:spring-context'
     implementation 'io.swagger.core.v3:swagger-annotations'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
