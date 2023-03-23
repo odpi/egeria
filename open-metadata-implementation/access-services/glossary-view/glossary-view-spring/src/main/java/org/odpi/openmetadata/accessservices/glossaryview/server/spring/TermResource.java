@@ -35,7 +35,7 @@ import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.Om
 
 public class TermResource {
 
-    private TermService termService;
+    private final TermService termService;
 
     /**
      * Called by Spring

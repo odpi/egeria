@@ -35,7 +35,7 @@ import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.Om
 
 public class CategoryResource {
 
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     /**
      * Called by Spring

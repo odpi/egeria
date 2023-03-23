@@ -36,7 +36,7 @@ import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.Om
 
 public class GlossaryResource {
 
-    private GlossaryService glossaryService;
+    private final GlossaryService glossaryService;
 
     /**
      * Called by Spring
