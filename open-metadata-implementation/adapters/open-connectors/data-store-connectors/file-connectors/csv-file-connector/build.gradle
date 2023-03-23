@@ -15,6 +15,7 @@ dependencies {
     testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     testImplementation project(':open-metadata-test:open-metadata-ut')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    testCompileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 
 }
 
