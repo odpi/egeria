@@ -14,7 +14,7 @@
 
 
 FROM registry.access.redhat.com/ubi9/openjdk-17-runtime
-ARG version=4.0-SNAPSHOT
+ARG version=4.0
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
 ARG BUILD_TIME=unknown
