@@ -95,22 +95,8 @@ public class AssetUniverse extends AssetDetail
 
     public AssetUniverse(Asset assetBean)
     {
-        this(assetBean,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null);
+        super(assetBean);
     }
-
 
     /**
      * Copy/clone Constructor note this is a deep copy
