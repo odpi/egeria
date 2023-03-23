@@ -141,7 +141,7 @@ public class GlossaryMapper extends EntityDetailMapper<Glossary> {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, glossary.getUsage(), OpenMetadataAPIMapper.USAGE_PROPERTY_NAME);
         }
         if (node.getName() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getName(), OpenMetadataAPIMapper.ATTRIBUTE_NAME_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getName(), OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
         }
     }
 

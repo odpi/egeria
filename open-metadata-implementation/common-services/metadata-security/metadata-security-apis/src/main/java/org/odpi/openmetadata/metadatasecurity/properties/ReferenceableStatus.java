@@ -55,10 +55,10 @@ public enum ReferenceableStatus implements Serializable
 
     private static final long serialVersionUID = 1L;
 
-    private  int    ordinal;
-    private  int    omrsOrdinal;
-    private  String name;
-    private  String description;
+    private  final int    ordinal;
+    private  final int    omrsOrdinal;
+    private  final String name;
+    private  final String description;
 
 
     /**
