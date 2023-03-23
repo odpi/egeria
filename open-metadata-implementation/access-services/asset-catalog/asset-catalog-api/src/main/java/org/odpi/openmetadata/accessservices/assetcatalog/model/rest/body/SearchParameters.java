@@ -5,13 +5,13 @@ package org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 
-import javax.validation.constraints.PositiveOrZero;
 import java.io.Serializable;
 import java.util.List;
 
