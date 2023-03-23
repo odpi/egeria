@@ -16,6 +16,7 @@ dependencies {
     testImplementation 'org.mockito:mockito-core'
     testImplementation 'org.mockito:mockito-junit-jupiter'
     testImplementation 'junit:junit'
+    testCompileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'Security Officer OMAS with Spring'
