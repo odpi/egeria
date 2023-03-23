@@ -86,6 +86,22 @@ public class DatabaseIntegratorContext extends IntegrationContext
         this.validValueManagement    = validValueManagement;
     }
 
+    /* ========================================================
+     * Returning the database manager name from the configuration
+     */
+
+
+    /**
+     * Return the qualified name of the database manager that is supplied in the configuration
+     * document.
+     *
+     * @return string name
+     */
+    public String getDatabaseManagerName()
+    {
+        return externalSourceName;
+    }
+
 
     /* ========================================================
      * Register for inbound events from the Data Manager OMAS OutTopic

@@ -6164,6 +6164,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract the "attributeName" property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from ReferenceValueAssignment relationship
+     * @return string text or null
+     */
+    protected String getAttributeName(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "getAttributeName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.getStringProperty(serviceName,
+                                                      OpenMetadataAPIMapper.ATTRIBUTE_NAME_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract the pointType property from the supplied instance properties.
      *
      * @param instanceProperties properties from classification

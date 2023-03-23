@@ -807,6 +807,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param validValueGUID     unique identifier of the valid value.
      * @param referenceableGUID  unique identifier of the element to link to.
+     * @param attributeName      name of the attribute that this relationship represents
      * @param confidence         how confident is the steward that this mapping is correct (0-100).
      * @param steward                identifier of steward
      * @param stewardTypeName        type of element that represents steward
@@ -827,6 +828,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                            String  externalSourceName,
                                            String  validValueGUID,
                                            String  referenceableGUID,
+                                           String  attributeName,
                                            int     confidence,
                                            String  steward,
                                            String  stewardTypeName,
@@ -853,6 +855,12 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                                                                               OpenMetadataAPIMapper.CONFIDENCE_PROPERTY_NAME,
                                                                                               confidence,
                                                                                               methodName);
+
+        relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                              relationshipProperties,
+                                                                              OpenMetadataAPIMapper.ATTRIBUTE_NAME_PROPERTY_NAME,
+                                                                              attributeName,
+                                                                              methodName);
 
         relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                               relationshipProperties,

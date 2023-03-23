@@ -696,23 +696,19 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
      * @param userId calling user.
      * @param validValueGUID unique identifier of the valid value.
      * @param referenceableGUID unique identifier of the element to link to.
-     * @param confidence how confident is the steward that this mapping is correct (0-100).
-     * @param steward identifier of steward
-     * @param notes additional notes from the steward
+     * @param properties properties for the relationship
      *
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
     @Override
-    public void    assignReferenceValueToItem(String   userId,
-                                              String   validValueGUID,
-                                              String   referenceableGUID,
-                                              int      confidence,
-                                              String   steward,
-                                              String   notes) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
+    public void    assignReferenceValueToItem(String                             userId,
+                                              String                             validValueGUID,
+                                              String                             referenceableGUID,
+                                              ReferenceValueAssignmentProperties properties) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
     {
         final String   methodName = "assignReferenceValueToItem";
         final String   validValueGUIDParameter = "validValueGUID";
@@ -724,14 +720,9 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
 
         final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/reference-values/{2}/items/{3}";
 
-        ReferenceValueAssignmentProperties requestBody = new ReferenceValueAssignmentProperties();
-        requestBody.setConfidence(confidence);
-        requestBody.setSteward(steward);
-        requestBody.setNotes(notes);
-
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        requestBody,
+                                        properties,
                                         serverName,
                                         userId,
                                         validValueGUID,

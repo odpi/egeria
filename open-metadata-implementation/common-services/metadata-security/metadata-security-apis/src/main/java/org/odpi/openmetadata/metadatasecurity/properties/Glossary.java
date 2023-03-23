@@ -1,9 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.assetmanager.properties;
+package org.odpi.openmetadata.metadatasecurity.properties;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serial;
 import java.util.Objects;
@@ -17,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GlossaryProperties extends ReferenceableProperties
+public class Glossary extends Referenceable
 {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -30,7 +32,7 @@ public class GlossaryProperties extends ReferenceableProperties
     /**
      * Default constructor
      */
-    public GlossaryProperties()
+    public Glossary()
     {
         super();
     }
@@ -41,7 +43,7 @@ public class GlossaryProperties extends ReferenceableProperties
      *
      * @param template object to copy
      */
-    public GlossaryProperties(GlossaryProperties template)
+    public Glossary(Glossary template)
     {
         super(template);
 
@@ -158,7 +160,6 @@ public class GlossaryProperties extends ReferenceableProperties
                        ", usage='" + usage + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
-                       ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        '}';
@@ -186,7 +187,7 @@ public class GlossaryProperties extends ReferenceableProperties
         {
             return false;
         }
-        GlossaryProperties that = (GlossaryProperties) objectToCompare;
+        Glossary that = (Glossary) objectToCompare;
         return Objects.equals(displayName, that.displayName) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(language, that.language) &&

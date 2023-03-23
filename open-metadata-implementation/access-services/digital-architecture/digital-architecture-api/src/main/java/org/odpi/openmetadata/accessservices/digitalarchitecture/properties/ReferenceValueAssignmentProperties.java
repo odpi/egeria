@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serial;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -22,8 +23,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ReferenceValueAssignmentProperties extends RelationshipProperties
 {
-    private static final long     serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
+    private String attributeName          = null;
     private int    confidence             = 0;
     private String steward                = null;
     private String stewardTypeName        = null;
@@ -50,12 +53,35 @@ public class ReferenceValueAssignmentProperties extends RelationshipProperties
 
         if (template != null)
         {
+            attributeName          = template.getAttributeName();
             confidence             = template.getConfidence();
             steward                = template.getSteward();
             stewardTypeName        = template.getStewardTypeName();
             stewardPropertyName    = template.getStewardPropertyName();
             notes                  = template.getNotes();
         }
+    }
+
+
+    /**
+     * Return the name of the attribute that this reference data value represents.
+     *
+     * @return string
+     */
+    public String getAttributeName()
+    {
+        return attributeName;
+    }
+
+
+    /**
+     * Set up the name of the attribute that this reference data value represents.
+     *
+     * @param attributeName string
+     */
+    public void setAttributeName(String attributeName)
+    {
+        this.attributeName = attributeName;
     }
 
 
@@ -179,6 +205,7 @@ public class ReferenceValueAssignmentProperties extends RelationshipProperties
     {
         return "ReferenceValueAssignmentProperties{" +
                        "confidence=" + confidence +
+                       ", attributeName='" + attributeName + '\'' +
                        ", steward='" + steward + '\'' +
                        ", stewardTypeName='" + stewardTypeName + '\'' +
                        ", stewardPropertyName='" + stewardPropertyName + '\'' +
@@ -212,9 +239,12 @@ public class ReferenceValueAssignmentProperties extends RelationshipProperties
             return false;
         }
         ReferenceValueAssignmentProperties that = (ReferenceValueAssignmentProperties) objectToCompare;
-        return confidence == that.confidence && Objects.equals(steward, that.steward) && Objects.equals(stewardTypeName,
-                                                                                                        that.stewardTypeName) && Objects.equals(
-                stewardPropertyName, that.stewardPropertyName) && Objects.equals(notes, that.notes);
+        return confidence == that.confidence &&
+                       Objects.equals(attributeName, that.attributeName) &&
+                       Objects.equals(steward, that.steward) &&
+                       Objects.equals(stewardTypeName, that.stewardTypeName) &&
+                       Objects.equals(stewardPropertyName, that.stewardPropertyName) &&
+                       Objects.equals(notes, that.notes);
     }
 
 

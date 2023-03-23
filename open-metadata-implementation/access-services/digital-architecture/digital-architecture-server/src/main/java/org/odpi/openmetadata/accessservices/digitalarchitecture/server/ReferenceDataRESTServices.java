@@ -23,7 +23,7 @@ import java.util.Map;
  * ReferenceDataRESTServices provides the API operations to create and maintain lists of valid
  * value definitions grouped into a valid value set.  Both valid value definitions and valid value sets have
  * the same attributes and so inherit from ValidValue where all the attributes are defined.
- *
+ * <p>
  * A set is just grouping of valid values.   Valid value definitions and set can be nested many times in other
  * valid value sets.
  */
@@ -871,6 +871,7 @@ public class ReferenceDataRESTServices
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
         int          confidence = 0;
+        String       attributeName = null;
         String       steward = null;
         String       stewardTypeName = null;
         String       stewardPropertyName = null;
@@ -878,6 +879,7 @@ public class ReferenceDataRESTServices
 
         if (requestBody != null)
         {
+            attributeName       = requestBody.getAttributeName();
             confidence          = requestBody.getConfidence();
             steward             = requestBody.getSteward();
             stewardTypeName     = requestBody.getStewardTypeName();
@@ -903,6 +905,7 @@ public class ReferenceDataRESTServices
                                                null,
                                                validValueGUID,
                                                referenceableGUID,
+                                               attributeName,
                                                confidence,
                                                steward,
                                                stewardTypeName,

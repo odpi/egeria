@@ -174,6 +174,7 @@ public class OpenMetadataTypesArchive
         create0464DynamicIntegrationGroups();
         update0470IncidentClassifierSet();
         update0484AgreementActor();
+        update0545ReferenceData();
         update0720InformationSupplyChains();
         addFormulaTypeAttribute();
     }
@@ -185,6 +186,7 @@ public class OpenMetadataTypesArchive
     private void update0385ControlledGlossaries()
     {
         this.archiveBuilder.addTypeDefPatch(updateControlledGlossaryTermEntity());
+        this.archiveBuilder.addRelationshipDef(addGlossaryTermEvolutionRelationship());
     }
 
 
@@ -235,6 +237,78 @@ public class OpenMetadataTypesArchive
         typeDefPatch.setValidInstanceStatusList(validInstanceStatusList);
 
         return typeDefPatch;
+    }
+
+
+    private RelationshipDef addGlossaryTermEvolutionRelationship()
+    {
+        final String guid            = "b323c9cf-f254-49c7-a391-11222e9da70f";
+        final String name            = "GlossaryTermEvolution";
+        final String description     = "Links a live glossary term with a future version of .";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "ControlledGlossaryTerm";
+        final String                     end1AttributeName            = "glossaryTermUpdates";
+        final String                     end1AttributeDescription     = "A glossary term that contains proposed updates to the live glossary term.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "GlossaryTerm";
+        final String                     end2AttributeName            = "liveGlossaryTerm";
+        final String                     end2AttributeDescription     = "The approved term that is in use.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "description";
+        final String attribute1Description     = "Short description of the update.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
     }
 
     /*
@@ -1095,6 +1169,48 @@ public class OpenMetadataTypesArchive
         relationshipDef.setEndDef2(relationshipEndDef);
 
         return relationshipDef;
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0545ReferenceData()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateReferenceValueAssignment());
+    }
+
+
+    private TypeDefPatch updateReferenceValueAssignment()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "ReferenceValueAssignment";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "attributeName";
+        final String attribute1Description     = "The name of the attribute that the reference data assignment represents.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
     }
 
     /*

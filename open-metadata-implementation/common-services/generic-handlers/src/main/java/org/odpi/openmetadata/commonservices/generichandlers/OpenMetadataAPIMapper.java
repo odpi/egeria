@@ -1445,6 +1445,7 @@ public class OpenMetadataAPIMapper
     public static final String IMPLEMENTATION_DESCRIPTION_PROPERTY_NAME  = "implementationDescription"; /* from GovernanceControl entity */
     public static final String NAME_PATTERN_PROPERTY_NAME                = "namePattern";               /* from NamingStandardRule entity */
     public static final String NOTES_PROPERTY_NAME                       = "notes";                     /* from multiple entities */
+    public static final String ATTRIBUTE_NAME_PROPERTY_NAME              = "attributeName";             /* from ReferenceValueAssignment relationship */
     public static final String RATIONALE_PROPERTY_NAME                   = "rationale";                 /* from GovernanceResponse, GovernanceImplementation relationship */
 
     public static final String GOVERNANCE_PROJECT_CLASSIFICATION_TYPE_GUID = "37142317-4125-4046-9514-71dc5031563f";
@@ -2079,8 +2080,6 @@ public class OpenMetadataAPIMapper
     public static final String SCHEMA_ATTRIBUTE_TYPE_NAME               = "SchemaAttribute";
     /* SchemaElement */
 
-    public static final String ATTRIBUTE_NAME_PROPERTY_NAME             = "displayName";           /* from SchemaAttribute entity */
-    public static final String OLD_ATTRIBUTE_NAME_PROPERTY_NAME         = "name";                  /* from SchemaAttribute entity */
     public static final String ELEMENT_POSITION_PROPERTY_NAME           = "position";              /* from SchemaAttribute entity */
     public static final String CARDINALITY_PROPERTY_NAME                = "cardinality";           /* from SchemaAttribute entity */
     public static final String MAX_CARDINALITY_PROPERTY_NAME            = "maxCardinality";        /* from SchemaAttribute entity */

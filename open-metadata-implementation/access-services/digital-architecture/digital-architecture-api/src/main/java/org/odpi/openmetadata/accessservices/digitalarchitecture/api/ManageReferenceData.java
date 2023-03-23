@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.digitalarchitecture.api;
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.*;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ReferenceValueAssignmentProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -312,22 +313,18 @@ public interface ManageReferenceData
      * @param userId calling user.
      * @param validValueGUID unique identifier of the valid value.
      * @param referenceableGUID unique identifier of the element to link to.
-     * @param confidence how confident is the steward that this mapping is correct (0-100).
-     * @param steward identifier of steward
-     * @param notes additional notes from the steward
+     * @param properties details of the relationship
      *
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    void    assignReferenceValueToItem(String   userId,
-                                       String   validValueGUID,
-                                       String   referenceableGUID,
-                                       int      confidence,
-                                       String   steward,
-                                       String   notes) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException;
+    void    assignReferenceValueToItem(String                             userId,
+                                       String                             validValueGUID,
+                                       String                             referenceableGUID,
+                                       ReferenceValueAssignmentProperties properties) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException;
 
 
     /**
