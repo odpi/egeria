@@ -92,6 +92,7 @@ public class ReferenceValueAssignmentItemConverter<B> extends DigitalArchitectur
                     {
                         instanceProperties = relationship.getProperties();
 
+                        bean.setAttributeName(this.getAttributeName(instanceProperties));
                         bean.setConfidence(this.getConfidence(instanceProperties));
                         bean.setSteward(this.getSteward(instanceProperties));
                         bean.setStewardTypeName(this.getStewardTypeName(instanceProperties));

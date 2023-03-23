@@ -38,11 +38,11 @@ public enum GovernanceClassificationStatus implements Serializable
     public static final String ENUM_TYPE_GUID  = "cc540586-ac7c-41ba-8cc1-4da694a6a8e4";
     public static final String ENUM_TYPE_NAME  = "GovernanceClassificationStatus";
 
-    private int    openTypeOrdinal;
+    private final int    openTypeOrdinal;
 
-    private int    ordinal;
-    private String name;
-    private String description;
+    private final int    ordinal;
+    private final String name;
+    private final String description;
 
     private static final long     serialVersionUID = 1L;
 
