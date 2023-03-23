@@ -13,6 +13,7 @@ dependencies {
     testImplementation 'org.testng:testng'
     testImplementation 'org.mockito:mockito-core'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    testCompileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 
 }
 

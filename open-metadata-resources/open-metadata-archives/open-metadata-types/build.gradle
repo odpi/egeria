@@ -14,6 +14,7 @@ dependencies {
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     testImplementation 'org.testng:testng'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    testCompileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     compileOnly 'com.google.code.findbugs:jsr305'
 
 }

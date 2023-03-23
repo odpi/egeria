@@ -29,6 +29,7 @@ dependencies {
     implementation project(':open-metadata-implementation:governance-servers:data-engine-proxy-services:data-engine-proxy-services-server')
     implementation project(':open-metadata-implementation:admin-services:admin-services-client')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    testCompileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
