@@ -163,23 +163,23 @@ public class EgeriaConnectedAssetProperties extends ConnectedAssetProperties
         {
             if ((localServerUserId != null) && (localServerPassword != null))
             {
-                assetProperties = new ConnectedAssetUniverse(serviceName,
-                                                             remoteServerName,
-                                                             localServerUserId,
-                                                             localServerPassword,
-                                                             omasServerURL,
-                                                             userId,
-                                                             assetGUID,
-                                                             connection.getGUID());
+                assetProperties = ConnectedAssetUniverse.create(serviceName,
+                                                                remoteServerName,
+                                                                localServerUserId,
+                                                                localServerPassword,
+                                                                omasServerURL,
+                                                                userId,
+                                                                assetGUID,
+                                                                connection.getGUID());
             }
             else
             {
-                assetProperties = new ConnectedAssetUniverse(serviceName,
-                                                             remoteServerName,
-                                                             omasServerURL,
-                                                             userId,
-                                                             assetGUID,
-                                                             connection.getGUID());
+                assetProperties = ConnectedAssetUniverse.create(serviceName,
+                                                                remoteServerName,
+                                                                omasServerURL,
+                                                                userId,
+                                                                assetGUID,
+                                                                connection.getGUID());
             }
         }
         catch (UserNotAuthorizedException  error)
