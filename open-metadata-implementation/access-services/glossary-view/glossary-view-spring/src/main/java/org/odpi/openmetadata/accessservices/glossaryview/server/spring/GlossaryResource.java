@@ -4,6 +4,9 @@ package org.odpi.openmetadata.accessservices.glossaryview.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PositiveOrZero;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetailResponse;
 import org.odpi.openmetadata.accessservices.glossaryview.server.service.GlossaryService;
 import org.springframework.validation.annotation.Validated;
@@ -13,9 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.PositiveOrZero;
 
 import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.OmasRegistration.PAGE_FROM_DEFAULT_VALUE;
 import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.OmasRegistration.PAGE_SIZE_DEFAULT_VALUE;
@@ -28,11 +28,15 @@ import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.Om
 @Validated
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/glossary-view/users/{userId}")
 
-@Tag(name="Glossary View OMAS", description="The Glossary View OMAS provides APIs and events for retrieving glossaries, categories and terms.", externalDocs=@ExternalDocumentation(description="Glossary View Open Metadata Access Service (OMAS)",url="https://egeria-project.org/services/omas/glossary-view/overview/"))
+@Tag(name="Glossary View OMAS",
+        description="The Glossary View OMAS provides APIs and events for retrieving glossaries, categories and terms.",
+        externalDocs=@ExternalDocumentation(
+                description="Glossary View Open Metadata Access Service (OMAS)",
+                url="https://egeria-project.org/services/omas/glossary-view/overview/"))
 
 public class GlossaryResource {
 
-    private GlossaryService glossaryService;
+    private final GlossaryService glossaryService;
 
     /**
      * Called by Spring

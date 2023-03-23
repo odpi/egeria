@@ -83,8 +83,8 @@ description = 'UI Server Platform Chassis for Spring'
 
 bootJar {
     manifest {
-//        attributes 'Main-Class': 'org.springframework.boot.loader.PropertiesLauncher'
-        mainClass = 'org.odpi.openmetadata.userinterface.uichassis.springboot.EgeriaUIPlatform'
+        attributes 'Main-Class': 'org.springframework.boot.loader.PropertiesLauncher'
+//        mainClass = 'org.odpi.openmetadata.userinterface.uichassis.springboot.EgeriaUIPlatform'
     }
 }
 
