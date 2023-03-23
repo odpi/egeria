@@ -160,7 +160,6 @@ dependencies {
         api("io.openlineage:openlineage-java:${openlineageVersion}")
         api("jakarta.persistence:jakarta.persistence-api:${jakartapersistenceVersion}")
         api("jakarta.validation:jakarta.validation-api:${jakartavalidationVersion}")
-        api("javax.validation:validation-api:${validationVersion}")
         api("javax.xml.bind:jaxb-api:${jaxbVersion}")
         api("org.apache.avro:avro:${avroVersion}")
         api("org.apache.commons:commons-collections4:${collections4Version}")
