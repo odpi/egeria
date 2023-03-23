@@ -11,6 +11,7 @@ dependencies {
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     testImplementation project(':open-metadata-test:open-metadata-ut')
     testImplementation 'org.testng:testng'
+    testCompileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'Software Developer OMAS API'
