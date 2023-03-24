@@ -28,6 +28,7 @@ import java.util.Map;
 public class IntegrationServiceHandler
 {
     private final String                    localServerName;               /* Initialized in constructor */
+    private final String                    localServerUserId;             /* Initialized in constructor */
     private final IntegrationServiceConfig  serviceConfig;                 /* Initialized in constructor */
     private final IntegrationContextManager contextManager;                /* Initialized in constructor */
     private final AuditLog                  auditLog;                      /* Initialized in constructor */
@@ -45,11 +46,13 @@ public class IntegrationServiceHandler
      * @param auditLog logging destination
      */
     public IntegrationServiceHandler(String                    localServerName,
+                                     String                    localServerUserId,
                                      IntegrationServiceConfig  serviceConfig,
                                      IntegrationContextManager contextManager,
                                      AuditLog                  auditLog)
     {
         this.localServerName       = localServerName;
+        this.localServerUserId     = localServerUserId;
         this.serviceConfig         = serviceConfig;
         this.contextManager        = contextManager;
         this.auditLog              = auditLog;
@@ -101,10 +104,16 @@ public class IntegrationServiceHandler
                         connectorConfig.setPermittedSynchronization(serviceConfig.getDefaultPermittedSynchronization());
                     }
 
+                    String userId = localServerUserId;
+
+                    if (connectorConfig.getConnectorUserId() != null)
+                    {
+                        userId = connectorConfig.getConnectorUserId();
+                    }
                     IntegrationConnectorHandler connectorHandler = new IntegrationConnectorHandler(connectorConfig.getConnectorId(),
                                                                                                    null,
                                                                                                    connectorConfig.getConnectorName(),
-                                                                                                   connectorConfig.getConnectorUserId(),
+                                                                                                   userId,
                                                                                                    null,
                                                                                                    null,
                                                                                                    connectorConfig.getRefreshTimeInterval(),
