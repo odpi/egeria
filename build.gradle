@@ -170,6 +170,20 @@ subprojects {
             }
 
         }
+        if (System.getenv("CI")) {
+            apply plugin: 'signing'
+            signing {
+                // gpg --export-secret-keys myemal@gmail.com | base64
+                def signingKey = System.getenv('OSSRH_GPG_PRIVATE_KEY')
+                // Passphrase for key
+                def signingPassword = System.getenv('OSSRH_GPG_PASSPHRASE')
+                // public key id (last 8 characters only) - note keys also need uploading to all the main registries
+                def signingKeyId = System.getenv('OSSRH_GPG_KEYID')
+                // We use these values from secrets rather than gradle.properties
+                useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+                sign publishing.publications.connector
+            }
+        }
     }
 
     // Always need these repos
