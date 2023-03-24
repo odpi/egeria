@@ -371,6 +371,8 @@ publishing {
             pom.withXml {
                 // NOTE - this subproject is similar to the root project in maven, in that it defines the BOM
                 asNode().appendNode('description', "${project.description}")
+                asNode().appendNode('name', "${project.name}")
+
             }
         }
     }
