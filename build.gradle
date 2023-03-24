@@ -50,7 +50,7 @@ subprojects {
     // TODO: Consider using convention plugins to stylise different profiles of subprojects
 
     // The 'bom' project is a special case - we must not apply anything else to it
-    if (project.name != 'bom') {
+    if (project.name != 'bom' && project.buildFile.exists()) {
         apply plugin: 'java'
         apply plugin: 'jacoco'
         apply plugin: 'checkstyle'
@@ -58,7 +58,6 @@ subprojects {
         apply plugin: 'com.autonomousapps.dependency-analysis'
         apply plugin: 'dev.jacomet.logging-capabilities'
         apply plugin: 'org.gradlex.java-ecosystem-capabilities'
-
 
         // Consistent dependencies, and exceptions
         dependencies {
