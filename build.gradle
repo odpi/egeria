@@ -29,7 +29,7 @@ plugins {
  */
 allprojects {
     group = 'org.odpi.egeria'
-    version = '4.1-SNAPSHOT'
+    version = '4.0'
 
     // Signing/publish used in parent & child projects
     apply plugin: 'maven-publish'
@@ -122,15 +122,43 @@ subprojects {
                             }
                             developers {
                                 developer {
+                                    id = 'mandy-chessell'
+                                    name = 'Mandy Chessell'
+                                    email = 'mandy.e.chessell@gmail.com'
+                                    timezone = 'Europe/London'
+                                    roles = ['Project Leader']
+                                    organization = 'Pragmatic Data Research Ltd'
+                                }
+                                developer {
                                     id = 'planetf1'
                                     name = 'Nigel Jones'
                                     email = 'nigel.l.jones+git@gmail.com'
+                                    roles = ['maintainer']
+                                    organization = 'IBM Corporation'
                                 }
                             }
                             scm {
                                 connection = 'scm:git:git://github.com/odpi/egeria.git'
                                 developerConnection = 'scm:git:ssh://github.com/odpi/egeria/egeria.git'
                                 url = 'http://github.com/odpi/egeria'
+                            }
+                            organization {
+                                name = 'LF AI & Data Foundation'
+                                url = 'https://lfaidata.foundation'
+                            }
+                            issueManagement {
+                                system = 'GitHub'
+                                url = 'https://github.com/odpi/egeria/issues'
+                            }
+                            inceptionYear = '2018'
+                            mailingLists {
+                                mailingList {
+                                    name = 'Egeria mailing list'
+                                    subscribe = 'egeria-technical-discuss+subscribe@lists.lfaidata.foundation'
+                                    unsubscribe = 'egeria-technical-discuss+unsubscribe@lists.lfaidata.foundation'
+                                    post = 'egeria-technical-discuss@lists.lfaidata.foundation'
+                                    archive = 'https://lists.lfaidata.foundation/g/egeria-technical-discuss/topics'
+                                }
                             }
                         }
                         // Override the project name & description for the pom based on properties set in the child build.gradle (hard to default & required for maven central)
