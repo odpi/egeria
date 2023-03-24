@@ -65,7 +65,7 @@ jobs:
         uses: docker/setup-qemu-action@v2
       - name: Set Release version env variable
         run: |
-          echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+          echo "VERSION=$(./gradlew properties --no-daemon --console=plain -q | grep '^version:' | awk '{printf $2}')" >> $GITHUB_ENV
       # Publish container images(egeria) to quay.io and docker.io
       - name: Copy the distribution content to be used in docker copy command
         run: |
