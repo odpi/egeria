@@ -28,7 +28,9 @@ jobs:
         with:
           # Only cache for main build
           cache-read-only: true
-          arguments: build publishToMavenLocal
+          arguments: |
+            build
+            --scan
       - name: Upload Test coverage report
         uses: actions/upload-artifact@v3
         with:
