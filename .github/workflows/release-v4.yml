@@ -56,8 +56,9 @@ jobs:
           OSSRH_GPG_KEYID: ${{ secrets.OSSRH_GPG_KEYID }}
           OSSRH_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_PASSPHRASE }}
           OSSRH_GPG_PRIVATE_KEY: ${{ secrets.OSSRH_GPG_PRIVATE_KEY }}
-          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
-          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenRepoUrl: https://oss.sonatype.org/service/local/staging/deploy/maven2
+          ORG_GRADLE_PROJECT_mavenRepoPass: ${{ secrets.OSSRH_TOKEN }}
+          ORG_GRADLE_PROJECT_mavenRepoUser: ${{ secrets.OSSRH_USERNAME }}
       # QEMU is needed for ARM64 build for egeria-configure
       # egeria-configure needs to install utilities
       - name: Set up QEMU
@@ -68,8 +69,8 @@ jobs:
       # Publish container images(egeria) to quay.io and docker.io
       - name: Copy the distribution content to be used in docker copy command
         run: |
-          mkdir -p ./open-metadata-resources/open-metadata-deployment/docker/egeria/target/assembly
-          cp -r open-metadata-distribution/open-metadata-assemblies/target/egeria-${{ env.VERSION }}-distribution/egeria-omag-${{ env.VERSION }}/. open-metadata-resources/open-metadata-deployment/docker/egeria/target/assembly
+          mkdir -p ./open-metadata-resources/open-metadata-deployment/docker/egeria/build/assembly
+          cp -r open-metadata-distribution/open-metadata-assemblies/build/unpacked/egeria-${{ env.VERSION }}-distribution.tar.gz/. open-metadata-resources/open-metadata-deployment/docker/egeria/build/assembly
       - name: Build and push(egeria) to quay.io and docker.io
         uses: docker/build-push-action@v4
         with:
