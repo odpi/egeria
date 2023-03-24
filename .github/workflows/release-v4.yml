@@ -47,6 +47,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: build and publish to maven central
+        uses: gradle/gradle-build-action@v2
         with:
           cache-read-only: false
           arguments: build publish -Dorg.gradle.parallel=false -Dorg.gradle.caching=false
