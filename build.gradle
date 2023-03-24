@@ -181,7 +181,7 @@ subprojects {
                 def signingKeyId = System.getenv('OSSRH_GPG_KEYID')
                 // We use these values from secrets rather than gradle.properties
                 useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
-                sign publishing.publications.connector
+                sign publishing.publications.mavenmodule
             }
         }
     }
