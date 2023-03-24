@@ -325,10 +325,17 @@ public class IntegrationGroupHandler
                     {
                         IntegrationServiceHandler integrationServiceHandler = integrationServiceHandlerMap.get(serviceURLMarker);
 
+                        String userId = serverUserId;
+
+                        if (registeredIntegrationConnectorElement.getRegistrationProperties().getConnectorUserId() != null)
+                        {
+                            userId = registeredIntegrationConnectorElement.getRegistrationProperties().getConnectorUserId();
+                        }
+
                         connectorHandler = new IntegrationConnectorHandler(registeredIntegrationConnectorElement.getConnectorId(),
                                                                            registeredIntegrationConnectorElement.getElementHeader().getGUID(),
                                                                            registeredIntegrationConnectorElement.getRegistrationProperties().getConnectorName(),
-                                                                           registeredIntegrationConnectorElement.getRegistrationProperties().getConnectorUserId(),
+                                                                           userId,
                                                                            registeredIntegrationConnectorElement.getRegistrationProperties().getStartDate(),
                                                                            registeredIntegrationConnectorElement.getRegistrationProperties().getStopDate(),
                                                                            registeredIntegrationConnectorElement.getRegistrationProperties().getRefreshTimeInterval(),
