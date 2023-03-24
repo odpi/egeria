@@ -31,7 +31,7 @@ import java.util.Map;
 
 /**
  * IntegrationDaemonOperationalServices is responsible for controlling the startup and shutdown of
- * of the integration daemon services.
+ * the integration daemon services.
  */
 public class IntegrationDaemonOperationalServices
 {
@@ -155,6 +155,7 @@ public class IntegrationDaemonOperationalServices
                     contextManager.createClients();
 
                     IntegrationServiceHandler integrationServiceHandler = new IntegrationServiceHandler(localServerName,
+                                                                                                        localServerUserId,
                                                                                                         integrationServiceConfig,
                                                                                                         contextManager,
                                                                                                         auditLog);
