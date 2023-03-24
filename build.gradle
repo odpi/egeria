@@ -152,14 +152,12 @@ subprojects {
         // Secrets for credentials
         repositories {
             maven {
-                name = 'OSSRH'
-                def releasesRepoUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
-                def snapshotsRepoUrl = 'https://oss.sonatype.org/content/repositories/snapshots'
-                url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+                name = mavenRepoName
+                url = mavenRepoUrl
                 // User token (under profile) on oss.sonatype.org
                 credentials {
-                    username = System.getenv("OSSRH_USERNAME")
-                    password = System.getenv("OSSRH_TOKEN")
+                    username = mavenRepoUser
+                    password = mavenRepoPass
                 }
             }
         }
