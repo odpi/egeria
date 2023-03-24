@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute;
 
@@ -30,6 +31,74 @@ public abstract class SchemaAttributes extends PropertyIteratorBase implements I
                             int maxCacheSize)
     {
         super(totalElementCount, maxCacheSize);
+        // Anonymous class for temporary changing the behaviour of the iterator in the case of SchemaAttributes
+        // as to not use the "totalElementCount" parameter because its value is always 0
+        super.pagingIterator = new PagingIterator(this, totalElementCount, maxCacheSize)
+        {
+            @Override
+            public ElementBase next()
+            {
+                    if (this.hasNext())
+                    {
+                        ElementBase retrievedElement = iterator.cloneElement(cachedElementList.get(cachedElementPointer));
+                        cachedElementPointer++;
+                        cachedElementStart++;
+
+                        log.debug("Returning next element:");
+                        log.debug("==> totalElementCount: " + totalElementCount);
+                        log.debug("==> cachedElementPointer: " + cachedElementPointer);
+                        log.debug("==> cachedElementStart:" + cachedElementStart);
+                        log.debug("==> maxCacheSize:" + maxCacheSize);
+
+                        return retrievedElement;
+                    }
+                    else
+                    {
+                        /*
+                         * Throw runtime exception to show the caller they are not using the list correctly.
+                         */
+                        throw new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition(this.getClass().getName()),
+                                                                                                         this.getClass().getName(),
+                                                                                                         "next");
+                    }
+            }
+
+            @Override
+            public boolean hasNext()
+            {
+                if (cachedElementList == null)
+                {
+                    return false;
+                }
+
+                if (cachedElementPointer == cachedElementList.size())
+                {
+                    try
+                    {
+                        cachedElementList = iterator.getCachedList(cachedElementStart, maxCacheSize);
+                        if (cachedElementList == null)
+                        {
+                            return false;
+                        }
+
+                        cachedElementPointer = 0;
+                    }
+                    catch (PropertyServerException error)
+                    {
+                        /*
+                         * Problem retrieving next cache.  The exception includes a detailed error message,
+                         */
+                        throw new OCFRuntimeException(OCFErrorCode.PROPERTIES_NOT_AVAILABLE.getMessageDefinition(error.getReportedErrorMessage(),
+                                                                                                                 this.toString()),
+                                                                                                                 this.getClass().getName(),
+                                                                                                                 "next",
+                                                                                                                 error);
+                    }
+                }
+
+                return true;
+            }
+        };
     }
 
 

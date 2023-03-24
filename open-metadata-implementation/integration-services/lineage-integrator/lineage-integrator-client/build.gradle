@@ -11,6 +11,7 @@ dependencies {
     implementation project(':open-metadata-implementation:integration-services:lineage-integrator:lineage-integrator-api')
     implementation 'org.springframework:spring-core'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'io.openlineage:openlineage-java'
 
 }

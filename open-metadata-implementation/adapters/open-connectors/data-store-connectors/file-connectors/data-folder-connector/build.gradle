@@ -15,6 +15,7 @@ dependencies {
     testImplementation project(':open-metadata-test:open-metadata-ut')
     testImplementation 'org.testng:testng'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    testCompileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 
 }
 

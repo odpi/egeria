@@ -32,17 +32,14 @@ class ConnectedNestedSchemaType extends NestedSchemaType
     {
         super(bean);
 
-        if (this.getAttributeCount() > 0)
-        {
-            super.schemaAttributes = new ConnectedSchemaAttributes(serviceName,
-                                                                   serverName,
-                                                                   userId,
-                                                                   omasServerURL,
-                                                                   this.getGUID(),
-                                                                   maxCacheSize,
-                                                                   this.getAttributeCount(),
-                                                                   restClient);
+        super.schemaAttributes = new ConnectedSchemaAttributes(serviceName,
+                                                               serverName,
+                                                               userId,
+                                                               omasServerURL,
+                                                               this.getGUID(),
+                                                               this.getAttributeCount(),
+                                                               maxCacheSize,
+                                                               restClient);
 
-        }
     }
 }

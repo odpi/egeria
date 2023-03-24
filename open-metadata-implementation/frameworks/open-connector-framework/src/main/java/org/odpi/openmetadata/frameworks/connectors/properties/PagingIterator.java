@@ -58,7 +58,7 @@ public class PagingIterator extends PropertyBase implements Iterator<ElementBase
 
     protected PropertyIteratorBase iterator = null;
 
-    private static final Logger log = LoggerFactory.getLogger(PagingIterator.class);
+    protected static final Logger log = LoggerFactory.getLogger(PagingIterator.class);
 
 
 

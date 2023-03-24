@@ -17,6 +17,7 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testCompileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 
 }
 

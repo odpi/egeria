@@ -79,6 +79,10 @@ public class AssetDetail extends AssetSummary
         this.schema = schema;
     }
 
+    public AssetDetail(Asset assetBean)
+    {
+        super(assetBean);
+    }
 
     /**
      * Copy/clone constructor.  Note, this is a deep copy

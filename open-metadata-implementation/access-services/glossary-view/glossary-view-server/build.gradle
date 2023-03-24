@@ -22,6 +22,7 @@ dependencies {
     testImplementation 'org.mockito:mockito-core'
     testImplementation 'junit:junit'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    testCompileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 
 }
 
