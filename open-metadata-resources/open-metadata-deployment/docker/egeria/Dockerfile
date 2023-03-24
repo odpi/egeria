@@ -41,7 +41,7 @@ LABEL org.opencontainers.image.vendor = "ODPi" \
       org.opencontainers.image.ext.docker.params = "JAVA_DEBUG=set to true to enable JVM debugging"
 
 # Copy egeria distribution
-COPY target/assembly /deployments
+COPY build/assembly /deployments
 
 # Expose port 8080 (default) for client access, and allow for 5005 being used for remote java debug
 EXPOSE 9443 5005
