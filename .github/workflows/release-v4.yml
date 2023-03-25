@@ -91,4 +91,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: Assemblies
-          path: open-metadata-distribution/open-metadata-assemblies/target/*.gz
+          path: open-metadata-distribution/open-metadata-assemblies/build/distributions/*.gz
