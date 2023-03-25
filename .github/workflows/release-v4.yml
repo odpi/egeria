@@ -50,7 +50,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           cache-read-only: false
-          arguments: build publish
+          arguments: build publish -Dorg.gradle.parallel=false -Dorg.gradle.caching=false
         # Import secrets needed for code signing and distribution
         env:
           OSSRH_GPG_KEYID: ${{ secrets.OSSRH_GPG_KEYID }}
@@ -65,12 +65,12 @@ jobs:
         uses: docker/setup-qemu-action@v2
       - name: Set Release version env variable
         run: |
-          echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+          echo "VERSION=$(./gradlew properties --no-daemon --console=plain -q | grep '^version:' | awk '{printf $2}')" >> $GITHUB_ENV
       # Publish container images(egeria) to quay.io and docker.io
       - name: Copy the distribution content to be used in docker copy command
         run: |
-          mkdir -p ./open-metadata-resources/open-metadata-deployment/docker/egeria/target/assembly
-          cp -r open-metadata-distribution/open-metadata-assemblies/target/egeria-${{ env.VERSION }}-distribution/egeria-omag-${{ env.VERSION }}/. open-metadata-resources/open-metadata-deployment/docker/egeria/target/assembly
+          mkdir -p ./open-metadata-resources/open-metadata-deployment/docker/egeria/build/assembly
+          cp -r open-metadata-distribution/open-metadata-assemblies/build/unpacked/egeria-${{ env.VERSION }}-distribution.tar.gz/. open-metadata-resources/open-metadata-deployment/docker/egeria/build/assembly
       - name: Build and push(egeria) to quay.io and docker.io
         uses: docker/build-push-action@v4
         with:
@@ -91,4 +91,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: Assemblies
-          path: open-metadata-distribution/open-metadata-assemblies/target/*.gz
+          path: open-metadata-distribution/open-metadata-assemblies/build/distributions/*.gz

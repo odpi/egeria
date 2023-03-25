@@ -7,7 +7,7 @@
  * Dependency Management - to fix versions. Pick up maven build settings for now
  */
 
-description = 'Egeria BOM'
+description = 'Egeria BOM (Bill of materials). Egeria provides the standards, frameworks, reference implementations and conformance tests for open metadata and governance.'
 
 apply plugin: 'java-platform'
 
@@ -327,9 +327,19 @@ publishing {
                 }
                 developers {
                     developer {
+                        id = 'mandy-chessell'
+                        name = 'Mandy Chessell'
+                        email = 'mandy.e.chessell@gmail.com'
+                        timezone = 'Europe/London'
+                        roles = ['Project Leader']
+                        organization = 'Pragmatic Data Research Ltd'
+                    }
+                    developer {
                         id = 'planetf1'
                         name = 'Nigel Jones'
                         email = 'nigel.l.jones+git@gmail.com'
+                        roles = ['maintainer']
+                        organization = 'IBM Corporation'
                     }
                 }
                 scm {
@@ -337,13 +347,47 @@ publishing {
                     developerConnection = 'scm:git:ssh://github.com/odpi/egeria/egeria.git'
                     url = 'http://github.com/odpi/egeria'
                 }
+                organization {
+                    name = 'LF AI & Data Foundation'
+                    url = 'https://lfaidata.foundation'
+                }
+                issueManagement {
+                    system = 'GitHub'
+                    url = 'https://github.com/odpi/egeria/issues'
+                }
+                inceptionYear = '2018'
+                mailingLists {
+                    mailingList {
+                        name = 'Egeria mailing list'
+                        subscribe = 'egeria-technical-discuss+subscribe@lists.lfaidata.foundation'
+                        unsubscribe = 'egeria-technical-discuss+unsubscribe@lists.lfaidata.foundation'
+                        post = 'egeria-technical-discuss@lists.lfaidata.foundation'
+                        archive = 'https://lists.lfaidata.foundation/g/egeria-technical-discuss/topics'
+                    }
+                }
+
             }
             // Override the project name & description for the pom based on properties set in the child build.gradle (hard to default & required for maven central)
             pom.withXml {
                 // NOTE - this subproject is similar to the root project in maven, in that it defines the BOM
                 asNode().appendNode('description', "${project.description}")
+                asNode().appendNode('name', "${project.name}")
             }
         }
+    }
+}
+if (System.getenv("CI")) {
+    apply plugin: 'signing'
+    signing {
+        // gpg --export-secret-keys myemal@gmail.com | base64
+        def signingKey = System.getenv('OSSRH_GPG_PRIVATE_KEY')
+        // Passphrase for key
+        def signingPassword = System.getenv('OSSRH_GPG_PASSPHRASE')
+        // public key id (last 8 characters only) - note keys also need uploading to all the main registries
+        def signingKeyId = System.getenv('OSSRH_GPG_KEYID')
+        // We use these values from secrets rather than gradle.properties
+        useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+        sign publishing.publications.mavenmodule
     }
 }
 
