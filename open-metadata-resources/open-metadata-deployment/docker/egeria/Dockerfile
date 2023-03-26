@@ -12,8 +12,10 @@
 # Based on RedHat UBI image.
 # https://catalog.redhat.com/software/containers/ubi9/openjdk-17-runtime/61ee7d45384a3eb331996bee
 
-
-FROM registry.access.redhat.com/ubi9/openjdk-17-runtime
+# This can be switched to the runtime image for a smaller footprint image
+# However the JDK debugging tools will be lost, which are helpful in monitoring & undersanding performance/resource issues
+#FROM registry.access.redhat.com/ubi9/openjdk-17-runtime
+FROM registry.access.redhat.com/ubi9/openjdk-17
 ARG version=4.0
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
