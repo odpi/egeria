@@ -24,14 +24,14 @@ public class AuthController {
         this.authenticationManager = authenticationManager;
     }
 
-    @PostMapping("/api/token2")
+    @PostMapping("/api/token")
     public String token(@RequestBody LoginRequest userLogin) throws AuthenticationException {
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(userLogin.username(), userLogin.password()));
         return tokenService.generateToken(authentication);
     }
 
-    @PostMapping("/api/token")
+    @PostMapping(value = "/api/token", params = {"username","password"})
     public String token(@RequestParam String username, @RequestParam String password) throws AuthenticationException {
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(username, password));
