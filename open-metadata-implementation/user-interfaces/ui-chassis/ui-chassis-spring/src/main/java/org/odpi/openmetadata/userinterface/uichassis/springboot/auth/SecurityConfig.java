@@ -26,11 +26,9 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -76,22 +74,18 @@ public class SecurityConfig {
     }
 
     /**
-     *Returns CorsConfigurationSource the cors configuration
+     *Returns WebMvcConfigurer for the cors configuration
      * The bean is based on springboot configuration property cors.allowed-origins
      */
     @Bean
     @ConditionalOnProperty(value = "cors.allowed-origins")
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        if( allowedOrigins!=null && !allowedOrigins.isEmpty()) {
-            configuration.setAllowedOrigins(allowedOrigins);
-            configuration.setAllowedMethods(Arrays.asList("GET","POST"));
-            configuration.addExposedHeader("x-auth-token");
-            configuration.setAllowedHeaders(Arrays.asList("content-type","x-auth-token"));
-            source.registerCorsConfiguration("/**", configuration);
-        }
-        return source;
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings( CorsRegistry registry ) {
+                registry.addMapping("/**").allowedOrigins(allowedOrigins.toArray(new String[]{}));
+            }
+        };
     }
 
     @Bean
