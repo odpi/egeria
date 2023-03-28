@@ -108,8 +108,12 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#token(org.odpi.openmetadata.userinterface.uichassis.springboot.auth.model.LoginRequest)" class="member-name-link">token</a><wbr>(<a href="../auth/model/LoginRequest.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.auth.model">LoginRequest</a>&nbsp;userLogin)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#token(java.lang.String,java.lang.String)" class="member-name-link">token</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;username,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#token(org.odpi.openmetadata.userinterface.uichassis.springboot.auth.model.LoginRequest)" class="member-name-link">token</a><wbr>(<a href="../auth/model/LoginRequest.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.auth.model">LoginRequest</a>&nbsp;userLogin)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -148,6 +152,22 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="annotations">@PostMapping("/api/token")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">token</span><wbr><span class="parameters">(@RequestBody
  <a href="../auth/model/LoginRequest.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.auth.model">LoginRequest</a>&nbsp;userLogin)</span>
+             throws <span class="exceptions">org.springframework.security.core.AuthenticationException</span></div>
+<dl class="notes">
+<dt>Throws:</dt>
+<dd><code>org.springframework.security.core.AuthenticationException</code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="token(java.lang.String,java.lang.String)">
+<h3>token</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(value="/api/token",
+             params={"username","password"})
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">token</span><wbr><span class="parameters">(@RequestParam
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;username,
+ @RequestParam
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password)</span>
              throws <span class="exceptions">org.springframework.security.core.AuthenticationException</span></div>
 <dl class="notes">
 <dt>Throws:</dt>
