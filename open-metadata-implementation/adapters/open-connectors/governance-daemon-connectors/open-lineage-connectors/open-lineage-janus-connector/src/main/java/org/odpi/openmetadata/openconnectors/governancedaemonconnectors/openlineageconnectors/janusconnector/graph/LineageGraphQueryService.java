@@ -89,6 +89,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.JSON_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.KEYSTORE_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FLOW;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.LINEAGE_MAPPING;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.LOG_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.MEDIA_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.NESTED_FILE;
@@ -536,6 +537,7 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
         List<String> edgeLabels = new ArrayList<>();
         if (ASSETS.contains(label)) {
             edgeLabels.add(DATA_FLOW);
+            edgeLabels.add(LINEAGE_MAPPING);
         }
         switch (label) {
             case TABULAR_FILE_COLUMN:
@@ -543,6 +545,7 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
             case RELATIONAL_COLUMN:
             case EVENT_SCHEMA_ATTRIBUTE:
                 edgeLabels.add(EDGE_LABEL_COLUMN_DATA_FLOW);
+                edgeLabels.add(LINEAGE_MAPPING);
                 break;
             case DATA_FILE:
             case AVRO_FILE:
@@ -774,7 +777,7 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
         if (GLOSSARY_TERM.equalsIgnoreCase(queriedNode.getType())) {
             edges = Arrays.asList(SEMANTIC_ASSIGNMENT, TERM_CATEGORIZATION);
         } else {
-            edges = List.of(DATA_FLOW);
+            edges = List.of(DATA_FLOW, LINEAGE_MAPPING);
         }
         searchTraversal = buildQueryWithRelatedNodes(searchTraversal, relatedNodes, edges);
         List<Vertex> results = searchTraversal.toList();

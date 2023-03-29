@@ -334,7 +334,7 @@ class AssetLineageOMRSTopicListenerTest {
                 AssetLineageEventType.NEW_RELATIONSHIP_EVENT);
         verify(assetLineagePublisher, times(0)).publishGlossaryContext(GUID);
         verify(assetLineagePublisher, times(0))
-                .publishDataFlowRelationshipEvent(lineageRelationship, AssetLineageEventType.NEW_RELATIONSHIP_EVENT);
+                .publishDataFlowOrLineageMappingRelationshipEvent(lineageRelationship, AssetLineageEventType.NEW_RELATIONSHIP_EVENT);
     }
 
     @Test
@@ -347,7 +347,7 @@ class AssetLineageOMRSTopicListenerTest {
         assetLineageOMRSTopicListener.processInstanceEvent(instanceEvent);
 
         verify(assetLineagePublisher, times(1))
-                .publishDataFlowRelationshipEvent(lineageRelationship, AssetLineageEventType.NEW_RELATIONSHIP_EVENT);
+                .publishDataFlowOrLineageMappingRelationshipEvent(lineageRelationship, AssetLineageEventType.NEW_RELATIONSHIP_EVENT);
     }
 
     @Test
