@@ -2,11 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.api;
 
+import org.odpi.openmetadata.accessservices.assetmanager.properties.SecurityTagsProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The StewardshipExchangeInterface supports the exchange of relationships (such as SemanticAssignment)
@@ -124,4 +127,38 @@ public interface StewardshipExchangeInterface
                                        boolean forDuplicateProcessing) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException;
+
+
+    /**
+     * Add or replace the security tags for an element.
+     *
+     * @param userId calling user
+     * @param elementGUID element to link it to - its type must inherit from Referenceable.
+     * @param properties details of the security tags
+     *
+     * @throws InvalidParameterException element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    void  addSecurityTags(String                 userId,
+                          String                 elementGUID,
+                          SecurityTagsProperties properties) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException;
+
+
+    /**
+     * Remove the security tags classification from an element.
+     *
+     * @param userId calling user
+     * @param elementGUID element where the security tags need to be removed.
+     *
+     * @throws InvalidParameterException asset or element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    void  removeSecurityTags(String userId,
+                             String elementGUID) throws InvalidParameterException,
+                                                        UserNotAuthorizedException,
+                                                        PropertyServerException;
 }

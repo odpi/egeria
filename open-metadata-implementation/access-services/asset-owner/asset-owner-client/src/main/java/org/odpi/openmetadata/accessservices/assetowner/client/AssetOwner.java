@@ -1112,18 +1112,20 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      *                         If null then the assetGUID is used.
      * @param securityLabels list of security labels defining the security characteristics of the element
      * @param securityProperties Descriptive labels describing origin of the asset
+     * @param accessGroups map from operation to list of security groups
      * @throws InvalidParameterException entity not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public void  addSecurityTags(String                userId,
-                                 String                assetGUID,
-                                 String                assetElementGUID,
-                                 List<String>          securityLabels,
-                                 Map<String, Object>   securityProperties) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+    public void  addSecurityTags(String                    userId,
+                                 String                    assetGUID,
+                                 String                    assetElementGUID,
+                                 List<String>              securityLabels,
+                                 Map<String, Object>       securityProperties,
+                                 Map<String, List<String>> accessGroups) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         final String   methodName = "addSecurityTags";
         final String   assetGUIDParameter = "assetGUID";
@@ -1136,6 +1138,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
         SecurityTagsRequestBody requestBody = new SecurityTagsRequestBody();
         requestBody.setSecurityLabels(securityLabels);
         requestBody.setSecurityProperties(securityProperties);
+        requestBody.setAccessGroups(accessGroups);
 
         if (assetElementGUID == null)
         {

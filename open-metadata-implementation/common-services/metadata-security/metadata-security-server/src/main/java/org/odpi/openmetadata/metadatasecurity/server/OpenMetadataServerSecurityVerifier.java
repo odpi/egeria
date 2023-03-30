@@ -18,6 +18,7 @@ import org.odpi.openmetadata.metadatasecurity.properties.ConfidenceGovernanceCla
 import org.odpi.openmetadata.metadatasecurity.properties.ConfidentialityGovernanceClassification;
 import org.odpi.openmetadata.metadatasecurity.properties.Connection;
 import org.odpi.openmetadata.metadatasecurity.properties.CriticalityGovernanceClassification;
+import org.odpi.openmetadata.metadatasecurity.properties.Glossary;
 import org.odpi.openmetadata.metadatasecurity.properties.GovernanceClassificationStatus;
 import org.odpi.openmetadata.metadatasecurity.properties.ImpactGovernanceClassification;
 import org.odpi.openmetadata.metadatasecurity.properties.ReferenceableStatus;
@@ -53,7 +54,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     
     private static final String NAME_PROPERTY_NAME                        = "name";                                 /* from Asset entity */
 
-    private static final String DISPLAY_NAME_PROPERTY_NAME                = "displayName";           /* from many entities */
+    private static final String DISPLAY_NAME_PROPERTY_NAME                = "displayName";                          /* from many entities */
     private static final String DESCRIPTION_PROPERTY_NAME                 = "description";                          /* from many entity */
 
     private static final String SECURED_PROPERTIES_PROPERTY_NAME          = "securedProperties";                    /* from Connection entity */
@@ -61,6 +62,8 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     private static final String USER_ID_PROPERTY_NAME                     = "userId";                               /* from Connection entity */
     private static final String CLEAR_PASSWORD_PROPERTY_NAME              = "clearPassword";                        /* from Connection entity */
     private static final String ENCRYPTED_PASSWORD_PROPERTY_NAME          = "encryptedPassword";                    /* from Connection entity */
+    private static final String LANGUAGE_PROPERTY_NAME                    = "language";                             /* from Glossary entity */
+    private static final String USAGE_PROPERTY_NAME                       = "usage";                                /* from Glossary entity */
 
     private static final String LEVEL_IDENTIFIER_PROPERTY_NAME              = "levelIdentifier";           /* from many governance entities and classifications */
     private static final String BASIS_IDENTIFIER_PROPERTY_NAME              = "basisIdentifier";           /* from Retention classification */
@@ -91,6 +94,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     private static final String SECURITY_TAG_CLASSIFICATION_TYPE_NAME             = "SecurityTags";
     private static final String SECURITY_LABELS_PROPERTY_NAME                     = "securityLabels";
     private static final String SECURITY_PROPERTIES_PROPERTY_NAME                 = "securityProperties";
+    private static final String ACCESS_GROUPS_PROPERTY_NAME                       = "accessGroups";
 
     private static final String ASSET_ZONES_CLASSIFICATION_NAME           = "AssetZoneMembership";
 
@@ -105,7 +109,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
 
 
     private static final String ASSET_OWNERSHIP_CLASSIFICATION_NAME       = "AssetOwnership";
-    private static final String OWNERSHIP_CLASSIFICATION_TYPE_NAME = "Ownership";
+    private static final String OWNERSHIP_CLASSIFICATION_TYPE_NAME        = "Ownership";
 
     private static final String OWNER_PROPERTY_NAME                       = "owner";                                /* from Area 4 */
     private static final String OWNER_TYPE_PROPERTY_NAME                  = "ownerType"; /* deprecated */
@@ -117,6 +121,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     private OpenMetadataServiceSecurity    serviceSecurityConnector    = null;
     private OpenMetadataConnectionSecurity connectionSecurityConnector = null;
     private OpenMetadataAssetSecurity      assetSecurityConnector      = null;
+    private OpenMetadataGlossarySecurity   glossarySecurityConnector   = null;
 
     private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
@@ -179,6 +184,10 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
             if (connector instanceof OpenMetadataAssetSecurity)
             {
                 assetSecurityConnector = (OpenMetadataAssetSecurity)connector;
+            }
+            if (connector instanceof OpenMetadataGlossarySecurity)
+            {
+                glossarySecurityConnector = (OpenMetadataGlossarySecurity)connector;
             }
         }
         catch (InvalidParameterException error)
@@ -563,6 +572,10 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                                                 SECURITY_PROPERTIES_PROPERTY_NAME,
                                                                                 securityTagProperties,
                                                                                 methodName));
+            assetBean.setAccessGroups(repositoryHelper.getStringArrayStringMapFromProperty(serviceName,
+                                                                                           ACCESS_GROUPS_PROPERTY_NAME,
+                                                                                           securityTagProperties,
+                                                                                           methodName));
         }
 
         if (confidentialityProperties != null)
@@ -792,9 +805,6 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
             }
         }
     }
-
-
-
 
 
     /**
@@ -1203,7 +1213,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                repositoryHelper.getClassificationProperties(serviceName, classifications, CRITICALITY_CLASSIFICATION_TYPE_NAME, methodName),
                                                repositoryHelper.getClassificationProperties(serviceName, classifications, IMPACT_CLASSIFICATION_TYPE_NAME, methodName),
                                                repositoryHelper.getClassificationProperties(serviceName, classifications, RETENTION_CLASSIFICATION_TYPE_NAME, methodName),
-                                               repositoryHelper.getClassificationProperties(serviceName, classifications, ASSET_OWNERSHIP_CLASSIFICATION_NAME, methodName),
+                                               repositoryHelper.getClassificationProperties(serviceName, classifications, OWNERSHIP_CLASSIFICATION_TYPE_NAME, methodName),
                                                repositoryHelper.getClassificationProperties(serviceName, classifications, ASSET_ZONES_CLASSIFICATION_NAME, methodName),
                                                repositoryHelper.getClassificationProperties(serviceName, classifications, ASSET_ORIGIN_CLASSIFICATION_NAME, methodName),
                                                repositoryHelper,
@@ -1339,9 +1349,8 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
 
 
     /**
-     * Validate that the user is able to perform the requested action on an attachment.  This method should be used by the other
-     * handlers to verify whether the element they are working with is attached to a visible asset
-     * (ie is a member of one of the supported zones) that can be operated on by the calling user.
+     * Validate that the user is able to perform the requested action on an asset.  This method should be used by the other
+     * handlers to verify whether the asset they are working with that can be operated on by the calling user.
      *
      * @param userId calling user
      * @param originalAssetEntity entity storing the current asset
@@ -1352,13 +1361,13 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param methodName calling method
      * @throws UserNotAuthorizedException user not authorized to issue this request
      */
-    public void validateUserForAssetUpdate(String userId,
-                                           EntityDetail originalAssetEntity,
-                                           InstanceProperties updatedAssetProperties,
-                                           InstanceStatus newInstanceStatus,
+    public void validateUserForAssetUpdate(String               userId,
+                                           EntityDetail         originalAssetEntity,
+                                           InstanceProperties   updatedAssetProperties,
+                                           InstanceStatus       newInstanceStatus,
                                            OMRSRepositoryHelper repositoryHelper,
-                                           String serviceName,
-                                           String methodName) throws UserNotAuthorizedException
+                                           String               serviceName,
+                                           String               methodName) throws UserNotAuthorizedException
     {
         if (assetSecurityConnector != null)
         {
@@ -1408,6 +1417,596 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
             Asset asset = this.getAssetBeanFromEntity(assetEntity, repositoryHelper, serviceName, methodName);
 
             assetSecurityConnector.validateUserForAssetDelete(userId, asset);
+        }
+    }
+
+    /*
+     * =========================================================================================================
+     * Glossary Security
+     */
+
+    /**
+     * Fill in information about a glossary from an entity.  This is to pass to the Open Metadata Security verifier.
+     *
+     * @param entity properties to add to the bean
+     * @param methodName calling method
+     * @return glossary bean
+     */
+    private Glossary getGlossaryBeanFromEntity(EntityDetail         entity,
+                                               OMRSRepositoryHelper repositoryHelper,
+                                               String               serviceName,
+                                               String               methodName)
+    {
+        if ((entity != null) && (entity.getType() != null))
+        {
+            Glossary glossary = new Glossary();
+
+            String              typeId                    = entity.getType().getTypeDefGUID();
+            String              typeName                  = entity.getType().getTypeDefName();
+            InstanceStatus      instanceStatus            = entity.getStatus();
+            String              glossaryGUID              = entity.getGUID();
+            InstanceProperties  entityProperties          = entity.getProperties();
+            InstanceProperties  securityTagProperties     = null;
+            InstanceProperties  confidentialityProperties = null;
+            InstanceProperties  confidenceProperties      = null;
+            InstanceProperties  criticalityProperties     = null;
+            InstanceProperties  impactProperties          = null;
+            InstanceProperties  retentionProperties       = null;
+            InstanceProperties  ownershipProperties       = null;
+
+            if (entity.getClassifications() != null)
+            {
+                for (Classification classification : entity.getClassifications())
+                {
+                    if (classification != null)
+                    {
+                        if (SECURITY_TAG_CLASSIFICATION_TYPE_NAME.equals(classification.getName()))
+                        {
+                            securityTagProperties = classification.getProperties();
+                        }
+                        else if (CONFIDENTIALITY_CLASSIFICATION_TYPE_NAME.equals(classification.getName()))
+                        {
+                            confidentialityProperties = classification.getProperties();
+                        }
+                        else if (CONFIDENCE_CLASSIFICATION_TYPE_NAME.equals(classification.getName()))
+                        {
+                            confidenceProperties = classification.getProperties();
+                        }
+                        else if (CRITICALITY_CLASSIFICATION_TYPE_NAME.equals(classification.getName()))
+                        {
+                            criticalityProperties = classification.getProperties();
+                        }
+                        else if (IMPACT_CLASSIFICATION_TYPE_NAME.equals(classification.getName()))
+                        {
+                            impactProperties = classification.getProperties();
+                        }
+                        else if (RETENTION_CLASSIFICATION_TYPE_NAME.equals(classification.getName()))
+                        {
+                            retentionProperties = classification.getProperties();
+                        }
+                        else if (OWNERSHIP_CLASSIFICATION_TYPE_NAME.equals(classification.getName()))
+                        {
+                            ownershipProperties = classification.getProperties();
+                        }
+                    }
+                }
+            }
+
+            setupGlossaryBeanWithEntityProperties(glossary,
+                                                  typeId,
+                                                  typeName,
+                                                  instanceStatus,
+                                                  glossaryGUID,
+                                                  entityProperties,
+                                                  securityTagProperties,
+                                                  confidentialityProperties,
+                                                  confidenceProperties,
+                                                  criticalityProperties,
+                                                  impactProperties,
+                                                  retentionProperties,
+                                                  ownershipProperties,
+                                                  repositoryHelper,
+                                                  serviceName,
+                                                  methodName);
+            return glossary;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Fill in information about a glossary from an entity.  This is to pass to the Open Metadata Security verifier.
+     *
+     * @param glossary bean to fill out
+     * @param typeId unique identifier for the type of the entity
+     * @param typeName unique name for the type of the entity
+     * @param instanceStatus status from the entity
+     * @param assetGUID unique identifier for the entity
+     * @param entityProperties properties from the entity
+     * @param securityTagProperties properties from the SecurityTags classification
+     * @param confidentialityProperties properties from the Confidentiality classification
+     * @param confidenceProperties properties from the Confidence classification
+     * @param criticalityProperties properties from the Criticality classification
+     * @param impactProperties properties from the Impact classification
+     * @param retentionProperties properties from the Retention classification
+     * @param ownershipProperties properties from the Ownership classification
+     * @param repositoryHelper for working with OMRS objects
+     * @param serviceName calling service
+     * @param methodName calling method
+     */
+    private void setupGlossaryBeanWithEntityProperties(Glossary             glossary,
+                                                       String               typeId,
+                                                       String               typeName,
+                                                       InstanceStatus       instanceStatus,
+                                                       String               assetGUID,
+                                                       InstanceProperties   entityProperties,
+                                                       InstanceProperties   securityTagProperties,
+                                                       InstanceProperties   confidentialityProperties,
+                                                       InstanceProperties   confidenceProperties,
+                                                       InstanceProperties   criticalityProperties,
+                                                       InstanceProperties   impactProperties,
+                                                       InstanceProperties   retentionProperties,
+                                                       InstanceProperties   ownershipProperties,
+                                                       OMRSRepositoryHelper repositoryHelper,
+                                                       String               serviceName,
+                                                       String               methodName)
+    {
+        glossary.setTypeGUID(typeId);
+        glossary.setTypeName(typeName);
+        glossary.setStatus(this.getReferenceableStatus(instanceStatus));
+        glossary.setGUID(assetGUID);
+
+        InstanceProperties properties = new InstanceProperties(entityProperties);
+
+        glossary.setQualifiedName(repositoryHelper.removeStringProperty(serviceName,
+                                                                        QUALIFIED_NAME_PROPERTY_NAME,
+                                                                        properties,
+                                                                        methodName));
+        glossary.setAdditionalProperties(repositoryHelper.removeStringMapFromProperty(serviceName,
+                                                                                      ADDITIONAL_PROPERTIES_PROPERTY_NAME,
+                                                                                      properties,
+                                                                                      methodName));
+        glossary.setDisplayName(repositoryHelper.removeStringProperty(serviceName,
+                                                                      NAME_PROPERTY_NAME,
+                                                                      properties,
+                                                                      methodName));
+        glossary.setDescription(repositoryHelper.removeStringProperty(serviceName,
+                                                                      DESCRIPTION_PROPERTY_NAME,
+                                                                      properties,
+                                                                      methodName));
+
+        glossary.setLanguage(repositoryHelper.removeStringProperty(serviceName,
+                                                                   LANGUAGE_PROPERTY_NAME,
+                                                                   properties,
+                                                                   methodName));
+        glossary.setUsage(repositoryHelper.removeStringProperty(serviceName,
+                                                                USAGE_PROPERTY_NAME,
+                                                                properties,
+                                                                methodName));
+
+        glossary.setExtendedProperties(repositoryHelper.getInstancePropertiesAsMap(properties));
+
+        if (securityTagProperties != null)
+        {
+            glossary.setSecurityLabels(repositoryHelper.getStringArrayProperty(serviceName,
+                                                                               SECURITY_LABELS_PROPERTY_NAME,
+                                                                               securityTagProperties,
+                                                                               methodName));
+            glossary.setSecurityProperties(repositoryHelper.getMapFromProperty(serviceName,
+                                                                               SECURITY_PROPERTIES_PROPERTY_NAME,
+                                                                               securityTagProperties,
+                                                                               methodName));
+            glossary.setAccessGroups(repositoryHelper.getStringArrayStringMapFromProperty(serviceName,
+                                                                                          ACCESS_GROUPS_PROPERTY_NAME,
+                                                                                          securityTagProperties,
+                                                                                          methodName));
+        }
+
+        if (confidentialityProperties != null)
+        {
+            ConfidentialityGovernanceClassification classification = new ConfidentialityGovernanceClassification();
+
+            classification.setStatus(repositoryHelper.getIntProperty(serviceName,
+                                                                     STATUS_IDENTIFIER_PROPERTY_NAME,
+                                                                     confidentialityProperties,
+                                                                     methodName));
+            classification.setConfidence(repositoryHelper.getIntProperty(serviceName,
+                                                                         GOVERNANCE_CLASSIFICATION_CONFIDENCE_PROPERTY_NAME,
+                                                                         confidentialityProperties,
+                                                                         methodName));
+            classification.setSteward(repositoryHelper.getStringProperty(serviceName,
+                                                                         GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME,
+                                                                         confidentialityProperties,
+                                                                         methodName));
+            classification.setSource(repositoryHelper.getStringProperty(serviceName,
+                                                                        GOVERNANCE_CLASSIFICATION_SOURCE_PROPERTY_NAME,
+                                                                        confidentialityProperties,
+                                                                        methodName));
+            classification.setNotes(repositoryHelper.getStringProperty(serviceName,
+                                                                       GOVERNANCE_CLASSIFICATION_NOTES_PROPERTY_NAME,
+                                                                       confidentialityProperties,
+                                                                       methodName));
+            classification.setConfidentialityLevel(repositoryHelper.getIntProperty(serviceName,
+                                                                                   LEVEL_IDENTIFIER_PROPERTY_NAME,
+                                                                                   confidentialityProperties,
+                                                                                   methodName));
+        }
+
+        if (confidenceProperties != null)
+        {
+            ConfidenceGovernanceClassification classification = new ConfidenceGovernanceClassification();
+
+            classification.setStatus(repositoryHelper.getIntProperty(serviceName,
+                                                                     STATUS_IDENTIFIER_PROPERTY_NAME,
+                                                                     confidenceProperties,
+                                                                     methodName));
+            classification.setConfidence(repositoryHelper.getIntProperty(serviceName,
+                                                                         GOVERNANCE_CLASSIFICATION_CONFIDENCE_PROPERTY_NAME,
+                                                                         confidenceProperties,
+                                                                         methodName));
+            classification.setSteward(repositoryHelper.getStringProperty(serviceName,
+                                                                         GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME,
+                                                                         confidenceProperties,
+                                                                         methodName));
+            classification.setSource(repositoryHelper.getStringProperty(serviceName,
+                                                                        GOVERNANCE_CLASSIFICATION_SOURCE_PROPERTY_NAME,
+                                                                        confidenceProperties,
+                                                                        methodName));
+            classification.setNotes(repositoryHelper.getStringProperty(serviceName,
+                                                                       GOVERNANCE_CLASSIFICATION_NOTES_PROPERTY_NAME,
+                                                                       confidenceProperties,
+                                                                       methodName));
+            classification.setConfidenceLevel(repositoryHelper.getIntProperty(serviceName,
+                                                                              LEVEL_IDENTIFIER_PROPERTY_NAME,
+                                                                              confidenceProperties,
+                                                                              methodName));
+        }
+
+        if (criticalityProperties != null)
+        {
+            CriticalityGovernanceClassification classification = new CriticalityGovernanceClassification();
+
+            classification.setStatus(repositoryHelper.getIntProperty(serviceName,
+                                                                     STATUS_IDENTIFIER_PROPERTY_NAME,
+                                                                     criticalityProperties,
+                                                                     methodName));
+            classification.setConfidence(repositoryHelper.getIntProperty(serviceName,
+                                                                         GOVERNANCE_CLASSIFICATION_CONFIDENCE_PROPERTY_NAME,
+                                                                         criticalityProperties,
+                                                                         methodName));
+            classification.setSteward(repositoryHelper.getStringProperty(serviceName,
+                                                                         GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME,
+                                                                         criticalityProperties,
+                                                                         methodName));
+            classification.setSource(repositoryHelper.getStringProperty(serviceName,
+                                                                        GOVERNANCE_CLASSIFICATION_SOURCE_PROPERTY_NAME,
+                                                                        criticalityProperties,
+                                                                        methodName));
+            classification.setNotes(repositoryHelper.getStringProperty(serviceName,
+                                                                       GOVERNANCE_CLASSIFICATION_NOTES_PROPERTY_NAME,
+                                                                       criticalityProperties,
+                                                                       methodName));
+            classification.setCriticalityLevel(repositoryHelper.getIntProperty(serviceName,
+                                                                               LEVEL_IDENTIFIER_PROPERTY_NAME,
+                                                                               criticalityProperties,
+                                                                               methodName));
+        }
+
+        if (impactProperties != null)
+        {
+            ImpactGovernanceClassification classification = new ImpactGovernanceClassification();
+
+            classification.setStatus(repositoryHelper.getIntProperty(serviceName,
+                                                                     STATUS_IDENTIFIER_PROPERTY_NAME,
+                                                                     impactProperties,
+                                                                     methodName));
+            classification.setConfidence(repositoryHelper.getIntProperty(serviceName,
+                                                                         GOVERNANCE_CLASSIFICATION_CONFIDENCE_PROPERTY_NAME,
+                                                                         impactProperties,
+                                                                         methodName));
+            classification.setSteward(repositoryHelper.getStringProperty(serviceName,
+                                                                         GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME,
+                                                                         impactProperties,
+                                                                         methodName));
+            classification.setSource(repositoryHelper.getStringProperty(serviceName,
+                                                                        GOVERNANCE_CLASSIFICATION_SOURCE_PROPERTY_NAME,
+                                                                        impactProperties,
+                                                                        methodName));
+            classification.setNotes(repositoryHelper.getStringProperty(serviceName,
+                                                                       GOVERNANCE_CLASSIFICATION_NOTES_PROPERTY_NAME,
+                                                                       impactProperties,
+                                                                       methodName));
+            classification.setImpactSeverityLevel(repositoryHelper.getIntProperty(serviceName,
+                                                                                  SEVERITY_LEVEL_IDENTIFIER_PROPERTY_NAME,
+                                                                                  impactProperties,
+                                                                                  methodName));
+        }
+
+        if (retentionProperties != null)
+        {
+            RetentionGovernanceClassification classification = new RetentionGovernanceClassification();
+
+            classification.setStatus(repositoryHelper.getIntProperty(serviceName,
+                                                                     STATUS_IDENTIFIER_PROPERTY_NAME,
+                                                                     retentionProperties,
+                                                                     methodName));
+            classification.setConfidence(repositoryHelper.getIntProperty(serviceName,
+                                                                         GOVERNANCE_CLASSIFICATION_CONFIDENCE_PROPERTY_NAME,
+                                                                         retentionProperties,
+                                                                         methodName));
+            classification.setSteward(repositoryHelper.getStringProperty(serviceName,
+                                                                         GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME,
+                                                                         retentionProperties,
+                                                                         methodName));
+            classification.setSource(repositoryHelper.getStringProperty(serviceName,
+                                                                        GOVERNANCE_CLASSIFICATION_SOURCE_PROPERTY_NAME,
+                                                                        retentionProperties,
+                                                                        methodName));
+            classification.setNotes(repositoryHelper.getStringProperty(serviceName,
+                                                                       GOVERNANCE_CLASSIFICATION_NOTES_PROPERTY_NAME,
+                                                                       retentionProperties,
+                                                                       methodName));
+            classification.setRetentionBasis(repositoryHelper.getIntProperty(serviceName,
+                                                                             BASIS_IDENTIFIER_PROPERTY_NAME,
+                                                                             retentionProperties,
+                                                                             methodName));
+            classification.setAssociatedGUID(repositoryHelper.getStringProperty(serviceName,
+                                                                                RETENTION_ASSOCIATED_GUID_PROPERTY_NAME,
+                                                                                retentionProperties,
+                                                                                methodName));
+            classification.setArchiveAfter(repositoryHelper.getDateProperty(serviceName,
+                                                                            RETENTION_ARCHIVE_AFTER_PROPERTY_NAME,
+                                                                            retentionProperties,
+                                                                            methodName));
+            classification.setDeleteAfter(repositoryHelper.getDateProperty(serviceName,
+                                                                           RETENTION_DELETE_AFTER_PROPERTY_NAME,
+                                                                           retentionProperties,
+                                                                           methodName));
+        }
+
+        if (ownershipProperties != null)
+        {
+            glossary.setOwner(repositoryHelper.getStringProperty(serviceName,
+                                                                 OWNER_PROPERTY_NAME,
+                                                                 ownershipProperties,
+                                                                 methodName));
+            glossary.setOwnerType(repositoryHelper.getEnumPropertyOrdinal(serviceName,
+                                                                          OWNER_TYPE_PROPERTY_NAME,
+                                                                          ownershipProperties,
+                                                                          methodName));
+        }
+    }
+
+
+    /**
+     * Tests for whether a specific user should have the right to create a glossary.
+     *
+     * @param userId identifier of user
+     * @param entityTypeGUID unique identifier of the type of entity to create
+     * @param entityTypeName unique name of the type of entity to create
+     * @param newProperties properties for new entity
+     * @param classifications classifications for new entity
+     * @param instanceStatus status for new entity
+     * @param repositoryHelper manipulates repository service objects
+     * @param serviceName calling service
+     * @param methodName calling method
+     * @throws UserNotAuthorizedException the user is not authorized to perform this command
+     */
+    public void  validateUserForGlossaryCreate(String                         userId,
+                                               String                         entityTypeGUID,
+                                               String                         entityTypeName,
+                                               InstanceProperties             newProperties,
+                                               List<Classification>           classifications,
+                                               InstanceStatus                 instanceStatus,
+                                               OMRSRepositoryHelper           repositoryHelper,
+                                               String                         serviceName,
+                                               String                         methodName) throws UserNotAuthorizedException
+    {
+        if (glossarySecurityConnector != null)
+        {
+            /*
+             * Need to build a description of the glossary to pass to the metadata security object.
+             */
+            Glossary glossaryBeanForMetadataSecurity = new Glossary();
+
+            setupGlossaryBeanWithEntityProperties(glossaryBeanForMetadataSecurity,
+                                                  entityTypeGUID,
+                                                  entityTypeName,
+                                                  instanceStatus,
+                                                  null,
+                                                  newProperties,
+                                                  repositoryHelper.getClassificationProperties(serviceName, classifications, SECURITY_TAG_CLASSIFICATION_TYPE_NAME, methodName),
+                                                  repositoryHelper.getClassificationProperties(serviceName, classifications, CONFIDENTIALITY_CLASSIFICATION_TYPE_NAME, methodName),
+                                                  repositoryHelper.getClassificationProperties(serviceName, classifications, CONFIDENCE_CLASSIFICATION_TYPE_NAME, methodName),
+                                                  repositoryHelper.getClassificationProperties(serviceName, classifications, CRITICALITY_CLASSIFICATION_TYPE_NAME, methodName),
+                                                  repositoryHelper.getClassificationProperties(serviceName, classifications, IMPACT_CLASSIFICATION_TYPE_NAME, methodName),
+                                                  repositoryHelper.getClassificationProperties(serviceName, classifications, RETENTION_CLASSIFICATION_TYPE_NAME, methodName),
+                                                  repositoryHelper.getClassificationProperties(serviceName, classifications, OWNERSHIP_CLASSIFICATION_TYPE_NAME, methodName),
+                                                  repositoryHelper,
+                                                  serviceName,
+                                                  methodName);
+
+            glossarySecurityConnector.validateUserForGlossaryCreate(userId, new Glossary(glossaryBeanForMetadataSecurity));
+        }
+    }
+
+
+    /**
+     * Tests for whether a specific user should have read access to a specific glossary and its contents.
+     *
+     * @param userId calling user
+     * @param entity entity storing the glossary's properties
+     * @param repositoryHelper helper for OMRS objects
+     * @param serviceName calling service
+     * @param methodName calling method
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     */
+    public void validateUserForGlossaryRead(String               userId,
+                                            EntityDetail         entity,
+                                            OMRSRepositoryHelper repositoryHelper,
+                                            String               serviceName,
+                                            String               methodName) throws UserNotAuthorizedException
+    {
+        if (glossarySecurityConnector != null)
+        {
+            /*
+             * Create the bean for the security module then call the appropriate security method.
+             */
+            Glossary glossary = this.getGlossaryBeanFromEntity(entity, repositoryHelper, serviceName, methodName);
+
+            glossarySecurityConnector.validateUserForGlossaryRead(userId, glossary);
+        }
+    }
+
+
+    /**
+     * Tests for whether a specific user should have the right to update the properties of a glossary.
+     *
+     * @param userId identifier of user
+     * @param originalEntity original glossary details
+     * @param newEntityProperties new glossary details
+     * @param repositoryHelper helper for OMRS objects
+     * @param serviceName calling service
+     * @param methodName calling method
+     * @throws UserNotAuthorizedException the user is not authorized to change this glossary
+     */
+    public void  validateUserForGlossaryDetailUpdate(String               userId,
+                                                     EntityDetail         originalEntity,
+                                                     InstanceProperties   newEntityProperties,
+                                                     OMRSRepositoryHelper repositoryHelper,
+                                                     String               serviceName,
+                                                     String               methodName) throws UserNotAuthorizedException
+    {
+        if (glossarySecurityConnector != null)
+        {
+            /*
+             * Create the bean for the security module then call the appropriate security method.
+             */
+            Glossary originalGlossary = this.getGlossaryBeanFromEntity(originalEntity, repositoryHelper, serviceName, methodName);
+
+            EntityDetail updatedGlossaryEntity = new EntityDetail(originalEntity);
+            updatedGlossaryEntity.setProperties(newEntityProperties);
+            Glossary newGlossary = this.getGlossaryBeanFromEntity(updatedGlossaryEntity, repositoryHelper, serviceName, methodName);
+
+            glossarySecurityConnector.validateUserForGlossaryDetailUpdate(userId, originalGlossary, newGlossary);
+        }
+    }
+
+
+    /**
+     * Tests for whether a specific user should have the right to update elements attached directly
+     * to a glossary such as glossary terms and categories.  These updates could be to their properties,
+     * classifications and relationships.  It also includes attaching valid values but not semantic assignments
+     * since they are considered updates to the associated asset.
+     *
+     * @param userId identifier of user
+     * @param entity glossary details
+     * @param repositoryHelper helper for OMRS objects
+     * @param serviceName calling service
+     * @param methodName calling method
+     * @throws UserNotAuthorizedException the user is not authorized to change this glossary
+     */
+    public void  validateUserForGlossaryMemberUpdate(String               userId,
+                                                     EntityDetail         entity,
+                                                     OMRSRepositoryHelper repositoryHelper,
+                                                     String               serviceName,
+                                                     String               methodName) throws UserNotAuthorizedException
+    {
+        if (glossarySecurityConnector != null)
+        {
+            /*
+             * Create the bean for the security module then call the appropriate security method.
+             */
+            Glossary glossary = this.getGlossaryBeanFromEntity(entity, repositoryHelper, serviceName, methodName);
+
+            glossarySecurityConnector.validateUserForGlossaryMemberUpdate(userId, glossary);
+        }
+    }
+
+
+    /**
+     * Tests for whether a specific user should have the right to update the instance status of a term
+     * anchored in a glossary.
+     *
+     * @param userId identifier of user
+     * @param entity glossary details
+     * @param repositoryHelper helper for OMRS objects
+     * @param serviceName calling service
+     * @param methodName calling method
+     * @throws UserNotAuthorizedException the user is not authorized to change this glossary
+     */
+    public void  validateUserForGlossaryMemberStatusUpdate(String               userId,
+                                                           EntityDetail         entity,
+                                                           OMRSRepositoryHelper repositoryHelper,
+                                                           String               serviceName,
+                                                           String               methodName) throws UserNotAuthorizedException
+    {
+        if (glossarySecurityConnector != null)
+        {
+            /*
+             * Create the bean for the security module then call the appropriate security method.
+             */
+            Glossary glossary = this.getGlossaryBeanFromEntity(entity, repositoryHelper, serviceName, methodName);
+
+            glossarySecurityConnector.validateUserForGlossaryMemberStatusUpdate(userId, glossary);
+        }
+    }
+
+
+    /**
+     * Tests for whether a specific user should have the right to attach feedback - such as comments,
+     * ratings, tags and likes, to the glossary.
+     *
+     * @param userId identifier of user
+     * @param entity original glossary details
+     * @param repositoryHelper helper for OMRS objects
+     * @param serviceName calling service
+     * @param methodName calling method
+     * @throws UserNotAuthorizedException the user is not authorized to change this glossary
+     */
+    public void  validateUserForGlossaryFeedback(String               userId,
+                                                 EntityDetail         entity,
+                                                 OMRSRepositoryHelper repositoryHelper,
+                                                 String               serviceName,
+                                                 String               methodName) throws UserNotAuthorizedException
+    {
+        if (glossarySecurityConnector != null)
+        {
+            /*
+             * Create the bean for the security module then call the appropriate security method.
+             */
+            Glossary glossary = this.getGlossaryBeanFromEntity(entity, repositoryHelper, serviceName, methodName);
+
+            glossarySecurityConnector.validateUserForGlossaryFeedback(userId, glossary);
+        }
+    }
+
+
+    /**
+     * Tests for whether a specific user should have the right to delete a glossary and all of its contents.
+     *
+     * @param userId identifier of user
+     * @param entity original glossary details
+     * @param repositoryHelper helper for OMRS objects
+     * @param serviceName calling service
+     * @param methodName calling method
+     * @throws UserNotAuthorizedException the user is not authorized to change this glossary
+     */
+    public void  validateUserForGlossaryDelete(String               userId,
+                                               EntityDetail         entity,
+                                               OMRSRepositoryHelper repositoryHelper,
+                                               String               serviceName,
+                                               String               methodName) throws UserNotAuthorizedException
+    {
+        if (glossarySecurityConnector != null)
+        {
+            /*
+             * Create the bean for the security module then call the appropriate security method.
+             */
+            Glossary glossary = this.getGlossaryBeanFromEntity(entity, repositoryHelper, serviceName, methodName);
+
+            glossarySecurityConnector.validateUserForGlossaryDelete(userId, glossary);
         }
     }
 

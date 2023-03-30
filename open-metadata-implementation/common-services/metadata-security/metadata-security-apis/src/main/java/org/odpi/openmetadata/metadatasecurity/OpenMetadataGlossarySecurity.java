@@ -54,7 +54,7 @@ public interface OpenMetadataGlossarySecurity
 
 
     /**
-     * Tests for whether a specific user should have the right to update the properties of a glossary.
+     * Tests for whether a specific user should have the right to update the properties/classifications of a glossary.
      *
      * @param userId identifier of user
      * @param originalGlossary original glossary details

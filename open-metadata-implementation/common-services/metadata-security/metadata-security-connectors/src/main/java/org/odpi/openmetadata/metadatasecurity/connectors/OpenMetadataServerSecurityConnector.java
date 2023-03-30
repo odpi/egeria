@@ -15,6 +15,7 @@ import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityErrorCode
 import org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader;
 import org.odpi.openmetadata.metadatasecurity.properties.Asset;
 import org.odpi.openmetadata.metadatasecurity.properties.Connection;
+import org.odpi.openmetadata.metadatasecurity.properties.Glossary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
@@ -579,6 +580,60 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
 
         throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_SERVICE_ACCESS.getMessageDefinition(userId,
                                                                                                                             this.getConnectionQualifiedName(connection)),
+                                             this.getClass().getName(),
+                                             methodName,
+                                             userId);
+    }
+
+
+    /**
+     * Write an audit log message and throw exception to record an unauthorized access.
+     *
+     * @param userId calling user
+     * @param operation of requested operation
+     * @param methodName calling method
+     *
+     * @throws UserNotAuthorizedException the authorization check failed
+     */
+    protected void throwMissingGlossary(String       userId,
+                                        String       operation,
+                                        String       methodName) throws UserNotAuthorizedException
+    {
+        if (auditLog != null)
+        {
+            auditLog.logMessage(methodName, OpenMetadataSecurityAuditCode.NULL_GLOSSARY.getMessageDefinition(userId, operation));
+        }
+
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.NULL_GLOSSARY.getMessageDefinition(userId,operation),
+                                             this.getClass().getName(),
+                                             methodName,
+                                             userId);
+    }
+
+
+    /**
+     * Write an audit log message and throw exception to record an unauthorized access.
+     *
+     * @param userId calling user
+     * @param operation of requested operation
+     * @param methodName calling method
+     *
+     * @throws UserNotAuthorizedException the authorization check failed
+     */
+    protected void throwUnauthorizedGlossaryAccess(String       userId,
+                                                   String       operation,
+                                                   Glossary     glossary,
+                                                   String       methodName) throws UserNotAuthorizedException
+    {
+        if (auditLog != null)
+        {
+            auditLog.logMessage(methodName, OpenMetadataSecurityAuditCode.UNAUTHORIZED_GLOSSARY_ACCESS.getMessageDefinition(userId, operation, glossary.getGUID()),
+                                glossary.toString());
+        }
+
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_GLOSSARY_ACCESS.getMessageDefinition(userId,
+                                                                                                                             operation,
+                                                                                                                             glossary.getGUID()),
                                              this.getClass().getName(),
                                              methodName,
                                              userId);
@@ -1213,7 +1268,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
 
 
     /**
-     * Tests for whether a specific user should have the right to create a instance within a repository.
+     * Tests for whether a specific user should have the right to create an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1323,7 +1378,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
 
 
     /**
-     * Tests for whether a specific user should have the right to update a instance within a repository.
+     * Tests for whether a specific user should have the right to update an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1444,7 +1499,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
 
 
     /**
-     * Tests for whether a specific user should have the right to delete a instance within a repository.
+     * Tests for whether a specific user should have the right to delete an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1471,7 +1526,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
 
 
     /**
-     * Tests for whether a specific user should have the right to restore a instance within a repository.
+     * Tests for whether a specific user should have the right to restore an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1489,7 +1544,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
 
 
     /**
-     * Tests for whether a specific user should have the right to change the guid on a instance within a repository.
+     * Tests for whether a specific user should have the right to change the guid on an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1521,7 +1576,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
 
 
     /**
-     * Tests for whether a specific user should have the right to change the type of a instance within a repository.
+     * Tests for whether a specific user should have the right to change an instance's type within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1553,7 +1608,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
 
 
     /**
-     * Tests for whether a specific user should have the right to change the home of a instance within a repository.
+     * Tests for whether a specific user should have the right to change the home of an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1587,7 +1642,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
 
 
     /**
-     * Tests for whether a specific user should have the right to create a instance within a repository.
+     * Tests for whether a specific user should have the right to create an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1643,7 +1698,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
 
 
     /**
-     * Tests for whether a specific user should have the right to update a instance within a repository.
+     * Tests for whether a specific user should have the right to update an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1670,7 +1725,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
 
 
     /**
-     * Tests for whether a specific user should have the right to delete a instance within a repository.
+     * Tests for whether a specific user should have the right to delete an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1697,7 +1752,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
 
 
     /**
-     * Tests for whether a specific user should have the right to restore a instance within a repository.
+     * Tests for whether a specific user should have the right to restore an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1715,7 +1770,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
 
 
     /**
-     * Tests for whether a specific user should have the right to change the guid on a instance within a repository.
+     * Tests for whether a specific user should have the right to change the guid on an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1747,7 +1802,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
 
 
     /**
-     * Tests for whether a specific user should have the right to change the type of a instance within a repository.
+     * Tests for whether a specific user should have the right to change an instance's type within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
@@ -1779,7 +1834,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
 
 
     /**
-     * Tests for whether a specific user should have the right to change the home of a instance within a repository.
+     * Tests for whether a specific user should have the right to change the home of an instance within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection

@@ -8,6 +8,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -229,6 +230,38 @@ public interface OMRSRepositoryPropertiesHelper
                                                       String             propertyName,
                                                       InstanceProperties properties,
                                                       String             methodName);
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    Map<String, List<String>> getStringArrayStringMapFromProperty(String             sourceName,
+                                                                  String             propertyName,
+                                                                  InstanceProperties properties,
+                                                                  String             methodName);
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a map property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    Map<String, List<String>> removeStringArrayStringMapFromProperty(String             sourceName,
+                                                                     String             propertyName,
+                                                                     InstanceProperties properties,
+                                                                     String             methodName);
 
 
     /**
@@ -681,6 +714,24 @@ public interface OMRSRepositoryPropertiesHelper
                                                    Map<String, Integer> mapValues,
                                                    String               methodName);
 
+
+    /**
+     * If the supplied map property is not null, add it to an instance properties object.  The supplied map is stored as a single
+     * property in the instances properties.   If the instance properties object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @param methodName calling method name
+     * @return instance properties object.
+     */
+    InstanceProperties addStringArrayStringMapPropertyToInstance(String                    sourceName,
+                                                                 InstanceProperties        properties,
+                                                                 String                    propertyName,
+                                                                 Map<String, List<String>> mapValues,
+                                                                 String                    methodName);
 
 
     /**
