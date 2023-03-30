@@ -250,15 +250,14 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  unauthorized access.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwUnauthorizedAssetAccess(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset,java.lang.String)" class="member-name-link">throwUnauthorizedAssetAccess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwMissingGlossary(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">throwMissingGlossary</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;operation,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Write an audit log message and throw exception to record an
- unauthorized access.</div>
+<div class="block">Write an audit log message and throw exception to record an unauthorized access.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwUnauthorizedAssetChange(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset,java.lang.String)" class="member-name-link">throwUnauthorizedAssetChange</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwUnauthorizedAssetAccess(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset,java.lang.String)" class="member-name-link">throwUnauthorizedAssetAccess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -266,7 +265,7 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  unauthorized access.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwUnauthorizedAssetCreate(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset,java.lang.String)" class="member-name-link">throwUnauthorizedAssetCreate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwUnauthorizedAssetChange(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset,java.lang.String)" class="member-name-link">throwUnauthorizedAssetChange</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -274,7 +273,7 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  unauthorized access.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwUnauthorizedAssetFeedback(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset,java.lang.String)" class="member-name-link">throwUnauthorizedAssetFeedback</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwUnauthorizedAssetCreate(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset,java.lang.String)" class="member-name-link">throwUnauthorizedAssetCreate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -282,12 +281,28 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  unauthorized access.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwUnauthorizedConnectionAccess(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Connection,java.lang.String)" class="member-name-link">throwUnauthorizedConnectionAccess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwUnauthorizedAssetFeedback(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset,java.lang.String)" class="member-name-link">throwUnauthorizedAssetFeedback</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Write an audit log message and throw exception to record an
+ unauthorized access.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwUnauthorizedConnectionAccess(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Connection,java.lang.String)" class="member-name-link">throwUnauthorizedConnectionAccess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../properties/Connection.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Connection</a>&nbsp;connection,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Write an audit log message and throw exception to record an
  unauthorized access.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwUnauthorizedGlossaryAccess(java.lang.String,java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Glossary,java.lang.String)" class="member-name-link">throwUnauthorizedGlossaryAccess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;operation,
+ <a href="../properties/Glossary.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Glossary</a>&nbsp;glossary,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Write an audit log message and throw exception to record an unauthorized access.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwUnauthorizedInstanceAccess(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">throwUnauthorizedInstanceAccess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -463,14 +478,14 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a>&gt;&nbsp;initialClassifications,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&nbsp;initialStatus)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Tests for whether a specific user should have the right to create a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to create an instance within a repository.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateUserForEntityDelete(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail)" class="member-name-link">validateUserForEntityDelete</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;instance)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Tests for whether a specific user should have the right to delete a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to delete an instance within a repository.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateUserForEntityProxyRead(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy)" class="member-name-link">validateUserForEntityProxyRead</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -493,7 +508,7 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newHomeMetadataCollectionId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newHomeMetadataCollectionName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Tests for whether a specific user should have the right to change the home of a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to change the home of an instance within a repository.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateUserForEntityReIdentification(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail,java.lang.String)" class="member-name-link">validateUserForEntityReIdentification</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -501,14 +516,14 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;instance,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newGUID)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Tests for whether a specific user should have the right to change the guid on a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to change the guid on an instance within a repository.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateUserForEntityRestore(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">validateUserForEntityRestore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;deletedEntityGUID)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Tests for whether a specific user should have the right to restore a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to restore an instance within a repository.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateUserForEntityReTyping(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary)" class="member-name-link">validateUserForEntityReTyping</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -516,7 +531,7 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;instance,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;newTypeDefSummary)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Tests for whether a specific user should have the right to change the type of a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to change an instance's type within a repository.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateUserForEntitySummaryRead(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary)" class="member-name-link">validateUserForEntitySummaryRead</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -530,7 +545,7 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;instance)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Tests for whether a specific user should have the right to update a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to update an instance within a repository.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateUserForRelationshipCreate(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus)" class="member-name-link">validateUserForRelationshipCreate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -541,14 +556,14 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;entityTwoSummary,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&nbsp;initialStatus)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Tests for whether a specific user should have the right to create a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to create an instance within a repository.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateUserForRelationshipDelete(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship)" class="member-name-link">validateUserForRelationshipDelete</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;instance)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Tests for whether a specific user should have the right to delete a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to delete an instance within a repository.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateUserForRelationshipRead(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship)" class="member-name-link">validateUserForRelationshipRead</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -564,7 +579,7 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newHomeMetadataCollectionId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newHomeMetadataCollectionName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Tests for whether a specific user should have the right to change the home of a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to change the home of an instance within a repository.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateUserForRelationshipReIdentification(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship,java.lang.String)" class="member-name-link">validateUserForRelationshipReIdentification</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -572,14 +587,14 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;instance,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newGUID)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Tests for whether a specific user should have the right to change the guid on a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to change the guid on an instance within a repository.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateUserForRelationshipRestore(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">validateUserForRelationshipRestore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;deletedRelationshipGUID)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Tests for whether a specific user should have the right to restore a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to restore an instance within a repository.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateUserForRelationshipReTyping(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary)" class="member-name-link">validateUserForRelationshipReTyping</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -587,14 +602,14 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;instance,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;newTypeDefSummary)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Tests for whether a specific user should have the right to change the type of a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to change an instance's type within a repository.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateUserForRelationshipUpdate(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship)" class="member-name-link">validateUserForRelationshipUpdate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;instance)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Tests for whether a specific user should have the right to update a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to update an instance within a repository.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateUserForServer(java.lang.String)" class="member-name-link">validateUserForServer</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
@@ -1120,6 +1135,43 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>connection</code> - connection to validate</dd>
+<dd><code>methodName</code> - calling method</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the authorization check failed</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="throwMissingGlossary(java.lang.String,java.lang.String,java.lang.String)">
+<h3>throwMissingGlossary</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">throwMissingGlossary</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;operation,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
+                             throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Write an audit log message and throw exception to record an unauthorized access.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>operation</code> - of requested operation</dd>
+<dd><code>methodName</code> - calling method</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the authorization check failed</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="throwUnauthorizedGlossaryAccess(java.lang.String,java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Glossary,java.lang.String)">
+<h3>throwUnauthorizedGlossaryAccess</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">throwUnauthorizedGlossaryAccess</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;operation,
+ <a href="../properties/Glossary.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Glossary</a>&nbsp;glossary,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
+                                        throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Write an audit log message and throw exception to record an unauthorized access.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>operation</code> - of requested operation</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the authorization check failed</dd>
@@ -1679,7 +1731,7 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a>&gt;&nbsp;initialClassifications,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&nbsp;initialStatus)</span>
                                     throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Tests for whether a specific user should have the right to create a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to create an instance within a repository.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of user</dd>
@@ -1756,7 +1808,7 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;instance)</span>
                                     throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Tests for whether a specific user should have the right to update a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to update an instance within a repository.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of user</dd>
@@ -1841,7 +1893,7 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;instance)</span>
                                     throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Tests for whether a specific user should have the right to delete a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to delete an instance within a repository.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of user</dd>
@@ -1859,7 +1911,7 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;deletedEntityGUID)</span>
                                      throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Tests for whether a specific user should have the right to restore a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to restore an instance within a repository.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of user</dd>
@@ -1878,7 +1930,7 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;instance,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newGUID)</span>
                                               throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Tests for whether a specific user should have the right to change the guid on a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to change the guid on an instance within a repository.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of user</dd>
@@ -1898,7 +1950,7 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;instance,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;newTypeDefSummary)</span>
                                       throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Tests for whether a specific user should have the right to change the type of a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to change an instance's type within a repository.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of user</dd>
@@ -1919,7 +1971,7 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newHomeMetadataCollectionId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newHomeMetadataCollectionName)</span>
                                       throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Tests for whether a specific user should have the right to change the home of a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to change the home of an instance within a repository.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of user</dd>
@@ -1943,7 +1995,7 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;entityTwoSummary,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&nbsp;initialStatus)</span>
                                           throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Tests for whether a specific user should have the right to create a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to create an instance within a repository.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of user</dd>
@@ -1985,7 +2037,7 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;instance)</span>
                                           throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Tests for whether a specific user should have the right to update a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to update an instance within a repository.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of user</dd>
@@ -2003,7 +2055,7 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;instance)</span>
                                           throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Tests for whether a specific user should have the right to delete a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to delete an instance within a repository.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of user</dd>
@@ -2021,7 +2073,7 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;deletedRelationshipGUID)</span>
                                            throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Tests for whether a specific user should have the right to restore a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to restore an instance within a repository.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of user</dd>
@@ -2040,7 +2092,7 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;instance,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newGUID)</span>
                                                     throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Tests for whether a specific user should have the right to change the guid on a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to change the guid on an instance within a repository.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of user</dd>
@@ -2060,7 +2112,7 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&nbsp;instance,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&nbsp;newTypeDefSummary)</span>
                                             throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Tests for whether a specific user should have the right to change the type of a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to change an instance's type within a repository.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of user</dd>
@@ -2081,7 +2133,7 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newHomeMetadataCollectionId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newHomeMetadataCollectionName)</span>
                                             throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Tests for whether a specific user should have the right to change the home of a instance within a repository.</div>
+<div class="block">Tests for whether a specific user should have the right to change the home of an instance within a repository.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of user</dd>
