@@ -95,8 +95,8 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
      * @param methodName  name of calling method
      * @throws InvalidParameterException bad parameter - probably page size
      */
-    public RepositorySelectedEntitiesIterator(RepositoryHandler       repositoryHandler,
-                                              InvalidParameterHandler invalidParameterHandler,
+    public RepositorySelectedEntitiesIterator(RepositoryHandler        repositoryHandler,
+                                              InvalidParameterHandler  invalidParameterHandler,
                                               String                   userId,
                                               String                   entityTypeGUID,
                                               String                   searchCriteria,

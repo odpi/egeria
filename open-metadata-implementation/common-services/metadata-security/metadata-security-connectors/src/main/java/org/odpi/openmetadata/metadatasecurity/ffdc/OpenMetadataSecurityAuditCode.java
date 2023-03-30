@@ -151,6 +151,21 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                              "The security service detected an unauthorized change of an open metadata instance.",
                              "Review the security policies and settings to determine if this access should be allowed or not." +
                                      "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
+
+    UNAUTHORIZED_GLOSSARY_ACCESS("OPEN-METADATA-SECURITY-0020",
+                              OMRSAuditLogRecordSeverity.SECURITY,
+                              "User {0} is not authorized to issue operation {1} on glossary {2}",
+                              "The security service detected an unauthorized access to a glossary.",
+                              "Review the security policies and settings to determine if this access to a glossary should be allowed or not." +
+                                      "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
+
+    NULL_GLOSSARY("OPEN-METADATA-SECURITY-0021",
+                              OMRSAuditLogRecordSeverity.SECURITY,
+                              "User {0} is not authorized to iss operation {1} because the glossary is null",
+                              "The system is unable to process a request from the user because the glossary element is not correctly anchored on a glossary.",
+                              "The request fails with a UserNotAuthorizedException exception. Add the anchor relationship of the glossary element to its glossary and corresponding Anchors classification.  When both are in place, re-run the request."),
+
+
     ;
 
     private final String                     logMessageId;

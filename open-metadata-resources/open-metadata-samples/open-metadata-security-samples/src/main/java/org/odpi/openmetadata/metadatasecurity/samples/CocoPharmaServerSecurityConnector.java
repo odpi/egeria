@@ -8,12 +8,15 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataAssetSecurity;
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataConnectionSecurity;
+import org.odpi.openmetadata.metadatasecurity.OpenMetadataGlossarySecurity;
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataServerSecurity;
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataServiceSecurity;
 import org.odpi.openmetadata.metadatasecurity.connectors.OpenMetadataServerSecurityConnector;
 import org.odpi.openmetadata.metadatasecurity.properties.Asset;
 import org.odpi.openmetadata.metadatasecurity.properties.Connection;
 import org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader;
+import org.odpi.openmetadata.metadatasecurity.properties.Glossary;
+import org.odpi.openmetadata.metadatasecurity.properties.Referenceable;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OpenMetadataRepositorySecurity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
@@ -36,29 +39,30 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
                                                                                                       OpenMetadataServerSecurity,
                                                                                                       OpenMetadataServiceSecurity,
                                                                                                       OpenMetadataConnectionSecurity,
-                                                                                                      OpenMetadataAssetSecurity
+                                                                                                      OpenMetadataAssetSecurity,
+                                                                                                      OpenMetadataGlossarySecurity
 {
     /*
      * These variables represent the different groups of user.  Typically these would be
      * implemented as a look up to a user directory such as LDAP rather than in memory lists.
      * The lists are used here to make the demo easier to set up.
      */
-    private List<String>              allUsers            = new ArrayList<>();
+    private final List<String> allUsers = new ArrayList<>();
 
-    private List<String>              assetOnboardingExit = new ArrayList<>();
-    private List<String>              serverAdmins        = new ArrayList<>();
-    private List<String>              serverOperators     = new ArrayList<>();
-    private List<String>              serverInvestigators = new ArrayList<>();
-    private List<String>              metadataArchitects  = new ArrayList<>();
-    private List<String>              npaAccounts         = new ArrayList<>();
-    private List<String>              externalUsers       = new ArrayList<>();
+    private final List<String> assetOnboardingExit = new ArrayList<>();
+    private final List<String> serverAdmins        = new ArrayList<>();
+    private final List<String> serverOperators     = new ArrayList<>();
+    private final List<String> serverInvestigators = new ArrayList<>();
+    private final List<String> metadataArchitects = new ArrayList<>();
+    private final List<String> npaAccounts   = new ArrayList<>();
+    private final List<String> externalUsers = new ArrayList<>();
 
-    private List<String>              defaultZoneMembership = new ArrayList<>();
-    private List<String>              zonesForExternals     = new ArrayList<>();
+    private final List<String> defaultZoneMembership = new ArrayList<>();
+    private final List<String> zonesForExternals     = new ArrayList<>();
 
 
-    private Map<String, List<String>> zoneAccess   = new HashMap<>();
-    private Map<String, String>       ownerZones   = new HashMap<>();
+    private final Map<String, List<String>> zoneAccess = new HashMap<>();
+    private final Map<String, String>       ownerZones = new HashMap<>();
 
     /*
      * Zones requiring special processing
@@ -1218,6 +1222,160 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         super.validateUserForAssetDelete(userId, asset);
     }
 
+    /*
+     * OpenMetadataGlossarySecurity assures the access to glossary content.
+     * Glossary categories and terms are anchored to a single glossary.
+     * Glossary terms may be linked to multiple categories, some in different glossaries.
+     */
+
+     /**
+     * Tests for whether a specific user should have the right to create a glossary.
+     *
+     * @param userId identifier of user
+     * @param glossary new glossary details
+     * @throws UserNotAuthorizedException the user is not authorized to change this glossary
+     */
+    @Override
+    public void  validateUserForGlossaryCreate(String    userId,
+                                               Glossary glossary) throws UserNotAuthorizedException
+    {
+        final String methodName = "validateUserForGlossaryCreate";
+
+        validateGlossaryAccess(glossary, userId, "glossaryCreate", methodName);
+    }
+
+
+    /**
+     * Tests for whether a specific user should have read access to a specific glossary and its contents.
+     *
+     * @param userId identifier of user
+     * @param glossary glossary details
+     * @throws UserNotAuthorizedException the user is not authorized to access this glossary
+     */
+    @Override
+    public void  validateUserForGlossaryRead(String    userId,
+                                             Glossary  glossary) throws UserNotAuthorizedException
+    {
+        final String methodName = "validateUserForGlossaryRead";
+
+        validateGlossaryAccess(glossary, userId, "glossaryRead", methodName);
+    }
+
+
+    /**
+     * Tests for whether a specific user should have the right to update the properties/classifications of a glossary.
+     *
+     * @param userId identifier of user
+     * @param originalGlossary original glossary details
+     * @param newGlossary new glossary details
+     * @throws UserNotAuthorizedException the user is not authorized to change this glossary
+     */
+    @Override
+    public void  validateUserForGlossaryDetailUpdate(String   userId,
+                                                     Glossary originalGlossary,
+                                                     Glossary newGlossary) throws UserNotAuthorizedException
+    {
+        final String methodName = "validateUserForGlossaryDetailUpdate";
+
+        validateGlossaryAccess(newGlossary, userId, "glossaryDetailUpdate", methodName);
+    }
+
+
+    /**
+     * Tests for whether a specific user should have the right to update elements attached directly
+     * to a glossary such as glossary terms and categories.  These updates could be to their properties,
+     * classifications and relationships.  It also includes attaching valid values but not semantic assignments
+     * since they are considered updates to the associated asset.
+     *
+     * @param userId identifier of user
+     * @param glossary glossary details
+     * @throws UserNotAuthorizedException the user is not authorized to change this glossary
+     */
+    @Override
+    public void  validateUserForGlossaryMemberUpdate(String    userId,
+                                                     Glossary  glossary) throws UserNotAuthorizedException
+    {
+        final String methodName = "validateUserForGlossaryMemberUpdate";
+
+        validateGlossaryAccess(glossary, userId, "glossaryMemberUpdate", methodName);
+    }
+
+
+    /**
+     * Tests for whether a specific user should have the right to update the instance status of a term
+     * anchored in a glossary.
+     *
+     * @param userId identifier of user
+     * @param glossary glossary details
+     * @throws UserNotAuthorizedException the user is not authorized to change this glossary
+     */
+    @Override
+    public void  validateUserForGlossaryMemberStatusUpdate(String    userId,
+                                                           Glossary  glossary) throws UserNotAuthorizedException
+    {
+        final String methodName = "validateUserForGlossaryMemberStatusUpdate";
+
+        validateGlossaryAccess(glossary, userId, "glossaryMemberStatusUpdate", methodName);
+    }
+
+
+    /**
+     * Tests for whether a specific user should have the right to attach feedback - such as comments,
+     * ratings, tags and likes, to the glossary.
+     *
+     * @param userId identifier of user
+     * @param glossary original glossary details
+     * @throws UserNotAuthorizedException the user is not authorized to change this glossary
+     */
+    @Override
+    public void  validateUserForGlossaryFeedback(String   userId,
+                                                 Glossary glossary) throws UserNotAuthorizedException
+    {
+        final String methodName = "validateUserForGlossaryFeedback";
+
+        validateGlossaryAccess(glossary, userId, "glossaryFeedback", methodName);
+    }
+
+
+    /**
+     * Tests for whether a specific user should have the right to delete a glossary and all of its contents.
+     *
+     * @param userId identifier of user
+     * @param glossary original glossary details
+     * @throws UserNotAuthorizedException the user is not authorized to change this glossary
+     */
+    @Override
+    public void  validateUserForGlossaryDelete(String   userId,
+                                               Glossary glossary) throws UserNotAuthorizedException
+    {
+        final String methodName = "validateUserForGlossaryDelete";
+
+        validateGlossaryAccess(glossary, userId, "glossaryDelete", methodName);
+    }
+
+
+    private void validateGlossaryAccess(Glossary glossary,
+                                        String   userId,
+                                        String   operationName,
+                                        String   methodName) throws  UserNotAuthorizedException
+    {
+        if (glossary == null)
+        {
+            super.throwMissingGlossary(userId, operationName, methodName);
+        }
+        else if (glossary.getAccessGroups() != null)
+        {
+            List<String> validUsers = glossary.getAccessGroups().get(operationName);
+
+            if (validUsers != null)
+            {
+                if (! validUsers.contains(userId))
+                {
+                    throwUnauthorizedGlossaryAccess(userId, operationName, glossary, methodName);
+                }
+            }
+        }
+    }
 
     /*
      * =========================================================================================================

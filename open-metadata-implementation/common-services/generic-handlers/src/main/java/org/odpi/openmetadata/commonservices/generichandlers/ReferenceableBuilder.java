@@ -515,14 +515,16 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
      * @param userId calling user
      * @param securityLabels list of security labels
      * @param securityProperties map of name value pairs
+     * @param accessGroups map from operation to list of security groups
      * @param methodName calling method
      * @throws InvalidParameterException security tags is not supported in the local repository, or any repository
      *                                   connected by an open metadata repository cohort
      */
-    public void setSecurityTags(String              userId,
-                                List<String>        securityLabels,
-                                Map<String, Object> securityProperties,
-                                String              methodName) throws InvalidParameterException
+    public void setSecurityTags(String                    userId,
+                                List<String>              securityLabels,
+                                Map<String, Object>       securityProperties,
+                                Map<String, List<String>> accessGroups,
+                                String                    methodName) throws InvalidParameterException
     {
         try
         {
@@ -537,6 +539,7 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
                                                                                   null,
                                                                                   getSecurityTagProperties(securityLabels,
                                                                                                            securityProperties,
+                                                                                                           accessGroups,
                                                                                                            methodName));
             newClassifications.put(classification.getName(), classification);
         }
@@ -553,11 +556,13 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
      * @param methodName name of the calling method
      * @param securityLabels list of security labels
      * @param securityProperties map of name value pairs
+     * @param accessGroups map from operation to list of security groups
      * @return InstanceProperties object
      */
-    InstanceProperties getSecurityTagProperties(List<String>        securityLabels,
-                                                Map<String, Object> securityProperties,
-                                                String              methodName)
+    InstanceProperties getSecurityTagProperties(List<String>              securityLabels,
+                                                Map<String, Object>       securityProperties,
+                                                Map<String, List<String>> accessGroups,
+                                                String                    methodName)
     {
         InstanceProperties properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                                           null,
@@ -569,6 +574,12 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
                                                                OpenMetadataAPIMapper.SECURITY_PROPERTIES_PROPERTY_NAME,
                                                                securityProperties,
                                                                methodName);
+
+        properties = repositoryHelper.addStringArrayStringMapPropertyToInstance(serviceName,
+                                                                                properties,
+                                                                                OpenMetadataAPIMapper.ACCESS_GROUPS_PROPERTY_NAME,
+                                                                                accessGroups,
+                                                                                methodName);
 
         setEffectivityDates(properties);
 

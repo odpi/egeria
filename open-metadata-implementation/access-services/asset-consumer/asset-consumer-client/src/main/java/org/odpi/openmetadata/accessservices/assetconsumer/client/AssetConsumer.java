@@ -2,23 +2,37 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.client;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.api.*;
+import org.odpi.openmetadata.accessservices.assetconsumer.api.AssetConsumerAssetInterface;
+import org.odpi.openmetadata.accessservices.assetconsumer.api.AssetConsumerFeedbackInterface;
+import org.odpi.openmetadata.accessservices.assetconsumer.api.AssetConsumerGlossaryInterface;
+import org.odpi.openmetadata.accessservices.assetconsumer.api.AssetConsumerLoggingInterface;
+import org.odpi.openmetadata.accessservices.assetconsumer.api.AssetConsumerTaggingInterface;
 import org.odpi.openmetadata.accessservices.assetconsumer.client.rest.AssetConsumerRESTClient;
 import org.odpi.openmetadata.accessservices.assetconsumer.elements.InformalTagElement;
 import org.odpi.openmetadata.accessservices.assetconsumer.elements.MeaningElement;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.*;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.CommentRequestBody;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.FeedbackRequestBody;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermListResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.LogRecordRequestBody;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.RatingRequestBody;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.TagRequestBody;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.TagResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.TagUpdateRequestBody;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.TagsResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 
 import java.util.ArrayList;
 import java.util.List;

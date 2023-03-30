@@ -5,6 +5,7 @@ package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollectionBase;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -64,7 +65,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Constructor ensures the metadata collection is linked to its connector and knows its metadata collection Id.
+     * Constructor ensures the metadata collection is linked to its connector and knows its metadata collection id.
      *
      * @param enterpriseParentConnector connector that this metadata collection supports.  The connector has the information
      *                        to call the metadata repository.
@@ -72,19 +73,18 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param repositoryHelper class used to build type definitions and instances.
      * @param repositoryValidator class used to validate type definitions and instances.
      * @param metadataCollectionId unique Identifier of the enterprise metadata collection Id.
-     * @param localMetadataCollectionId unique Identifier of the local repository's metadata collection Id (will be null
-     *                                  if no local repository.
+     * @param localMetadataCollectionId unique Identifier of the local repository's metadata collection id (will be null if no local repository).
      */
     EnterpriseOMRSMetadataCollection(EnterpriseOMRSRepositoryConnector enterpriseParentConnector,
                                      String                            repositoryName,
-                                     OMRSRepositoryHelper repositoryHelper,
-                                     OMRSRepositoryValidator repositoryValidator,
+                                     OMRSRepositoryHelper              repositoryHelper,
+                                     OMRSRepositoryValidator           repositoryValidator,
                                      String                            metadataCollectionId,
                                      String                            localMetadataCollectionId,
                                      AuditLog auditLog)
     {
         /*
-         * The metadata collection Id is the unique identifier for the metadata collection.  It is managed by the super class.
+         * The metadata collection id is the unique identifier for the metadata collection.  It is managed by the super class.
          */
         super(enterpriseParentConnector, repositoryName, repositoryHelper, repositoryValidator, metadataCollectionId);
 
@@ -315,9 +315,9 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param standard  name of the standard null means any.
      * @param organization  name of the organization null means any.
      * @param identifier  identifier of the element in the standard null means any.
-     * @return TypeDefs list each entry in the list contains a typedef.  This is is a structure
+     * @return TypeDefs list each entry in the list contains a typedef.  This is a structure
      * describing the TypeDef's category and properties.
-     * @throws InvalidParameterException all attributes of the external Id are null.
+     * @throws InvalidParameterException all attributes of the external id are null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
@@ -355,7 +355,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      *
      * @param userId  unique identifier for requesting user.
      * @param searchCriteria  String search criteria.
-     * @return TypeDefs list each entry in the list contains a typedef.  This is is a structure
+     * @return TypeDefs list each entry in the list contains a typedef.  This is a structure
      * describing the TypeDef's category and properties.
      * @throws InvalidParameterException the searchCriteria is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
@@ -393,7 +393,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * Return the TypeDef identified by the GUID.
      *
      * @param userId  unique identifier for requesting user.
-     * @param guid  String unique Id of the TypeDef
+     * @param guid  String unique id of the TypeDef
      * @return TypeDef structure describing its category and properties.
      * @throws InvalidParameterException the guid is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -1080,6 +1080,81 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
+     * Return all historical versions of an entity within the bounds of the provided timestamps. To retrieve all historical
+     * versions of an entity, set both the 'fromTime' and 'toTime' to null.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the entity.
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the entity (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the entity (exclusive)
+     * @param startFromElement the starting element number of the historical versions to return. This is used when retrieving
+     *                         versions beyond the first page of results. Zero means start from the first element.
+     * @param pageSize the maximum number of result versions that can be returned on this request. Zero means unrestricted
+     *                 return results size.
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @return {@code List<EntityDetail>} of each historical version of the entity detail within the bounds, and in the order requested.
+     * @throws InvalidParameterException the guid or date is null or fromTime is after the toTime
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored.
+     * @throws EntityNotKnownException the requested entity instance is not known in the metadata collection at the time requested.
+     * @throws EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support history.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public List<EntityDetail> getEntityDetailHistory(String                 userId,
+                                                     String                 guid,
+                                                     Date                   fromTime,
+                                                     Date                   toTime,
+                                                     int                    startFromElement,
+                                                     int                    pageSize,
+                                                     HistorySequencingOrder sequencingOrder) throws InvalidParameterException,
+                                                                                                    RepositoryErrorException,
+                                                                                                    EntityNotKnownException,
+                                                                                                    EntityProxyOnlyException,
+                                                                                                    FunctionNotSupportedException,
+                                                                                                    UserNotAuthorizedException
+    {
+        final String  methodName = "getEntityDetailHistory";
+
+        /*
+         * Validate parameters
+         */
+        this.getInstanceHistoryParameterValidation(userId, guid, fromTime, toTime, methodName);
+
+        /*
+         * Validation complete, ok to continue with request
+         *
+         * The list of cohort connectors are retrieved for each request to ensure that any changes in
+         * the shape of the cohort are reflected immediately.
+         */
+        List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
+
+        FederationControl              federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        GetEntityDetailHistoryExecutor executor          = new GetEntityDetailHistoryExecutor(userId,
+                                                                                              guid,
+                                                                                              fromTime,
+                                                                                              toTime,
+                                                                                              startFromElement,
+                                                                                              pageSize,
+                                                                                              sequencingOrder,
+                                                                                              localMetadataCollectionId,
+                                                                                              auditLog,
+                                                                                              repositoryValidator,
+                                                                                              methodName);
+
+        /*
+         * Ready to process the request.  Create requests occur in the first repository that accepts the call.
+         * Some repositories may produce exceptions.  These exceptions are saved and will be returned if
+         * there are no positive results from any repository.
+         */
+        federationControl.executeCommand(executor);
+
+        return executor.getHistoryResults(enterpriseParentConnector, this);
+    }
+
+
+    /**
      * Return the relationships for a specific entity.
      *
      * @param userId unique identifier for requesting user.
@@ -1409,7 +1484,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      *
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID unique identifier for the type of entity requested.  Null means any type of entity
-     *                       (but could be slow so not recommended.
+     *                       (but could be slow so not recommended).
      * @param classificationName name of the classification, note a null is not valid.
      * @param matchClassificationProperties list of classification properties used to narrow the search (where any String
      *                                      property's value should be defined as a Java regular expression, even if it
@@ -2673,7 +2748,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
     /**
      * Save a new entity that is sourced from an external technology.  The external
      * technology is identified by a GUID and a name.  These can be recorded in a
-     * Software Server Capability (guid and qualifiedName respectively.
+     * Software Capability (guid and qualifiedName respectively).
      * The new entity is assigned a new GUID and put
      * in the requested state.  The new entity is returned.
      *
@@ -2926,7 +3001,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Delete an entity.  The entity is soft deleted.  This means it is still in the graph but it is no longer returned
+     * Delete an entity.  The entity is soft-deleted.  This means it is still in the graph, but it is no longer returned
      * on queries.  All homed relationships to the entity are also soft-deleted and will no longer be usable, while any
      * reference copy relationships to the entity will be purged (and will no longer be accessible in this repository).
      * To completely eliminate the entity from the graph requires a call to the purgeEntity() method after the delete call.
@@ -3786,7 +3861,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
     /**
      * Save a new relationship that is sourced from an external technology.  The external
      * technology is identified by a GUID and a name.  These can be recorded in a
-     * Software Server Capability (guid and qualifiedName respectively.
+     * Software Server Capability (guid and qualifiedName respectively).
      * The new relationship is assigned a new GUID and put
      * in the requested state.  The new relationship is returned.
      *
@@ -4031,7 +4106,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
     /**
      * Delete a specific relationship.  This is a soft-delete which means the relationship's status is updated to
-     * DELETED and it is no longer available for queries.  To remove the relationship permanently from the
+     * DELETED, and it is no longer available for queries.  To remove the relationship permanently from the
      * metadata collection, use purgeRelationship().
      *
      * @param userId unique identifier for requesting user.
@@ -4249,7 +4324,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Change the type of an existing entity.  Typically this action is taken to move an entity's
+     * Change an existing entity's type.  Typically, this action is taken to move an entity's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type and the properties adjusted.
      *
@@ -4335,7 +4410,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Change the type of an existing relationship.  Typically this action is taken to move a relationship's
+     * Change an existing relationship's type.  Typically, this action is taken to move a relationship's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *
@@ -4487,7 +4562,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      *
      * This method is called when a remote repository calls the variant of purgeEntity that
      * passes the EntityDetail object.  This is typically used if purge is called without a previous soft-delete.
-     * However it may also be used to purge after a soft-delete.
+     * However, it may also be used to purge after a soft-delete.
      *
      * @param userId unique identifier for requesting server.
      * @param entity details of the entity to purge.
@@ -4656,7 +4731,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
     /**
      * This method is called when a remote repository calls the variant of purgeRelationship that
      * passes the relationship object.  This is typically used if purge is called without a previous soft-delete.
-     * However it may also be used to purge after a soft-delete.
+     * However, it may also be used to purge after a soft-delete.
      *
      * Remove the reference copy of the relationship from the local repository. This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
@@ -4874,7 +4949,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         if (cohortMetadataCollection == null)
         {
             /*
-             * A problem in the set up of the metadata collection list.  Repository connectors implemented
+             * A problem in the set-up of the metadata collection list.  Repository connectors implemented
              * with no metadata collection are tested for in the OMRSEnterpriseConnectorManager so something
              * else has gone wrong.
              */

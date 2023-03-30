@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -23,7 +24,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TaggedElement implements Serializable
 {
-    private static final long     serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private ElementHeader          relationshipHeader     = null;
     private ElementStub            relatedElement         = null;

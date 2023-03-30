@@ -1537,6 +1537,7 @@ public class OpenMetadataAPIMapper
     public static final String SECURITY_TAG_CLASSIFICATION_TYPE_NAME             = "SecurityTags";
     public static final String SECURITY_LABELS_PROPERTY_NAME                     = "securityLabels";
     public static final String SECURITY_PROPERTIES_PROPERTY_NAME                 = "securityProperties";
+    public static final String ACCESS_GROUPS_PROPERTY_NAME                       = "accessGroups";
 
 
     public static final String ZONE_TYPE_GUID                           = "290a192b-42a7-449a-935a-269ca62cfdac";

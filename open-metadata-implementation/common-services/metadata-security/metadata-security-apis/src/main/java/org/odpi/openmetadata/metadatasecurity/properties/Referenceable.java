@@ -20,13 +20,16 @@ public class Referenceable implements Serializable
     private String              typeGUID             = null;
     private String              typeName             = null;
     private ReferenceableStatus status               = null;
-    private String              guid                 = null;
-    private String              qualifiedName        = null;
-    private Map<String, String> additionalProperties = null;
-    private Map<String, Object> extendedProperties   = null;
+    private String                                  guid                 = null;
+    private String                                  qualifiedName        = null;
+    private Map<String, String>                     additionalProperties = null;
+    private Map<String, Object>                     extendedProperties   = null;
+    private String                                  owner                = null;
+    private int                                     ownerType            = 0;
 
     private List<String>                            securityLabels     = null;
     private Map<String, Object>                     securityProperties = null;
+    private Map<String, List<String>>               accessGroups       = null;
     private ConfidentialityGovernanceClassification confidentiality    = null;
     private ConfidenceGovernanceClassification      confidence         = null;
     private CriticalityGovernanceClassification     criticality        = null;
@@ -45,7 +48,7 @@ public class Referenceable implements Serializable
 
 
     /**
-     * Copy/clone constructor.  Retrieves values from the supplied template
+     * Copy/clone constructor.  Retrieve values from the supplied template
      *
      * @param template element to copy
      */
@@ -59,15 +62,17 @@ public class Referenceable implements Serializable
             guid                 = template.getGUID();
             qualifiedName        = template.getQualifiedName();
             additionalProperties = template.getAdditionalProperties();
+            owner                = template.getOwner();
+            ownerType            = template.getOwnerType();
             securityLabels       = template.getSecurityLabels();
             securityProperties   = template.getSecurityProperties();
+            accessGroups         = template.getAccessGroups();
             confidentiality      = template.getConfidentiality();
             confidence           = template.getConfidence();
             criticality          = template.getCriticality();
             impact               = template.getImpact();
             retention            = template.getRetention();
             extendedProperties   = template.getExtendedProperties();
-
         }
     }
 
@@ -217,6 +222,49 @@ public class Referenceable implements Serializable
 
 
     /**
+     * Returns the name of the owner for this asset.
+     *
+     * @return owner String
+     */
+    public String getOwner() {
+        return owner;
+    }
+
+
+    /**
+     * Set up the name of the owner for this asset.
+     *
+     * @param owner String name
+     */
+    public void setOwner(String owner)
+    {
+        this.owner = owner;
+    }
+
+
+    /**
+     * Return the type of owner stored in the owner property.
+     *
+     * @return OwnerType enum
+     */
+    public int getOwnerType()
+    {
+        return ownerType;
+    }
+
+
+    /**
+     * Set up the owner type for this asset.
+     *
+     * @param ownerType OwnerType enum
+     */
+    public void setOwnerType(int ownerType)
+    {
+        this.ownerType = ownerType;
+    }
+
+
+    /**
      * Return the properties that have been defined for a subtype of this object that are not supported explicitly
      * by this bean.
      *
@@ -314,6 +362,28 @@ public class Referenceable implements Serializable
     public void setSecurityProperties(Map<String, Object> securityProperties)
     {
         this.securityProperties = securityProperties;
+    }
+
+
+    /**
+     * Return the map of operations to access groups.
+     *
+     * @return map from string to list of strings
+     */
+    public Map<String, List<String>> getAccessGroups()
+    {
+        return accessGroups;
+    }
+
+
+    /**
+     * Set up the map of operations to access groups.
+     *
+     * @param accessGroups map from string to list of strings
+     */
+    public void setAccessGroups(Map<String, List<String>> accessGroups)
+    {
+        this.accessGroups = accessGroups;
     }
 
 
@@ -436,19 +506,22 @@ public class Referenceable implements Serializable
     public String toString()
     {
         return "Referenceable{" +
-                "typeGUID='" + typeGUID + '\'' +
-                ", typeName='" + typeName + '\'' +
-                ", guid='" + guid + '\'' +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", extendedProperties=" + extendedProperties +
-                ", securityLabels=" + securityLabels +
-                ", securityProperties=" + securityProperties +
-                ", confidentiality=" + confidentiality +
-                ", confidence=" + confidence +
-                ", criticality=" + criticality +
-                ", retention=" + retention +
-                '}';
+                       "typeGUID='" + typeGUID + '\'' +
+                       ", typeName='" + typeName + '\'' +
+                       ", guid='" + guid + '\'' +
+                       ", qualifiedName='" + qualifiedName + '\'' +
+                       ", additionalProperties=" + additionalProperties +
+                       ", owner='" + owner + '\'' +
+                       ", ownerType=" + ownerType +
+                       ", extendedProperties=" + extendedProperties +
+                       ", securityLabels=" + securityLabels +
+                       ", securityProperties=" + securityProperties +
+                       ", accessGroups=" + accessGroups +
+                       ", confidentiality=" + confidentiality +
+                       ", confidence=" + confidence +
+                       ", criticality=" + criticality +
+                       ", retention=" + retention +
+                       '}';
     }
 
 
@@ -471,17 +544,20 @@ public class Referenceable implements Serializable
         }
         Referenceable that = (Referenceable) objectToCompare;
         return Objects.equals(typeGUID, that.typeGUID) &&
-                Objects.equals(typeName, that.typeName) &&
-                Objects.equals(guid, that.guid) &&
-                Objects.equals(qualifiedName, that.qualifiedName) &&
-                Objects.equals(additionalProperties, that.additionalProperties) &&
-                Objects.equals(extendedProperties, that.extendedProperties) &&
-                Objects.equals(securityLabels, that.securityLabels) &&
-                Objects.equals(securityProperties, that.securityProperties) &&
-                Objects.equals(confidentiality, that.confidentiality) &&
-                Objects.equals(confidence, that.confidence) &&
-                Objects.equals(criticality, that.criticality) &&
-                Objects.equals(retention, that.retention);
+                       Objects.equals(typeName, that.typeName) &&
+                       Objects.equals(guid, that.guid) &&
+                       Objects.equals(qualifiedName, that.qualifiedName) &&
+                       Objects.equals(additionalProperties, that.additionalProperties)  &&
+                       Objects.equals(owner, that.owner) &&
+                       getOwnerType() == that.ownerType &&
+                       Objects.equals(extendedProperties, that.extendedProperties) &&
+                       Objects.equals(securityLabels, that.securityLabels) &&
+                       Objects.equals(securityProperties, that.securityProperties) &&
+                       Objects.equals(accessGroups, that.accessGroups) &&
+                       Objects.equals(confidentiality, that.confidentiality) &&
+                       Objects.equals(confidence, that.confidence) &&
+                       Objects.equals(criticality, that.criticality) &&
+                       Objects.equals(retention, that.retention);
     }
 
 
@@ -493,6 +569,6 @@ public class Referenceable implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(typeGUID, typeName, guid, qualifiedName, additionalProperties, extendedProperties, securityLabels, securityProperties, confidentiality, confidence, criticality, retention);
+        return Objects.hash(typeGUID, typeName, guid, qualifiedName, additionalProperties, owner, ownerType, extendedProperties, securityLabels, securityProperties, confidentiality, confidence, criticality, retention);
     }
 }

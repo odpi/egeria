@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -3121,6 +3122,18 @@ public class OpenMetadataAPIGenericHandler<B>
                                                       serviceName,
                                                       methodName);
         }
+        else if (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME))
+        {
+            /*
+             * Even if the request is an update request, the security module is first called for read - the update
+             * is validated once the properties have been updated.
+             */
+            securityVerifier.validateUserForGlossaryRead(userId,
+                                                         connectToEntity,
+                                                         repositoryHelper,
+                                                         serviceName,
+                                                         methodName);
+        }
 
         /*
          * Most referenceables have an independent lifecycle.  They are their own anchor.  This method is handling the special cases.
@@ -3188,17 +3201,17 @@ public class OpenMetadataAPIGenericHandler<B>
 
             if (anchorEntityType != null)
             {
+                boolean isFeedbackEntity = (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME)) ||
+                                           (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataAPIMapper.COMMENT_TYPE_NAME)) ||
+                                           (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataAPIMapper.RATING_TYPE_NAME)) ||
+                                           (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataAPIMapper.LIKE_TYPE_NAME));
+
                 /*
                  * Determine if the element is attached directly or indirectly to an asset (or is an asset) so it is possible to determine
                  * if this asset is in a supported zone or if the user is allowed to change its attachments.
                  */
                 if (OpenMetadataAPIMapper.ASSET_TYPE_NAME.equals(anchorEntityType.getTypeDefName()))
                 {
-                    boolean isFeedbackEntity = (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME)) ||
-                                               (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataAPIMapper.COMMENT_TYPE_NAME)) ||
-                                               (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataAPIMapper.RATING_TYPE_NAME)) ||
-                                               (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataAPIMapper.LIKE_TYPE_NAME));
-
                     securityVerifier.validateUserForAssetAttachment(userId,
                                                                     connectToGUID,
                                                                     connectToGUIDParameterName,
@@ -3209,6 +3222,33 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                     repositoryHelper,
                                                                     serviceName,
                                                                     methodName);
+                }
+                else if (OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME.equals(anchorEntityType.getTypeDefName()))
+                {
+                    if (isFeedbackEntity)
+                    {
+                        securityVerifier.validateUserForGlossaryFeedback(userId,
+                                                                         anchorEntity,
+                                                                         repositoryHelper,
+                                                                         serviceName,
+                                                                         methodName);
+                    }
+                    else if (isUpdate)
+                    {
+                        securityVerifier.validateUserForGlossaryMemberUpdate(userId,
+                                                                             anchorEntity,
+                                                                             repositoryHelper,
+                                                                             serviceName,
+                                                                             methodName);
+                    }
+                    else
+                    {
+                        securityVerifier.validateUserForGlossaryRead(userId,
+                                                                     anchorEntity,
+                                                                     repositoryHelper,
+                                                                     serviceName,
+                                                                     methodName);
+                    }
                 }
 
                 /*
@@ -3427,6 +3467,18 @@ public class OpenMetadataAPIGenericHandler<B>
                                                         repositoryHelper,
                                                         serviceName,
                                                         methodName);
+        }
+        else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME))
+        {
+            securityVerifier.validateUserForGlossaryCreate(userId,
+                                                           entityTypeGUID,
+                                                           entityTypeName,
+                                                           newProperties,
+                                                           classifications,
+                                                           instanceStatus,
+                                                           repositoryHelper,
+                                                           serviceName,
+                                                           methodName);
         }
     }
 
@@ -6361,6 +6413,15 @@ public class OpenMetadataAPIGenericHandler<B>
                                                             serviceName,
                                                             methodName);
             }
+            else if (repositoryHelper.isTypeOf(serviceName, originalEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME))
+            {
+                securityVerifier.validateUserForGlossaryDetailUpdate(userId,
+                                                                     originalEntity,
+                                                                     newProperties,
+                                                                     repositoryHelper,
+                                                                     serviceName,
+                                                                     methodName);
+            }
 
             repositoryHandler.updateEntityProperties(userId,
                                                      externalSourceGUID,
@@ -6565,6 +6626,14 @@ public class OpenMetadataAPIGenericHandler<B>
                                                             serviceName,
                                                             methodName);
             }
+            else if (repositoryHelper.isTypeOf(serviceName, originalEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME))
+            {
+                securityVerifier.validateUserForGlossaryMemberStatusUpdate(userId,
+                                                                           anchorEntity,
+                                                                           repositoryHelper,
+                                                                           serviceName,
+                                                                           methodName);
+            }
 
             repositoryHandler.updateEntityStatus(userId,
                                                  externalSourceGUID,
@@ -6627,6 +6696,277 @@ public class OpenMetadataAPIGenericHandler<B>
                                                         serverName,
                                                         methodName);
         }
+    }
+
+
+    /**
+     * Undo the last update to the entity.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param entityGUID unique identifier of object to update
+     * @param entityGUIDParameterName name of parameter supplying the GUID
+     * @param entityTypeName unique name of the entity's type
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @return recovered bean
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem adding the new properties to the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public B    undoBeanUpdateInRepository(String             userId,
+                                           String             externalSourceGUID,
+                                           String             externalSourceName,
+                                           String             entityGUID,
+                                           String             entityGUIDParameterName,
+                                           String             entityTypeName,
+                                           boolean            forLineage,
+                                           boolean            forDuplicateProcessing,
+                                           Date               effectiveTime,
+                                           String             methodName) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
+    {
+        return this.undoBeanUpdateInRepository(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               entityGUID,
+                                               entityGUIDParameterName,
+                                               entityTypeName,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               supportedZones,
+                                               effectiveTime,
+                                               methodName);
+    }
+
+
+    /**
+     * Undo the last update to the entity.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param entityGUID unique identifier of object to update
+     * @param entityGUIDParameterName name of parameter supplying the GUID
+     * @param entityTypeName unique name of the entity's type
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param serviceSupportedZones supported zones for calling service
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @return recovered bean
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem adding the new properties to the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public B    undoBeanUpdateInRepository(String             userId,
+                                           String             externalSourceGUID,
+                                           String             externalSourceName,
+                                           String             entityGUID,
+                                           String             entityGUIDParameterName,
+                                           String             entityTypeName,
+                                           boolean            forLineage,
+                                           boolean            forDuplicateProcessing,
+                                           List<String>       serviceSupportedZones,
+                                           Date               effectiveTime,
+                                           String             methodName) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
+    {
+        EntityDetail startingEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                        entityGUID,
+                                                                        entityGUIDParameterName,
+                                                                        entityTypeName,
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
+                                                                        effectiveTime,
+                                                                        methodName);
+
+        return undoBeanUpdateInRepository(userId,
+                                          externalSourceGUID,
+                                          externalSourceName,
+                                          startingEntity,
+                                          entityGUIDParameterName,
+                                          entityTypeName,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          serviceSupportedZones,
+                                          effectiveTime,
+                                          methodName);
+    }
+
+
+    /**
+     * Undo the last update to the entity.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param originalEntity unique identifier of object to update
+     * @param entityGUIDParameterName name of parameter supplying the GUID
+     * @param entityTypeName unique name of the entity's type
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param serviceSupportedZones supported zones for calling service
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @return recovered bean
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem adding the new properties to the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public B    undoBeanUpdateInRepository(String             userId,
+                                           String             externalSourceGUID,
+                                           String             externalSourceName,
+                                           EntityDetail       originalEntity,
+                                           String             entityGUIDParameterName,
+                                           String             entityTypeName,
+                                           boolean            forLineage,
+                                           boolean            forDuplicateProcessing,
+                                           List<String>       serviceSupportedZones,
+                                           Date               effectiveTime,
+                                           String             methodName) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
+    {
+        final String originalEntityParameterName = "originalEntity";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        if ((originalEntity != null) && (originalEntity.getType() != null))
+        {
+            EntityDetail anchorEntity = this.validateAnchorEntity(userId,
+                                                                  originalEntity.getGUID(),
+                                                                  entityTypeName,
+                                                                  originalEntity,
+                                                                  entityGUIDParameterName,
+                                                                  true,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing,
+                                                                  serviceSupportedZones,
+                                                                  effectiveTime,
+                                                                  methodName);
+
+            EntityDetail recoveredEntity = repositoryHandler.undoEntityUpdate(userId,
+                                                                              externalSourceGUID,
+                                                                              externalSourceName,
+                                                                              originalEntity.getGUID(),
+                                                                              methodName);
+
+            /*
+             * There is an extra security check if the update is for an asset or glossary.
+             */
+            try
+            {
+                if (repositoryHelper.isTypeOf(serviceName, originalEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.ASSET_TYPE_NAME))
+                {
+                    securityVerifier.validateUserForAssetUpdate(userId,
+                                                                originalEntity,
+                                                                recoveredEntity.getProperties(),
+                                                                recoveredEntity.getStatus(),
+                                                                repositoryHelper,
+                                                                serviceName,
+                                                                methodName);
+                }
+                else if (repositoryHelper.isTypeOf(serviceName, originalEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME))
+                {
+                    securityVerifier.validateUserForGlossaryDetailUpdate(userId,
+                                                                         originalEntity,
+                                                                         recoveredEntity.getProperties(),
+                                                                         repositoryHelper,
+                                                                         serviceName,
+                                                                         methodName);
+                }
+            }
+            catch (UserNotAuthorizedException notAuth)
+            {
+                /*
+                 * Put the original entity back.
+                 */
+                repositoryHandler.updateEntity(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               originalEntity.getGUID(),
+                                               originalEntityParameterName,
+                                               originalEntity.getType().getTypeDefGUID(),
+                                               originalEntity.getType().getTypeDefName(),
+                                               originalEntity.getProperties(),
+                                               originalEntity.getClassifications(),
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               effectiveTime,
+                                               methodName);
+                throw notAuth;
+            }
+
+            /*
+             * Update is OK so record that it occurred in the LatestChange classification if there is an anchor entity.
+             */
+            final String actionDescriptionTemplate = "Undo last update of properties in %s %s";
+            String actionDescription = String.format(actionDescriptionTemplate, entityTypeName, originalEntity.getGUID());
+
+            if (anchorEntity != null)
+            {
+                this.addLatestChangeToAnchor(anchorEntity,
+                                             OpenMetadataAPIMapper.ATTACHMENT_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             null,
+                                             originalEntity.getGUID(),
+                                             entityTypeName,
+                                             null,
+                                             userId,
+                                             actionDescription,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             effectiveTime,
+                                             methodName);
+            }
+            else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+            {
+                this.addLatestChangeToAnchor(originalEntity,
+                                             OpenMetadataAPIMapper.ENTITY_PROPERTY_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             null,
+                                             null,
+                                             null,
+                                             null,
+                                             userId,
+                                             actionDescription,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             effectiveTime,
+                                             methodName);
+            }
+
+            if (recoveredEntity != null)
+            {
+                return converter.getNewBean(beanClass, recoveredEntity, methodName);
+            }
+        }
+        else
+        {
+            String entityGUID = "<null>";
+
+            if (originalEntity != null)
+            {
+                entityGUID = originalEntity.getGUID();
+            }
+            invalidParameterHandler.throwUnknownElement(userId,
+                                                        entityGUID,
+                                                        entityTypeName,
+                                                        serviceName,
+                                                        serverName,
+                                                        methodName);
+        }
+
+        return null;
     }
 
 
@@ -6705,8 +7045,8 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Classify an entity in the repository to show that its asset/artifact counterpart in the real world has either
-     * been deleted or archived.
+     * Classify an entity in the repository to show that its asset/artifact counterpart in the real world has either been deleted or archived.
+     * The entity is preserved because it is needed for lineage.
      *
      * @param userId calling user
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
@@ -6735,8 +7075,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                         boolean            forDuplicateProcessing,
                                         Date               effectiveTime,
                                         String             methodName) throws InvalidParameterException,
-                                                                               PropertyServerException,
-                                                                               UserNotAuthorizedException
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
     {
         this.archiveBeanInRepository(userId,
                                      externalSourceGUID,
@@ -9716,6 +10056,83 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
     /**
+     * Classify an entity in the repository to show that its asset/artifact counterpart in the real world has either
+     * been deleted or archived. Note, this method is designed to work only on anchor entities or entities with no anchor.
+     *
+     * @param userId calling user
+     * @param guid unique identifier of object to update
+     * @param guidParameterName name of parameter supplying the GUID
+     * @param entityTypeName unique name of the entity's type
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param serviceSupportedZones supported zones for calling service
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @return list of beans
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem removing the properties from the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<B> getBeanHistory(String                 userId,
+                                  String                 guid,
+                                  String                 guidParameterName,
+                                  String                 entityTypeName,
+                                  Date                   fromTime,
+                                  Date                   toTime,
+                                  int                    startingFrom,
+                                  int                    pageSize,
+                                  HistorySequencingOrder sequencingOrder,
+                                  boolean                forLineage,
+                                  boolean                forDuplicateProcessing,
+                                  List<String>           serviceSupportedZones,
+                                  Date                   effectiveTime,
+                                  String                 methodName) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
+
+        this.validateAnchorEntity(userId,
+                                  guid,
+                                  guidParameterName,
+                                  entityTypeName,
+                                  true,
+                                  forLineage,
+                                  forDuplicateProcessing,
+                                  serviceSupportedZones,
+                                  effectiveTime,
+                                  methodName);
+
+        List<EntityDetail> entities = repositoryHandler.getEntityDetailHistory(userId,
+                                                                               guid,
+                                                                               fromTime,
+                                                                               toTime,
+                                                                               startingFrom,
+                                                                               pageSize,
+                                                                               sequencingOrder,
+                                                                               methodName);
+
+        if (entities != null)
+        {
+            List<B> results = new ArrayList<>();
+
+            for (EntityDetail entity : entities)
+            {
+                results.add(converter.getNewBean(beanClass, entity, methodName));
+            }
+
+            if (! results.isEmpty())
+            {
+                return results;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Return the bean that matches the requested value.
      *
      * @param userId identifier of calling user
@@ -10089,8 +10506,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
         /*
-         * Now need to ensure that the anchor's classification is pushed down to the dependent elements.  This is done by retrieving the
-         * relationships.
+         * Validate that the anchor guid means that the entity is visible to caller.
          */
         RepositoryFindEntitiesIterator iterator = new RepositoryFindEntitiesIterator(repositoryHandler,
                                                                                      invalidParameterHandler,

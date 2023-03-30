@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.assetmanager.client;
 
 import org.odpi.openmetadata.accessservices.assetmanager.api.StewardshipExchangeInterface;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.SecurityTagsProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -240,5 +241,63 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
                                                                                        PropertyServerException
     {
 
+    }
+
+
+    /**
+     * Add or replace the security tags for an element.
+     *
+     * @param userId calling user
+     * @param elementGUID element to link it to - its type must inherit from Referenceable.
+     * @param properties details of the security tags
+     *
+     * @throws InvalidParameterException element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public void  addSecurityTags(String                 userId,
+                                 String                 elementGUID,
+                                 SecurityTagsProperties properties) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        final String   methodName = "addSecurityTags";
+        final String   elementGUIDParameter = "elementGUID";
+        final String   propertiesParameter = "properties";
+        final String   assetURLTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}/elements/{2}/security-tags";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameter, methodName);
+        invalidParameterHandler.validateObject(properties, propertiesParameter, methodName);
+
+        restClient.callVoidPostRESTCall(methodName, assetURLTemplate, properties, serverName, userId, elementGUID);
+    }
+
+
+    /**
+     * Remove the security tags classification from an element.
+     *
+     * @param userId calling user
+     * @param elementGUID element where the security tags need to be removed.
+     *
+     * @throws InvalidParameterException asset or element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public void  removeSecurityTags(String userId,
+                                    String elementGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        final String   methodName = "removeSecurityTags";
+        final String   elementGUIDParameter = "elementGUID";
+        final String   assetURLTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}/elements/{2}/security-tags/remove";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameter, methodName);
+
+        restClient.callVoidPostRESTCall(methodName, assetURLTemplate, nullRequestBody, serverName, userId, elementGUID);
     }
 }

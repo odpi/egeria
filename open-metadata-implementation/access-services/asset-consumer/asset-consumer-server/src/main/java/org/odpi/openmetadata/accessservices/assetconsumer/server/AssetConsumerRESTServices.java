@@ -2,19 +2,42 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.elements.*;
-import org.odpi.openmetadata.accessservices.assetconsumer.handlers.*;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.*;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
+import org.odpi.openmetadata.accessservices.assetconsumer.elements.InformalTagElement;
+import org.odpi.openmetadata.accessservices.assetconsumer.elements.MeaningElement;
+import org.odpi.openmetadata.accessservices.assetconsumer.handlers.LoggingHandler;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.CommentRequestBody;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.FeedbackRequestBody;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermListResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.LogRecordRequestBody;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.RatingRequestBody;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.TagRequestBody;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.TagResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.TagUpdateRequestBody;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.TagsResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
-import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.CommentHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.GlossaryTermHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.InformalTagHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.LikeHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIDummyBean;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.commonservices.generichandlers.RatingHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.LoggerFactory;
 
@@ -854,8 +877,7 @@ public class AssetConsumerRESTServices
                                                      int             startFrom,
                                                      int             pageSize)
     {
-        final String nameParameterName = "term";
-        final String methodName        = "getMeaningByName";
+        final String methodName = "getMeaningByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -870,9 +892,12 @@ public class AssetConsumerRESTServices
 
             if (requestBody != null)
             {
+                List<InstanceStatus> limitStatuses = new ArrayList<>();
+                limitStatuses.add(InstanceStatus.ACTIVE);
                 response.setMeanings(glossaryTermHandler.getTermsByName(userId,
+                                                                        null,
                                                                         requestBody.getName(),
-                                                                        nameParameterName,
+                                                                        limitStatuses,
                                                                         startFrom,
                                                                         pageSize,
                                                                         false,
@@ -916,7 +941,6 @@ public class AssetConsumerRESTServices
                                                  int                     startFrom,
                                                  int                     pageSize)
     {
-        final String nameParameterName = "term";
         final String methodName = "findMeanings";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -932,9 +956,12 @@ public class AssetConsumerRESTServices
 
             if (requestBody != null)
             {
+                List<InstanceStatus> limitStatuses = new ArrayList<>();
+                limitStatuses.add(InstanceStatus.ACTIVE);
                 response.setMeanings(glossaryTermHandler.findTerms(userId,
+                                                                   null,
                                                                    requestBody.getSearchString(),
-                                                                   nameParameterName,
+                                                                   limitStatuses,
                                                                    startFrom,
                                                                    pageSize,
                                                                    false,

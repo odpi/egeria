@@ -490,9 +490,11 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
      * <p>
      * All relationships to the entity are also soft-deleted and will no longer be usable.  These deleted relationships
      * will be notified through separate events.
+     * </p>
      * <p>
      * Details of the TypeDef are included with the entity's unique id (guid) to ensure the right entity is deleted in
      * the remote repositories.
+     * </p>
      *
      * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
      *                                       local repository, or event mapper name.
@@ -800,6 +802,7 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
      * <p>
      * Details of the TypeDef are included with the relationship's unique id (guid) to ensure the right
      * relationship is deleted in the remote repositories.
+     * </p>
      *
      * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
      *                                       local repository, or event mapper name.

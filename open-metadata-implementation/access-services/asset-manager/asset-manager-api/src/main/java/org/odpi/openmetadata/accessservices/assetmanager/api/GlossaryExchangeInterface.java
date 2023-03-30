@@ -29,7 +29,6 @@ public interface GlossaryExchangeInterface
      * The Glossary entity is the top level element in a glossary.
      */
 
-
     /**
      * Create a new metadata element to represent the root of a glossary.  All categories and terms are linked
      * to a single glossary.  They are owned by this glossary and if the glossary is deleted, any linked terms and
@@ -513,6 +512,7 @@ public interface GlossaryExchangeInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software capability representing the caller
      * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryGUID optional glossary unique identifier to scope the search to a glossary.
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -529,6 +529,7 @@ public interface GlossaryExchangeInterface
     List<GlossaryCategoryElement>   findGlossaryCategories(String  userId,
                                                            String  assetManagerGUID,
                                                            String  assetManagerName,
+                                                           String  glossaryGUID,
                                                            String  searchString,
                                                            int     startFrom,
                                                            int     pageSize,
@@ -578,6 +579,7 @@ public interface GlossaryExchangeInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software capability representing the caller
      * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryGUID optional glossary unique identifier to scope the search to a glossary.
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -594,6 +596,7 @@ public interface GlossaryExchangeInterface
     List<GlossaryCategoryElement>   getGlossaryCategoriesByName(String  userId,
                                                                 String  assetManagerGUID,
                                                                 String  assetManagerName,
+                                                                String  glossaryGUID,
                                                                 String  name,
                                                                 int     startFrom,
                                                                 int     pageSize,
@@ -1388,6 +1391,64 @@ public interface GlossaryExchangeInterface
 
 
     /**
+     * Undo the last update to the glossary term.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @return recovered glossary term
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    GlossaryTermElement undoGlossaryTermUpdate(String  userId,
+                                               String  assetManagerGUID,
+                                               String  assetManagerName,
+                                               String  glossaryTermGUID,
+                                               String  glossaryTermExternalIdentifier,
+                                               Date    effectiveTime,
+                                               boolean forLineage,
+                                               boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException;
+
+
+    /**
+     * Archive the metadata element representing a glossary term.  This removes it from normal access.  However, it is still available
+     * for lineage requests.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryTermGUID unique identifier of the metadata element to archive
+     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param archiveProperties option parameters about the archive process
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void archiveGlossaryTerm(String            userId,
+                             String            assetManagerGUID,
+                             String            assetManagerName,
+                             String            glossaryTermGUID,
+                             String            glossaryTermExternalIdentifier,
+                             ArchiveProperties archiveProperties,
+                             Date              effectiveTime,
+                             boolean           forDuplicateProcessing) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException;
+
+
+    /**
      * Remove the metadata element representing a glossary term.
      *
      * @param userId calling user
@@ -1422,7 +1483,10 @@ public interface GlossaryExchangeInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software capability representing the caller
      * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryGUID unique identifier of the glossary to query
      * @param searchString string to find in the properties
+     * @param limitResultsByStatus By default, terms in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -1435,17 +1499,19 @@ public interface GlossaryExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<GlossaryTermElement>   findGlossaryTerms(String  userId,
-                                                  String  assetManagerGUID,
-                                                  String  assetManagerName,
-                                                  String  searchString,
-                                                  int     startFrom,
-                                                  int     pageSize,
-                                                  Date    effectiveTime,
-                                                  boolean forLineage,
-                                                  boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException;
+    List<GlossaryTermElement>   findGlossaryTerms(String                   userId,
+                                                  String                   assetManagerGUID,
+                                                  String                   assetManagerName,
+                                                  String                   glossaryGUID,
+                                                  String                   searchString,
+                                                  List<GlossaryTermStatus> limitResultsByStatus,
+                                                  int                      startFrom,
+                                                  int                      pageSize,
+                                                  Date                     effectiveTime,
+                                                  boolean                  forLineage,
+                                                  boolean                  forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                          UserNotAuthorizedException,
+                                                                                                          PropertyServerException;
 
 
     /**
@@ -1519,7 +1585,10 @@ public interface GlossaryExchangeInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software capability representing the caller
      * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryGUID unique identifier of the glossary to query
      * @param name name to search for
+     * @param limitResultsByStatus By default, terms in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -1532,17 +1601,19 @@ public interface GlossaryExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<GlossaryTermElement>   getGlossaryTermsByName(String  userId,
-                                                       String  assetManagerGUID,
-                                                       String  assetManagerName,
-                                                       String  name,
-                                                       int     startFrom,
-                                                       int     pageSize,
-                                                       Date    effectiveTime,
-                                                       boolean forLineage,
-                                                       boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException;
+    List<GlossaryTermElement>   getGlossaryTermsByName(String                   userId,
+                                                       String                   assetManagerGUID,
+                                                       String                   assetManagerName,
+                                                       String                   glossaryGUID,
+                                                       String                   name,
+                                                       List<GlossaryTermStatus> limitResultsByStatus,
+                                                       int                      startFrom,
+                                                       int                      pageSize,
+                                                       Date                     effectiveTime,
+                                                       boolean                  forLineage,
+                                                       boolean                  forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                               UserNotAuthorizedException,
+                                                                                                               PropertyServerException;
 
 
     /**
@@ -1572,6 +1643,41 @@ public interface GlossaryExchangeInterface
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException;
 
+    /**
+     * Retrieve all the versions of a glossary term.
+     *
+     * @param userId calling user
+     * @param guid unique identifier of object to retrieve
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the entity (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the entity (exclusive)
+     * @param startFrom the starting element number of the historical versions to return. This is used when retrieving
+     *                         versions beyond the first page of results. Zero means start from the first element.
+     * @param pageSize the maximum number of result versions that can be returned on this request. Zero means unrestricted
+     *                 return results size.
+     * @param oldestFirst  defining how the results should be ordered.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @return list of beans
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem removing the properties from the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    List<GlossaryTermElement> getGlossaryTermHistory(String                 userId,
+                                                     String                 assetManagerGUID,
+                                                     String                 assetManagerName,
+                                                     String                 guid,
+                                                     Date                   fromTime,
+                                                     Date                   toTime,
+                                                     int                    startFrom,
+                                                     int                    pageSize,
+                                                     boolean                oldestFirst,
+                                                     boolean                forLineage,
+                                                     boolean                forDuplicateProcessing,
+                                                     Date                   effectiveTime) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException;
 
     /* =========================================================================================
      * Support for linkage to external glossary resources.  These glossary resources are not

@@ -783,7 +783,52 @@ public class GlossaryExchangeService
                                                                                                UserNotAuthorizedException, 
                                                                                                PropertyServerException
     {
-        return glossaryManagerClient.findGlossaryCategories(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize, effectiveTime, forLineage,
+        return glossaryManagerClient.findGlossaryCategories(userId,
+                                                            assetManagerGUID,
+                                                            assetManagerName,
+                                                            null,
+                                                            searchString,
+                                                            startFrom,
+                                                            pageSize,
+                                                            effectiveTime,
+                                                            forLineage,
+                                                            forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve the list of glossary category metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param glossaryGUID optional glossary unique identifier to scope the search to a glossary.
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<GlossaryCategoryElement>   findGlossaryCategories(String glossaryGUID,
+                                                                  String searchString,
+                                                                  int    startFrom,
+                                                                  int    pageSize,
+                                                                  Date   effectiveTime) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        return glossaryManagerClient.findGlossaryCategories(userId,
+                                                            assetManagerGUID,
+                                                            assetManagerName,
+                                                            glossaryGUID,
+                                                            searchString,
+                                                            startFrom,
+                                                            pageSize,
+                                                            effectiveTime,
+                                                            forLineage,
                                                             forDuplicateProcessing);
     }
 
@@ -809,7 +854,14 @@ public class GlossaryExchangeService
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        return glossaryManagerClient.getCategoriesForGlossary(userId, assetManagerGUID, assetManagerName, glossaryGUID, startFrom, pageSize, effectiveTime, forLineage,
+        return glossaryManagerClient.getCategoriesForGlossary(userId,
+                                                              assetManagerGUID,
+                                                              assetManagerName,
+                                                              glossaryGUID,
+                                                              startFrom,
+                                                              pageSize,
+                                                              effectiveTime,
+                                                              forLineage,
                                                               forDuplicateProcessing);
     }
 
@@ -836,7 +888,52 @@ public class GlossaryExchangeService
                                                                                                     UserNotAuthorizedException,
                                                                                                     PropertyServerException
     {
-        return glossaryManagerClient.getGlossaryCategoriesByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize, effectiveTime , forLineage,
+        return glossaryManagerClient.getGlossaryCategoriesByName(userId,
+                                                                 assetManagerGUID,
+                                                                 assetManagerName,
+                                                                 null,
+                                                                 name,
+                                                                 startFrom,
+                                                                 pageSize,
+                                                                 effectiveTime,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve the list of glossary category metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param glossaryGUID optional glossary unique identifier to scope the search to a glossary.
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<GlossaryCategoryElement>   getGlossaryCategoriesByName(String glossaryGUID,
+                                                                       String name,
+                                                                       int    startFrom,
+                                                                       int    pageSize,
+                                                                       Date   effectiveTime) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
+    {
+        return glossaryManagerClient.getGlossaryCategoriesByName(userId,
+                                                                 assetManagerGUID,
+                                                                 assetManagerName,
+                                                                 glossaryGUID,
+                                                                 name,
+                                                                 startFrom,
+                                                                 pageSize,
+                                                                 effectiveTime,
+                                                                 forLineage,
                                                                  forDuplicateProcessing);
     }
 
@@ -858,7 +955,12 @@ public class GlossaryExchangeService
                                                                                           UserNotAuthorizedException, 
                                                                                           PropertyServerException
     {
-        return glossaryManagerClient.getGlossaryCategoryByGUID(userId, assetManagerGUID, assetManagerName, guid, effectiveTime, forLineage,
+        return glossaryManagerClient.getGlossaryCategoryByGUID(userId,
+                                                               assetManagerGUID,
+                                                               assetManagerName,
+                                                               guid,
+                                                               effectiveTime,
+                                                               forLineage,
                                                                forDuplicateProcessing);
     }
 
@@ -886,7 +988,12 @@ public class GlossaryExchangeService
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        return glossaryManagerClient.getGlossaryCategoryParent(userId, assetManagerGUID, assetManagerName, glossaryCategoryGUID, effectiveTime, forLineage,
+        return glossaryManagerClient.getGlossaryCategoryParent(userId,
+                                                               assetManagerGUID,
+                                                               assetManagerName,
+                                                               glossaryCategoryGUID,
+                                                               effectiveTime,
+                                                               forLineage,
                                                                forDuplicateProcessing);
     }
 
@@ -918,7 +1025,14 @@ public class GlossaryExchangeService
                                                                                                UserNotAuthorizedException, 
                                                                                                PropertyServerException
     {
-        return glossaryManagerClient.getGlossarySubCategories(userId, assetManagerGUID, assetManagerName, glossaryCategoryGUID, startFrom, pageSize, effectiveTime, forLineage,
+        return glossaryManagerClient.getGlossarySubCategories(userId,
+                                                              assetManagerGUID,
+                                                              assetManagerName,
+                                                              glossaryCategoryGUID,
+                                                              startFrom,
+                                                              pageSize,
+                                                              effectiveTime,
+                                                              forLineage,
                                                               forDuplicateProcessing);
     }
 
@@ -1090,7 +1204,15 @@ public class GlossaryExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            glossaryManagerClient.updateGlossaryTerm(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier, isMergeUpdate, glossaryTermProperties, effectiveTime, forLineage,
+            glossaryManagerClient.updateGlossaryTerm(userId,
+                                                     assetManagerGUID,
+                                                     assetManagerName,
+                                                     glossaryTermGUID,
+                                                     glossaryTermExternalIdentifier,
+                                                     isMergeUpdate,
+                                                     glossaryTermProperties,
+                                                     effectiveTime,
+                                                     forLineage,
                                                      forDuplicateProcessing);
         }
         else
@@ -1136,7 +1258,14 @@ public class GlossaryExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            glossaryManagerClient.updateGlossaryTermStatus(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier, glossaryTermStatus, effectiveTime, forLineage,
+            glossaryManagerClient.updateGlossaryTermStatus(userId,
+                                                           assetManagerGUID,
+                                                           assetManagerName,
+                                                           glossaryTermGUID,
+                                                           glossaryTermExternalIdentifier,
+                                                           glossaryTermStatus,
+                                                           effectiveTime,
+                                                           forLineage,
                                                            forDuplicateProcessing);
         }
         else
@@ -1175,7 +1304,14 @@ public class GlossaryExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            glossaryManagerClient.setupTermCategory(userId, assetManagerGUID, assetManagerName, glossaryCategoryGUID, glossaryTermGUID, categorizationProperties, effectiveTime, forLineage,
+            glossaryManagerClient.setupTermCategory(userId,
+                                                    assetManagerGUID,
+                                                    assetManagerName,
+                                                    glossaryCategoryGUID,
+                                                    glossaryTermGUID,
+                                                    categorizationProperties,
+                                                    effectiveTime,
+                                                    forLineage,
                                                     forDuplicateProcessing);
         }
         else
@@ -1212,7 +1348,13 @@ public class GlossaryExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            glossaryManagerClient.clearTermCategory(userId, assetManagerGUID, assetManagerName, glossaryCategoryGUID, glossaryTermGUID, effectiveTime, forLineage,
+            glossaryManagerClient.clearTermCategory(userId,
+                                                    assetManagerGUID,
+                                                    assetManagerName,
+                                                    glossaryCategoryGUID,
+                                                    glossaryTermGUID,
+                                                    effectiveTime,
+                                                    forLineage,
                                                     forDuplicateProcessing);
         }
         else
@@ -1253,7 +1395,15 @@ public class GlossaryExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            glossaryManagerClient.setupTermRelationship(userId, assetManagerGUID, assetManagerName, relationshipTypeName, glossaryTermOneGUID, glossaryTermTwoGUID, relationshipsProperties, effectiveTime, forLineage,
+            glossaryManagerClient.setupTermRelationship(userId,
+                                                        assetManagerGUID,
+                                                        assetManagerName,
+                                                        relationshipTypeName,
+                                                        glossaryTermOneGUID,
+                                                        glossaryTermTwoGUID,
+                                                        relationshipsProperties,
+                                                        effectiveTime,
+                                                        forLineage,
                                                         forDuplicateProcessing);
         }
         else
@@ -1294,7 +1444,15 @@ public class GlossaryExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            glossaryManagerClient.updateTermRelationship(userId, assetManagerGUID, assetManagerName, relationshipTypeName, glossaryTermOneGUID, glossaryTermTwoGUID, relationshipsProperties, effectiveTime, forLineage,
+            glossaryManagerClient.updateTermRelationship(userId,
+                                                         assetManagerGUID,
+                                                         assetManagerName,
+                                                         relationshipTypeName,
+                                                         glossaryTermOneGUID,
+                                                         glossaryTermTwoGUID,
+                                                         relationshipsProperties,
+                                                         effectiveTime,
+                                                         forLineage,
                                                          forDuplicateProcessing);
         }
         else
@@ -1333,7 +1491,14 @@ public class GlossaryExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            glossaryManagerClient.clearTermRelationship(userId, assetManagerGUID, assetManagerName, relationshipTypeName, glossaryTermOneGUID, glossaryTermTwoGUID, effectiveTime, forLineage,
+            glossaryManagerClient.clearTermRelationship(userId,
+                                                        assetManagerGUID,
+                                                        assetManagerName,
+                                                        relationshipTypeName,
+                                                        glossaryTermOneGUID,
+                                                        glossaryTermTwoGUID,
+                                                        effectiveTime,
+                                                        forLineage,
                                                         forDuplicateProcessing);
         }
         else
@@ -1370,7 +1535,13 @@ public class GlossaryExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            glossaryManagerClient.setTermAsAbstractConcept(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier, effectiveTime, forLineage,
+            glossaryManagerClient.setTermAsAbstractConcept(userId,
+                                                           assetManagerGUID,
+                                                           assetManagerName,
+                                                           glossaryTermGUID,
+                                                           glossaryTermExternalIdentifier,
+                                                           effectiveTime,
+                                                           forLineage,
                                                            forDuplicateProcessing);
         }
         else
@@ -1407,7 +1578,13 @@ public class GlossaryExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            glossaryManagerClient.clearTermAsAbstractConcept(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier, effectiveTime, forLineage,
+            glossaryManagerClient.clearTermAsAbstractConcept(userId,
+                                                             assetManagerGUID,
+                                                             assetManagerName,
+                                                             glossaryTermGUID,
+                                                             glossaryTermExternalIdentifier,
+                                                             effectiveTime,
+                                                             forLineage,
                                                              forDuplicateProcessing);
         }
         else
@@ -1444,7 +1621,13 @@ public class GlossaryExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            glossaryManagerClient.setTermAsDataValue(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier, effectiveTime, forLineage,
+            glossaryManagerClient.setTermAsDataValue(userId,
+                                                     assetManagerGUID,
+                                                     assetManagerName,
+                                                     glossaryTermGUID,
+                                                     glossaryTermExternalIdentifier,
+                                                     effectiveTime,
+                                                     forLineage,
                                                      forDuplicateProcessing);
         }
         else
@@ -1481,7 +1664,13 @@ public class GlossaryExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            glossaryManagerClient.clearTermAsDataValue(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier, effectiveTime, forLineage,
+            glossaryManagerClient.clearTermAsDataValue(userId,
+                                                       assetManagerGUID,
+                                                       assetManagerName,
+                                                       glossaryTermGUID,
+                                                       glossaryTermExternalIdentifier,
+                                                       effectiveTime,
+                                                       forLineage,
                                                        forDuplicateProcessing);
         }
         else
@@ -1520,7 +1709,14 @@ public class GlossaryExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            glossaryManagerClient.setTermAsActivity(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier, activityType, effectiveTime, forLineage,
+            glossaryManagerClient.setTermAsActivity(userId,
+                                                    assetManagerGUID,
+                                                    assetManagerName,
+                                                    glossaryTermGUID,
+                                                    glossaryTermExternalIdentifier,
+                                                    activityType,
+                                                    effectiveTime,
+                                                    forLineage,
                                                     forDuplicateProcessing);
         }
         else
@@ -1557,7 +1753,13 @@ public class GlossaryExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            glossaryManagerClient.clearTermAsActivity(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier, effectiveTime, forLineage,
+            glossaryManagerClient.clearTermAsActivity(userId,
+                                                      assetManagerGUID,
+                                                      assetManagerName,
+                                                      glossaryTermGUID,
+                                                      glossaryTermExternalIdentifier,
+                                                      effectiveTime,
+                                                      forLineage,
                                                       forDuplicateProcessing);
         }
         else
@@ -1596,7 +1798,14 @@ public class GlossaryExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            glossaryManagerClient.setTermAsContext(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier, contextDefinition, effectiveTime, forLineage,
+            glossaryManagerClient.setTermAsContext(userId,
+                                                   assetManagerGUID,
+                                                   assetManagerName,
+                                                   glossaryTermGUID,
+                                                   glossaryTermExternalIdentifier,
+                                                   contextDefinition,
+                                                   effectiveTime,
+                                                   forLineage,
                                                    forDuplicateProcessing);
         }
         else
@@ -1633,7 +1842,13 @@ public class GlossaryExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            glossaryManagerClient.clearTermAsContext(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier, effectiveTime, forLineage,
+            glossaryManagerClient.clearTermAsContext(userId,
+                                                     assetManagerGUID,
+                                                     assetManagerName,
+                                                     glossaryTermGUID,
+                                                     glossaryTermExternalIdentifier,
+                                                     effectiveTime,
+                                                     forLineage,
                                                      forDuplicateProcessing);
         }
         else
@@ -1670,7 +1885,13 @@ public class GlossaryExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            glossaryManagerClient.setTermAsSpineObject(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier, effectiveTime, forLineage,
+            glossaryManagerClient.setTermAsSpineObject(userId,
+                                                       assetManagerGUID,
+                                                       assetManagerName,
+                                                       glossaryTermGUID,
+                                                       glossaryTermExternalIdentifier,
+                                                       effectiveTime,
+                                                       forLineage,
                                                        forDuplicateProcessing);
         }
         else
@@ -1707,7 +1928,13 @@ public class GlossaryExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            glossaryManagerClient.clearTermAsSpineObject(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier, effectiveTime, forLineage,
+            glossaryManagerClient.clearTermAsSpineObject(userId,
+                                                         assetManagerGUID,
+                                                         assetManagerName,
+                                                         glossaryTermGUID,
+                                                         glossaryTermExternalIdentifier,
+                                                         effectiveTime,
+                                                         forLineage,
                                                          forDuplicateProcessing);
         }
         else
@@ -1745,7 +1972,13 @@ public class GlossaryExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            glossaryManagerClient.setTermAsSpineAttribute(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier, effectiveTime, forLineage,
+            glossaryManagerClient.setTermAsSpineAttribute(userId,
+                                                          assetManagerGUID,
+                                                          assetManagerName,
+                                                          glossaryTermGUID,
+                                                          glossaryTermExternalIdentifier,
+                                                          effectiveTime,
+                                                          forLineage,
                                                           forDuplicateProcessing);
         }
         else
@@ -1782,7 +2015,13 @@ public class GlossaryExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            glossaryManagerClient.clearTermAsSpineAttribute(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier, effectiveTime, forLineage,
+            glossaryManagerClient.clearTermAsSpineAttribute(userId,
+                                                            assetManagerGUID,
+                                                            assetManagerName,
+                                                            glossaryTermGUID,
+                                                            glossaryTermExternalIdentifier,
+                                                            effectiveTime,
+                                                            forLineage,
                                                             forDuplicateProcessing);
         }
         else
@@ -1819,7 +2058,13 @@ public class GlossaryExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            glossaryManagerClient.setTermAsObjectIdentifier(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier, effectiveTime, forLineage,
+            glossaryManagerClient.setTermAsObjectIdentifier(userId,
+                                                            assetManagerGUID,
+                                                            assetManagerName,
+                                                            glossaryTermGUID,
+                                                            glossaryTermExternalIdentifier,
+                                                            effectiveTime,
+                                                            forLineage,
                                                             forDuplicateProcessing);
         }
         else
@@ -1856,7 +2101,13 @@ public class GlossaryExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            glossaryManagerClient.clearTermAsObjectIdentifier(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier, effectiveTime, forLineage,
+            glossaryManagerClient.clearTermAsObjectIdentifier(userId,
+                                                              assetManagerGUID,
+                                                              assetManagerName,
+                                                              glossaryTermGUID,
+                                                              glossaryTermExternalIdentifier,
+                                                              effectiveTime,
+                                                              forLineage,
                                                               forDuplicateProcessing);
         }
         else
@@ -1893,7 +2144,13 @@ public class GlossaryExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            glossaryManagerClient.removeGlossaryTerm(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, glossaryTermExternalIdentifier, effectiveTime, forLineage,
+            glossaryManagerClient.removeGlossaryTerm(userId,
+                                                     assetManagerGUID,
+                                                     assetManagerName,
+                                                     glossaryTermGUID,
+                                                     glossaryTermExternalIdentifier,
+                                                     effectiveTime,
+                                                     forLineage,
                                                      forDuplicateProcessing);
         }
         else
@@ -1931,7 +2188,57 @@ public class GlossaryExchangeService
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        return glossaryManagerClient.findGlossaryTerms(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize, effectiveTime, forLineage,
+        return glossaryManagerClient.findGlossaryTerms(userId,
+                                                       assetManagerGUID,
+                                                       assetManagerName,
+                                                       null,
+                                                       searchString,
+                                                       null,
+                                                       startFrom,
+                                                       pageSize,
+                                                       effectiveTime,
+                                                       forLineage,
+                                                       forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve the list of glossary term metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param glossaryGUID unique identifier of the glossary to query
+     * @param searchString string to find in the properties
+     * @param limitResultsByStatus By default, terms in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<GlossaryTermElement>   findGlossaryTerms(String                   glossaryGUID,
+                                                         String                   searchString,
+                                                         List<GlossaryTermStatus> limitResultsByStatus,
+                                                         int                      startFrom,
+                                                         int                      pageSize,
+                                                         Date                     effectiveTime) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
+    {
+        return glossaryManagerClient.findGlossaryTerms(userId,
+                                                       assetManagerGUID,
+                                                       assetManagerName,
+                                                       glossaryGUID,
+                                                       searchString,
+                                                       limitResultsByStatus,
+                                                       startFrom,
+                                                       pageSize,
+                                                       effectiveTime,
+                                                       forLineage,
                                                        forDuplicateProcessing);
     }
 
@@ -1957,7 +2264,14 @@ public class GlossaryExchangeService
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        return glossaryManagerClient.getTermsForGlossary(userId, assetManagerGUID, assetManagerName, glossaryGUID, startFrom, pageSize, effectiveTime, forLineage,
+        return glossaryManagerClient.getTermsForGlossary(userId,
+                                                         assetManagerGUID,
+                                                         assetManagerName,
+                                                         glossaryGUID,
+                                                         startFrom,
+                                                         pageSize,
+                                                         effectiveTime,
+                                                         forLineage,
                                                          forDuplicateProcessing);
     }
 
@@ -1983,7 +2297,14 @@ public class GlossaryExchangeService
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        return glossaryManagerClient.getTermsForGlossaryCategory(userId, assetManagerGUID, assetManagerName, glossaryCategoryGUID, startFrom, pageSize, effectiveTime, forLineage,
+        return glossaryManagerClient.getTermsForGlossaryCategory(userId,
+                                                                 assetManagerGUID,
+                                                                 assetManagerName,
+                                                                 glossaryCategoryGUID,
+                                                                 startFrom,
+                                                                 pageSize,
+                                                                 effectiveTime,
+                                                                 forLineage,
                                                                  forDuplicateProcessing);
     }
 
@@ -2010,7 +2331,57 @@ public class GlossaryExchangeService
                                                                                            UserNotAuthorizedException, 
                                                                                            PropertyServerException
     {
-        return glossaryManagerClient.getGlossaryTermsByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize, effectiveTime, forLineage,
+        return glossaryManagerClient.getGlossaryTermsByName(userId,
+                                                            assetManagerGUID,
+                                                            assetManagerName,
+                                                            null,
+                                                            name,
+                                                            null,
+                                                            startFrom,
+                                                            pageSize,
+                                                            effectiveTime,
+                                                            forLineage,
+                                                            forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve the list of glossary term metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param glossaryGUID unique identifier of the glossary to query
+     * @param name name to search for
+     * @param limitResultsByStatus By default, terms in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<GlossaryTermElement>   getGlossaryTermsByName(String                   glossaryGUID,
+                                                              String                   name,
+                                                              List<GlossaryTermStatus> limitResultsByStatus,
+                                                              int                      startFrom,
+                                                              int                      pageSize,
+                                                              Date                     effectiveTime) throws InvalidParameterException,
+                                                                                                             UserNotAuthorizedException,
+                                                                                                             PropertyServerException
+    {
+        return glossaryManagerClient.getGlossaryTermsByName(userId,
+                                                            assetManagerGUID,
+                                                            assetManagerName,
+                                                            glossaryGUID,
+                                                            name,
+                                                            limitResultsByStatus,
+                                                            startFrom,
+                                                            pageSize,
+                                                            effectiveTime,
+                                                            forLineage,
                                                             forDuplicateProcessing);
     }
 

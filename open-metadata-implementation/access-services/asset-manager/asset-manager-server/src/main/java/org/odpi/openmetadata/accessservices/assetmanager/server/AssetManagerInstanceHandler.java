@@ -44,12 +44,12 @@ class AssetManagerInstanceHandler extends OMASServiceInstanceHandler
     SoftwareCapabilityHandler<SoftwareCapabilityElement> getAssetManagerHandler(String userId,
                                                                                 String serverName,
                                                                                 String serviceOperationName) throws InvalidParameterException,
-                                                                                                                                UserNotAuthorizedException,
-                                                                                                                                PropertyServerException
+                                                                                                                    UserNotAuthorizedException,
+                                                                                                                    PropertyServerException
     {
         AssetManagerServicesInstance instance = (AssetManagerServicesInstance)super.getServerServiceInstance(userId,
-                                                                                                           serverName,
-                                                                                                           serviceOperationName);
+                                                                                                             serverName,
+                                                                                                             serviceOperationName);
 
         if (instance != null)
         {
@@ -343,4 +343,127 @@ class AssetManagerInstanceHandler extends OMASServiceInstanceHandler
 
         return null;
     }
+
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    InformalTagHandler<InformalTagElement> getInformalTagHandler(String userId,
+                                                                 String serverName,
+                                                                 String serviceOperationName) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
+    {
+        AssetManagerServicesInstance instance = (AssetManagerServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                             serverName,
+                                                                                                             serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getInformalTagHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    LikeHandler<LikeElement> getLikeHandler(String userId,
+                                            String serverName,
+                                            String serviceOperationName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        AssetManagerServicesInstance instance = (AssetManagerServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                             serverName,
+                                                                                                             serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getLikeHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    RatingHandler<RatingElement> getRatingHandler(String userId,
+                                                  String serverName,
+                                                  String serviceOperationName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        AssetManagerServicesInstance instance = (AssetManagerServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                             serverName,
+                                                                                                             serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getRatingHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    CommentHandler<CommentElement> getCommentHandler(String userId,
+                                                     String serverName,
+                                                     String serviceOperationName) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+
+        AssetManagerServicesInstance instance = (AssetManagerServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                             serverName,
+                                                                                                             serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getCommentHandler();
+        }
+
+        return null;
+    }
+
 }
