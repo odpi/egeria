@@ -50,7 +50,7 @@ subprojects {
     // TODO: Consider using convention plugins to stylise different profiles of subprojects
 
     // The 'bom' project is a special case - we must not apply anything else to it
-    if (project.name != 'bom') {
+    if (project.name != 'bom' && project.buildFile.exists()) {
         apply plugin: 'java'
         apply plugin: 'jacoco'
         apply plugin: 'checkstyle'
@@ -58,7 +58,6 @@ subprojects {
         apply plugin: 'com.autonomousapps.dependency-analysis'
         apply plugin: 'dev.jacomet.logging-capabilities'
         apply plugin: 'org.gradlex.java-ecosystem-capabilities'
-
 
         // Consistent dependencies, and exceptions
         dependencies {
@@ -122,15 +121,43 @@ subprojects {
                             }
                             developers {
                                 developer {
+                                    id = 'mandy-chessell'
+                                    name = 'Mandy Chessell'
+                                    email = 'mandy.e.chessell@gmail.com'
+                                    timezone = 'Europe/London'
+                                    roles = ['Project Leader']
+                                    organization = 'Pragmatic Data Research Ltd'
+                                }
+                                developer {
                                     id = 'planetf1'
                                     name = 'Nigel Jones'
                                     email = 'nigel.l.jones+git@gmail.com'
+                                    roles = ['maintainer']
+                                    organization = 'IBM Corporation'
                                 }
                             }
                             scm {
                                 connection = 'scm:git:git://github.com/odpi/egeria.git'
                                 developerConnection = 'scm:git:ssh://github.com/odpi/egeria/egeria.git'
                                 url = 'http://github.com/odpi/egeria'
+                            }
+                            organization {
+                                name = 'LF AI & Data Foundation'
+                                url = 'https://lfaidata.foundation'
+                            }
+                            issueManagement {
+                                system = 'GitHub'
+                                url = 'https://github.com/odpi/egeria/issues'
+                            }
+                            inceptionYear = '2018'
+                            mailingLists {
+                                mailingList {
+                                    name = 'Egeria mailing list'
+                                    subscribe = 'egeria-technical-discuss+subscribe@lists.lfaidata.foundation'
+                                    unsubscribe = 'egeria-technical-discuss+unsubscribe@lists.lfaidata.foundation'
+                                    post = 'egeria-technical-discuss@lists.lfaidata.foundation'
+                                    archive = 'https://lists.lfaidata.foundation/g/egeria-technical-discuss/topics'
+                                }
                             }
                         }
                         // Override the project name & description for the pom based on properties set in the child build.gradle (hard to default & required for maven central)
@@ -142,6 +169,20 @@ subprojects {
                 }
             }
 
+        }
+        if (System.getenv("CI")) {
+            apply plugin: 'signing'
+            signing {
+                // gpg --export-secret-keys myemal@gmail.com | base64
+                def signingKey = System.getenv('OSSRH_GPG_PRIVATE_KEY')
+                // Passphrase for key
+                def signingPassword = System.getenv('OSSRH_GPG_PASSPHRASE')
+                // public key id (last 8 characters only) - note keys also need uploading to all the main registries
+                def signingKeyId = System.getenv('OSSRH_GPG_KEYID')
+                // We use these values from secrets rather than gradle.properties
+                useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+                sign publishing.publications.mavenmodule
+            }
         }
     }
 

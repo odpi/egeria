@@ -12,8 +12,11 @@
 # Based on RedHat UBI image.
 # https://catalog.redhat.com/software/containers/ubi9/openjdk-17-runtime/61ee7d45384a3eb331996bee
 
+# This can be switched to the runtime image for a smaller footprint image
+# However the JDK debugging tools will be lost, which are helpful in monitoring & undersanding performance/resource issues
+#FROM registry.access.redhat.com/ubi9/openjdk-17-runtime
+FROM registry.access.redhat.com/ubi9/openjdk-17
 
-FROM registry.access.redhat.com/ubi9/openjdk-17-runtime
 ARG version=4.1-SNAPSHOT
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
@@ -41,7 +44,7 @@ LABEL org.opencontainers.image.vendor = "ODPi" \
       org.opencontainers.image.ext.docker.params = "JAVA_DEBUG=set to true to enable JVM debugging"
 
 # Copy egeria distribution
-COPY target/assembly /deployments
+COPY build/assembly /deployments
 
 # Expose port 8080 (default) for client access, and allow for 5005 being used for remote java debug
 EXPOSE 9443 5005
