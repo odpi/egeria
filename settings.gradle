@@ -26,7 +26,7 @@ pluginManagement {
         // Docs don't recommend specifying a version for checkstyle
         id 'checkstyle'
         id 'org.springframework.boot' version '2.7.9'
-        id 'com.github.johnrengelman.shadow' version '7.1.2'
+        id 'com.github.johnrengelman.shadow' version '8.1.1'
         id 'com.github.psxpaul.execfork' version '0.2.2'
     }
 }
