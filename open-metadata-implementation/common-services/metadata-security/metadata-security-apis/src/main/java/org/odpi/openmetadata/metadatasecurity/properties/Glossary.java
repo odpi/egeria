@@ -153,15 +153,28 @@ public class Glossary extends Referenceable
     @Override
     public String toString()
     {
-        return "GlossaryProperties{" +
+        return "Glossary{" +
                        "displayName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
                        ", language='" + language + '\'' +
                        ", usage='" + usage + '\'' +
+                       ", typeGUID='" + getTypeGUID() + '\'' +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", status=" + getStatus() +
+                       ", GUID='" + getGUID() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
+                       ", owner='" + getOwner() + '\'' +
+                       ", ownerType=" + getOwnerType() +
                        ", extendedProperties=" + getExtendedProperties() +
+                       ", securityLabels=" + getSecurityLabels() +
+                       ", securityProperties=" + getSecurityProperties() +
+                       ", accessGroups=" + getAccessGroups() +
+                       ", confidentiality=" + getConfidentiality() +
+                       ", confidence=" + getConfidence() +
+                       ", criticality=" + getCriticality() +
+                       ", impact=" + getImpact() +
+                       ", retention=" + getRetention() +
                        '}';
     }
 

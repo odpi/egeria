@@ -43,7 +43,10 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
     private final GovernanceActionHandler<GovernanceActionElement>                    governanceActionHandler;
     private final AssetHandler<GovernanceActionProcessElement>                        governanceActionProcessHandler;
     private final GovernanceActionTypeHandler<GovernanceActionTypeElement>            governanceActionTypeHandler;
-
+    private final InformalTagHandler<InformalTagElement>                              informalTagHandler;
+    private final LikeHandler<LikeElement>                                            likeHandler;
+    private final RatingHandler<RatingElement>                                        ratingHandler;
+    private final CommentHandler<CommentElement>                                      commentHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -233,6 +236,61 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
                                                                              defaultZones,
                                                                              publishZones,
                                                                              auditLog);
+
+        this.informalTagHandler = new InformalTagHandler<>(new InformalTagConverter<>(repositoryHelper, serviceName, serverName),
+                                                           InformalTagElement.class,
+                                                           serviceName,
+                                                           serverName,
+                                                           invalidParameterHandler,
+                                                           repositoryHandler,
+                                                           repositoryHelper,
+                                                           localServerUserId,
+                                                           securityVerifier,
+                                                           supportedZones,
+                                                           defaultZones,
+                                                           publishZones,
+                                                           auditLog);
+        this.likeHandler = new LikeHandler<>(new LikeConverter<>(repositoryHelper, serviceName, serverName),
+                                             LikeElement.class,
+                                             serviceName,
+                                             serverName,
+                                             invalidParameterHandler,
+                                             repositoryHandler,
+                                             repositoryHelper,
+                                             localServerUserId,
+                                             securityVerifier,
+                                             supportedZones,
+                                             defaultZones,
+                                             publishZones,
+                                             auditLog);
+
+        this.ratingHandler = new RatingHandler<>(new RatingConverter<>(repositoryHelper, serviceName, serverName),
+                                                 RatingElement.class,
+                                                 serviceName,
+                                                 serverName,
+                                                 invalidParameterHandler,
+                                                 repositoryHandler,
+                                                 repositoryHelper,
+                                                 localServerUserId,
+                                                 securityVerifier,
+                                                 supportedZones,
+                                                 defaultZones,
+                                                 publishZones,
+                                                 auditLog);
+
+        this.commentHandler = new CommentHandler<>(new CommentConverter<>(repositoryHelper, serviceName, serverName),
+                                                   CommentElement.class,
+                                                   serviceName,
+                                                   serverName,
+                                                   invalidParameterHandler,
+                                                   repositoryHandler,
+                                                   repositoryHelper,
+                                                   localServerUserId,
+                                                   securityVerifier,
+                                                   supportedZones,
+                                                   defaultZones,
+                                                   publishZones,
+                                                   auditLog);
     }
 
 
@@ -412,4 +470,67 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
         return governanceActionHandler;
     }
 
+
+    /**
+     * Return the handler for managing informal tag objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    InformalTagHandler<InformalTagElement> getInformalTagHandler() throws PropertyServerException
+    {
+        final String methodName = "getInformalTagHandler";
+
+        validateActiveRepository(methodName);
+
+        return informalTagHandler;
+    }
+
+
+    /**
+     * Return the handler for managing like objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    LikeHandler<LikeElement> getLikeHandler() throws PropertyServerException
+    {
+        final String methodName = "getLikeHandler";
+
+        validateActiveRepository(methodName);
+
+        return likeHandler;
+    }
+
+
+    /**
+     * Return the handler for managing rating objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    RatingHandler<RatingElement> getRatingHandler() throws PropertyServerException
+    {
+        final String methodName = "getRatingHandler";
+
+        validateActiveRepository(methodName);
+
+        return ratingHandler;
+    }
+
+
+    /**
+     * Return the handler for managing comment objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    CommentHandler<CommentElement> getCommentHandler() throws PropertyServerException
+    {
+        final String methodName = "getCommentHandler";
+
+        validateActiveRepository(methodName);
+
+        return commentHandler;
+    }
 }

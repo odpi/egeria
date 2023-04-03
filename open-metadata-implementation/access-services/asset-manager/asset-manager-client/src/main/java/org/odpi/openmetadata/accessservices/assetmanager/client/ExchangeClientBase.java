@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.ffdc.AssetManagerErrorC
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 
@@ -26,6 +27,8 @@ public class ExchangeClientBase
 
     InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     AssetManagerRESTClient  restClient;               /* Initialized in constructor */
+
+    final NullRequestBody         nullRequestBody = new NullRequestBody();
 
     AuditLog auditLog = null;
 

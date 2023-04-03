@@ -112,7 +112,7 @@ public class CommentConverter<B> extends OCFConverter<B>
 
 
     /**
-     * Retrieve and delete the OwnerType enum property from the instance properties of an entity
+     * Retrieve and delete the CommentType enum property from the instance properties of an entity
      *
      * @param properties  entity properties
      * @return CommentType  enum value

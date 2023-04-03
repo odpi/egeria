@@ -17,8 +17,6 @@ public class Asset extends Referenceable
 
     private String              displayName      = null;
     private String              description      = null;
-    private String              owner            = null;
-    private int                 ownerType        = 0;
     private List<String>        zoneMembership   = null;
     private Map<String, String> origin           = null;
 
@@ -44,8 +42,7 @@ public class Asset extends Referenceable
         {
             displayName            = template.getDisplayName();
             description            = template.getDescription();
-            owner                  = template.getOwner();
-            ownerType              = template.getOwnerType();
+
             zoneMembership         = template.getZoneMembership();
             origin                 = template.getOrigin();
         }
@@ -95,49 +92,6 @@ public class Asset extends Referenceable
     public void setDescription(String description)
     {
         this.description = description;
-    }
-
-
-    /**
-     * Returns the name of the owner for this asset.
-     *
-     * @return owner String
-     */
-    public String getOwner() {
-        return owner;
-    }
-
-
-    /**
-     * Set up the name of the owner for this asset.
-     *
-     * @param owner String name
-     */
-    public void setOwner(String owner)
-    {
-        this.owner = owner;
-    }
-
-
-    /**
-     * Return the type of owner stored in the owner property.
-     *
-     * @return OwnerType enum
-     */
-    public int getOwnerType()
-    {
-        return ownerType;
-    }
-
-
-    /**
-     * Set up the owner type for this asset.
-     *
-     * @param ownerType OwnerType enum
-     */
-    public void setOwnerType(int ownerType)
-    {
-        this.ownerType = ownerType;
     }
 
 
@@ -216,23 +170,26 @@ public class Asset extends Referenceable
     public String toString()
     {
         return "Asset{" +
-                       "typeGUID='" + getTypeGUID() + '\'' +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", displayName='" + displayName + '\'' +
+                       "displayName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
-                       ", owner='" + owner + '\'' +
-                       ", ownerType=" + ownerType +
                        ", zoneMembership=" + zoneMembership +
                        ", origin=" + origin +
+                       ", typeGUID='" + getTypeGUID() + '\'' +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", status=" + getStatus() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
+                       ", owner='" + getOwner() + '\'' +
+                       ", ownerType=" + getOwnerType() +
                        ", extendedProperties=" + getExtendedProperties() +
                        ", securityLabels=" + getSecurityLabels() +
                        ", securityProperties=" + getSecurityProperties() +
+                       ", accessGroups=" + getAccessGroups() +
                        ", confidentiality=" + getConfidentiality() +
                        ", confidence=" + getConfidence() +
-                       ", impact=" + getImpact() +
                        ", criticality=" + getCriticality() +
+                       ", impact=" + getImpact() +
                        ", retention=" + getRetention() +
                        '}';
     }
@@ -262,8 +219,6 @@ public class Asset extends Referenceable
         Asset asset = (Asset) objectToCompare;
         return Objects.equals(getDisplayName(), asset.getDisplayName()) &&
                 Objects.equals(getDescription(), asset.getDescription()) &&
-                Objects.equals(getOwner(), asset.getOwner()) &&
-                getOwnerType() == asset.getOwnerType() &&
                 Objects.equals(getZoneMembership(), asset.getZoneMembership()) &&
                 Objects.equals(getOrigin(), asset.getOrigin());
     }
@@ -278,7 +233,6 @@ public class Asset extends Referenceable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getDisplayName(), getDescription(), getOwner(),
-                            getOwnerType(), getZoneMembership(), getOrigin());
+        return Objects.hash(super.hashCode(), getDisplayName(), getDescription(), getZoneMembership(), getOrigin());
     }
 }

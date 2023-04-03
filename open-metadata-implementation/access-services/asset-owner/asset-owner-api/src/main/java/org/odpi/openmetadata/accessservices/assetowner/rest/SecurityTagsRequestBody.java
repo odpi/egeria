@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serial;
 import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -21,10 +22,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SecurityTagsRequestBody extends AssetOwnerOMASAPIRequestBody
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-    private List<String>        securityLabels     = null;
-    private Map<String, Object> securityProperties = null;
+    private List<String>              securityLabels     = null;
+    private Map<String, Object>       securityProperties = null;
+    private Map<String, List<String>> accessGroups = null;
 
 
     /**
@@ -48,6 +51,7 @@ public class SecurityTagsRequestBody extends AssetOwnerOMASAPIRequestBody
         {
             this.securityLabels     = template.getSecurityLabels();
             this.securityProperties = template.getSecurityProperties();
+            this.accessGroups       = template.getAccessGroups();
         }
     }
 
@@ -118,6 +122,36 @@ public class SecurityTagsRequestBody extends AssetOwnerOMASAPIRequestBody
 
 
     /**
+     * Return the map from operation to list of security groups.
+     *
+     * @return map
+     */
+    public Map<String, List<String>> getAccessGroups()
+    {
+        if (accessGroups == null)
+        {
+            return null;
+        }
+        if (accessGroups.isEmpty())
+        {
+            return null;
+        }
+        return accessGroups;
+    }
+
+
+    /**
+     * Setup the map from operation to list of security groups.
+     *
+     * @param accessGroups map
+     */
+    public void setAccessGroups(Map<String, List<String>> accessGroups)
+    {
+        this.accessGroups = accessGroups;
+    }
+
+
+    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -126,9 +160,10 @@ public class SecurityTagsRequestBody extends AssetOwnerOMASAPIRequestBody
     public String toString()
     {
         return "SecurityTagsRequestBody{" +
-                ", securityLabels='" + securityLabels + '\'' +
-                ", securityProperties=" + securityProperties +
-                '}';
+                       "securityLabels=" + securityLabels +
+                       ", securityProperties=" + securityProperties +
+                       ", accessGroups=" + accessGroups +
+                       '}';
     }
 
 
@@ -145,15 +180,14 @@ public class SecurityTagsRequestBody extends AssetOwnerOMASAPIRequestBody
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof SecurityTagsRequestBody that))
         {
             return false;
         }
-        SecurityTagsRequestBody that = (SecurityTagsRequestBody) objectToCompare;
-        return Objects.equals(getSecurityLabels(), that.getSecurityLabels()) &&
-                Objects.equals(getSecurityProperties(), that.getSecurityProperties());
+        return Objects.equals(securityLabels, that.securityLabels) &&
+                       Objects.equals(securityProperties, that.securityProperties) &&
+                       Objects.equals(accessGroups, that.accessGroups);
     }
-
 
 
     /**
@@ -164,6 +198,6 @@ public class SecurityTagsRequestBody extends AssetOwnerOMASAPIRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(getSecurityLabels(), getSecurityProperties());
+        return Objects.hash(securityLabels, securityProperties, accessGroups);
     }
 }

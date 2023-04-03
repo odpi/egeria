@@ -716,6 +716,97 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
     }
 
 
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    @Override
+    public Map<String, List<String>> getStringArrayStringMapFromProperty(String             sourceName,
+                                                                         String             propertyName,
+                                                                         InstanceProperties properties,
+                                                                         String             methodName)
+    {
+        final String thisMethodName = "getStringArrayStringMapFromProperty";
+
+        Map<String, Object>   mapFromProperty = this.getMapFromProperty(sourceName, propertyName, properties, methodName);
+
+        if (mapFromProperty != null)
+        {
+            Map<String, List<String>>  stringArrayMap = new HashMap<>();
+
+            for (String mapPropertyName : mapFromProperty.keySet())
+            {
+                Object actualPropertyValue = mapFromProperty.get(mapPropertyName);
+
+                if (actualPropertyValue instanceof HashMap)
+                {
+                    /*
+                     * There are values to extract
+                     */
+                    HashMap<Object, Object> propertyValue = (HashMap<Object, Object>) actualPropertyValue;
+                    List<String> unpackedValue = new ArrayList<>();
+
+                    for (Object value : propertyValue.values())
+                    {
+                        unpackedValue.add(value.toString());
+                    }
+                    log.debug(thisMethodName + " found that array property " + propertyName + " has elements: " + unpackedValue);
+
+                    stringArrayMap.put(mapPropertyName, unpackedValue);
+                }
+            }
+
+            if (! stringArrayMap.isEmpty())
+            {
+                return stringArrayMap;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a map property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    @Override
+    public Map<String, List<String>> removeStringArrayStringMapFromProperty(String             sourceName,
+                                                                            String             propertyName,
+                                                                            InstanceProperties properties,
+                                                                            String             methodName)
+    {
+        Map<String, List<String>>  retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getStringArrayStringMapFromProperty(sourceName, propertyName, properties, methodName);
+
+            if (retrievedProperty != null)
+            {
+                this.removeProperty(propertyName, properties);
+                log.debug("Properties left: " + properties);
+            }
+        }
+
+        log.debug("Retrieved " + propertyName + " property: " + retrievedProperty);
+        return retrievedProperty;
+    }
+
+
     /**
      * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
      *
@@ -760,6 +851,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
         log.debug("Map property " + propertyName + " not present");
         return null;
     }
+
 
 
     /**
@@ -1980,14 +2072,104 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
                     mapPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                     mapPropertyValue.setMapValues(mapInstanceProperties);
-                    mapPropertyValue.setTypeGUID(longMapTypeGUID);
-                    mapPropertyValue.setTypeName(longMapTypeName);
+                    mapPropertyValue.setTypeGUID(intMapTypeGUID);
+                    mapPropertyValue.setTypeName(intMapTypeName);
                     resultingProperties.setProperty(propertyName, mapPropertyValue);
 
                     log.debug("Returning instanceProperty: " + resultingProperties);
 
                     return resultingProperties;
                 }
+            }
+        }
+
+        log.debug("Null property");
+        return properties;
+    }
+
+
+    /**
+     * If the supplied map property is not null, add it to an instance properties object.  The supplied map is stored as a single
+     * property in the instances properties.   If the instance properties object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @param methodName calling method name
+     * @return instance properties object.
+     */
+    @Override
+    public InstanceProperties addStringArrayStringMapPropertyToInstance(String                    sourceName,
+                                                                        InstanceProperties        properties,
+                                                                        String                    propertyName,
+                                                                        Map<String, List<String>> mapValues,
+                                                                        String                    methodName)
+    {
+        if (mapValues != null)
+        {
+            log.debug("Adding property " + propertyName + " for " + methodName);
+
+            if (! mapValues.isEmpty())
+            {
+                InstanceProperties  resultingInstanceProperties;
+
+                if (properties == null)
+                {
+                    resultingInstanceProperties = new InstanceProperties();
+                    resultingInstanceProperties.setHeaderVersion(InstanceProperties.CURRENT_INSTANCE_PROPERTIES_HEADER_VERSION);
+                }
+                else
+                {
+                    resultingInstanceProperties = properties;
+                }
+
+                /*
+                 * The values of a map property are stored as an embedded InstanceProperties object.
+                 */
+                InstanceProperties  mapInstanceProperties = new InstanceProperties();
+
+                for (String mapKey : mapValues.keySet())
+                {
+                    List<String> mapEntry = mapValues.get(mapKey);
+                    ArrayPropertyValue arrayPropertyValue = new ArrayPropertyValue();
+
+                    arrayPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
+                    arrayPropertyValue.setTypeGUID(stringArrayTypeGUID);
+                    arrayPropertyValue.setTypeName(stringArrayTypeName);
+                    arrayPropertyValue.setArrayCount(mapEntry.size());
+
+                    int index = 0;
+                    for (String arrayValue : mapEntry)
+                    {
+                        PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+                        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+                        primitivePropertyValue.setPrimitiveValue(arrayValue);
+
+                        arrayPropertyValue.setArrayValue(index, primitivePropertyValue);
+                        index++;
+                    }
+
+                    mapInstanceProperties.setProperty(mapKey, arrayPropertyValue);
+                }
+
+                /*
+                 * If there was content in the map then the resulting InstanceProperties are added as
+                 * a property to the resulting properties.
+                 */
+                MapPropertyValue mapPropertyValue = new MapPropertyValue();
+
+                mapPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
+                mapPropertyValue.setMapValues(mapInstanceProperties);
+                mapPropertyValue.setTypeGUID(objectMapTypeGUID);
+                mapPropertyValue.setTypeName(objectMapTypeName);
+                resultingInstanceProperties.setProperty(propertyName, mapPropertyValue);
+
+                log.debug("Returning instanceProperty: " + resultingInstanceProperties);
+
+                return resultingInstanceProperties;
             }
         }
 

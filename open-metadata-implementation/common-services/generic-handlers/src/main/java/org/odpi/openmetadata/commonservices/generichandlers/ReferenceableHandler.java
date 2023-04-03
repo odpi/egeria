@@ -922,7 +922,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param beanGUIDParameterName name of parameter supplying the beanGUID
      * @param beanGUIDTypeName type of bean
      * @param securityLabels list of security labels defining the security characteristics of the element
-     * @param securityProperties Descriptive labels describing origin of the asset
+     * @param securityProperties descriptive labels describing origin of the element
+     * @param accessGroups map from operation to list of security groups
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -932,18 +933,19 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void  addSecurityTags(String                userId,
-                                 String                beanGUID,
-                                 String                beanGUIDParameterName,
-                                 String                beanGUIDTypeName,
-                                 List<String>          securityLabels,
-                                 Map<String, Object>   securityProperties,
-                                 boolean               forLineage,
-                                 boolean               forDuplicateProcessing,
-                                 Date                  effectiveTime,
-                                 String                methodName) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public void  addSecurityTags(String                   userId,
+                                 String                   beanGUID,
+                                 String                   beanGUIDParameterName,
+                                 String                   beanGUIDTypeName,
+                                 List<String>             securityLabels,
+                                 Map<String, Object>      securityProperties,
+                                 Map<String,List<String>> accessGroups,
+                                 boolean                  forLineage,
+                                 boolean                  forDuplicateProcessing,
+                                 Date                     effectiveTime,
+                                 String                   methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         ReferenceableBuilder builder = new ReferenceableBuilder(OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
                                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
@@ -959,7 +961,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            beanGUIDTypeName,
                                            OpenMetadataAPIMapper.SECURITY_TAG_CLASSIFICATION_TYPE_GUID,
                                            OpenMetadataAPIMapper.SECURITY_TAG_CLASSIFICATION_TYPE_NAME,
-                                           builder.getSecurityTagProperties(securityLabels, securityProperties, methodName),
+                                           builder.getSecurityTagProperties(securityLabels, securityProperties, accessGroups, methodName),
                                            true,
                                            forLineage,
                                            forDuplicateProcessing,

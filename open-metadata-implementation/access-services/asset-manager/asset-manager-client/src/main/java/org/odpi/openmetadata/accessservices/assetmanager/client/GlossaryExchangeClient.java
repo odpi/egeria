@@ -129,8 +129,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * categories are deleted as well.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param glossaryProperties properties to store
      *
@@ -184,8 +184,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * glossary is deleted, any linked terms and categories are deleted as well.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
      * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param templateProperties properties that override the template
@@ -240,8 +240,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Update the metadata element representing a glossary.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryGUID unique identifier of the metadata element to update
      * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
      * @param glossaryProperties new properties for this element
@@ -297,8 +297,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * are linked to the assets etc. and as such they are logically categorized by the linked category.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
      * @param organizingPrinciple description of how the glossary is organized
@@ -345,8 +345,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Remove the taxonomy designation from the glossary.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
      *
@@ -391,8 +391,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Canonical vocabularies are used to semantically classify assets in an unambiguous way.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
      * @param scope description of the situations where this glossary is relevant.
@@ -439,8 +439,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Remove the canonical designation from the glossary.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
      *
@@ -482,8 +482,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * and terms.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
      *
@@ -525,8 +525,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * The search string is treated as a regular expression.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned*
@@ -578,8 +578,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * There are no wildcards supported on this request.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -632,8 +632,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Retrieve the list of glossaries created on behalf of the named asset manager.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -675,8 +675,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Retrieve the glossary metadata element with the supplied unique identifier.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param guid unique identifier of the requested metadata element
      *
      * @return matching metadata element
@@ -721,8 +721,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Create a new metadata element to represent a glossary category.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryGUID unique identifier of the glossary where the category is located
      * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param glossaryCategoryProperties properties about the glossary category to store
@@ -777,8 +777,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Create a new metadata element to represent a glossary category using an existing metadata element as a template.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
      * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param templateProperties properties that override the template
@@ -833,8 +833,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Update the metadata element representing a glossary category.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryCategoryGUID unique identifier of the metadata element to update
      * @param glossaryCategoryExternalIdentifier unique identifier of the glossary category in the external asset manager
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
@@ -897,8 +897,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Create a parent-child relationship between two categories.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryParentCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the super-category
      * @param glossaryChildCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the subcategory
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -948,8 +948,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Remove a parent-child relationship between two categories.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryParentCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the super-category
      * @param glossaryChildCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the subcategory
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -998,8 +998,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Remove the metadata element representing a glossary category.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryCategoryGUID unique identifier of the metadata element to remove
      * @param glossaryCategoryExternalIdentifier unique identifier of the glossary category in the external asset manager
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -1046,8 +1046,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * The search string is treated as a regular expression.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryGUID optional glossary unique identifier to scope the search to a glossary.
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -1065,6 +1066,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
     public List<GlossaryCategoryElement> findGlossaryCategories(String  userId,
                                                                 String  assetManagerGUID,
                                                                 String  assetManagerName,
+                                                                String  glossaryGUID,
                                                                 String  searchString,
                                                                 int     startFrom,
                                                                 int     pageSize,
@@ -1081,10 +1083,11 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+        GlossarySearchStringRequestBody requestBody = new GlossarySearchStringRequestBody();
         requestBody.setAssetManagerGUID(assetManagerGUID);
         requestBody.setAssetManagerName(assetManagerName);requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
+        requestBody.setGlossaryGUID(glossaryGUID);
         requestBody.setEffectiveTime(effectiveTime);
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/by-search-string?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
@@ -1107,8 +1110,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Return the list of categories associated with a glossary.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryGUID unique identifier of the glossary to query
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -1164,8 +1167,9 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * There are no wildcards supported on this request.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryGUID optional glossary unique identifier to scope the search to a glossary.
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -1183,6 +1187,7 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
     public List<GlossaryCategoryElement>   getGlossaryCategoriesByName(String  userId,
                                                                        String  assetManagerGUID,
                                                                        String  assetManagerName,
+                                                                       String  glossaryGUID,
                                                                        String  name,
                                                                        int     startFrom,
                                                                        int     pageSize,
@@ -1199,9 +1204,10 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        NameRequestBody requestBody = new NameRequestBody();
+        GlossaryNameRequestBody requestBody = new GlossaryNameRequestBody();
         requestBody.setAssetManagerGUID(assetManagerGUID);
         requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setGlossaryGUID(glossaryGUID);
         requestBody.setName(name);
         requestBody.setNameParameterName(nameParameterName);
         requestBody.setEffectiveTime(effectiveTime);
@@ -1226,8 +1232,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Retrieve the glossary category metadata element with the supplied unique identifier.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryCategoryGUID unique identifier of the requested metadata element
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
@@ -1275,8 +1281,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Retrieve the glossary category metadata element with the supplied unique identifier.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryCategoryGUID unique identifier of the requested metadata element
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
@@ -1324,8 +1330,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Retrieve the glossary category metadata element with the supplied unique identifier.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryCategoryGUID unique identifier of the requested metadata element
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -1384,8 +1390,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Create a new metadata element to represent a glossary term.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryGUID unique identifier of the glossary where the term is located
      * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param glossaryTermProperties properties for the glossary term
@@ -1440,8 +1446,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Create a new metadata element to represent a glossary term whose lifecycle is managed through a controlled workflow.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryGUID unique identifier of the glossary where the term is located
      * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param glossaryTermProperties properties for the glossary term
@@ -1499,8 +1505,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Create a new metadata element to represent a glossary term using an existing metadata element as a template.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
      * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param templateProperties properties that override the template
@@ -1555,8 +1561,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Update the metadata element representing a glossary term.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the glossary term to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
@@ -1591,7 +1597,11 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(glossaryTermProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(glossaryTermProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(glossaryTermProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
         GlossaryTermRequestBody requestBody = new GlossaryTermRequestBody();
         requestBody.setElementProperties(glossaryTermProperties);
@@ -1620,8 +1630,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * a controlled glossary term.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the glossary term to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param glossaryTermStatus new properties for the glossary term
@@ -1679,8 +1689,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Link a term to a category.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryCategoryGUID unique identifier of the glossary category
      * @param glossaryTermGUID unique identifier of the glossary term
      * @param categorizationProperties properties for the categorization relationship
@@ -1731,8 +1741,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Unlink a term from a category.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryCategoryGUID unique identifier of the glossary category
      * @param glossaryTermGUID unique identifier of the glossary term
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -1781,8 +1791,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Link two terms together using a specialist relationship.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
@@ -1843,8 +1853,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Update the relationship properties for the two terms.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
@@ -1903,8 +1913,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Remove the relationship between two terms.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
@@ -1956,8 +1966,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Classify the glossary term to indicate that it describes an abstract concept.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -2003,8 +2013,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Remove the abstract concept designation from the glossary term.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -2050,8 +2060,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Classify the glossary term to indicate that it describes a data value.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -2097,8 +2107,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Remove the data value designation from the glossary term.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -2144,8 +2154,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Classify the glossary term to indicate that it describes a data value.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param activityType type of activity
@@ -2201,8 +2211,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Remove the activity designation from the glossary term.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -2248,8 +2258,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Classify the glossary term to indicate that it describes a context.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param contextDefinition more details of the context
@@ -2305,8 +2315,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Remove the context definition designation from the glossary term.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -2352,8 +2362,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Classify the glossary term to indicate that it describes a spine object.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -2399,8 +2409,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Remove the spine object designation from the glossary term.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -2446,8 +2456,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Classify the glossary term to indicate that it describes a spine attribute.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -2493,8 +2503,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Remove the spine attribute designation from the glossary term.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -2540,8 +2550,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Classify the glossary term to indicate that it describes an object identifier.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -2587,8 +2597,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Remove the object identifier designation from the glossary term.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -2631,11 +2641,114 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
 
 
     /**
+     * Undo the last update to the glossary term.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public GlossaryTermElement undoGlossaryTermUpdate(String  userId,
+                                                      String  assetManagerGUID,
+                                                      String  assetManagerName,
+                                                      String  glossaryTermGUID,
+                                                      String  glossaryTermExternalIdentifier,
+                                                      Date    effectiveTime,
+                                                      boolean forLineage,
+                                                      boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        final String methodName = "undoGlossaryTermUpdate";
+        final String glossaryGUIDParameterName = "glossaryTermGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/undo&forLineage={3}&forDuplicateProcessing={4}";
+
+        GlossaryTermElementResponse response = restClient.callGlossaryTermPostRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       getUpdateRequestBody(assetManagerGUID, assetManagerName, glossaryTermExternalIdentifier, effectiveTime, methodName),
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       glossaryTermGUID,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing);
+
+        return response.getElement();
+    }
+    
+
+    /**
+     * Archive the metadata element representing a glossary term.  This removes it from normal access.  However, it is still available
+     * for lineage requests.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryTermGUID unique identifier of the metadata element to archive
+     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param archiveProperties option parameters about the archive process
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void archiveGlossaryTerm(String            userId,
+                                    String            assetManagerGUID,
+                                    String            assetManagerName,
+                                    String            glossaryTermGUID,
+                                    String            glossaryTermExternalIdentifier,
+                                    ArchiveProperties archiveProperties,
+                                    Date              effectiveTime,
+                                    boolean           forDuplicateProcessing) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        final String methodName                  = "archiveGlossaryTerm";
+        final String glossaryGUIDParameterName   = "glossaryTermGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/archive?forDuplicateProcessing={3}";
+
+        ArchiveRequestBody requestBody = new ArchiveRequestBody();
+        requestBody.setElementProperties(archiveProperties);
+        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
+                                                                                   assetManagerName,
+                                                                                   glossaryTermExternalIdentifier,
+                                                                                   methodName));
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        glossaryTermGUID,
+                                        forDuplicateProcessing);
+    }
+
+
+    /**
      * Remove the metadata element representing a glossary term.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to remove
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -2682,9 +2795,12 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * The search string is treated as a regular expression.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryGUID unique identifier of the glossary to query
      * @param searchString string to find in the properties
+     * @param limitResultsByStatus By default, terms in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -2698,17 +2814,19 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<GlossaryTermElement>   findGlossaryTerms(String  userId,
-                                                         String  assetManagerGUID,
-                                                         String  assetManagerName,
-                                                         String  searchString,
-                                                         int     startFrom,
-                                                         int     pageSize,
-                                                         Date    effectiveTime,
-                                                         boolean forLineage,
-                                                         boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                                UserNotAuthorizedException,
-                                                                                                PropertyServerException
+    public List<GlossaryTermElement>   findGlossaryTerms(String                   userId,
+                                                         String                   assetManagerGUID,
+                                                         String                   assetManagerName,
+                                                         String                   glossaryGUID,
+                                                         String                   searchString,
+                                                         List<GlossaryTermStatus> limitResultsByStatus,
+                                                         int                      startFrom,
+                                                         int                      pageSize,
+                                                         Date                     effectiveTime,
+                                                         boolean                  forLineage,
+                                                         boolean                  forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                 UserNotAuthorizedException,
+                                                                                                                 PropertyServerException
     {
         final String methodName                = "findGlossaryTerms";
         final String searchStringParameterName = "searchString";
@@ -2717,11 +2835,13 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+        GlossarySearchStringRequestBody requestBody = new GlossarySearchStringRequestBody();
         requestBody.setAssetManagerGUID(assetManagerGUID);
         requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setGlossaryGUID(glossaryGUID);
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
+        requestBody.setLimitResultsByStatus(limitResultsByStatus);
         requestBody.setEffectiveTime(effectiveTime);
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/by-search-string?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
@@ -2744,8 +2864,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Retrieve the list of glossary terms associated with a glossary.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryGUID unique identifier of the glossary of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -2800,8 +2920,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Retrieve the list of glossary terms associated with a glossary category.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryCategoryGUID unique identifier of the glossary category of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -2857,9 +2977,12 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * There are no wildcards supported on this request.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryGUID unique identifier of the glossary to query
      * @param name name to search for
+     * @param limitResultsByStatus By default, terms in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -2873,17 +2996,19 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<GlossaryTermElement>   getGlossaryTermsByName(String  userId,
-                                                              String  assetManagerGUID,
-                                                              String  assetManagerName,
-                                                              String  name,
-                                                              int     startFrom,
-                                                              int     pageSize,
-                                                              Date    effectiveTime,
-                                                              boolean forLineage,
-                                                              boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                                     UserNotAuthorizedException,
-                                                                                                     PropertyServerException
+    public List<GlossaryTermElement>   getGlossaryTermsByName(String                   userId,
+                                                              String                   assetManagerGUID,
+                                                              String                   assetManagerName,
+                                                              String                   glossaryGUID,
+                                                              String                   name,
+                                                              List<GlossaryTermStatus> limitResultsByStatus,
+                                                              int                      startFrom,
+                                                              int                      pageSize,
+                                                              Date                     effectiveTime,
+                                                              boolean                  forLineage,
+                                                              boolean                  forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                      UserNotAuthorizedException,
+                                                                                                                      PropertyServerException
     {
         final String methodName        = "getGlossaryTermsByName";
         final String nameParameterName = "name";
@@ -2892,11 +3017,13 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        NameRequestBody requestBody = new NameRequestBody();
+        GlossaryNameRequestBody requestBody = new GlossaryNameRequestBody();
         requestBody.setAssetManagerGUID(assetManagerGUID);
         requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setGlossaryGUID(glossaryGUID);
         requestBody.setName(name);
         requestBody.setNameParameterName(nameParameterName);
+        requestBody.setLimitResultsByStatus(limitResultsByStatus);
         requestBody.setEffectiveTime(effectiveTime);
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/by-name?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
@@ -2919,8 +3046,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Retrieve the glossary term metadata element with the supplied unique identifier.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the requested metadata element
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
@@ -2964,6 +3091,76 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
     }
 
 
+    /**
+     * Retrieve all the versions of a glossary term.
+     *
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of object to retrieve
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the entity (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the entity (exclusive)
+     * @param startFrom the starting element number of the historical versions to return. This is used when retrieving
+     *                         versions beyond the first page of results. Zero means start from the first element.
+     * @param pageSize the maximum number of result versions that can be returned on this request. Zero means unrestricted
+     *                 return results size.
+     * @param oldestFirst  defining how the results should be ordered.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @return list of beans
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem removing the properties from the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public List<GlossaryTermElement> getGlossaryTermHistory(String                 userId,
+                                                            String                 assetManagerGUID,
+                                                            String                 assetManagerName,
+                                                            String                 glossaryTermGUID,
+                                                            Date                   fromTime,
+                                                            Date                   toTime,
+                                                            int                    startFrom,
+                                                            int                    pageSize,
+                                                            boolean                oldestFirst,
+                                                            boolean                forLineage,
+                                                            boolean                forDuplicateProcessing,
+                                                            Date                   effectiveTime) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException
+    {
+        final String methodName        = "getGlossaryTermHistory";
+        final String guidParameterName = "glossaryTermGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, guidParameterName, methodName);
+
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        HistoryRequestBody requestBody = new HistoryRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setFromTime(fromTime);
+        requestBody.setToTime(toTime);
+        requestBody.setEffectiveTime(effectiveTime);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/history?startFrom={3}&pageSize={4}&oldestFirst={5}&forLineage={6}&forDuplicateProcessing={7}";
+
+        GlossaryTermElementsResponse restResult = restClient.callGlossaryTermsPostRESTCall(methodName,
+                                                                                           urlTemplate,
+                                                                                           requestBody,
+                                                                                           serverName,
+                                                                                           userId,
+                                                                                           glossaryTermGUID,
+                                                                                           startFrom,
+                                                                                           validatedPageSize,
+                                                                                           oldestFirst,
+                                                                                           forLineage,
+                                                                                           forDuplicateProcessing);
+
+        return restResult.getElementList();
+    }
+
+
     /* =========================================================================================
      * Support for linkage to external glossary resources.  These glossary resources are not
      * stored as metadata - they could be web pages, ontologies or some other format.
@@ -2977,8 +3174,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * It is possible that this resource was generated from the glossary content or was the source for it.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param linkProperties properties of the link
      *
      * @return unique identifier of the external reference
@@ -3022,8 +3219,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Update the properties of a reference to an external glossary resource.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param externalLinkGUID unique identifier of the external reference
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param linkProperties properties of the link
@@ -3080,8 +3277,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Remove information about a link to an external glossary resource (and the relationships that attached it to the glossaries).
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param externalLinkGUID unique identifier of the external reference
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
@@ -3125,8 +3322,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Connect a glossary to a reference to an external glossary resource.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param externalLinkGUID unique identifier of the external reference
      * @param glossaryGUID unique identifier of the metadata element to attach
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -3175,8 +3372,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Disconnect a glossary from a reference to an external glossary resource.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param externalLinkGUID unique identifier of the external reference
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -3279,8 +3476,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Return the glossaries connected to an external glossary source.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param externalLinkGUID unique identifier of the metadata element for the external glossary link of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -3336,8 +3533,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * It is possible that this resource was generated from the glossary content or was the source for it.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param externalLinkGUID unique identifier of the external reference
      * @param glossaryCategoryGUID unique identifier for the glossary category
      * @param linkProperties properties of the link
@@ -3393,8 +3590,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Remove the link to an external glossary category resource.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param externalLinkGUID unique identifier of the external reference
      * @param glossaryCategoryGUID unique identifier for the glossary category
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -3444,8 +3641,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * It is possible that this resource was generated from the glossary content or was the source for it.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param externalLinkGUID unique identifier of the external reference
      * @param glossaryTermGUID unique identifier for the glossary category
      * @param linkProperties properties of the link
@@ -3501,8 +3698,8 @@ public class GlossaryExchangeClient extends ExchangeClientBase implements Glossa
      * Remove the link to an external glossary term resource.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
      * @param externalLinkGUID unique identifier of the external reference
      * @param glossaryTermGUID unique identifier for the glossary category
      * @param effectiveTime the time that the retrieved elements must be effective for

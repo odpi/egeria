@@ -8,8 +8,8 @@ POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/asset-co
 ```
 
 ```java
-TagRequestBody  tagRequestBody = new TagRequestBody();
-tagRequestBody.setTagDescription(tagDescription);
+TagRequestBody  tagProperties = new TagRequestBody();
+tagProperties.setTagDescription(tagDescription);
 
 VoidResponse
 ```
