@@ -26,13 +26,13 @@ import java.util.List;
  */
 public class RepositoryFindEntitiesIterator extends RepositoryIteratorForEntities
 {
-    private List<String>          entitySubtypeGUIDs;
-    private SearchProperties      searchProperties;
-    private List<InstanceStatus>  limitResultsByStatus;
-    private SearchClassifications searchClassifications;
-    private Date                  asOfTime;
-    private String                sequencingProperty;
-    private SequencingOrder       sequencingOrder;
+    private final List<String>         entitySubtypeGUIDs;
+    private final SearchProperties      searchProperties;
+    private final List<InstanceStatus>  limitResultsByStatus;
+    private final SearchClassifications searchClassifications;
+    private final Date            asOfTime;
+    private final String          sequencingProperty;
+    private final SequencingOrder sequencingOrder;
 
     /**
      * Constructor takes the parameters used to call the repository handler.

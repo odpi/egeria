@@ -46,7 +46,7 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                                          "configuration error and re-run the request, if it is a valid request; otherwise contact your security " +
                                          "team."),
 
-    UNAUTHORIZED_SERVER_ACCESS(403, "OMAG-PLATFORM-SECURITY-403-002",
+    UNAUTHORIZED_SERVER_ACCESS(403, "OMAG-SERVER-SECURITY-403-002",
                                 "User {0} is not authorized to issue a request to server {1}",
                                 "The system is unable to process a request from the user because they do not have access to the requested " +
                                        "OMAG server.  The request fails with a UserNotAuthorizedException exception.",
@@ -55,7 +55,7 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                                        "came from to determine if the system is under attack, or it was a mistake, or the user's tool is not " +
                                        "configured to connect to the correct server."),
 
-    UNAUTHORIZED_SERVICE_ACCESS(403, "OMAG-PLATFORM-SECURITY-403-003",
+    UNAUTHORIZED_SERVICE_ACCESS(403, "OMAG-SERVER-SECURITY-403-003",
                                 "User {0} is not authorized to issue {1} requests",
                                 "The system is unable to process a request from the user because they do not have access to the " +
                                         "requested services. The request fails with a UserNotAuthorizedException exception.",
@@ -64,56 +64,56 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                                         "have access, investigate where the request came from to determine if the system is under attack, or it was a" +
                                         " mistake."),
 
-    UNAUTHORIZED_ASSET_FEEDBACK(403, "OMAG-PLATFORM-SECURITY-403-004",
+    UNAUTHORIZED_ASSET_FEEDBACK(403, "OMAG-SERVER-SECURITY-403-004",
                              "User {0} is not authorized to attach feedback to asset {1}",
                              "The system is unable to process a request from the user because they do not have access to augment the " +
                                         "requested asset.  The request fails with a UserNotAuthorizedException exception.",
                              "Using information about the asset and the user, determine if this result is expected, or if the configuration needs " +
                                         "to be adjusted to allow this user to perform the request."),
 
-    UNAUTHORIZED_ZONE_CHANGE(403, "OMAG-PLATFORM-SECURITY-403-005",
+    UNAUTHORIZED_ZONE_CHANGE(403, "OMAG-SERVER-SECURITY-403-005",
                              "User {0} is not authorized to change the zone membership for asset {1} from {2} to {3}",
                              "The system is unable to process a request from the user because they do not have access to update " +
                                      "the requested asset.  The request fails with a UserNotAuthorizedException exception.",
                              "Using information about the asset, the zones and the user, determine if this result is expected, " +
                                      "or if the configuration needs to be adjusted to allow this user to perform the request."),
 
-    UNAUTHORIZED_CONNECTION_ACCESS(403, "OMAG-PLATFORM-SECURITY-403-006",
+    UNAUTHORIZED_CONNECTION_ACCESS(403, "OMAG-SERVER-SECURITY-403-006",
                              "User {0} is not authorized to access connection {1}",
                              "The system is unable to process a request from the user because they do not have access to the" +
                                            "requested connection.  The request fails with a UserNotAuthorizedException exception.",
                              "Using knowledge about the connection and the user, determine if this result is expected, " +
                                            "or if the configuration needs to be adjusted to allow this user to perform the request."),
 
-    UNAUTHORIZED_ASSET_ACCESS(403, "OMAG-PLATFORM-SECURITY-403-007",
+    UNAUTHORIZED_ASSET_ACCESS(403, "OMAG-SERVER-SECURITY-403-007",
                              "User {0} is not authorized to access asset {1}",
                              "The system is unable to process a request from the user because they do not have access to the " +
                                       "requested asset.  The request fails with a UserNotAuthorizedException exception.",
                              "Using knowledge about the user and the asset, determine if this is the correct result or " +
                                       "the configuration needs to be changed to allow access."),
 
-    UNAUTHORIZED_ASSET_CREATE(403, "OMAG-PLATFORM-SECURITY-403-008",
+    UNAUTHORIZED_ASSET_CREATE(403, "OMAG-SERVER-SECURITY-403-008",
                               "User {0} is not authorized to create an asset of type {1}",
                               "The system is unable to process a request from the user because they do not have authority to create " +
                                       "an asset of the requested type.  The request fails with a UserNotAuthorizedException exception.",
                               "Using knowledge about the user and the asset, determine if this is the correct result or " +
                                       "the configuration needs to be changed to allow the user to create the asset."),
 
-    UNAUTHORIZED_ASSET_CHANGE(403, "OMAG-PLATFORM-SECURITY-403-009",
+    UNAUTHORIZED_ASSET_CHANGE(403, "OMAG-SERVER-SECURITY-403-009",
                               "User {0} is not authorized to change asset {1}",
                               "The system is unable to process a request from the user because they do not have access to change the " +
                                       "properties of the requested asset.  The request fails with a UserNotAuthorizedException exception.",
                               "Using knowledge about the user and the asset, determine if this is the correct result or " +
                                       "the configuration needs to be changed to allow the user to update the asset."),
 
-    INCOMPLETE_ASSET(         403, "OMAG-PLATFORM-SECURITY-403-010",
+    INCOMPLETE_ASSET(         403, "OMAG-SERVER-SECURITY-403-010",
                               "User {0} is not authorized to change asset {1} because it has missing properties: {2}",
                               "The system is unable to process a request from the user because the asset is not correctly or completely filled out." +
                                       "  The request fails with a UserNotAuthorizedException exception.",
                               "Using knowledge about the asset determine why the properties are missing and whether it needs to be " +
                                       "updated, or that the user should not be accessing the asset."),
 
-    UNAUTHORIZED_TYPE_ACCESS(403, "OMAG-PLATFORM-SECURITY-403-011",
+    UNAUTHORIZED_TYPE_ACCESS(403, "OMAG-SERVER-SECURITY-403-011",
                               "User {0} is not authorized to access open metadata type {1} ({2}) on server {3}",
                               "The system is unable to process a request from the user because they do not have access to the " +
                                      "necessary services and/or resources to retrieve type information.  The request fails with a " +
@@ -121,7 +121,7 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                               "Determine if the user should be allowed access to the type information or not.  If they should then " +
                                      "change the configuration to give them access."),
 
-    UNAUTHORIZED_TYPE_CHANGE(403, "OMAG-PLATFORM-SECURITY-403-012",
+    UNAUTHORIZED_TYPE_CHANGE(403, "OMAG-SERVER-SECURITY-403-012",
                              "User {0} is not authorized to change open metadata type {1} ({2}) on server {3}",
                              "The system is unable to process a request from the user because they do not have access to " +
                                      "update an open metadata type.  The request fails with a UserNotAuthorizedException exception.",
@@ -129,34 +129,47 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                                      "if the user is privileged to make these changes.  If they are then update the configuration to grant them " +
                                      "access."),
 
-    UNAUTHORIZED_INSTANCE_ACCESS(403, "OMAG-PLATFORM-SECURITY-403-013",
+    UNAUTHORIZED_INSTANCE_ACCESS(403, "OMAG-SERVER-SECURITY-403-013",
                              "User {0} is not authorized to access open metadata instance {1} of type {2} on server {3}",
                              "The system is unable to process a request from the user because they do not have read access to the " +
                                          "requested metadata.  The request fails with a UserNotAuthorizedException exception.",
                              "Determine if the user should have access to this metadata instance and if they should then" +
                                          " change the configuration to give them the required privileges."),
 
-    UNAUTHORIZED_INSTANCE_CHANGE(403, "OMAG-PLATFORM-SECURITY-403-014",
+    UNAUTHORIZED_INSTANCE_CHANGE(403, "OMAG-SERVER-SECURITY-403-014",
                              "User {0} is not authorized to change open metadata instance {1} of type {2} on server {3}",
                              "The system is unable to process a request from the user because they do not have access to " +
                                          "make changes to the requested metadata instance.  The request fails with a UserNotAuthorizedException exception.",
                              "Determine if the user should have access to this metadata instance and if they should then " +
                                          "change the configuration to give them the required update privileges."),
 
-    MULTIPLE_CONNECTIONS_FOUND(403, "OMAG-PLATFORM-SECURITY-403-015",
+    MULTIPLE_CONNECTIONS_FOUND(403, "OMAG-SERVER-SECURITY-403-015",
                                "{0} connections are connected to the asset with unique identifier {1} but there is no security connector to select a connection for user {2}; the calling method is {3}",
                                "The system is unable to process a request because multiple connections have been discovered and it is unsure which connection to return.",
                                "Either add a server security connection or use a method such as getConnectionsForAsset() to page through the list of connections to select the one that is appropriate for their use case."),
 
-    NO_CONNECTIONS_ALLOWED(403, "OMAG-PLATFORM-SECURITY-403-016",
+    NO_CONNECTIONS_ALLOWED(403, "OMAG-SERVER-SECURITY-403-016",
                                "{0} connections are connected to the asset with unique identifier {1} but the user {2} is not permitted to use any of them; the calling method is {3}",
                                "The system is unable to process a request because the calling user does not have sufficient privileges.",
                                "No action is required if this user should not have access to the connection.  To gain access to the connection, either the security credentials of the user need changing, or a different userId is required."),
+
+    UNAUTHORIZED_GLOSSARY_ACCESS(403, "OMAG-SERVER-SECURITY-403-020",
+                                 "User {0} is not authorized to issue an operation {1} on glossary {2}",
+                                 "The security service detected an unauthorized access to a glossary.",
+                                 "Review the security policies and settings to determine if this access to a glossary should be allowed or not." +
+                                         "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
+
 
     UNKNOWN_CONNECTION_RETURNED(500, "OMAG-PLATFORM-SECURITY-500-001",
                            "{0} connections are connected to the asset with unique identifier {1} but the connector selecting the connection for user {2} has returned an unrecognized connection; the calling method is {3}",
                            "The system is unable to process a request because the security connector is behaving strangely.",
                            "Investigate and correct the behaviour of the server security connector."),
+
+    NULL_GLOSSARY(500, "OMAG-SERVER-SECURITY-500-002",
+                  "User {0} is not authorized to iss operation {1} because the glossary is null",
+                  "The system is unable to process a request from the user because the glossary element is not correctly anchored on a glossary.",
+                  "The request fails with a UserNotAuthorizedException exception. Add the anchor relationship of the glossary element to its glossary and corresponding Anchors classification.  When both are in place, re-run the request."),
+
     ;
 
     private final ExceptionMessageDefinition messageDefinition;

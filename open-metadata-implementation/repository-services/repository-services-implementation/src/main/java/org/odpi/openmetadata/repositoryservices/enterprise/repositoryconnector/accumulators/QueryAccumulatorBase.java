@@ -33,7 +33,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
      * @param repositoryValidator validator provides common validation routines
      */
     QueryAccumulatorBase(String                  localMetadataCollectionId,
-                         AuditLog auditLog,
+                         AuditLog                auditLog,
                          OMRSRepositoryValidator repositoryValidator)
     {
         super(auditLog);
@@ -134,7 +134,18 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
         entityNotKnownException = exception;
     }
 
-
+    /**
+     * Save the supplied exception.
+     *
+     * @param metadataCollectionId unique identifier for metadata collection this issued this exception
+     * @param exception  exception from remote call
+     */
+    public synchronized void captureException(String                   metadataCollectionId,
+                                              EntityProxyOnlyException exception)
+    {
+        setRequestReturned(metadataCollectionId, 0);
+        entityProxyOnlyException = exception;
+    }
 
     /**
      * Save the supplied exception.

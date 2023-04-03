@@ -6,11 +6,13 @@ package org.odpi.openmetadata.commonservices.generichandlers;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryIteratorForEntities;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
@@ -470,6 +472,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * The search string is treated as a regular expression.
      *
      * @param userId calling user
+     * @param glossaryGUID unique identifier of the glossary to query
      * @param searchString string to find in the properties
      * @param searchStringParameterName name of parameter supplying the search string
      * @param startFrom paging start point
@@ -486,6 +489,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<B> findGlossaryCategories(String  userId,
+                                          String  glossaryGUID,
                                           String  searchString,
                                           String  searchStringParameterName,
                                           int     startFrom,
@@ -497,21 +501,96 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
     {
-        return this.findBeans(userId,
-                              searchString,
-                              searchStringParameterName,
-                              OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
-                              OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
-                              forLineage,
-                              forDuplicateProcessing,
-                              supportedZones,
-                              null,
-                              startFrom,
-                              pageSize,
-                              effectiveTime,
-                              methodName);
-    }
+        if (glossaryGUID == null)
+        {
+            return this.findBeans(userId,
+                                  searchString,
+                                  searchStringParameterName,
+                                  OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
+                                  OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                  forLineage,
+                                  forDuplicateProcessing,
+                                  supportedZones,
+                                  null,
+                                  startFrom,
+                                  pageSize,
+                                  effectiveTime,
+                                  methodName);
+        }
+        else
+        {
+            final String entityGUIDParameterName = "categoryEntity.getGUID";
 
+            int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+            /*
+             * Need to filter results for glossary.
+             */
+            RepositoryIteratorForEntities iterator = getEntitySearchIterator(userId,
+                                                                             searchString,
+                                                                             OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
+                                                                             OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                             null,
+                                                                             false,
+                                                                             false,
+                                                                             null,
+                                                                             forLineage,
+                                                                             forDuplicateProcessing,
+                                                                             0,
+                                                                             queryPageSize,
+                                                                             effectiveTime,
+                                                                             methodName);
+
+            List<B> results = new ArrayList<>();
+
+            while ((iterator.moreToReceive()) && ((queryPageSize == 0) || (results.size() < queryPageSize)))
+            {
+                EntityDetail entity = iterator.getNext();
+
+                int matchCount = 0;
+
+                if (entity != null)
+                {
+                    try
+                    {
+                        this.validateAnchorEntity(userId,
+                                                  entity.getGUID(),
+                                                  entity.getType().getTypeDefName(),
+                                                  entity,
+                                                  entityGUIDParameterName,
+                                                  false,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
+                                                  supportedZones,
+                                                  effectiveTime,
+                                                  methodName);
+
+                        String anchorGUID = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
+
+                        if (glossaryGUID.equals(anchorGUID))
+                        {
+                            matchCount ++;
+                            if (matchCount > startFrom)
+                            {
+                                results.add(converter.getNewBean(beanClass, entity, methodName));
+                            }
+                        }
+                    }
+                    catch (Exception notVisible)
+                    {
+                        // ignore entity
+                    }
+                }
+            }
+
+            if (! results.isEmpty())
+            {
+                return results;
+            }
+
+            return null;
+        }
+    }
 
 
     /**
@@ -569,6 +648,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * There are no wildcards supported on this request.
      *
      * @param userId calling user
+     * @param glossaryGUID unique identifier of the glossary to query
      * @param name name to search for
      * @param nameParameterName parameter supplying name
      * @param startFrom paging start point
@@ -585,6 +665,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<B>   getGlossaryCategoriesByName(String  userId,
+                                                 String  glossaryGUID,
                                                  String  name,
                                                  String  nameParameterName,
                                                  int     startFrom,
@@ -603,23 +684,99 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
 
-        return this.getBeansByValue(userId,
-                                    name,
-                                    nameParameterName,
-                                    OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
-                                    OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
-                                    specificMatchPropertyNames,
-                                    true,
-                                    null,
-                                    null,
-                                    forLineage,
-                                    forDuplicateProcessing,
-                                    supportedZones,
-                                    null,
-                                    startFrom,
-                                    pageSize,
-                                    effectiveTime,
-                                    methodName);
+        if (glossaryGUID == null)
+        {
+            return this.getBeansByValue(userId,
+                                        name,
+                                        nameParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
+                                        OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                        specificMatchPropertyNames,
+                                        true,
+                                        null,
+                                        null,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        null,
+                                        startFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+        }
+        else
+        {
+            final String entityGUIDParameterName = "categoryEntity.getGUID";
+
+            int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+            /*
+             * Need to filter results for glossary.
+             */
+            RepositoryIteratorForEntities iterator = getEntitySearchIterator(userId,
+                                                                             name,
+                                                                             OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
+                                                                             OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                             specificMatchPropertyNames,
+                                                                             true,
+                                                                             false,
+                                                                             null,
+                                                                             forLineage,
+                                                                             forDuplicateProcessing,
+                                                                             0,
+                                                                             queryPageSize,
+                                                                             effectiveTime,
+                                                                             methodName);
+
+            List<B> results = new ArrayList<>();
+
+            while ((iterator.moreToReceive()) && ((queryPageSize == 0) || (results.size() < queryPageSize)))
+            {
+                EntityDetail entity = iterator.getNext();
+
+                int matchCount = 0;
+
+                if (entity != null)
+                {
+                    try
+                    {
+                        this.validateAnchorEntity(userId,
+                                                  entity.getGUID(),
+                                                  entity.getType().getTypeDefName(),
+                                                  entity,
+                                                  entityGUIDParameterName,
+                                                  false,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
+                                                  supportedZones,
+                                                  effectiveTime,
+                                                  methodName);
+
+                        String anchorGUID = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
+
+                        if (glossaryGUID.equals(anchorGUID))
+                        {
+                            matchCount ++;
+                            if (matchCount > startFrom)
+                            {
+                                results.add(converter.getNewBean(beanClass, entity, methodName));
+                            }
+                        }
+                    }
+                    catch (Exception notVisible)
+                    {
+                        // ignore entity
+                    }
+                }
+            }
+
+            if (! results.isEmpty())
+            {
+                return results;
+            }
+
+            return null;
+        }
     }
 
 

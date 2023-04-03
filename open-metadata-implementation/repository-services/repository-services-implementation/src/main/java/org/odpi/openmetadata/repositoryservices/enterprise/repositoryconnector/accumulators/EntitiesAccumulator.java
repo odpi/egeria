@@ -26,9 +26,9 @@ public class EntitiesAccumulator extends QueryInstanceAccumulatorBase
     /*
      * Map of entityGUID to entity detail retrieved from the repositories
      */
-    private volatile Map<String, EntityDetail>         accumulatedEntities        = new HashMap<>();
-    private volatile Map<String, List<Classification>> accumulatedClassifications = new HashMap<>();
-    private volatile Map<String, List<String>>         accumulatedEntitySources   = new HashMap<>();
+    private final Map<String, EntityDetail>         accumulatedEntities        = new HashMap<>();
+    private final Map<String, List<Classification>> accumulatedClassifications = new HashMap<>();
+    private final Map<String, List<String>>         accumulatedEntitySources   = new HashMap<>();
 
 
     /**

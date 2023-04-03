@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
+import java.io.Serial;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -22,7 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SearchStringRequestBody extends EffectiveTimeQueryRequestBody
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private String searchString = null;
     private String searchStringParameterName = null;
@@ -49,6 +50,7 @@ public class SearchStringRequestBody extends EffectiveTimeQueryRequestBody
         if (template != null)
         {
             searchString = template.getSearchString();
+            searchStringParameterName = template.getSearchStringParameterName();
         }
     }
 

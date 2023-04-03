@@ -351,7 +351,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
             }
             
 
-            List<GlossaryCategoryElement> glossaryCategoryList = client.getGlossaryCategoriesByName(userId, assetManagerGUID, assetManagerName, glossaryCategoryName, 0, maxPageSize, null, false, false);
+            List<GlossaryCategoryElement> glossaryCategoryList = client.getGlossaryCategoriesByName(userId, assetManagerGUID, assetManagerName, null, glossaryCategoryName, 0, maxPageSize, null, false, false);
 
             if (glossaryCategoryList == null)
             {
@@ -755,7 +755,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                         extendedProperties,
                                         status);
 
-            List<GlossaryTermElement> glossaryTermList = client.getGlossaryTermsByName(userId, assetManagerGUID, assetManagerName, qualifiedName, 0, maxPageSize, null, false, false);
+            List<GlossaryTermElement> glossaryTermList = client.getGlossaryTermsByName(userId, assetManagerGUID, assetManagerName, null, qualifiedName, null,0, maxPageSize, null, false, false);
 
             validateGlossaryTermElements(activityName,
                                         "RetrieveByQualifiedName",
@@ -768,7 +768,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                         extendedProperties,
                                         status);
 
-            glossaryTermList = client.getGlossaryTermsByName(userId, assetManagerGUID, assetManagerName, displayName, 0, 0, null, false, false);
+            glossaryTermList = client.getGlossaryTermsByName(userId, assetManagerGUID, assetManagerName, null, displayName, null, 0, 0, null, false, false);
 
             validateGlossaryTermElements(activityName,
                                          "RetrieveTermsByGlossary",

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SchemaTypeElement;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -16,15 +17,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * SchemaTypeElementResponse is the response structure used on the OMAS REST API calls that return the properties
- * for a element.
+ * SchemaTypeElementResponse is the response structure used on the OMAS REST API calls that return the properties for an element.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SchemaTypeElementResponse extends AssetManagerOMASAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private SchemaTypeElement element = null;
 

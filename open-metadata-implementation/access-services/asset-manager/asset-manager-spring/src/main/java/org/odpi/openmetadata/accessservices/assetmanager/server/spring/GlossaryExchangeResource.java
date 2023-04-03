@@ -463,16 +463,16 @@ public class GlossaryExchangeResource
      */
     @PostMapping(path = "/glossaries/categories/{glossaryParentCategoryGUID}/subcategories/{glossaryChildCategoryGUID}")
 
-    public VoidResponse setupCategoryParent(@PathVariable String                             serverName,
-                                            @PathVariable String                             userId,
-                                            @PathVariable String                             glossaryParentCategoryGUID,
-                                            @PathVariable String                             glossaryChildCategoryGUID,
+    public VoidResponse setupCategoryParent(@PathVariable String                       serverName,
+                                            @PathVariable String                       userId,
+                                            @PathVariable String                       glossaryParentCategoryGUID,
+                                            @PathVariable String                       glossaryChildCategoryGUID,
                                             @RequestParam (required = false, defaultValue = "false")
-                                                    boolean                      forLineage,
+                                                          boolean                      forLineage,
                                             @RequestParam (required = false, defaultValue = "false")
-                                                    boolean                      forDuplicateProcessing,
+                                                          boolean                      forDuplicateProcessing,
                                             @RequestBody(required = false)
-                                                          RelationshipRequestBody requestBody)
+                                                          RelationshipRequestBody      requestBody)
     {
         return restAPI.setupCategoryParent(serverName, userId, glossaryParentCategoryGUID, glossaryChildCategoryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -561,15 +561,15 @@ public class GlossaryExchangeResource
      */
     @PostMapping(path = "/glossaries/categories/by-search-string")
 
-    public GlossaryCategoryElementsResponse findGlossaryCategories(@PathVariable String                  serverName,
-                                                                   @PathVariable String                  userId,
-                                                                   @RequestParam int                     startFrom,
-                                                                   @RequestParam int                     pageSize,
+    public GlossaryCategoryElementsResponse findGlossaryCategories(@PathVariable String                          serverName,
+                                                                   @PathVariable String                          userId,
+                                                                   @RequestParam int                             startFrom,
+                                                                   @RequestParam int                             pageSize,
                                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                           boolean                      forLineage,
+                                                                           boolean                               forLineage,
                                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                           boolean                      forDuplicateProcessing,
-                                                                   @RequestBody  SearchStringRequestBody requestBody)
+                                                                           boolean                               forDuplicateProcessing,
+                                                                   @RequestBody  GlossarySearchStringRequestBody requestBody)
     {
         return restAPI.findGlossaryCategories(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -629,15 +629,15 @@ public class GlossaryExchangeResource
      */
     @PostMapping(path = "/glossaries/categories/by-name")
 
-    public GlossaryCategoryElementsResponse   getGlossaryCategoriesByName(@PathVariable String          serverName,
-                                                                          @PathVariable String          userId,
-                                                                          @RequestParam int             startFrom,
-                                                                          @RequestParam int             pageSize,
+    public GlossaryCategoryElementsResponse   getGlossaryCategoriesByName(@PathVariable String                  serverName,
+                                                                          @PathVariable String                  userId,
+                                                                          @RequestParam int                     startFrom,
+                                                                          @RequestParam int                     pageSize,
                                                                           @RequestParam (required = false, defaultValue = "false")
-                                                                                  boolean                      forLineage,
+                                                                                  boolean                       forLineage,
                                                                           @RequestParam (required = false, defaultValue = "false")
-                                                                                  boolean                      forDuplicateProcessing,
-                                                                          @RequestBody  NameRequestBody requestBody)
+                                                                                  boolean                       forDuplicateProcessing,
+                                                                          @RequestBody  GlossaryNameRequestBody requestBody)
     {
         return restAPI.getGlossaryCategoriesByName(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -824,6 +824,7 @@ public class GlossaryExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the glossary term to update
+     * @param isMergeUpdate should the properties be merged with the existing properties or completely over-write them
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody new properties for the glossary term
@@ -839,12 +840,14 @@ public class GlossaryExchangeResource
                                            @PathVariable String                  userId,
                                            @PathVariable String                  glossaryTermGUID,
                                            @RequestParam (required = false, defaultValue = "false")
-                                                   boolean                      forLineage,
+                                                         boolean                 isMergeUpdate,
                                            @RequestParam (required = false, defaultValue = "false")
-                                                   boolean                      forDuplicateProcessing,
+                                                         boolean                 forLineage,
+                                           @RequestParam (required = false, defaultValue = "false")
+                                                         boolean                 forDuplicateProcessing,
                                            @RequestBody  GlossaryTermRequestBody requestBody)
     {
-        return restAPI.updateGlossaryTerm(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.updateGlossaryTerm(serverName, userId, glossaryTermGUID, isMergeUpdate, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -902,9 +905,9 @@ public class GlossaryExchangeResource
                                           @PathVariable String                  glossaryCategoryGUID,
                                           @PathVariable String                  glossaryTermGUID,
                                           @RequestParam (required = false, defaultValue = "false")
-                                                  boolean                       forLineage,
+                                                        boolean                 forLineage,
                                           @RequestParam (required = false, defaultValue = "false")
-                                                  boolean                       forDuplicateProcessing,
+                                                        boolean                 forDuplicateProcessing,
                                           @RequestBody  RelationshipRequestBody requestBody)
     {
         return restAPI.setupTermCategory(serverName, userId, glossaryCategoryGUID, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
@@ -1344,11 +1347,11 @@ public class GlossaryExchangeResource
                                                @PathVariable String                        userId,
                                                @PathVariable String                        glossaryTermGUID,
                                                @RequestParam (required = false, defaultValue = "false")
-                                                       boolean                      forLineage,
+                                                             boolean                       forLineage,
                                                @RequestParam (required = false, defaultValue = "false")
-                                                       boolean                      forDuplicateProcessing,
+                                                             boolean                       forDuplicateProcessing,
                                                @RequestBody(required = false)
-                                                             UpdateRequestBody requestBody)
+                                                             UpdateRequestBody             requestBody)
     {
         return restAPI.clearTermAsSpineObject(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1375,11 +1378,11 @@ public class GlossaryExchangeResource
                                                 @PathVariable String                        userId,
                                                 @PathVariable String                        glossaryTermGUID,
                                                 @RequestParam (required = false, defaultValue = "false")
-                                                        boolean                      forLineage,
+                                                              boolean                      forLineage,
                                                 @RequestParam (required = false, defaultValue = "false")
-                                                        boolean                      forDuplicateProcessing,
+                                                              boolean                      forDuplicateProcessing,
                                                 @RequestBody(required = false)
-                                                              UpdateRequestBody requestBody)
+                                                              UpdateRequestBody            requestBody)
     {
         return restAPI.setTermAsSpineAttribute(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1406,11 +1409,11 @@ public class GlossaryExchangeResource
                                                   @PathVariable String                        userId,
                                                   @PathVariable String                        glossaryTermGUID,
                                                   @RequestParam (required = false, defaultValue = "false")
-                                                          boolean                      forLineage,
+                                                                boolean                       forLineage,
                                                   @RequestParam (required = false, defaultValue = "false")
-                                                          boolean                      forDuplicateProcessing,
+                                                                boolean                       forDuplicateProcessing,
                                                   @RequestBody(required = false)
-                                                                UpdateRequestBody requestBody)
+                                                                UpdateRequestBody             requestBody)
     {
         return restAPI.clearTermAsSpineAttribute(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1437,11 +1440,11 @@ public class GlossaryExchangeResource
                                                   @PathVariable String                        userId,
                                                   @PathVariable String                        glossaryTermGUID,
                                                   @RequestParam (required = false, defaultValue = "false")
-                                                          boolean                      forLineage,
+                                                                boolean                      forLineage,
                                                   @RequestParam (required = false, defaultValue = "false")
-                                                          boolean                      forDuplicateProcessing,
+                                                                boolean                      forDuplicateProcessing,
                                                   @RequestBody(required = false)
-                                                                UpdateRequestBody requestBody)
+                                                                UpdateRequestBody            requestBody)
     {
         return restAPI.setTermAsObjectIdentifier(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1468,13 +1471,72 @@ public class GlossaryExchangeResource
                                                     @PathVariable String                        userId,
                                                     @PathVariable String                        glossaryTermGUID,
                                                     @RequestParam (required = false, defaultValue = "false")
-                                                            boolean                      forLineage,
+                                                                  boolean                      forLineage,
                                                     @RequestParam (required = false, defaultValue = "false")
-                                                            boolean                      forDuplicateProcessing,
+                                                                  boolean                      forDuplicateProcessing,
                                                     @RequestBody(required = false)
-                                                                  UpdateRequestBody requestBody)
+                                                                  UpdateRequestBody            requestBody)
     {
         return restAPI.clearTermAsObjectIdentifier(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Undo the last update to the glossary term.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/undo")
+
+    public GlossaryTermElementResponse undoGlossaryTermUpdate(@PathVariable String                        serverName,
+                                                              @PathVariable String                        userId,
+                                                              @PathVariable String                        glossaryTermGUID,
+                                                              @RequestParam (required = false, defaultValue = "false")
+                                                                            boolean                       forLineage,
+                                                              @RequestParam (required = false, defaultValue = "false")
+                                                                            boolean                       forDuplicateProcessing,
+                                                              @RequestBody(required = false)
+                                                                            UpdateRequestBody            requestBody)
+    {
+        return restAPI.undoGlossaryTermUpdate(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Archive the metadata element representing a glossary term.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the metadata element to archive
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/archive")
+
+    public VoidResponse archiveGlossaryTerm(@PathVariable String                        serverName,
+                                            @PathVariable String                        userId,
+                                            @PathVariable String                        glossaryTermGUID,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                          boolean                      forDuplicateProcessing,
+                                            @RequestBody(required = false)
+                                                          ArchiveRequestBody           requestBody)
+    {
+        return restAPI.archiveGlossaryTerm(serverName, userId, glossaryTermGUID, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1499,11 +1561,11 @@ public class GlossaryExchangeResource
                                            @PathVariable String                        userId,
                                            @PathVariable String                        glossaryTermGUID,
                                            @RequestParam (required = false, defaultValue = "false")
-                                                   boolean                      forLineage,
+                                                         boolean                       forLineage,
                                            @RequestParam (required = false, defaultValue = "false")
-                                                   boolean                      forDuplicateProcessing,
+                                                         boolean                       forDuplicateProcessing,
                                            @RequestBody(required = false)
-                                                         UpdateRequestBody requestBody)
+                                                         UpdateRequestBody             requestBody)
     {
         return restAPI.removeGlossaryTerm(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1528,15 +1590,15 @@ public class GlossaryExchangeResource
      */
     @PostMapping(path = "/glossaries/terms/by-search-string")
 
-    public GlossaryTermElementsResponse findGlossaryTerms(@PathVariable String                  serverName,
-                                                          @PathVariable String                  userId,
-                                                          @RequestParam int                     startFrom,
-                                                          @RequestParam int                     pageSize,
+    public GlossaryTermElementsResponse findGlossaryTerms(@PathVariable String                          serverName,
+                                                          @PathVariable String                          userId,
+                                                          @RequestParam int                             startFrom,
+                                                          @RequestParam int                             pageSize,
                                                           @RequestParam (required = false, defaultValue = "false")
-                                                                  boolean                      forLineage,
+                                                                  boolean                               forLineage,
                                                           @RequestParam (required = false, defaultValue = "false")
-                                                                  boolean                      forDuplicateProcessing,
-                                                          @RequestBody  SearchStringRequestBody requestBody)
+                                                                  boolean                               forDuplicateProcessing,
+                                                          @RequestBody  GlossarySearchStringRequestBody requestBody)
     {
         return restAPI.findGlossaryTerms(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1631,15 +1693,15 @@ public class GlossaryExchangeResource
      */
     @PostMapping(path = "/glossaries/terms/by-name")
 
-    public GlossaryTermElementsResponse   getGlossaryTermsByName(@PathVariable String          serverName,
-                                                                 @PathVariable String          userId,
-                                                                 @RequestParam int             startFrom,
-                                                                 @RequestParam int             pageSize,
+    public GlossaryTermElementsResponse   getGlossaryTermsByName(@PathVariable String                  serverName,
+                                                                 @PathVariable String                  userId,
+                                                                 @RequestParam int                     startFrom,
+                                                                 @RequestParam int                     pageSize,
                                                                  @RequestParam (required = false, defaultValue = "false")
-                                                                         boolean                      forLineage,
+                                                                               boolean                 forLineage,
                                                                  @RequestParam (required = false, defaultValue = "false")
-                                                                         boolean                      forDuplicateProcessing,
-                                                                 @RequestBody  NameRequestBody requestBody)
+                                                                               boolean                 forDuplicateProcessing,
+                                                                 @RequestBody  GlossaryNameRequestBody requestBody)
     {
         return restAPI.getGlossaryTermsByName(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1666,9 +1728,9 @@ public class GlossaryExchangeResource
                                                              @PathVariable String                             userId,
                                                              @PathVariable String                             glossaryTermGUID,
                                                              @RequestParam (required = false, defaultValue = "false")
-                                                                     boolean                      forLineage,
+                                                                           boolean                      forLineage,
                                                              @RequestParam (required = false, defaultValue = "false")
-                                                                     boolean                      forDuplicateProcessing,
+                                                                           boolean                      forDuplicateProcessing,
                                                              @RequestBody(required = false)
                                                                            EffectiveTimeQueryRequestBody requestBody)
     {
@@ -1676,6 +1738,43 @@ public class GlossaryExchangeResource
     }
 
 
+    /**
+     * Retrieve all the versions of a glossary term.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of object to retrieve
+     * @param startFrom the starting element number of the historical versions to return. This is used when retrieving
+     *                         versions beyond the first page of results. Zero means start from the first element.
+     * @param pageSize the maximum number of result versions that can be returned on this request. Zero means unrestricted
+     *                 return results size.
+     * @param oldestFirst  defining how the results should be ordered.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param requestBody the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @return list of beans or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  PropertyServerException there is a problem removing the properties from the repositories.
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/history")
+
+    public GlossaryTermElementsResponse getGlossaryTermHistory(@PathVariable String                 serverName,
+                                                               @PathVariable String                 userId,
+                                                               @PathVariable String                 glossaryTermGUID,
+                                                               @RequestParam int                    startFrom,
+                                                               @RequestParam int                    pageSize,
+                                                               @RequestParam (required = false, defaultValue = "false")
+                                                                             boolean                oldestFirst,
+                                                               @RequestParam (required = false, defaultValue = "false")
+                                                                             boolean                forLineage,
+                                                               @RequestParam (required = false, defaultValue = "false")
+                                                                             boolean                forDuplicateProcessing,
+                                                               @RequestBody(required = false)
+                                                                             HistoryRequestBody     requestBody)
+    {
+        return restAPI.getGlossaryTermHistory(serverName, userId, glossaryTermGUID, startFrom, pageSize, oldestFirst, forLineage, forDuplicateProcessing, requestBody);
+    }
 
     /* =========================================================================================
      * Support for linkage to external glossary resources.  These glossary resources are not

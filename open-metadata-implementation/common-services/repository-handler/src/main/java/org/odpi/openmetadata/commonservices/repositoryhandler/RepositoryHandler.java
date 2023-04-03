@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -1250,6 +1251,121 @@ public class RepositoryHandler
 
 
     /**
+     * Undo the last update to the requested entity.
+     *
+     * @param userId             unique identifier for requesting user.
+     * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
+     * @param externalSourceName unique name for the external source.
+     * @param updatedEntityGUID  String unique identifier (guid) for the entity.
+     * @param methodName         name of calling method
+     * @return recovered entity
+     *
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public EntityDetail undoEntityUpdate(String userId,
+                                         String externalSourceGUID,
+                                         String externalSourceName,
+                                         String updatedEntityGUID,
+                                         String methodName) throws UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        final String localMethodName = "undoEntityUpdate";
+
+        try
+        {
+            EntityDetail entity = metadataCollection.undoEntityUpdate(userId, updatedEntityGUID);
+
+            if (entity != null)
+            {
+                errorHandler.validateProvenance(userId,
+                                                entity,
+                                                updatedEntityGUID,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                methodName);
+            }
+
+            return entity;
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            /*
+             * This comes from validateProvenance.  The call to validate provenance is in the try...catch
+             * in case the caller has passed bad parameters.
+             */
+            throw error;
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Exception error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Return all historical versions of an entity within the bounds of the provided timestamps. To retrieve all historical
+     * versions of an entity, set both the 'fromTime' and 'toTime' to null.
+     *
+     * @param userId             unique identifier for requesting user.
+     * @param guid String unique identifier for the entity.
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the entity (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the entity (exclusive)
+     * @param startingFrom the starting element number of the historical versions to return. This is used when retrieving
+     *                         versions beyond the first page of results. Zero means start from the first element.
+     * @param pageSize the maximum number of result versions that can be returned on this request. Zero means unrestricted
+     *                 return results size.
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param methodName         name of calling method
+     * @return list of versions of an entity
+     *
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<EntityDetail> getEntityDetailHistory(String                 userId,
+                                                     String                 guid,
+                                                     Date                   fromTime,
+                                                     Date                   toTime,
+                                                     int                    startingFrom,
+                                                     int                    pageSize,
+                                                     HistorySequencingOrder sequencingOrder,
+                                                     String                 methodName) throws UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        final String localMethodName = "getEntityDetailHistory";
+
+        try
+        {
+            return metadataCollection.getEntityDetailHistory(userId,
+                                                             guid,
+                                                             fromTime,
+                                                             toTime,
+                                                             startingFrom,
+                                                             pageSize,
+                                                             sequencingOrder);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Exception error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
      * Update an existing entity status in the open metadata repository.  The external source identifiers
      * are used to validate the provenance of the entity before the update.  If they are null,
      * only local cohort entities can be updated.  If they are not null, they need to match the instance's
@@ -2102,6 +2218,42 @@ public class RepositoryHandler
 
 
     /**
+     * Remove an entity from the open metadata repository without additional checks.
+     *
+     * @param userId             calling user
+     * @param obsoleteEntityGUID unique identifier of the entity
+     * @param entityTypeGUID     type of entity to delete
+     * @param entityTypeName     name of the entity's type
+     * @param methodName         name of calling method
+     *
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public  void simpleDeleteEntity(String  userId,
+                                    String  obsoleteEntityGUID,
+                                    String  entityTypeGUID,
+                                    String  entityTypeName,
+                                    String  methodName) throws UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        final String localMethodName = "simpleDeleteEntity";
+
+        try
+        {
+            metadataCollection.deleteEntity(userId, entityTypeGUID, entityTypeName, obsoleteEntityGUID);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException error)
+        {
+            this.purgeEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, methodName);
+        }
+        catch (Exception error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+    }
+
+
+    /**
      * Purge an entity stored in a repository that does not support delete.
      *
      * @param userId             calling user
@@ -2163,15 +2315,16 @@ public class RepositoryHandler
      * @param deletedEntityGUID  String unique identifier (guid) for the entity.
      * @param methodName         name of calling method
      *
+     * @return restored entity
      * @throws PropertyServerException    problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void restoreEntity(String userId,
-                              String externalSourceGUID,
-                              String externalSourceName,
-                              String deletedEntityGUID,
-                              String methodName) throws UserNotAuthorizedException,
-                                                        PropertyServerException
+    public EntityDetail restoreEntity(String userId,
+                                      String externalSourceGUID,
+                                      String externalSourceName,
+                                      String deletedEntityGUID,
+                                      String methodName) throws UserNotAuthorizedException,
+                                                                PropertyServerException
     {
         final String localMethodName = "restoreEntity";
 
@@ -2188,6 +2341,8 @@ public class RepositoryHandler
                                                 externalSourceName,
                                                 methodName);
             }
+
+            return entity;
         }
         catch (UserNotAuthorizedException error)
         {
@@ -2205,6 +2360,8 @@ public class RepositoryHandler
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
+
+        return null;
     }
 
 

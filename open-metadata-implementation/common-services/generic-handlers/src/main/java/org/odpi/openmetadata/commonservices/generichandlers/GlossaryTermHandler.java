@@ -4,11 +4,14 @@ package org.odpi.openmetadata.commonservices.generichandlers;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryIteratorForEntities;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -323,7 +326,10 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        if (!isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
                                                                    OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
@@ -1523,6 +1529,75 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
 
 
     /**
+     * Classify the glossary term in the repository to show that it has been archived and is only needed for lineage.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param glossaryTermGUIDParameterName parameter supplying glossaryTermGUID
+     * @param archiveDate date that the file was archived or discovered to have been archived.  Null means now.
+     * @param archiveProcess name of archiving process
+     * @param archiveProperties properties to help locate the archive copy
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem removing the properties from the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void archiveGlossaryTerm(String              userId,
+                                    String              assetManagerGUID,
+                                    String              assetManagerName,
+                                    String              glossaryTermGUID,
+                                    String              glossaryTermGUIDParameterName,
+                                    Date                archiveDate,
+                                    String              archiveProcess,
+                                    Map<String, String> archiveProperties,
+                                    boolean             forDuplicateProcessing,
+                                    Date                effectiveTime,
+                                    String              methodName) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException
+    {
+        EntityDetail entity = this.getEntityFromRepository(userId,
+                                                           glossaryTermGUID,
+                                                           glossaryTermGUIDParameterName,
+                                                           OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                           null,
+                                                           null,
+                                                           true,
+                                                           forDuplicateProcessing,
+                                                           effectiveTime,
+                                                           methodName);
+
+        ReferenceableBuilder builder = new ReferenceableBuilder(repositoryHelper, serviceName, serverName);
+
+        repositoryHandler.classifyEntity(userId,
+                                         assetManagerGUID,
+                                         assetManagerName,
+                                         entity.getGUID(),
+                                         entity,
+                                         glossaryTermGUIDParameterName,
+                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                         OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_GUID,
+                                         OpenMetadataAPIMapper.MEMENTO_CLASSIFICATION_TYPE_NAME,
+                                         ClassificationOrigin.ASSIGNED,
+                                         entity.getGUID(),
+                                         builder.getMementoProperties(archiveDate,
+                                                                      userId,
+                                                                      archiveProcess,
+                                                                      archiveProperties,
+                                                                      methodName),
+                                         true,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
+                                         methodName);
+    }
+
+
+    /**
      * Remove the metadata element representing a glossary term.
      *
      * @param userId calling user
@@ -1571,8 +1646,10 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * Returns the glossary term object corresponding to the supplied term name.
      *
      * @param userId  String - userId of user making request.
+     * @param glossaryGUID unique identifier of the glossary to query
      * @param name  this may be the qualifiedName or displayName of the term.
-     * @param nameParameterName property that provided the name
+     * @param limitResultsByStatus By default, terms in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
@@ -1585,39 +1662,94 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem retrieving information from the property (metadata) server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<B> getTermsByName(String    userId,
-                                  String    name,
-                                  String    nameParameterName,
-                                  int       startFrom,
-                                  int       pageSize,
-                                  boolean   forLineage,
-                                  boolean   forDuplicateProcessing,
-                                  Date      effectiveTime,
-                                  String    methodName) throws InvalidParameterException,
-                                                               PropertyServerException,
-                                                               UserNotAuthorizedException
+    public List<B> getTermsByName(String               userId,
+                                  String               glossaryGUID,
+                                  String               name,
+                                  List<InstanceStatus> limitResultsByStatus,
+                                  int                  startFrom,
+                                  int                  pageSize,
+                                  boolean              forLineage,
+                                  boolean              forDuplicateProcessing,
+                                  Date                 effectiveTime,
+                                  String               methodName) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
     {
+        final String entityGUIDParameterName = "termEntity.getGUID";
+
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
 
-        return this.getBeansByValue(userId,
-                                    name,
-                                    nameParameterName,
-                                    OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
-                                    OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                    specificMatchPropertyNames,
-                                    true,
-                                    null,
-                                    null,
-                                    forLineage,
-                                    forDuplicateProcessing,
-                                    supportedZones,
-                                    null,
-                                    startFrom,
-                                    pageSize,
-                                    effectiveTime,
-                                    methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        /*
+         * Need to filter results for glossary.
+         */
+        RepositoryIteratorForEntities iterator = getEntitySearchIterator(userId,
+                                                                         name,
+                                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
+                                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                         specificMatchPropertyNames,
+                                                                         true,
+                                                                         false,
+                                                                         null,
+                                                                         forLineage,
+                                                                         forDuplicateProcessing,
+                                                                         0,
+                                                                         queryPageSize,
+                                                                         effectiveTime,
+                                                                         methodName);
+
+        List<B> results = new ArrayList<>();
+
+        while ((iterator.moreToReceive()) && ((queryPageSize == 0) || (results.size() < queryPageSize)))
+        {
+            EntityDetail entity = iterator.getNext();
+
+            int matchCount = 0;
+
+            if (entity != null)
+            {
+                try
+                {
+                    this.validateAnchorEntity(userId,
+                                              entity.getGUID(),
+                                              entity.getType().getTypeDefName(),
+                                              entity,
+                                              entityGUIDParameterName,
+                                              false,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              supportedZones,
+                                              effectiveTime,
+                                              methodName);
+
+                    String anchorGUID = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
+
+                    if (((glossaryGUID == null) || (glossaryGUID.equals(anchorGUID))) &&
+                        ((limitResultsByStatus == null) || (limitResultsByStatus.contains(entity.getStatus()))))
+                    {
+                        matchCount ++;
+                        if (matchCount > startFrom)
+                        {
+                            results.add(converter.getNewBean(beanClass, entity, methodName));
+                        }
+                    }
+                }
+                catch (Exception notVisible)
+                {
+                    // ignore entity
+                }
+            }
+        }
+
+        if (! results.isEmpty())
+        {
+            return results;
+        }
+
+        return null;
     }
 
 
@@ -1625,8 +1757,10 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * Returns the glossary term object containing the supplied term name.  This may include wildcard characters
      *
      * @param userId  String - userId of user making request.
-     * @param name  this may be the qualifiedName or displayName of the term
-     * @param nameParameterName property that provided the name - interpreted as a regular expression
+     * @param glossaryGUID unique identifier of the glossary to query
+     * @param searchString string to find in the properties
+     * @param limitResultsByStatus By default, terms in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
@@ -1639,39 +1773,134 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem retrieving information from the property (metadata) server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<B> findTerms(String    userId,
-                             String    name,
-                             String    nameParameterName,
-                             int       startFrom,
-                             int       pageSize,
-                             boolean   forLineage,
-                             boolean   forDuplicateProcessing,
-                             Date      effectiveTime,
-                             String    methodName) throws InvalidParameterException,
-                                                          PropertyServerException,
-                                                          UserNotAuthorizedException
+    public List<B> findTerms(String               userId,
+                             String               glossaryGUID,
+                             String               searchString,
+                             List<InstanceStatus> limitResultsByStatus,
+                             int                  startFrom,
+                             int                  pageSize,
+                             boolean              forLineage,
+                             boolean              forDuplicateProcessing,
+                             Date                 effectiveTime,
+                             String               methodName) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
     {
-        List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
+        final String entityGUIDParameterName = "termEntity.getGUID";
 
-        return this.getBeansByValue(userId,
-                                    name,
-                                    nameParameterName,
-                                    OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
-                                    OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                    specificMatchPropertyNames,
-                                    false,
-                                    null,
-                                    null,
-                                    forLineage,
-                                    forDuplicateProcessing,
-                                    supportedZones,
-                                    null,
-                                    startFrom,
-                                    pageSize,
-                                    effectiveTime,
-                                    methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        /*
+         * Need to filter results for glossary.
+         */
+        RepositoryIteratorForEntities iterator = getEntitySearchIterator(userId,
+                                                                         searchString,
+                                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
+                                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                         null,
+                                                                         false,
+                                                                         false,
+                                                                         null,
+                                                                         forLineage,
+                                                                         forDuplicateProcessing,
+                                                                         0,
+                                                                         queryPageSize,
+                                                                         effectiveTime,
+                                                                         methodName);
+
+        List<B> results = new ArrayList<>();
+
+        while ((iterator.moreToReceive()) && ((queryPageSize == 0) || (results.size() < queryPageSize)))
+        {
+            EntityDetail termEntity = iterator.getNext();
+
+            int matchCount = 0;
+
+            if (termEntity != null)
+            {
+                try
+                {
+                    this.validateAnchorEntity(userId,
+                                              termEntity.getGUID(),
+                                              OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                              termEntity,
+                                              entityGUIDParameterName,
+                                              false,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              supportedZones,
+                                              effectiveTime,
+                                              methodName);
+
+                    String termAnchorGUID = this.getAnchorGUIDFromAnchorsClassification(termEntity, methodName);
+
+                    if (((glossaryGUID == null) || (glossaryGUID.equals(termAnchorGUID))) &&
+                        ((limitResultsByStatus == null) || (limitResultsByStatus.contains(termEntity.getStatus()))))
+                    {
+                        matchCount ++;
+                        if (matchCount > startFrom)
+                        {
+                            results.add(converter.getNewBean(beanClass, termEntity, methodName));
+                        }
+                    }
+                    else if (glossaryGUID != null)
+                    {
+                        /*
+                         * The term is not anchored in the requested glossary.  Maybe it is linked to a category in the requested glossary?
+                         */
+                        List<EntityDetail> categoryEntities = this.getAttachedEntities(userId,
+                                                                                       termEntity.getGUID(),
+                                                                                       entityGUIDParameterName,
+                                                                                       OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                                       OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_GUID,
+                                                                                       OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_NAME,
+                                                                                       OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                                       null,
+                                                                                       null,
+                                                                                       1,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing,
+                                                                                       supportedZones,
+                                                                                       0,
+                                                                                       0,
+                                                                                       effectiveTime,
+                                                                                       methodName);
+
+                        if (categoryEntities != null)
+                        {
+                            for (EntityDetail categoryEntity : categoryEntities)
+                            {
+                                if (categoryEntity != null)
+                                {
+                                    String categoryAnchorGUID = this.getAnchorGUIDFromAnchorsClassification(categoryEntity, methodName);
+
+                                    if ((glossaryGUID.equals(categoryAnchorGUID)) &&
+                                        ((limitResultsByStatus == null) || (limitResultsByStatus.contains(termEntity.getStatus()))))
+                                    {
+                                        matchCount ++;
+                                        if (matchCount > startFrom)
+                                        {
+                                            results.add(converter.getNewBean(beanClass, termEntity, methodName));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception notVisible)
+                {
+                    // ignore entity
+                }
+            }
+        }
+
+        if (! results.isEmpty())
+        {
+            return results;
+        }
+
+        return null;
     }
 
 
