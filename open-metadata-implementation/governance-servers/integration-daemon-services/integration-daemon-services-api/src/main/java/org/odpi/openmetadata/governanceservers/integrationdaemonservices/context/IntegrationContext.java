@@ -10,6 +10,7 @@ package org.odpi.openmetadata.governanceservers.integrationdaemonservices.contex
  *
  * This base class supports the common methods available to all types of integration connectors.
  */
+@Deprecated
 public abstract class IntegrationContext
 {
     /**

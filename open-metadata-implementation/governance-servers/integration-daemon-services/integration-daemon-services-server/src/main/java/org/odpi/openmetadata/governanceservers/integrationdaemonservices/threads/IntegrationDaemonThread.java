@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -85,37 +86,42 @@ public class IntegrationDaemonThread implements Runnable
         {
             Date now = new Date();
 
-            for (IntegrationConnectorHandler connectorHandler : connectorHandlers.getIntegrationConnectorProcessingList())
-            {
-                if (connectorHandler != null)
-                {
-                    if (((connectorHandler.getStartDate() == null) || now.after(connectorHandler.getStartDate())) &&
-                        ((connectorHandler.getStopDate() == null)  || now.before(connectorHandler.getStopDate())))
-                    {
-                        try
-                        {
-                            if (connectorHandler.getLastRefreshTime() == null)
-                            {
-                                connectorHandler.refreshConnector(actionDescription, true);
-                            }
-                            else if (connectorHandler.getMinMinutesBetweenRefresh() > 0)
-                            {
-                                long nextRefreshTime =
-                                        connectorHandler.getLastRefreshTime().getTime() +
-                                                (connectorHandler.getMinMinutesBetweenRefresh() * 60000);
+            List<IntegrationConnectorHandler> integrationConnectorHandlers = connectorHandlers.getIntegrationConnectorProcessingList();
 
-                                if (nextRefreshTime < now.getTime())
+            if (integrationConnectorHandlers != null)
+            {
+                for (IntegrationConnectorHandler connectorHandler : connectorHandlers.getIntegrationConnectorProcessingList())
+                {
+                    if (connectorHandler != null)
+                    {
+                        if (((connectorHandler.getStartDate() == null) || now.after(connectorHandler.getStartDate())) &&
+                            ((connectorHandler.getStopDate() == null)  || now.before(connectorHandler.getStopDate())))
+                        {
+                            try
+                            {
+                                if (connectorHandler.getLastRefreshTime() == null)
                                 {
-                                    connectorHandler.refreshConnector(actionDescription, false);
+                                    connectorHandler.refreshConnector(actionDescription, true);
+                                }
+                                else if (connectorHandler.getMinMinutesBetweenRefresh() > 0)
+                                {
+                                    long nextRefreshTime =
+                                            connectorHandler.getLastRefreshTime().getTime() +
+                                                    (connectorHandler.getMinMinutesBetweenRefresh() * 60000);
+
+                                    if (nextRefreshTime < now.getTime())
+                                    {
+                                        connectorHandler.refreshConnector(actionDescription, false);
+                                    }
                                 }
                             }
-                        }
-                        catch (Exception error)
-                        {
-                            auditLog.logMessage(actionDescription,
-                                                IntegrationDaemonServicesAuditCode.DAEMON_THREAD_CONNECTOR_ERROR.getMessageDefinition(integrationDaemonName,
-                                                                                                                                      error.getClass().getName(),
-                                                                                                                                      error.getMessage()));
+                            catch (Exception error)
+                            {
+                                auditLog.logMessage(actionDescription,
+                                                    IntegrationDaemonServicesAuditCode.DAEMON_THREAD_CONNECTOR_ERROR.getMessageDefinition(integrationDaemonName,
+                                                                                                                                          error.getClass().getName(),
+                                                                                                                                          error.getMessage()));
+                            }
                         }
                     }
                 }

@@ -349,11 +349,14 @@ public class AssetBuilder extends ReferenceableBuilder
                                                                                      organization,
                                                                                      methodName);
 
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                  properties,
-                                                                  OpenMetadataAPIMapper.ORGANIZATION_PROPERTY_NAME_PROPERTY_NAME,
-                                                                  organizationPropertyName,
-                                                                  methodName);
+        if (organization != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.ORGANIZATION_PROPERTY_NAME_PROPERTY_NAME,
+                                                                      organizationPropertyName,
+                                                                      methodName);
+        }
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
@@ -361,12 +364,14 @@ public class AssetBuilder extends ReferenceableBuilder
                                                                   businessCapability,
                                                                   methodName);
 
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                  properties,
-                                                                  OpenMetadataAPIMapper.BUSINESS_CAPABILITY_PROPERTY_NAME_PROPERTY_NAME,
-                                                                  businessCapabilityPropertyName,
-                                                                  methodName);
-
+        if (businessCapability != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.BUSINESS_CAPABILITY_PROPERTY_NAME_PROPERTY_NAME,
+                                                                      businessCapabilityPropertyName,
+                                                                      methodName);
+        }
 
         properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                      properties,

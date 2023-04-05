@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesErrorCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorReport;
@@ -19,6 +20,7 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.propert
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceRegistry;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,14 +43,17 @@ public class IntegrationGroupHandler
     private final IntegrationGroupConfigurationClient configurationClient;        /* Initialized in constructor */
 
     private final IntegrationConnectorCacheMap           integrationConnectorLookupTable;
-    private final Map<String, IntegrationServiceHandler> integrationServiceHandlerMap;
-    private final List<IntegrationConnectorHandler>      connectorHandlers = new ArrayList<>();
+    private final Map<String, IntegrationContextManager> contextManagerMap;
+    private final Map<String, String>                    integrationServiceNameMap;
+    private List<IntegrationConnectorHandler>      connectorHandlers = new ArrayList<>();
 
     /**
      * Create a client-side object for managing an integration connector.
      *
      * @param integrationGroupName the properties of the integration group.
-     * @param integrationServiceHandlerMap details of the active integration services.
+     * @param integrationConnectorCacheMap manages the dynamic map of connectors.
+     * @param contextManagerMap details of the context manager for each registered integration service.
+     * @param integrationServiceNameMap details of the full name for each registered integration service.
      * @param serverName the name of the integration daemon server where the integration group is running
      * @param serverUserId user id for the server to use
      * @param configurationClient client to retrieve the configuration
@@ -57,7 +62,8 @@ public class IntegrationGroupHandler
      * @param maxPageSize maximum number of results that can be returned in a single request
      */
     public IntegrationGroupHandler(String                                 integrationGroupName,
-                                   Map<String, IntegrationServiceHandler> integrationServiceHandlerMap,
+                                   Map<String, IntegrationContextManager> contextManagerMap,
+                                   Map<String, String>                    integrationServiceNameMap,
                                    IntegrationConnectorCacheMap           integrationConnectorCacheMap,
                                    String                                 serverName,
                                    String                                 serverUserId,
@@ -67,7 +73,8 @@ public class IntegrationGroupHandler
                                    int                                    maxPageSize)
     {
         this.integrationGroupName            = integrationGroupName;
-        this.integrationServiceHandlerMap    = integrationServiceHandlerMap;
+        this.contextManagerMap               = contextManagerMap;
+        this.integrationServiceNameMap       = integrationServiceNameMap;
         this.integrationConnectorLookupTable = integrationConnectorCacheMap;
         this.serverName                      = serverName;
         this.serverUserId                    = serverUserId;
@@ -191,7 +198,7 @@ public class IntegrationGroupHandler
             this.integrationGroupGUID       = null;
             this.integrationGroupProperties = null;
 
-            throw new PropertyServerException(IntegrationDaemonServicesErrorCode.UNKNOWN_GOVERNANCE_ENGINE_CONFIG.getMessageDefinition(integrationGroupName,
+            throw new PropertyServerException(IntegrationDaemonServicesErrorCode.UNKNOWN_INTEGRATION_GROUP_CONFIG.getMessageDefinition(integrationGroupName,
                                                                                                                                        configurationClient.getConfigurationServerName(),
                                                                                                                                        serverName),
                                               this.getClass().getName(),
@@ -229,9 +236,11 @@ public class IntegrationGroupHandler
         final String actionDescription = "Retrieve all integration connector configuration";
 
         auditLog.logMessage(actionDescription,
-                            IntegrationDaemonServicesAuditCode.CLEARING_ALL_GOVERNANCE_SERVICE_CONFIG.getMessageDefinition(integrationGroupName));
+                            IntegrationDaemonServicesAuditCode.CLEARING_ALL_INTEGRATION_CONNECTOR_CONFIG.getMessageDefinition(integrationGroupName));
 
-        integrationConnectorLookupTable.clear();
+        // integrationConnectorLookupTable.clear();
+
+        Map<String, IntegrationConnectorHandler>  currentConnectors = new HashMap<>();
 
         int      startingFrom = 0;
         boolean  moreToReceive = true;
@@ -247,7 +256,13 @@ public class IntegrationGroupHandler
             {
                 for (RegisteredIntegrationConnectorElement registeredIntegrationConnectorElement : registeredIntegrationConnectors)
                 {
-                    refreshRegisteredIntegrationConnector(registeredIntegrationConnectorElement, methodName);
+                    IntegrationConnectorHandler matchingHandler = refreshRegisteredIntegrationConnector(registeredIntegrationConnectorElement, methodName);
+
+                    if (matchingHandler != null)
+                    {
+                        currentConnectors.put(registeredIntegrationConnectorElement.getConnectorId(),
+                                              matchingHandler);
+                    }
                 }
 
                 startingFrom = startingFrom + maxPageSize;
@@ -256,6 +271,39 @@ public class IntegrationGroupHandler
             {
                 moreToReceive = false;
             }
+        }
+
+        /*
+         * The challenge is to remove the connectors that are running but no longer in the group.
+         */
+        if ((connectorHandlers == null) || (connectorHandlers.isEmpty()))
+        {
+            connectorHandlers = new ArrayList<>(currentConnectors.values());
+        }
+        else if (currentConnectors.isEmpty())
+        {
+            connectorHandlers = new ArrayList<>();
+        }
+        else
+        {
+            for (IntegrationConnectorHandler runningConnector : connectorHandlers)
+            {
+                boolean found = false;
+                for (String connectorId : currentConnectors.keySet())
+                {
+                    if (connectorId.equals(runningConnector.getIntegrationConnectorId()))
+                    {
+                        found = true;
+                    }
+                }
+
+                if (! found)
+                {
+                    runningConnector.disconnectConnector(methodName);
+                }
+            }
+
+            connectorHandlers = new ArrayList<>(currentConnectors.values());
         }
 
         auditLog.logMessage(actionDescription,
@@ -296,9 +344,10 @@ public class IntegrationGroupHandler
      *
      * @param registeredIntegrationConnectorElement description of the registered integration connector
      * @param methodName calling method for message
+     * @return connector handler
      */
-    private void refreshRegisteredIntegrationConnector(RegisteredIntegrationConnectorElement registeredIntegrationConnectorElement,
-                                                       String                                methodName)
+    private IntegrationConnectorHandler refreshRegisteredIntegrationConnector(RegisteredIntegrationConnectorElement registeredIntegrationConnectorElement,
+                                                                              String                                methodName)
     {
         /*
          * It is possible that the details about the integration connector are still being built.  So ignore the new element if it is not complete.
@@ -323,9 +372,9 @@ public class IntegrationGroupHandler
 
                     if (serviceURLMarker != null)
                     {
-                        IntegrationServiceHandler integrationServiceHandler = integrationServiceHandlerMap.get(serviceURLMarker);
-
-                        String userId = serverUserId;
+                        IntegrationContextManager contextManager = contextManagerMap.get(serviceURLMarker);
+                        String                    integrationServiceName = integrationServiceNameMap.get(serviceURLMarker);
+                        String                    userId = serverUserId;
 
                         if (registeredIntegrationConnectorElement.getRegistrationProperties().getConnectorUserId() != null)
                         {
@@ -344,9 +393,9 @@ public class IntegrationGroupHandler
                                                                            registeredIntegrationConnectorElement.getProperties().getUsesBlockingCalls(),
                                                                            registeredIntegrationConnectorElement.getRegistrationProperties().getPermittedSynchronization(),
                                                                            registeredIntegrationConnectorElement.getRegistrationProperties().getGenerateIntegrationReports(),
-                                                                           integrationServiceHandler.getIntegrationServiceFullName(),
+                                                                           integrationServiceName,
                                                                            serverName,
-                                                                           integrationServiceHandler.getContextManager(),
+                                                                           contextManager,
                                                                            auditLog);
                         /*
                          * This is a local list for status reporting
@@ -357,7 +406,8 @@ public class IntegrationGroupHandler
                          * This is the full list of connectors running in the integration daemon.
                          */
                         integrationConnectorLookupTable.putHandlerByConnectorId(registeredIntegrationConnectorElement.getConnectorId(),
-                                                                                connectorHandler);
+                                                                                connectorHandler,
+                                                                                false);
                     }
                     else
                     {
@@ -383,6 +433,10 @@ public class IntegrationGroupHandler
             {
                 connectorHandler.updateConnectorDetails(registeredIntegrationConnectorElement);
             }
+
+            return connectorHandler;
         }
+
+        return null;
     }
 }

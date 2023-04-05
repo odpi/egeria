@@ -6,6 +6,7 @@ import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSync
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -14,6 +15,7 @@ import java.util.Objects;
  */
 public class IntegrationServiceRegistration implements Serializable
 {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private int                        integrationServiceId                  = 0;

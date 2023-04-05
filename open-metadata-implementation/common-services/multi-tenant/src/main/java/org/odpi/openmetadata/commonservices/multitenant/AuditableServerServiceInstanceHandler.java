@@ -7,6 +7,9 @@ import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerExcept
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
+/**
+ * AuditableServerServiceInstanceHandler supports registered services that have an audit log.
+ */
 public abstract class AuditableServerServiceInstanceHandler extends OMAGServerServiceInstanceHandler
 {
     /**
