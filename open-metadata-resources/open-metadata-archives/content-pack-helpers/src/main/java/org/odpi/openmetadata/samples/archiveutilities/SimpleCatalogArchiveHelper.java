@@ -365,6 +365,7 @@ public class SimpleCatalogArchiveHelper
     private static final String GROUPS_PROPERTY                              = "groups";
     private static final String SECURITY_LABELS_PROPERTY                     = "securityLabels";
     private static final String SECURITY_PROPERTIES_PROPERTY                 = "securityProperties";
+    private static final String ACCESS_GROUPS_PROPERTY                       = "accessGroups";
 
     private static final String IDENTIFIER_PROPERTY                          = "identifier";
 
@@ -5228,5 +5229,34 @@ public class SimpleCatalogArchiveHelper
                                                                          InstanceStatus.ACTIVE);
 
         archiveBuilder.addClassification(archiveHelper.getClassificationEntityExtension(referenceableEntityProxy, classification));
+    }
+
+    /**
+     * Add a SecurityTags classification to the requested element.
+     *
+     * @param assetGUID unique identifier for the element to classify
+     * @param securityLabels list of security labels
+     * @param securityProperties map of security properties
+     */
+    public void addSecurityTagsClassification(String                    assetGUID,
+                                              List<String>              securityLabels,
+                                              Map<String, Object>       securityProperties,
+                                              Map<String, List<String>> accessGroups)
+    {
+        final String methodName = "addSecurityTagsClassification";
+
+        EntityDetail assetEntity = archiveBuilder.getEntity(assetGUID);
+
+        EntityProxy entityProxy = archiveHelper.getEntityProxy(assetEntity);
+
+        InstanceProperties properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, null, SECURITY_LABELS_PROPERTY, securityLabels, methodName);
+        properties = archiveHelper.addMapPropertyToInstance(archiveRootName, properties, SECURITY_PROPERTIES_PROPERTY, securityProperties, methodName);
+        properties = archiveHelper.addStringArrayStringMapPropertyToInstance(archiveRootName, properties, ACCESS_GROUPS_PROPERTY, accessGroups, methodName);
+
+        Classification classification = archiveHelper.getClassification(SECURITY_TAGS_CLASSIFICATION_NAME,
+                                                                        properties,
+                                                                        InstanceStatus.ACTIVE);
+
+        archiveBuilder.addClassification(archiveHelper.getClassificationEntityExtension(entityProxy, classification));
     }
 }
