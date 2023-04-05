@@ -13,6 +13,7 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registr
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonInstanceHandler;
 import org.odpi.openmetadata.integrationservices.topic.api.TopicIntegratorAPI;
 import org.odpi.openmetadata.integrationservices.topic.connector.TopicIntegratorConnector;
+import org.odpi.openmetadata.integrationservices.topic.connector.TopicIntegratorOMISConnector;
 import org.odpi.openmetadata.integrationservices.topic.contextmanager.TopicIntegratorContextManager;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +39,7 @@ public class TopicIntegratorRESTServices
     {
         IntegrationServiceRegistry.registerIntegrationService(IntegrationServiceDescription.TOPIC_INTEGRATOR_OMIS,
                                                               TopicIntegratorContextManager.class.getName(),
-                                                              TopicIntegratorAPI.class.getName());
+                                                              TopicIntegratorOMISConnector.class.getName());
     }
 
 

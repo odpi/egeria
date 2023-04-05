@@ -431,6 +431,13 @@ public class OMRSOperationalServices
             {
                 auditLog.logMessage(actionDescription,
                                     OMRSAuditCode.LOCAL_REPOSITORY_FAILED_TO_START.getMessageDefinition(error.getMessage()));
+
+                throw new OMRSLogicErrorException(OMRSErrorCode.LOCAL_REPOSITORY_FAILED_TO_START.getMessageDefinition(localServerName,
+                                                                                                                      error.getClass().getName(),
+                                                                                                                      error.getMessage()),
+                                                  this.getClass().getName(),
+                                                  methodName,
+                                                  error);
             }
         }
 

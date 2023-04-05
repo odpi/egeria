@@ -186,6 +186,9 @@ public class EngineConfigurationRefreshThread implements Runnable
     }
 
 
+    /**
+     * Stop the thread
+     */
     public void stop()
     {
         keepTrying = false;

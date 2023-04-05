@@ -13,6 +13,7 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registr
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonInstanceHandler;
 import org.odpi.openmetadata.integrationservices.search.api.SearchIntegratorAPI;
 import org.odpi.openmetadata.integrationservices.search.connector.SearchIntegratorConnector;
+import org.odpi.openmetadata.integrationservices.search.connector.SearchIntegratorOMISConnector;
 import org.odpi.openmetadata.integrationservices.search.contextmanager.SearchIntegratorContextManager;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +39,7 @@ public class SearchIntegratorRESTServices
     {
         IntegrationServiceRegistry.registerIntegrationService(IntegrationServiceDescription.SEARCH_INTEGRATOR_OMIS,
                                                               SearchIntegratorContextManager.class.getName(),
-                                                              SearchIntegratorAPI.class.getName());
+                                                              SearchIntegratorOMISConnector.class.getName());
     }
 
 

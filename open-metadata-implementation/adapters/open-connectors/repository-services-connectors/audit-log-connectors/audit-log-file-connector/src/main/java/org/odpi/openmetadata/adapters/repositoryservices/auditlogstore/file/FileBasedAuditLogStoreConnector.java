@@ -97,11 +97,10 @@ public class FileBasedAuditLogStoreConnector extends OMRSAuditLogStoreConnectorB
         {
             try
             {
-                File configStoreFile =
-                        new File(logStoreTemplateName + "/log-record-" + logRecord.getGUID());
+                File logFileStore = new File(logStoreTemplateName + "/log-record-" + logRecord.getGUID() + ".json");
 
                 String configStoreFileContents = OBJECT_WRITER.writeValueAsString(logRecord);
-                FileUtils.writeStringToFile(configStoreFile, configStoreFileContents, (String)null, false);
+                FileUtils.writeStringToFile(logFileStore, configStoreFileContents, (String)null, false);
             }
             catch (IOException ioException)
             {

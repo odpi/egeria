@@ -146,6 +146,33 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                           "The connector will be restarted once the properties are cleared.",
                                           "Ensure that the connector does not report any errors during the restart processing as it operated on its default properties."),
 
+    NO_INTEGRATION_SERVICES_CONFIGURED("INTEGRATION-DAEMON-SERVICES-0017",
+                                       OMRSAuditLogRecordSeverity.INFO,
+                                       "Integration daemon {0} is not configured with any integration services",
+                                       "The integration daemon continues start up, looking for integration groups.",
+                                       "No change is required if the integration daemon requires no statically configured integration connectors. " +
+                                               "If statically configured integration connectors are required, add the configuration for at least " +
+                                               "one integration service, with the associated integration connector configurations," +
+                                               " to this integration daemon's configuration document and then restart the integration daemon."),
+
+    NO_INTEGRATION_GROUPS_CONFIGURED("INTEGRATION-DAEMON-SERVICES-0018",
+                                       OMRSAuditLogRecordSeverity.INFO,
+                                       "Integration daemon {0} is not configured with any integration groups",
+                                       "The integration daemon continues start up.",
+                                       "No change is required if the integration daemon requires no dynamically configured integration connectors. " +
+                                               "If dynamically configured integration connectors are required, add the configuration for at least " +
+                                               "one integration group to this integration daemon's configuration document and then restart the integration daemon."),
+
+    CONFIGURATION_LISTENER_REGISTERED("INTEGRATION-DAEMON-SERVICES-0019",
+                                      OMRSAuditLogRecordSeverity.STARTUP,
+                                      "The integration daemon services has registered the configuration " +
+                                              "listener for server {0}.  It will receive configuration updates from metadata server {1}",
+                                      "The integration daemon continues to run.  The integration daemon services will start up the " +
+                                              "integration groups and they will operate with whatever configuration that they can retrieve.  " +
+                                              "Periodically the integration daemon services will" +
+                                              "retry the request to retrieve the integration connector configuration associated with the group and activate/deactivate the requested integration connectors as requested.",
+                                      "Ensure the configuration for the integration connectors is attached to the integration group(s) configured for this integration daemon."),
+
     SERVER_SHUTTING_DOWN("INTEGRATION-DAEMON-SERVICES-0020",
                     OMRSAuditLogRecordSeverity.SHUTDOWN,
                     "The integration daemon {0} is shutting down",
@@ -196,6 +223,31 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                          "Verify that all integration connectors that support the metadata exchange have shut down successfully."),
 
 
+    NO_CONFIGURATION_LISTENER("INTEGRATION-DAEMON-SERVICES-0027",
+                              OMRSAuditLogRecordSeverity.EXCEPTION,
+                              "The integration daemon services are unable to retrieve the connection for the configuration " +
+                                      "listener for server {0} from metadata server {1}. " +
+                                      "Exception returned was {2} with error message {3}",
+                              "The server continues to run.  The engine host services will start up the " +
+                                      "integration services and they will operate with whatever configuration that they can retrieve.  " +
+                                      "Periodically the integration daemon services will" +
+                                      "retry the request to retrieve the connection information.  " +
+                                      "Without the connection, the integration daemon services will not be notified of changes to the integration " +
+                                      "groups' configuration",
+                              "This problem may be caused because the integration daemon services has been configured with the wrong location for the " +
+                                      "metadata server, or the metadata server is not running the Governance Engine OMAS service or " +
+                                      "the metadata server is not running at all.  Investigate the status of the metadata server to " +
+                                      "ensure it is running and correctly configured.  Once it is ready, either restart the server, or issue the " +
+                                      "refresh-config command or wait for the engine host services to retry the configuration request."),
+
+    INTEGRATION_GROUP_NO_CONFIG("INTEGRATION-DAEMON-SERVICES-0028",
+                                OMRSAuditLogRecordSeverity.ERROR,
+                                "Failed to refresh configuration for integration group {0}.  The exception was {1} with error message {2}",
+                                "The integration group is unable to process any integration connector requests until its configuration can be retrieved.",
+                                "Review the error messages and resolve the cause of the problem.  " +
+                                        "Either wait for the integration daemon services to refresh the configuration, or issue the refreshConfig " +
+                                        "call to request that the integration group calls the Governance Engine OMAS to refresh the configuration for " +
+                                        "the integration group."),
     CONNECTOR_THREAD_STARTING("INTEGRATION-DAEMON-SERVICES-0030",
                     OMRSAuditLogRecordSeverity.STARTUP,
                     "The dedicated thread for integration connector {0} has started in integration daemon {1}",
@@ -307,14 +359,14 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                   "permissive access, you could consider isolating it in its own integration daemon that has a more powerful userId, " +
                                   "leaving the rest of the integration connectors working with the current userId."),
 
-    CLEARING_ALL_GOVERNANCE_SERVICE_CONFIG("INTEGRATION-DAEMON-SERVICES-0051",
-                                           OMRSAuditLogRecordSeverity.INFO,
-                                           "All integration connector configuration is being refreshed for integration group {0}",
-                                           "The integration daemon services will call the Governance Engine OMAS in the metadata server to " +
+    CLEARING_ALL_INTEGRATION_CONNECTOR_CONFIG("INTEGRATION-DAEMON-SERVICES-0051",
+                                              OMRSAuditLogRecordSeverity.INFO,
+                                              "All integration connector configuration is being refreshed for integration group {0}",
+                                              "The integration daemon services will call the Governance Engine OMAS in the metadata server to " +
                                                    "retrieve details of all the integration connectors configured for this integration group." +
                                                    "During this process, some refresh requests may fail if the associated integration" +
                                                    "connector is only partially configured.",
-                                           "Monitor the integration daemon services to ensure all the integration connectors are retrieved. " +
+                                              "Monitor the integration daemon services to ensure all the integration connectors are retrieved. " +
                                                    "Then it is ready to process new refresh requests."),
 
     GROUP_SHUTDOWN("INTEGRATION-DAEMON-SERVICES-0052",
@@ -339,7 +391,7 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
 
     UNKNOWN_CONNECTOR_INTERFACE("INTEGRATION-DAEMON-SERVICES-0055",
                             OMRSAuditLogRecordSeverity.ERROR,
-                            "Failed to start up integration connector {0} because it interface does not match to an integration service connector " +
+                            "Failed to start up integration connector {0} because its interface does not match to an integration service connector " +
                                         "interface that is supported by this server",
                             "The integration connector is ignored.",
                             "Review the implementation of the integration connector and ensure it is implementing an appropriate interface.  Once " +

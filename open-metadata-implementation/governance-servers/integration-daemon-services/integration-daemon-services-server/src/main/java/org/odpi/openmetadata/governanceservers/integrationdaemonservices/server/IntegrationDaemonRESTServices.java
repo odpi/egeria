@@ -6,14 +6,17 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationServiceHandler;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationDaemonStatus;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationServiceSummary;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.*;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.ConnectorConfigPropertiesRequestBody;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.IntegrationDaemonStatusResponse;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.IntegrationGroupSummariesResponse;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.IntegrationGroupSummaryResponse;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.IntegrationServiceSummaryResponse;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
@@ -40,7 +43,6 @@ public class IntegrationDaemonRESTServices
      *
      * @param serverName integration daemon server name
      * @param userId calling user
-     * @param serviceURLMarker integration service identifier
      * @param connectorName name of a specific connector
      *
      * @return properties map or
@@ -51,7 +53,6 @@ public class IntegrationDaemonRESTServices
      */
     public PropertiesResponse getConfigurationProperties(String serverName,
                                                          String userId,
-                                                         String serviceURLMarker,
                                                          String connectorName)
     {
         final String methodName = "getConfigurationProperties";
@@ -63,11 +64,12 @@ public class IntegrationDaemonRESTServices
 
         try
         {
-            IntegrationServiceHandler handler = instanceHandler.getIntegrationServiceHandler(userId, serverName, serviceURLMarker, methodName);
-
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setProperties(handler.getConfigurationProperties(userId, connectorName));
+            response.setProperties(instanceHandler.getConfigurationProperties(userId,
+                                                                              serverName,
+                                                                              methodName,
+                                                                              connectorName));
         }
         catch (Exception error)
         {
@@ -85,7 +87,6 @@ public class IntegrationDaemonRESTServices
      *
      * @param serverName integration daemon server name
      * @param userId calling user
-     * @param serviceURLMarker integration service identifier
      * @param requestBody name of a specific connector or null for all connectors and the properties to change
      *
      * @return void or
@@ -96,7 +97,6 @@ public class IntegrationDaemonRESTServices
      */
     public  VoidResponse updateConfigurationProperties(String                               serverName,
                                                        String                               userId,
-                                                       String                               serviceURLMarker,
                                                        ConnectorConfigPropertiesRequestBody requestBody)
     {
         final String methodName = "updateConfigurationProperties";
@@ -108,16 +108,18 @@ public class IntegrationDaemonRESTServices
 
         try
         {
-            IntegrationServiceHandler handler = instanceHandler.getIntegrationServiceHandler(userId, serverName, serviceURLMarker, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId,
+                                                   serverName,
+                                                   methodName);
 
             if (requestBody != null)
             {
-                handler.updateConfigurationProperties(userId,
-                                                      requestBody.getConnectorName(),
-                                                      requestBody.getMergeUpdate(),
-                                                      requestBody.getConfigurationProperties());
+                instanceHandler.updateConfigurationProperties(userId,
+                                                              serverName,
+                                                              methodName,
+                                                              requestBody.getConnectorName(),
+                                                              requestBody.getMergeUpdate(),
+                                                              requestBody.getConfigurationProperties());
             }
             else
             {
@@ -136,7 +138,7 @@ public class IntegrationDaemonRESTServices
 
 
     /**
-     * Request that the integration daemon refresh all the connectors in all the integration services
+     * Request that the integration daemon refresh all the connectors in all the integration services and groups
      *
      * @param serverName name of the integration daemon
      * @param userId identifier of calling user
@@ -149,11 +151,11 @@ public class IntegrationDaemonRESTServices
      *  PropertyServerException there was a problem detected by the integration service.
      */
     @SuppressWarnings(value = "unused")
-    public  VoidResponse refreshAllServices(String          serverName,
-                                            String          userId,
-                                            NullRequestBody requestBody)
+    public  VoidResponse refreshConnectors(String          serverName,
+                                           String          userId,
+                                           NameRequestBody requestBody)
     {
-        final String methodName = "refreshAllServices";
+        final String methodName = "refreshConnectors";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -164,18 +166,14 @@ public class IntegrationDaemonRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            List<IntegrationServiceHandler> handlers = instanceHandler.getAllIntegrationServiceHandlers(userId, serverName, methodName);
+            String connectorName = null;
 
-            if (handlers != null)
+            if (requestBody != null)
             {
-                for (IntegrationServiceHandler handler : handlers)
-                {
-                    if (handler != null)
-                    {
-                        handler.refreshService(null);
-                    }
-                }
+                connectorName = requestBody.getName();
             }
+
+            instanceHandler.refreshConnector(userId, serverName, methodName, connectorName);
         }
         catch (Exception error)
         {
@@ -189,10 +187,56 @@ public class IntegrationDaemonRESTServices
 
 
     /**
-     * Request that the integration service refresh its configuration by calling the metadata server.
-     * This request is useful if the metadata server has an outage, particularly while the
-     * integration daemon is initializing.  This request just ensures that the latest configuration
-     * is in use.
+     * Request that the integration daemon restart all the connectors in all the integration services and groups
+     *
+     * @param serverName name of the integration daemon
+     * @param userId identifier of calling user
+     * @param requestBody null request body
+     *
+     * @return void or
+     *
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  PropertyServerException there was a problem detected by the integration service.
+     */
+    @SuppressWarnings(value = "unused")
+    public  VoidResponse restartConnectors(String          serverName,
+                                           String          userId,
+                                           NameRequestBody requestBody)
+    {
+        final String methodName = "restartConnectors";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            String connectorName = null;
+
+            if (requestBody != null)
+            {
+                connectorName = requestBody.getName();
+            }
+
+            instanceHandler.restartConnector(userId, serverName, methodName, connectorName);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Process a refresh request.  This calls refresh on all connectors within the integration service.
      *
      * @param serverName name of the integration daemon
      * @param userId identifier of calling user
@@ -429,11 +473,11 @@ public class IntegrationDaemonRESTServices
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  IntegrationGroupException there was a problem detected by the integration group.
      */
-    public  VoidResponse refreshConfig(String serverName,
-                                       String userId,
-                                       String integrationGroupName)
+    public  VoidResponse refreshIntegrationGroupConfig(String serverName,
+                                                       String userId,
+                                                       String integrationGroupName)
     {
-        final String        methodName = "refreshConfig";
+        final String        methodName = "refreshIntegrationGroupConfig";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -444,7 +488,7 @@ public class IntegrationDaemonRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            instanceHandler.refreshConfig(userId, serverName, integrationGroupName, methodName);
+            instanceHandler.refreshIntegrationGroupConfig(userId, serverName, integrationGroupName, methodName);
         }
         catch (Exception error)
         {
