@@ -2402,7 +2402,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                            connectionEntity.getType().getTypeDefName(),
                                                                                            null,
                                                                                            null,
-                                                                                           2,
+                                                                                           0,
                                                                                            forLineage,
                                                                                            forDuplicateProcessing,
                                                                                            0,

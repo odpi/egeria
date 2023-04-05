@@ -19,6 +19,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
@@ -53,6 +54,7 @@ public class GovernanceConfigurationHandler
     private final AssetHandler<IntegrationConnectorElement>          integrationConnectorHandler;
     private final ConnectionHandler<Connection>                      connectionHandler;
     private final ConnectorTypeHandler<ConnectorType>                connectorTypeHandler;
+    private final EndpointHandler<Endpoint>                          endpointHandler;
     private final InvalidParameterHandler                            invalidParameterHandler;
     private final RegisteredIntegrationConnectorConverter            registeredIntegrationConnectorConverter;
     private final CatalogTargetConverter<CatalogTarget>              catalogTargetConverter;
@@ -177,6 +179,20 @@ public class GovernanceConfigurationHandler
                                                                defaultZones,
                                                                publishZones,
                                                                auditLog);
+
+        this.endpointHandler = new EndpointHandler<>(new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
+                                                     Endpoint.class,
+                                                     serviceName,
+                                                     serverName,
+                                                     invalidParameterHandler,
+                                                     repositoryHandler,
+                                                     repositoryHelper,
+                                                     localServerUserId,
+                                                     securityVerifier,
+                                                     supportedZones,
+                                                     defaultZones,
+                                                     publishZones,
+                                                     auditLog);
     }
 
 
@@ -504,6 +520,45 @@ public class GovernanceConfigurationHandler
 
         if (assetGUID != null)
         {
+            Endpoint      endpoint     = connection.getEndpoint();
+            String        endpointGUID = null;
+            String        endpointParameterName = "connection.getEndpoint()";
+
+            if (endpoint != null)
+            {
+                if (endpoint.getGUID() != null)
+                {
+                    endpointGUID = endpoint.getGUID();
+                }
+                else
+                {
+                    String endpointTypeName = OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME;
+
+                    if ((endpoint.getType() != null) && (endpoint.getType().getTypeName() != null))
+                    {
+                        endpointTypeName = endpoint.getType().getTypeName();
+                    }
+
+                    endpointGUID = endpointHandler.createEndpoint(userId,
+                                                                  null,
+                                                                  null,
+                                                                  assetGUID,
+                                                                  endpoint.getQualifiedName(),
+                                                                  endpoint.getDisplayName(),
+                                                                  endpoint.getDescription(),
+                                                                  endpoint.getAddress(),
+                                                                  endpoint.getProtocol(),
+                                                                  endpoint.getEncryptionMethod(),
+                                                                  endpoint.getAdditionalProperties(),
+                                                                  endpointTypeName,
+                                                                  endpoint.getExtendedProperties(),
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  methodName);
+                }
+            }
+
             ConnectorType connectorType = connection.getConnectorType();
 
             String connectorTypeGUID = connectorTypeHandler.getConnectorTypeForConnection(userId,
@@ -626,8 +681,8 @@ public class GovernanceConfigurationHandler
                                                        connection.getEncryptedPassword(),
                                                        connectorTypeGUID,
                                                        connectorTypeGUIDParameterName,
-                                                       null,
-                                                       null,
+                                                       endpointGUID,
+                                                       endpointParameterName,
                                                        null,
                                                        null,
                                                        false,
@@ -1651,6 +1706,7 @@ public class GovernanceConfigurationHandler
      * @param displayName   display name for the integration connector.
      * @param versionIdentifier identifier if the version
      * @param description  description of the analysis provided by the integration connector.
+     * @param usesBlockingCalls the connector issues blocking calls and needs a dedicated thread.
      * @param additionalProperties additional properties
      * @param connection   connection to instantiate the integration connector implementation.
      *
@@ -1703,6 +1759,45 @@ public class GovernanceConfigurationHandler
 
         if (assetGUID != null)
         {
+            Endpoint      endpoint     = connection.getEndpoint();
+            String        endpointGUID = null;
+            String        endpointParameterName = "connection.getEndpoint()";
+
+            if (endpoint != null)
+            {
+                if (endpoint.getGUID() != null)
+                {
+                    endpointGUID = endpoint.getGUID();
+                }
+                else
+                {
+                    String typeName = OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME;
+
+                    if ((endpoint.getType() != null) && (endpoint.getType().getTypeName() != null))
+                    {
+                        typeName = endpoint.getType().getTypeName();
+                    }
+
+                    endpointGUID = endpointHandler.createEndpoint(userId,
+                                                                  null,
+                                                                  null,
+                                                                  assetGUID,
+                                                                  endpoint.getQualifiedName(),
+                                                                  endpoint.getDisplayName(),
+                                                                  endpoint.getDescription(),
+                                                                  endpoint.getAddress(),
+                                                                  endpoint.getProtocol(),
+                                                                  endpoint.getEncryptionMethod(),
+                                                                  endpoint.getAdditionalProperties(),
+                                                                  typeName,
+                                                                  endpoint.getExtendedProperties(),
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  methodName);
+                }
+            }
+
             ConnectorType connectorType = connection.getConnectorType();
 
             String connectorTypeGUID = connectorTypeHandler.getConnectorTypeForConnection(userId,
@@ -1825,8 +1920,8 @@ public class GovernanceConfigurationHandler
                                                        connection.getEncryptedPassword(),
                                                        connectorTypeGUID,
                                                        connectorTypeGUIDParameterName,
-                                                       null,
-                                                       null,
+                                                       endpointGUID,
+                                                       endpointParameterName,
                                                        null,
                                                        null,
                                                        false,
@@ -1965,10 +2060,12 @@ public class GovernanceConfigurationHandler
         /*
          * Checks this is a valid, visible service.
          */
-        connectionHandler.getBeanFromRepository(userId,
+        connectionHandler.getEntityFromRepository(userId,
                                                 integrationConnectorGUID,
                                                 guidParameter,
                                                 OpenMetadataAPIMapper.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                null,
+                                                null,
                                                 false,
                                                 false,
                                                 effectiveTime,
@@ -2023,6 +2120,7 @@ public class GovernanceConfigurationHandler
      * @param isMergeUpdate should the supplied properties be merged with existing properties (true) only replacing the properties with
      *                      matching names, or should the entire properties of the instance be replaced?
      * @param qualifiedName new value for unique name of integration connector.
+     * @param versionIdentifier version identifier ofthe connector.
      * @param displayName new value for the display name.
      * @param description new value for the description.
      * @param connection connection used to create an instance of this integration connector.
@@ -2125,6 +2223,10 @@ public class GovernanceConfigurationHandler
      * @param connectorUserId request type supported by the service
      * @param metadataSourceQualifiedName list of analysis parameters that are passed to the integration connector (via
      *                                  the governance context).  These values can be overridden on the actual governance request.
+     * @param startDate earliest date to start the connector
+     * @param refreshTimeInterval how often to run the connector
+     * @param stopDate latest time the connector should run
+     * @param permittedSynchronization which direction should synchronization flow?
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.

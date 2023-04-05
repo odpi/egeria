@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.governanceengine.properties.Integrat
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -27,7 +28,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class IntegrationConnectorElement implements MetadataElement, Serializable
 {
-    private static final long     serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private ElementHeader                  elementHeader  = null;
     private IntegrationConnectorProperties properties     = null;

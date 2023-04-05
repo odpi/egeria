@@ -24,7 +24,8 @@ import java.util.Map;
  */
 public class GovernanceEngineOutTopicListener extends GovernanceEngineEventListener
 {
-    private final Map<String, IntegrationGroupHandler> integrationGroupHandlers;
+    private final String                               groupName;
+    private final IntegrationGroupHandler              groupHandler;
     private final IntegrationGroupConfigurationClient  configurationClient;
     private final String                               userId;
     private final AuditLog                             auditLog;
@@ -33,18 +34,21 @@ public class GovernanceEngineOutTopicListener extends GovernanceEngineEventListe
      * Constructor for the listener.  Its job is to receive events and pass the information received on to the
      * appropriate integration group handler.
      *
-     * @param integrationGroupHandlers these are the handlers for all the integration groups that are hosted by this
+     * @param groupName name of the integration group
+     * @param integrationGroupHandler the handler for an integration group that is hosted by this
      *                                integration daemon.
      * @param configurationClient client to extract extra information from the metadata server
      * @param userId useRId to use when calling the metadata server
      * @param auditLog logging destination
      */
-    public GovernanceEngineOutTopicListener(Map<String, IntegrationGroupHandler> integrationGroupHandlers,
+    public GovernanceEngineOutTopicListener(String                               groupName,
+                                            IntegrationGroupHandler              integrationGroupHandler,
                                             IntegrationGroupConfigurationClient  configurationClient,
                                             String                               userId,
                                             AuditLog                             auditLog)
     {
-        this.integrationGroupHandlers = integrationGroupHandlers;
+        this.groupName                = groupName;
+        this.groupHandler             = integrationGroupHandler;
         this.configurationClient      = configurationClient;
         this.userId                   = userId;
         this.auditLog                 = auditLog;
@@ -74,9 +78,8 @@ public class GovernanceEngineOutTopicListener extends GovernanceEngineEventListe
                  */
                 WatchdogGovernanceServiceEvent watchdogGovernanceServiceEvent = (WatchdogGovernanceServiceEvent)event;
 
-                if (watchdogGovernanceServiceEvent.getWatchdogGovernanceEvent() instanceof WatchdogClassificationEvent)
+                if (watchdogGovernanceServiceEvent.getWatchdogGovernanceEvent() instanceof WatchdogClassificationEvent watchdogClassificationEvent)
                 {
-                    WatchdogClassificationEvent watchdogClassificationEvent = (WatchdogClassificationEvent)watchdogGovernanceServiceEvent.getWatchdogGovernanceEvent();
                     String elementTypeName = watchdogClassificationEvent.getMetadataElement().getType().getTypeName();
                     if (elementTypeName.equals("IntegrationGroup"))
                     {
@@ -88,10 +91,10 @@ public class GovernanceEngineOutTopicListener extends GovernanceEngineEventListe
                                                          watchdogGovernanceServiceEvent);
                     }
                 }
-                else if (watchdogGovernanceServiceEvent.getWatchdogGovernanceEvent() instanceof WatchdogMetadataElementEvent)
+                else if (watchdogGovernanceServiceEvent.getWatchdogGovernanceEvent() instanceof WatchdogMetadataElementEvent watchdogMetadataElementEvent)
                 {
-                    WatchdogMetadataElementEvent watchdogMetadataElementEvent = (WatchdogMetadataElementEvent)watchdogGovernanceServiceEvent.getWatchdogGovernanceEvent();
                     String elementTypeName = watchdogMetadataElementEvent.getMetadataElement().getType().getTypeName();
+
                     if (elementTypeName.equals("IntegrationGroup"))
                     {
                         processIntegrationGroupEvent(watchdogMetadataElementEvent.getMetadataElement(), watchdogGovernanceServiceEvent);
@@ -102,10 +105,10 @@ public class GovernanceEngineOutTopicListener extends GovernanceEngineEventListe
                                                          watchdogGovernanceServiceEvent);
                     }
                 }
-                else if (watchdogGovernanceServiceEvent.getWatchdogGovernanceEvent() instanceof WatchdogRelatedElementsEvent)
+                else if (watchdogGovernanceServiceEvent.getWatchdogGovernanceEvent() instanceof WatchdogRelatedElementsEvent watchdogMetadataElementEvent)
                 {
-                    WatchdogRelatedElementsEvent watchdogMetadataElementEvent = (WatchdogRelatedElementsEvent)watchdogGovernanceServiceEvent.getWatchdogGovernanceEvent();
                     String elementTypeName = watchdogMetadataElementEvent.getRelatedMetadataElements().getType().getTypeName();
+
                     if (elementTypeName.equals("RegisteredIntegrationConnector"))
                     {
                         processIntegrationConnectorEvent(watchdogMetadataElementEvent.getRelatedMetadataElements().getElementGUIDAtEnd2(),
@@ -132,21 +135,18 @@ public class GovernanceEngineOutTopicListener extends GovernanceEngineEventListe
 
         if (elementQualifiedName != null)
         {
-            IntegrationGroupHandler integrationGroupHandler = integrationGroupHandlers.get(elementQualifiedName.valueAsString());
-
-            if (integrationGroupHandler != null)
+            if (groupName.equals(elementQualifiedName.valueAsString()))
             {
                 try
                 {
-                    integrationGroupHandler.refreshConfig();
+                    groupHandler.refreshConfig();
                 }
                 catch (Exception error)
                 {
                     auditLog.logException(actionDescription,
-                                          IntegrationDaemonServicesAuditCode.GROUP_CHANGE_FAILED.getMessageDefinition(
-                                                  elementQualifiedName.valueAsString(),
-                                                  error.getClass().getName(),
-                                                  error.getMessage()),
+                                          IntegrationDaemonServicesAuditCode.GROUP_CHANGE_FAILED.getMessageDefinition(groupName,
+                                                                                                                      error.getClass().getName(),
+                                                                                                                      error.getMessage()),
                                           event.toString(),
                                           error);
                 }
@@ -176,12 +176,9 @@ public class GovernanceEngineOutTopicListener extends GovernanceEngineEventListe
                 {
                     if (groupGUID != null)
                     {
-                        for (IntegrationGroupHandler handler : integrationGroupHandlers.values())
+                        if (groupGUID.equals(groupHandler.getIntegrationGroupGUID()))
                         {
-                            if (groupGUID.equals(handler.getIntegrationGroupGUID()))
-                            {
-                                handler.refreshConnectorConfig(integrationConnectorGUID);
-                            }
+                            groupHandler.refreshConnectorConfig(integrationConnectorGUID);
                         }
                     }
                 }

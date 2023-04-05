@@ -142,7 +142,7 @@ public class ConfigDefaultsResource
      */
     @DeleteMapping(path = "/event-bus")
     public VoidResponse deleteEventBus(@PathVariable String userId,
-                                                 @PathVariable String serverName)
+                                       @PathVariable String serverName)
     {
         return adminAPI.deleteEventBus(userId, serverName);
     }

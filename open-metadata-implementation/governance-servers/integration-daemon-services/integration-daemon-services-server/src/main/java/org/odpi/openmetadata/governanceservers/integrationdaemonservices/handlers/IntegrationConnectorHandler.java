@@ -316,7 +316,7 @@ public class IntegrationConnectorHandler implements Serializable
      *
      * @param actionDescription description of caller's operation
      */
-    synchronized void reinitializeConnector(String    actionDescription)
+    public synchronized void reinitializeConnector(String actionDescription)
     {
         final String operationName = "initialize";
 
@@ -399,7 +399,7 @@ public class IntegrationConnectorHandler implements Serializable
      *
      * @return property map
      */
-    synchronized Map<String, Object> getConfigurationProperties()
+    public synchronized Map<String, Object> getConfigurationProperties()
     {
         if (connection != null)
         {
@@ -418,10 +418,10 @@ public class IntegrationConnectorHandler implements Serializable
      * @param isMergeUpdate should the properties be merged into the existing properties or replace them
      * @param configurationProperties new configuration properties
      */
-    synchronized void updateConfigurationProperties(String              userId,
-                                                    String              actionDescription,
-                                                    boolean             isMergeUpdate,
-                                                    Map<String, Object> configurationProperties)
+    public synchronized void updateConfigurationProperties(String              userId,
+                                                           String              actionDescription,
+                                                           boolean             isMergeUpdate,
+                                                           Map<String, Object> configurationProperties)
     {
         if (connection != null)
         {
@@ -652,7 +652,7 @@ public class IntegrationConnectorHandler implements Serializable
      *
      * @param actionDescription external caller's activity
      */
-    private void disconnectConnector(String   actionDescription)
+    public void disconnectConnector(String   actionDescription)
     {
         final String operationName = "disconnect";
 

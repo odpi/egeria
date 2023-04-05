@@ -69,8 +69,8 @@ public class OMAGServerOperationalServices
     /**
      * Activate the list of open metadata and governance servers using the stored configuration information.
      * The code works through the list, starting each server in turn.  It stops if one of the servers fails to
-     * start and returns the error.  Otherwise it continues through the list, returning the successful
-     * start up messages.
+     * start and returns the error.  Otherwise, it continues through the list, returning the successful
+     * start-up messages.
      *
      * @param userId  user that is issuing the request
      * @param serverNames  list of server names
@@ -122,7 +122,7 @@ public class OMAGServerOperationalServices
 
         if (response.getRelatedHTTPCode() == 200)
         {
-            response.setSuccessMessage(new Date().toString() + " " + startUpMessage);
+            response.setSuccessMessage(new Date() + " " + startUpMessage);
         }
 
         return response;
@@ -236,7 +236,7 @@ public class OMAGServerOperationalServices
             }
 
             /*
-             * The instance saves the operational services objects for this server instance so they can be retrieved
+             * The instance saves the operational services objects for this server instance, so they can be retrieved
              * in response to subsequent REST calls for the server.  These instances provide the multi-tenant
              * support in Egeria.
              */
@@ -279,9 +279,9 @@ public class OMAGServerOperationalServices
 
             /*
              * Create an audit log for logging initialization progress and errors.
-             * Each subsystem should be logging the start up of their components and handling
-             * their errors.  However the logging and error handling done by this method is to bracket the
-             * start up of the different types of subsystems and provide minimal diagnostics for
+             * Each subsystem should be logging the start-up of their components and handling
+             * their errors.  However, the logging and error handling done by this method is to bracket the
+             * start-up of the different types of subsystems and provide minimal diagnostics for
              * immature subsystems that have not yet developed their logging and error handling.
              */
             OMRSAuditLog auditLog = operationalRepositoryServices.getAuditLog(
@@ -294,7 +294,7 @@ public class OMAGServerOperationalServices
 
             /*
              * There are many paging services in Egeria.  This value sets a maximum page size that a requester can use.
-             * It is passed to each subsystem at start up so it can enforce the limit on all paging REST calls.
+             * It is passed to each subsystem at start-up, so it can enforce the limit on all paging REST calls.
              * Having a limit helps to prevent a denial of service attack that uses very large requests to overwhelm the server.
              * If this value is 0 it means there is no upper limit.  If this value is negative then it is invalid.
              */
@@ -600,7 +600,7 @@ public class OMAGServerOperationalServices
              */
             instance.setServerActiveStatus(ServerActiveStatus.RUNNING);
 
-            String successMessage = new Date().toString() + " " + serverName + " is running the following services: " + activatedServiceList.toString();
+            String successMessage = new Date() + " " + serverName + " is running the following services: " + activatedServiceList;
 
             auditLog.logMessage(actionDescription,
                                 OMAGAdminAuditCode.SERVER_STARTUP_SUCCESS.getMessageDefinition(serverName,
@@ -1116,6 +1116,7 @@ public class OMAGServerOperationalServices
 
             IntegrationDaemonOperationalServices integrationDaemonOperationalServices
                     = new IntegrationDaemonOperationalServices(configuration.getLocalServerName(),
+                                                               configuration.getLocalServerId(),
                                                                configuration.getLocalServerUserId(),
                                                                configuration.getLocalServerPassword(),
                                                                configuration.getMaxPageSize());
@@ -1560,7 +1561,7 @@ public class OMAGServerOperationalServices
      * @param serverName  local server name
      * @return OMAGServerConfig properties or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName parameter or the server is not runing.
+     * OMAGInvalidParameterException invalid serverName parameter or the server is not running.
      */
     public OMAGServerConfigResponse getActiveConfiguration(String userId,
                                                            String serverName)
@@ -1603,7 +1604,7 @@ public class OMAGServerOperationalServices
 
 
     /**
-     * Return the status of the server and it services within.
+     * Return the status of the server along with it services within.
      *
      * @param userId  user that is issuing the request
      * @param serverName  local server name

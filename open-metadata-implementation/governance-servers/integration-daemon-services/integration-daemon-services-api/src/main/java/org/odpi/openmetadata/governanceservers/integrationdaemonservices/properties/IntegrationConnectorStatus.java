@@ -24,6 +24,7 @@ public enum IntegrationConnectorStatus implements Serializable
     STOPPED           (2,  "Stopped",              "The connector has been stopped (either because it is configured to stop, or the integration daemon is shutting down)."),
     INITIALIZE_FAILED (3,  "Initialize Failed",    "The integration daemon is not able to initialize the connector because the metadata server is not available."),
     CONFIG_FAILED     (4,  "Configuration Failed", "The integration daemon is not able to initialize the connector because the class name or related configuration is invalid."),
+    SHUTDOWN          (5,  "Shutdown",             "The integration daemon is no longer calling the connector because it has been shutdown or replaced."),
     FAILED            (99, "Connector Failed",     "The connector threw an exception and will not be called until it is restarted."),
     ;
 
