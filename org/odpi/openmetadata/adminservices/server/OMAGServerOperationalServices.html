@@ -169,7 +169,7 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActiveServerStatus(java.lang.String,java.lang.String)" class="member-name-link">getActiveServerStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the status of the server and it services within.</div>
+<div class="block">Return the status of the server along with it services within.</div>
 </div>
 </div>
 </div>
@@ -209,8 +209,8 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;serverNames)</span></div>
 <div class="block">Activate the list of open metadata and governance servers using the stored configuration information.
  The code works through the list, starting each server in turn.  It stops if one of the servers fails to
- start and returns the error.  Otherwise it continues through the list, returning the successful
- start up messages.</div>
+ start and returns the error.  Otherwise, it continues through the list, returning the successful
+ start-up messages.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - user that is issuing the request</dd>
@@ -326,7 +326,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>OMAGServerConfig properties or
  OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
- OMAGInvalidParameterException invalid serverName parameter or the server is not runing.</dd>
+ OMAGInvalidParameterException invalid serverName parameter or the server is not running.</dd>
 </dl>
 </section>
 </li>
@@ -335,7 +335,7 @@ loadScripts(document, 'script');</script>
 <h3>getActiveServerStatus</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/OMAGServerStatusResponse.html" title="class in org.odpi.openmetadata.adminservices.rest">OMAGServerStatusResponse</a></span>&nbsp;<span class="element-name">getActiveServerStatus</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
-<div class="block">Return the status of the server and it services within.</div>
+<div class="block">Return the status of the server along with it services within.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - user that is issuing the request</dd>

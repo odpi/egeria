@@ -1122,6 +1122,7 @@ loadScripts(document, 'script');</script>
 <dd><code>displayName</code> - display name for the integration connector.</dd>
 <dd><code>versionIdentifier</code> - identifier if the version</dd>
 <dd><code>description</code> - description of the analysis provided by the integration connector.</dd>
+<dd><code>usesBlockingCalls</code> - the connector issues blocking calls and needs a dedicated thread.</dd>
 <dd><code>additionalProperties</code> - additional properties</dd>
 <dd><code>connection</code> - connection to instantiate the integration connector implementation.</dd>
 <dt>Returns:</dt>
@@ -1249,6 +1250,7 @@ loadScripts(document, 'script');</script>
 <dd><code>isMergeUpdate</code> - should the supplied properties be merged with existing properties (true) only replacing the properties with
                       matching names, or should the entire properties of the instance be replaced?</dd>
 <dd><code>qualifiedName</code> - new value for unique name of integration connector.</dd>
+<dd><code>versionIdentifier</code> - version identifier ofthe connector.</dd>
 <dd><code>displayName</code> - new value for the display name.</dd>
 <dd><code>description</code> - new value for the description.</dd>
 <dd><code>connection</code> - connection used to create an instance of this integration connector.</dd>
@@ -1313,6 +1315,10 @@ loadScripts(document, 'script');</script>
 <dd><code>connectorUserId</code> - request type supported by the service</dd>
 <dd><code>metadataSourceQualifiedName</code> - list of analysis parameters that are passed to the integration connector (via
                                   the governance context).  These values can be overridden on the actual governance request.</dd>
+<dd><code>startDate</code> - earliest date to start the connector</dd>
+<dd><code>refreshTimeInterval</code> - how often to run the connector</dd>
+<dd><code>stopDate</code> - latest time the connector should run</dd>
+<dd><code>permittedSynchronization</code> - which direction should synchronization flow?</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>

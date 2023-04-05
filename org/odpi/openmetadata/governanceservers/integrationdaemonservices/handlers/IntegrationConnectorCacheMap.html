@@ -117,15 +117,21 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the integration connector for the connectorId.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="IntegrationConnectorHandler.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers">IntegrationConnectorHandler</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationConnectorProcessingList()" class="member-name-link">getIntegrationConnectorProcessingList</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="IntegrationConnectorHandler.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers">IntegrationConnectorHandler</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHandlerByConnectorName(java.lang.String)" class="member-name-link">getHandlerByConnectorName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the integration connector by its connector name.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="IntegrationConnectorHandler.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers">IntegrationConnectorHandler</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationConnectorProcessingList()" class="member-name-link">getIntegrationConnectorProcessingList</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of connectors that should be processed by the integration daemon thread.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#putHandlerByConnectorId(java.lang.String,org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationConnectorHandler)" class="member-name-link">putHandlerByConnectorId</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
- <a href="IntegrationConnectorHandler.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers">IntegrationConnectorHandler</a>&nbsp;integrationConnectorHandler)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#putHandlerByConnectorId(java.lang.String,org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationConnectorHandler,boolean)" class="member-name-link">putHandlerByConnectorId</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
+ <a href="IntegrationConnectorHandler.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers">IntegrationConnectorHandler</a>&nbsp;integrationConnectorHandler,
+ boolean&nbsp;permanent)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add a new integration connector to the map/list.</div>
 </div>
 </div>
@@ -160,16 +166,18 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="putHandlerByConnectorId(java.lang.String,org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationConnectorHandler)">
+<section class="detail" id="putHandlerByConnectorId(java.lang.String,org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationConnectorHandler,boolean)">
 <h3>putHandlerByConnectorId</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">putHandlerByConnectorId</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
- <a href="IntegrationConnectorHandler.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers">IntegrationConnectorHandler</a>&nbsp;integrationConnectorHandler)</span></div>
+ <a href="IntegrationConnectorHandler.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers">IntegrationConnectorHandler</a>&nbsp;integrationConnectorHandler,
+ boolean&nbsp;permanent)</span></div>
 <div class="block">Add a new integration connector to the map/list.  New connectors are added to the front of the list, so they get processed first in the next
  iteration.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>connectorId</code> - unique identifier of the connector</dd>
 <dd><code>integrationConnectorHandler</code> - mapped integration connector</dd>
+<dd><code>permanent</code> - is this connector part of the static configuration?</dd>
 </dl>
 </section>
 </li>
@@ -181,6 +189,19 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>connectorId</code> - identifier of the connector.</dd>
+<dt>Returns:</dt>
+<dd>connector handler</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getHandlerByConnectorName(java.lang.String)">
+<h3>getHandlerByConnectorName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="IntegrationConnectorHandler.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers">IntegrationConnectorHandler</a></span>&nbsp;<span class="element-name">getHandlerByConnectorName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName)</span></div>
+<div class="block">Retrieve the integration connector by its connector name.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>connectorName</code> - identifier of the connector.</dd>
 <dt>Returns:</dt>
 <dd>connector handler</dd>
 </dl>

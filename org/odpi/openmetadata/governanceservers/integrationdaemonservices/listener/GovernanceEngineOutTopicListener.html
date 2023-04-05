@@ -93,7 +93,8 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.util.Map,org.odpi.openmetadata.accessservices.governanceengine.client.IntegrationGroupConfigurationClient,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">GovernanceEngineOutTopicListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../handlers/IntegrationGroupHandler.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers">IntegrationGroupHandler</a>&gt;&nbsp;integrationGroupHandlers,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationGroupHandler,org.odpi.openmetadata.accessservices.governanceengine.client.IntegrationGroupConfigurationClient,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">GovernanceEngineOutTopicListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;groupName,
+ <a href="../handlers/IntegrationGroupHandler.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers">IntegrationGroupHandler</a>&nbsp;integrationGroupHandler,
  <a href="../../../accessservices/governanceengine/client/IntegrationGroupConfigurationClient.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.client">IntegrationGroupConfigurationClient</a>&nbsp;configurationClient,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
@@ -137,9 +138,10 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.util.Map,org.odpi.openmetadata.accessservices.governanceengine.client.IntegrationGroupConfigurationClient,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationGroupHandler,org.odpi.openmetadata.accessservices.governanceengine.client.IntegrationGroupConfigurationClient,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
 <h3>GovernanceEngineOutTopicListener</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">GovernanceEngineOutTopicListener</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../handlers/IntegrationGroupHandler.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers">IntegrationGroupHandler</a>&gt;&nbsp;integrationGroupHandlers,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">GovernanceEngineOutTopicListener</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;groupName,
+ <a href="../handlers/IntegrationGroupHandler.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers">IntegrationGroupHandler</a>&nbsp;integrationGroupHandler,
  <a href="../../../accessservices/governanceengine/client/IntegrationGroupConfigurationClient.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.client">IntegrationGroupConfigurationClient</a>&nbsp;configurationClient,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span></div>
@@ -147,7 +149,8 @@ loadScripts(document, 'script');</script>
  appropriate integration group handler.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>integrationGroupHandlers</code> - these are the handlers for all the integration groups that are hosted by this
+<dd><code>groupName</code> - name of the integration group</dd>
+<dd><code>integrationGroupHandler</code> - the handler for an integration group that is hosted by this
                                 integration daemon.</dd>
 <dd><code>configurationClient</code> - client to extract extra information from the metadata server</dd>
 <dd><code>userId</code> - useRId to use when calling the metadata server</dd>

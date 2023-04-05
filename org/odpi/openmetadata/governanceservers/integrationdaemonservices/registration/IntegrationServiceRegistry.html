@@ -124,11 +124,16 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Return descriptions for the list of registered OMISs for this platform.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#registerIntegrationService(org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription,java.lang.String,java.lang.String)" class="member-name-link">registerIntegrationService</a><wbr>(<a href="IntegrationServiceDescription.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration">IntegrationServiceDescription</a>&nbsp;serviceDescription,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getRegisteredServiceURLMarkers()" class="member-name-link">getRegisteredServiceURLMarkers</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Return a map from service-url-root to the context manager class name.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#registerIntegrationService(org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription,java.lang.String,java.lang.String)" class="member-name-link">registerIntegrationService</a><wbr>(<a href="IntegrationServiceDescription.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration">IntegrationServiceDescription</a>&nbsp;serviceDescription,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;contextManagerClassName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorClassName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Register an Open Metadata Integration service (OMIS) with the OMAG Server Platform.</div>
 </div>
 </div>
@@ -176,6 +181,17 @@ loadScripts(document, 'script');</script>
 <dd><code>contextManagerClassName</code> - name of the class that implements a specialized context for the connectors.</dd>
 <dd><code>connectorClassName</code> - name of the specialized connector interface that supports the specialized context.  This is implemented by the
                        integration connector and links it to a specific integration service.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getRegisteredServiceURLMarkers()">
+<h3>getRegisteredServiceURLMarkers</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getRegisteredServiceURLMarkers</span>()</div>
+<div class="block">Return a map from service-url-root to the context manager class name.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of registered OMIS serviceURLMarkers</dd>
 </dl>
 </section>
 </li>
