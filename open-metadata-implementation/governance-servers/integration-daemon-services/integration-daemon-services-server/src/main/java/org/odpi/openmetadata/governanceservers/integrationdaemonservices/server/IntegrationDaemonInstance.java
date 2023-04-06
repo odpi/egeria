@@ -107,6 +107,24 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
 
 
     /**
+     * Return the list of all the integration group handlers for this integration daemon.
+     *
+     * @param serviceOperationName name of calling request
+     * @return list of integration service handlers.
+     * @throws PropertyServerException there are no integration groups in this integration daemon
+     */
+    synchronized List<IntegrationGroupHandler> getAllIntegrationGroupHandlers(String serviceOperationName) throws PropertyServerException
+    {
+        if ((integrationGroupHandlers == null) || (integrationGroupHandlers.isEmpty()))
+        {
+            return null;
+        }
+
+        return new ArrayList<>(integrationGroupHandlers.values());
+    }
+
+
+    /**
      * Retrieve all the definitions for the requested integration group from the Governance Engine OMAS
      * running in a metadata server.
      *
@@ -117,10 +135,10 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    void  refreshConfig(String integrationGroupName,
-                        String serviceOperationName) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException
+    void refreshIntegrationGroupConfig(String integrationGroupName,
+                                       String serviceOperationName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         final String integrationGroupParameterName = "integrationGroupName";
 
@@ -218,7 +236,171 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
 
         return summaries;
     }
-    
+
+
+    /**
+     * Retrieve the configuration properties of the named connector.
+     *
+     * @param connectorName name of a specific connector
+     *
+     * @return property map
+     *
+     * @throws InvalidParameterException the connector name is not recognized
+     */
+    public Map<String, Object> getConfigurationProperties(String connectorName) throws InvalidParameterException
+    {
+        final String   methodName = "getConfigurationProperties";
+        final String   connectorNameParameterName = "connectorName";
+
+        invalidParameterHandler.validateName(connectorName, connectorNameParameterName, methodName);
+
+        IntegrationConnectorHandler connectorHandler = integrationConnectorCacheMap.getHandlerByConnectorName(connectorName);
+        if (connectorHandler != null)
+        {
+            return connectorHandler.getConfigurationProperties();
+        }
+
+        final String parameterName = "connectorName";
+        final String actionDescription = "Retrieve configuration properties";
+
+        throw new InvalidParameterException(IntegrationDaemonServicesErrorCode.UNKNOWN_CONNECTOR_NAME.getMessageDefinition(connectorName, serverName),
+                                            this.getClass().getName(),
+                                            actionDescription,
+                                            parameterName);
+    }
+
+
+    /**
+     * Update the configuration properties of a specific named connector.
+     *
+     * @param userId calling user
+     * @param connectorName name of a specific connector
+     * @param isMergeUpdate should the properties be merged into the existing properties or replace them
+     * @param configurationProperties new configuration properties
+     * @throws InvalidParameterException the connector name is not recognized
+     */
+    public void updateConfigurationProperties(String              userId,
+                                              String              connectorName,
+                                              boolean             isMergeUpdate,
+                                              Map<String, Object> configurationProperties) throws InvalidParameterException
+    {
+        final String   methodName = "updateConfigurationProperties";
+        final String   connectorNameParameterName = "connectorName";
+
+        invalidParameterHandler.validateName(connectorName, connectorNameParameterName, methodName);
+
+        IntegrationConnectorHandler connectorHandler = integrationConnectorCacheMap.getHandlerByConnectorName(connectorName);
+        if (connectorHandler != null)
+        {
+            connectorHandler.updateConfigurationProperties(userId, methodName, isMergeUpdate, configurationProperties);
+        }
+        else
+        {
+            final String actionDescription = "Update connector configuration properties REST API call";
+            final String parameterName = "connectorName";
+
+            throw new InvalidParameterException(IntegrationDaemonServicesErrorCode.UNKNOWN_CONNECTOR_NAME.getMessageDefinition(connectorName,
+                                                                                                                               serverName),
+                                                this.getClass().getName(),
+                                                actionDescription,
+                                                parameterName);
+        }
+    }
+
+
+    /**
+     * Refresh all the connectors, or a specific connector if a connector name is supplied.
+     *
+     * @param connectorName name of a specific connector or null for all connectors
+     * @throws InvalidParameterException the connector name is not recognized
+     */
+    public void refreshConnector(String connectorName) throws InvalidParameterException
+    {
+        final String methodName = "refreshConnector";
+
+        if (connectorName == null)
+        {
+            for (String connectorId : integrationConnectorCacheMap.getConnectorIds())
+            {
+                if (connectorId != null)
+                {
+                    IntegrationConnectorHandler connectorHandler = integrationConnectorCacheMap.getHandlerByConnectorId(connectorId);
+
+                    if (connectorHandler != null)
+                    {
+                        connectorHandler.refreshConnector(methodName, false);
+                    }
+                }
+            }
+        }
+        else
+        {
+            IntegrationConnectorHandler connectorHandler = integrationConnectorCacheMap.getHandlerByConnectorName(connectorName);
+
+            if (connectorHandler != null)
+            {
+                connectorHandler.refreshConnector(methodName, false);
+            }
+            else
+            {
+                final String parameterName = "connectorName";
+
+                throw new InvalidParameterException(IntegrationDaemonServicesErrorCode.UNKNOWN_CONNECTOR_NAME.getMessageDefinition(connectorName,
+                                                                                                                                   serverName),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    parameterName);
+            }
+        }
+    }
+
+
+    /**
+     * Restart all the connectors, or a specific connector if a connector name is supplied.
+     *
+     * @param connectorName name of a specific connector or null for all connectors
+     * @throws InvalidParameterException the connector name is not recognized
+     */
+    public void restartConnector(String connectorName) throws InvalidParameterException
+    {
+        final String methodName = "restartConnector";
+
+        if (connectorName == null)
+        {
+            for (String connectorId : integrationConnectorCacheMap.getConnectorIds())
+            {
+                if (connectorId != null)
+                {
+                    IntegrationConnectorHandler connectorHandler = integrationConnectorCacheMap.getHandlerByConnectorId(connectorId);
+
+                    if (connectorHandler != null)
+                    {
+                        connectorHandler.reinitializeConnector(methodName);
+                    }
+                }
+            }
+        }
+        else
+        {
+            IntegrationConnectorHandler connectorHandler = integrationConnectorCacheMap.getHandlerByConnectorName(connectorName);
+
+            if (connectorHandler != null)
+            {
+                connectorHandler.reinitializeConnector(methodName);
+            }
+            else
+            {
+                final String parameterName = "connectorName";
+
+                throw new InvalidParameterException(IntegrationDaemonServicesErrorCode.UNKNOWN_CONNECTOR_NAME.getMessageDefinition(connectorName,
+                                                                                                                                   serverName),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    parameterName);
+            }
+        }
+    }
+
 
     /**
      * Shutdown the integration daemon

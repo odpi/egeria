@@ -24,8 +24,8 @@ public class OMRSLogicErrorException extends OMRSRuntimeException
      * @param actionDescription   description of function it was performing when error detected
      */
     public OMRSLogicErrorException(ExceptionMessageDefinition messageDefinition,
-                                    String                     className,
-                                    String                     actionDescription)
+                                   String                     className,
+                                   String                     actionDescription)
     {
         super(messageDefinition, className, actionDescription);
     }
@@ -41,9 +41,9 @@ public class OMRSLogicErrorException extends OMRSRuntimeException
      * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
      */
     public OMRSLogicErrorException(ExceptionMessageDefinition messageDefinition,
-                                    String                     className,
-                                    String                     actionDescription,
-                                    Map<String, Object> relatedProperties)
+                                   String                     className,
+                                   String                     actionDescription,
+                                   Map<String, Object>        relatedProperties)
     {
         super(messageDefinition, className, actionDescription, relatedProperties);
     }
@@ -59,9 +59,9 @@ public class OMRSLogicErrorException extends OMRSRuntimeException
      * @param caughtError   previous error causing this exception
      */
     public OMRSLogicErrorException(ExceptionMessageDefinition messageDefinition,
-                                    String                     className,
-                                    String                     actionDescription,
-                                    Throwable                  caughtError)
+                                   String                     className,
+                                   String                     actionDescription,
+                                   Throwable                  caughtError)
     {
         super(messageDefinition, className, actionDescription, caughtError);
     }

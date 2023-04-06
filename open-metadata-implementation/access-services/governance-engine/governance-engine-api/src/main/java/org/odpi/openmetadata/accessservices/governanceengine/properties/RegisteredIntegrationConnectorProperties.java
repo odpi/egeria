@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
@@ -22,7 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RegisteredIntegrationConnectorProperties implements Serializable
 {
-    private static final long      serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private String                   connectorName               = null;
     private String                   connectorUserId             = null;
@@ -61,7 +63,6 @@ public class RegisteredIntegrationConnectorProperties implements Serializable
             generateIntegrationReports       = template.getGenerateIntegrationReports();
         }
     }
-
 
 
     /**

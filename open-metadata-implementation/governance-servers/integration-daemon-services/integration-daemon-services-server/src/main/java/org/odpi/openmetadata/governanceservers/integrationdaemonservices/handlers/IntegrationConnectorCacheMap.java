@@ -17,14 +17,7 @@ public class IntegrationConnectorCacheMap
     private volatile Map<String, IntegrationConnectorHandler> integrationConnectorLookupTable = new HashMap<>();
     private volatile List<IntegrationConnectorHandler>        integrationConnectorProcessingList = new ArrayList<>();
 
-    /**
-     * Remove all integration connectors from the hash map
-     */
-    synchronized void clear()
-    {
-        integrationConnectorLookupTable = new HashMap<>();
-        integrationConnectorProcessingList = new ArrayList<>();
-    }
+    private final    List<String> permanentConnectorIds = new ArrayList<>();
 
 
     /**
@@ -33,15 +26,22 @@ public class IntegrationConnectorCacheMap
      *
      * @param connectorId unique identifier of the connector
      * @param integrationConnectorHandler mapped integration connector
+     * @param permanent is this connector part of the static configuration?
      */
     public synchronized void putHandlerByConnectorId(String                      connectorId,
-                                                     IntegrationConnectorHandler integrationConnectorHandler)
+                                                     IntegrationConnectorHandler integrationConnectorHandler,
+                                                     boolean                     permanent)
     {
         integrationConnectorLookupTable.put(connectorId, integrationConnectorHandler);
 
         if (! integrationConnectorHandler.needsDedicatedThread())
         {
             integrationConnectorProcessingList.add(0, integrationConnectorHandler);
+        }
+
+        if (permanent)
+        {
+            permanentConnectorIds.add(connectorId);
         }
     }
 
@@ -55,6 +55,33 @@ public class IntegrationConnectorCacheMap
     public synchronized IntegrationConnectorHandler getHandlerByConnectorId(String connectorId)
     {
         return integrationConnectorLookupTable.get(connectorId);
+    }
+
+
+    /**
+     * Retrieve the integration connector by its connector name.
+     *
+     * @param connectorName identifier of the connector.
+     * @return connector handler
+     */
+    public synchronized IntegrationConnectorHandler getHandlerByConnectorName(String connectorName)
+    {
+        if (connectorName == null)
+        {
+            return null;
+        }
+
+        for (String connectorId : integrationConnectorLookupTable.keySet())
+        {
+            IntegrationConnectorHandler connectorHandler = integrationConnectorLookupTable.get(connectorId);
+
+            if (connectorName.equals(connectorHandler.getIntegrationConnectorName()))
+            {
+                return connectorHandler;
+            }
+        }
+
+        return null;
     }
 
 

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.server;
 
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineEventClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.IntegrationGroupConfigurationClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.rest.GovernanceEngineRESTClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationGroupConfig;
@@ -20,6 +21,8 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handler
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationConnectorHandler;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationGroupHandler;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationServiceHandler;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceRegistry;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads.GroupConfigurationRefreshThread;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads.IntegrationDaemonThread;
 
 import java.lang.reflect.InvocationTargetException;
@@ -36,6 +39,7 @@ import java.util.Map;
 public class IntegrationDaemonOperationalServices
 {
     private final String                         localServerName;               /* Initialized in constructor */
+    private final String                         localServerId;                 /* Initialized in constructor */
     private final String                         localServerUserId;             /* Initialized in constructor */
     private final String                         localServerPassword;           /* Initialized in constructor */
     private final int                            maxPageSize;                   /* Initialized in constructor */
@@ -45,21 +49,26 @@ public class IntegrationDaemonOperationalServices
     private IntegrationDaemonInstance       integrationDaemonInstance = null;
     private final Map<String, ServerActiveStatus> serviceStatusMap          = new HashMap<>();
 
+    private final List<GroupConfigurationRefreshThread> configurationRefreshThreads = new ArrayList<>();
+    private IntegrationDaemonThread integrationDaemonThread = null;
 
     /**
      * Constructor used at server startup.
      *
      * @param localServerName name of the local server
+     * @param localServerId unique identifier for this server
      * @param localServerUserId user id for this server to use on REST calls if processing inbound messages.
      * @param localServerPassword user password for this server to use on REST calls if processing inbound messages.
      * @param maxPageSize maximum number of records that can be requested on the pageSize parameter
      */
     public IntegrationDaemonOperationalServices(String localServerName,
+                                                String localServerId,
                                                 String localServerUserId,
                                                 String localServerPassword,
                                                 int    maxPageSize)
     {
         this.localServerName       = localServerName;
+        this.localServerId         = localServerId;
         this.localServerUserId     = localServerUserId;
         this.localServerPassword   = localServerPassword;
         this.maxPageSize           = maxPageSize;
@@ -92,92 +101,105 @@ public class IntegrationDaemonOperationalServices
             /*
              * Handover problem between the admin services and the integration services if the config is null.
              */
-            if (staticConfiguration == null)
+            if (((staticConfiguration == null) || (staticConfiguration.isEmpty())) &&
+                ((dynamicConfiguration == null) || (dynamicConfiguration.isEmpty())))
             {
                 throw new OMAGConfigurationErrorException(IntegrationDaemonServicesErrorCode.NO_CONFIG_DOC.getMessageDefinition(localServerName),
                                                           this.getClass().getName(),
                                                           methodName);
             }
-            else if (staticConfiguration.isEmpty())
-            {
-                throw new OMAGConfigurationErrorException(IntegrationDaemonServicesErrorCode.NO_INTEGRATION_SERVICES_CONFIGURED.getMessageDefinition(localServerName),
-                                                          this.getClass().getName(),
-                                                          methodName);
-            }
 
-            /*
-             * Initialize each of the integration services and accumulate the integration connector handlers for the
-             * integration daemon handler.
-             */
             IntegrationConnectorCacheMap           daemonConnectorHandlers      = new IntegrationConnectorCacheMap();
             Map<String, IntegrationServiceHandler> integrationServiceHandlerMap = new HashMap<>();
 
-            for (IntegrationServiceConfig integrationServiceConfig : staticConfiguration)
+            if ((staticConfiguration == null) || (staticConfiguration.isEmpty()))
             {
-                if (integrationServiceConfig != null)
+                auditLog.logMessage(actionDescription,
+                                    IntegrationDaemonServicesAuditCode.NO_INTEGRATION_SERVICES_CONFIGURED.getMessageDefinition(localServerName));
+            }
+            else
+            {
+                /*
+                 * Initialize each of the integration services and accumulate the integration connector handlers for the
+                 * integration daemon handler.
+                 */
+                for (IntegrationServiceConfig integrationServiceConfig : staticConfiguration)
                 {
-                    this.setServerServiceActiveStatus(integrationServiceConfig.getIntegrationServiceFullName(), ServerActiveStatus.STARTING);
-
-                    String                    partnerOMASRootURL          = this.getPartnerOMASRootURL(integrationServiceConfig);
-                    String                    partnerOMASServerName       = this.getPartnerOMASServerName(integrationServiceConfig);
-                    String                    integrationServiceURLMarker = this.getServiceURLMarker(integrationServiceConfig);
-                    IntegrationContextManager contextManager              = this.getContextManager(integrationServiceConfig);
-
-                    if (integrationServiceConfig.getDefaultPermittedSynchronization() == null)
+                    if (integrationServiceConfig != null)
                     {
-                        auditLog.logMessage(actionDescription,
-                                            IntegrationDaemonServicesAuditCode.NO_PERMITTED_SYNCHRONIZATION.getMessageDefinition(localServerName),
-                                            integrationServiceConfig.toString());
+                        this.setServerServiceActiveStatus(integrationServiceConfig.getIntegrationServiceFullName(), ServerActiveStatus.STARTING);
 
-                        throw new OMAGConfigurationErrorException(IntegrationDaemonServicesErrorCode.NO_PERMITTED_SYNCHRONIZATION.getMessageDefinition(integrationServiceConfig.getIntegrationServiceFullName(),
-                                                                                                                                                       localServerName),
-                                                                  this.getClass().getName(),
-                                                                  methodName);
-                    }
+                        String                    partnerOMASRootURL          = this.getPartnerOMASRootURL(integrationServiceConfig);
+                        String                    partnerOMASServerName       = this.getPartnerOMASServerName(integrationServiceConfig);
+                        String                    integrationServiceURLMarker = this.getServiceURLMarker(integrationServiceConfig);
+                        IntegrationContextManager contextManager              = this.getContextManager(integrationServiceConfig);
 
-                    /*
-                     * Each integration service has its own audit log instance.
-                     */
-                    AuditLog integrationServicesAuditLog
-                            = auditLog.createNewAuditLog(integrationServiceConfig.getIntegrationServiceId(),
-                                                         integrationServiceConfig.getIntegrationServiceDevelopmentStatus(),
-                                                         integrationServiceConfig.getIntegrationServiceFullName(),
-                                                         integrationServiceConfig.getIntegrationServiceDescription(),
-                                                         integrationServiceConfig.getIntegrationServiceWiki());
-                    contextManager.initializeContextManager(partnerOMASServerName,
-                                                            partnerOMASRootURL,
-                                                            localServerUserId,
-                                                            localServerPassword,
-                                                            integrationServiceConfig.getIntegrationServiceOptions(),
-                                                            maxPageSize,
-                                                            integrationServicesAuditLog);
-
-                    contextManager.createClients();
-
-                    IntegrationServiceHandler integrationServiceHandler = new IntegrationServiceHandler(localServerName,
-                                                                                                        localServerUserId,
-                                                                                                        integrationServiceConfig,
-                                                                                                        contextManager,
-                                                                                                        auditLog);
-
-                    List<IntegrationConnectorHandler> serviceConnectorHandlers = integrationServiceHandler.initialize();
-                    if (serviceConnectorHandlers != null)
-                    {
-                        for (IntegrationConnectorHandler connectorHandler : serviceConnectorHandlers)
+                        if (integrationServiceConfig.getDefaultPermittedSynchronization() == null)
                         {
-                            daemonConnectorHandlers.putHandlerByConnectorId(connectorHandler.getIntegrationConnectorId(), connectorHandler);
-                        }
-                    }
+                            auditLog.logMessage(actionDescription,
+                                                IntegrationDaemonServicesAuditCode.NO_PERMITTED_SYNCHRONIZATION.getMessageDefinition(localServerName),
+                                                integrationServiceConfig.toString());
 
-                    integrationServiceHandlerMap.put(integrationServiceURLMarker, integrationServiceHandler);
-                    this.setServerServiceActiveStatus(integrationServiceConfig.getIntegrationServiceFullName(), ServerActiveStatus.RUNNING);
+                            throw new OMAGConfigurationErrorException(
+                                    IntegrationDaemonServicesErrorCode.NO_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                                            integrationServiceConfig.getIntegrationServiceFullName(),
+                                            localServerName),
+                                    this.getClass().getName(),
+                                    methodName);
+                        }
+
+                        /*
+                         * Each integration service has its own audit log instance.
+                         */
+                        AuditLog integrationServicesAuditLog
+                                = auditLog.createNewAuditLog(integrationServiceConfig.getIntegrationServiceId(),
+                                                             integrationServiceConfig.getIntegrationServiceDevelopmentStatus(),
+                                                             integrationServiceConfig.getIntegrationServiceFullName(),
+                                                             integrationServiceConfig.getIntegrationServiceDescription(),
+                                                             integrationServiceConfig.getIntegrationServiceWiki());
+                        contextManager.initializeContextManager(partnerOMASServerName,
+                                                                partnerOMASRootURL,
+                                                                localServerUserId,
+                                                                localServerPassword,
+                                                                integrationServiceConfig.getIntegrationServiceOptions(),
+                                                                maxPageSize,
+                                                                integrationServicesAuditLog);
+
+                        contextManager.createClients();
+
+                        IntegrationServiceHandler integrationServiceHandler = new IntegrationServiceHandler(localServerName,
+                                                                                                            localServerUserId,
+                                                                                                            integrationServiceConfig,
+                                                                                                            contextManager,
+                                                                                                            auditLog);
+
+                        List<IntegrationConnectorHandler> serviceConnectorHandlers = integrationServiceHandler.initialize();
+                        if (serviceConnectorHandlers != null)
+                        {
+                            for (IntegrationConnectorHandler connectorHandler : serviceConnectorHandlers)
+                            {
+                                daemonConnectorHandlers.putHandlerByConnectorId(connectorHandler.getIntegrationConnectorId(),
+                                                                                connectorHandler,
+                                                                                true);
+                            }
+                        }
+
+                        integrationServiceHandlerMap.put(integrationServiceURLMarker, integrationServiceHandler);
+                        this.setServerServiceActiveStatus(integrationServiceConfig.getIntegrationServiceFullName(), ServerActiveStatus.RUNNING);
+                    }
                 }
             }
 
             Map<String, IntegrationGroupHandler> integrationGroupHandlerMap = new HashMap<>();
 
-            if (dynamicConfiguration != null)
+            if ((dynamicConfiguration == null) || (dynamicConfiguration.isEmpty()))
             {
+                auditLog.logMessage(actionDescription,
+                                    IntegrationDaemonServicesAuditCode.NO_INTEGRATION_GROUPS_CONFIGURED.getMessageDefinition(localServerName));
+            }
+            else
+            {
+                List<String> registeredServiceURLs = IntegrationServiceRegistry.getRegisteredServiceURLMarkers();
 
                 for (IntegrationGroupConfig integrationGroupConfig : dynamicConfiguration)
                 {
@@ -189,14 +211,53 @@ public class IntegrationDaemonOperationalServices
 
                         GovernanceEngineRESTClient restClient = new GovernanceEngineRESTClient(partnerOMASServerName, partnerOMASRootURL, auditLog);
                         GovernanceEngineClient serverClient = new GovernanceEngineClient(partnerOMASServerName, partnerOMASRootURL, restClient, maxPageSize);
+                        GovernanceEngineEventClient eventClient = new GovernanceEngineEventClient(partnerOMASServerName,
+                                                                                                  partnerOMASRootURL,
+                                                                                                  restClient,
+                                                                                                  maxPageSize,
+                                                                                                  auditLog,
+                                                                                                  localServerId);
                         IntegrationGroupConfigurationClient configurationClient = new IntegrationGroupConfigurationClient(partnerOMASServerName,
                                                                                                                           partnerOMASRootURL,
                                                                                                                           restClient,
                                                                                                                           maxPageSize,
                                                                                                                           auditLog);
 
+                        Map<String, IntegrationContextManager> contextManagerMap = new HashMap<>();
+                        Map<String, String>                    integrationServiceNameMap = new HashMap<>();
+
+                        for (String registeredServiceURLMarker : registeredServiceURLs)
+                        {
+                            IntegrationServiceConfig integrationServiceConfig = IntegrationServiceRegistry.getIntegrationServiceConfig(registeredServiceURLMarker,
+                                                                                                                            localServerName,
+                                                                                                                            methodName);
+                            IntegrationContextManager serviceContextManager = this.getContextManager(integrationServiceConfig);
+                            /*
+                             * Each integration service has its own audit log instance.
+                             */
+                            AuditLog integrationServicesAuditLog
+                                    = auditLog.createNewAuditLog(integrationServiceConfig.getIntegrationServiceId(),
+                                                                 integrationServiceConfig.getIntegrationServiceDevelopmentStatus(),
+                                                                 integrationServiceConfig.getIntegrationServiceFullName(),
+                                                                 integrationServiceConfig.getIntegrationServiceDescription(),
+                                                                 integrationServiceConfig.getIntegrationServiceWiki());
+                            serviceContextManager.initializeContextManager(partnerOMASServerName,
+                                                                    partnerOMASRootURL,
+                                                                    localServerUserId,
+                                                                    localServerPassword,
+                                                                    integrationServiceConfig.getIntegrationServiceOptions(),
+                                                                    maxPageSize,
+                                                                    integrationServicesAuditLog);
+
+                            serviceContextManager.createClients();
+
+                            contextManagerMap.put(registeredServiceURLMarker, serviceContextManager);
+                            integrationServiceNameMap.put(registeredServiceURLMarker, integrationServiceConfig.getIntegrationServiceFullName());
+                        }
+
                         IntegrationGroupHandler groupHandler = new IntegrationGroupHandler(integrationGroupConfig.getIntegrationGroupQualifiedName(),
-                                                                                           integrationServiceHandlerMap,
+                                                                                           contextManagerMap,
+                                                                                           integrationServiceNameMap,
                                                                                            daemonConnectorHandlers,
                                                                                            localServerName,
                                                                                            localServerUserId,
@@ -206,6 +267,24 @@ public class IntegrationDaemonOperationalServices
                                                                                            maxPageSize);
 
                         integrationGroupHandlerMap.put(groupName, groupHandler);
+
+                        /*
+                         * Register a listener for the Governance Engine OMAS out topic.  This call will fail if
+                         * the metadata server is not running so a separate thread is created to retry the registration request at
+                         * intervals to wait for the metadata server to restart.  It will also try to retrieve the configuration
+                         * for the governance engines.
+                         */
+                        GroupConfigurationRefreshThread configurationRefreshThread = new GroupConfigurationRefreshThread(groupName,
+                                                                                                                         groupHandler,
+                                                                                                                         eventClient,
+                                                                                                                         auditLog,
+                                                                                                                         localServerUserId,
+                                                                                                                         localServerName,
+                                                                                                                         partnerOMASServerName,
+                                                                                                                         partnerOMASRootURL);
+                        configurationRefreshThreads.add(configurationRefreshThread);
+                        Thread thread = new Thread(configurationRefreshThread, configurationRefreshThread.getClass().getName());
+                        thread.start();
                     }
                 }
             }
@@ -213,7 +292,7 @@ public class IntegrationDaemonOperationalServices
             /*
              * Create the thread that calls refresh on all the connectors.
              */
-            IntegrationDaemonThread integrationDaemonThread = new IntegrationDaemonThread(localServerName, daemonConnectorHandlers, auditLog);
+            integrationDaemonThread = new IntegrationDaemonThread(localServerName, daemonConnectorHandlers, auditLog);
             integrationDaemonThread.start();
 
             /*
@@ -563,6 +642,16 @@ public class IntegrationDaemonOperationalServices
         for (String serviceName : serviceStatusMap.keySet())
         {
             serviceStatusMap.put(serviceName, ServerActiveStatus.STOPPING);
+        }
+
+        if (integrationDaemonThread != null)
+        {
+            integrationDaemonThread.stop();
+        }
+
+        for (GroupConfigurationRefreshThread groupConfigurationRefreshThread : configurationRefreshThreads)
+        {
+            groupConfigurationRefreshThread.stop();
         }
 
         if (integrationDaemonInstance != null)
