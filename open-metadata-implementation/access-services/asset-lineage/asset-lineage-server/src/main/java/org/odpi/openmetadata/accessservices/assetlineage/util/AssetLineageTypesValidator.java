@@ -77,7 +77,7 @@ public class AssetLineageTypesValidator {
         final Set<String> defaultTopicRelationships =
                 Set.of(ATTRIBUTE_FOR_SCHEMA, SCHEMA_TYPE_OPTION, ASSET_SCHEMA_TYPE);
         final Set<String> defaultProcessRelationships =
-                Set.of(ATTRIBUTE_FOR_SCHEMA, ASSET_SCHEMA_TYPE, PORT_SCHEMA, PORT_DELEGATION, PROCESS_PORT, PROCESS_HIERARCHY, DATA_FLOW);
+                Set.of(ATTRIBUTE_FOR_SCHEMA, ASSET_SCHEMA_TYPE, PORT_SCHEMA, PROCESS_PORT, PROCESS_HIERARCHY, DATA_FLOW);
         final Set<String> defaultGlossaryTermRelationships =
                 Set.of(SEMANTIC_ASSIGNMENT, TERM_CATEGORIZATION);
 

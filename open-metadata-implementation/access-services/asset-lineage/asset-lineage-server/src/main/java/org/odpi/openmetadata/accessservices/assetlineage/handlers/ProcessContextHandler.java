@@ -23,8 +23,6 @@ import java.util.stream.Collectors;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ATTRIBUTE_FOR_SCHEMA;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.COLLECTION_MEMBERSHIP;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_FLOW;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_ALIAS;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_DELEGATION;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_IMPLEMENTATION;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_SCHEMA;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
@@ -56,7 +54,7 @@ public class ProcessContextHandler {
 
     /**
      * Retrieves the full context for a Process.
-     * This context contains the full description for the Port Aliases, Port Implementations, SchemaTypes and Tabular Columns related to the process.
+     * This context contains the full description for the Port Implementations, SchemaTypes and Tabular Columns related to the process.
      *
      * @param userId  userId of user making request.
      * @param process the process entity for which the context is built
@@ -144,9 +142,6 @@ public class ProcessContextHandler {
     private void addContextForPort(String userId, EntityDetail port, Set<GraphContext> relationshipsContext) throws OCFCheckedExceptionBase {
         String portType = port.getType().getTypeDefName();
 
-        if (PORT_ALIAS.equals(portType)) {
-            handlerHelper.addContextForRelationships(userId, port, PORT_DELEGATION, relationshipsContext);
-        }
         if (PORT_IMPLEMENTATION.equals(portType)) {
             EntityDetail tabularSchemaType = handlerHelper.addContextForRelationships(userId, port, PORT_SCHEMA, relationshipsContext);
 

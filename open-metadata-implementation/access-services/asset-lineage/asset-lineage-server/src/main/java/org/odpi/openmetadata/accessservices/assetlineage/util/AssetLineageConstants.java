@@ -22,7 +22,6 @@ public final class AssetLineageConstants {
     public static final String DATABASE = "Database";
     public static final String FILE_FOLDER = "FileFolder";
     public static final String PROCESS = "Process";
-    public static final String PORT_ALIAS = "PortAlias";
     public static final String PORT_IMPLEMENTATION = "PortImplementation";
     public static final String TABULAR_SCHEMA_TYPE = "TabularSchemaType";
     public static final String TABULAR_COLUMN = "TabularColumn";
