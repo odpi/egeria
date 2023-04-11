@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.Port;
-import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortType;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
@@ -97,26 +96,6 @@ public class DataEnginePortHandler {
     }
 
     /**
-     * Create the port alias and attach it to the process.
-     *
-     * @param userId             the name of the calling user
-     * @param portAlias          the port alias values
-     * @param processGUID        the unique identifier of the process
-     * @param externalSourceName the unique name of the external source
-     *
-     * @return unique identifier of the port alias in the repository
-     *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public String createPortAlias(String userId, PortAlias portAlias, String processGUID, String externalSourceName) throws InvalidParameterException,
-                                                                                                                            UserNotAuthorizedException,
-                                                                                                                            PropertyServerException {
-        return createPort(userId, portAlias, PORT_ALIAS_TYPE_NAME, processGUID, externalSourceName);
-    }
-
-    /**
      * Update the port implementation
      *
      * @param userId             the name of the calling user
@@ -132,25 +111,6 @@ public class DataEnginePortHandler {
                                          String externalSourceName) throws InvalidParameterException, UserNotAuthorizedException,
                                                                            PropertyServerException {
         updatePort(userId, originalPortEntity, portImplementation, PORT_IMPLEMENTATION_TYPE_NAME, externalSourceName);
-    }
-
-    /**
-     * Update the port alias
-     *
-     * @param userId             the name of the calling user
-     * @param originalPortEntity the created port entity
-     * @param portAlias          the port alias new values
-     * @param externalSourceName the external data engine
-     *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public void updatePortAlias(String userId, EntityDetail originalPortEntity, PortAlias portAlias, String externalSourceName) throws
-                                                                                                                                InvalidParameterException,
-                                                                                                                                UserNotAuthorizedException,
-                                                                                                                                PropertyServerException {
-        updatePort(userId, originalPortEntity, portAlias, PORT_ALIAS_TYPE_NAME, externalSourceName);
     }
 
     /**

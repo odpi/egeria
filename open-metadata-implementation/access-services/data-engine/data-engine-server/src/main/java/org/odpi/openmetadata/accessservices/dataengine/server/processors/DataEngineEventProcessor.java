@@ -8,12 +8,11 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.odpi.openmetadata.accessservices.dataengine.event.DataEngineRegistrationEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DataFileEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.DataFlowsEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DatabaseEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DatabaseSchemaEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DeleteEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.EventTypeEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.DataFlowsEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessHierarchyEvent;
@@ -88,34 +87,6 @@ public class DataEngineEventProcessor {
                     dataEngineRegistrationEvent.getEngine());
 
         } catch (IOException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
-            logException(dataEngineEvent, methodName, e);
-        }
-    }
-
-    /**
-     * Process a {@link PortAliasEvent}
-     *
-     * @param dataEngineEvent the event to be processed
-     */
-    public void processPortAliasEvent(String dataEngineEvent) {
-        final String methodName = "processPortAliasEvent";
-
-        log.trace(DEBUG_MESSAGE_METHOD, methodName);
-        try {
-            PortAliasEvent portAliasEvent = OBJECT_READER.readValue(dataEngineEvent, PortAliasEvent.class);
-
-            String userId = portAliasEvent.getUserId();
-            String externalSourceName = portAliasEvent.getExternalSourceName();
-
-            String processGUID = dataEngineRESTServices.getEntityGUID(serverName, userId, portAliasEvent.getProcessQualifiedName(), PROCESS_TYPE_NAME)
-                    .orElse(null);
-
-            dataEngineRESTServices.updateProcessStatus(userId, serverName, processGUID, InstanceStatus.DRAFT, externalSourceName);
-            dataEngineRESTServices.upsertPortAliasWithDelegation(userId, serverName, portAliasEvent.getPortAlias(),
-                    processGUID, externalSourceName);
-            dataEngineRESTServices.updateProcessStatus(userId, serverName, processGUID, InstanceStatus.ACTIVE, externalSourceName);
-
-        } catch (IOException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }

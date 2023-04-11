@@ -14,7 +14,6 @@ import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.Port;
-import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -130,46 +129,6 @@ class DataEnginePortHandlerTest {
     }
 
     @Test
-    void createPortAlias() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        String methodName = "createPort";
-
-        when(portHandler.createPort(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PROCESS_GUID,
-                "processGUID", QUALIFIED_NAME, NAME, PortType.INOUT_PORT.getOrdinal(), null, PORT_ALIAS_TYPE_NAME,
-                null, false, false, null, methodName)).thenReturn(GUID);
-
-        String result = dataEnginePortHandler.createPortAlias(USER, getPortAlias(), PROCESS_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
-
-        assertEquals(GUID, result);
-        verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
-        verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME, QUALIFIED_NAME_PROPERTY_NAME, methodName);
-        verify(invalidParameterHandler, times(1)).validateName(NAME, DISPLAY_NAME_PROPERTY_NAME, methodName);
-        verify(portHandler, times(1)).createPort(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PROCESS_GUID,
-                "processGUID", QUALIFIED_NAME, NAME, PortType.INOUT_PORT.getOrdinal(), null, PORT_ALIAS_TYPE_NAME,
-                null, false, false, null, methodName);
-    }
-
-    @Test
-    void createPortAlias_throwsUserNotAuthorizedException() throws PropertyServerException,
-                                                                   UserNotAuthorizedException,
-                                                                   InvocationTargetException,
-                                                                   NoSuchMethodException,
-                                                                   InstantiationException,
-                                                                   IllegalAccessException,
-                                                                   InvalidParameterException {
-        String methodName = "createPort";
-
-        UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        when(portHandler.createPort(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PROCESS_GUID,
-                "processGUID", QUALIFIED_NAME, NAME, PortType.INOUT_PORT.getOrdinal(), null, PORT_ALIAS_TYPE_NAME,
-                null, false, false, null, methodName)).thenThrow(mockedException);
-
-        UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
-                dataEnginePortHandler.createPortAlias(USER, getPortAlias(), PROCESS_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
-
-        assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
-    }
-
-    @Test
     void updatePortImplementation() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "updatePort";
 
@@ -240,60 +199,6 @@ class DataEnginePortHandlerTest {
 
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
         verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME, QUALIFIED_NAME_PROPERTY_NAME, methodName);
-    }
-
-    @Test
-    void updatePortAlias() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        String methodName = "updatePort";
-
-        EntityDetail mockedOriginalPortEntity = Mockito.mock(EntityDetail.class);
-        when(mockedOriginalPortEntity.getGUID()).thenReturn(PORT_GUID);
-
-        EntityDetail mockedUpdatedPortEntity = Mockito.mock(EntityDetail.class);
-        when(dataEngineCommonHandler.buildEntityDetail(PORT_GUID, null)).thenReturn(mockedUpdatedPortEntity);
-
-        EntityDetailDifferences mockedDifferences = mock(EntityDetailDifferences.class);
-        when(mockedDifferences.hasInstancePropertiesDifferences()).thenReturn(Boolean.TRUE);
-        when(repositoryHelper.getEntityDetailDifferences(mockedOriginalPortEntity, mockedUpdatedPortEntity, true)).thenReturn(mockedDifferences);
-
-        dataEnginePortHandler.updatePortAlias(USER, mockedOriginalPortEntity, getPortAlias(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
-
-        verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
-        verify(invalidParameterHandler, times(1)).validateName(NAME, DISPLAY_NAME_PROPERTY_NAME, methodName);
-        verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME, QUALIFIED_NAME_PROPERTY_NAME, methodName);
-        verify(portHandler, times(1)).updatePort(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PORT_GUID,
-                "portGUID", QUALIFIED_NAME, NAME, PortType.INOUT_PORT.getOrdinal(), null,
-                PORT_ALIAS_TYPE_NAME, null, null, null, false, false, null, methodName);
-    }
-
-    @Test
-    void updatePortAlias_throwsUserNotAuthorizedException() throws InvocationTargetException,
-                                                                   NoSuchMethodException,
-                                                                   InstantiationException,
-                                                                   IllegalAccessException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException, InvalidParameterException {
-
-        String methodName = "updatePort";
-
-        EntityDetail mockedOriginalPortEntity = Mockito.mock(EntityDetail.class);
-        when(mockedOriginalPortEntity.getGUID()).thenReturn(PORT_GUID);
-        EntityDetail mockedUpdatedPortEntity = Mockito.mock(EntityDetail.class);
-        when(dataEngineCommonHandler.buildEntityDetail(PORT_GUID, null)).thenReturn(mockedUpdatedPortEntity);
-
-        EntityDetailDifferences mockedDifferences = mock(EntityDetailDifferences.class);
-        when(mockedDifferences.hasInstancePropertiesDifferences()).thenReturn(Boolean.TRUE);
-        when(repositoryHelper.getEntityDetailDifferences(mockedOriginalPortEntity, mockedUpdatedPortEntity, true)).thenReturn(mockedDifferences);
-
-        UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        doThrow(mockedException).when(portHandler).updatePort(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PORT_GUID,
-                "portGUID", QUALIFIED_NAME, NAME, PortType.INOUT_PORT.getOrdinal(), null,
-                PORT_ALIAS_TYPE_NAME, null, null, null, false, false, null, methodName);
-
-        UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
-                dataEnginePortHandler.updatePortAlias(USER, mockedOriginalPortEntity, getPortAlias(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
-
-        assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
     }
 
     @Test
@@ -503,15 +408,4 @@ class DataEnginePortHandlerTest {
 
         return portImplementation;
     }
-
-    private PortAlias getPortAlias() {
-        PortAlias portAlias = new PortAlias();
-        portAlias.setQualifiedName(QUALIFIED_NAME);
-        portAlias.setDisplayName(NAME);
-        portAlias.setPortType(PortType.INOUT_PORT);
-        portAlias.setDelegatesTo(DELEGATED_QUALIFIED_NAME);
-
-        return portAlias;
-    }
-
 }

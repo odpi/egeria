@@ -9,15 +9,14 @@ import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.CSVFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Collection;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
+import org.odpi.openmetadata.accessservices.dataengine.model.DataFlow;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.Engine;
 import org.odpi.openmetadata.accessservices.dataengine.model.EventType;
-import org.odpi.openmetadata.accessservices.dataengine.model.DataFlow;
 import org.odpi.openmetadata.accessservices.dataengine.model.ParentProcess;
 import org.odpi.openmetadata.accessservices.dataengine.model.Port;
-import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
@@ -30,13 +29,12 @@ import org.odpi.openmetadata.accessservices.dataengine.model.UpdateSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineOMASAPIRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataFileRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DataFlowsRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseSchemaRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DeleteRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.EventTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.DataFlowsRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
@@ -64,10 +62,10 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.ConnectionResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.ConnectionResponse;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
@@ -430,37 +428,6 @@ public class DataEngineRESTServices {
     }
 
     /**
-     * Create or update the Port Alias with a PortDelegation relationship
-     *
-     * @param serverName           name of server instance to call
-     * @param userId               the name of the calling user
-     * @param portAliasRequestBody properties of the port
-     *
-     * @return the unique identifier (guid) of the created port
-     */
-    public GUIDResponse upsertPortAlias(String userId, String serverName, PortAliasRequestBody portAliasRequestBody) {
-        final String methodName = "upsertPortAliasWithDelegation";
-
-        GUIDResponse response = new GUIDResponse();
-
-        try {
-            validateRequestBody(userId, serverName, portAliasRequestBody, methodName);
-
-            String processGUID = getEntityGUID(serverName, userId, portAliasRequestBody.getProcessQualifiedName(), PROCESS_TYPE_NAME)
-                    .orElse(null);
-            String externalSourceName = portAliasRequestBody.getExternalSourceName();
-
-            updateProcessStatus(userId, serverName, processGUID, InstanceStatus.DRAFT, externalSourceName);
-            response.setGUID(upsertPortAliasWithDelegation(userId, serverName, portAliasRequestBody.getPortAlias(), processGUID, externalSourceName));
-            updateProcessStatus(userId, serverName, processGUID, InstanceStatus.ACTIVE, externalSourceName);
-        } catch (Exception error) {
-            restExceptionHandler.captureExceptions(response, error, methodName);
-        }
-
-        return response;
-    }
-
-    /**
      * Delete the Port with the associated schema type and relationships
      *
      * @param serverName  name of server instance to call
@@ -577,7 +544,7 @@ public class DataEngineRESTServices {
     }
 
     /**
-     * Delete a process, with the associated port implementations, port aliases and data flows
+     * Delete a process, with the associated port implementations and data flows
      *
      * @param userId      the name of the calling user
      * @param serverName  name of server instance to call
@@ -621,49 +588,6 @@ public class DataEngineRESTServices {
         }
         processHandler.removeProcess(userId, processGUID, externalSourceName, deleteSemantic);
         log.debug(DEBUG_DELETE_MESSAGE, processGUID, PROCESS_TYPE_NAME);
-    }
-
-    /**
-     * Create or update a Port Alias with a PortDelegation relationship
-     *
-     * @param userId             the name of the calling user
-     * @param serverName         name of server instance to call
-     * @param portAlias          the port alias values
-     * @param processGUID        the unique identifier of the process
-     * @param externalSourceName the unique name of the external source
-     *
-     * @return the unique identifier (guid) of the created port alias
-     *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public String upsertPortAliasWithDelegation(String userId, String serverName, PortAlias portAlias, String processGUID,
-                                                String externalSourceName) throws InvalidParameterException, PropertyServerException,
-                                                                                  UserNotAuthorizedException {
-        final String methodName = "upsertPortAliasWithDelegation";
-
-        log.trace(DEBUG_MESSAGE_METHOD_DETAILS, methodName, portAlias);
-
-        DataEnginePortHandler dataEnginePortHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
-
-        Optional<EntityDetail> portEntity = dataEnginePortHandler.findPortAliasEntity(userId, portAlias.getQualifiedName());
-
-        String portAliasGUID;
-        if (portEntity.isEmpty()) {
-            portAliasGUID = dataEnginePortHandler.createPortAlias(userId, portAlias, processGUID, externalSourceName);
-        } else {
-            portAliasGUID = portEntity.get().getGUID();
-            dataEnginePortHandler.updatePortAlias(userId, portEntity.get(), portAlias, externalSourceName);
-        }
-
-        if (!StringUtils.isEmpty(portAlias.getDelegatesTo())) {
-            dataEnginePortHandler.addPortDelegationRelationship(userId, portAliasGUID, portAlias.getPortType(), portAlias.getDelegatesTo(),
-                    externalSourceName);
-        }
-
-        log.trace(DEBUG_MESSAGE_METHOD_RETURN, methodName, portAliasGUID);
-        return portAliasGUID;
     }
 
     /**
@@ -720,7 +644,7 @@ public class DataEngineRESTServices {
      * @param processGUID        the unique identifier of the process
      * @param externalSourceName the unique name of the external source
      *
-     * @return the unique identifier (guid) of the created port alias
+     * @return the unique identifier (guid) of the created port implementation
      *
      * @throws InvalidParameterException     the bean properties are invalid
      * @throws UserNotAuthorizedException    user not authorized to issue this request
@@ -1636,7 +1560,6 @@ public class DataEngineRESTServices {
 
         String qualifiedName = process.getQualifiedName();
         List<PortImplementation> portImplementations = process.getPortImplementations();
-        List<PortAlias> portAliases = process.getPortAliases();
         UpdateSemantic updateSemantic = process.getUpdateSemantic();
 
         GUIDResponse response = new GUIDResponse();
@@ -1656,7 +1579,6 @@ public class DataEngineRESTServices {
                 if (updateSemantic == UpdateSemantic.REPLACE) {
                     deleteObsoletePorts(userId, serverName, portImplementations, processGUID, PORT_IMPLEMENTATION_TYPE_NAME, response,
                             externalSourceName);
-                    deleteObsoletePorts(userId, serverName, portAliases, processGUID, PORT_ALIAS_TYPE_NAME, response, externalSourceName);
                 }
             }
 
@@ -1666,7 +1588,6 @@ public class DataEngineRESTServices {
             }
 
             upsertPortImplementations(userId, serverName, portImplementations, processGUID, response, externalSourceName);
-            upsertPortAliases(userId, serverName, portAliases, processGUID, response, externalSourceName);
 
             if (response.getRelatedHTTPCode() == HttpStatus.OK.value()) {
                 processHandler.updateProcessStatus(userId, processGUID, InstanceStatus.ACTIVE, externalSourceName);
@@ -1799,20 +1720,6 @@ public class DataEngineRESTServices {
                 restExceptionHandler.captureExceptions(response, error, methodName);
             }
         });
-    }
-
-    private void upsertPortAliases(String userId, String serverName, List<PortAlias> portAliases, String processGUID, GUIDResponse response,
-                                   String externalSourceName) {
-        final String methodName = "upsertPortAliases";
-        if (CollectionUtils.isNotEmpty(portAliases)) {
-            portAliases.forEach(portAlias -> {
-                try {
-                    upsertPortAliasWithDelegation(userId, serverName, portAlias, processGUID, externalSourceName);
-                } catch (Exception error) {
-                    restExceptionHandler.captureExceptions(response, error, methodName);
-                }
-            });
-        }
     }
 
     private void validateDatabaseRequestBody(String userId, String serverName, DatabaseRequestBody databaseRequestBody, String methodName) throws

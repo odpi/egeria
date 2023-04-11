@@ -31,7 +31,6 @@ public enum DataEngineEventType implements Serializable {
     UNKNOWN_DATA_ENGINE_EVENT(0, "Unknown Data Engine Job Event", "An event that is not recognized by the local server."),
     DATA_ENGINE_REGISTRATION_EVENT(1, "DataEngineRegistrationEvent", "An event that register a data engine as external source."),
     DATA_FLOWS_EVENT(2, "DataFlowsEvent", "An event that adds or update data flows."),
-    PORT_ALIAS_EVENT(3, "PortAliasEvent", "An event that add or update port alias"),
     PORT_IMPLEMENTATION_EVENT(4, "PortImplementationEvent", "An event that creates or updates port implementations."),
     SCHEMA_TYPE_EVENT(5, "SchemaTypeEvent", "An event that creates or updates schema types."),
     PROCESS_HIERARCHY_EVENT(6, "ProcessHierarchyEvent", "An event to setup a process hierarchy."),
