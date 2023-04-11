@@ -73,25 +73,19 @@ public final class Constants {
     public static final String EVENT_TYPE_LIST_KEY = "eventTypeList";
     public static final String EVENT_TYPE_KEY = "eventType";
     public static final String TOPIC_KEY = "topic";
-
     //Relationships Type
-    public static final String SCHEMA_ATTRIBUTE_TYPE = "SchemaAttributeType";
-    public static final String SCHEMA_ATTRIBUTE = "SchemaAttribute";
     public static final String ATTRIBUTE_FOR_SCHEMA = "AttributeForSchema";
-    public static final String COMPLEX_SCHEMA_TYPE = "ComplexSchemaType";
     public static final String ASSET_SCHEMA_TYPE = "AssetSchemaType";
     public static final String CONNECTION_TO_ASSET = "ConnectionToAsset";
-    public static final String CONNECTION_CONNECTOR_TYPE = "ConnectionConnectorType";
     public static final String CONNECTION_ENDPOINT = "ConnectionEndpoint";
     public static final String DATA_CONTENT_FOR_DATA_SET = "DataContentForDataSet";
     public static final String SEMANTIC_ASSIGNMENT = "SemanticAssignment";
     public static final String TERM_CATEGORIZATION = "TermCategorization";
     public static final String TERM_ANCHOR = "TermAnchor";
-    public static final String PORT_DELEGATION = "PortDelegation";
+    public static final String PROCESS_HIERARCHY = "ProcessHierarchy";
     public static final String PROCESS_PORT = "ProcessPort";
     public static final String PORT_IMPLEMENTATION = "PortImplementation";
     public static final String DATA_FLOW = "DataFlow";
-    public static final String SCHEMA_TYPE = "SchemaType";
     public static final String PORT_SCHEMA = "PortSchema";
     public static final String NESTED_FILE = "NestedFile";
     public static final String NESTED_SCHEMA_ATTRIBUTE = "NestedSchemaAttribute";
