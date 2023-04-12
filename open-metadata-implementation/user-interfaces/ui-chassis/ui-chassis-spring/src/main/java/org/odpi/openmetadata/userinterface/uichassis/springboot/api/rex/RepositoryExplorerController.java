@@ -310,7 +310,7 @@ public class RepositoryExplorerController extends SecureController
      * neighboring entities.
      */
     @PostMapping(path = "/api/instances/rex-pre-traversal")
-    public RexPreTraversalResponse rexPreTraversal(@RequestBody RexTraversalRequestBody body, HttpServletRequest request)
+    public RexPreTraversalResponse rexPreTraversal(@RequestBody RexTraversalRequestBody body)
     {
         // Look up types in server and construct TEX
         RexPreTraversalResponse rexPreTraversalResponse;
@@ -344,7 +344,7 @@ public class RepositoryExplorerController extends SecureController
         List<String> classificationNames       = null;
 
 
-        String userId = getUser(request);
+        String userId = getUser();
 
         try {
 
@@ -468,7 +468,7 @@ public class RepositoryExplorerController extends SecureController
     }
 
     @PostMapping(path = "/api/instances/rex-traversal")
-    public RexTraversalResponse rexTraversal(@RequestBody RexTraversalRequestBody body, HttpServletRequest request)
+    public RexTraversalResponse rexTraversal(@RequestBody RexTraversalRequestBody body)
     {
 
         RexTraversalResponse rexTraversalResponse;
@@ -504,7 +504,7 @@ public class RepositoryExplorerController extends SecureController
 
         // If a filter typeGUID was not selected in the UI then it will not appear in the body.
 
-        String userId = getUser(request);
+        String userId = getUser();
 
         try {
 
@@ -1085,8 +1085,7 @@ public class RepositoryExplorerController extends SecureController
      *  the request body.
      */
     @PostMapping( path = "/api/instances/entity")
-    public RexEntityDetailResponse getEntityDetail(@RequestBody  RexEntityRequestBody   body,
-                                                   HttpServletRequest                  request)
+    public RexEntityDetailResponse getEntityDetail(@RequestBody  RexEntityRequestBody   body)
     {
 
         RexEntityDetailResponse response;
@@ -1111,7 +1110,7 @@ public class RepositoryExplorerController extends SecureController
         }
 
 
-        String userId = getUser(request);
+        String userId = getUser();
 
         try {
 
@@ -1247,8 +1246,7 @@ public class RepositoryExplorerController extends SecureController
      *  the request body.
      */
     @PostMapping( path = "/api/instances/relationship")
-    public RexRelationshipResponse getRelationship(@RequestBody  RexRelationshipRequestBody   body,
-                                                   HttpServletRequest                         request)
+    public RexRelationshipResponse getRelationship(@RequestBody  RexRelationshipRequestBody   body)
     {
 
         RexRelationshipResponse response;
@@ -1273,7 +1271,7 @@ public class RepositoryExplorerController extends SecureController
         }
 
 
-        String userId = getUser(request);
+        String userId = getUser();
 
         try {
 
@@ -1401,8 +1399,7 @@ public class RepositoryExplorerController extends SecureController
      *  the request body.
      */
     @PostMapping( path = "/api/instances/entities/by-property-value")
-    public RexSearchResponse entitySearch(@RequestBody  RexSearchBody   body,
-                                          HttpServletRequest            request)
+    public RexSearchResponse entitySearch(@RequestBody  RexSearchBody   body)
     {
         RexSearchResponse response;
         String exceptionMessage;
@@ -1432,7 +1429,7 @@ public class RepositoryExplorerController extends SecureController
 
 
 
-        String userId = getUser(request);
+        String userId = getUser();
 
         String entityTypeGUID = null;
 
@@ -1582,8 +1579,7 @@ public class RepositoryExplorerController extends SecureController
      *  the request body.
      */
     @PostMapping( path = "/api/instances/relationships/by-property-value")
-    public RexSearchResponse relationshipSearch(@RequestBody  RexSearchBody    body,
-                                                HttpServletRequest             request)
+    public RexSearchResponse relationshipSearch(@RequestBody  RexSearchBody    body)
     {
 
         RexSearchResponse response;
@@ -1612,7 +1608,7 @@ public class RepositoryExplorerController extends SecureController
         }
 
 
-        String userId = getUser(request);
+        String userId = getUser();
 
         String relationshipTypeGUID = null;
 
