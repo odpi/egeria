@@ -45,10 +45,9 @@ public class GlossaryViewController extends SecureController {
      */
     @GetMapping
     public List<Glossary> getAllGlossaries(@RequestParam(defaultValue = "0") Integer from,
-                                           @RequestParam(defaultValue = "100") Integer size,
-                                           HttpServletRequest request)
+                                           @RequestParam(defaultValue = "100") Integer size)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         return glossaryViewClient.getAllGlossaries(userId, from, size);
     }
 
@@ -67,7 +66,7 @@ public class GlossaryViewController extends SecureController {
                                             @RequestParam(defaultValue = "100") Integer size,
                                             HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         return glossaryViewClient.getAllGlossaryTerms(userId, from, size);
     }
 
@@ -86,7 +85,7 @@ public class GlossaryViewController extends SecureController {
                                                     @RequestParam(defaultValue = "100") Integer size,
                                                     HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         return glossaryViewClient.getAllCategories(userId, from, size);
     }
 
@@ -102,7 +101,7 @@ public class GlossaryViewController extends SecureController {
     public Glossary getGlossary(@PathVariable("glossaryGUID") String glossaryGUID,
                                 HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         Glossary glossary = glossaryViewClient.getGlossary(userId, glossaryGUID);
         if (glossary == null) {
             throw new GlossaryNotFoundException("Could not find glossary with guid " + glossaryGUID);
@@ -126,7 +125,7 @@ public class GlossaryViewController extends SecureController {
                                                 @RequestParam(defaultValue = "100") Integer size,
                                                 HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         return glossaryViewClient.getCategories(userId, glossaryGUID, from, size);
     }
 
@@ -146,7 +145,7 @@ public class GlossaryViewController extends SecureController {
                                                  @RequestParam(defaultValue = "100") Integer size,
                                                  HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         return glossaryViewClient.getTermsOfGlossary(userId, glossaryGUID, from, size);
     }
 
@@ -166,7 +165,7 @@ public class GlossaryViewController extends SecureController {
                                                                          @RequestParam(defaultValue = "100") Integer size,
                                                                          HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         return glossaryViewClient.getExternalGlossaryLinksOfGlossary(userId, glossaryGUID, from, size);
     }
 
@@ -182,7 +181,7 @@ public class GlossaryViewController extends SecureController {
     public GlossaryTerm getAntonyms(@PathVariable("termGUID") String termGUID,
                                     HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         GlossaryTerm term = glossaryViewClient.getTerm(userId, termGUID);
         if (term == null) {
             throw new TermNotFoundException("Could not find antonym for term with guid " + termGUID);
@@ -206,7 +205,7 @@ public class GlossaryViewController extends SecureController {
                                           @RequestParam(defaultValue = "100") Integer size,
                                           HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         return glossaryViewClient.getAntonyms(userId, termGUID, from, size);
     }
 
@@ -226,7 +225,7 @@ public class GlossaryViewController extends SecureController {
                                                   @RequestParam(defaultValue = "100") Integer size,
                                                   HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         return glossaryViewClient.getAssignedElements(userId, termGUID, from, size);
     }
 
@@ -246,7 +245,7 @@ public class GlossaryViewController extends SecureController {
                                             @RequestParam(defaultValue = "100") Integer size,
                                             HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         return glossaryViewClient.getAttributes(userId, termGUID, from, size);
     }
 
@@ -266,7 +265,7 @@ public class GlossaryViewController extends SecureController {
                                           @RequestParam(defaultValue = "100") Integer size,
                                           HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         return glossaryViewClient.getIsA(userId, termGUID, from, size);
     }
 
@@ -286,7 +285,7 @@ public class GlossaryViewController extends SecureController {
                                                 @RequestParam(defaultValue = "100") Integer size,
                                                 HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         return glossaryViewClient.getPreferredTerms(userId, termGUID, from, size);
     }
 
@@ -306,7 +305,7 @@ public class GlossaryViewController extends SecureController {
                                               @RequestParam(defaultValue = "100") Integer size,
                                               HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         return glossaryViewClient.getRelatedTerms(userId, termGUID, from, size);
     }
 
@@ -326,7 +325,7 @@ public class GlossaryViewController extends SecureController {
                                                   @RequestParam(defaultValue = "100") Integer size,
                                                   HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         return glossaryViewClient.getReplacementTerms(userId, termGUID, from, size);
     }
 
@@ -345,7 +344,7 @@ public class GlossaryViewController extends SecureController {
                                           @RequestParam(defaultValue = "100") Integer size,
                                           HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         return glossaryViewClient.getSubtypes(userId, termGUID, from, size);
     }
 
@@ -365,7 +364,7 @@ public class GlossaryViewController extends SecureController {
                                           @RequestParam(defaultValue = "100") Integer size,
                                           HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         return glossaryViewClient.getSynonyms(userId, termGUID, from, size);
     }
 
@@ -385,7 +384,7 @@ public class GlossaryViewController extends SecureController {
                                               @RequestParam(defaultValue = "100") Integer size, 
                                               HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         return glossaryViewClient.getTranslations(userId, termGUID, from, size);
     }
 
@@ -405,7 +404,7 @@ public class GlossaryViewController extends SecureController {
                                        @RequestParam(defaultValue = "100") Integer size, 
                                        HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         return glossaryViewClient.getTypes(userId, termGUID, from, size);
     }
 
@@ -425,7 +424,7 @@ public class GlossaryViewController extends SecureController {
                                                 @RequestParam(defaultValue = "100") Integer size, 
                                                 HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         return glossaryViewClient.getUsedInContexts(userId, termGUID, from, size);
     }
 
@@ -445,7 +444,7 @@ public class GlossaryViewController extends SecureController {
                                              @RequestParam(defaultValue = "100") Integer size, 
                                              HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         return glossaryViewClient.getValidValues(userId, termGUID, from, size);
     }
 
@@ -461,7 +460,7 @@ public class GlossaryViewController extends SecureController {
     public Glossary getSynonyms(@PathVariable("termGUID") String termGUID, 
                                 HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         Glossary termHomeGlossary = glossaryViewClient.getTermHomeGlossary(userId, termGUID);
         if (termHomeGlossary == null) {
             throw new GlossaryNotFoundException("The home glossary was not found for term with guid " + termGUID);
@@ -486,7 +485,7 @@ public class GlossaryViewController extends SecureController {
                                                                      @RequestParam(defaultValue = "100") Integer size, 
                                                                      HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         return glossaryViewClient.getExternalGlossaryLinksOfTerm(userId, termGUID, from, size);
     }
 
@@ -502,7 +501,7 @@ public class GlossaryViewController extends SecureController {
     public GlossaryCategory getCategory(@PathVariable("categoryGUID") String categoryGUID, 
                                         HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         GlossaryCategory category = glossaryViewClient.getCategory(userId, categoryGUID);
         if (category == null) {
             throw new CategoryNotFoundException("Could not find the category, please check that the guid is correct " + categoryGUID);
@@ -522,7 +521,7 @@ public class GlossaryViewController extends SecureController {
     public Glossary getCategoryHomeGlossary(@PathVariable("categoryGUID") String categoryGUID,
                                             HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         Glossary categoryHomeGlossary = glossaryViewClient.getCategoryHomeGlossary(userId, categoryGUID);
         if (categoryHomeGlossary == null) {
             throw new GlossaryNotFoundException("Could not find the home glossary, please check that the guid is correct " + categoryGUID);
@@ -546,7 +545,7 @@ public class GlossaryViewController extends SecureController {
                                                    @RequestParam(defaultValue = "100") Integer size, 
                                                    HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         return glossaryViewClient.getSubcategories(userId, categoryGUID, from, size);
     }
 
@@ -566,7 +565,7 @@ public class GlossaryViewController extends SecureController {
                                                  @RequestParam(defaultValue = "100") Integer size, 
                                                  HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         return glossaryViewClient.getTermsOfCategory(userId, categoryGUID, from, size);
     }
 
@@ -586,7 +585,7 @@ public class GlossaryViewController extends SecureController {
                                                                @RequestParam(defaultValue = "100") Integer size, 
                                                                HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
-        String userId = getUser(request);
+        String userId = getUser();
         return glossaryViewClient.getExternalGlossaryLinksOfCategory(userId, categoryGUID, from, size);
     }
 }
