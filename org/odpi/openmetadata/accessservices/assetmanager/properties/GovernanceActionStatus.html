@@ -107,25 +107,45 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#ACTIONED" class="member-name-link">ACTIONED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Actioned - The governance action service for the governance action has successfully completed processing.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#ACTIVATING" class="member-name-link">ACTIVATING</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Activating - The governance action service for the governance action is being initialized in the governance engine.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#APPROVED" class="member-name-link">APPROVED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Approved - The governance action is approved to run.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#FAILED" class="member-name-link">FAILED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Failed - The governance action service for the governance action failed to execute.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#IGNORED" class="member-name-link">IGNORED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Ignored - The governance action has not been run because a different governance action was chosen.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#IN_PROGRESS" class="member-name-link">IN_PROGRESS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">In Progress - The governance engine is running the associated governance action service for the governance action.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#INVALID" class="member-name-link">INVALID</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Invalid - The governance action has not been run because it is not appropriate (for example, a false positive).</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#OTHER" class="member-name-link">OTHER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Other - Undefined or unknown governance action status.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#REQUESTED" class="member-name-link">REQUESTED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Requested - The governance action has been created and is pending.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#WAITING" class="member-name-link">WAITING</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Waiting - The governance action is waiting for its start time or the right conditions to run.</div>
+</div>
 </div>
 </section>
 </li>
@@ -210,60 +230,70 @@ the order they are declared.</div>
 <section class="detail" id="REQUESTED">
 <h3>REQUESTED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.properties">GovernanceActionStatus</a></span>&nbsp;<span class="element-name">REQUESTED</span></div>
+<div class="block">Requested - The governance action has been created and is pending.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="APPROVED">
 <h3>APPROVED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.properties">GovernanceActionStatus</a></span>&nbsp;<span class="element-name">APPROVED</span></div>
+<div class="block">Approved - The governance action is approved to run.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="WAITING">
 <h3>WAITING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.properties">GovernanceActionStatus</a></span>&nbsp;<span class="element-name">WAITING</span></div>
+<div class="block">Waiting - The governance action is waiting for its start time or the right conditions to run.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ACTIVATING">
 <h3>ACTIVATING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.properties">GovernanceActionStatus</a></span>&nbsp;<span class="element-name">ACTIVATING</span></div>
+<div class="block">Activating - The governance action service for the governance action is being initialized in the governance engine.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="IN_PROGRESS">
 <h3>IN_PROGRESS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.properties">GovernanceActionStatus</a></span>&nbsp;<span class="element-name">IN_PROGRESS</span></div>
+<div class="block">In Progress - The governance engine is running the associated governance action service for the governance action.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ACTIONED">
 <h3>ACTIONED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.properties">GovernanceActionStatus</a></span>&nbsp;<span class="element-name">ACTIONED</span></div>
+<div class="block">Actioned - The governance action service for the governance action has successfully completed processing.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID">
 <h3>INVALID</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.properties">GovernanceActionStatus</a></span>&nbsp;<span class="element-name">INVALID</span></div>
+<div class="block">Invalid - The governance action has not been run because it is not appropriate (for example, a false positive).</div>
 </section>
 </li>
 <li>
 <section class="detail" id="IGNORED">
 <h3>IGNORED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.properties">GovernanceActionStatus</a></span>&nbsp;<span class="element-name">IGNORED</span></div>
+<div class="block">Ignored - The governance action has not been run because a different governance action was chosen.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="FAILED">
 <h3>FAILED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.properties">GovernanceActionStatus</a></span>&nbsp;<span class="element-name">FAILED</span></div>
+<div class="block">Failed - The governance action service for the governance action failed to execute.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OTHER">
 <h3>OTHER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.properties">GovernanceActionStatus</a></span>&nbsp;<span class="element-name">OTHER</span></div>
+<div class="block">Other - Undefined or unknown governance action status.</div>
 </section>
 </li>
 </ul>

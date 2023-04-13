@@ -77,7 +77,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../clientconstructors/ClientConstructorTest.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.fvt.clientconstructors">ClientConstructorTest</a></code>, <code><a href="../glossaries/CreateGlossaryTest.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.fvt.glossaries">CreateGlossaryTest</a></code>, <code><a href="../externalidentifiers/ManageExternalIdsTest.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.fvt.externalidentifiers">ManageExternalIdsTest</a></code></dd>
+<dd><code><a href="../clientconstructors/ClientConstructorTest.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.fvt.clientconstructors">ClientConstructorTest</a></code>, <code><a href="../glossaries/CreateExchangeGlossaryTest.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.fvt.glossaries">CreateExchangeGlossaryTest</a></code>, <code><a href="../glossaries/CreateManagementGlossaryTest.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.fvt.glossaries">CreateManagementGlossaryTest</a></code>, <code><a href="../externalidentifiers/ManageExternalIdsTest.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.fvt.externalidentifiers">ManageExternalIdsTest</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">AssetManagerTestBase</span>
@@ -138,7 +138,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create an asset manager entity and return its GUID.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../client/ExternalAssetManagerClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">ExternalAssetManagerClient</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../client/exchange/ExternalAssetManagerClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.exchange">ExternalAssetManagerClient</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetManagerClient(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)" class="member-name-link">getAssetManagerClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformRootURL,
  <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
@@ -147,7 +147,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Create and return an asset manager client.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossary(org.odpi.openmetadata.accessservices.assetmanager.client.GlossaryExchangeClient,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map)" class="member-name-link">getGlossary</a><wbr>(<a href="../../client/GlossaryExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">GlossaryExchangeClient</a>&nbsp;client,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossary(org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GlossaryExchangeClient,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map)" class="member-name-link">getGlossary</a><wbr>(<a href="../../client/exchange/GlossaryExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.exchange">GlossaryExchangeClient</a>&nbsp;client,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;testCaseName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;activityName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -167,13 +167,34 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new glossary object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../client/GlossaryExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">GlossaryExchangeClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryExchangeClient(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)" class="member-name-link">getGlossaryExchangeClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossary(org.odpi.openmetadata.accessservices.assetmanager.client.management.GlossaryManagementClient,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getGlossary</a><wbr>(<a href="../../client/management/GlossaryManagementClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.management">GlossaryManagementClient</a>&nbsp;client,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;testCaseName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;activityName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryDisplayName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryDescription,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryUsage,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryLanguage)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create a new glossary object.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../client/exchange/GlossaryExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.exchange">GlossaryExchangeClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryExchangeClient(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)" class="member-name-link">getGlossaryExchangeClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformRootURL,
+ <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;testCaseName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create and return a glossary exchange client.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../client/management/GlossaryManagementClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.management">GlossaryManagementClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryManagementClient(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)" class="member-name-link">getGlossaryManagementClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformRootURL,
  <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;testCaseName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create and return a glossary exchange client.</div>
+<div class="block">Create and return a glossary management client.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateCorrelationHeader(java.util.List,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,int)" class="member-name-link">validateCorrelationHeader</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../metadataelements/MetadataCorrelationHeader.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">MetadataCorrelationHeader</a>&gt;&nbsp;metadataCorrelationHeaders,
@@ -206,6 +227,36 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryUsage,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryLanguage)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateGlossaryTermElement(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus)" class="member-name-link">validateGlossaryTermElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;testCaseName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;activityName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;stepName,
+ <a href="../../metadataelements/GlossaryTermElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">GlossaryTermElement</a>&nbsp;retrievedElement,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryTermGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;extendedProperties,
+ <a href="../../../../frameworks/connectors/properties/beans/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStatus</a>&nbsp;status)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Verify that an element returned is as expected.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateGlossaryTermElements(java.lang.String,java.lang.String,java.lang.String,java.util.List,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus)" class="member-name-link">validateGlossaryTermElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;testCaseName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;activityName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;stepName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../metadataelements/GlossaryTermElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">GlossaryTermElement</a>&gt;&nbsp;retrievedElements,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryTermGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;extendedProperties,
+ <a href="../../../../frameworks/connectors/properties/beans/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStatus</a>&nbsp;status)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Validate a returned list of glossary term elements.</div>
+</div>
 </div>
 </div>
 </div>
@@ -276,7 +327,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getAssetManagerClient(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)">
 <h3>getAssetManagerClient</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../client/ExternalAssetManagerClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">ExternalAssetManagerClient</a></span>&nbsp;<span class="element-name">getAssetManagerClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../client/exchange/ExternalAssetManagerClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.exchange">ExternalAssetManagerClient</a></span>&nbsp;<span class="element-name">getAssetManagerClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformRootURL,
  <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;testCaseName)</span>
@@ -298,12 +349,34 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getGlossaryExchangeClient(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)">
 <h3>getGlossaryExchangeClient</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../client/GlossaryExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">GlossaryExchangeClient</a></span>&nbsp;<span class="element-name">getGlossaryExchangeClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../client/exchange/GlossaryExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.exchange">GlossaryExchangeClient</a></span>&nbsp;<span class="element-name">getGlossaryExchangeClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformRootURL,
  <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;testCaseName)</span>
                                                     throws <span class="exceptions"><a href="../../../../fvt/utilities/exceptions/FVTUnexpectedCondition.html" title="class in org.odpi.openmetadata.fvt.utilities.exceptions">FVTUnexpectedCondition</a></span></div>
 <div class="block">Create and return a glossary exchange client.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to connect to</dd>
+<dd><code>serverPlatformRootURL</code> - the network address of the server running the OMAS REST servers</dd>
+<dd><code>auditLog</code> - logging destination</dd>
+<dd><code>testCaseName</code> - name of calling test case</dd>
+<dt>Returns:</dt>
+<dd>client</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../fvt/utilities/exceptions/FVTUnexpectedCondition.html" title="class in org.odpi.openmetadata.fvt.utilities.exceptions">FVTUnexpectedCondition</a></code> - the test case failed</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getGlossaryManagementClient(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)">
+<h3>getGlossaryManagementClient</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../client/management/GlossaryManagementClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.management">GlossaryManagementClient</a></span>&nbsp;<span class="element-name">getGlossaryManagementClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformRootURL,
+ <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;testCaseName)</span>
+                                                        throws <span class="exceptions"><a href="../../../../fvt/utilities/exceptions/FVTUnexpectedCondition.html" title="class in org.odpi.openmetadata.fvt.utilities.exceptions">FVTUnexpectedCondition</a></span></div>
+<div class="block">Create and return a glossary management client.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
@@ -399,9 +472,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getGlossary(org.odpi.openmetadata.accessservices.assetmanager.client.GlossaryExchangeClient,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map)">
+<section class="detail" id="getGlossary(org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GlossaryExchangeClient,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map)">
 <h3>getGlossary</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getGlossary</span><wbr><span class="parameters">(<a href="../../client/GlossaryExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">GlossaryExchangeClient</a>&nbsp;client,
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getGlossary</span><wbr><span class="parameters">(<a href="../../client/exchange/GlossaryExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.exchange">GlossaryExchangeClient</a>&nbsp;client,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;testCaseName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;activityName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -444,6 +517,109 @@ loadScripts(document, 'script');</script>
 <dd>unique identifier of the new glossary</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../fvt/utilities/exceptions/FVTUnexpectedCondition.html" title="class in org.odpi.openmetadata.fvt.utilities.exceptions">FVTUnexpectedCondition</a></code> - error</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getGlossary(org.odpi.openmetadata.accessservices.assetmanager.client.management.GlossaryManagementClient,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<h3>getGlossary</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getGlossary</span><wbr><span class="parameters">(<a href="../../client/management/GlossaryManagementClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.management">GlossaryManagementClient</a>&nbsp;client,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;testCaseName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;activityName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryDisplayName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryDescription,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryUsage,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryLanguage)</span>
+                      throws <span class="exceptions"><a href="../../../../fvt/utilities/exceptions/FVTUnexpectedCondition.html" title="class in org.odpi.openmetadata.fvt.utilities.exceptions">FVTUnexpectedCondition</a></span></div>
+<div class="block">Create a new glossary object.  The identifier may be null.  The glossary is retrieved and the return values tested to
+ be sure the new element was created correctly.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>client</code> - glossary client</dd>
+<dd><code>testCaseName</code> - calling test case</dd>
+<dd><code>activityName</code> - calling activity within the test case</dd>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>glossaryName</code> - qualified name of glossary</dd>
+<dd><code>glossaryDisplayName</code> - display name for glossary</dd>
+<dd><code>glossaryDescription</code> - description of glossary</dd>
+<dd><code>glossaryUsage</code> - expected usage of the glossary</dd>
+<dd><code>glossaryLanguage</code> - language used in the glossary</dd>
+<dt>Returns:</dt>
+<dd>unique identifier of the new glossary</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../fvt/utilities/exceptions/FVTUnexpectedCondition.html" title="class in org.odpi.openmetadata.fvt.utilities.exceptions">FVTUnexpectedCondition</a></code> - error</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="validateGlossaryTermElement(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus)">
+<h3>validateGlossaryTermElement</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">validateGlossaryTermElement</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;testCaseName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;activityName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;stepName,
+ <a href="../../metadataelements/GlossaryTermElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">GlossaryTermElement</a>&nbsp;retrievedElement,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryTermGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;extendedProperties,
+ <a href="../../../../frameworks/connectors/properties/beans/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStatus</a>&nbsp;status)</span>
+                                       throws <span class="exceptions"><a href="../../../../fvt/utilities/exceptions/FVTUnexpectedCondition.html" title="class in org.odpi.openmetadata.fvt.utilities.exceptions">FVTUnexpectedCondition</a></span></div>
+<div class="block">Verify that an element returned is as expected.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>testCaseName</code> - calling test case</dd>
+<dd><code>activityName</code> - which test</dd>
+<dd><code>stepName</code> - which step in test</dd>
+<dd><code>retrievedElement</code> - element to test</dd>
+<dd><code>glossaryTermGUID</code> - guid of element of interest</dd>
+<dd><code>typeName</code> - name of type of glossary term</dd>
+<dd><code>qualifiedName</code> - expected qualified name</dd>
+<dd><code>displayName</code> - expected display name</dd>
+<dd><code>description</code> - expected description</dd>
+<dd><code>extendedProperties</code> - additional properties for subtype</dd>
+<dd><code>status</code> - expected status</dd>
+<dt>Returns:</dt>
+<dd>boolean to indicate that the element matched the supplied GUID</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../fvt/utilities/exceptions/FVTUnexpectedCondition.html" title="class in org.odpi.openmetadata.fvt.utilities.exceptions">FVTUnexpectedCondition</a></code> - something was wrong.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="validateGlossaryTermElements(java.lang.String,java.lang.String,java.lang.String,java.util.List,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus)">
+<h3>validateGlossaryTermElements</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateGlossaryTermElements</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;testCaseName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;activityName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;stepName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../metadataelements/GlossaryTermElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">GlossaryTermElement</a>&gt;&nbsp;retrievedElements,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryTermGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;extendedProperties,
+ <a href="../../../../frameworks/connectors/properties/beans/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStatus</a>&nbsp;status)</span>
+                                     throws <span class="exceptions"><a href="../../../../fvt/utilities/exceptions/FVTUnexpectedCondition.html" title="class in org.odpi.openmetadata.fvt.utilities.exceptions">FVTUnexpectedCondition</a></span></div>
+<div class="block">Validate a returned list of glossary term elements.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>testCaseName</code> - calling test case</dd>
+<dd><code>activityName</code> - which test</dd>
+<dd><code>stepName</code> - which step in test</dd>
+<dd><code>retrievedElements</code> - elements retrieved from the repository</dd>
+<dd><code>glossaryTermGUID</code> - unique identifier of the element to focus on</dd>
+<dd><code>typeName</code> - name of type of glossary term</dd>
+<dd><code>qualifiedName</code> - expected qualified name</dd>
+<dd><code>displayName</code> - expected display name</dd>
+<dd><code>description</code> - expected description</dd>
+<dd><code>extendedProperties</code> - additional properties for subtype</dd>
+<dd><code>status</code> - expected status</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../fvt/utilities/exceptions/FVTUnexpectedCondition.html" title="class in org.odpi.openmetadata.fvt.utilities.exceptions">FVTUnexpectedCondition</a></code> - something was wrong.</dd>
 </dl>
 </section>
 </li>

@@ -107,17 +107,16 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient,org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient,org.odpi.openmetadata.integrationservices.lineage.connector.OpenLineageListenerManager,org.odpi.openmetadata.accessservices.assetmanager.client.DataAssetExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.LineageExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.GovernanceExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.StewardshipExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerEventClient,boolean,org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">LineageIntegratorContext</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient,org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient,org.odpi.openmetadata.integrationservices.lineage.connector.OpenLineageListenerManager,org.odpi.openmetadata.accessservices.assetmanager.client.exchange.DataAssetExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.exchange.LineageExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GovernanceExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerEventClient,boolean,org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">LineageIntegratorContext</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorUserId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../../frameworks/integration/client/OpenIntegrationClient.html" title="class in org.odpi.openmetadata.frameworks.integration.client">OpenIntegrationClient</a>&nbsp;openIntegrationClient,
  <a href="../../../frameworks/governanceaction/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenMetadataClient</a>&nbsp;openMetadataStoreClient,
  <a href="OpenLineageListenerManager.html" title="interface in org.odpi.openmetadata.integrationservices.lineage.connector">OpenLineageListenerManager</a>&nbsp;openLineageListenerManager,
- <a href="../../../accessservices/assetmanager/client/DataAssetExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">DataAssetExchangeClient</a>&nbsp;dataAssetExchangeClient,
- <a href="../../../accessservices/assetmanager/client/LineageExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">LineageExchangeClient</a>&nbsp;lineageExchangeClient,
- <a href="../../../accessservices/assetmanager/client/GovernanceExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">GovernanceExchangeClient</a>&nbsp;governanceExchangeClient,
- <a href="../../../accessservices/assetmanager/client/StewardshipExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">StewardshipExchangeClient</a>&nbsp;stewardshipExchangeClient,
+ <a href="../../../accessservices/assetmanager/client/exchange/DataAssetExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.exchange">DataAssetExchangeClient</a>&nbsp;dataAssetExchangeClient,
+ <a href="../../../accessservices/assetmanager/client/exchange/LineageExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.exchange">LineageExchangeClient</a>&nbsp;lineageExchangeClient,
+ <a href="../../../accessservices/assetmanager/client/exchange/GovernanceExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.exchange">GovernanceExchangeClient</a>&nbsp;governanceExchangeClient,
  <a href="../../../accessservices/assetmanager/client/AssetManagerEventClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">AssetManagerEventClient</a>&nbsp;eventClient,
  boolean&nbsp;generateIntegrationReport,
  <a href="../../../frameworks/integration/contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a>&nbsp;permittedSynchronization,
@@ -996,7 +995,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient,org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient,org.odpi.openmetadata.integrationservices.lineage.connector.OpenLineageListenerManager,org.odpi.openmetadata.accessservices.assetmanager.client.DataAssetExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.LineageExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.GovernanceExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.StewardshipExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerEventClient,boolean,org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient,org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient,org.odpi.openmetadata.integrationservices.lineage.connector.OpenLineageListenerManager,org.odpi.openmetadata.accessservices.assetmanager.client.exchange.DataAssetExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.exchange.LineageExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GovernanceExchangeClient,org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerEventClient,boolean,org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
 <h3>LineageIntegratorContext</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">LineageIntegratorContext</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
@@ -1005,10 +1004,9 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
  <a href="../../../frameworks/integration/client/OpenIntegrationClient.html" title="class in org.odpi.openmetadata.frameworks.integration.client">OpenIntegrationClient</a>&nbsp;openIntegrationClient,
  <a href="../../../frameworks/governanceaction/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenMetadataClient</a>&nbsp;openMetadataStoreClient,
  <a href="OpenLineageListenerManager.html" title="interface in org.odpi.openmetadata.integrationservices.lineage.connector">OpenLineageListenerManager</a>&nbsp;openLineageListenerManager,
- <a href="../../../accessservices/assetmanager/client/DataAssetExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">DataAssetExchangeClient</a>&nbsp;dataAssetExchangeClient,
- <a href="../../../accessservices/assetmanager/client/LineageExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">LineageExchangeClient</a>&nbsp;lineageExchangeClient,
- <a href="../../../accessservices/assetmanager/client/GovernanceExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">GovernanceExchangeClient</a>&nbsp;governanceExchangeClient,
- <a href="../../../accessservices/assetmanager/client/StewardshipExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">StewardshipExchangeClient</a>&nbsp;stewardshipExchangeClient,
+ <a href="../../../accessservices/assetmanager/client/exchange/DataAssetExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.exchange">DataAssetExchangeClient</a>&nbsp;dataAssetExchangeClient,
+ <a href="../../../accessservices/assetmanager/client/exchange/LineageExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.exchange">LineageExchangeClient</a>&nbsp;lineageExchangeClient,
+ <a href="../../../accessservices/assetmanager/client/exchange/GovernanceExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.exchange">GovernanceExchangeClient</a>&nbsp;governanceExchangeClient,
  <a href="../../../accessservices/assetmanager/client/AssetManagerEventClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">AssetManagerEventClient</a>&nbsp;eventClient,
  boolean&nbsp;generateIntegrationReport,
  <a href="../../../frameworks/integration/contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a>&nbsp;permittedSynchronization,
@@ -1030,7 +1028,6 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <dd><code>dataAssetExchangeClient</code> - client for data asset requests</dd>
 <dd><code>lineageExchangeClient</code> - client for lineage requests</dd>
 <dd><code>governanceExchangeClient</code> - client for governance actions and related elements</dd>
-<dd><code>stewardshipExchangeClient</code> - client for attaching governance metadata</dd>
 <dd><code>eventClient</code> - client managing listeners for the OMAS OutTopic</dd>
 <dd><code>generateIntegrationReport</code> - should the connector generate an integration reports?</dd>
 <dd><code>permittedSynchronization</code> - the direction of integration permitted by the integration connector</dd>
@@ -3451,7 +3448,6 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>elementGUID</code> - unique identifier of the metadata element to update</dd>
-<dd><code>elementExternalIdentifier</code> - unique identifier of the element in the external asset manager</dd>
 <dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
@@ -3473,7 +3469,6 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>elementGUID</code> - unique identifier of the metadata element to update</dd>
-<dd><code>elementExternalIdentifier</code> - unique identifier of the element in the external asset manager</dd>
 <dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>

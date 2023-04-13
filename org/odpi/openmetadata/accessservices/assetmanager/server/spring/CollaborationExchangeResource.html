@@ -112,34 +112,41 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addCommentReply(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.CommentProperties)" class="member-name-link">addCommentReply</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addCommentReply(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.ReferenceableUpdateRequestBody)" class="member-name-link">addCommentReply</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;commentGUID,
- <a href="../../properties/CommentProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">CommentProperties</a>&nbsp;requestBody)</code></div>
+ boolean&nbsp;isPublic,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ <a href="../../rest/ReferenceableUpdateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">ReferenceableUpdateRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Adds a reply to a comment.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addCommentToElement(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.CommentProperties)" class="member-name-link">addCommentToElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addCommentToElement(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.ReferenceableUpdateRequestBody)" class="member-name-link">addCommentToElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- <a href="../../properties/CommentProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">CommentProperties</a>&nbsp;requestBody)</code></div>
+ boolean&nbsp;isPublic,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ <a href="../../rest/ReferenceableUpdateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">ReferenceableUpdateRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Creates a comment and attaches it to an element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addLikeToElement(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.FeedbackProperties)" class="member-name-link">addLikeToElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addLikeToElement(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.LikeProperties)" class="member-name-link">addLikeToElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- <a href="../../properties/FeedbackProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">FeedbackProperties</a>&nbsp;requestBody)</code></div>
+ boolean&nbsp;isPublic,
+ <a href="../../properties/LikeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">LikeProperties</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Creates a "like" object and attaches it to an element.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addRatingToElement(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.RatingProperties)" class="member-name-link">addRatingToElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addRatingToElement(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.RatingProperties)" class="member-name-link">addRatingToElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ boolean&nbsp;isPublic,
  <a href="../../properties/RatingProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">RatingProperties</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Adds a star rating and optional review text to the element.</div>
@@ -187,18 +194,24 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the list of informal tags containing the supplied string in either the name or description.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/CommentElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">CommentElementsResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAttachedComments(java.lang.String,java.lang.String,java.lang.String,int,int)" class="member-name-link">getAttachedComments</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAttachedComments(java.lang.String,java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getAttachedComments</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  int&nbsp;startFrom,
- int&nbsp;pageSize)</code></div>
+ int&nbsp;pageSize,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ <a href="../../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the comments attached to an element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/CommentElementResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">CommentElementResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getComment(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getComment</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getComment(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getComment</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;commentGUID)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;commentGUID,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ <a href="../../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the requested comment.</div>
 </div>
@@ -237,11 +250,13 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the tags exactly matching the supplied name.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeCommentFromElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)" class="member-name-link">removeCommentFromElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeCommentFromElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.ReferenceableUpdateRequestBody)" class="member-name-link">removeCommentFromElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;commentGUID,
- <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</code></div>
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ <a href="../../rest/ReferenceableUpdateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">ReferenceableUpdateRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Removes a comment added to the element by this user.</div>
 </div>
@@ -271,11 +286,14 @@ loadScripts(document, 'script');</script>
 <div class="block">Removes a link between a tag and an element that was added by this user.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateComment(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.CommentProperties)" class="member-name-link">updateComment</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateComment(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.ReferenceableUpdateRequestBody)" class="member-name-link">updateComment</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;commentGUID,
- <a href="../../properties/CommentProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">CommentProperties</a>&nbsp;requestBody)</code></div>
+ boolean&nbsp;isMergeUpdate,
+ boolean&nbsp;isPublic,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ <a href="../../rest/ReferenceableUpdateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">ReferenceableUpdateRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update an existing comment.</div>
 </div>
@@ -320,26 +338,32 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="addCommentReply(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.CommentProperties)">
+<section class="detail" id="addCommentReply(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.ReferenceableUpdateRequestBody)">
 <h3>addCommentReply</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/comments/{commentGUID}/replies")
+<div class="member-signature"><span class="annotations">@PostMapping(path="/comments/{commentGUID}/replies")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">addCommentReply</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;commentGUID,
+ @RequestParam
+ boolean&nbsp;isPublic,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forLineage,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forDuplicateProcessing,
  @RequestBody
- <a href="../../properties/CommentProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">CommentProperties</a>&nbsp;requestBody)</span></div>
+ <a href="../../rest/ReferenceableUpdateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">ReferenceableUpdateRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Adds a reply to a comment.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request.</dd>
 <dd><code>userId</code> - String - userId of user making request.</dd>
-<dd><code>elementGUID</code> - String - unique id of element that this chain of comments is linked.</dd>
 <dd><code>commentGUID</code> - String - unique id for an existing comment.  Used to add a reply to a comment.</dd>
+<dd><code>isPublic</code> - is this visible to other people</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dd><code>requestBody</code> - containing type of comment enum and the text of the comment.</dd>
 <dt>Returns:</dt>
 <dd>elementGUID for new comment object or
@@ -351,7 +375,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="addCommentToElement(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.CommentProperties)">
+<section class="detail" id="addCommentToElement(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.ReferenceableUpdateRequestBody)">
 <h3>addCommentToElement</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/comments")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">addCommentToElement</span><wbr><span class="parameters">(@PathVariable
@@ -360,14 +384,23 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ @RequestParam
+ boolean&nbsp;isPublic,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forLineage,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forDuplicateProcessing,
  @RequestBody
- <a href="../../properties/CommentProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">CommentProperties</a>&nbsp;requestBody)</span></div>
+ <a href="../../rest/ReferenceableUpdateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">ReferenceableUpdateRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Creates a comment and attaches it to an element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request.</dd>
 <dd><code>userId</code> - String - userId of user making request.</dd>
 <dd><code>elementGUID</code> - String - unique id for the element.</dd>
+<dd><code>isPublic</code> - is this visible to other people</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dd><code>requestBody</code> - containing type of comment enum and the text of the comment.</dd>
 <dt>Returns:</dt>
 <dd>elementGUID for new comment object or
@@ -379,7 +412,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="addLikeToElement(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.FeedbackProperties)">
+<section class="detail" id="addLikeToElement(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.LikeProperties)">
 <h3>addLikeToElement</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/likes")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">addLikeToElement</span><wbr><span class="parameters">(@PathVariable
@@ -388,14 +421,17 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ @RequestParam
+ boolean&nbsp;isPublic,
  @RequestBody
- <a href="../../properties/FeedbackProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">FeedbackProperties</a>&nbsp;requestBody)</span></div>
+ <a href="../../properties/LikeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">LikeProperties</a>&nbsp;requestBody)</span></div>
 <div class="block">Creates a "like" object and attaches it to an element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request.</dd>
 <dd><code>userId</code> - String - userId of user making request.</dd>
 <dd><code>elementGUID</code> - String - unique id for the element.</dd>
+<dd><code>isPublic</code> - is this visible to other people</dd>
 <dd><code>requestBody</code> - feedback request body.</dd>
 <dt>Returns:</dt>
 <dd>void or
@@ -407,7 +443,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="addRatingToElement(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.RatingProperties)">
+<section class="detail" id="addRatingToElement(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.RatingProperties)">
 <h3>addRatingToElement</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/ratings")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">addRatingToElement</span><wbr><span class="parameters">(@PathVariable
@@ -416,6 +452,8 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ @RequestParam
+ boolean&nbsp;isPublic,
  @RequestBody
  <a href="../../properties/RatingProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">RatingProperties</a>&nbsp;requestBody)</span></div>
 <div class="block">Adds a star rating and optional review text to the element.</div>
@@ -424,6 +462,7 @@ loadScripts(document, 'script');</script>
 <dd><code>serverName</code> - name of the server instances for this request.</dd>
 <dd><code>userId</code> - String - userId of user making request.</dd>
 <dd><code>elementGUID</code> - String - unique id for the element.</dd>
+<dd><code>isPublic</code> - is this visible to other people</dd>
 <dd><code>requestBody</code> - containing the StarRating and user review of element.</dd>
 <dt>Returns:</dt>
 <dd>elementGUID for new review object or
@@ -691,7 +730,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="removeCommentFromElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">
+<section class="detail" id="removeCommentFromElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.ReferenceableUpdateRequestBody)">
 <h3>removeCommentFromElement</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/comments/{commentGUID}/remove")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">removeCommentFromElement</span><wbr><span class="parameters">(@PathVariable
@@ -702,8 +741,12 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;commentGUID,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forLineage,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forDuplicateProcessing,
  @RequestBody(required=false)
- <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../rest/ReferenceableUpdateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">ReferenceableUpdateRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Removes a comment added to the element by this user.  This deletes the link to the comment, the comment itself and any comment replies attached to it.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -721,15 +764,21 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getComment(java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="getComment(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody)">
 <h3>getComment</h3>
-<div class="member-signature"><span class="annotations">@GetMapping(path="/comments/{commentGUID}")
+<div class="member-signature"><span class="annotations">@PostMapping(path="/comments/{commentGUID}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/CommentElementResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">CommentElementResponse</a></span>&nbsp;<span class="element-name">getComment</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;commentGUID)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;commentGUID,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forLineage,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forDuplicateProcessing,
+ @RequestBody(required=false)
+ <a href="../../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Return the requested comment.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -745,9 +794,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getAttachedComments(java.lang.String,java.lang.String,java.lang.String,int,int)">
+<section class="detail" id="getAttachedComments(java.lang.String,java.lang.String,java.lang.String,int,int,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody)">
 <h3>getAttachedComments</h3>
-<div class="member-signature"><span class="annotations">@GetMapping(path="/elements/{elementGUID}/comments")
+<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/comments/retrieve")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/CommentElementsResponse.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">CommentElementsResponse</a></span>&nbsp;<span class="element-name">getAttachedComments</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
@@ -757,7 +806,13 @@ loadScripts(document, 'script');</script>
  @RequestParam
  int&nbsp;startFrom,
  @RequestParam
- int&nbsp;pageSize)</span></div>
+ int&nbsp;pageSize,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forLineage,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forDuplicateProcessing,
+ @RequestBody(required=false)
+ <a href="../../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Return the comments attached to an element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -859,26 +914,35 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateComment(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.CommentProperties)">
+<section class="detail" id="updateComment(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.ReferenceableUpdateRequestBody)">
 <h3>updateComment</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="elements/{elementGUID}/comments/{commentGUID}/update")
+<div class="member-signature"><span class="annotations">@PostMapping(path="/comments/{commentGUID}/update")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateComment</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;commentGUID,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;isMergeUpdate,
+ @RequestParam
+ boolean&nbsp;isPublic,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forLineage,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forDuplicateProcessing,
  @RequestBody
- <a href="../../properties/CommentProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">CommentProperties</a>&nbsp;requestBody)</span></div>
+ <a href="../../rest/ReferenceableUpdateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">ReferenceableUpdateRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Update an existing comment.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request.</dd>
 <dd><code>userId</code> - userId of user making request.</dd>
-<dd><code>elementGUID</code> - unique identifier for the element that the comment is attached to (directly or indirectly).</dd>
 <dd><code>commentGUID</code> - unique identifier for the comment to change.</dd>
+<dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
+<dd><code>isPublic</code> - is this visible to other people</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dd><code>requestBody</code> - containing type of comment enum and the text of the comment.</dd>
 <dt>Returns:</dt>
 <dd>void or

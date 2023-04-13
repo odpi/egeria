@@ -61,7 +61,8 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="package-signature">package <span class="element-name">org.odpi.openmetadata.accessservices.assetmanager.client</span></div>
 <section class="package-description" id="package-description">
-<div class="block">These are the Java clients for the Asset Manager OMAS.</div>
+<div class="block">These are the Java clients for the Asset Manager OMAS that can be used either by integration services or external asset managers that are
+ using Egeria directly as their metadata management services.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -71,6 +72,14 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Package</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><a href="exchange/package-summary.html">org.odpi.openmetadata.accessservices.assetmanager.client.exchange</a></div>
+<div class="col-last even-row-color">
+<div class="block">These are the Java clients for the Asset Manager OMAS that are used by the Open Metadata Integration Services (OMISs).</div>
+</div>
+<div class="col-first odd-row-color"><a href="management/package-summary.html">org.odpi.openmetadata.accessservices.assetmanager.client.management</a></div>
+<div class="col-last odd-row-color">
+<div class="block">These are the Java clients for the Asset Manager OMAS that are used by catalog services that wish to use Egeria as their metadata services.</div>
+</div>
 <div class="col-first even-row-color"><a href="rest/package-summary.html">org.odpi.openmetadata.accessservices.assetmanager.client.rest</a></div>
 <div class="col-last even-row-color">
 <div class="block">This package provides the support for issuing REST API calls to the OMAG Server and processing common error responses
@@ -85,76 +94,27 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="AssetManagerEventClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">AssetManagerEventClient</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="AssetManagerBaseClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">AssetManagerBaseClient</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">AssetManagerBaseClient supports the common properties and functions for the Asset Manager OMAS.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="AssetManagerEventClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">AssetManagerEventClient</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">AssetManagerEventClient provides the implementation to manage the interaction with the server to
  set up a listener to support the receipt of inbound events from the Asset Manager OMAS Out Topic.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="CollaborationExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">CollaborationExchangeClient</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">DataElementExchangeClient is the client for managing comments, ratings, likes and tags.</div>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="ConnectedAssetClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">ConnectedAssetClient</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">ConnectedAssetClient is used by applications and tools as a factory for Open
  Connector Framework (OCF) connectors.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ConnectionExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">ConnectionExchangeClient</a></div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="OpenIntegrationServiceClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">OpenIntegrationServiceClient</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">ConnectionExchangeClient is the client for managing Connections, Endpoints and ConnectorTypes.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DataAssetExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">DataAssetExchangeClient</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">DataAssetExchangeClient is the client for managing Data Assets, Schemas and Connections.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ExchangeClientBase.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">ExchangeClientBase</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">ExchangeClientBase provides the base class for the clients called XXXXExchangeClient</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ExternalAssetManagerClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">ExternalAssetManagerClient</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ExternalAssetManagerClient is the client for setting up the SoftwareServerCapabilities that represent asset managers.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ExternalReferenceExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">ExternalReferenceExchangeClient</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">ExternalReferenceExchangeClient is the client for managing external references.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="GlossaryExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">GlossaryExchangeClient</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">GlossaryExchangeClient is the client for managing resources from a glossary.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="GovernanceExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">GovernanceExchangeClient</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">GovernanceExchangeClient is the client for managing governance policies and rules.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="InfrastructureExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">InfrastructureExchangeClient</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">InfrastructureExchangeClient is the client for managing Servers and their services and infrastructure.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="LineageExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">LineageExchangeClient</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">LineageExchangeClient is the client for managing processes and lineage linkage.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="OpenIntegrationServiceClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">OpenIntegrationServiceClient</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">OpenIntegrationServiceClient provides an interface to the open integration service.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="OpenMetadataStoreClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">OpenMetadataStoreClient</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="OpenMetadataStoreClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">OpenMetadataStoreClient</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">OpenMetadataClientBase provides an interface to the open metadata store.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SchemaExchangeClientBase.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">SchemaExchangeClientBase</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ExchangeClientBase provides the base class for the clients that implement SchemaExchangeInterface</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="StewardshipExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">StewardshipExchangeClient</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">StewardshipExchangeClient is the client for todos and tasks.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ValidValuesExchangeClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">ValidValuesExchangeClient</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ValidValuesExchangeClient provides the API operations to create and maintain lists of valid
- value definitions grouped into a valid value set.</div>
 </div>
 </div>
 </div>

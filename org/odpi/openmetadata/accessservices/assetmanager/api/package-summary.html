@@ -41,7 +41,7 @@ loadScripts(document, 'script');</script>
 <ul class="sub-nav-list">
 <li>Package:&nbsp;</li>
 <li><a href="#package-description">Description</a>&nbsp;|&nbsp;</li>
-<li>Related Packages&nbsp;|&nbsp;</li>
+<li><a href="#related-package-summary">Related Packages</a>&nbsp;|&nbsp;</li>
 <li><a href="#class-summary">Classes and Interfaces</a></li>
 </ul>
 </div>
@@ -61,29 +61,28 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="package-signature">package <span class="element-name">org.odpi.openmetadata.accessservices.assetmanager.api</span></div>
 <section class="package-description" id="package-description">
-<div class="block">This package contains the different interfaces of the asset manager.
-
- Each interface is focused on the exchange of groups of related metadata elements between a third party
- asset manager and open metadata.
-
- <ul>
-     <li>AssetManagerInterface - interface for managing external identifiers</li>
-     <li>CollaborationExchangeInterface - for exchanging feedback information from users such as likes, ratings and comments.
-     There is also support for informal tags.</li>
-     <li>DataAssetExchange - for exchange of data related assets, their schemas, connections and lineage.</li>
-     <li>GlossaryExchangeInterface - for exchange of Glossaries, GlossaryCategories, GlossaryTerms and
-     their relationships and classifications. </li>
-     <li>GovernanceExchangeInterface - for exchange of information about policies and rules.</li>
-     <li>InfrastructureExchangeInterface - for exchanging metadata about hosts, containers, applications,
-     servers and server capabilities.</li>
-     <li>LineageExchangeInterface - for exchanging process definitions and lineage linkage.</li>
-     <li>StewardshipExchangeInterface - for exchanging information about classifications, exceptions, requests for actions and
-     resolutions.</li>
-     <li>ValidValuesExchangeInterface - for exchanging information about reference data.</li>
- </ul></div>
+<div class="block">This package contains Asset Manager OMAS's event interfaces.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
+<li>
+<div id="related-package-summary">
+<div class="caption"><span>Related Packages</span></div>
+<div class="summary-table two-column-summary">
+<div class="table-header col-first">Package</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><a href="exchange/package-summary.html">org.odpi.openmetadata.accessservices.assetmanager.api.exchange</a></div>
+<div class="col-last even-row-color">
+<div class="block">This package contains the different interfaces of the asset manager when it is being used to exchange metadata with one or
+ more external asset managers via the integration services (OMISs).</div>
+</div>
+<div class="col-first odd-row-color"><a href="management/package-summary.html">org.odpi.openmetadata.accessservices.assetmanager.api.management</a></div>
+<div class="col-last odd-row-color">
+<div class="block">This package provides interfaces for applications that wish to use Egeria as their metadata repository.</div>
+</div>
+</div>
+</div>
+</li>
 <li>
 <div id="class-summary">
 <div class="caption"><span>Interfaces</span></div>
@@ -99,68 +98,6 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color class-summary class-summary-tab1">
 <div class="block">AssetManagerEventListener is the interface that a client implements to
  register to receive the events from the Asset Manager OMAS's out topic.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab1"><a href="AssetManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">AssetManagerInterface</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab1">
-<div class="block">AssetManagerInterface provides the interface for retrieving the identity of an external asset manager.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab1"><a href="CollaborationExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">CollaborationExchangeInterface</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab1">
-<div class="block">The CollaborationExchangeInterface supports the exchange of comments, likes, reviews/ratings and
- informal tags.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab1"><a href="ConnectionExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ConnectionExchangeInterface</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab1">
-<div class="block">ConnectionExchangeInterface provides methods to define connections and their supporting objects
-
- The interface supports the following types of objects
-
- 
-     Connections - the connections used to create connector instances that can access the connection.
-     ConnectorTypes - description of a specific that can be used to access the connection.
-     ConnectorCategories - the network information needed to access the connection.
-     Endpoints - the network information needed to access the connection.
- </div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab1"><a href="DataAssetExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">DataAssetExchangeInterface</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab1">
-<div class="block">DataAssetExchangeInterface provides methods to define data assets, their schemas and connections, along with supporting objects,
- and lineage.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab1"><a href="ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab1">
-<div class="block">The ExternalReferencesInterface is used by the governance team to define external references to elements within the governance program.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab1"><a href="GlossaryExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">GlossaryExchangeInterface</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab1">
-<div class="block">GlossaryExchangeInterface defines the client side interface for the Asset Manager OMAS that is
- relevant for managing glossaries.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab1"><a href="GovernanceExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">GovernanceExchangeInterface</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab1">
-<div class="block">The GovernanceExchangeInterface enables the exchange of governance definitions between an external asset manager and open metadata.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab1"><a href="InfrastructureExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">InfrastructureExchangeInterface</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab1">
-<div class="block">The InfrastructureExchangeInterface supports the exchange of metadata about Hosts, SoftwareServerPlatforms, SoftwareServers
- and SoftwareServerCapabilities such as Applications.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab1"><a href="LineageExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">LineageExchangeInterface</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab1">
-<div class="block">The LineageExchangeInterface supports the exchange of process definitions and lineage linkage.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab1"><a href="SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab1">
-<div class="block">SchemaExchangeInterface defines the common methods for managing schemas.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab1"><a href="StewardshipExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">StewardshipExchangeInterface</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab1">
-<div class="block">The StewardshipExchangeInterface supports the exchange of relationships (such as SemanticAssignment)
- and classifications that are added by stewards (or automated stewardship processes) such as Confidentiality.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab1"><a href="ValidValuesExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ValidValuesExchangeInterface</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab1">
-<div class="block">The ValidValuesExchangeInterface supports the exchanges of valid values and reference data.</div>
 </div>
 </div>
 </div>
