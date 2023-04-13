@@ -84,7 +84,6 @@ public class RatingConverter<B> extends AssetManagerOMASConverter<B>
 
                     properties.setReview(this.removeReview(instanceProperties));
                     properties.setStarRating(this.removeStarRatingFromProperties(instanceProperties));
-                    properties.setIsPublic(this.removeIsPublic(instanceProperties));
                 }
                 else
                 {

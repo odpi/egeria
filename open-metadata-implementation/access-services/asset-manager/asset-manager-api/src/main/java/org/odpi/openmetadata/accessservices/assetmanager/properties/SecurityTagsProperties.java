@@ -25,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SecurityTagsProperties implements Serializable
+public class SecurityTagsProperties extends ClassificationProperties
 {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -40,6 +40,7 @@ public class SecurityTagsProperties implements Serializable
      */
     public SecurityTagsProperties()
     {
+        super();
     }
 
 
@@ -50,6 +51,8 @@ public class SecurityTagsProperties implements Serializable
      */
     public SecurityTagsProperties(SecurityTagsProperties template)
     {
+        super(template);
+
         if (template != null)
         {
             this.securityLabels     = template.getSecurityLabels();
@@ -144,7 +147,7 @@ public class SecurityTagsProperties implements Serializable
 
 
     /**
-     * Setup the map from operation to list of security groups.
+     * Set up the map from operation to list of security groups.
      *
      * @param accessGroups map
      */
@@ -166,6 +169,9 @@ public class SecurityTagsProperties implements Serializable
                        "securityLabels=" + securityLabels +
                        ", securityProperties=" + securityProperties +
                        ", accessGroups=" + accessGroups +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", extendedProperties=" + getExtendedProperties() +
                        '}';
     }
 
@@ -187,6 +193,10 @@ public class SecurityTagsProperties implements Serializable
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
         return Objects.equals(securityLabels, that.securityLabels) &&
                        Objects.equals(securityProperties, that.securityProperties) &&
                        Objects.equals(accessGroups, that.accessGroups);
@@ -201,6 +211,6 @@ public class SecurityTagsProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(securityLabels, securityProperties, accessGroups);
+        return Objects.hash(super.hashCode(), securityLabels, securityProperties, accessGroups);
     }
 }

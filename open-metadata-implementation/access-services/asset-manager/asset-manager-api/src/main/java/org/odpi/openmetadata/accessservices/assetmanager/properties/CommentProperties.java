@@ -32,7 +32,6 @@ public class CommentProperties extends ReferenceableProperties
     private CommentType commentType = null;
     private String      commentText = null;
     private String      user        = null;
-    private boolean     isPublic  = false;
 
     /**
      * Default constructor
@@ -60,7 +59,6 @@ public class CommentProperties extends ReferenceableProperties
             commentType = template.getCommentType();
             user        = template.getUser();
             commentText = template.getCommentText();
-            isPublic    = template.getIsPublic();
         }
     }
 
@@ -131,29 +129,6 @@ public class CommentProperties extends ReferenceableProperties
     }
 
 
-
-    /**
-     * Return whether the feedback is private or not
-     *
-     * @return boolean
-     */
-    public boolean getIsPublic()
-    {
-        return isPublic;
-    }
-
-
-    /**
-     * Set up the privacy flag.
-     *
-     * @param aPrivate boolean
-     */
-    public void setIsPublic(boolean aPrivate)
-    {
-        isPublic = aPrivate;
-    }
-
-
     /**
      * Standard toString method.
      *
@@ -166,7 +141,6 @@ public class CommentProperties extends ReferenceableProperties
                        "commentType=" + commentType +
                        ", commentText='" + commentText + '\'' +
                        ", user='" + user + '\'' +
-                       ", isPublic=" + isPublic +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", effectiveFrom=" + getEffectiveFrom() +
@@ -201,7 +175,6 @@ public class CommentProperties extends ReferenceableProperties
         }
         CommentProperties that = (CommentProperties) objectToCompare;
         return commentType == that.commentType &&
-                       isPublic == that.isPublic &&
                        Objects.equals(commentText, that.commentText) &&
                        Objects.equals(user, that.user);
     }
@@ -215,6 +188,6 @@ public class CommentProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), commentType, commentText, user, isPublic);
+        return Objects.hash(super.hashCode(), commentType, commentText, user);
     }
 }

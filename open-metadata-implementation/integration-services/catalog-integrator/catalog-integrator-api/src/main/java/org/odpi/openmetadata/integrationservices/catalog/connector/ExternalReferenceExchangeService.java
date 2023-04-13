@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.integrationservices.catalog.connector;
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.ExternalReferenceExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ExternalReferenceExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceLinkElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;

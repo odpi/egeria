@@ -2,21 +2,24 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.server;
 
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CommentElement;
+import org.odpi.openmetadata.accessservices.assetmanager.handlers.CommentExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.InformalTagElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.LikeElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RatingElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.CommentProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.CommentType;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.FeedbackProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.LikeProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.RatingProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.StarRating;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.TagProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.CommentElementResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.CommentElementsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagUpdateRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.ReferenceableUpdateRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -26,7 +29,6 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.generichandlers.CommentHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.InformalTagHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.LikeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
@@ -66,6 +68,7 @@ public class CollaborationExchangeRESTServices
      * @param serverName name of the server instances for this request
      * @param userId      String - userId of user making request.
      * @param guid        String - unique id for the element.
+     * @param isPublic is this visible to other people
      * @param requestBody containing the StarRating and user review of referenceable (probably element).
      *
      * @return void or
@@ -74,9 +77,10 @@ public class CollaborationExchangeRESTServices
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse addRatingToElement(String            serverName,
-                                           String            userId,
-                                           String            guid,
+    public VoidResponse addRatingToElement(String           serverName,
+                                           String           userId,
+                                           String           guid,
+                                           boolean          isPublic,
                                            RatingProperties requestBody)
     {
         final String methodName = "addRatingToElement";
@@ -99,6 +103,7 @@ public class CollaborationExchangeRESTServices
                 {
                     starRating = requestBody.getStarRating().getOpenTypeOrdinal();
                 }
+
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 handler.saveRating(userId,
                                    null,
@@ -107,7 +112,7 @@ public class CollaborationExchangeRESTServices
                                    guidParameterName,
                                    starRating,
                                    requestBody.getReview(),
-                                   requestBody.getIsPublic(),
+                                   isPublic,
                                    false,
                                    false,
                                    new Date(),
@@ -188,6 +193,7 @@ public class CollaborationExchangeRESTServices
      * @param serverName name of the server instances for this request
      * @param userId      String - userId of user making request.
      * @param guid        String - unique id for the element.
+     * @param isPublic is this visible to other people
      * @param requestBody feedback request body .
      *
      * @return void or
@@ -196,10 +202,11 @@ public class CollaborationExchangeRESTServices
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse addLikeToElement(String              serverName,
-                                         String              userId,
-                                         String              guid,
-                                         FeedbackProperties requestBody)
+    public VoidResponse addLikeToElement(String         serverName,
+                                         String         userId,
+                                         String         guid,
+                                         boolean        isPublic,
+                                         LikeProperties requestBody)
     {
         final String methodName        = "addLikeToElement";
         final String guidParameterName = "guid";
@@ -221,7 +228,7 @@ public class CollaborationExchangeRESTServices
                                  null,
                                  guid,
                                  guidParameterName,
-                                 requestBody.getIsPublic(),
+                                 isPublic,
                                  false,
                                  false,
                                  new Date(),
@@ -301,6 +308,9 @@ public class CollaborationExchangeRESTServices
      * @param serverName name of the server instances for this request
      * @param userId  String - userId of user making request.
      * @param guid  String - unique id for the element.
+     * @param isPublic is this visible to other people
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody containing type of comment enum and the text of the comment.
      *
      * @return guid for new comment object or
@@ -309,13 +319,16 @@ public class CollaborationExchangeRESTServices
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse addCommentToElement(String            serverName,
-                                            String            userId,
-                                            String            guid,
-                                            CommentProperties requestBody)
+    public GUIDResponse addCommentToElement(String                         serverName,
+                                            String                         userId,
+                                            String                         guid,
+                                            boolean                        isPublic,
+                                            boolean                        forLineage,
+                                            boolean                        forDuplicateProcessing,
+                                            ReferenceableUpdateRequestBody requestBody)
     {
-        final String        methodName = "addCommentToElement";
-        final String        guidParameterName = "guid";
+        final String methodName = "addCommentToElement";
+        final String guidParameterName = "elementGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -324,32 +337,28 @@ public class CollaborationExchangeRESTServices
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                int commentType = CommentType.STANDARD_COMMENT.getOpenTypeOrdinal();
-
-                if (requestBody.getCommentType() != null)
+                if (requestBody.getElementProperties() instanceof CommentProperties commentProperties)
                 {
-                    commentType = requestBody.getCommentType().getOpenTypeOrdinal();
-                }
-                CommentHandler<CommentElement> handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
+                    CommentExchangeHandler handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
 
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                response.setGUID(handler.attachNewComment(userId,
-                                                          null,
-                                                          null,
-                                                          guid,
-                                                          guid,
-                                                          guidParameterName,
-                                                          commentType,
-                                                          requestBody.getCommentText(),
-                                                          requestBody.getIsPublic(),
-                                                          null,
-                                                          null,
-                                                          false,
-                                                          false,
-                                                          new Date(),
-                                                          methodName));
+                    response.setGUID(handler.createComment(userId,
+                                                           guid,
+                                                           guidParameterName,
+                                                           requestBody.getMetadataCorrelationProperties(),
+                                                           isPublic,
+                                                           commentProperties,
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           methodName));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(CommentProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -371,8 +380,10 @@ public class CollaborationExchangeRESTServices
      *
      * @param serverName name of the server instances for this request
      * @param userId       String - userId of user making request.
-     * @param elementGUID     String - unique id of element that this chain of comments is linked.
      * @param commentGUID  String - unique id for an existing comment.  Used to add a reply to a comment.
+     * @param isPublic is this visible to other people
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
      * @return guid for new comment object or
@@ -381,11 +392,13 @@ public class CollaborationExchangeRESTServices
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse addCommentReply(String             serverName,
-                                        String             userId,
-                                        String             elementGUID,
-                                        String             commentGUID,
-                                        CommentProperties requestBody)
+    public GUIDResponse addCommentReply(String                         serverName,
+                                        String                         userId,
+                                        String                         commentGUID,
+                                        boolean                        isPublic,
+                                        boolean                        forLineage,
+                                        boolean                        forDuplicateProcessing,
+                                        ReferenceableUpdateRequestBody requestBody)
     {
         final String guidParameterName = "commentGUID";
         final String methodName        = "addCommentReply";
@@ -399,31 +412,24 @@ public class CollaborationExchangeRESTServices
         {
             if (requestBody != null)
             {
-                int commentType = CommentType.STANDARD_COMMENT.getOpenTypeOrdinal();
-
-                if (requestBody.getCommentType() != null)
+                if (requestBody.getElementProperties() instanceof CommentProperties commentProperties)
                 {
-                    commentType = requestBody.getCommentType().getOpenTypeOrdinal();
+                    CommentExchangeHandler handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
+
+                    response.setGUID(handler.createComment(userId,
+                                                           commentGUID,
+                                                           guidParameterName,
+                                                           requestBody.getMetadataCorrelationProperties(),
+                                                           isPublic,
+                                                           commentProperties,
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           methodName));
                 }
-
-                CommentHandler<CommentElement> handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
-
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                response.setGUID(handler.attachNewComment(userId,
-                                                          null,
-                                                          null,
-                                                          elementGUID,
-                                                          commentGUID,
-                                                          guidParameterName,
-                                                          commentType,
-                                                          requestBody.getCommentText(),
-                                                          requestBody.getIsPublic(),
-                                                          null,
-                                                          null,
-                                                          false,
-                                                          false,
-                                                          new Date(),
-                                                          methodName));
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(CommentProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -445,8 +451,11 @@ public class CollaborationExchangeRESTServices
      *
      * @param serverName   name of the server instances for this request.
      * @param userId       userId of user making request.
-     * @param elementGUID    unique identifier for the element that the comment is attached to (directly or indirectly).
      * @param commentGUID  unique identifier for the comment to change.
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param isPublic is this visible to other people
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
      * @return void or
@@ -455,11 +464,14 @@ public class CollaborationExchangeRESTServices
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse   updateComment(String             serverName,
-                                        String             userId,
-                                        String             elementGUID,
-                                        String             commentGUID,
-                                        CommentProperties requestBody)
+    public VoidResponse   updateComment(String                         serverName,
+                                        String                         userId,
+                                        String                         commentGUID,
+                                        boolean                        isMergeUpdate,
+                                        boolean                        isPublic,
+                                        boolean                        forLineage,
+                                        boolean                        forDuplicateProcessing,
+                                        ReferenceableUpdateRequestBody requestBody)
     {
         final String guidParameterName = "commentGUID";
         final String methodName        = "updateComment";
@@ -471,32 +483,29 @@ public class CollaborationExchangeRESTServices
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                int commentType = CommentType.STANDARD_COMMENT.getOpenTypeOrdinal();
-
-                if (requestBody.getCommentType() != null)
+                if (requestBody.getElementProperties() instanceof  CommentProperties commentProperties)
                 {
-                    commentType = requestBody.getCommentType().getOpenTypeOrdinal();
+                    CommentExchangeHandler handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
+
+                    handler.updateComment(userId,
+                                          requestBody.getMetadataCorrelationProperties(),
+                                          commentGUID,
+                                          commentProperties,
+                                          isMergeUpdate,
+                                          isPublic,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          requestBody.getEffectiveTime(),
+                                          methodName);
                 }
-
-                CommentHandler<CommentElement> handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
-
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                handler.updateComment(userId,
-                                      null,
-                                      null,
-                                      commentGUID,
-                                      guidParameterName,
-                                      commentType,
-                                      requestBody.getCommentText(),
-                                      requestBody.getIsPublic(),
-                                      null,
-                                      null,
-                                      false,
-                                      false,
-                                      new Date(),
-                                      methodName);
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(CommentProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -513,6 +522,155 @@ public class CollaborationExchangeRESTServices
     }
 
 
+
+    /**
+     * Link a comment that contains the best answer to a question posed in another comment.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param questionCommentGUID unique identifier of the comment containing the question
+     * @param answerCommentGUID unique identifier of the comment containing the accepted answer
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setupAcceptedAnswer(String                  serverName,
+                                            String                  userId,
+                                            String                  questionCommentGUID,
+                                            String                  answerCommentGUID,
+                                            boolean                 forLineage,
+                                            boolean                 forDuplicateProcessing,
+                                            RelationshipRequestBody requestBody)
+    {
+        final String methodName = "setupAcceptedAnswer";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CommentExchangeHandler handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof FeedbackProperties feedbackProperties)
+                {
+                    handler.setupAcceptedAnswer(userId,
+                                                requestBody.getAssetManagerGUID(),
+                                                requestBody.getAssetManagerName(),
+                                                questionCommentGUID,
+                                                answerCommentGUID,
+                                                feedbackProperties.getIsPublic(),
+                                                requestBody.getProperties().getEffectiveFrom(),
+                                                requestBody.getProperties().getEffectiveTo(),
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                requestBody.getEffectiveTime(),
+                                                methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(CommentProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Unlink a comment that contains an answer to a question posed in another comment.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param questionCommentGUID unique identifier of the comment containing the question
+     * @param answerCommentGUID unique identifier of the comment containing the accepted answer
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearAcceptedAnswer(String                        serverName,
+                                            String                        userId,
+                                            String                        questionCommentGUID,
+                                            String                        answerCommentGUID,
+                                            boolean                       forLineage,
+                                            boolean                       forDuplicateProcessing,
+                                            EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName = "clearCategoryParent";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CommentExchangeHandler handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.clearAcceptedAnswer(userId,
+                                            requestBody.getAssetManagerGUID(),
+                                            requestBody.getAssetManagerName(),
+                                            questionCommentGUID,
+                                            answerCommentGUID,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            requestBody.getEffectiveTime(),
+                                            methodName);
+            }
+            else
+            {
+                handler.clearAcceptedAnswer(userId,
+                                            null,
+                                            null,
+                                            questionCommentGUID,
+                                            answerCommentGUID,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            null,
+                                            methodName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
     /**
      * Removes a comment added to the element by this user.
      *
@@ -520,6 +678,8 @@ public class CollaborationExchangeRESTServices
      * @param userId  String - userId of user making request.
      * @param elementGUID  String - unique id for the element object
      * @param commentGUID  String - unique id for the comment object
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody null request body needed to satisfy the HTTP Post request
      *
      * @return void or
@@ -529,11 +689,13 @@ public class CollaborationExchangeRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse removeCommentFromElement(String          serverName,
-                                                 String          userId,
-                                                 String          elementGUID,
-                                                 String          commentGUID,
-                                                 NullRequestBody requestBody)
+    public VoidResponse removeCommentFromElement(String                         serverName,
+                                                 String                         userId,
+                                                 String                         elementGUID,
+                                                 String                         commentGUID,
+                                                 boolean                        forLineage,
+                                                 boolean                        forDuplicateProcessing,
+                                                 ReferenceableUpdateRequestBody requestBody)
     {
         final String guidParameterName = "commentGUID";
         final String methodName        = "removeElementComment";
@@ -545,18 +707,30 @@ public class CollaborationExchangeRESTServices
 
         try
         {
-            CommentHandler<CommentElement> handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
-
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            handler.removeCommentFromElement(userId,
-                                             null,
-                                             null,
-                                             commentGUID,
-                                             guidParameterName,
-                                             false,
-                                             false,
-                                             new Date(),
-                                             methodName);
+
+            CommentExchangeHandler handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.removeComment(userId,
+                                      requestBody.getMetadataCorrelationProperties(),
+                                      commentGUID,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      requestBody.getEffectiveTime(),
+                                      methodName);
+            }
+            else
+            {
+                handler.removeComment(userId,
+                                      null,
+                                      commentGUID,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      null,
+                                      methodName);
+            }
         }
         catch (Exception error)
         {
@@ -574,16 +748,22 @@ public class CollaborationExchangeRESTServices
      * @param serverName name of the server instances for this request
      * @param userId       userId of user making request.
      * @param commentGUID  unique identifier for the comment object.
+     * @param forLineage               return elements marked with the Memento classification?
+     * @param forDuplicateProcessing   do not merge elements marked as duplicates?
+     * @param requestBody effectiveTime and asset manager identifiers
      * @return comment properties or
      *  InvalidParameterException one of the parameters is null or invalid.
      *  PropertyServerException there is a problem updating the element properties in the property server.
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
-    public CommentElementResponse getComment(String serverName,
-                                             String userId,
-                                             String commentGUID)
+    public CommentElementResponse getCommentByGUID(String                        serverName,
+                                                   String                        userId,
+                                                   String                        commentGUID,
+                                                   boolean                       forLineage,
+                                                   boolean                       forDuplicateProcessing,
+                                                   EffectiveTimeQueryRequestBody requestBody)
     {
-        final String   methodName = "getComment";
+        final String methodName = "getComment";
         final String guidParameterName = "commentGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -593,17 +773,32 @@ public class CollaborationExchangeRESTServices
 
         try
         {
-            CommentHandler<CommentElement>  handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
+            CommentExchangeHandler handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setElement(handler.getBeanFromRepository(userId,
-                                                              commentGUID,
-                                                              guidParameterName,
-                                                              OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
-                                                              false,
-                                                              false,
-                                                              new Date(),
-                                                              methodName));
+
+            if (requestBody != null)
+            {
+                response.setElement(handler.getCommentByGUID(userId,
+                                                             commentGUID,
+                                                             guidParameterName,
+                                                             OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             requestBody.getEffectiveTime(),
+                                                             methodName));
+            }
+            else
+            {
+                response.setElement(handler.getCommentByGUID(userId,
+                                                             commentGUID,
+                                                             guidParameterName,
+                                                             OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             null,
+                                                             methodName));
+            }
         }
         catch (Exception error)
         {
@@ -623,16 +818,22 @@ public class CollaborationExchangeRESTServices
      * @param elementGUID    unique identifier for the element that the comments are connected to (maybe a comment too).
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param forLineage               return elements marked with the Memento classification?
+     * @param forDuplicateProcessing   do not merge elements marked as duplicates?
+     * @param requestBody effectiveTime and asset manager identifiers
      * @return list of comments or
      *  InvalidParameterException one of the parameters is null or invalid.
      *  PropertyServerException there is a problem updating the element properties in the property server.
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
-    public CommentElementsResponse getAttachedComments(String serverName,
-                                                       String userId,
-                                                       String elementGUID,
-                                                       int    startFrom,
-                                                       int    pageSize)
+    public CommentElementsResponse getAttachedComments(String                        serverName,
+                                                       String                        userId,
+                                                       String                        elementGUID,
+                                                       int                           startFrom,
+                                                       int                           pageSize,
+                                                       boolean                       forLineage,
+                                                       boolean                       forDuplicateProcessing,
+                                                       EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getAttachedComments";
         final String guidParameterName = "elementGUID";
@@ -644,25 +845,38 @@ public class CollaborationExchangeRESTServices
 
         try
         {
-            CommentHandler<CommentElement>  handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
+            CommentExchangeHandler handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setElementList(handler.getAttachedElements(userId,
-                                                                elementGUID,
-                                                                guidParameterName,
-                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
-                                                                OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
-                                                                null,
-                                                                null,
-                                                                2,
-                                                                false,
-                                                                false,
-                                                                startFrom,
-                                                                pageSize,
-                                                                new Date(),
-                                                                methodName));
+
+            if (requestBody != null)
+            {
+                response.setElementList(handler.getAttachedComments(userId,
+                                                                    requestBody.getAssetManagerGUID(),
+                                                                    requestBody.getAssetManagerName(),
+                                                                    elementGUID,
+                                                                    guidParameterName,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    requestBody.getEffectiveTime(),
+                                                                    methodName));
+            }
+            else
+            {
+                response.setElementList(handler.getAttachedComments(userId,
+                                                                    null,
+                                                                    null,
+                                                                    elementGUID,
+                                                                    guidParameterName,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    null,
+                                                                    methodName));
+            }
         }
         catch (Exception error)
         {

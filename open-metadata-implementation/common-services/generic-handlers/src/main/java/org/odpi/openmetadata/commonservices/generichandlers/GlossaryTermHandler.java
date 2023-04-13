@@ -215,6 +215,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param externalSourceGUID     unique identifier of software capability representing the caller
      * @param externalSourceName     unique name of software capability representing the caller
+     * @param glossaryGUID unique identifier of the owning glossary
+     * @param glossaryGUIDParameterName parameter supplying glossaryGUID
      * @param templateGUID unique identifier of the metadata element to copy
      * @param qualifiedName unique name for the term - used in other configuration
      * @param displayName short display name for the term
@@ -230,6 +232,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
     public String createGlossaryTermFromTemplate(String userId,
                                                  String externalSourceGUID,
                                                  String externalSourceName,
+                                                 String glossaryGUID,
+                                                 String glossaryGUIDParameterName,
                                                  String templateGUID,
                                                  String qualifiedName,
                                                  String displayName,
@@ -252,18 +256,48 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                               serviceName,
                                                               serverName);
 
-        return this.createBeanFromTemplate(userId,
-                                           externalSourceGUID,
-                                           externalSourceName,
-                                           templateGUID,
-                                           templateGUIDParameterName,
-                                           OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
-                                           OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                           qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                           builder,
-                                           supportedZones,
-                                           methodName);
+        builder.setAnchors(userId, glossaryGUID, methodName);
+
+        String glossaryTermGUID = this.createBeanFromTemplate(userId,
+                                                              externalSourceGUID,
+                                                              externalSourceName,
+                                                              templateGUID,
+                                                              templateGUIDParameterName,
+                                                              OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
+                                                              OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                              qualifiedName,
+                                                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                              builder,
+                                                              supportedZones,
+                                                              methodName);
+
+        if (glossaryTermGUID != null)
+        {
+            /*
+             * Link the term to its glossary.  This relationship is always effective.
+             */
+            final String glossaryTermGUIDParameterName = "glossaryTermGUID";
+
+            this.uncheckedLinkElementToElement(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               glossaryGUID,
+                                               glossaryGUIDParameterName,
+                                               OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                               glossaryTermGUID,
+                                               glossaryTermGUIDParameterName,
+                                               OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                               false,
+                                               false,
+                                               supportedZones,
+                                               OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
+                                               OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_NAME,
+                                               null,
+                                               null,
+                                               methodName);
+        }
+
+        return glossaryTermGUID;
     }
 
 

@@ -26,10 +26,29 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public enum PortType implements Serializable
 {
+    /**
+     * Input Port - Data is passed into the process.
+     */
     INPUT_PORT  (0,  0,  "Input Port",        "Data is passed into the process."),
+
+    /**
+     * Output Port - Data is produced by the process.
+     */
     OUTPUT_PORT (1,  1,  "Output Port",       "Data is produced by the process."),
+
+    /**
+     * Input-Output Port - A request-response interface is provided by the process.
+     */
     INOUT_PORT  (2,  2,  "Input-Output Port", "A request response interface is provided by the process."),
+
+    /**
+     * Output-Input Port - A request-response call is made by the process.
+     */
     OUTIN_PORT  (3,  3,  "Output-Input Port", "A request response call is made by the process."),
+
+    /**
+     * Other - None of the above.
+     */
     OTHER       (99, 99, "Other",             "None of the above.");
 
     private static final long serialVersionUID = 1L;

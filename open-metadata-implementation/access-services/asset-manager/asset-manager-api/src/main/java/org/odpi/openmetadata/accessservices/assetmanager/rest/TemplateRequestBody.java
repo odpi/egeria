@@ -28,7 +28,8 @@ public class TemplateRequestBody extends UpdateRequestBody
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private TemplateProperties            elementProperties             = null;
+    private TemplateProperties elementProperties = null;
+    private String             parentGUID        = null;
 
 
     /**
@@ -52,6 +53,7 @@ public class TemplateRequestBody extends UpdateRequestBody
         if (template != null)
         {
             elementProperties = template.getElementProperties();
+            parentGUID        = template.getParentGUID();
         }
     }
 
@@ -79,6 +81,28 @@ public class TemplateRequestBody extends UpdateRequestBody
 
 
     /**
+     * Return an optional parent GUID to attach the new element to.
+     *
+     * @return guid
+     */
+    public String getParentGUID()
+    {
+        return parentGUID;
+    }
+
+
+    /**
+     * Set up an optional parent GUID to attach the new element to.
+     *
+     * @param parentGUID guid
+     */
+    public void setParentGUID(String parentGUID)
+    {
+        this.parentGUID = parentGUID;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -88,6 +112,7 @@ public class TemplateRequestBody extends UpdateRequestBody
     {
         return "TemplateRequestBody{" +
                        "elementProperties=" + elementProperties +
+                       ", parentGUID='" + parentGUID + '\'' +
                        ", metadataCorrelationProperties=" + getMetadataCorrelationProperties() +
                        ", effectiveTime=" + getEffectiveTime() +
                        '}';
@@ -107,7 +132,7 @@ public class TemplateRequestBody extends UpdateRequestBody
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof TemplateRequestBody that))
         {
             return false;
         }
@@ -115,8 +140,7 @@ public class TemplateRequestBody extends UpdateRequestBody
         {
             return false;
         }
-        TemplateRequestBody that = (TemplateRequestBody) objectToCompare;
-        return Objects.equals(elementProperties, that.elementProperties);
+        return Objects.equals(elementProperties, that.elementProperties) && Objects.equals(parentGUID, that.parentGUID);
     }
 
 
@@ -128,6 +152,6 @@ public class TemplateRequestBody extends UpdateRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementProperties);
+        return Objects.hash(super.hashCode(), elementProperties, parentGUID);
     }
 }

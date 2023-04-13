@@ -76,8 +76,6 @@ public class LikeConverter<B> extends AssetManagerOMASConverter<B>
                 {
                     instanceProperties = new InstanceProperties(entity.getProperties());
                     properties.setUser(entity.getCreatedBy());
-
-                    properties.setIsPublic(this.removeIsPublic(instanceProperties));
                 }
                 else
                 {

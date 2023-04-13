@@ -4,6 +4,17 @@
 package org.odpi.openmetadata.integrationservices.catalog.contextmanager;
 
 import org.odpi.openmetadata.accessservices.assetmanager.client.*;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.CollaborationExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ConnectionExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.DataAssetExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ExternalAssetManagerClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ExternalReferenceExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GlossaryExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GovernanceExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.InfrastructureExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.LineageExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.StewardshipExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ValidValuesExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -33,18 +44,18 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
     private final static String disabledExchangeServicesOption = "disabledExchangeServices";
 
     private ConnectedAssetClient            connectedAssetClient;
-    private OpenMetadataStoreClient         openMetadataStoreClient;
-    private ExternalAssetManagerClient      assetManagerClient;
-    private CollaborationExchangeClient     collaborationExchangeClient;
-    private ConnectionExchangeClient        connectionExchangeClient;
-    private DataAssetExchangeClient         dataAssetExchangeClient;
-    private ExternalReferenceExchangeClient externalReferenceExchangeClient;
-    private GlossaryExchangeClient          glossaryExchangeClient;
-    private GovernanceExchangeClient        governanceExchangeClient;
-    private InfrastructureExchangeClient    infrastructureExchangeClient;
-    private LineageExchangeClient           lineageExchangeClient;
-    private StewardshipExchangeClient       stewardshipExchangeClient;
-    private ValidValuesExchangeClient       validValuesExchangeClient;
+    private OpenMetadataStoreClient     openMetadataStoreClient;
+    private ExternalAssetManagerClient  assetManagerClient;
+    private CollaborationExchangeClient collaborationExchangeClient;
+    private ConnectionExchangeClient           connectionExchangeClient;
+    private DataAssetExchangeClient            dataAssetExchangeClient;
+    private ExternalReferenceExchangeClient    externalReferenceExchangeClient;
+    private GlossaryExchangeClient             glossaryExchangeClient;
+    private GovernanceExchangeClient           governanceExchangeClient;
+    private InfrastructureExchangeClient       infrastructureExchangeClient;
+    private LineageExchangeClient              lineageExchangeClient;
+    private StewardshipExchangeClient          stewardshipExchangeClient;
+    private ValidValuesExchangeClient          validValuesExchangeClient;
 
 
     /**

@@ -86,7 +86,6 @@ public class CommentConverter<B> extends AssetManagerOMASConverter<B>
                     properties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     properties.setCommentText(this.removeCommentText(instanceProperties));
                     properties.setCommentType(this.removeCommentTypeFromProperties(instanceProperties));
-                    properties.setIsPublic(this.removeIsPublic(instanceProperties));
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are

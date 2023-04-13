@@ -21,18 +21,39 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum SynchronizationDirection implements Serializable
 {
+    /**
+     * Both Directions - Metadata exchange is permitted in both directions.  Synchronization is halted on a specific
+     * element if potentially clashing updates have occurred both in the third party technology and
+     * open metadata.  Such conflicts are logged on the audit log and resolved through manual stewardship.
+     */
     BOTH_DIRECTIONS   (0, 0,"Both Directions",
                        "Metadata exchange is permitted in both directions.  Synchronization is halted on a specific " +
                                "element if potentially clashing updates have occurred both in the third party technology and " +
                                "open metadata.  Such conflicts are logged on the audit log and resolved through manual stewardship."),
+
+    /**
+     * To Third Party - The third party technology is logically downstream of open metadata.  This means the open metadata
+     * ecosystem is the originator and owner of the metadata being synchronized. Any updates detected
+     * in the third technology are overridden by the latest open metadata values.
+     */
     TO_THIRD_PARTY    (1, 1,"To Third Party",
                        "The third party technology is logically downstream of open metadata.  This means the open metadata " +
                                   "ecosystem is the originator and owner of the metadata being synchronized. Any updates detected " +
                                   "in the third technology are overridden by the latest open metadata values."),
+
+    /**
+     * From Third Party - The third party technology is logically upstream (the originator and owner of the metadata).
+     * Any updates made in open metadata are not passed to the third party technology and the
+     * third party technology is requested to refresh the open metadata version.
+     */
     FROM_THIRD_PARTY  (2, 2,"From Third Party",
                        "The third party technology is logically upstream (the originator and owner of the metadata).  " +
                                   "Any updates made in open metadata are not passed to the third party technology and the " +
                                   "third party technology is requested to refresh the open metadata version."),
+
+    /**
+     * Other - Another type of synchronization rule - see description property.
+     */
     OTHER             (99, 99,"Other",
                        "Another type of synchronization rule - see description property."),
     ;

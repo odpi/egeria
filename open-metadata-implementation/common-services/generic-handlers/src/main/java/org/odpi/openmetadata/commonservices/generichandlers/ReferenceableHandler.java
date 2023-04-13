@@ -1013,6 +1013,266 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
+     * Add or replace the governance action classification on a referenceable.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of the software capability that owns this project
+     * @param externalSourceName unique name of the software capability that owns this project
+     * @param beanGUID unique identifier of bean
+     * @param beanGUIDParameterName name of parameter supplying the beanGUID
+     * @param beanGUIDTypeName type of bean
+     * @param classificationTypeName type GUID of governance action classification
+     * @param classificationTypeName type name of governance action classification
+     * @param statusIdentifier identifier for the status of the classification
+     * @param confidence how confident? is this classification right? 0=unknown; 0-100% confident
+     * @param steward who is responsible for this classification
+     * @param stewardTypeName what type of element is used to identify the steward
+     * @param stewardPropertyName what property name is used to identify the steward? guid, qualifiedName etc
+     * @param source what is the source of the classification
+     * @param notes any notes from the steward
+     * @param levelIdentifier what level should the classification be set up as?
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  addGovernanceActionClassification(String                userId,
+                                                   String                externalSourceGUID,
+                                                   String                externalSourceName,
+                                                   String                beanGUID,
+                                                   String                beanGUIDParameterName,
+                                                   String                beanGUIDTypeName,
+                                                   String                classificationTypeGUID,
+                                                   String                classificationTypeName,
+                                                   int                   statusIdentifier,
+                                                   int                   confidence,
+                                                   String                steward,
+                                                   String                stewardTypeName,
+                                                   String                stewardPropertyName,
+                                                   String                source,
+                                                   String                notes,
+                                                   int                   levelIdentifier,
+                                                   boolean               forLineage,
+                                                   boolean               forDuplicateProcessing,
+                                                   Date                  effectiveFrom,
+                                                   Date                  effectiveTo,
+                                                   Date                  effectiveTime,
+                                                   String                methodName) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        InstanceProperties properties = repositoryHelper.addIntPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.STATUS_IDENTIFIER_PROPERTY_NAME, statusIdentifier, methodName);
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.CONFIDENCE_PROPERTY_NAME, confidence, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME, steward, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.STEWARD_TYPE_NAME_PROPERTY_NAME, stewardTypeName, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME_PROPERTY_NAME, stewardPropertyName, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME, source, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.NOTES_PROPERTY_NAME, notes, methodName);
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.LEVEL_IDENTIFIER_PROPERTY_NAME, levelIdentifier, methodName);
+
+        this.setClassificationInRepository(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
+                                           beanGUID,
+                                           beanGUIDParameterName,
+                                           beanGUIDTypeName,
+                                           classificationTypeGUID,
+                                           classificationTypeName,
+                                           this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
+                                           true,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
+                                           methodName);
+    }
+
+
+    /**
+     * Remove the governance expectations classification from a referenceable.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of the software capability that owns this project
+     * @param externalSourceName unique name of the software capability that owns this project
+     * @param beanGUID unique identifier of entity to update
+     * @param beanGUIDParameterName name of parameter providing beanGUID
+     * @param beanGUIDTypeName type of bean
+     * @param classificationTypeName type GUID of governance action classification
+     * @param classificationTypeName type name of governance action classification
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  removeGovernanceActionClassification(String  userId,
+                                                      String  externalSourceGUID,
+                                                      String  externalSourceName,
+                                                      String  beanGUID,
+                                                      String  beanGUIDParameterName,
+                                                      String  beanGUIDTypeName,
+                                                      String  classificationTypeGUID,
+                                                      String  classificationTypeName,
+                                                      boolean forLineage,
+                                                      boolean forDuplicateProcessing,
+                                                      Date    effectiveTime,
+                                                      String  methodName) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        this.removeClassificationFromRepository(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                beanGUID,
+                                                beanGUIDParameterName,
+                                                beanGUIDTypeName,
+                                                classificationTypeGUID,
+                                                classificationTypeName,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
+                                                methodName);
+    }
+
+
+    /**
+     * Add or replace the governance action classification on a referenceable.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of the software capability that owns this project
+     * @param externalSourceName unique name of the software capability that owns this project
+     * @param beanGUID unique identifier of bean
+     * @param beanGUIDParameterName name of parameter supplying the beanGUID
+     * @param beanGUIDTypeName type of bean
+     * @param statusIdentifier identifier for the status of the classification
+     * @param confidence how confident? is this classification right? 0=unknown; 0-100% confident
+     * @param steward who is responsible for this classification
+     * @param stewardTypeName what type of element is used to identify the steward
+     * @param stewardPropertyName what property name is used to identify the steward? guid, qualifiedName etc
+     * @param source what is the source of the classification
+     * @param notes any notes from the steward
+     * @param basisIdentifier what level should the classification be set up as?
+     * @param associatedGUID unique identifier of policy/rule controlling this retention decision
+     * @param archiveAfter when should the element be archived?
+     * @param deleteAfter when should the element be deleted?
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  addRetentionClassification(String                userId,
+                                            String                externalSourceGUID,
+                                            String                externalSourceName,
+                                            String                beanGUID,
+                                            String                beanGUIDParameterName,
+                                            String                beanGUIDTypeName,
+                                            int                   statusIdentifier,
+                                            int                   confidence,
+                                            String                steward,
+                                            String                stewardTypeName,
+                                            String                stewardPropertyName,
+                                            String                source,
+                                            String                notes,
+                                            int                   basisIdentifier,
+                                            String                associatedGUID,
+                                            Date                  archiveAfter,
+                                            Date                  deleteAfter,
+                                            boolean               forLineage,
+                                            boolean               forDuplicateProcessing,
+                                            Date                  effectiveFrom,
+                                            Date                  effectiveTo,
+                                            Date                  effectiveTime,
+                                            String                methodName) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        InstanceProperties properties = repositoryHelper.addIntPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.STATUS_IDENTIFIER_PROPERTY_NAME, statusIdentifier, methodName);
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.CONFIDENCE_PROPERTY_NAME, confidence, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME, steward, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.STEWARD_TYPE_NAME_PROPERTY_NAME, stewardTypeName, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME_PROPERTY_NAME, stewardPropertyName, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME, source, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.NOTES_PROPERTY_NAME, notes, methodName);
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.BASIS_IDENTIFIER_PROPERTY_NAME, basisIdentifier, methodName);
+
+        this.setClassificationInRepository(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
+                                           beanGUID,
+                                           beanGUIDParameterName,
+                                           beanGUIDTypeName,
+                                           OpenMetadataAPIMapper.RETENTION_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataAPIMapper.RETENTION_CLASSIFICATION_TYPE_NAME,
+                                           this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
+                                           true,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
+                                           methodName);
+    }
+
+
+    /**
+     * Remove the governance expectations classification from a referenceable.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of the software capability that owns this project
+     * @param externalSourceName unique name of the software capability that owns this project
+     * @param beanGUID unique identifier of entity to update
+     * @param beanGUIDParameterName name of parameter providing beanGUID
+     * @param beanGUIDTypeName type of bean
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  removeRetentionClassification(String  userId,
+                                               String  externalSourceGUID,
+                                               String  externalSourceName,
+                                               String  beanGUID,
+                                               String  beanGUIDParameterName,
+                                               String  beanGUIDTypeName,
+                                               boolean forLineage,
+                                               boolean forDuplicateProcessing,
+                                               Date    effectiveTime,
+                                               String  methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        this.removeClassificationFromRepository(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                beanGUID,
+                                                beanGUIDParameterName,
+                                                beanGUIDTypeName,
+                                                OpenMetadataAPIMapper.RETENTION_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataAPIMapper.RETENTION_CLASSIFICATION_TYPE_NAME,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
+                                                methodName);
+    }
+
+
+    /**
      * Add or replace the governance expectations classification to a referenceable.
      *
      * @param userId calling user

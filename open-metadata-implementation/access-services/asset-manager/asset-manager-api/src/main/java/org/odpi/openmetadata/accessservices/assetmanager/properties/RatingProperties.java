@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serial;
+import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -25,7 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RatingProperties extends FeedbackProperties
+public class RatingProperties implements Serializable
 {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -50,8 +51,6 @@ public class RatingProperties extends FeedbackProperties
      */
     public RatingProperties(RatingProperties template)
     {
-        super(template);
-
         if (template != null)
         {
             user = template.getUser();
@@ -137,7 +136,6 @@ public class RatingProperties extends FeedbackProperties
                 "starRating=" + starRating +
                 ", review='" + review + '\'' +
                 ", user='" + user + '\'' +
-                ", isPublic='" + getIsPublic() + '\'' +
                 '}';
     }
 
@@ -159,10 +157,6 @@ public class RatingProperties extends FeedbackProperties
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
         RatingProperties rating = (RatingProperties) objectToCompare;
         return getStarRating() == rating.getStarRating() &&
                 Objects.equals(getReview(), rating.getReview()) &&
@@ -178,10 +172,6 @@ public class RatingProperties extends FeedbackProperties
     @Override
     public int hashCode()
     {
-        int result = super.hashCode();
-        result = 31 * result + (starRating != null ? starRating.hashCode() : 0);
-        result = 31 * result + (review != null ? review.hashCode() : 0);
-        result = 31 * result + (user != null ? user.hashCode() : 0);
-        return result;
+        return Objects.hash(starRating, review, user);
     }
 }

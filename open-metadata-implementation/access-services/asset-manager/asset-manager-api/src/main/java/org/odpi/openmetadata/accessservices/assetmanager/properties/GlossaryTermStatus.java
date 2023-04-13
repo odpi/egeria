@@ -29,13 +29,44 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum GlossaryTermStatus implements Serializable
 {
+    /**
+     * Draft - The term is incomplete.
+     */
     DRAFT     (1,1,  "Draft",     "The term is incomplete."),
+
+    /**
+     * Prepared - The term is ready for review.
+     */
     PREPARED  (2,2,  "Prepared",  "The term is ready for review."),
+
+    /**
+     * Proposed - The term is in review.
+     */
     PROPOSED  (3,3,  "Proposed",  "The term is in review."),
+
+    /**
+     * Approved - The term is approved and ready to be activated.
+     */
     APPROVED  (4,4,  "Approved",  "The term is approved and ready to be activated."),
+
+    /**
+     * Rejected - The term is rejected and should not be used.
+     */
     REJECTED  (5,5,  "Rejected",  "The term is rejected and should not be used."),
+
+    /**
+     * Active - The term is approved and in use.
+     */
     ACTIVE    (6,15, "Active",    "The term is approved and in use."),
+
+    /**
+     * Deprecated - The term is out of date and should not be used.
+     */
     DEPRECATED(7,30, "Deprecated","The term is out of date and should not be used."),
+
+    /**
+     * Other - The term is in a locally defined state.
+     */
     OTHER     (8,50, "Other",     "The term is in a locally defined state."),
     ;
 

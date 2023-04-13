@@ -3,8 +3,8 @@
 
 package org.odpi.openmetadata.accessservices.assetmanager.fvt.externalidentifiers;
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.ExternalAssetManagerClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.GlossaryExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ExternalAssetManagerClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GlossaryExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.fvt.common.AssetManagerTestBase;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataCorrelationHeader;
@@ -159,7 +159,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for getGlossary)");
             }
 
-            GlossaryElement retrievedElement = client.getGlossaryByGUID(userId, assetManagerGUID, assetManagerOneName, glossaryGUID);
+            GlossaryElement retrievedElement = client.getGlossaryByGUID(userId, assetManagerGUID, assetManagerOneName, glossaryGUID, null, false, false);
 
             if (retrievedElement == null)
             {
@@ -225,11 +225,11 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(bad assetManagerName)");
             }
 
-            client.removeGlossary(userId, assetManagerGUID, assetManagerOneName, glossaryGUID, externalGlossaryIdentifierOne);
+            client.removeGlossary(userId, assetManagerGUID, assetManagerOneName, glossaryGUID, externalGlossaryIdentifierOne, null, false, false);
 
             try
             {
-                client.getGlossaryByGUID(userId, assetManagerGUID, assetManagerOneName, glossaryGUID);
+                client.getGlossaryByGUID(userId, assetManagerGUID, assetManagerOneName, glossaryGUID, null, false, false);
 
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(glossary not deleted)");
             }
@@ -324,7 +324,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
             /*
              * Retrieve element for just asset manager two
              */
-            retrievedElement = glossaryExchangeClient.getGlossaryByGUID(userId, assetManagerTwoGUID, assetManagerTwoName, glossaryGUID);
+            retrievedElement = glossaryExchangeClient.getGlossaryByGUID(userId, assetManagerTwoGUID, assetManagerTwoName, glossaryGUID, null, false, false);
 
             if (retrievedElement == null)
             {
@@ -383,7 +383,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
             /*
              * Retrieve element for just asset manager one
              */
-            retrievedElement = glossaryExchangeClient.getGlossaryByGUID(userId, assetManagerOneGUID, assetManagerOneName, glossaryGUID);
+            retrievedElement = glossaryExchangeClient.getGlossaryByGUID(userId, assetManagerOneGUID, assetManagerOneName, glossaryGUID, null, false, false);
 
             if (retrievedElement == null)
             {
@@ -442,7 +442,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
             /*
              * Retrieve correlation headers for all asset managers
              */
-            retrievedElement = glossaryExchangeClient.getGlossaryByGUID(userId, null, null, glossaryGUID);
+            retrievedElement = glossaryExchangeClient.getGlossaryByGUID(userId, null, null, glossaryGUID, null, false, false);
 
             if (retrievedElement == null)
             {
@@ -466,11 +466,11 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Wrong number of Correlation properties from Retrieve) " + metadataCorrelationHeaders);
             }
 
-            glossaryExchangeClient.removeGlossary(userId, assetManagerOneGUID, assetManagerOneName, glossaryGUID, externalGlossaryIdentifierOne);
+            glossaryExchangeClient.removeGlossary(userId, assetManagerOneGUID, assetManagerOneName, glossaryGUID, externalGlossaryIdentifierOne, null, false, false);
 
             try
             {
-                glossaryExchangeClient.getGlossaryByGUID(userId, assetManagerOneGUID, assetManagerOneName, glossaryGUID);
+                glossaryExchangeClient.getGlossaryByGUID(userId, assetManagerOneGUID, assetManagerOneName, glossaryGUID, null, false, false);
 
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(glossary not deleted)");
             }
@@ -567,7 +567,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
             /*
              * Retrieve from asset manager two
              */
-            retrievedElement = glossaryExchangeClient.getGlossaryByGUID(userId, assetManagerTwoGUID, assetManagerTwoName, glossaryGUID);
+            retrievedElement = glossaryExchangeClient.getGlossaryByGUID(userId, assetManagerTwoGUID, assetManagerTwoName, glossaryGUID, null, false, false);
 
             if (retrievedElement == null)
             {
@@ -627,7 +627,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
             /*
              * Retrieve from asset manager one
              */
-            retrievedElement = glossaryExchangeClient.getGlossaryByGUID(userId, assetManagerOneGUID, assetManagerOneName, glossaryGUID);
+            retrievedElement = glossaryExchangeClient.getGlossaryByGUID(userId, assetManagerOneGUID, assetManagerOneName, glossaryGUID, null, false, false);
 
             if (retrievedElement == null)
             {
@@ -686,7 +686,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
             /*
              * Retrieve from all asset managers.
              */
-            retrievedElement = glossaryExchangeClient.getGlossaryByGUID(userId, null, null, glossaryGUID);
+            retrievedElement = glossaryExchangeClient.getGlossaryByGUID(userId, null, null, glossaryGUID, null, false, false);
 
             if (retrievedElement == null)
             {
@@ -711,11 +711,11 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
             }
 
 
-            glossaryExchangeClient.removeGlossary(userId, assetManagerOneGUID, assetManagerOneName, glossaryGUID, externalGlossaryIdentifierOne);
+            glossaryExchangeClient.removeGlossary(userId, assetManagerOneGUID, assetManagerOneName, glossaryGUID, externalGlossaryIdentifierOne, null, false, false);
 
             try
             {
-                glossaryExchangeClient.getGlossaryByGUID(userId, assetManagerOneGUID, assetManagerOneName, glossaryGUID);
+                glossaryExchangeClient.getGlossaryByGUID(userId, assetManagerOneGUID, assetManagerOneName, glossaryGUID, null, false, false);
 
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(glossary not deleted)");
             }
@@ -800,7 +800,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
                                                      GLOSSARY_TYPE_NAME,
                                                      externalIdentifierProperties);
 
-            GlossaryElement retrievedElement = glossaryExchangeClient.getGlossaryByGUID(userId, assetManagerOneGUID, assetManagerOneName, glossaryGUID);
+            GlossaryElement retrievedElement = glossaryExchangeClient.getGlossaryByGUID(userId, assetManagerOneGUID, assetManagerOneName, glossaryGUID, null, false, false);
 
             if (retrievedElement == null)
             {
@@ -824,11 +824,11 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Wrong number of Correlation properties from Retrieve)");
             }
 
-            glossaryExchangeClient.removeGlossary(userId, assetManagerOneGUID, assetManagerOneName, glossaryGUID, externalGlossaryIdentifierOne);
+            glossaryExchangeClient.removeGlossary(userId, assetManagerOneGUID, assetManagerOneName, glossaryGUID, externalGlossaryIdentifierOne, null, false, false);
 
             try
             {
-                glossaryExchangeClient.getGlossaryByGUID(userId, assetManagerOneGUID, assetManagerOneName, glossaryGUID);
+                glossaryExchangeClient.getGlossaryByGUID(userId, assetManagerOneGUID, assetManagerOneName, glossaryGUID, null, false, false);
 
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(glossary not deleted)");
             }
@@ -917,7 +917,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for getGlossary Two)");
             }
 
-            GlossaryElement retrievedElement = glossaryExchangeClient.getGlossaryByGUID(userId, assetManagerOneGUID, assetManagerOneName, glossaryOneGUID);
+            GlossaryElement retrievedElement = glossaryExchangeClient.getGlossaryByGUID(userId, assetManagerOneGUID, assetManagerOneName, glossaryOneGUID, null, false, false);
 
             if (retrievedElement == null)
             {
@@ -974,7 +974,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
             }
 
 
-            retrievedElement = glossaryExchangeClient.getGlossaryByGUID(userId, assetManagerOneGUID, assetManagerOneName, glossaryTwoGUID);
+            retrievedElement = glossaryExchangeClient.getGlossaryByGUID(userId, assetManagerOneGUID, assetManagerOneName, glossaryTwoGUID, null, false, false);
 
             if (retrievedElement == null)
             {
@@ -1026,11 +1026,11 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
             }
 
 
-            glossaryExchangeClient.removeGlossary(userId, assetManagerOneGUID, assetManagerOneName, glossaryOneGUID, externalGlossaryIdentifierOne);
+            glossaryExchangeClient.removeGlossary(userId, assetManagerOneGUID, assetManagerOneName, glossaryOneGUID, externalGlossaryIdentifierOne, null, false, false);
 
             try
             {
-                glossaryExchangeClient.getGlossaryByGUID(userId, assetManagerOneGUID, assetManagerOneName, glossaryOneGUID);
+                glossaryExchangeClient.getGlossaryByGUID(userId, assetManagerOneGUID, assetManagerOneName, glossaryOneGUID, null, false, false);
 
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(glossary not deleted)");
             }
