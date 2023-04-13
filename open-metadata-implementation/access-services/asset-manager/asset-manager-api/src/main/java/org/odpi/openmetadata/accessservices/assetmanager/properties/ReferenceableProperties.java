@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.assetmanager.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
@@ -22,19 +23,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
+                @JsonSubTypes.Type(value = CommentProperties.class, name = "CommentProperties"),
                 @JsonSubTypes.Type(value = GlossaryProperties.class, name = "GlossaryProperties"),
                 @JsonSubTypes.Type(value = GlossaryCategoryProperties.class, name = "GlossaryCategoryProperties"),
                 @JsonSubTypes.Type(value = GlossaryTermProperties.class, name = "GlossaryTermProperties"),
                 @JsonSubTypes.Type(value = GovernanceActionProperties.class, name = "GovernanceActionProperties"),
                 @JsonSubTypes.Type(value = GovernanceActionTypeProperties.class, name = "GovernanceActionTypeProperties"),
                 @JsonSubTypes.Type(value = GovernanceActionProcessProperties.class, name = "GovernanceActionProcessProperties"),
+                @JsonSubTypes.Type(value = NoteLogProperties.class, name = "NoteLogProperties"),
+                @JsonSubTypes.Type(value = NoteProperties.class, name = "NoteProperties"),
                 @JsonSubTypes.Type(value = PortProperties.class, name = "PortProperties"),
                 @JsonSubTypes.Type(value = SupplementaryProperties.class, name = "SupplementaryProperties"),
                 @JsonSubTypes.Type(value = ValidValueProperties.class, name = "ValidValueProperties"),
         })
 public class ReferenceableProperties implements Serializable
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private String               qualifiedName        = null;
     private Map<String, String>  additionalProperties = null;

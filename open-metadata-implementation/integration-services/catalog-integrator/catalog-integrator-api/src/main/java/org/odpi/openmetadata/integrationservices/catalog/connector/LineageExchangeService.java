@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.integrationservices.catalog.connector;
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.LineageExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.LineageExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -14,7 +14,6 @@ import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorE
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 
 /**

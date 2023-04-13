@@ -25,8 +25,7 @@ public class LikeProperties implements Serializable
     @Serial
     private static final long serialVersionUID = 1L;
 
-    protected String     user       = null;
-    protected boolean    isPublic   = false;
+    private String     user       = null;
 
 
     /**
@@ -48,7 +47,6 @@ public class LikeProperties implements Serializable
         if (template != null)
         {
             user = template.getUser();
-            isPublic = template.isPublic;
         }
     }
 
@@ -73,29 +71,6 @@ public class LikeProperties implements Serializable
         this.user = user;
     }
 
-
-    /**
-     * Return if this like is private to the creating user.
-     *
-     * @return boolean
-     */
-    public boolean getIsPublic()
-    {
-        return isPublic;
-    }
-
-
-    /**
-     * Set up whether the like is private to the creating user or not.
-     *
-     * @param aPublic boolean
-     */
-    public void setIsPublic(boolean aPublic)
-    {
-        isPublic = aPublic;
-    }
-
-
     /**
      * Standard toString method.
      *
@@ -106,7 +81,6 @@ public class LikeProperties implements Serializable
     {
         return "LikeProperties{" +
                        "user='" + user + '\'' +
-                       ", isPublic=" + isPublic +
                        '}';
     }
 
@@ -129,8 +103,7 @@ public class LikeProperties implements Serializable
             return false;
         }
         LikeProperties like = (LikeProperties) objectToCompare;
-        return isPublic == like.isPublic &&
-                       Objects.equals(getUser(), like.getUser());
+        return Objects.equals(getUser(), like.getUser());
     }
 
 
@@ -142,6 +115,6 @@ public class LikeProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(getUser(), isPublic);
+        return Objects.hash(user);
     }
 }

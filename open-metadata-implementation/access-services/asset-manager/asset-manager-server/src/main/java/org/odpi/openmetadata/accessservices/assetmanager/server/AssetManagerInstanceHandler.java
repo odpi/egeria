@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.server;
 
+import org.odpi.openmetadata.accessservices.assetmanager.handlers.CommentExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.ConnectionExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.DataAssetExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.ExternalReferenceExchangeHandler;
@@ -447,11 +448,11 @@ class AssetManagerInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    CommentHandler<CommentElement> getCommentHandler(String userId,
-                                                     String serverName,
-                                                     String serviceOperationName) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    CommentExchangeHandler getCommentHandler(String userId,
+                                             String serverName,
+                                             String serviceOperationName) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
 
         AssetManagerServicesInstance instance = (AssetManagerServicesInstance)super.getServerServiceInstance(userId,

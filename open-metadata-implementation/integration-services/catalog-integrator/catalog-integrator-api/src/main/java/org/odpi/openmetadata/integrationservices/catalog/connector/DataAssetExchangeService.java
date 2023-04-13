@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.integrationservices.catalog.connector;
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.DataAssetExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.DataAssetExchangeClient;
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.DataAssetElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RelationshipElement;

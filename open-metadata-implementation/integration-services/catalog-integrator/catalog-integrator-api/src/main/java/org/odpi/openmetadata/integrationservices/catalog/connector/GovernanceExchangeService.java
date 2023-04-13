@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.integrationservices.catalog.connector;
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.GovernanceExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GovernanceExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 

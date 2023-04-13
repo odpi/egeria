@@ -20,11 +20,34 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum StarRating implements Serializable
 {
+    /**
+     * No recommendation.
+     */
     NO_RECOMMENDATION (0, 0, "X", "No recommendation"),
+
+    /**
+     * Poor
+     */
     ONE_STAR          (1, 1, "*", "Poor"),
+
+    /**
+     * Usable
+     */
     TWO_STARS         (2, 2, "**", "Usable"),
+
+    /**
+     * Good
+     */
     THREE_STARS       (3, 3, "***", "Good"),
+
+    /**
+     * Very good
+     */
     FOUR_STARS        (4, 4, "****", "Very Good"),
+
+    /**
+     * Excellent
+     */
     FIVE_STARS        (5, 5, "*****", "Excellent");
 
     public static final String ENUM_TYPE_GUID  = "77fea3ef-6ec1-4223-8408-38567e9d3c93";

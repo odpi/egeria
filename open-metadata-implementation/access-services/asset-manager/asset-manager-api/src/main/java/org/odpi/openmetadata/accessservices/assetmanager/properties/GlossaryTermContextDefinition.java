@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -19,9 +20,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GlossaryTermContextDefinition implements Serializable
+public class GlossaryTermContextDefinition extends ClassificationProperties
 {
-    private static final long     serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private String description = null;
     private String scope       = null;
@@ -43,6 +45,8 @@ public class GlossaryTermContextDefinition implements Serializable
      */
     public GlossaryTermContextDefinition(GlossaryTermContextDefinition template)
     {
+        super (template);
+
         if (template != null)
         {
             description = template.getDescription();
@@ -106,6 +110,9 @@ public class GlossaryTermContextDefinition implements Serializable
         return "GlossaryTermContextDefinition{" +
                        "description='" + description + '\'' +
                        ", scope='" + scope + '\'' +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", extendedProperties=" + getExtendedProperties() +
                        '}';
     }
 
@@ -127,6 +134,10 @@ public class GlossaryTermContextDefinition implements Serializable
         {
             return false;
         }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
         GlossaryTermContextDefinition that = (GlossaryTermContextDefinition) objectToCompare;
         return Objects.equals(description, that.description) &&
                 Objects.equals(scope, that.scope);
@@ -141,6 +152,6 @@ public class GlossaryTermContextDefinition implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(description, scope);
+        return Objects.hash(super.hashCode(), description, scope);
     }
 }

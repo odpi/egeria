@@ -20,18 +20,45 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum GovernanceClassificationStatus implements Serializable
 {
+    /**
+     * Discovered - The classification assignment was discovered by an automated process.
+     */
     DISCOVERED (0, 0,"Discovered",
                                "The classification assignment was discovered by an automated process."),
+
+    /**
+     * Proposed - The classification assignment was proposed by a subject matter expert.
+     */
     PROPOSED   (1, 1,"Proposed",
                                "The classification assignment was proposed by a subject matter expert."),
+
+    /**
+     * Imported - The classification assignment was imported from another metadata system.
+     */
     IMPORTED   (2, 2,"Imported",
                                "The classification assignment was imported from another metadata system."),
+
+    /**
+     * Validated - The classification assignment has been validated and approved by a subject matter expert.
+     */
     VALIDATED  (3, 3,"Validated",
                                "The classification assignment has been validated and approved by a subject matter expert."),
+
+    /**
+     * Deprecated - The classification assignment should no longer be used.
+     */
     DEPRECATED (4, 4,"Deprecated",
                                "The classification assignment should no longer be used."),
+
+    /**
+     * Obsolete - The classification assignment must no longer be used.
+     */
     OBSOLETE   (5, 5,"Obsolete",
                                "The classification assignment must no longer be used."),
+
+    /**
+     * Other - Another classification assignment status.
+     */
     OTHER     (99, 99, "Other",
                                "Another classification assignment status.");
 

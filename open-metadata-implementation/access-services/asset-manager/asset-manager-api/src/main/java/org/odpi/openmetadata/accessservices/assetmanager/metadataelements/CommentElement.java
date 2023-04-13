@@ -29,10 +29,12 @@ public class CommentElement implements MetadataElement, Serializable
     @Serial 
     private static final long serialVersionUID = 1L;
 
-    private ElementHeader                   elementHeader      = null;
+    private ElementHeader                   elementHeader         = null;
     private List<MetadataCorrelationHeader> correlationHeaders    = null;
     private CommentProperties               properties            = null;
     private FeedbackTargetElement           feedbackTargetElement = null;
+    private List<RelatedElement>            acceptedAnswers       = null;
+    private List<RelatedElement>            questionsAnswered     = null;
 
 
     /**
@@ -165,6 +167,50 @@ public class CommentElement implements MetadataElement, Serializable
     public void setFeedbackTargetElement(FeedbackTargetElement feedbackTargetElement)
     {
         this.feedbackTargetElement = feedbackTargetElement;
+    }
+
+
+    /**
+     * Return details of any comment that provides an accepted answer to the question posed in this comment.
+     *
+     * @return list of comment headers
+     */
+    public List<RelatedElement> getAcceptedAnswers()
+    {
+        return acceptedAnswers;
+    }
+
+
+    /**
+     * Set up details of any comment that provides an accepted answer to the question posed in this comment.
+     *
+     * @param acceptedAnswers  list of comment headers
+     */
+    public void setAcceptedAnswers(List<RelatedElement> acceptedAnswers)
+    {
+        this.acceptedAnswers = acceptedAnswers;
+    }
+
+
+    /**
+     * Return details of any comment that poses a question that this comment answers.
+     *
+     * @return  list of comment headers
+     */
+    public List<RelatedElement> getQuestionsAnswered()
+    {
+        return questionsAnswered;
+    }
+
+
+    /**
+     * Set up details of any comment that poses a question that this comment answers.
+     *
+     * @param questionsAnswered  list of comment headers
+     */
+    public void setQuestionsAnswered(List<RelatedElement> questionsAnswered)
+    {
+        this.questionsAnswered = questionsAnswered;
     }
 
 

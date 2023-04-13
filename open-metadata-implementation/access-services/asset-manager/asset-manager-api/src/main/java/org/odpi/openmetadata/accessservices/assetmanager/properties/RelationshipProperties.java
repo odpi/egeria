@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -40,11 +41,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ProcessCallProperties.class, name = "ProcessCallProperties"),
                 @JsonSubTypes.Type(value = LineageMappingProperties.class, name = "LineageMappingProperties"),
                 @JsonSubTypes.Type(value = GlossaryTermCategorization.class, name = "GlossaryTermCategorization"),
+                @JsonSubTypes.Type(value = GlossaryTermRelationship.class, name = "GlossaryTermRelationship"),
                 @JsonSubTypes.Type(value = ForeignKeyProperties.class, name = "ForeignKeyProperties"),
         })
 public class RelationshipProperties implements Serializable
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private Date effectiveFrom = null;
     private Date effectiveTo   = null;

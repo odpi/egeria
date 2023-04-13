@@ -881,6 +881,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
         OriginRequestBody requestBody = new OriginRequestBody();
         requestBody.setBusinessCapabilityGUID(businessCapabilityGUID);
         requestBody.setOrganizationGUID(organizationGUID);
+        requestBody.setOtherOriginValues(otherOriginValues);
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,

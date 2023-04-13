@@ -7,6 +7,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.accessservices.assetmanager.client.*;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.DataAssetExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ExternalAssetManagerClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GovernanceExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.LineageExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -40,7 +44,6 @@ public class LineageIntegratorContextManager extends IntegrationContextManager i
     private DataAssetExchangeClient    dataAssetExchangeClient;
     private LineageExchangeClient      lineageExchangeClient;
     private GovernanceExchangeClient   governanceExchangeClient;
-    private StewardshipExchangeClient  stewardshipExchangeClient;
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final ObjectWriter OBJECT_WRITER = OBJECT_MAPPER.writer();
@@ -134,11 +137,6 @@ public class LineageIntegratorContextManager extends IntegrationContextManager i
                                                                 maxPageSize,
                                                                 auditLog);
 
-        stewardshipExchangeClient = new StewardshipExchangeClient(partnerOMASServerName,
-                                                                  partnerOMASPlatformRootURL,
-                                                                  restClient,
-                                                                  maxPageSize,
-                                                                  auditLog);
     }
 
 
@@ -223,7 +221,6 @@ public class LineageIntegratorContextManager extends IntegrationContextManager i
                                                                                       dataAssetExchangeClient,
                                                                                       lineageExchangeClient,
                                                                                       governanceExchangeClient,
-                                                                                      stewardshipExchangeClient,
                                                                                       eventClient,
                                                                                       generateIntegrationReport,
                                                                                       permittedSynchronization,

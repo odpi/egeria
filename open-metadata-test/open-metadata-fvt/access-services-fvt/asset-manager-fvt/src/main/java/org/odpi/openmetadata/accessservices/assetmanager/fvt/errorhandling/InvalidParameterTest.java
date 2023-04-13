@@ -4,8 +4,8 @@
 package org.odpi.openmetadata.accessservices.assetmanager.fvt.errorhandling;
 
 import org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerEventClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.GlossaryExchangeClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.ExternalAssetManagerClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ExternalAssetManagerClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GlossaryExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryProperties;
@@ -469,6 +469,7 @@ public class InvalidParameterTest
             client.createGlossary(null,
                                   assetManagerGUID,
                                   assetManagerName,
+                                  true,
                                   null,
                                   properties);
 
@@ -503,6 +504,7 @@ public class InvalidParameterTest
             client.createGlossary(userId,
                                   assetManagerGUID,
                                   assetManagerName,
+                                  true,
                                   null,
                                   null);
             throw new FVTUnexpectedCondition(testCaseName, activityName);
@@ -537,6 +539,7 @@ public class InvalidParameterTest
             client.createGlossary(userId,
                                   assetManagerGUID,
                                   assetManagerName,
+                                  true,
                                   null,
                                   properties);
             throw new FVTUnexpectedCondition(testCaseName, activityName);

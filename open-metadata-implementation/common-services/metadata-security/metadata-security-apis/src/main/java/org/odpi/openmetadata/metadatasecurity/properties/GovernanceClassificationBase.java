@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * GovernanceClassificationBase defines the common properties for the governance action classifications
+ * GovernanceClassificationBase defines the common properties for the governance action classifications.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -25,11 +25,13 @@ public class GovernanceClassificationBase implements Serializable
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private int    status     = 0;
-    private int    confidence = 0;
-    private String steward    = null;
-    private String source     = null;
-    private String notes      = null;
+    private int    status              = 0;
+    private int    confidence          = 0;
+    private String steward             = null;
+    private String stewardTypeName     = null;
+    private String stewardPropertyName = null;
+    private String source              = null;
+    private String notes               = null;
 
 
     /**
@@ -50,11 +52,13 @@ public class GovernanceClassificationBase implements Serializable
     {
         if (template != null)
         {
-            status     = template.getStatus();
+            status = template.getStatus();
             confidence = template.getConfidence();
-            steward    = template.getSteward();
-            source     = template.getSource();
-            notes      = template.getNotes();
+            steward = template.getSteward();
+            stewardTypeName = template.getStewardTypeName();
+            stewardPropertyName = template.getStewardPropertyName();
+            source = template.getSource();
+            notes = template.getNotes();
         }
     }
 
@@ -126,6 +130,50 @@ public class GovernanceClassificationBase implements Serializable
 
 
     /**
+     * Return the type name of the element used to describe the steward.
+     *
+     * @return name
+     */
+    public String getStewardTypeName()
+    {
+        return stewardTypeName;
+    }
+
+
+    /**
+     * Set up the type name of the element used to describe the steward.
+     *
+     * @param stewardTypeName name
+     */
+    public void setStewardTypeName(String stewardTypeName)
+    {
+        this.stewardTypeName = stewardTypeName;
+    }
+
+
+    /**
+     * Return the name of the property used to identify the steward.
+     *
+     * @return name
+     */
+    public String getStewardPropertyName()
+    {
+        return stewardPropertyName;
+    }
+
+
+    /**
+     * Set up the name of the property used to identify the steward.
+     *
+     * @param stewardPropertyName name
+     */
+    public void setStewardPropertyName(String stewardPropertyName)
+    {
+        this.stewardPropertyName = stewardPropertyName;
+    }
+
+
+    /**
      * Return the source of this classification.
      *
      * @return string identifier
@@ -178,12 +226,14 @@ public class GovernanceClassificationBase implements Serializable
     public String toString()
     {
         return "GovernanceClassificationBase{" +
-                "status=" + status +
-                ", confidence=" + confidence +
-                ", steward='" + steward + '\'' +
-                ", source='" + source + '\'' +
-                ", notes='" + notes +
-                '}';
+                       "status=" + status +
+                       ", confidence=" + confidence +
+                       ", steward='" + steward + '\'' +
+                       ", stewardTypeName='" + stewardTypeName + '\'' +
+                       ", stewardPropertyName='" + stewardPropertyName + '\'' +
+                       ", source='" + source + '\'' +
+                       ", notes='" + notes + '\'' +
+                       '}';
     }
 
 
@@ -210,10 +260,12 @@ public class GovernanceClassificationBase implements Serializable
         }
         GovernanceClassificationBase that = (GovernanceClassificationBase) objectToCompare;
         return confidence == that.confidence &&
-                status == that.status &&
-                Objects.equals(steward, that.steward) &&
-                Objects.equals(source, that.source) &&
-                Objects.equals(notes, that.notes);
+                       status == that.status &&
+                       Objects.equals(steward, that.steward) &&
+                       Objects.equals(stewardTypeName, that.stewardTypeName) &&
+                       Objects.equals(stewardPropertyName, that.stewardPropertyName) &&
+                       Objects.equals(source, that.source) &&
+                       Objects.equals(notes, that.notes);
     }
 
 
@@ -225,6 +277,6 @@ public class GovernanceClassificationBase implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), status, confidence, steward, source, notes);
+        return Objects.hash(super.hashCode(), status, confidence, steward, stewardTypeName, stewardPropertyName, source, notes);
     }
 }

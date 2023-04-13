@@ -17,24 +17,25 @@ public class Referenceable implements Serializable
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private String              typeGUID             = null;
-    private String              typeName             = null;
-    private ReferenceableStatus status               = null;
+    private String                                  typeGUID             = null;
+    private String                                  typeName             = null;
+    private ReferenceableStatus                     status               = null;
     private String                                  guid                 = null;
     private String                                  qualifiedName        = null;
     private Map<String, String>                     additionalProperties = null;
     private Map<String, Object>                     extendedProperties   = null;
     private String                                  owner                = null;
     private int                                     ownerType            = 0;
-
-    private List<String>                            securityLabels     = null;
-    private Map<String, Object>                     securityProperties = null;
-    private Map<String, List<String>>               accessGroups       = null;
-    private ConfidentialityGovernanceClassification confidentiality    = null;
-    private ConfidenceGovernanceClassification      confidence         = null;
-    private CriticalityGovernanceClassification     criticality        = null;
-    private ImpactGovernanceClassification          impact             = null;
-    private RetentionGovernanceClassification       retention          = null;
+    private String                                  ownerTypeName        = null;
+    private String                                  ownerPropertyName    = null;
+    private List<String>                            securityLabels       = null;
+    private Map<String, Object>                     securityProperties   = null;
+    private Map<String, List<String>>               accessGroups         = null;
+    private ConfidentialityGovernanceClassification confidentiality      = null;
+    private ConfidenceGovernanceClassification      confidence           = null;
+    private CriticalityGovernanceClassification     criticality          = null;
+    private ImpactGovernanceClassification          impact               = null;
+    private RetentionGovernanceClassification       retention            = null;
 
 
 
@@ -64,6 +65,8 @@ public class Referenceable implements Serializable
             additionalProperties = template.getAdditionalProperties();
             owner                = template.getOwner();
             ownerType            = template.getOwnerType();
+            ownerTypeName        = template.getOwnerTypeName();
+            ownerPropertyName    = template.getOwnerPropertyName();
             securityLabels       = template.getSecurityLabels();
             securityProperties   = template.getSecurityProperties();
             accessGroups         = template.getAccessGroups();
@@ -261,6 +264,50 @@ public class Referenceable implements Serializable
     public void setOwnerType(int ownerType)
     {
         this.ownerType = ownerType;
+    }
+
+
+    /**
+     * Return the type name of the element representing the owner.
+     *
+     * @return name
+     */
+    public String getOwnerTypeName()
+    {
+        return ownerTypeName;
+    }
+
+
+    /**
+     * Set up  the type name of the element representing the owner.
+     *
+     * @param ownerTypeName name
+     */
+    public void setOwnerTypeName(String ownerTypeName)
+    {
+        this.ownerTypeName = ownerTypeName;
+    }
+
+
+    /**
+     * Return the property name of the identifier that is representing the owner.
+     *
+     * @return name
+     */
+    public String getOwnerPropertyName()
+    {
+        return ownerPropertyName;
+    }
+
+
+    /**
+     * Set up the property name of the identifier that is representing the owner.
+     *
+     * @param ownerPropertyName name
+     */
+    public void setOwnerPropertyName(String ownerPropertyName)
+    {
+        this.ownerPropertyName = ownerPropertyName;
     }
 
 
@@ -512,6 +559,8 @@ public class Referenceable implements Serializable
                        ", qualifiedName='" + qualifiedName + '\'' +
                        ", additionalProperties=" + additionalProperties +
                        ", owner='" + owner + '\'' +
+                       ", ownerTypeName='" + ownerTypeName + '\'' +
+                       ", ownerPropertyName='" + ownerPropertyName + '\'' +
                        ", ownerType=" + ownerType +
                        ", extendedProperties=" + extendedProperties +
                        ", securityLabels=" + securityLabels +
@@ -549,6 +598,8 @@ public class Referenceable implements Serializable
                        Objects.equals(qualifiedName, that.qualifiedName) &&
                        Objects.equals(additionalProperties, that.additionalProperties)  &&
                        Objects.equals(owner, that.owner) &&
+                       Objects.equals(ownerTypeName, that.ownerTypeName) &&
+                       Objects.equals(ownerPropertyName, that.ownerPropertyName) &&
                        getOwnerType() == that.ownerType &&
                        Objects.equals(extendedProperties, that.extendedProperties) &&
                        Objects.equals(securityLabels, that.securityLabels) &&
@@ -569,6 +620,6 @@ public class Referenceable implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(typeGUID, typeName, guid, qualifiedName, additionalProperties, owner, ownerType, extendedProperties, securityLabels, securityProperties, confidentiality, confidence, criticality, retention);
+        return Objects.hash(typeGUID, typeName, guid, qualifiedName, additionalProperties, owner, ownerType, ownerTypeName, ownerPropertyName, extendedProperties, securityLabels, securityProperties, confidentiality, confidence, criticality, retention);
     }
 }

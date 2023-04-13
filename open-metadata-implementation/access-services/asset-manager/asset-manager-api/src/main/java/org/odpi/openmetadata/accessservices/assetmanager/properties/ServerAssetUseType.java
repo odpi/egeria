@@ -26,10 +26,29 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public enum ServerAssetUseType implements Serializable
 {
-    OWNS      (0,  0,  "Owns",     "The asset is managed and updated via this relationship"),
+    /**
+     * Owns - The asset is managed and updated via this relationship.
+     */
+    OWNS      (0,  0,  "Owns",     "The asset is managed and updated via this relationship."),
+
+    /**
+     * Governs - The asset is governed through this relationship.
+     */
     GOVERNS   (1,  1,  "Governs",  "The asset is governed through this relationship."),
+
+    /**
+     * Maintains - The asset is maintained through this relationship.
+     */
     MAINTAINS (2,  2,  "Maintains","The asset is maintained through this relationship."),
+
+    /**
+     * Uses - The asset is used through this relationship.
+     */
     USES      (3,  3,  "Uses",     "The asset is used through this relationship."),
+
+    /**
+     * Other - None of the above.
+     */
     OTHER     (99, 99, "Other",    "None of the above.");
 
     private static final long serialVersionUID = 1L;

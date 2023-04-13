@@ -12,6 +12,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorr
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -32,6 +33,7 @@ public class ControlledGlossaryTermRequestBody implements Serializable
     private MetadataCorrelationProperties metadataCorrelationProperties = null;
     private GlossaryTermProperties        elementProperties = null;
     private GlossaryTermStatus            initialStatus = null;
+    private Date                          effectiveTime = null;
 
     /**
      * Default constructor
@@ -54,6 +56,7 @@ public class ControlledGlossaryTermRequestBody implements Serializable
             metadataCorrelationProperties = template.getMetadataCorrelationProperties();
             elementProperties = template.getElementProperties();
             initialStatus = template.getInitialStatus();
+            effectiveTime = template.getEffectiveTime();
         }
     }
 
@@ -125,6 +128,28 @@ public class ControlledGlossaryTermRequestBody implements Serializable
 
 
     /**
+     * Return the date/time to use for the query.
+     *
+     * @return date object
+     */
+    public Date getEffectiveTime()
+    {
+        return effectiveTime;
+    }
+
+
+    /**
+     * Set up  the date/time to use for the query.
+     *
+     * @param effectiveTime date object
+     */
+    public void setEffectiveTime(Date effectiveTime)
+    {
+        this.effectiveTime = effectiveTime;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -136,6 +161,7 @@ public class ControlledGlossaryTermRequestBody implements Serializable
                        "metadataCorrelationProperties=" + metadataCorrelationProperties +
                        ", elementProperties=" + elementProperties +
                        ", initialStatus=" + initialStatus +
+                       ", effectiveTime=" + effectiveTime +
                        '}';
     }
 
@@ -159,7 +185,8 @@ public class ControlledGlossaryTermRequestBody implements Serializable
         }
         ControlledGlossaryTermRequestBody that = (ControlledGlossaryTermRequestBody) objectToCompare;
         return Objects.equals(getMetadataCorrelationProperties(), that.getMetadataCorrelationProperties()) &&
-                       Objects.equals(getElementProperties(), that.getElementProperties());
+                       Objects.equals(getElementProperties(), that.getElementProperties()) &&
+                       Objects.equals(effectiveTime, that.effectiveTime);
     }
 
 
@@ -172,6 +199,6 @@ public class ControlledGlossaryTermRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), metadataCorrelationProperties, elementProperties, initialStatus);
+        return Objects.hash(super.hashCode(), metadataCorrelationProperties, elementProperties, initialStatus, effectiveTime);
     }
 }

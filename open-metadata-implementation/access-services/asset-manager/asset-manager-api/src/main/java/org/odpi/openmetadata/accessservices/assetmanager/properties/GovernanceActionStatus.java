@@ -19,15 +19,54 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum GovernanceActionStatus implements Serializable
 {
+    /**
+     * Requested - The governance action has been created and is pending.
+     */
     REQUESTED       (0,  0,  "Requested",  "The governance action has been created and is pending"),
+
+    /**
+     * Approved - The governance action is approved to run.
+     */
     APPROVED        (1,  1,  "Approved",   "The governance action is approved to run"),
+
+    /**
+     * Waiting - The governance action is waiting for its start time or the right conditions to run.
+     */
     WAITING         (2,  2,  "Waiting",    "The governance action is waiting for its start time or the right conditions to run"),
+
+    /**
+     * Activating - The governance action service for the governance action is being initialized in the governance engine.
+     */
     ACTIVATING      (3,  3,  "Activating", "The governance action service for the governance action is being initialized in the governance engine"),
+
+    /**
+     * In Progress - The governance engine is running the associated governance action service for the governance action.
+     */
     IN_PROGRESS     (4,  4,  "In Progress","The governance engine is running the associated governance action service for the governance action"),
+
+    /**
+     * Actioned - The governance action service for the governance action has successfully completed processing.
+     */
     ACTIONED        (5,  10, "Actioned",   "The governance action service for the governance action has successfully completed processing"),
+
+    /**
+     * Invalid - The governance action has not been run because it is not appropriate (for example, a false positive).
+     */
     INVALID         (6,  11, "Invalid",    "The governance action has not been run because it is not appropriate (for example, a false positive)"),
+
+    /**
+     * Ignored - The governance action has not been run because a different governance action was chosen.
+     */
     IGNORED         (7,  12, "Ignored",    "The governance action has not been run because a different governance action was chosen"),
+
+    /**
+     * Failed - The governance action service for the governance action failed to execute.
+     */
     FAILED          (8,  13, "Failed",     "The governance action service for the governance action failed to execute"),
+
+    /**
+     * Other - Undefined or unknown governance action status.
+     */
     OTHER           (99, 99, "Other",      "Undefined or unknown governance action status");
 
     private static final long     serialVersionUID = 1L;
@@ -39,7 +78,7 @@ public enum GovernanceActionStatus implements Serializable
     private final String statusDescription;
     private final int    statusCode;
 
-    private int openTypeOrdinal;
+    private final int openTypeOrdinal;
 
     /**
      * Typical Constructor

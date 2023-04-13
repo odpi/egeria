@@ -5,15 +5,17 @@ package org.odpi.openmetadata.accessservices.assetmanager.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.CommentProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.FeedbackProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.LikeProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.RatingProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.TagProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.CommentElementResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.CommentElementsResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagUpdateRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagUpdateRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.ReferenceableUpdateRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.server.CollaborationExchangeRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -59,8 +61,10 @@ public class CollaborationExchangeResource
      *
      * @param serverName    name of the server instances for this request.
      * @param userId        String - userId of user making request.
-     * @param elementGUID     String - unique id of element that this chain of comments is linked.
      * @param commentGUID   String - unique id for an existing comment.  Used to add a reply to a comment.
+     * @param isPublic is this visible to other people
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody   containing type of comment enum and the text of the comment.
      *
      * @return elementGUID for new comment object or
@@ -69,20 +73,24 @@ public class CollaborationExchangeResource
      *                                   the metadata repository or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = "/elements/{elementGUID}/comments/{commentGUID}/replies")
+    @PostMapping(path = "/comments/{commentGUID}/replies")
 
     @Operation(summary="addCommentReply",
                description="Adds a reply to a comment.",
                externalDocs=@ExternalDocumentation(description="Element Feedback",
                                                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
-    public GUIDResponse addCommentReply(@PathVariable String             serverName,
-                                        @PathVariable String             userId,
-                                        @PathVariable String             elementGUID,
-                                        @PathVariable String             commentGUID,
-                                        @RequestBody CommentProperties requestBody)
+    public GUIDResponse addCommentReply(@PathVariable String                         serverName,
+                                        @PathVariable String                         userId,
+                                        @PathVariable String                         commentGUID,
+                                        @RequestParam boolean                        isPublic,
+                                        @RequestParam (required = false, defaultValue = "false")
+                                                      boolean                        forLineage,
+                                        @RequestParam (required = false, defaultValue = "false")
+                                                      boolean                        forDuplicateProcessing,
+                                        @RequestBody  ReferenceableUpdateRequestBody requestBody)
     {
-        return restAPI.addCommentReply(serverName, userId, elementGUID, commentGUID, requestBody);
+        return restAPI.addCommentReply(serverName, userId, commentGUID, isPublic, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -92,6 +100,9 @@ public class CollaborationExchangeResource
      * @param serverName name of the server instances for this request.
      * @param userId      String - userId of user making request.
      * @param elementGUID        String - unique id for the element.
+     * @param isPublic is this visible to other people
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody containing type of comment enum and the text of the comment.
      *
      * @return elementGUID for new comment object or
@@ -107,12 +118,17 @@ public class CollaborationExchangeResource
                externalDocs=@ExternalDocumentation(description="Element Feedback",
                                                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
-    public GUIDResponse addCommentToElement(@PathVariable String             serverName,
-                                          @PathVariable String             userId,
-                                          @PathVariable String             elementGUID,
-                                          @RequestBody CommentProperties requestBody)
+    public GUIDResponse addCommentToElement(@PathVariable String                         serverName,
+                                            @PathVariable String                         userId,
+                                            @PathVariable String                         elementGUID,
+                                            @RequestParam boolean                        isPublic,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                          boolean                        forLineage,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                          boolean                        forDuplicateProcessing,
+                                            @RequestBody  ReferenceableUpdateRequestBody requestBody)
     {
-        return restAPI.addCommentToElement(serverName, userId, elementGUID, requestBody);
+        return restAPI.addCommentToElement(serverName, userId, elementGUID, isPublic, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -122,6 +138,7 @@ public class CollaborationExchangeResource
      * @param serverName  name of the server instances for this request.
      * @param userId      String - userId of user making request.
      * @param elementGUID   String - unique id for the element.
+     * @param isPublic is this visible to other people
      * @param requestBody feedback request body.
      *
      * @return void or
@@ -137,12 +154,13 @@ public class CollaborationExchangeResource
                externalDocs=@ExternalDocumentation(description="Element Feedback",
                                                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
-    public VoidResponse addLikeToElement(@PathVariable String              serverName,
-                                       @PathVariable String              userId,
-                                       @PathVariable String              elementGUID,
-                                       @RequestBody FeedbackProperties requestBody)
+    public VoidResponse addLikeToElement(@PathVariable String         serverName,
+                                         @PathVariable String         userId,
+                                         @PathVariable String         elementGUID,
+                                         @RequestParam boolean        isPublic,
+                                         @RequestBody  LikeProperties requestBody)
     {
-        return restAPI.addLikeToElement(serverName, userId, elementGUID, requestBody);
+        return restAPI.addLikeToElement(serverName, userId, elementGUID, isPublic, requestBody);
     }
 
 
@@ -151,7 +169,8 @@ public class CollaborationExchangeResource
      *
      * @param serverName  name of the server instances for this request.
      * @param userId      String - userId of user making request.
-     * @param elementGUID        String - unique id for the element.
+     * @param elementGUID String - unique id for the element.
+     * @param isPublic    is this visible to other people
      * @param requestBody containing the StarRating and user review of element.
      *
      * @return elementGUID for new review object or
@@ -166,12 +185,13 @@ public class CollaborationExchangeResource
                externalDocs=@ExternalDocumentation(description="Element Feedback",
                                                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
-    public VoidResponse addRatingToElement(@PathVariable String            serverName,
-                                         @PathVariable String            userId,
-                                         @PathVariable String            elementGUID,
-                                         @RequestBody RatingProperties requestBody)
+    public VoidResponse addRatingToElement(@PathVariable String           serverName,
+                                           @PathVariable String           userId,
+                                           @PathVariable String           elementGUID,
+                                           @RequestParam boolean          isPublic,
+                                           @RequestBody  RatingProperties requestBody)
     {
-        return restAPI.addRatingToElement(serverName, userId, elementGUID, requestBody);
+        return restAPI.addRatingToElement(serverName, userId, elementGUID, isPublic, requestBody);
     }
 
 
@@ -196,11 +216,11 @@ public class CollaborationExchangeResource
                externalDocs=@ExternalDocumentation(description="Element Classifiers",
                                                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-classifiers"))
 
-    public VoidResponse addTagToElement(@PathVariable String              serverName,
-                                      @PathVariable String              userId,
-                                      @PathVariable String              elementGUID,
-                                      @PathVariable String              tagGUID,
-                                      @RequestBody FeedbackProperties requestBody)
+    public VoidResponse addTagToElement(@PathVariable String             serverName,
+                                        @PathVariable String             userId,
+                                        @PathVariable String             elementGUID,
+                                        @PathVariable String             tagGUID,
+                                        @RequestBody  FeedbackProperties requestBody)
     {
         return restAPI.addTagToElement(serverName, userId, elementGUID, tagGUID, requestBody);
     }
@@ -225,9 +245,9 @@ public class CollaborationExchangeResource
                externalDocs=@ExternalDocumentation(description="Informal Tag",
                                                    url="https://egeria-project.org/concepts/informal-tag/"))
 
-    public GUIDResponse createTag(@PathVariable String         serverName,
-                                  @PathVariable String         userId,
-                                  @RequestBody TagProperties requestBody)
+    public GUIDResponse createTag(@PathVariable String        serverName,
+                                  @PathVariable String        userId,
+                                  @RequestBody  TagProperties requestBody)
     {
         return restAPI.createTag(serverName, userId, requestBody);
     }
@@ -286,10 +306,10 @@ public class CollaborationExchangeResource
                                                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-classifiers"))
 
     public GUIDListResponse getElementsByTag(@PathVariable String serverName,
-                                           @PathVariable String userId,
-                                           @PathVariable String tagGUID,
-                                           @RequestParam int    startFrom,
-                                           @RequestParam int    pageSize)
+                                             @PathVariable String userId,
+                                             @PathVariable String tagGUID,
+                                             @RequestParam int    startFrom,
+                                             @RequestParam int    pageSize)
 
     {
         return restAPI.getElementsByTag(serverName, userId, tagGUID, startFrom, pageSize);
@@ -464,13 +484,18 @@ public class CollaborationExchangeResource
                externalDocs=@ExternalDocumentation(description="Element Feedback",
                                                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
-    public VoidResponse removeCommentFromElement(@PathVariable                  String          serverName,
-                                               @PathVariable                  String          userId,
-                                               @PathVariable                  String          elementGUID,
-                                               @PathVariable                  String          commentGUID,
-                                               @RequestBody(required = false) NullRequestBody requestBody)
+    public VoidResponse removeCommentFromElement(@PathVariable String                         serverName,
+                                                 @PathVariable String                         userId,
+                                                 @PathVariable String                         elementGUID,
+                                                 @PathVariable String                         commentGUID,
+                                                 @RequestParam (required = false, defaultValue = "false")
+                                                               boolean                        forLineage,
+                                                 @RequestParam (required = false, defaultValue = "false")
+                                                               boolean                        forDuplicateProcessing,
+                                                 @RequestBody(required = false)
+                                                               ReferenceableUpdateRequestBody requestBody)
     {
-        return restAPI.removeCommentFromElement(serverName, userId, elementGUID, commentGUID, requestBody);
+        return restAPI.removeCommentFromElement(serverName, userId, elementGUID, commentGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -485,13 +510,19 @@ public class CollaborationExchangeResource
      *  PropertyServerException there is a problem updating the element properties in the property server.
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
-    @GetMapping(path = "/comments/{commentGUID}")
+    @PostMapping(path = "/comments/{commentGUID}")
 
-    public CommentElementResponse getComment(@PathVariable String serverName,
-                                             @PathVariable String userId,
-                                             @PathVariable String commentGUID)
+    public CommentElementResponse getComment(@PathVariable String                        serverName,
+                                             @PathVariable String                        userId,
+                                             @PathVariable String                        commentGUID,
+                                             @RequestParam (required = false, defaultValue = "false")
+                                                           boolean                       forLineage,
+                                             @RequestParam (required = false, defaultValue = "false")
+                                                           boolean                       forDuplicateProcessing,
+                                             @RequestBody(required = false)
+                                                           EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getComment(serverName, userId, commentGUID);
+        return restAPI.getCommentByGUID(serverName, userId, commentGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -508,15 +539,21 @@ public class CollaborationExchangeResource
      *  PropertyServerException there is a problem updating the element properties in the property server.
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
-    @GetMapping(path = "/elements/{elementGUID}/comments")
+    @PostMapping(path = "/elements/{elementGUID}/comments/retrieve")
 
-    public CommentElementsResponse getAttachedComments(@PathVariable String serverName,
-                                                       @PathVariable String userId,
-                                                       @PathVariable String elementGUID,
-                                                       @RequestParam int    startFrom,
-                                                       @RequestParam int    pageSize)
+    public CommentElementsResponse getAttachedComments(@PathVariable String                        serverName,
+                                                       @PathVariable String                        userId,
+                                                       @PathVariable String                        elementGUID,
+                                                       @RequestParam int                           startFrom,
+                                                       @RequestParam int                           pageSize,
+                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                       forLineage,
+                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                       forDuplicateProcessing,
+                                                       @RequestBody(required = false)
+                                                                     EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getAttachedComments(serverName, userId, elementGUID, startFrom, pageSize);
+        return restAPI.getAttachedComments(serverName, userId, elementGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -599,7 +636,7 @@ public class CollaborationExchangeResource
                externalDocs=@ExternalDocumentation(description="Element classifiers",
                                                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-classifiers"))
 
-    public VoidResponse   removeTagFromElement(@PathVariable                  String          serverName,
+    public VoidResponse removeTagFromElement(@PathVariable                  String          serverName,
                                              @PathVariable                  String          userId,
                                              @PathVariable                  String          elementGUID,
                                              @PathVariable                  String          tagGUID,
@@ -614,8 +651,11 @@ public class CollaborationExchangeResource
      *
      * @param serverName   name of the server instances for this request.
      * @param userId       userId of user making request.
-     * @param elementGUID    unique identifier for the element that the comment is attached to (directly or indirectly).
      * @param commentGUID  unique identifier for the comment to change.
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param isPublic      is this visible to other people
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
      * @return void or
@@ -623,20 +663,26 @@ public class CollaborationExchangeResource
      * PropertyServerException There is a problem updating the element properties in the metadata repository.
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = "elements/{elementGUID}/comments/{commentGUID}/update")
+    @PostMapping(path = "/comments/{commentGUID}/update")
 
     @Operation(summary="updateComment",
                description="Update an existing comment.",
                externalDocs=@ExternalDocumentation(description="Element Feedback",
                                                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
-    public VoidResponse   updateComment(@PathVariable String             serverName,
-                                        @PathVariable String             userId,
-                                        @PathVariable String             elementGUID,
-                                        @PathVariable String             commentGUID,
-                                        @RequestBody CommentProperties requestBody)
+    public VoidResponse   updateComment(@PathVariable String                         serverName,
+                                        @PathVariable String                         userId,
+                                        @PathVariable String                         commentGUID,
+                                        @RequestParam (required = false, defaultValue = "false")
+                                                      boolean                        isMergeUpdate,
+                                        @RequestParam boolean                        isPublic,
+                                        @RequestParam (required = false, defaultValue = "false")
+                                                      boolean                        forLineage,
+                                        @RequestParam (required = false, defaultValue = "false")
+                                                      boolean                        forDuplicateProcessing,
+                                        @RequestBody  ReferenceableUpdateRequestBody requestBody)
     {
-        return restAPI.updateComment(serverName, userId, elementGUID, commentGUID, requestBody);
+        return restAPI.updateComment(serverName, userId, commentGUID, isMergeUpdate, isPublic, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
