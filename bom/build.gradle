@@ -78,8 +78,8 @@ ext {
     // TODO: Held as data engine breaks
     mockitoVersion = '4.11.0'
     plexusVersion = '3.5.1'
-    prometheusVersion = '1.10.5'
-    nettyVersion = '4.1.90.Final'
+    nettyVersion = '4.1.91.Final'
+    prometheusVersion = '1.10.6'
     quartzVersion = '2.3.2'
     reflectionsVersion = '0.10.2'
     sanitizerVersion = '1.2.3'
@@ -119,7 +119,7 @@ ext {
 dependencies {
     // Only use this to bring in platforms, which are *constraints*
     dependencies {
-        api(platform('net.openhft:chronicle-bom:2.24ea46'))
+        api(platform('net.openhft:chronicle-bom:2.24ea50'))
     }
     constraints {
         api("ch.qos.logback:logback-classic:${logbackVersion}")
