@@ -16,7 +16,7 @@ pluginManagement {
     }
     plugins {
         id "io.freefair.aggregate-javadoc" version "6.6.3"
-        id "io.freefair.lombok" version "6.6.3"
+        id "io.freefair.lombok" version "8.0.1"
         // Checks for unnecessary dependencies
         id("com.autonomousapps.dependency-analysis") version "1.19.0"
         // helps resolve log implementation clashes
@@ -25,8 +25,8 @@ pluginManagement {
         id 'org.gradlex.java-ecosystem-capabilities' version "1.1"
         // Docs don't recommend specifying a version for checkstyle
         id 'checkstyle'
-        id 'org.springframework.boot' version '2.7.9'
-        id 'com.github.johnrengelman.shadow' version '7.1.2'
+        id 'org.springframework.boot' version '2.7.10'
+        id 'com.github.johnrengelman.shadow' version '8.1.1'
         id 'com.github.psxpaul.execfork' version '0.2.2'
     }
 }

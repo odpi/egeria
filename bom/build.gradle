@@ -28,13 +28,13 @@ ext {
     classmateVersion = '1.5.1'
     collections4Version = '4.4'
     commonscodecVersion = '1.15'
-    commonsconfiguration2Version = '2.8.0'
+    commonsconfiguration2Version = '2.9.0'
     commonsconfigurationVersion = '1.10'
     commonsioVersion = '2.11.0'
     commonsloggingVersion = '1.2'
     commonstextVersion = '1.10.0'
     commonscliVersion = '1.5.0'
-    elasticsearchVersion = '8.6.2'
+    elasticsearchVersion = '8.7.0'
     findbugsVersion = '3.0.2'
     glassfishVersion = '1.1.4'
     // TODO: Held back for compatability
@@ -58,7 +58,7 @@ ext {
     javassistVersion = '3.29.2-GA'
     jaxbVersion = '2.3.1'
     jenaVersion = '4.7.0'
-    jodatimeVersion = '2.12.2'
+    jodatimeVersion = '2.12.5'
     jsonldVersion = '0.13.4'
     junitVersion = '4.13.2'
     junitjupiterVersion = '5.9.2'
@@ -78,8 +78,8 @@ ext {
     // TODO: Held as data engine breaks
     mockitoVersion = '4.11.0'
     plexusVersion = '3.5.1'
-    prometheusVersion = '1.10.4'
-    nettyVersion = '4.1.89.Final'
+    prometheusVersion = '1.10.5'
+    nettyVersion = '4.1.90.Final'
     quartzVersion = '2.3.2'
     reflectionsVersion = '0.10.2'
     sanitizerVersion = '1.2.3'
@@ -90,13 +90,13 @@ ext {
     snakeyamlVersion = '2.0'
     slf4jVersion = '2.0.6'
     snappyVersion = '1.1.9.1'
-    springbootVersion = '3.0.4'
+    springbootVersion = '3.0.5'
     spotbugsVersion = '4.7.3'
     springdataVersion = '3.0.3'
     springldapVersion = '3.0.1'
     springsecurityVersion = '6.0.2'
     springsecurityJwtVersion = '1.1.1.RELEASE'
-    swaggerVersion = '2.2.8'
+    swaggerVersion = '2.2.9'
     testngVersion = '7.7.1'
     thriftVersion = '0.18.1'
     springwebVersion = '6.0.6'
@@ -106,7 +106,7 @@ ext {
     gsonVersion = '2.10.1'
     antVersion = '1.10.13'
     jnrVersion = '3.1.16'
-    cassandraVersion = '4.1.0'
+    cassandraVersion = '4.1.1'
     protobufVersion = '3.22.2'
     osgiVersion = '8.0.0'
     log4jVersion = '2.20.0'
@@ -119,7 +119,7 @@ ext {
 dependencies {
     // Only use this to bring in platforms, which are *constraints*
     dependencies {
-        api(platform('net.openhft:chronicle-bom:2.24ea45'))
+        api(platform('net.openhft:chronicle-bom:2.24ea46'))
     }
     constraints {
         api("ch.qos.logback:logback-classic:${logbackVersion}")
