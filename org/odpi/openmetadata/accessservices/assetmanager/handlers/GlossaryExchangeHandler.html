@@ -311,12 +311,13 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove the relationship between two terms.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createControlledGlossaryTerm(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermStatus,java.util.Date,boolean,boolean,java.lang.String)" class="member-name-link">createControlledGlossaryTerm</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createControlledGlossaryTerm(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermStatus,java.lang.String,java.util.Date,boolean,boolean,java.lang.String)" class="member-name-link">createControlledGlossaryTerm</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryGUID,
  <a href="../properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  boolean&nbsp;assetManagerIsHome,
  <a href="../properties/GlossaryTermProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">GlossaryTermProperties</a>&nbsp;glossaryTermProperties,
  <a href="../properties/GlossaryTermStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.properties">GlossaryTermStatus</a>&nbsp;initialStatus,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;updateDescription,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
@@ -343,11 +344,12 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new metadata element to represent the root of a glossary.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createGlossaryCategory(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryCategoryProperties,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">createGlossaryCategory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createGlossaryCategory(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryCategoryProperties,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">createGlossaryCategory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryGUID,
  <a href="../properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  boolean&nbsp;assetManagerIsHome,
  <a href="../properties/GlossaryCategoryProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">GlossaryCategoryProperties</a>&nbsp;glossaryCategoryProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;updateDescription,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -377,11 +379,12 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new metadata element to represent a glossary using an existing metadata element as a template.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createGlossaryTerm(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties,java.util.Date,boolean,boolean,java.lang.String)" class="member-name-link">createGlossaryTerm</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createGlossaryTerm(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties,java.lang.String,java.util.Date,boolean,boolean,java.lang.String)" class="member-name-link">createGlossaryTerm</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryGUID,
  <a href="../properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  boolean&nbsp;assetManagerIsHome,
  <a href="../properties/GlossaryTermProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">GlossaryTermProperties</a>&nbsp;glossaryTermProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;updateDescription,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
@@ -911,10 +914,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Update the properties of a reference to an external glossary resource.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateGlossary(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryProperties,boolean,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">updateGlossary</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateGlossary(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryProperties,java.lang.String,boolean,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">updateGlossary</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryGUID,
  <a href="../properties/GlossaryProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">GlossaryProperties</a>&nbsp;glossaryProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;updateDescription,
  boolean&nbsp;isMergeUpdate,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
@@ -924,10 +928,12 @@ loadScripts(document, 'script');</script>
 <div class="block">Update the metadata element representing a glossary.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateGlossaryCategory(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryCategoryProperties,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">updateGlossaryCategory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateGlossaryCategory(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryCategoryProperties,java.lang.String,boolean,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">updateGlossaryCategory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryCategoryGUID,
  <a href="../properties/GlossaryCategoryProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">GlossaryCategoryProperties</a>&nbsp;glossaryCategoryProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;updateDescription,
+ boolean&nbsp;isMergeUpdate,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -936,10 +942,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Update the metadata element representing a glossary category.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateGlossaryTerm(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties,boolean,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">updateGlossaryTerm</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateGlossaryTerm(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties,java.lang.String,boolean,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">updateGlossaryTerm</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryTermGUID,
  <a href="../properties/GlossaryTermProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">GlossaryTermProperties</a>&nbsp;glossaryTermProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;updateDescription,
  boolean&nbsp;isMergeUpdate,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
@@ -1076,7 +1083,6 @@ loadScripts(document, 'script');</script>
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Create a new metadata element to represent a glossary using an existing metadata element as a template.
  The template defines additional classifications and relationships that should be added to the new glossary.
-
  All categories and terms are linked to a single glossary.  They are owned by this glossary and if the
  glossary is deleted, any linked terms and categories are deleted as well.</div>
 <dl class="notes">
@@ -1097,12 +1103,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateGlossary(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryProperties,boolean,boolean,boolean,java.util.Date,java.lang.String)">
+<section class="detail" id="updateGlossary(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryProperties,java.lang.String,boolean,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>updateGlossary</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateGlossary</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryGUID,
  <a href="../properties/GlossaryProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">GlossaryProperties</a>&nbsp;glossaryProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;updateDescription,
  boolean&nbsp;isMergeUpdate,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
@@ -1118,6 +1125,7 @@ loadScripts(document, 'script');</script>
 <dd><code>correlationProperties</code> - properties to help with the mapping of the elements in the external asset manager and open metadata</dd>
 <dd><code>glossaryGUID</code> - unique identifier of the metadata element to update</dd>
 <dd><code>glossaryProperties</code> - new properties for this element</dd>
+<dd><code>updateDescription</code> - description of the update for the revision history</dd>
 <dd><code>isMergeUpdate</code> - should the properties be merged with the existing properties or completely over-write them</dd>
 <dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
 <dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
@@ -1447,13 +1455,14 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createGlossaryCategory(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryCategoryProperties,boolean,boolean,java.util.Date,java.lang.String)">
+<section class="detail" id="createGlossaryCategory(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryCategoryProperties,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>createGlossaryCategory</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createGlossaryCategory</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryGUID,
  <a href="../properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  boolean&nbsp;assetManagerIsHome,
  <a href="../properties/GlossaryCategoryProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">GlossaryCategoryProperties</a>&nbsp;glossaryCategoryProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;updateDescription,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -1469,6 +1478,7 @@ loadScripts(document, 'script');</script>
 <dd><code>correlationProperties</code> - properties to help with the mapping of the elements in the external asset manager and open metadata</dd>
 <dd><code>assetManagerIsHome</code> - ensure that only the asset manager can update this element</dd>
 <dd><code>glossaryCategoryProperties</code> - properties about the glossary category to store</dd>
+<dd><code>updateDescription</code> - description of the update for the revision history</dd>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
 <dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
 <dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
@@ -1515,12 +1525,14 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateGlossaryCategory(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryCategoryProperties,boolean,boolean,java.util.Date,java.lang.String)">
+<section class="detail" id="updateGlossaryCategory(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryCategoryProperties,java.lang.String,boolean,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>updateGlossaryCategory</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateGlossaryCategory</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryCategoryGUID,
  <a href="../properties/GlossaryCategoryProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">GlossaryCategoryProperties</a>&nbsp;glossaryCategoryProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;updateDescription,
+ boolean&nbsp;isMergeUpdate,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -1535,6 +1547,8 @@ loadScripts(document, 'script');</script>
 <dd><code>correlationProperties</code> - properties to help with the mapping of the elements in the external asset manager and open metadata</dd>
 <dd><code>glossaryCategoryGUID</code> - unique identifier of the metadata element to update</dd>
 <dd><code>glossaryCategoryProperties</code> - new properties for the metadata element</dd>
+<dd><code>updateDescription</code> - description of the update for the revision history</dd>
+<dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
 <dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
 <dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
@@ -1879,13 +1893,14 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createGlossaryTerm(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties,java.util.Date,boolean,boolean,java.lang.String)">
+<section class="detail" id="createGlossaryTerm(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties,java.lang.String,java.util.Date,boolean,boolean,java.lang.String)">
 <h3>createGlossaryTerm</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createGlossaryTerm</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryGUID,
  <a href="../properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  boolean&nbsp;assetManagerIsHome,
  <a href="../properties/GlossaryTermProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">GlossaryTermProperties</a>&nbsp;glossaryTermProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;updateDescription,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
@@ -1901,6 +1916,7 @@ loadScripts(document, 'script');</script>
 <dd><code>correlationProperties</code> - properties to help with the mapping of the elements in the external asset manager and open metadata</dd>
 <dd><code>assetManagerIsHome</code> - ensure that only the asset manager can update this element</dd>
 <dd><code>glossaryTermProperties</code> - properties for the glossary term</dd>
+<dd><code>updateDescription</code> - description of the update for the revision history</dd>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
 <dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
 <dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
@@ -1915,7 +1931,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createControlledGlossaryTerm(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermStatus,java.util.Date,boolean,boolean,java.lang.String)">
+<section class="detail" id="createControlledGlossaryTerm(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermStatus,java.lang.String,java.util.Date,boolean,boolean,java.lang.String)">
 <h3>createControlledGlossaryTerm</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createControlledGlossaryTerm</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryGUID,
@@ -1923,6 +1939,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;assetManagerIsHome,
  <a href="../properties/GlossaryTermProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">GlossaryTermProperties</a>&nbsp;glossaryTermProperties,
  <a href="../properties/GlossaryTermStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.properties">GlossaryTermStatus</a>&nbsp;initialStatus,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;updateDescription,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
@@ -1938,6 +1955,7 @@ loadScripts(document, 'script');</script>
 <dd><code>assetManagerIsHome</code> - ensure that only the asset manager can update this element</dd>
 <dd><code>glossaryGUID</code> - unique identifier of the glossary where the term is located</dd>
 <dd><code>glossaryTermProperties</code> - properties for the glossary term</dd>
+<dd><code>updateDescription</code> - description of the update for the revision history</dd>
 <dd><code>initialStatus</code> - glossary term status to use when the object is created</dd>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
 <dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
@@ -1985,12 +2003,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateGlossaryTerm(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties,boolean,boolean,boolean,java.util.Date,java.lang.String)">
+<section class="detail" id="updateGlossaryTerm(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties,java.lang.String,boolean,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>updateGlossaryTerm</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateGlossaryTerm</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryTermGUID,
  <a href="../properties/GlossaryTermProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">GlossaryTermProperties</a>&nbsp;glossaryTermProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;updateDescription,
  boolean&nbsp;isMergeUpdate,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
@@ -2006,6 +2025,7 @@ loadScripts(document, 'script');</script>
 <dd><code>correlationProperties</code> - properties to help with the mapping of the elements in the external asset manager and open metadata</dd>
 <dd><code>glossaryTermGUID</code> - unique identifier of the glossary term to update</dd>
 <dd><code>glossaryTermProperties</code> - new properties for the glossary term</dd>
+<dd><code>updateDescription</code> - description of the update for the revision history</dd>
 <dd><code>isMergeUpdate</code> - should the properties be merged with the existing properties or completely over-write them</dd>
 <dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
 <dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
@@ -2681,6 +2701,8 @@ loadScripts(document, 'script');</script>
 <dd><code>forDuplicateProcessing</code> - the request is for duplicate processing and so must not deduplicate</dd>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dd><code>methodName</code> - calling method</dd>
+<dt>Returns:</dt>
+<dd>glossary term after undo</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem adding the new properties to the repositories.</dd>
@@ -2707,6 +2729,7 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>correlationProperties</code> - properties to help with the mapping of the elements in the external asset manager and open metadata</dd>
 <dd><code>glossaryTermGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>archiveProperties</code> - properties describing the archiver</dd>
 <dd><code>forDuplicateProcessing</code> - the request is for duplicate processing and so must not deduplicate</dd>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dd><code>methodName</code> - calling method</dd>

@@ -754,6 +754,8 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - String - userId of user making request.</dd>
 <dd><code>elementGUID</code> - String - unique id for the element object</dd>
 <dd><code>commentGUID</code> - String - unique id for the comment object</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dd><code>requestBody</code> - containing type of comment enum and the text of the comment.</dd>
 <dt>Returns:</dt>
 <dd>void or
@@ -785,6 +787,9 @@ loadScripts(document, 'script');</script>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
 <dd><code>userId</code> - userId of user making request.</dd>
 <dd><code>commentGUID</code> - unique identifier for the comment object.</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
+<dd><code>requestBody</code> - properties controlling the request</dd>
 <dt>Returns:</dt>
 <dd>comment properties or
   InvalidParameterException one of the parameters is null or invalid.
@@ -821,6 +826,9 @@ loadScripts(document, 'script');</script>
 <dd><code>elementGUID</code> - unique identifier for the element that the comments are connected to (maybe a comment too).</dd>
 <dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
 <dd><code>pageSize</code> - maximum number of elements to return.</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
+<dd><code>requestBody</code> - properties controlling the request</dd>
 <dt>Returns:</dt>
 <dd>list of comments or
   InvalidParameterException one of the parameters is null or invalid.
