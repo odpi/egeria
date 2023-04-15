@@ -115,7 +115,6 @@ public class GlossaryExchangeRESTServices
     /**
      * Create a new metadata element to represent a glossary using an existing metadata element as a template.
      * The template defines additional classifications and relationships that should be added to the new glossary.
-     *
      * All categories and terms are linked to a single glossary.  They are owned by this glossary and if the
      * glossary is deleted, any linked terms and categories are deleted as well.
      *
@@ -219,6 +218,7 @@ public class GlossaryExchangeRESTServices
                                            requestBody.getMetadataCorrelationProperties(),
                                            glossaryGUID,
                                            glossaryProperties,
+                                           requestBody.getUpdateDescription(),
                                            isMergeUpdate,
                                            forLineage,
                                            forDuplicateProcessing,
@@ -318,7 +318,6 @@ public class GlossaryExchangeRESTServices
      * Classify the glossary to indicate that it can be used as a taxonomy.
      * This means each term is attached to one, and only one category and the categories are organized as a hierarchy
      * with a single root category.
-     *
      * Taxonomies are used as a way of organizing assets and other related metadata.  The terms in the taxonomy
      * are linked to the assets etc. and as such they are logically categorized by the linked category.
      *
@@ -459,7 +458,6 @@ public class GlossaryExchangeRESTServices
      * Classify a glossary to declare that it has no two GlossaryTerm definitions with
      * the same name.  This means there is only one definition for each term.  Typically, the terms are also of a similar
      * level of granularity and are limited to a specific scope of use.
-     *
      * Canonical vocabularies are used to semantically classify assets in an unambiguous way.
      *
      * @param serverName name of the server to route the request to
@@ -924,6 +922,7 @@ public class GlossaryExchangeRESTServices
                                                                     requestBody.getMetadataCorrelationProperties(),
                                                                     assetManagerIsHome,
                                                                     properties,
+                                                                    requestBody.getUpdateDescription(),
                                                                     forLineage,
                                                                     forDuplicateProcessing,
                                                                     requestBody.getEffectiveTime(),
@@ -1057,6 +1056,8 @@ public class GlossaryExchangeRESTServices
                                                    requestBody.getMetadataCorrelationProperties(),
                                                    glossaryCategoryGUID,
                                                    properties,
+                                                   requestBody.getUpdateDescription(),
+                                                   isMergeUpdate,
                                                    forLineage,
                                                    forDuplicateProcessing,
                                                    requestBody.getEffectiveTime(),
@@ -1796,6 +1797,7 @@ public class GlossaryExchangeRESTServices
                                                                 requestBody.getMetadataCorrelationProperties(),
                                                                 assetManagerIsHome,
                                                                 properties,
+                                                                requestBody.getUpdateDescription(),
                                                                 requestBody.getEffectiveTime(),
                                                                 forLineage,
                                                                 forDuplicateProcessing,
@@ -1867,6 +1869,7 @@ public class GlossaryExchangeRESTServices
                                                                       assetManagerIsHome,
                                                                       requestBody.getElementProperties(),
                                                                       requestBody.getInitialStatus(),
+                                                                      requestBody.getUpdateDescription(),
                                                                       requestBody.getEffectiveTime(),
                                                                       forLineage,
                                                                       forDuplicateProcessing,
@@ -1965,12 +1968,12 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse updateGlossaryTerm(String                  serverName,
-                                           String                  userId,
-                                           String                  glossaryTermGUID,
-                                           boolean                 isMergeUpdate,
-                                           boolean                 forLineage,
-                                           boolean                 forDuplicateProcessing,
+    public VoidResponse updateGlossaryTerm(String                         serverName,
+                                           String                         userId,
+                                           String                         glossaryTermGUID,
+                                           boolean                        isMergeUpdate,
+                                           boolean                        forLineage,
+                                           boolean                        forDuplicateProcessing,
                                            ReferenceableUpdateRequestBody requestBody)
     {
         final String methodName = "updateGlossaryTerm";
@@ -1995,6 +1998,7 @@ public class GlossaryExchangeRESTServices
                                                requestBody.getMetadataCorrelationProperties(),
                                                glossaryTermGUID,
                                                properties,
+                                               requestBody.getUpdateDescription(),
                                                isMergeUpdate,
                                                forLineage,
                                                forDuplicateProcessing,

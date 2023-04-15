@@ -10062,7 +10062,12 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param userId calling user
      * @param guid unique identifier of object to update
      * @param guidParameterName name of parameter supplying the GUID
+     * @param fromTime starting time
+     * @param toTime ending time
      * @param entityTypeName unique name of the entity's type
+     * @param startingFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param sequencingOrder order of the results
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param serviceSupportedZones supported zones for calling service

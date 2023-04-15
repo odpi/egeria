@@ -36,6 +36,16 @@ public class AppointmentHandler
     private final RepositoryErrorHandler                              errorHandler;
 
 
+    /**
+     * Create an AppointmentHandler.
+     *
+     * @param roleHandler handler for person roles
+     * @param profileHandler handler for actor profiles
+     * @param repositoryHelper helper
+     * @param serviceName this service
+     * @param serverName controlling server name
+     * @param auditLog logging destination
+     */
     public AppointmentHandler(PersonRoleHandler<GovernanceRoleElement> roleHandler,
                               ActorProfileHandler<ProfileElement>      profileHandler,
                               OMRSRepositoryHelper                     repositoryHelper,

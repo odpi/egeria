@@ -140,6 +140,8 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
      * Create a new comment.
      *
      * @param userId calling user
+     * @param guid unique identifier of the element to attach the comment to
+     * @param guidParameterName parameter for guid
      * @param correlationProperties  properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param isPublic is this visible to other people
      * @param commentProperties properties to store
@@ -294,6 +296,9 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
      * @param userId calling user
      * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param commentGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid

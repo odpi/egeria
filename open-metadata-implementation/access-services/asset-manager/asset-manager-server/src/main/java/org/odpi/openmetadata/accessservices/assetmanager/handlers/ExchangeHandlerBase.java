@@ -566,4 +566,21 @@ class ExchangeHandlerBase
                                                                                 methodName));
         }
     }
+
+
+    /**
+     * Write the supplied update description to the revision history note log for the element.
+     *
+     * @param userId calling user
+     * @param elementGUID element to attach the comment to
+     * @param elementQualifiedName qualified name of the element (or null if not known)
+     * @param updateDescription comment to attach
+     */
+    void updateRevisionHistory(String userId,
+                               String elementGUID,
+                               String elementQualifiedName,
+                               String updateDescription)
+    {
+
+    }
 }

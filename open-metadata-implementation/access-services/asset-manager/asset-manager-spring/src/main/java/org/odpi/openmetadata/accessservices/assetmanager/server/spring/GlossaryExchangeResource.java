@@ -473,6 +473,7 @@ public class GlossaryExchangeResource
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
+     * @param assetManagerIsHome  ensure that only the asset manager can update this element
      * @param glossaryGUID unique identifier of the glossary where the category is located
      * @param templateGUID unique identifier of the metadata element to copy
      * @param requestBody properties that override the template

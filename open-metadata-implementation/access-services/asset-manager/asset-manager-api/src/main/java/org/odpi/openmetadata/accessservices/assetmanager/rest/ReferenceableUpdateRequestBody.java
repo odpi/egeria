@@ -25,7 +25,8 @@ public class ReferenceableUpdateRequestBody extends ReferenceableRequestBody
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private Date effectiveTime = null;
+    private Date effectiveTime       = null;
+    private String updateDescription = null;
 
     /**
      * Default constructor
@@ -48,6 +49,7 @@ public class ReferenceableUpdateRequestBody extends ReferenceableRequestBody
         if (template != null)
         {
             effectiveTime = template.getEffectiveTime();
+            updateDescription = template.getUpdateDescription();
         }
     }
 
@@ -75,6 +77,28 @@ public class ReferenceableUpdateRequestBody extends ReferenceableRequestBody
 
 
     /**
+     * Return the string that describes details of the update.
+     *
+     * @return description
+     */
+    public String getUpdateDescription()
+    {
+        return updateDescription;
+    }
+
+
+    /**
+     * Set up the string that describes details of the update.
+     *
+     * @param updateDescription description
+     */
+    public void setUpdateDescription(String updateDescription)
+    {
+        this.updateDescription = updateDescription;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -84,8 +108,10 @@ public class ReferenceableUpdateRequestBody extends ReferenceableRequestBody
     {
         return "ReferenceableUpdateRequestBody{" +
                        "effectiveTime=" + effectiveTime +
+                       ", updateDescription='" + updateDescription + '\'' +
                        ", metadataCorrelationProperties=" + getMetadataCorrelationProperties() +
                        ", elementProperties=" + getElementProperties() +
+                       ", parentGUID='" + getParentGUID() + '\'' +
                        '}';
     }
 
@@ -111,7 +137,8 @@ public class ReferenceableUpdateRequestBody extends ReferenceableRequestBody
         {
             return false;
         }
-        return Objects.equals(effectiveTime, that.effectiveTime);
+        return Objects.equals(effectiveTime, that.effectiveTime) &&
+                Objects.equals(updateDescription, that.updateDescription);
     }
 
 
@@ -123,6 +150,6 @@ public class ReferenceableUpdateRequestBody extends ReferenceableRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), effectiveTime);
+        return Objects.hash(super.hashCode(), effectiveTime, updateDescription);
     }
 }

@@ -25,6 +25,7 @@ public class CatalogTargetConverter<B> extends OCFConverter<B>
      *
      * @param repositoryHelper helper object to parse entity/relationship objects
      * @param serviceName name of this component
+     * @param serverName controlling server name
      */
     public CatalogTargetConverter(OMRSRepositoryHelper repositoryHelper,
                                   String               serviceName,
