@@ -1123,7 +1123,6 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
      * @param glossaryGUID unique identifier of the glossary where the category is located
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
-     * @param updateDescription description of the update for the revision history
      * @param methodName calling method
      *
      * @return unique identifier of the new glossary category
@@ -2003,7 +2002,6 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
      * @param glossaryGUID unique identifier of the glossary where the term is located
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
-     * @param updateDescription description of the update for the revision history
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element for the glossary term
@@ -2050,14 +2048,6 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                           false,
                                           null,
                                           methodName);
-
-            if (updateDescription != null)
-            {
-                this.updateRevisionHistory(userId,
-                                           glossaryTermGUID,
-                                           templateProperties.getQualifiedName(),
-                                           updateDescription);
-            }
         }
 
         return glossaryTermGUID;
