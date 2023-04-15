@@ -34,6 +34,7 @@ public class ControlledGlossaryTermRequestBody implements Serializable
     private GlossaryTermProperties        elementProperties = null;
     private GlossaryTermStatus            initialStatus = null;
     private Date                          effectiveTime = null;
+    private String                        updateDescription = null;
 
     /**
      * Default constructor
@@ -57,6 +58,7 @@ public class ControlledGlossaryTermRequestBody implements Serializable
             elementProperties = template.getElementProperties();
             initialStatus = template.getInitialStatus();
             effectiveTime = template.getEffectiveTime();
+            updateDescription = template.getUpdateDescription();
         }
     }
 
@@ -149,6 +151,29 @@ public class ControlledGlossaryTermRequestBody implements Serializable
     }
 
 
+
+    /**
+     * Return the string that describes details of the update.
+     *
+     * @return description
+     */
+    public String getUpdateDescription()
+    {
+        return updateDescription;
+    }
+
+
+    /**
+     * Set up the string that describes details of the update.
+     *
+     * @param updateDescription description
+     */
+    public void setUpdateDescription(String updateDescription)
+    {
+        this.updateDescription = updateDescription;
+    }
+
+
     /**
      * JSON-style toString
      *
@@ -162,6 +187,7 @@ public class ControlledGlossaryTermRequestBody implements Serializable
                        ", elementProperties=" + elementProperties +
                        ", initialStatus=" + initialStatus +
                        ", effectiveTime=" + effectiveTime +
+                       ", updateDescription='" + updateDescription + '\'' +
                        '}';
     }
 
@@ -186,7 +212,8 @@ public class ControlledGlossaryTermRequestBody implements Serializable
         ControlledGlossaryTermRequestBody that = (ControlledGlossaryTermRequestBody) objectToCompare;
         return Objects.equals(getMetadataCorrelationProperties(), that.getMetadataCorrelationProperties()) &&
                        Objects.equals(getElementProperties(), that.getElementProperties()) &&
-                       Objects.equals(effectiveTime, that.effectiveTime);
+                       Objects.equals(effectiveTime, that.effectiveTime) &&
+                       Objects.equals(updateDescription, that.updateDescription);
     }
 
 
@@ -199,6 +226,6 @@ public class ControlledGlossaryTermRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), metadataCorrelationProperties, elementProperties, initialStatus, effectiveTime);
+        return Objects.hash(super.hashCode(), metadataCorrelationProperties, elementProperties, initialStatus, effectiveTime, updateDescription);
     }
 }

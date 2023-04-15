@@ -137,6 +137,7 @@ public class IntegrationConnectorBuilder extends ProcessBuilder
     /**
      * Return the supplied bean properties in an InstanceProperties object.
      *
+     * @param catalogTargetName name of the catalog target
      * @param methodName name of the calling method
      * @return InstanceProperties object
      * @throws InvalidParameterException there is a problem with the properties
@@ -156,6 +157,7 @@ public class IntegrationConnectorBuilder extends ProcessBuilder
     /**
      * Return the supplied bean properties in an InstanceProperties object.
      *
+     * @param catalogTargetName name of catalog target
      * @param methodName name of the calling method
      * @return InstanceProperties object
      * @throws InvalidParameterException there is a problem with the properties

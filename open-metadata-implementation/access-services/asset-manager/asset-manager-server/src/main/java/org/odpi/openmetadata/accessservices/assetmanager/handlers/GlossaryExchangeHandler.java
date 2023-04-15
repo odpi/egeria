@@ -342,7 +342,6 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
     /**
      * Create a new metadata element to represent a glossary using an existing metadata element as a template.
      * The template defines additional classifications and relationships that should be added to the new glossary.
-     *
      * All categories and terms are linked to a single glossary.  They are owned by this glossary and if the
      * glossary is deleted, any linked terms and categories are deleted as well.
      *
@@ -407,6 +406,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
      * @param correlationProperties  properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryGUID unique identifier of the metadata element to update
      * @param glossaryProperties new properties for this element
+     * @param updateDescription description of the update for the revision history
      * @param isMergeUpdate should the properties be merged with the existing properties or completely over-write them
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -421,6 +421,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                MetadataCorrelationProperties correlationProperties,
                                String                        glossaryGUID,
                                GlossaryProperties            glossaryProperties,
+                               String                        updateDescription,
                                boolean                       isMergeUpdate,
                                boolean                       forLineage,
                                boolean                       forDuplicateProcessing,
@@ -465,6 +466,14 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                        forDuplicateProcessing,
                                        effectiveTime,
                                        methodName);
+
+        if (updateDescription != null)
+        {
+            this.updateRevisionHistory(userId,
+                                       glossaryGUID,
+                                       glossaryProperties.getQualifiedName(),
+                                       updateDescription);
+        }
     }
 
 
@@ -1033,6 +1042,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
      * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param assetManagerIsHome ensure that only the asset manager can update this element
      * @param glossaryCategoryProperties properties about the glossary category to store
+     * @param updateDescription description of the update for the revision history
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1049,6 +1059,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                          MetadataCorrelationProperties correlationProperties,
                                          boolean                       assetManagerIsHome,
                                          GlossaryCategoryProperties    glossaryCategoryProperties,
+                                         String                        updateDescription,
                                          boolean                       forLineage,
                                          boolean                       forDuplicateProcessing,
                                          Date                          effectiveTime,
@@ -1089,6 +1100,14 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                           forDuplicateProcessing,
                                           effectiveTime,
                                           methodName);
+        }
+
+        if (updateDescription != null)
+        {
+            this.updateRevisionHistory(userId,
+                                       glossaryCategoryGUID,
+                                       glossaryCategoryProperties.getQualifiedName(),
+                                       updateDescription);
         }
 
         return glossaryCategoryGUID;
@@ -1164,6 +1183,8 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
      * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryCategoryGUID unique identifier of the metadata element to update
      * @param glossaryCategoryProperties new properties for the metadata element
+     * @param updateDescription description of the update for the revision history
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime optional date for effective time of the query.  Null means any effective time
@@ -1177,6 +1198,8 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                        MetadataCorrelationProperties correlationProperties,
                                        String                        glossaryCategoryGUID,
                                        GlossaryCategoryProperties    glossaryCategoryProperties,
+                                       String                        updateDescription,
+                                       boolean                       isMergeUpdate,
                                        boolean                       forLineage,
                                        boolean                       forDuplicateProcessing,
                                        Date                          effectiveTime,
@@ -1216,9 +1239,18 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                        glossaryCategoryProperties.getEffectiveFrom(),
                                                        glossaryCategoryProperties.getEffectiveTo(),
                                                        effectiveTime,
+                                                       isMergeUpdate,
                                                        forLineage,
                                                        forDuplicateProcessing,
                                                        methodName);
+
+        if (updateDescription != null)
+        {
+            this.updateRevisionHistory(userId,
+                                       glossaryCategoryGUID,
+                                       glossaryCategoryProperties.getQualifiedName(),
+                                       updateDescription);
+        }
     }
 
 
@@ -1745,6 +1777,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
      * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param assetManagerIsHome  ensure that only the asset manager can update this element
      * @param glossaryTermProperties properties for the glossary term
+     * @param updateDescription description of the update for the revision history
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1761,6 +1794,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                      MetadataCorrelationProperties correlationProperties,
                                      boolean                       assetManagerIsHome,
                                      GlossaryTermProperties        glossaryTermProperties,
+                                     String                        updateDescription,
                                      Date                          effectiveTime,
                                      boolean                       forLineage,
                                      boolean                       forDuplicateProcessing,
@@ -1806,6 +1840,14 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                           forDuplicateProcessing,
                                           effectiveTime,
                                           methodName);
+
+            if (updateDescription != null)
+            {
+                this.updateRevisionHistory(userId,
+                                           glossaryTermGUID,
+                                           glossaryTermProperties.getQualifiedName(),
+                                           updateDescription);
+            }
         }
 
         return glossaryTermGUID;
@@ -1863,6 +1905,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerIsHome ensure that only the asset manager can update this element
      * @param glossaryGUID unique identifier of the glossary where the term is located
      * @param glossaryTermProperties properties for the glossary term
+     * @param updateDescription description of the update for the revision history
      * @param initialStatus glossary term status to use when the object is created
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
@@ -1881,6 +1924,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                boolean                       assetManagerIsHome,
                                                GlossaryTermProperties        glossaryTermProperties,
                                                GlossaryTermStatus            initialStatus,
+                                               String                        updateDescription,
                                                Date                          effectiveTime,
                                                boolean                       forLineage,
                                                boolean                       forDuplicateProcessing,
@@ -1935,6 +1979,14 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                           forDuplicateProcessing,
                                           effectiveTime,
                                           methodName);
+
+            if (updateDescription != null)
+            {
+                this.updateRevisionHistory(userId,
+                                           glossaryTermGUID,
+                                           glossaryTermProperties.getQualifiedName(),
+                                           updateDescription);
+            }
         }
 
         return glossaryTermGUID;
@@ -2009,6 +2061,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
      * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryTermGUID unique identifier of the glossary term to update
      * @param glossaryTermProperties new properties for the glossary term
+     * @param updateDescription description of the update for the revision history
      * @param isMergeUpdate should the properties be merged with the existing properties or completely over-write them
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -2023,6 +2076,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                    MetadataCorrelationProperties correlationProperties,
                                    String                        glossaryTermGUID,
                                    GlossaryTermProperties        glossaryTermProperties,
+                                   String                        updateDescription,
                                    boolean                       isMergeUpdate,
                                    boolean                       forLineage,
                                    boolean                       forDuplicateProcessing,
@@ -2075,6 +2129,14 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                forDuplicateProcessing,
                                                effectiveTime,
                                                methodName);
+
+        if (updateDescription != null)
+        {
+            this.updateRevisionHistory(userId,
+                                       glossaryTermGUID,
+                                       glossaryTermProperties.getQualifiedName(),
+                                       updateDescription);
+        }
     }
 
 
@@ -3309,6 +3371,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
+     * @return glossary term after undo
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem adding the new properties to the repositories.
@@ -3359,6 +3422,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
      * @param userId calling user
      * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param archiveProperties properties describing the archiver
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method

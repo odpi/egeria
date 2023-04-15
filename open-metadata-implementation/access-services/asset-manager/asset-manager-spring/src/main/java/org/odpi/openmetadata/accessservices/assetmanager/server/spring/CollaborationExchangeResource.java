@@ -470,6 +470,8 @@ public class CollaborationExchangeResource
      * @param userId       String - userId of user making request.
      * @param elementGUID  String - unique id for the element object
      * @param commentGUID  String - unique id for the comment object
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
      * @return void or
@@ -505,6 +507,9 @@ public class CollaborationExchangeResource
      * @param serverName name of the server instances for this request
      * @param userId       userId of user making request.
      * @param commentGUID  unique identifier for the comment object.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties controlling the request
      * @return comment properties or
      *  InvalidParameterException one of the parameters is null or invalid.
      *  PropertyServerException there is a problem updating the element properties in the property server.
@@ -534,6 +539,9 @@ public class CollaborationExchangeResource
      * @param elementGUID    unique identifier for the element that the comments are connected to (maybe a comment too).
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties controlling the request
      * @return list of comments or
      *  InvalidParameterException one of the parameters is null or invalid.
      *  PropertyServerException there is a problem updating the element properties in the property server.

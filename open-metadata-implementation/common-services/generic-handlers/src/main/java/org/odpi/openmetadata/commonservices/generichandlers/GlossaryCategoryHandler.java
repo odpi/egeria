@@ -293,6 +293,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @param effectiveFrom  the time that the element must be effective from (null for any time, new Date() for now)
      * @param effectiveTo  the time that the must be effective to (null for any time, new Date() for now)
      * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param methodName calling method
@@ -315,6 +316,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                          Date                effectiveFrom,
                                          Date                effectiveTo,
                                          Date                effectiveTime,
+                                         boolean             isMergeUpdate,
                                          boolean             forLineage,
                                          boolean             forDuplicateProcessing,
                                          String              methodName) throws InvalidParameterException,
@@ -362,7 +364,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                     forDuplicateProcessing,
                                     supportedZones,
                                     builder.getInstanceProperties(methodName),
-                                    false,
+                                    isMergeUpdate,
                                     effectiveTime,
                                     methodName);
     }

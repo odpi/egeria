@@ -21,6 +21,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.List;
 
+/**
+ * CommunityProfileAdmin controls the startup and shutdown of the Community Profile OMAS for a server.
+ */
 public class CommunityProfileAdmin extends AccessServiceAdmin
 {
     private AuditLog                          auditLog       = null;

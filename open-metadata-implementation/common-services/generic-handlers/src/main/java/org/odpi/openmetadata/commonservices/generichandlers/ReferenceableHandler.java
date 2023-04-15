@@ -1021,7 +1021,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param beanGUID unique identifier of bean
      * @param beanGUIDParameterName name of parameter supplying the beanGUID
      * @param beanGUIDTypeName type of bean
-     * @param classificationTypeName type GUID of governance action classification
+     * @param classificationTypeGUID type GUID of governance action classification
      * @param classificationTypeName type name of governance action classification
      * @param statusIdentifier identifier for the status of the classification
      * @param confidence how confident? is this classification right? 0=unknown; 0-100% confident
@@ -1102,7 +1102,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param beanGUID unique identifier of entity to update
      * @param beanGUIDParameterName name of parameter providing beanGUID
      * @param beanGUIDTypeName type of bean
-     * @param classificationTypeName type GUID of governance action classification
+     * @param classificationTypeGUID type GUID of governance action classification
      * @param classificationTypeName type name of governance action classification
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate

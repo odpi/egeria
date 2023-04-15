@@ -15,6 +15,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.List;
 
+/**
+ * GovernanceProgramAdmin controls the startup and shutdown of the Governance Program OMAS for a server.
+ */
 public class GovernanceProgramAdmin extends AccessServiceAdmin
 {
     private OMRSRepositoryConnector           repositoryConnector = null;
