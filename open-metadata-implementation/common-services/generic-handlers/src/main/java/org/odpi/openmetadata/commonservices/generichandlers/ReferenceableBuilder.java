@@ -408,6 +408,54 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
     }
 
 
+    /**
+     * Return the template properties in an InstanceProperties object.
+     *
+     * @param defaultValue initial value of a data field value
+     * @param sampleValues list of sample values
+     * @param dataPattern regular expression describing the values in the data filed
+     * @param namePattern regular expression describing the name of the data field
+     * @param methodName name of the calling method
+     * @return InstanceProperties object
+     */
+    InstanceProperties getDataFieldValuesProperties(String              defaultValue,
+                                                    List<String>        sampleValues,
+                                                    String              dataPattern,
+                                                    String              namePattern,
+                                                    String              methodName)
+    {
+        InstanceProperties properties;
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  null,
+                                                                  OpenMetadataAPIMapper.DEFAULT_VALUE_PROPERTY_NAME,
+                                                                  defaultValue,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
+                                                                       properties,
+                                                                       OpenMetadataAPIMapper.SAMPLE_VALUES_PROPERTY_NAME,
+                                                                       sampleValues,
+                                                                       methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DATA_PATTERN_PROPERTY_NAME,
+                                                                  dataPattern,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.NAME_PATTERN_PROPERTY_NAME,
+                                                                  namePattern,
+                                                                  methodName);
+
+        setEffectivityDates(properties);
+
+        return properties;
+    }
+
+
 
     /**
      * Set up the Memento classification.

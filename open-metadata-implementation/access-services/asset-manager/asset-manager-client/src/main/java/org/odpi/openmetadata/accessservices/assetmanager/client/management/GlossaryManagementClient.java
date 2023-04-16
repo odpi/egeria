@@ -12,6 +12,8 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Glossa
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ArchiveProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.CanonicalVocabularyProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.DataFieldValuesProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.EditingGlossaryProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalGlossaryElementLinkProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalGlossaryLinkProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryCategoryProperties;
@@ -174,6 +176,7 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
      * @param userId calling user
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
+     * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
      *
      * @return unique identifier of the new metadata element
      *
@@ -184,11 +187,12 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
     @Override
     public String createGlossaryFromTemplate(String                       userId,
                                              String                       templateGUID,
-                                             TemplateProperties           templateProperties) throws InvalidParameterException,
+                                             TemplateProperties           templateProperties,
+                                             boolean                      deepCopy) throws InvalidParameterException,
                                                                                                      UserNotAuthorizedException,
                                                                                                      PropertyServerException
     {
-        return client.createGlossaryFromTemplate(userId, null, null, false, templateGUID, null, templateProperties);
+        return client.createGlossaryFromTemplate(userId, null, null, false, templateGUID, null, deepCopy, templateProperties);
     }
 
 
@@ -228,6 +232,76 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
                               effectiveTime,
                               forLineage,
                               forDuplicateProcessing);
+    }
+
+
+    /**
+     * Classify the glossary to indicate that it is an editing glossary - this means it is
+     * a temporary collection of glossary updates that will be merged into another glossary.
+     * *
+     * @param userId calling user
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param properties description of the purpose of the editing glossary
+     * @param effectiveTime           the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void setGlossaryAsEditingGlossary(String                    userId,
+                                             String                    glossaryGUID,
+                                             EditingGlossaryProperties properties,
+                                             Date                      effectiveTime,
+                                             boolean                   forLineage,
+                                             boolean                   forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        client.setGlossaryAsEditingGlossary(userId,
+                                            null,
+                                            null,
+                                            glossaryGUID,
+                                            null,
+                                            properties,
+                                            effectiveTime,
+                                            forLineage,
+                                            forDuplicateProcessing);
+    }
+
+
+    /**
+     * Remove the editing glossary classification from the glossary.
+     *
+     * @param userId calling user
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param effectiveTime           the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void clearGlossaryAsEditingGlossary(String  userId,
+                                               String  glossaryGUID,
+                                               Date    effectiveTime,
+                                               boolean forLineage,
+                                               boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        client.clearGlossaryAsEditingGlossary(userId,
+                                              null,
+                                              null,
+                                              glossaryGUID,
+                                              null,
+                                              effectiveTime,
+                                              forLineage,
+                                              forDuplicateProcessing);
     }
 
 
@@ -303,6 +377,7 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
                                        forLineage,
                                        forDuplicateProcessing);
     }
+
 
 
     /**
@@ -563,6 +638,7 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
      * @param glossaryGUID unique identifier of the glossary where the category is located
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
+     * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
      *
      * @return unique identifier of the new glossary category
      *
@@ -574,11 +650,12 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
     public String createGlossaryCategoryFromTemplate(String                       userId,
                                                      String                       glossaryGUID,
                                                      String                       templateGUID,
-                                                     TemplateProperties           templateProperties) throws InvalidParameterException,
-                                                                                                             UserNotAuthorizedException,
-                                                                                                             PropertyServerException
+                                                     TemplateProperties           templateProperties,
+                                                     boolean                      deepCopy) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
     {
-        return client.createGlossaryCategoryFromTemplate(userId, null, null, false, glossaryGUID, templateGUID, null, templateProperties);
+        return client.createGlossaryCategoryFromTemplate(userId, null, null, false, glossaryGUID, templateGUID, null, deepCopy, templateProperties);
     }
 
 
@@ -957,6 +1034,7 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
      * @param glossaryGUID unique identifier of the glossary where the term is located
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
+     * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
      *
      * @return unique identifier of the new metadata element for the glossary term
      *
@@ -968,11 +1046,12 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
     public String createGlossaryTermFromTemplate(String                       userId,
                                                  String                       glossaryGUID,
                                                  String                       templateGUID,
-                                                 TemplateProperties           templateProperties) throws InvalidParameterException,
-                                                                                                         UserNotAuthorizedException,
-                                                                                                         PropertyServerException
+                                                 TemplateProperties           templateProperties,
+                                                 boolean                      deepCopy) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
-        return client.createGlossaryTermFromTemplate(userId, null, null, false, glossaryGUID, templateGUID, null, templateProperties);
+        return client.createGlossaryTermFromTemplate(userId, null, null, false, glossaryGUID, templateGUID, null, deepCopy, templateProperties);
     }
 
 
@@ -1236,6 +1315,61 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
                                                                                   PropertyServerException
     {
         client.clearTermAsAbstractConcept(userId, null, null, glossaryTermGUID, null, effectiveTime, forLineage, forDuplicateProcessing);
+    }
+
+
+    /**
+     * Classify the glossary term to indicate that it describes a data field and supply
+     * properties that describe the characteristics of the data values found within.
+     *
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param properties characterizations of the data values stored in the data field
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void setTermAsDataField(String                    userId,
+                                   String                    glossaryTermGUID,
+                                   DataFieldValuesProperties properties,
+                                   Date                      effectiveTime,
+                                   boolean                   forLineage,
+                                   boolean                   forDuplicateProcessing) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        client.setTermAsDataField(userId, null, null, glossaryTermGUID, null, properties, effectiveTime, forLineage, forDuplicateProcessing);
+    }
+
+
+    /**
+     * Remove the data field designation from the glossary term.
+     *
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void clearTermAsDataField(String  userId,
+                                     String  glossaryTermGUID,
+                                     Date    effectiveTime,
+                                     boolean forLineage,
+                                     boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        client.clearTermAsDataField(userId, null, null, glossaryTermGUID, null, effectiveTime, forLineage, forDuplicateProcessing);
     }
 
 

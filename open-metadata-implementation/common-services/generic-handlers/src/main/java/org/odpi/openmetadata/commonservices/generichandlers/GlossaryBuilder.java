@@ -190,6 +190,34 @@ public class GlossaryBuilder extends ReferenceableBuilder
 
 
     /**
+     * Return the bean properties describing an editing glossary in an InstanceProperties object.
+     *
+     * @param description the factor used to organize the category hierarchy that forms the taxonomy
+     * @param methodName name of the calling method
+     * @return InstanceProperties object
+     */
+    InstanceProperties getEditingGlossaryProperties(String description,
+                                                    String methodName)
+    {
+        InstanceProperties properties = null;
+
+        if (description != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      null,
+                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                      description,
+                                                                      methodName);
+
+        }
+
+        setEffectivityDates(properties);
+
+        return properties;
+    }
+
+
+    /**
      * Return the bean properties describing a taxonomy in an InstanceProperties object.
      *
      * @param organizingPrinciple the factor used to organize the category hierarchy that forms the taxonomy

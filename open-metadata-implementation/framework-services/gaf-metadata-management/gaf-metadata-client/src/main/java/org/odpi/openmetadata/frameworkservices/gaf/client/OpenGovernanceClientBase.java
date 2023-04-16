@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * GovernanceEngineClient sits in the governance context of a governance action service when it is running in the engine host OMAG server.
+ * OpenGovernanceClientBase sits in the governance context of a governance action service when it is running in the engine host OMAG server.
  * It is however shared by all the governance action services running in an engine service so that we only need one connector to the topic
  * listener for the watchdog governance services.
  */

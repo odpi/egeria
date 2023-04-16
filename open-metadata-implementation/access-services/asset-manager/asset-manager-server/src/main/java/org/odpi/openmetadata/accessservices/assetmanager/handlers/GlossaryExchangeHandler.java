@@ -350,6 +350,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerIsHome ensure that only the asset manager can update this element
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
+     * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element
@@ -363,6 +364,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                              boolean                       assetManagerIsHome,
                                              String                        templateGUID,
                                              TemplateProperties            templateProperties,
+                                             boolean                       deepCopy,
                                              String                        methodName) throws InvalidParameterException,
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
@@ -381,6 +383,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                                          templateProperties.getQualifiedName(),
                                                                          templateProperties.getDisplayName(),
                                                                          templateProperties.getDescription(),
+                                                                         deepCopy,
                                                                          methodName);
         if (glossaryGUID != null)
         {
@@ -526,6 +529,127 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                        effectiveTime,
                                        methodName);
     }
+
+
+    /**
+     * Classify the glossary to indicate that it is an editing glossary - this means it is
+     * a temporary collection of glossary updates that will be merged into another glossary.
+     *
+     * @param userId calling user
+     * @param correlationProperties  properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param properties description of how the glossary is organized
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setGlossaryAsEditingGlossary(String                        userId,
+                                             MetadataCorrelationProperties correlationProperties,
+                                             String                        glossaryGUID,
+                                             EditingGlossaryProperties     properties,
+                                             boolean                       forLineage,
+                                             boolean                       forDuplicateProcessing,
+                                             Date                          effectiveTime,
+                                             String                        methodName) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryGUID,
+                                        glossaryGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                        correlationProperties,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        effectiveTime,
+                                        methodName);
+
+        if (properties != null)
+        {
+            glossaryHandler.addEditingGlossaryClassificationToGlossary(userId,
+                                                                getExternalSourceGUID(correlationProperties),
+                                                                getExternalSourceName(correlationProperties),
+                                                                glossaryGUID,
+                                                                glossaryGUIDParameterName,
+                                                                properties.getDescription(),
+                                                                forLineage,
+                                                                forDuplicateProcessing,
+                                                                effectiveTime,
+                                                                methodName);
+        }
+        else
+        {
+            glossaryHandler.addEditingGlossaryClassificationToGlossary(userId,
+                                                                       getExternalSourceGUID(correlationProperties),
+                                                                       getExternalSourceName(correlationProperties),
+                                                                       glossaryGUID,
+                                                                       glossaryGUIDParameterName,
+                                                                       null,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
+                                                                       effectiveTime,
+                                                                       methodName);
+        }
+    }
+
+
+    /**
+     * Remove the editing glossary designation from the glossary.
+     *
+     * @param userId calling user
+     * @param correlationProperties  properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearGlossaryAsEditingGlossary(String                        userId,
+                                               MetadataCorrelationProperties correlationProperties,
+                                               String                        glossaryGUID,
+                                               boolean                       forLineage,
+                                               boolean                       forDuplicateProcessing,
+                                               Date                          effectiveTime,
+                                               String                        methodName) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryGUID,
+                                        glossaryGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                        correlationProperties,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        effectiveTime,
+                                        methodName);
+
+        glossaryHandler.removeEditingGlossaryClassificationFromGlossary(userId,
+                                                                        getExternalSourceGUID(correlationProperties),
+                                                                        getExternalSourceName(correlationProperties),
+                                                                        glossaryGUID,
+                                                                        glossaryGUIDParameterName,
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
+                                                                        effectiveTime,
+                                                                        methodName);
+    }
+
 
 
     /**
@@ -1123,6 +1247,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
      * @param glossaryGUID unique identifier of the glossary where the category is located
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
+     * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
      * @param methodName calling method
      *
      * @return unique identifier of the new glossary category
@@ -1137,6 +1262,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                      String                        glossaryGUID,
                                                      String                        templateGUID,
                                                      TemplateProperties            templateProperties,
+                                                     boolean                       deepCopy,
                                                      String                        methodName) throws InvalidParameterException,
                                                                                                       UserNotAuthorizedException,
                                                                                                       PropertyServerException
@@ -1158,6 +1284,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                                                                  templateProperties.getQualifiedName(),
                                                                                                  templateProperties.getDisplayName(),
                                                                                                  templateProperties.getDescription(),
+                                                                                                 deepCopy,
                                                                                                  methodName);
         if (glossaryCategoryGUID != null)
         {
@@ -2002,6 +2129,8 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
      * @param glossaryGUID unique identifier of the glossary where the term is located
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
+     * @param initialStatus glossary term status to use when the object is created
+     * @param deepCopy should the template creation use the extend to the anchored element or just the direct entity?
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element for the glossary term
@@ -2016,6 +2145,8 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                  String                        glossaryGUID,
                                                  String                        templateGUID,
                                                  TemplateProperties            templateProperties,
+                                                 GlossaryTermStatus            initialStatus,
+                                                 boolean                       deepCopy,
                                                  String                        methodName) throws InvalidParameterException,
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
@@ -2036,6 +2167,8 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                                                      templateProperties.getQualifiedName(),
                                                                                      templateProperties.getDisplayName(),
                                                                                      templateProperties.getDescription(),
+                                                                                     getInstanceStatus(initialStatus),
+                                                                                     deepCopy,
                                                                                      methodName);
         if (glossaryTermGUID != null)
         {
@@ -2695,6 +2828,129 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                        forDuplicateProcessing,
                                                        effectiveTime,
                                                        methodName);
+    }
+
+
+    /**
+     * Classify the glossary term to indicate that it describes a data field and supply
+     * properties that describe the characteristics of the data values found within.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param properties characterizations of the data values stored in the data field
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setTermAsDataField(String                        userId,
+                                   MetadataCorrelationProperties correlationProperties,
+                                   String                        glossaryTermGUID,
+                                   DataFieldValuesProperties     properties,
+                                   boolean                       forLineage,
+                                   boolean                       forDuplicateProcessing,
+                                   Date                          effectiveTime,
+                                   String                        methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        effectiveTime,
+                                        methodName);
+
+        if (properties != null)
+        {
+            glossaryTermHandler.addDataFieldValuesClassification(userId,
+                                                                 glossaryTermGUID,
+                                                                 glossaryTermGUIDParameterName,
+                                                                 OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                 properties.getDefaultValue(),
+                                                                 properties.getSampleValues(),
+                                                                 properties.getDataPattern(),
+                                                                 properties.getNamePattern(),
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 effectiveTime,
+                                                                 methodName);
+        }
+        else
+        {
+            glossaryTermHandler.addDataFieldValuesClassification(userId,
+                                                                 glossaryTermGUID,
+                                                                 glossaryTermGUIDParameterName,
+                                                                 OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 effectiveTime,
+                                                                 methodName);
+        }
+    }
+
+
+    /**
+     * Remove the data field designation from the glossary term.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearTermAsDataField(String                        userId,
+                                     MetadataCorrelationProperties correlationProperties,
+                                     String                        glossaryTermGUID,
+                                     boolean                       forLineage,
+                                     boolean                       forDuplicateProcessing,
+                                     Date                          effectiveTime,
+                                     String                        methodName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryTermGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        correlationProperties,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        effectiveTime,
+                                        methodName);
+
+        glossaryTermHandler.removeDataFieldValuesClassification(userId,
+                                                                glossaryTermGUID,
+                                                                glossaryTermGUIDParameterName,
+                                                                OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                forLineage,
+                                                                forDuplicateProcessing,
+                                                                effectiveTime,
+                                                                methodName);
     }
 
 

@@ -172,7 +172,6 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
     /**
      * Create a new metadata element to represent a glossary using an existing metadata element as a template.
      * The template defines additional classifications and relationships that should be added to the new glossary.
-     *
      * All categories and terms are linked to a single glossary.  They are owned by this glossary and if the
      * glossary is deleted, any linked terms and categories are deleted as well.
      *
@@ -182,6 +181,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
      * @param assetManagerIsHome ensure that only the asset manager can update this element
      * @param templateGUID unique identifier of the metadata element to copy
      * @param externalIdentifierProperties optional properties used to define an external identifier
+     * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
      * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new metadata element
@@ -197,6 +197,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                              boolean                      assetManagerIsHome,
                                              String                       templateGUID,
                                              ExternalIdentifierProperties externalIdentifierProperties,
+                                             boolean                      deepCopy,
                                              TemplateProperties           templateProperties) throws InvalidParameterException,
                                                                                                      UserNotAuthorizedException,
                                                                                                      PropertyServerException
@@ -213,6 +214,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                                      templateProperties,
                                                      externalIdentifierProperties,
                                                      urlTemplate,
+                                                     deepCopy,
                                                      methodName);
     }
 
@@ -269,6 +271,104 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                   forLineage,
                                   forDuplicateProcessing,
                                   methodName);
+    }
+
+
+    /**
+     * Classify the glossary to indicate that it is an editing glossary - this means it is
+     * a temporary collection of glossary updates that will be merged into another glossary.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
+     * @param properties description of the purpose of the editing glossary
+     * @param effectiveTime           the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void setGlossaryAsEditingGlossary(String                    userId,
+                                             String                    assetManagerGUID,
+                                             String                    assetManagerName,
+                                             String                    glossaryGUID,
+                                             String                    glossaryExternalIdentifier,
+                                             EditingGlossaryProperties properties,
+                                             Date                      effectiveTime,
+                                             boolean                   forLineage,
+                                             boolean                   forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        final String methodName                  = "setGlossaryAsTaxonomy";
+        final String glossaryGUIDParameterName   = "glossaryGUID";
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/is-editing-glossary";
+
+        super.setReferenceableClassification(userId,
+                                             assetManagerGUID,
+                                             assetManagerName,
+                                             glossaryGUID,
+                                             glossaryGUIDParameterName,
+                                             glossaryExternalIdentifier,
+                                             properties,
+                                             urlTemplate,
+                                             effectiveTime,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             methodName);
+    }
+
+
+    /**
+     * Remove the editing glossary classification from the glossary.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
+     * @param effectiveTime           the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void clearGlossaryAsEditingGlossary(String  userId,
+                                               String  assetManagerGUID,
+                                               String  assetManagerName,
+                                               String  glossaryGUID,
+                                               String  glossaryExternalIdentifier,
+                                               Date    effectiveTime,
+                                               boolean forLineage,
+                                               boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        final String methodName                  = "clearGlossaryAsEditingGlossary";
+        final String glossaryGUIDParameterName   = "glossaryGUID";
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/is-editing-glossary/remove";
+
+        super.removeReferenceableClassification(userId,
+                                                assetManagerGUID,
+                                                assetManagerName,
+                                                glossaryGUID,
+                                                glossaryGUIDParameterName,
+                                                glossaryExternalIdentifier,
+                                                urlTemplate,
+                                                effectiveTime,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                methodName);
     }
 
 
@@ -820,6 +920,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
      * @param glossaryGUID unique identifier of the glossary where the category is located
      * @param templateGUID unique identifier of the metadata element to copy
      * @param externalIdentifierProperties optional properties used to define an external identifier
+     * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
      * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new glossary category
@@ -836,6 +937,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                                      String                       glossaryGUID,
                                                      String                       templateGUID,
                                                      ExternalIdentifierProperties externalIdentifierProperties,
+                                                     boolean                      deepCopy,
                                                      TemplateProperties           templateProperties) throws InvalidParameterException,
                                                                                                              UserNotAuthorizedException,
                                                                                                              PropertyServerException
@@ -854,6 +956,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                                                templateGUID,
                                                                templateProperties,
                                                                externalIdentifierProperties,
+                                                               deepCopy,
                                                                urlTemplate,
                                                                methodName);
     }
@@ -1539,6 +1642,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
      * @param glossaryGUID unique identifier of the glossary where the term is located
      * @param templateGUID unique identifier of the metadata element to copy
      * @param externalIdentifierProperties optional properties used to define an external identifier
+     * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
      * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new metadata element for the glossary term
@@ -1555,6 +1659,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                                  String                       glossaryGUID,
                                                  String                       templateGUID,
                                                  ExternalIdentifierProperties externalIdentifierProperties,
+                                                 boolean                      deepCopy,
                                                  TemplateProperties           templateProperties) throws InvalidParameterException,
                                                                                                          UserNotAuthorizedException,
                                                                                                          PropertyServerException
@@ -1573,6 +1678,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                                                templateGUID,
                                                                templateProperties,
                                                                externalIdentifierProperties,
+                                                               deepCopy,
                                                                urlTemplate,
                                                                methodName);
     }
@@ -2042,6 +2148,103 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
         final String glossaryGUIDParameterName = "glossaryTermGUID";
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-abstract-concept/remove";
+
+        super.removeReferenceableClassification(userId,
+                                                assetManagerGUID,
+                                                assetManagerName,
+                                                glossaryTermGUID,
+                                                glossaryGUIDParameterName,
+                                                glossaryTermExternalIdentifier,
+                                                urlTemplate,
+                                                effectiveTime,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                methodName);
+    }
+
+
+    /**
+     * Classify the glossary term to indicate that it describes a data field and supply
+     * properties that describe the characteristics of the data values found within.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void setTermAsDataField(String                    userId,
+                                   String                    assetManagerGUID,
+                                   String                    assetManagerName,
+                                   String                    glossaryTermGUID,
+                                   String                    glossaryTermExternalIdentifier,
+                                   DataFieldValuesProperties properties,
+                                   Date                      effectiveTime,
+                                   boolean                   forLineage,
+                                   boolean                   forDuplicateProcessing) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        final String methodName = "setTermAsDataField";
+        final String glossaryGUIDParameterName = "glossaryTermGUID";
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-data-field";
+
+        super.setReferenceableClassification(userId,
+                                             assetManagerGUID,
+                                             assetManagerName,
+                                             glossaryTermGUID,
+                                             glossaryGUIDParameterName,
+                                             glossaryTermExternalIdentifier,
+                                             properties,
+                                             urlTemplate,
+                                             effectiveTime,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             methodName);
+    }
+
+
+    /**
+     * Remove the data field designation from the glossary term.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void clearTermAsDataField(String  userId,
+                                     String  assetManagerGUID,
+                                     String  assetManagerName,
+                                     String  glossaryTermGUID,
+                                     String  glossaryTermExternalIdentifier,
+                                     Date    effectiveTime,
+                                     boolean forLineage,
+                                     boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        final String methodName = "clearTermAsDataField";
+        final String glossaryGUIDParameterName = "glossaryTermGUID";
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/is-data-field/remove";
 
         super.removeReferenceableClassification(userId,
                                                 assetManagerGUID,

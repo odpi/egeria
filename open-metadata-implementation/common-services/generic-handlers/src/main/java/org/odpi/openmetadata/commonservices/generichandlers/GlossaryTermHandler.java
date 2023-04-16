@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
@@ -133,25 +134,37 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        InstanceStatus instanceStatus = InstanceStatus.ACTIVE;
-
-        if (initialStatus != null)
-        {
-            instanceStatus = initialStatus;
-        }
-
-        String typeName = OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME;
+        String typeName;
 
         if (suppliedTypeName != null)
         {
             typeName = suppliedTypeName;
         }
+        else if ((initialStatus == null) || (initialStatus == InstanceStatus.ACTIVE))
+        {
+            typeName = OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME;
+        }
+        else
+        {
+            typeName = OpenMetadataAPIMapper.CONTROLLED_GLOSSARY_TERM_TYPE_NAME;
+        }
 
-        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                                                   serviceName,
-                                                                   methodName,
-                                                                   repositoryHelper);
+        TypeDef glossaryTypeDef = invalidParameterHandler.validateTypeDefName(typeName,
+                                                                              OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                              serviceName,
+                                                                              methodName,
+                                                                              repositoryHelper);
+
+        InstanceStatus instanceStatus;
+
+        if (initialStatus != null)
+        {
+            instanceStatus = initialStatus;
+        }
+        else
+        {
+            instanceStatus = glossaryTypeDef.getInitialStatus();
+        }
 
         GlossaryTermBuilder builder = new GlossaryTermBuilder(qualifiedName,
                                                               displayName,
@@ -173,8 +186,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
         String glossaryTermGUID = this.createBeanInRepository(userId,
                                                               externalSourceGUID,
                                                               externalSourceName,
-                                                              typeGUID,
-                                                              typeName,
+                                                              glossaryTypeDef.getGUID(),
+                                                              glossaryTypeDef.getName(),
                                                               builder,
                                                               effectiveTime,
                                                               methodName);
@@ -221,6 +234,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @param qualifiedName unique name for the term - used in other configuration
      * @param displayName short display name for the term
      * @param description description of the  term
+     * @param initialStatus glossary term status to use when the object is created
+     * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element for the glossary term
@@ -229,18 +244,20 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createGlossaryTermFromTemplate(String userId,
-                                                 String externalSourceGUID,
-                                                 String externalSourceName,
-                                                 String glossaryGUID,
-                                                 String glossaryGUIDParameterName,
-                                                 String templateGUID,
-                                                 String qualifiedName,
-                                                 String displayName,
-                                                 String description,
-                                                 String methodName) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public String createGlossaryTermFromTemplate(String         userId,
+                                                 String         externalSourceGUID,
+                                                 String         externalSourceName,
+                                                 String         glossaryGUID,
+                                                 String         glossaryGUIDParameterName,
+                                                 String         templateGUID,
+                                                 String         qualifiedName,
+                                                 String         displayName,
+                                                 String         description,
+                                                 InstanceStatus initialStatus,
+                                                 boolean        deepCopy,
+                                                 String         methodName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         final String templateGUIDParameterName   = "templateGUID";
         final String qualifiedNameParameterName  = "qualifiedName";
@@ -269,6 +286,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                               OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                               builder,
                                                               supportedZones,
+                                                              deepCopy,
                                                               methodName);
 
         if (glossaryTermGUID != null)
@@ -278,6 +296,22 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
              */
             final String glossaryTermGUIDParameterName = "glossaryTermGUID";
 
+            if (initialStatus != null)
+            {
+                this.updateBeanStatusInRepository(userId,
+                                                  externalSourceGUID,
+                                                  externalSourceName,
+                                                  glossaryTermGUID,
+                                                  glossaryTermGUIDParameterName,
+                                                  OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
+                                                  OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                  false,
+                                                  false,
+                                                  initialStatus,
+                                                  "initialStatus",
+                                                  null,
+                                                  methodName);
+            }
             this.uncheckedLinkElementToElement(userId,
                                                externalSourceGUID,
                                                externalSourceName,

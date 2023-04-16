@@ -1836,7 +1836,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Classify an asset as suitable to be used as a template for cataloguing assets of a similar types.
+     * Classify an entity as suitable to be used as a template for cataloguing assets of a similar types.
      *
      * @param userId calling user
      * @param beanGUID unique identifier of bean
@@ -1892,7 +1892,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Remove the classification that indicates that this asset can be used as a template.
+     * Remove the classification that indicates that this entity can be used as a template.
      *
      * @param userId calling user
      * @param beanGUID unique identifier of bean
@@ -1933,6 +1933,105 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
     }
 
 
+    /**
+     * Classify the referenceable to indicate that it describes a data field and supply
+     * properties that describe the characteristics of the data values found within.
+     *
+     * @param userId calling user
+     * @param beanGUID unique identifier of bean
+     * @param beanGUIDParameterName name of parameter supplying the beanGUID
+     * @param beanGUIDTypeName type of bean
+     * @param defaultValue initial value of a data field value
+     * @param sampleValues list of sample values
+     * @param dataPattern regular expression describing the values in the data filed
+     * @param namePattern regular expression describing the name of the data field
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException asset or element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void addDataFieldValuesClassification(String              userId,
+                                                 String              beanGUID,
+                                                 String              beanGUIDParameterName,
+                                                 String              beanGUIDTypeName,
+                                                 String              defaultValue,
+                                                 List<String>        sampleValues,
+                                                 String              dataPattern,
+                                                 String              namePattern,
+                                                 boolean             forLineage,
+                                                 boolean             forDuplicateProcessing,
+                                                 Date                effectiveTime,
+                                                 String              methodName) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        ReferenceableBuilder builder = new ReferenceableBuilder(OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
+                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                repositoryHelper,
+                                                                serviceName,
+                                                                serverName);
+
+        this.setClassificationInRepository(userId,
+                                           null,
+                                           null,
+                                           beanGUID,
+                                           beanGUIDParameterName,
+                                           beanGUIDTypeName,
+                                           OpenMetadataAPIMapper.DATA_FIELD_VALUES_CLASSIFICATION_GUID,
+                                           OpenMetadataAPIMapper.DATA_FIELD_VALUES_CLASSIFICATION_NAME,
+                                           builder.getDataFieldValuesProperties(defaultValue, sampleValues, dataPattern, namePattern, methodName),
+                                           true,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
+                                           methodName);
+    }
+
+
+    /**
+     * Remove the classification that indicates that this referenceable describeds a data field.
+     *
+     * @param userId calling user
+     * @param beanGUID unique identifier of bean
+     * @param beanGUIDParameterName name of parameter supplying the beanGUID
+     * @param beanGUIDTypeName type of bean
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException asset or element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void removeDataFieldValuesClassification(String  userId,
+                                                    String  beanGUID,
+                                                    String  beanGUIDParameterName,
+                                                    String  beanGUIDTypeName,
+                                                    boolean forLineage,
+                                                    boolean forDuplicateProcessing,
+                                                    Date    effectiveTime,
+                                                    String  methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        this.removeClassificationFromRepository(userId,
+                                                null,
+                                                null,
+                                                beanGUID,
+                                                beanGUIDParameterName,
+                                                beanGUIDTypeName,
+                                                OpenMetadataAPIMapper.DATA_FIELD_VALUES_CLASSIFICATION_GUID,
+                                                OpenMetadataAPIMapper.DATA_FIELD_VALUES_CLASSIFICATION_NAME,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
+                                                methodName);
+    }
 
 
     /**
@@ -2082,8 +2181,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.IMPLEMENTED_BY_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataAPIMapper.IMPLEMENTED_BY_RELATIONSHIP_TYPE_NAME,
+                                  OpenMetadataAPIMapper.REFERENCEABLE_TO_MORE_INFO_TYPE_GUID,
+                                  OpenMetadataAPIMapper.REFERENCEABLE_TO_MORE_INFO_TYPE_NAME,
                                   this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,

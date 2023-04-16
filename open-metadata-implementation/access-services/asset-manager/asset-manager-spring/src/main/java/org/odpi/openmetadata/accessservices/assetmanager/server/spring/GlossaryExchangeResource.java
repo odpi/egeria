@@ -77,7 +77,6 @@ public class GlossaryExchangeResource
     /**
      * Create a new metadata element to represent a glossary using an existing metadata element as a template.
      * The template defines additional classifications and relationships that should be added to the new glossary.
-     *
      * All categories and terms are linked to a single glossary.  They are owned by this glossary and if the
      * glossary is deleted, any linked terms and categories are deleted as well.
      *
@@ -85,6 +84,7 @@ public class GlossaryExchangeResource
      * @param userId calling user
      * @param assetManagerIsHome ensure that only the asset manager can update this element
      * @param templateGUID unique identifier of the metadata element to copy
+     * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element or
@@ -99,9 +99,11 @@ public class GlossaryExchangeResource
                                                    @PathVariable String              templateGUID,
                                                    @RequestParam (required = false, defaultValue = "false")
                                                                  boolean             assetManagerIsHome,
+                                                   @RequestParam (required = false, defaultValue = "true")
+                                                                 boolean             deepCopy,
                                                    @RequestBody  TemplateRequestBody requestBody)
     {
-        return restAPI.createGlossaryFromTemplate(serverName, userId, assetManagerIsHome, templateGUID, requestBody);
+        return restAPI.createGlossaryFromTemplate(serverName, userId, assetManagerIsHome, templateGUID, deepCopy, requestBody);
     }
 
 
@@ -171,10 +173,71 @@ public class GlossaryExchangeResource
 
 
     /**
+     * Classify the glossary to indicate that it is an editing glossary - this means it is
+     * a temporary collection of glossary updates that will be merged into another glossary.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/{glossaryGUID}/is-editing-glossary")
+
+    public VoidResponse setGlossaryAsEditingGlossary(@PathVariable String                    serverName,
+                                                     @PathVariable String                    userId,
+                                                     @PathVariable String                    glossaryGUID,
+                                                     @RequestParam (required = false, defaultValue = "false")
+                                                                   boolean                   forLineage,
+                                                     @RequestParam (required = false, defaultValue = "false")
+                                                                   boolean                   forDuplicateProcessing,
+                                                     @RequestBody  ClassificationRequestBody requestBody)
+    {
+        return restAPI.setGlossaryAsEditingGlossary(serverName, userId, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Remove the editing glossary designation from the glossary.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody correlation properties for the external asset manager
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/{glossaryGUID}/is-editing-glossary/remove")
+
+    public VoidResponse clearGlossaryAsEditingGlossary(@PathVariable String                    serverName,
+                                                       @PathVariable String                    userId,
+                                                       @PathVariable String                    glossaryGUID,
+                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                   forLineage,
+                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                   forDuplicateProcessing,
+                                                       @RequestBody(required = false)
+                                                                     ClassificationRequestBody requestBody)
+    {
+        return restAPI.clearGlossaryAsEditingGlossary(serverName, userId, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
      * Classify the glossary to indicate that it can be used as a taxonomy.
      * This means each term is attached to one, and only one category and the categories are organized as a hierarchy
      * with a single root category.
-     *
      * Taxonomies are used as a way of organizing assets and other related metadata.  The terms in the taxonomy
      * are linked to the assets etc. and as such they are logically categorized by the linked category.
      *
@@ -476,6 +539,7 @@ public class GlossaryExchangeResource
      * @param assetManagerIsHome  ensure that only the asset manager can update this element
      * @param glossaryGUID unique identifier of the glossary where the category is located
      * @param templateGUID unique identifier of the metadata element to copy
+     * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new glossary category or
@@ -490,10 +554,12 @@ public class GlossaryExchangeResource
                                                            @PathVariable String               glossaryGUID,
                                                            @PathVariable String               templateGUID,
                                                            @RequestParam (required = false, defaultValue = "false")
-                                                               boolean                        assetManagerIsHome,
+                                                                         boolean              assetManagerIsHome,
+                                                           @RequestParam (required = false, defaultValue = "true")
+                                                                         boolean              deepCopy,
                                                            @RequestBody  TemplateRequestBody  requestBody)
     {
-        return restAPI.createGlossaryCategoryFromTemplate(serverName, userId, glossaryGUID, templateGUID, assetManagerIsHome, requestBody);
+        return restAPI.createGlossaryCategoryFromTemplate(serverName, userId, glossaryGUID, templateGUID, assetManagerIsHome, deepCopy, requestBody);
     }
 
 
@@ -905,6 +971,7 @@ public class GlossaryExchangeResource
      * @param glossaryGUID unique identifier of the glossary where the term is located
      * @param templateGUID unique identifier of the metadata element to copy
      * @param assetManagerIsHome  ensure that only the asset manager can update this element
+     * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element for the glossary term or
@@ -914,15 +981,17 @@ public class GlossaryExchangeResource
      */
     @PostMapping(path = "/glossaries/{glossaryGUID}/terms/from-template/{templateGUID}")
 
-    public GUIDResponse createGlossaryTermFromTemplate(@PathVariable String               serverName,
-                                                       @PathVariable String               userId,
-                                                       @PathVariable String               glossaryGUID,
-                                                       @PathVariable String               templateGUID,
+    public GUIDResponse createGlossaryTermFromTemplate(@PathVariable String                      serverName,
+                                                       @PathVariable String                      userId,
+                                                       @PathVariable String                      glossaryGUID,
+                                                       @PathVariable String                      templateGUID,
                                                        @RequestParam (required = false, defaultValue = "false")
-                                                                     boolean              assetManagerIsHome,
-                                                       @RequestBody  TemplateRequestBody  requestBody)
+                                                                     boolean                     assetManagerIsHome,
+                                                       @RequestParam (required = false, defaultValue = "true")
+                                                                     boolean                     deepCopy,
+                                                       @RequestBody  GlossaryTemplateRequestBody requestBody)
     {
-        return restAPI.createGlossaryTermFromTemplate(serverName, userId, glossaryGUID, templateGUID, assetManagerIsHome, requestBody);
+        return restAPI.createGlossaryTermFromTemplate(serverName, userId, glossaryGUID, templateGUID, assetManagerIsHome, deepCopy, requestBody);
     }
 
 
@@ -1278,6 +1347,68 @@ public class GlossaryExchangeResource
                                                            ClassificationRequestBody requestBody)
     {
         return restAPI.clearTermAsDataValue(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Classify the glossary term to indicate that it describes a data field.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-data-field")
+
+    public VoidResponse setTermAsDataField(@PathVariable String                       serverName,
+                                           @PathVariable String                       userId,
+                                           @PathVariable String                       glossaryTermGUID,
+                                           @RequestParam (required = false, defaultValue = "false")
+                                                         boolean                      forLineage,
+                                           @RequestParam (required = false, defaultValue = "false")
+                                                         boolean                      forDuplicateProcessing,
+                                           @RequestBody(required = false)
+                                                         ClassificationRequestBody    requestBody)
+    {
+        return restAPI.setTermAsDataField(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Remove the data field designation from the glossary term.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-data-field/remove")
+
+    public VoidResponse clearTermAsDataField(@PathVariable String                    serverName,
+                                             @PathVariable String                    userId,
+                                             @PathVariable String                    glossaryTermGUID,
+                                             @RequestParam (required = false, defaultValue = "false")
+                                                           boolean                   forLineage,
+                                             @RequestParam (required = false, defaultValue = "false")
+                                                           boolean                   forDuplicateProcessing,
+                                             @RequestBody(required = false)
+                                                           ClassificationRequestBody requestBody)
+    {
+        return restAPI.clearTermAsDataField(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
