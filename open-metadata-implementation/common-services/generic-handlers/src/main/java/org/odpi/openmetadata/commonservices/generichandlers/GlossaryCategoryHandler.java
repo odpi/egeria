@@ -196,6 +196,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @param qualifiedName unique name for the category - used in other configuration
      * @param displayName short display name for the category
      * @param description description of the category
+     * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element
@@ -204,18 +205,19 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createGlossaryCategoryFromTemplate(String userId,
-                                                     String externalSourceGUID,
-                                                     String externalSourceName,
-                                                     String glossaryGUID,
-                                                     String glossaryGUIDParameterName,
-                                                     String templateGUID,
-                                                     String qualifiedName,
-                                                     String displayName,
-                                                     String description,
-                                                     String methodName) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public String createGlossaryCategoryFromTemplate(String  userId,
+                                                     String  externalSourceGUID,
+                                                     String  externalSourceName,
+                                                     String  glossaryGUID,
+                                                     String  glossaryGUIDParameterName,
+                                                     String  templateGUID,
+                                                     String  qualifiedName,
+                                                     String  displayName,
+                                                     String  description,
+                                                     boolean deepCopy,
+                                                     String  methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         final String templateGUIDParameterName   = "templateGUID";
         final String qualifiedNameParameterName  = "qualifiedName";
@@ -244,6 +246,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                                   OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                                   builder,
                                                                   supportedZones,
+                                                                  deepCopy,
                                                                   methodName);
 
         if (glossaryCategoryGUID != null)

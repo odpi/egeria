@@ -179,6 +179,7 @@ public class GlossaryExchangeService
      * @param templateGUID unique identifier of the metadata element to copy
      * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param templateProperties properties that override the template
+     * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
      *
      * @return unique identifier of the new metadata element
      *
@@ -189,9 +190,10 @@ public class GlossaryExchangeService
     public String createGlossaryFromTemplate(boolean                      assetManagerIsHome,
                                              String                       templateGUID,
                                              ExternalIdentifierProperties externalIdentifierProperties,
-                                             TemplateProperties           templateProperties) throws InvalidParameterException,
-                                                                                                     UserNotAuthorizedException,
-                                                                                                     PropertyServerException
+                                             TemplateProperties           templateProperties,
+                                             boolean                      deepCopy) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
     {
         final String methodName = "createGlossaryFromTemplate";
 
@@ -203,6 +205,7 @@ public class GlossaryExchangeService
                                                                     assetManagerIsHome,
                                                                     templateGUID,
                                                                     externalIdentifierProperties,
+                                                                    deepCopy,
                                                                     templateProperties);
         }
         else
@@ -619,6 +622,7 @@ public class GlossaryExchangeService
      * @param templateGUID unique identifier of the metadata element to copy
      * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param templateProperties properties that override the template
+     * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
      *
      * @return unique identifier of the new glossary category
      *
@@ -630,9 +634,10 @@ public class GlossaryExchangeService
                                                      boolean                      assetManagerIsHome,
                                                      String                       templateGUID,
                                                      ExternalIdentifierProperties externalIdentifierProperties,
-                                                     TemplateProperties           templateProperties) throws InvalidParameterException,
-                                                                                                             UserNotAuthorizedException,
-                                                                                                             PropertyServerException
+                                                     TemplateProperties           templateProperties,
+                                                     boolean                      deepCopy) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
     {
         final String methodName = "createGlossaryCategoryFromTemplate";
 
@@ -645,6 +650,7 @@ public class GlossaryExchangeService
                                                                             glossaryGUID,
                                                                             templateGUID,
                                                                             externalIdentifierProperties,
+                                                                            deepCopy,
                                                                             templateProperties);
         }
         else
@@ -1211,6 +1217,7 @@ public class GlossaryExchangeService
      * @param templateGUID unique identifier of the metadata element to copy
      * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param templateProperties properties that override the template
+     * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
      *
      * @return unique identifier of the new metadata element for the glossary term
      *
@@ -1222,9 +1229,10 @@ public class GlossaryExchangeService
                                                  boolean                      assetManagerIsHome,
                                                  String                       templateGUID,
                                                  ExternalIdentifierProperties externalIdentifierProperties,
-                                                 TemplateProperties           templateProperties) throws InvalidParameterException,
-                                                                                                         UserNotAuthorizedException,
-                                                                                                         PropertyServerException
+                                                 TemplateProperties           templateProperties,
+                                                 boolean                      deepCopy) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
         final String methodName = "createGlossaryTermFromTemplate";
 
@@ -1237,6 +1245,7 @@ public class GlossaryExchangeService
                                                                         glossaryGUID,
                                                                         templateGUID,
                                                                         externalIdentifierProperties,
+                                                                        deepCopy,
                                                                         templateProperties);
         }
         else

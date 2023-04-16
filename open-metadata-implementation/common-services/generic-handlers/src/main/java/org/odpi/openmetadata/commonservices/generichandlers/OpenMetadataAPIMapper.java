@@ -90,6 +90,8 @@ public class OpenMetadataAPIMapper
     public static final String SOURCED_FROM_RELATIONSHIP_TYPE_NAME               = "SourcedFrom";
     /* End1 = NewEntity; End 2 = Template */
 
+    public static final String SOURCE_VERSION_NUMBER_PROPERTY_NAME               = "sourceVersionNumber";
+
     public static final String MEMENTO_CLASSIFICATION_TYPE_GUID                  = "ecdcd472-6701-4303-8dec-267bcb54feb9";
     public static final String MEMENTO_CLASSIFICATION_TYPE_NAME                  = "Memento";
     public static final String ARCHIVE_DATE_PROPERTY_NAME                        = "archiveDate";
@@ -948,6 +950,14 @@ public class OpenMetadataAPIMapper
     public static final String ENCODING_DESCRIPTION_PROPERTY_NAME        = "description";   /* from DataStoreEncoding classification */
     public static final String ENCODING_PROPERTIES_PROPERTY_NAME         = "properties";    /* from DataStoreEncoding classification */
 
+    public static final String DATA_FIELD_VALUES_CLASSIFICATION_GUID     = "740e76e1-77b4-4426-ad52-d0a4ed15fff9";
+    public static final String DATA_FIELD_VALUES_CLASSIFICATION_NAME     = "DataFieldValues";
+
+    public static final String DEFAULT_VALUE_PROPERTY_NAME               = "defaultValue";      /* from DataFieldValues classification */
+    public static final String SAMPLE_VALUES_PROPERTY_NAME               = "sampleValues";      /* from DataFieldValues classification */
+    public static final String DATA_PATTERN_PROPERTY_NAME                = "dataPattern";       /* from DataFieldValues classification */
+    public static final String NAME_PATTERN_PROPERTY_NAME                = "namePattern";       /* from DataFieldValues classification */
+
     public static final String DATABASE_TYPE_GUID                        = "0921c83f-b2db-4086-a52c-0d10e52ca078";  /* from Area 2 */
     public static final String DATABASE_TYPE_NAME                        = "Database";
     /* DataStore */
@@ -1198,6 +1208,14 @@ public class OpenMetadataAPIMapper
     public static final String CONTROLLED_GLOSSARY_TERM_TYPE_NAME                = "ControlledGlossaryTerm";           /* from Area 3 */
     /* GlossaryTerm */
 
+    public static final String EDITING_GLOSSARY_CLASSIFICATION_TYPE_GUID         = "173614ba-c582-4ecc-8fcc-cde5fb664548";
+    public static final String EDITING_GLOSSARY_CLASSIFICATION_TYPE_NAME         = "EditingGlossary";           /* from Area 3 */
+    /* Glossary */
+
+    public static final String EDITING_GLOSSARY_COPY_CLASSIFICATION_TYPE_GUID    = "361fa044-e703-404c-bb83-9402f9221f54";
+    public static final String EDITING_GLOSSARY_COPY_CLASSIFICATION_TYPE_NAME    = "EditingGlossaryCopy";       /* from Area 3 */
+    /* Glossary */
+
     public static final String SUMMARY_PROPERTY_NAME                             = "summary";       /* from GlossaryTerm and GovernanceDefinition entity */
     public static final String EXAMPLES_PROPERTY_NAME                            = "examples";      /* from GlossaryTerm entity */
     public static final String ABBREVIATION_PROPERTY_NAME                        = "abbreviation";  /* from GlossaryTerm entity */
@@ -1443,7 +1461,6 @@ public class OpenMetadataAPIMapper
     public static final String BUSINESS_IMPERATIVES_PROPERTY_NAME        = "businessImperatives";       /* from GovernanceStrategy entity */
     public static final String JURISDICTION_PROPERTY_NAME                = "jurisdiction";              /* from Regulation entity */
     public static final String IMPLEMENTATION_DESCRIPTION_PROPERTY_NAME  = "implementationDescription"; /* from GovernanceControl entity */
-    public static final String NAME_PATTERN_PROPERTY_NAME                = "namePattern";               /* from NamingStandardRule entity */
     public static final String NOTES_PROPERTY_NAME                       = "notes";                     /* from multiple entities */
     public static final String ATTRIBUTE_NAME_PROPERTY_NAME              = "attributeName";             /* from ReferenceValueAssignment relationship */
     public static final String RATIONALE_PROPERTY_NAME                   = "rationale";                 /* from GovernanceResponse, GovernanceImplementation relationship */
@@ -2050,7 +2067,6 @@ public class OpenMetadataAPIMapper
     /* SimpleSchemaType */
 
     public static final String DATA_TYPE_PROPERTY_NAME                  = "dataType";     /* from SimpleSchemaType and LiteralSchemaType entity */
-    public static final String DEFAULT_VALUE_PROPERTY_NAME              = "defaultValue"; /* from PrimitiveSchemaType entity */
     public static final String FIXED_VALUE_PROPERTY_NAME                = "fixedValue";   /* from LiteralSchemaType entity */
 
     /* For Map Schema Type */

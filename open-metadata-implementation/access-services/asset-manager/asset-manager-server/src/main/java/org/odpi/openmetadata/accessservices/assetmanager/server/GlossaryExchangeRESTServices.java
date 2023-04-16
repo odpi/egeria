@@ -5,6 +5,8 @@ package org.odpi.openmetadata.accessservices.assetmanager.server;
 
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.GlossaryExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.CanonicalVocabularyProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.DataFieldValuesProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.EditingGlossaryProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryCategoryProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermCategorization;
@@ -122,6 +124,7 @@ public class GlossaryExchangeRESTServices
      * @param userId calling user
      * @param assetManagerIsHome ensure that only the asset manager can update this element
      * @param templateGUID unique identifier of the metadata element to copy
+     * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element or
@@ -133,6 +136,7 @@ public class GlossaryExchangeRESTServices
                                                    String              userId,
                                                    boolean             assetManagerIsHome,
                                                    String              templateGUID,
+                                                   boolean             deepCopy,
                                                    TemplateRequestBody requestBody)
     {
         final String methodName = "createGlossaryFromTemplate";
@@ -155,6 +159,7 @@ public class GlossaryExchangeRESTServices
                                                                     assetManagerIsHome,
                                                                     templateGUID,
                                                                     requestBody.getElementProperties(),
+                                                                    deepCopy,
                                                                     methodName));
             }
             else
@@ -301,6 +306,144 @@ public class GlossaryExchangeRESTServices
                                        forDuplicateProcessing,
                                        null,
                                        methodName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+
+    /**
+     * Classify the glossary to indicate that it is an editing glossary - this means it is
+     * a temporary collection of glossary updates that will be merged into another glossary.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setGlossaryAsEditingGlossary(String                    serverName,
+                                                     String                    userId,
+                                                     String                    glossaryGUID,
+                                                     boolean                   forLineage,
+                                                     boolean                   forDuplicateProcessing,
+                                                     ClassificationRequestBody requestBody)
+    {
+        final String methodName = "setGlossaryAsTaxonomy";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof EditingGlossaryProperties properties)
+                {
+                    GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
+
+                    handler.setGlossaryAsEditingGlossary(userId,
+                                                         requestBody.getMetadataCorrelationProperties(),
+                                                         glossaryGUID,
+                                                         properties,
+                                                         forLineage,
+                                                         forDuplicateProcessing,
+                                                         requestBody.getEffectiveTime(),
+                                                         methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(EditingGlossaryProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove the editing glossary designation from the glossary.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody correlation properties for the external asset manager
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearGlossaryAsEditingGlossary(String                    serverName,
+                                                       String                    userId,
+                                                       String                    glossaryGUID,
+                                                       boolean                   forLineage,
+                                                       boolean                   forDuplicateProcessing,
+                                                       ClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearGlossaryAsTaxonomy";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.clearGlossaryAsEditingGlossary(userId,
+                                                       requestBody.getMetadataCorrelationProperties(),
+                                                       glossaryGUID,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       requestBody.getEffectiveTime(),
+                                                       methodName);
+            }
+            else
+            {
+                handler.clearGlossaryAsEditingGlossary(userId,
+                                                       null,
+                                                       glossaryGUID,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       null,
+                                                       methodName);
             }
         }
         catch (Exception error)
@@ -957,6 +1100,7 @@ public class GlossaryExchangeRESTServices
      * @param assetManagerIsHome ensure that only the asset manager can update this element
      * @param glossaryGUID unique identifier of the glossary where the category is located
      * @param templateGUID unique identifier of the metadata element to copy
+     * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new glossary category or
@@ -969,6 +1113,7 @@ public class GlossaryExchangeRESTServices
                                                            String               glossaryGUID,
                                                            String               templateGUID,
                                                            boolean              assetManagerIsHome,
+                                                           boolean              deepCopy,
                                                            TemplateRequestBody  requestBody)
     {
         final String methodName = "createGlossaryCategoryFromTemplate";
@@ -992,6 +1137,7 @@ public class GlossaryExchangeRESTServices
                                                                             glossaryGUID,
                                                                             templateGUID,
                                                                             requestBody.getElementProperties(),
+                                                                            deepCopy,
                                                                             methodName));
             }
             else
@@ -1899,6 +2045,7 @@ public class GlossaryExchangeRESTServices
      * @param glossaryGUID unique identifier of the glossary where the term is located
      * @param assetManagerIsHome ensure that only the asset manager can update this element
      * @param templateGUID unique identifier of the metadata element to copy
+     * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element for the glossary term or
@@ -1906,12 +2053,13 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse createGlossaryTermFromTemplate(String               serverName,
-                                                       String               glossaryGUID,
-                                                       String               userId,
-                                                       String               templateGUID,
-                                                       boolean              assetManagerIsHome,
-                                                       TemplateRequestBody  requestBody)
+    public GUIDResponse createGlossaryTermFromTemplate(String                       serverName,
+                                                       String                       glossaryGUID,
+                                                       String                       userId,
+                                                       String                       templateGUID,
+                                                       boolean                      assetManagerIsHome,
+                                                       boolean                      deepCopy,
+                                                       GlossaryTemplateRequestBody  requestBody)
     {
         final String methodName = "createGlossaryTermFromTemplate";
 
@@ -1934,6 +2082,8 @@ public class GlossaryExchangeRESTServices
                                                                         glossaryGUID,
                                                                         templateGUID,
                                                                         requestBody.getElementProperties(),
+                                                                        requestBody.getGlossaryTermStatus(),
+                                                                        deepCopy,
                                                                         methodName));
             }
             else
@@ -2568,6 +2718,147 @@ public class GlossaryExchangeRESTServices
                                                forDuplicateProcessing,
                                                requestBody.getEffectiveTime(),
                                                methodName);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Classify the glossary term to indicate that it describes a data field and supply
+     * properties that describe the characteristics of the data values found within.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setTermAsDataField(String                    serverName,
+                                           String                    userId,
+                                           String                    glossaryTermGUID,
+                                           boolean                   forLineage,
+                                           boolean                   forDuplicateProcessing,
+                                           ClassificationRequestBody requestBody)
+    {
+        final String methodName = "setTermAsDataField";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof DataFieldValuesProperties properties)
+                {
+                    handler.setTermAsDataField(userId,
+                                               requestBody.getMetadataCorrelationProperties(),
+                                               glossaryTermGUID,
+                                               properties,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               requestBody.getEffectiveTime(),
+                                               methodName);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.setTermAsDataField(userId,
+                                               requestBody.getMetadataCorrelationProperties(),
+                                               glossaryTermGUID,
+                                               null,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               requestBody.getEffectiveTime(),
+                                               methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DataFieldValuesProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove the data field designation from the glossary term.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearTermAsDataField(String                    serverName,
+                                             String                    userId,
+                                             String                    glossaryTermGUID,
+                                             boolean                   forLineage,
+                                             boolean                   forDuplicateProcessing,
+                                             ClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearTermAsDataField";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.clearTermAsDataField(userId,
+                                             requestBody.getMetadataCorrelationProperties(),
+                                             glossaryTermGUID,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             requestBody.getEffectiveTime(), methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {

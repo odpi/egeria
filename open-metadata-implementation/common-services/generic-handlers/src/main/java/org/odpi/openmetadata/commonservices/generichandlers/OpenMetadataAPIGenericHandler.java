@@ -5424,6 +5424,7 @@ public class OpenMetadataAPIGenericHandler<B>
     }
 
 
+
     /**
      * Create a new entity in the repository based on the contents of an existing entity (the template). The supplied builder is preloaded with
      * properties that should override the properties from the template.  This is the method to call from the specific handlers.
@@ -5460,7 +5461,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                           PropertyServerException,
                                                                                           UserNotAuthorizedException
     {
-        return createBeanFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateGUIDParameterName, entityTypeGUID, entityTypeName, uniqueParameterValue, uniqueParameterName, propertyBuilder, supportedZones, methodName);
+        return createBeanFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateGUIDParameterName, entityTypeGUID, entityTypeName, uniqueParameterValue, uniqueParameterName, propertyBuilder, supportedZones, true, methodName);
     }
 
 
@@ -5502,6 +5503,50 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                           PropertyServerException,
                                                                                           UserNotAuthorizedException
     {
+        return createBeanFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateGUIDParameterName, entityTypeGUID, entityTypeName, uniqueParameterValue, uniqueParameterName, propertyBuilder, serviceSupportedZones,true, methodName);
+    }
+
+
+    /**
+     * Create a new entity in the repository based on the contents of an existing entity (the template). The supplied builder is preloaded with
+     * properties that should override the properties from the template.  This is the method to call from the specific handlers.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param templateGUID unique identifier of existing entity to use
+     * @param templateGUIDParameterName name of parameter passing the templateGUID
+     * @param entityTypeGUID unique identifier of the type for the entity
+     * @param entityTypeName unique name of the type for the entity
+     * @param uniqueParameterValue the value of a unique property (eg qualifiedName) in the new entity - this is used to create unique names in the
+     *                             attachments.
+     * @param uniqueParameterName name of the property where the unique value is stored.
+     * @param propertyBuilder this property builder has the new properties supplied by the caller.  They will be augmented by the template
+     *                        properties and classification.
+     * @param serviceSupportedZones list of supported zones for this service
+     * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
+     * @param methodName calling method
+     * @return unique identifier of the new bean
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws PropertyServerException there is a problem in the repository services
+     * @throws UserNotAuthorizedException the user is not authorized to access one of the elements.
+     */
+    public String createBeanFromTemplate(String                        userId,
+                                         String                        externalSourceGUID,
+                                         String                        externalSourceName,
+                                         String                        templateGUID,
+                                         String                        templateGUIDParameterName,
+                                         String                        entityTypeGUID,
+                                         String                        entityTypeName,
+                                         String                        uniqueParameterValue,
+                                         String                        uniqueParameterName,
+                                         OpenMetadataAPIGenericBuilder propertyBuilder,
+                                         List<String>                  serviceSupportedZones,
+                                         boolean                       deepCopy,
+                                         String                        methodName) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
         TemplateProgress templateProgress = createBeanFromTemplate(userId,
                                                                    externalSourceGUID,
                                                                    externalSourceName,
@@ -5515,6 +5560,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                    uniqueParameterName,
                                                                    propertyBuilder,
                                                                    serviceSupportedZones,
+                                                                   deepCopy,
                                                                    methodName);
 
         if (templateProgress != null)
@@ -5523,13 +5569,24 @@ public class OpenMetadataAPIGenericHandler<B>
              * This relationship shows where the property values for the new bean came from.  It enables traceability.  Also, if the template is
              * updated, there is a possibility of making complementary changes to the entities that were derived from it.
              */
+            InstanceProperties relationshipProperties = null;
+
+            if (templateProgress.sourceVersionNumber != 0)
+            {
+                relationshipProperties = repositoryHelper.addLongPropertyToInstance(serviceName,
+                                                                                    null,
+                                                                                    OpenMetadataAPIMapper.SOURCE_VERSION_NUMBER_PROPERTY_NAME,
+                                                                                    templateProgress.sourceVersionNumber,
+                                                                                    methodName);
+            }
+
             repositoryHandler.createRelationship(localServerUserId,
                                                  OpenMetadataAPIMapper.SOURCED_FROM_RELATIONSHIP_TYPE_GUID,
                                                  externalSourceGUID,
                                                  externalSourceName,
                                                  templateProgress.newBeanGUID,
                                                  templateGUID,
-                                                 null,
+                                                 relationshipProperties,
                                                  methodName);
 
             return templateProgress.newBeanGUID;
@@ -5546,7 +5603,8 @@ public class OpenMetadataAPIGenericHandler<B>
      */
     static class TemplateProgress
     {
-        String              newBeanGUID          = null; /* GUID of last new entity created - ultimately this is returned to the original caller*/
+        String              newBeanGUID          = null; /* GUID of last new entity created - ultimately this is returned to the original caller */
+        long                sourceVersionNumber  = 0; /* the version number of the template entity for the new bean */
         String              previousTemplateGUID = null; /* GUID of last template entity processed - prevents processing a relationship twice */
         Map<String, String> coveredGUIDMap       = new HashMap<>(); /* Map of template GUIDs to new bean GUIDs that have been processed - prevents replicating the same entity twice */
         List<String>        templateAnchorGUIDs  = new ArrayList<>(); /* List of anchor GUIDs associated with the template - to allow nested anchors to be handled */
@@ -5574,6 +5632,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param propertyBuilder this property builder has the new properties supplied by the caller.  They will be augmented by the template
      *                        properties and classification.
      * @param serviceSupportedZones list of supported zones for this service
+     * @param deepCopy should the template creation extend to the anchored element or just the direct entity?
      * @param methodName calling method
      *
      * @return current progress of the template replication
@@ -5595,6 +5654,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                     String                        uniqueParameterName,
                                                     OpenMetadataAPIGenericBuilder propertyBuilder,
                                                     List<String>                  serviceSupportedZones,
+                                                    boolean                       deepCopy,
                                                     String                        methodName) throws InvalidParameterException,
                                                                                                      PropertyServerException,
                                                                                                      UserNotAuthorizedException
@@ -5622,6 +5682,11 @@ public class OpenMetadataAPIGenericHandler<B>
 
         if (templateEntity != null)
         {
+            /*
+             * Save the version number of the template entity.
+             */
+            templateProgress.sourceVersionNumber = templateEntity.getVersion();
+
             /*
              * Check that the template is visible to the calling user.  If the template is an anchor, its own entity is returned.
              */
@@ -5739,25 +5804,27 @@ public class OpenMetadataAPIGenericHandler<B>
                 templateProgress.beanAnchorGUID = newEntityGUID;
             }
 
-            /*
-             * The real value of templates is that they cover the creation of a cluster of metadata instances.  The last step is to explore
-             * the graph of linked elements and replicate the structure for the new bean.
-             */
-            templateProgress = this.addAttachmentsFromTemplate(userId,
-                                                               externalSourceGUID,
-                                                               externalSourceName,
-                                                               templateProgress,
-                                                               newEntityGUID,
-                                                               newEntityParameterName,
-                                                               templateGUID,
-                                                               entityTypeName,
-                                                               uniqueParameterValue,
-                                                               forLineage,
-                                                               forDuplicateProcessing,
-                                                               serviceSupportedZones,
-                                                               effectiveTime,
-                                                               methodName);
-
+            if (deepCopy)
+            {
+                /*
+                 * The real value of templates is that they cover the creation of a cluster of metadata instances.  The last step is to explore
+                 * the graph of linked elements and replicate the structure for the new bean.
+                 */
+                templateProgress = this.addAttachmentsFromTemplate(userId,
+                                                                   externalSourceGUID,
+                                                                   externalSourceName,
+                                                                   templateProgress,
+                                                                   newEntityGUID,
+                                                                   newEntityParameterName,
+                                                                   templateGUID,
+                                                                   entityTypeName,
+                                                                   uniqueParameterValue,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   serviceSupportedZones,
+                                                                   effectiveTime,
+                                                                   methodName);
+            }
 
             templateProgress.newBeanGUID = newEntityGUID;
         }
@@ -6005,6 +6072,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                            nextQualifiedNameParameterName,
                                                                            builder,
                                                                            serviceSupportedZones,
+                                                                           true,
                                                                            methodName);
 
                             nextBeanEntityGUID = templateProgress.newBeanGUID;
