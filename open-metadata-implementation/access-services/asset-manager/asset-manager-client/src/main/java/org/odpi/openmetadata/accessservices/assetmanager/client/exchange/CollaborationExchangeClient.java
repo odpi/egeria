@@ -7,11 +7,9 @@ import org.odpi.openmetadata.accessservices.assetmanager.api.exchange.Collaborat
 import org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerBaseClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CommentElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.InformalTagElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.NoteElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.NoteLogElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ArchiveProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.CommentProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.FeedbackProperties;
@@ -20,12 +18,8 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.LikeProperti
 import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteLogProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.RatingProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.ArchiveRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.CommentElementResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.CommentElementsResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryElementsResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossarySearchStringRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagUpdateRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagsResponse;
@@ -1244,6 +1238,7 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
      * @param elementGUID unique identifier of the element where the note log is located
      * @param externalIdentifierProperties optional properties used to define an external identifier for the note log
      * @param noteLogProperties properties about the note log to store
+     * @param isPublic                 is this element visible to other people.
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1262,6 +1257,7 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
                                  String                       elementGUID,
                                  ExternalIdentifierProperties externalIdentifierProperties,
                                  NoteLogProperties            noteLogProperties,
+                                 boolean                      isPublic,
                                  Date                         effectiveTime,
                                  boolean                      forLineage,
                                  boolean                      forDuplicateProcessing) throws InvalidParameterException,
@@ -1274,69 +1270,21 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/{2}/note-logs";
 
-        return super.createReferenceableWithParent(userId,
-                                                   assetManagerGUID,
-                                                   assetManagerName,
-                                                   assetManagerIsHome,
-                                                   elementGUID,
-                                                   guidParameterName,
-                                                   noteLogProperties,
-                                                   propertiesParameterName,
-                                                   externalIdentifierProperties,
-                                                   urlTemplate,
-                                                   effectiveTime,
-                                                   forLineage,
-                                                   forDuplicateProcessing,
-                                                   methodName);
-    }
-
-
-    /**
-     * Create a new metadata element to represent a note log using an existing metadata element as a template.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software capability representing the caller
-     * @param assetManagerName unique name of software capability representing the caller
-     * @param assetManagerIsHome      ensure that only the asset manager can update this element
-     * @param elementGUID unique identifier of the element where the note log is located
-     * @param templateGUID unique identifier of the metadata element to copy
-     * @param externalIdentifierProperties optional properties used to define an external identifier
-     * @param templateProperties properties that override the template
-     *
-     * @return unique identifier of the new note log
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @Override
-    public String createNoteLogFromTemplate(String                       userId,
-                                            String                       assetManagerGUID,
-                                            String                       assetManagerName,
-                                            boolean                      assetManagerIsHome,
-                                            String                       elementGUID,
-                                            String                       templateGUID,
-                                            ExternalIdentifierProperties externalIdentifierProperties,
-                                            TemplateProperties           templateProperties) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException
-    {
-        final String methodName = "createNoteLogFromTemplate";
-        final String guidParameterName = "elementGUID";
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/{2}/note-logs/from-template/{3}";
-
-        return super.createReferenceableFromTemplateWithParent(userId,
-                                                               assetManagerGUID,
-                                                               assetManagerName,
-                                                               assetManagerIsHome,
-                                                               elementGUID,
-                                                               guidParameterName,
-                                                               templateGUID,
-                                                               templateProperties,
-                                                               externalIdentifierProperties,
-                                                               urlTemplate,
-                                                               methodName);
+        return super.createFeedbackWithParent(userId,
+                                              assetManagerGUID,
+                                              assetManagerName,
+                                              assetManagerIsHome,
+                                              elementGUID,
+                                              guidParameterName,
+                                              isPublic,
+                                              noteLogProperties,
+                                              propertiesParameterName,
+                                              externalIdentifierProperties,
+                                              urlTemplate,
+                                              effectiveTime,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              methodName);
     }
 
 
@@ -1683,56 +1631,6 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
     }
 
 
-
-    /**
-     * Create a new metadata element to represent a note using an existing metadata element as a template.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software capability representing the caller
-     * @param assetManagerName unique name of software capability representing the caller
-     * @param assetManagerIsHome      ensure that only the asset manager can update this element
-     * @param noteLogGUID unique identifier of the element where the note is located
-     * @param templateGUID unique identifier of the metadata element to copy
-     * @param externalIdentifierProperties optional properties used to define an external identifier
-     * @param templateProperties properties that override the template
-     *
-     * @return unique identifier of the new metadata element for the note
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @Override
-    public String createNoteFromTemplate(String                       userId,
-                                         String                       assetManagerGUID,
-                                         String                       assetManagerName,
-                                         boolean                      assetManagerIsHome,
-                                         String                       noteLogGUID,
-                                         String                       templateGUID,
-                                         ExternalIdentifierProperties externalIdentifierProperties,
-                                         TemplateProperties           templateProperties) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException
-    {
-        final String methodName = "createNoteFromTemplate";
-        final String guidParameterName = "noteLogGUID";
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/note-logs/{2}/notes/from-template/{3}";
-
-        return super.createReferenceableFromTemplateWithParent(userId,
-                                                               assetManagerGUID,
-                                                               assetManagerName,
-                                                               assetManagerIsHome,
-                                                               noteLogGUID,
-                                                               guidParameterName,
-                                                               templateGUID,
-                                                               templateProperties,
-                                                               externalIdentifierProperties,
-                                                               urlTemplate,
-                                                               methodName);
-    }
-
-
     /**
      * Update the properties of the metadata element representing a note.
      *
@@ -1785,110 +1683,6 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
                                   forLineage,
                                   forDuplicateProcessing,
                                   methodName);
-    }
-
-
-    /**
-     * Undo the last update to the note.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software capability representing the caller
-     * @param assetManagerName unique name of software capability representing the caller
-     * @param noteGUID unique identifier of the metadata element to update
-     * @param noteExternalIdentifier unique identifier of the note in the external asset manager
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @return recovered note
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @Override
-    public NoteElement undoNoteUpdate(String  userId,
-                                      String  assetManagerGUID,
-                                      String  assetManagerName,
-                                      String  noteGUID,
-                                      String  noteExternalIdentifier,
-                                      Date    effectiveTime,
-                                      boolean forLineage,
-                                      boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
-    {
-        final String methodName = "undoNoteUpdate";
-        final String noteGUIDParameterName = "noteGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(noteGUID, noteGUIDParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/note-logs/notes/{2}/undo&forLineage={3}&forDuplicateProcessing={4}";
-
-        NoteElementResponse response = restClient.callNoteElementPostRESTCall(methodName,
-                                                                              urlTemplate,
-                                                                              getUpdateRequestBody(assetManagerGUID, assetManagerName, noteExternalIdentifier, effectiveTime, methodName),
-                                                                              serverName,
-                                                                              userId,
-                                                                              noteGUID,
-                                                                              forLineage,
-                                                                              forDuplicateProcessing);
-
-        return response.getElement();
-    }
-
-
-    /**
-     * Archive the metadata element representing a note.  This removes it from normal access.  However, it is still available
-     * for lineage requests.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software capability representing the caller
-     * @param assetManagerName unique name of software capability representing the caller
-     * @param noteGUID unique identifier of the metadata element to archive
-     * @param noteExternalIdentifier unique identifier of the note in the external asset manager
-     * @param archiveProperties option parameters about the archive process
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @Override
-    public void archiveNote(String            userId,
-                            String            assetManagerGUID,
-                            String            assetManagerName,
-                            String            noteGUID,
-                            String            noteExternalIdentifier,
-                            ArchiveProperties archiveProperties,
-                            Date              effectiveTime,
-                            boolean           forDuplicateProcessing) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
-    {
-        final String methodName = "archiveNote";
-        final String noteGUIDParameterName = "noteGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(noteGUID, noteGUIDParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/note-logs/notes/{2}/archive&forLineage={3}&forDuplicateProcessing={4}";
-
-        ArchiveRequestBody requestBody = new ArchiveRequestBody();
-        requestBody.setElementProperties(archiveProperties);
-        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
-                                                                                   assetManagerName,
-                                                                                   noteExternalIdentifier,
-                                                                                   methodName));
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        userId,
-                                        noteGUID,
-                                        forDuplicateProcessing);
     }
 
 
@@ -1946,7 +1740,6 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software capability representing the caller
      * @param assetManagerName unique name of software capability representing the caller
-     * @param elementGUID unique identifier of the element to query
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -1964,7 +1757,6 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
     public List<NoteElement>   findNotes(String  userId,
                                          String  assetManagerGUID,
                                          String  assetManagerName,
-                                         String  elementGUID,
                                          String  searchString,
                                          int     startFrom,
                                          int     pageSize,
@@ -2051,71 +1843,6 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
                                                                                   serverName,
                                                                                   userId,
                                                                                   noteLogGUID,
-                                                                                  startFrom,
-                                                                                  validatedPageSize,
-                                                                                  forLineage,
-                                                                                  forDuplicateProcessing);
-
-        return restResult.getElementList();
-    }
-
-
-    /**
-     * Retrieve the list of note metadata elements with a matching qualified or display name.
-     * There are no wildcards supported on this request.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software capability representing the caller
-     * @param assetManagerName unique name of software capability representing the caller
-     * @param elementGUID unique identifier of the element to query
-     * @param name name to search for
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     *
-     * @return list of matching metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @Override
-    public List<NoteElement>   getNotesByName(String  userId,
-                                              String  assetManagerGUID,
-                                              String  assetManagerName,
-                                              String  elementGUID,
-                                              String  name,
-                                              int     startFrom,
-                                              int     pageSize,
-                                              Date    effectiveTime,
-                                              boolean forLineage,
-                                              boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
-    {
-        final String methodName        = "getNotesByName";
-        final String nameParameterName = "name";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(name, nameParameterName, methodName);
-        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
-
-        NameRequestBody requestBody = new NameRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-        requestBody.setName(name);
-        requestBody.setNameParameterName(nameParameterName);
-        requestBody.setEffectiveTime(effectiveTime);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/note-logs/notes/by-name?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
-
-        NoteElementsResponse restResult = restClient.callNoteElementsPostRESTCall(methodName,
-                                                                                  urlTemplate,
-                                                                                  requestBody,
-                                                                                  serverName,
-                                                                                  userId,
                                                                                   startFrom,
                                                                                   validatedPageSize,
                                                                                   forLineage,

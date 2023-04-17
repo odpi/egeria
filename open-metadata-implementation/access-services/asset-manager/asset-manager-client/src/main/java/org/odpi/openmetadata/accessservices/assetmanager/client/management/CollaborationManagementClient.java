@@ -10,7 +10,6 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Commen
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.InformalTagElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.NoteElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.NoteLogElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ArchiveProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.CommentProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.FeedbackProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.InformalTagProperties;
@@ -18,7 +17,6 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.LikeProperti
 import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteLogProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.RatingProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -799,33 +797,7 @@ public class CollaborationManagementClient implements CollaborationManagementInt
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        return client.createNoteLog(userId, null, null, false, elementGUID, null, noteLogProperties, effectiveTime, forLineage, forDuplicateProcessing);
-    }
-
-
-    /**
-     * Create a new metadata element to represent a note log using an existing metadata element as a template.
-     *
-     * @param userId calling user
-     * @param elementGUID unique identifier of the element where the note log is located
-     * @param templateGUID unique identifier of the metadata element to copy
-     * @param templateProperties properties that override the template
-     *
-     * @return unique identifier of the new note log
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @Override
-    public String createNoteLogFromTemplate(String                       userId,
-                                            String                       elementGUID,
-                                            String                       templateGUID,
-                                            TemplateProperties           templateProperties) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException
-    {
-        return client.createNoteLogFromTemplate(userId, null, null, false, elementGUID, templateGUID, null, templateProperties);
+        return client.createNoteLog(userId, null, null, false, elementGUID, null, noteLogProperties, true, effectiveTime, forLineage, forDuplicateProcessing);
     }
 
 
@@ -835,7 +807,6 @@ public class CollaborationManagementClient implements CollaborationManagementInt
      * @param userId calling user
      * @param noteLogGUID unique identifier of the metadata element to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
-     * @param isPublic      is this visible to other people
      * @param noteLogProperties new properties for the metadata element
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
@@ -849,7 +820,6 @@ public class CollaborationManagementClient implements CollaborationManagementInt
     public void updateNoteLog(String            userId,
                               String            noteLogGUID,
                               boolean           isMergeUpdate,
-                              boolean           isPublic,
                               NoteLogProperties noteLogProperties,
                               Date              effectiveTime,
                               boolean           forLineage,
@@ -857,7 +827,7 @@ public class CollaborationManagementClient implements CollaborationManagementInt
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        client.updateNoteLog(userId, null, null, noteLogGUID, null, isMergeUpdate, isPublic, noteLogProperties, effectiveTime, forLineage, forDuplicateProcessing);
+        client.updateNoteLog(userId, null, null, noteLogGUID, null, isMergeUpdate, true, noteLogProperties, effectiveTime, forLineage, forDuplicateProcessing);
     }
 
 
@@ -1012,33 +982,6 @@ public class CollaborationManagementClient implements CollaborationManagementInt
     }
 
 
-
-    /**
-     * Create a new metadata element to represent a note using an existing metadata element as a template.
-     *
-     * @param userId calling user
-     * @param noteLogGUID unique identifier of the element where the note is located
-     * @param templateGUID unique identifier of the metadata element to copy
-     * @param templateProperties properties that override the template
-     *
-     * @return unique identifier of the new metadata element for the note
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @Override
-    public String createNoteFromTemplate(String                       userId,
-                                         String                       noteLogGUID,
-                                         String                       templateGUID,
-                                         TemplateProperties           templateProperties) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException
-    {
-        return client.createNoteFromTemplate(userId, null, null, false, noteLogGUID, templateGUID, null, templateProperties);
-    }
-
-
     /**
      * Update the properties of the metadata element representing a note.
      *
@@ -1066,60 +1009,6 @@ public class CollaborationManagementClient implements CollaborationManagementInt
                                                                          PropertyServerException
     {
         client.updateNote(userId, null, null, noteGUID, null, isMergeUpdate, noteProperties, effectiveTime, forLineage, forDuplicateProcessing);
-    }
-
-
-    /**
-     * Undo the last update to the note.
-     *
-     * @param userId calling user
-     * @param noteGUID unique identifier of the metadata element to update
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @return recovered note
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @Override
-    public NoteElement undoNoteUpdate(String  userId,
-                                      String  noteGUID,
-                                      Date    effectiveTime,
-                                      boolean forLineage,
-                                      boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
-    {
-        return client.undoNoteUpdate(userId, null, null, noteGUID, null, effectiveTime, forLineage, forDuplicateProcessing);
-    }
-
-
-    /**
-     * Archive the metadata element representing a note.  This removes it from normal access.  However, it is still available
-     * for lineage requests.
-     *
-     * @param userId calling user
-     * @param noteGUID unique identifier of the metadata element to archive
-     * @param archiveProperties option parameters about the archive process
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @Override
-    public void archiveNote(String            userId,
-                            String            noteGUID,
-                            ArchiveProperties archiveProperties,
-                            Date              effectiveTime,
-                            boolean           forDuplicateProcessing) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
-    {
-        client.archiveNote(userId, null, null, noteGUID, null, archiveProperties, effectiveTime, forDuplicateProcessing);
     }
 
 
@@ -1154,7 +1043,6 @@ public class CollaborationManagementClient implements CollaborationManagementInt
      * The search string is treated as a regular expression.
      *
      * @param userId calling user
-     * @param elementGUID unique identifier of the element to query
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -1170,7 +1058,6 @@ public class CollaborationManagementClient implements CollaborationManagementInt
      */
     @Override
     public List<NoteElement>   findNotes(String  userId,
-                                         String  elementGUID,
                                          String  searchString,
                                          int     startFrom,
                                          int     pageSize,
@@ -1180,7 +1067,7 @@ public class CollaborationManagementClient implements CollaborationManagementInt
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        return client.findNotes(userId, null, null, elementGUID, searchString, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
+        return client.findNotes(userId, null, null, searchString, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
     }
 
 
@@ -1213,41 +1100,6 @@ public class CollaborationManagementClient implements CollaborationManagementInt
                                                                                           PropertyServerException
     {
         return client.getNotesForNoteLog(userId, null, null, noteLogGUID, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
-    }
-
-
-    /**
-     * Retrieve the list of note metadata elements with a matching qualified or display name.
-     * There are no wildcards supported on this request.
-     *
-     * @param userId calling user
-     * @param elementGUID unique identifier of the element to query
-     * @param name name to search for
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     *
-     * @return list of matching metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @Override
-    public List<NoteElement>   getNotesByName(String  userId,
-                                              String  elementGUID,
-                                              String  name,
-                                              int     startFrom,
-                                              int     pageSize,
-                                              Date    effectiveTime,
-                                              boolean forLineage,
-                                              boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
-    {
-        return client.getNotesByName(userId, null, null, elementGUID, name, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
     }
 
 

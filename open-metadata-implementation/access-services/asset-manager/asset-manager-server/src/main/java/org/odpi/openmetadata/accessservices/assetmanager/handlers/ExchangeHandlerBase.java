@@ -4,6 +4,8 @@ package org.odpi.openmetadata.accessservices.assetmanager.handlers;
 
 import org.odpi.openmetadata.accessservices.assetmanager.converters.ElementHeaderConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.converters.ExternalIdentifierConverter;
+import org.odpi.openmetadata.accessservices.assetmanager.converters.NoteConverter;
+import org.odpi.openmetadata.accessservices.assetmanager.converters.NoteLogConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -27,8 +29,10 @@ import java.util.List;
  */
 class ExchangeHandlerBase
 {
-    InvalidParameterHandler                                             invalidParameterHandler;
-    ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> externalIdentifierHandler;
+    final InvalidParameterHandler                                             invalidParameterHandler;
+    final ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> externalIdentifierHandler;
+    private final NoteLogHandler<NoteLogElement>                   noteLogHandler;
+    private final NoteHandler<NoteElement>                         noteHandler;
 
     String               serviceName;
     String               serverName;
@@ -79,6 +83,34 @@ class ExchangeHandlerBase
                                                                     defaultZones,
                                                                     publishZones,
                                                                     auditLog);
+
+        noteLogHandler = new NoteLogHandler<>(new NoteLogConverter<>(repositoryHelper, serviceName, serverName),
+                                              NoteLogElement.class,
+                                              serviceName,
+                                              serverName,
+                                              invalidParameterHandler,
+                                              repositoryHandler,
+                                              repositoryHelper,
+                                              localServerUserId,
+                                              securityVerifier,
+                                              supportedZones,
+                                              defaultZones,
+                                              publishZones,
+                                              auditLog);
+
+        noteHandler = new NoteHandler<>(new NoteConverter<>(repositoryHelper, serviceName, serverName),
+                                        NoteElement.class,
+                                        serviceName,
+                                        serverName,
+                                        invalidParameterHandler,
+                                        repositoryHandler,
+                                        repositoryHelper,
+                                        localServerUserId,
+                                        securityVerifier,
+                                        supportedZones,
+                                        defaultZones,
+                                        publishZones,
+                                        auditLog);
 
         this.invalidParameterHandler = invalidParameterHandler;
         this.serviceName = serviceName;
@@ -574,13 +606,102 @@ class ExchangeHandlerBase
      * @param userId calling user
      * @param elementGUID element to attach the comment to
      * @param elementQualifiedName qualified name of the element (or null if not known)
+     * @param elementTypeName type name of element
+     * @param updateTitle description of the type of update
      * @param updateDescription comment to attach
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem detected in the repository services
      */
     void updateRevisionHistory(String userId,
                                String elementGUID,
                                String elementQualifiedName,
-                               String updateDescription)
+                               String elementTypeName,
+                               String updateTitle,
+                               String updateDescription) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
     {
+        final String elementParameterName = "elementGUID";
+        final String noteLogParameterName = "noteLogGUID";
+        final String methodName = "updateRevisionHistory";
+        final String noteLogQualifiedNamePrefix = "RevisionHistory:";
+        final String noteLogName = "Revision History";
+        String noteText = "None";
 
+        if (updateDescription != null)
+        {
+            noteText = updateDescription;
+        }
+
+        List<NoteLogElement> noteLogs = noteLogHandler.getAttachedNoteLogs(userId,
+                                                                           elementGUID,
+                                                                           elementParameterName,
+                                                                           OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                           0,
+                                                                           0,
+                                                                           false,
+                                                                           false,
+                                                                           null,
+                                                                           methodName);
+
+        String noteLogGUID = null;
+
+        if (noteLogs != null)
+        {
+            for (NoteLogElement noteLogElement : noteLogs)
+            {
+                if ((noteLogElement != null) &&
+                    (noteLogElement.getProperties() != null) &&
+                    (noteLogElement.getProperties().getQualifiedName() != null) &&
+                    (noteLogElement.getElementHeader() != null) &&
+                    (noteLogElement.getElementHeader().getGUID() != null))
+                {
+                    if (noteLogElement.getProperties().getQualifiedName().startsWith(noteLogQualifiedNamePrefix))
+                    {
+                        noteLogGUID = noteLogElement.getElementHeader().getGUID();
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (noteLogGUID == null)
+        {
+            noteLogGUID = noteLogHandler.attachNewNoteLog(userId,
+                                                          null,
+                                                          null,
+                                                          elementGUID,
+                                                          elementGUID,
+                                                          elementParameterName,
+                                                          noteLogQualifiedNamePrefix + elementTypeName + ":" + elementQualifiedName,
+                                                          noteLogName,
+                                                          null,
+                                                          true,
+                                                          null,
+                                                          null,
+                                                          false,
+                                                          false,
+                                                          null,
+                                                          methodName);
+        }
+
+        if (noteLogGUID != null)
+        {
+            noteHandler.attachNewNote(userId,
+                                      null,
+                                      null,
+                                      elementGUID,
+                                      noteLogGUID,
+                                      noteLogParameterName,
+                                      updateTitle,
+                                      noteText,
+                                      null,
+                                      null,
+                                      false,
+                                      false,
+                                      null,
+                                      methodName);
+        }
     }
 }

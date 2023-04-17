@@ -835,10 +835,6 @@ public class OpenMetadataAPIMapper
     public static final String NOTE_LOG_ENTRIES_RELATIONSHIP_TYPE_NAME  = "AttachedNoteLogEntry";
     /* End1 = NoteLog; End 2 = NoteEntry */
 
-    public static final String NOTE_ENTRY_TYPE_GUID                     = "2a84d94c-ac6f-4be1-a72a-07dcec7b1fe3";
-    public static final String NOTE_ENTRY_TYPE_NAME                     = "NoteEntry";              /* from Area 1 */
-    /* Referenceable */
-
 
     /*
     Added warning suppression for SonarCloud since the below constants contain the pattern
@@ -858,7 +854,7 @@ public class OpenMetadataAPIMapper
     public static final String NOTE_LOG_AUTHOR_TYPE_NAME                = "NoteLogAuthor";              /* from Area 1 */
     /* PersonRole */
 
-    public static final String NOTE_TYPE_GUID                           = "646727c7-9ad4-46fa-b660-265489ad96c6";
+    public static final String NOTE_TYPE_GUID                           = "2a84d94c-ac6f-4be1-a72a-07dcec7b1fe3";
     public static final String NOTE_TYPE_NAME                            = "NoteEntry";              /* from Area 1 */
     /* Referenceable */
 

@@ -15,13 +15,18 @@ import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQuery
 import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagUpdateRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.NameRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.NoteElementResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.NoteElementsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.NoteLogElementResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.NoteLogElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ReferenceableUpdateRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.RelationshipRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.server.CollaborationExchangeRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -695,6 +700,82 @@ public class CollaborationExchangeResource
 
 
     /**
+     * Link a comment that contains the best answer to a question posed in another comment.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param questionCommentGUID unique identifier of the comment containing the question
+     * @param answerCommentGUID unique identifier of the comment containing the accepted answer
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/comments/questions/{questionCommentGUID}/answers/{answerCommentGUID}")
+
+    public VoidResponse setupAcceptedAnswer(@PathVariable String                  serverName,
+                                            @PathVariable String                  userId,
+                                            @PathVariable String                  questionCommentGUID,
+                                            @PathVariable String                  answerCommentGUID,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                          boolean                 forLineage,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                          boolean                 forDuplicateProcessing,
+                                            @RequestBody  RelationshipRequestBody requestBody)
+    {
+        return restAPI.setupAcceptedAnswer(serverName,
+                                           userId,
+                                           questionCommentGUID,
+                                           answerCommentGUID,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           requestBody);
+    }
+
+
+    /**
+     * Unlink a comment that contains an answer to a question posed in another comment.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param questionCommentGUID unique identifier of the comment containing the question
+     * @param answerCommentGUID unique identifier of the comment containing the accepted answer
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/comments/questions/{questionCommentGUID}/answers/{answerCommentGUID}/remove")
+
+    public VoidResponse clearAcceptedAnswer(@PathVariable String                        serverName,
+                                            @PathVariable String                        userId,
+                                            @PathVariable String                        questionCommentGUID,
+                                            @PathVariable String                        answerCommentGUID,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                          boolean                       forLineage,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                          boolean                       forDuplicateProcessing,
+                                            @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.clearAcceptedAnswer(serverName,
+                                           userId,
+                                           questionCommentGUID,
+                                           answerCommentGUID,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           requestBody);
+    }
+
+
+    /**
      * Updates the description of an existing tag (either private or public).
      *
      * @param serverName   name of the server instances for this request
@@ -714,11 +795,418 @@ public class CollaborationExchangeResource
                externalDocs=@ExternalDocumentation(description="Informal Tag",
                                                    url="https://egeria-project.org/concepts/informal-tag/"))
 
-    public VoidResponse   updateTagDescription(@PathVariable String                serverName,
-                                               @PathVariable String                userId,
-                                               @PathVariable String                tagGUID,
-                                               @RequestBody InformalTagUpdateRequestBody requestBody)
+    public VoidResponse   updateTagDescription(@PathVariable String                       serverName,
+                                               @PathVariable String                       userId,
+                                               @PathVariable String                       tagGUID,
+                                               @RequestBody  InformalTagUpdateRequestBody requestBody)
     {
         return restAPI.updateTagDescription(serverName, userId, tagGUID, requestBody);
+    }
+
+
+
+    /* =====================================================================================================================
+     * A note log maintains an ordered list of notes.  It can be used to support release note, blogs and similar
+     * broadcast information.  Notelogs are typically maintained by the owners/stewards of an element.
+     */
+
+    /**
+     * Create a new metadata element to represent a note log and attach it to an element (if supplied).
+     * Any supplied element becomes the note log's anchor, causing the note log to be deleted if/when the element is deleted.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param assetManagerIsHome      ensure that only the asset manager can update this element
+     * @param elementGUID unique identifier of the element where the note log is located
+     * @param isPublic                 is this element visible to other people.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to control the type of the request
+     *
+     * @return unique identifier of the new note log or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/elements/{elementGUID}/note-logs")
+
+    public  GUIDResponse createNoteLog(@PathVariable String                         serverName,
+                                       @PathVariable String                         userId,
+                                       @PathVariable String                         elementGUID,
+                                       @RequestParam (required = false, defaultValue = "false")
+                                                     boolean                        assetManagerIsHome,
+                                       @RequestParam (required = false, defaultValue = "true")
+                                                     boolean                        isPublic,
+                                       @RequestParam (required = false, defaultValue = "false")
+                                                     boolean                        forLineage,
+                                       @RequestParam (required = false, defaultValue = "false")
+                                                     boolean                        forDuplicateProcessing,
+                                       @RequestBody  ReferenceableUpdateRequestBody requestBody)
+    {
+        return restAPI.createNoteLog(serverName, userId, elementGUID, assetManagerIsHome, isPublic, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Update the metadata element representing a note log.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param noteLogGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param isPublic                 is this element visible to other people.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody new properties for the metadata element
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/note-logs/{noteLogGUID}/update")
+
+    public VoidResponse updateNoteLog(@PathVariable String                         serverName,
+                                      @PathVariable String                         userId,
+                                      @PathVariable String                         noteLogGUID,
+                                      @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                        isMergeUpdate,
+                                      @RequestParam (required = false, defaultValue = "true")
+                                                    boolean                        isPublic,
+                                      @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                        forLineage,
+                                      @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                        forDuplicateProcessing,
+                                      @RequestBody  ReferenceableUpdateRequestBody requestBody)
+    {
+        return restAPI.updateNoteLog(serverName, userId, noteLogGUID, isMergeUpdate, isPublic, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Remove the metadata element representing a note log.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param noteLogGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/note-logs/{noteLogGUID}/remove")
+
+    public VoidResponse removeNoteLog(@PathVariable String                         serverName,
+                                      @PathVariable String                         userId,
+                                      @PathVariable String                         noteLogGUID,
+                                      @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                        forLineage,
+                                      @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                        forDuplicateProcessing,
+                                      @RequestBody(required = false)
+                                                    ReferenceableUpdateRequestBody requestBody)
+    {
+        return restAPI.removeNoteLog(serverName, userId, noteLogGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of note log metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody string to find in the properties and correlators
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/note-logs/by-search-string")
+
+    public NoteLogElementsResponse findNoteLogs(@PathVariable String                  serverName,
+                                                @PathVariable String                  userId,
+                                                @RequestParam int                     startFrom,
+                                                @RequestParam int                     pageSize,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                              boolean                 forLineage,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                              boolean                 forDuplicateProcessing,
+                                                @RequestBody  SearchStringRequestBody requestBody)
+    {
+        return restAPI.findNoteLogs(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of note log metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody name to search for and correlators
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/note-logs/by-name")
+
+    public NoteLogElementsResponse getNoteLogsByName(@PathVariable String          serverName,
+                                                     @PathVariable String          userId,
+                                                     @RequestParam int             startFrom,
+                                                     @RequestParam int             pageSize,
+                                                     @RequestParam (required = false, defaultValue = "false")
+                                                                   boolean         forLineage,
+                                                     @RequestParam (required = false, defaultValue = "false")
+                                                                   boolean         forDuplicateProcessing,
+                                                     @RequestBody  NameRequestBody requestBody)
+    {
+        return restAPI.getNoteLogsByName(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the note log metadata element with the supplied unique identifier.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param noteLogGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return requested metadata element or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/note-logs/{noteLogGUID}/retrieve")
+
+    public NoteLogElementResponse getNoteLogByGUID(@PathVariable String                        serverName,
+                                                   @PathVariable String                        userId,
+                                                   @PathVariable String                        noteLogGUID,
+                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                 boolean                       forLineage,
+                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                 boolean                       forDuplicateProcessing,
+                                                   @RequestBody(required = false)
+                                                                 EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getNoteLogByGUID(serverName, userId, noteLogGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /* ===============================================================================
+     * A element typically contains many notes, linked with relationships.
+     */
+
+    /**
+     * Create a new metadata element to represent a note.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param assetManagerIsHome      ensure that only the asset manager can update this element
+     * @param noteLogGUID unique identifier of the element where the note is located
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return unique identifier of the new metadata element for the note or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/note-logs/{noteLogGUID}/notes")
+
+    public GUIDResponse createNote(@PathVariable String                         serverName,
+                                   @PathVariable String                         userId,
+                                   @PathVariable String                         noteLogGUID,
+                                   @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                        assetManagerIsHome,
+                                   @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                        forLineage,
+                                   @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                        forDuplicateProcessing,
+                                   @RequestBody  ReferenceableUpdateRequestBody requestBody)
+    {
+        return restAPI.createNote(serverName, userId, assetManagerIsHome, noteLogGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Update the properties of the metadata element representing a note.
+     *
+     * @param userId calling user
+     * @param serverName   name of the server instances for this request
+     * @param noteGUID unique identifier of the note to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/note-logs/notes/{noteGUID}/update")
+
+    public VoidResponse updateNote(@PathVariable String                         serverName,
+                                   @PathVariable String                         userId,
+                                   @PathVariable String                         noteGUID,
+                                   @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                        isMergeUpdate,
+                                   @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                        forLineage,
+                                   @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                        forDuplicateProcessing,
+                                   @RequestBody  ReferenceableUpdateRequestBody requestBody)
+    {
+        return restAPI.updateNote(serverName, userId, noteGUID, isMergeUpdate, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Remove the metadata element representing a note.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param noteGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/note-logs/notes/{noteGUID}/remove")
+
+    public VoidResponse removeNote(@PathVariable String                         serverName,
+                                   @PathVariable String                         userId,
+                                   @PathVariable String                         noteGUID,
+                                   @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                        forLineage,
+                                   @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                        forDuplicateProcessing,
+                                   @RequestBody(required = false)
+                                                 ReferenceableUpdateRequestBody requestBody)
+    {
+        return restAPI.removeNote(serverName, userId, noteGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of note metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody string to find in the properties and correlators
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/note-logs/notes/by-search-string")
+
+    public NoteElementsResponse findNotes(@PathVariable String                  serverName,
+                                          @PathVariable String                  userId,
+                                          @RequestParam int                     startFrom,
+                                          @RequestParam int                     pageSize,
+                                          @RequestParam (required = false, defaultValue = "false")
+                                                        boolean                 forLineage,
+                                          @RequestParam (required = false, defaultValue = "false")
+                                                        boolean                 forDuplicateProcessing,
+                                          @RequestBody  SearchStringRequestBody requestBody)
+    {
+        return restAPI.findNotes(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of notes associated with a note log.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param noteLogGUID unique identifier of the note log of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody asset manager identifiers
+     *
+     * @return list of associated metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/note-logs/{noteLogGUID}/notes/retrieve")
+
+    public NoteElementsResponse getNotesForNoteLog(@PathVariable String                        serverName,
+                                                   @PathVariable String                        userId,
+                                                   @PathVariable String                        noteLogGUID,
+                                                   @RequestParam int                           startFrom,
+                                                   @RequestParam int                           pageSize,
+                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                 boolean                       forLineage,
+                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                 boolean                       forDuplicateProcessing,
+                                                   @RequestBody(required = false)
+                                                                 EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getNotesForNoteLog(serverName, userId, noteLogGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the note metadata element with the supplied unique identifier.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param noteGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody asset manager identifiers
+     *
+     * @return matching metadata element or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/note-logs/notes/{noteGUID}/retrieve")
+
+    public NoteElementResponse getNoteByGUID(@PathVariable String                        serverName,
+                                             @PathVariable String                        userId,
+                                             @PathVariable String                        noteGUID,
+                                             @RequestParam (required = false, defaultValue = "false")
+                                                           boolean                       forLineage,
+                                             @RequestParam (required = false, defaultValue = "false")
+                                                           boolean                       forDuplicateProcessing,
+                                             @RequestBody(required = false)
+                                                           EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getNoteByGUID(serverName, userId, noteGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 }

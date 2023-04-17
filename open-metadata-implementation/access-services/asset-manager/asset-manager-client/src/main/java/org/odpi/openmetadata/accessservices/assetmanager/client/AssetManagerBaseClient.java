@@ -736,7 +736,6 @@ public class AssetManagerBaseClient
     }
 
 
-
     /**
      * Create a new metadata element to represent a community using an existing metadata element as a template.
      *
@@ -804,6 +803,7 @@ public class AssetManagerBaseClient
     }
 
 
+
     /**
      * Create a new metadata element to represent a community using an existing metadata element as a template.
      *
@@ -869,6 +869,79 @@ public class AssetManagerBaseClient
                                                                   templateGUID,
                                                                   assetManagerIsHome,
                                                                   deepCopy);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
+     * Create a new metadata element to represent a community using an existing metadata element as a template.
+     *
+     * @param userId             calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param assetManagerIsHome      ensure that only the asset manager can update this element
+     * @param parentGUID              unique identifier of the parent element
+     * @param parentGUIDParameterName name of parameter passing the parentGUID
+     * @param isPublic                is this element visible to other people.
+     * @param templateGUID       unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     * @param externalIdentifierProperties optional properties used to define an external identifier
+     * @param urlTemplate        URL to call (with placeholders)
+     * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
+     * @param methodName         calling method
+     *
+     * @return unique identifier of the new community
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    protected String createFeedbackFromTemplateWithParent(String                       userId,
+                                                          String                       assetManagerGUID,
+                                                          String                       assetManagerName,
+                                                          boolean                      assetManagerIsHome,
+                                                          String                       parentGUID,
+                                                          String                       parentGUIDParameterName,
+                                                          boolean                      isPublic,
+                                                          String                       templateGUID,
+                                                          TemplateProperties           templateProperties,
+                                                          ExternalIdentifierProperties externalIdentifierProperties,
+                                                          boolean                      deepCopy,
+                                                          String                       urlTemplate,
+                                                          String                       methodName) throws InvalidParameterException,
+                                                                                                          UserNotAuthorizedException,
+                                                                                                          PropertyServerException
+    {
+        final String templateGUIDParameterName  = "templateGUID";
+        final String propertiesParameterName    = "templateProperties";
+        final String qualifiedNameParameterName = "qualifiedName";
+        final String requestParamsURLTemplate   = "?assetManagerIsHome={4}&deepCopy={5}&isPublic={6}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(parentGUID, parentGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        TemplateRequestBody requestBody = new TemplateRequestBody();
+
+        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
+                                                                                   assetManagerName,
+                                                                                   externalIdentifierProperties,
+                                                                                   methodName));
+        requestBody.setParentGUID(parentGUID);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate + requestParamsURLTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId,
+                                                                  parentGUID,
+                                                                  templateGUID,
+                                                                  assetManagerIsHome,
+                                                                  deepCopy,
+                                                                  isPublic);
 
         return restResult.getGUID();
     }
@@ -956,7 +1029,7 @@ public class AssetManagerBaseClient
      * @param assetManagerIsHome      ensure that only the asset manager can update this element
      * @param parentGUID              unique identifier of the parent element
      * @param parentGUIDParameterName name of parameter passing the parentGUID
-     * @param isPublic is this comment visible to other people.
+     * @param isPublic                is this element visible to other people.
      * @param properties              properties about the element to store
      * @param propertiesParameterName name of parameter passing the properties
      * @param externalIdentifierProperties optional properties used to define an external identifier
@@ -1028,8 +1101,8 @@ public class AssetManagerBaseClient
      * set up specialized properties in extended properties.
      *
      * @param userId                   calling user
-     * @param assetManagerGUID       unique identifier of software capability representing the caller
-     * @param assetManagerName       unique name of software capability representing the caller
+     * @param assetManagerGUID         unique identifier of software capability representing the caller
+     * @param assetManagerName         unique name of software capability representing the caller
      * @param elementGUID              unique identifier of the metadata element to update
      * @param elementGUIDParameterName name of parameter passing the elementGUID
      * @param externalIdentifierName   optional external identifier
@@ -1101,8 +1174,8 @@ public class AssetManagerBaseClient
      * set up specialized properties in extended properties.
      *
      * @param userId                   calling user
-     * @param assetManagerGUID       unique identifier of software capability representing the caller
-     * @param assetManagerName       unique name of software capability representing the caller
+     * @param assetManagerGUID         unique identifier of software capability representing the caller
+     * @param assetManagerName         unique name of software capability representing the caller
      * @param elementGUID              unique identifier of the metadata element to update
      * @param elementGUIDParameterName name of parameter passing the elementGUID
      * @param externalIdentifierName   optional external identifier

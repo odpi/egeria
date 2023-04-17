@@ -5,10 +5,34 @@ package org.odpi.openmetadata.accessservices.assetmanager.handlers;
 import org.odpi.openmetadata.accessservices.assetmanager.converters.GlossaryCategoryConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.converters.GlossaryConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.converters.GlossaryTermConverter;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalGlossaryLinkElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryCategoryElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.ArchiveProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.CanonicalVocabularyProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.DataFieldValuesProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.EditingGlossaryProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalGlossaryElementLinkProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalGlossaryLinkProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryCategoryProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermActivityType;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermCategorization;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermContextDefinition;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermRelationship;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermRelationshipStatus;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermStatus;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.TaxonomyProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.*;
+import org.odpi.openmetadata.commonservices.generichandlers.GlossaryCategoryHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.GlossaryHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.GlossaryTermHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -118,7 +142,6 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                         defaultZones,
                                                         publishZones,
                                                         auditLog);
-
     }
 
 
@@ -470,13 +493,14 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                        effectiveTime,
                                        methodName);
 
-        if (updateDescription != null)
-        {
-            this.updateRevisionHistory(userId,
-                                       glossaryGUID,
-                                       glossaryProperties.getQualifiedName(),
-                                       updateDescription);
-        }
+        String revisionHistoryTitle = "Glossary properties updated by " + userId + " on " + new Date();
+
+        this.updateRevisionHistory(userId,
+                                   glossaryGUID,
+                                   glossaryProperties.getQualifiedName(),
+                                   OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                   revisionHistoryTitle,
+                                   updateDescription);
     }
 
 
@@ -656,7 +680,6 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
      * Classify the glossary to indicate that it can be used as a taxonomy.
      * This means each term is attached to one, and only one category and the categories are organized as a hierarchy
      * with a single root category.
-     *
      * Taxonomies are used as a way of organizing assets and other related metadata.  The terms in the taxonomy
      * are linked to the assets etc. and as such they are logically categorized by the linked category.
      *
@@ -780,7 +803,6 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
      * Classify a glossary to declare that it has no two GlossaryTerm definitions with
      * the same name.  This means there is only one definition for each term.  Typically, the terms are also of a similar
      * level of granularity and are limited to a specific scope of use.
-     *
      * Canonical vocabularies are used to semantically classify assets in an unambiguous way.
      *
      * @param userId calling user
@@ -1224,15 +1246,18 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                           forDuplicateProcessing,
                                           effectiveTime,
                                           methodName);
-        }
 
-        if (updateDescription != null)
-        {
+            String revisionHistoryTitle = "Glossary category created by " + userId + " on " + new Date();
+
             this.updateRevisionHistory(userId,
                                        glossaryCategoryGUID,
                                        glossaryCategoryProperties.getQualifiedName(),
+                                       OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                       revisionHistoryTitle,
                                        updateDescription);
         }
+
+
 
         return glossaryCategoryGUID;
     }
@@ -1371,13 +1396,15 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                        forDuplicateProcessing,
                                                        methodName);
 
-        if (updateDescription != null)
-        {
-            this.updateRevisionHistory(userId,
-                                       glossaryCategoryGUID,
-                                       glossaryCategoryProperties.getQualifiedName(),
-                                       updateDescription);
-        }
+        String revisionHistoryTitle = "Glossary category updated by " + userId + " on " + new Date();
+
+        this.updateRevisionHistory(userId,
+                                   glossaryCategoryGUID,
+                                   glossaryCategoryProperties.getQualifiedName(),
+                                   OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                   revisionHistoryTitle,
+                                   updateDescription);
+
     }
 
 
@@ -1968,13 +1995,14 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                           effectiveTime,
                                           methodName);
 
-            if (updateDescription != null)
-            {
-                this.updateRevisionHistory(userId,
-                                           glossaryTermGUID,
-                                           glossaryTermProperties.getQualifiedName(),
-                                           updateDescription);
-            }
+            String revisionHistoryTitle = "Glossary term created by " + userId + " on " + new Date();
+
+            this.updateRevisionHistory(userId,
+                                       glossaryTermGUID,
+                                       glossaryTermProperties.getQualifiedName(),
+                                       OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                       revisionHistoryTitle,
+                                       updateDescription);
         }
 
         return glossaryTermGUID;
@@ -2107,13 +2135,14 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                           effectiveTime,
                                           methodName);
 
-            if (updateDescription != null)
-            {
-                this.updateRevisionHistory(userId,
-                                           glossaryTermGUID,
-                                           glossaryTermProperties.getQualifiedName(),
-                                           updateDescription);
-            }
+            String revisionHistoryTitle = "Glossary term created by " + userId + " on " + new Date();
+
+            this.updateRevisionHistory(userId,
+                                       glossaryTermGUID,
+                                       glossaryTermProperties.getQualifiedName(),
+                                       OpenMetadataAPIMapper.CONTROLLED_GLOSSARY_TERM_TYPE_NAME,
+                                       revisionHistoryTitle,
+                                       updateDescription);
         }
 
         return glossaryTermGUID;
@@ -2130,7 +2159,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      * @param initialStatus glossary term status to use when the object is created
-     * @param deepCopy should the template creation use the extend to the anchored element or just the direct entity?
+     * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element for the glossary term
@@ -2263,13 +2292,14 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                effectiveTime,
                                                methodName);
 
-        if (updateDescription != null)
-        {
-            this.updateRevisionHistory(userId,
-                                       glossaryTermGUID,
-                                       glossaryTermProperties.getQualifiedName(),
-                                       updateDescription);
-        }
+        String revisionHistoryTitle = "Glossary term updated by " + userId + " on " + new Date();
+
+        this.updateRevisionHistory(userId,
+                                   glossaryTermGUID,
+                                   glossaryTermProperties.getQualifiedName(),
+                                   OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                   revisionHistoryTitle,
+                                   updateDescription);
     }
 
 
