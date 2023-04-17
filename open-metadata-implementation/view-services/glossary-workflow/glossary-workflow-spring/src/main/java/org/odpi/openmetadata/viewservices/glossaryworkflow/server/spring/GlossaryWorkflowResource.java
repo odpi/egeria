@@ -39,7 +39,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/view-services/glossary-workflow/users/{userId}")
 
-@Tag(name="Glossary Workflow OMVS", description=".", externalDocs=@ExternalDocumentation(description="Glossary Workflow Open Metadata View Service (OMVS)",url="https://egeria-project.org/services/omvs/glossary-workflow/overview/"))
+@Tag(name="Glossary Workflow OMVS",
+     description="The Glossary Workflow OMVS enables the caller to create glossary terms and organize them into categories as part of a controlled workflow process.  It supports the editing glossary and multiple states.",
+     externalDocs=@ExternalDocumentation(description="Glossary Workflow Open Metadata View Service (OMVS)",
+                                         url="https://egeria-project.org/services/omvs/glossary-workflow/overview/"))
 
 public class GlossaryWorkflowResource
 {

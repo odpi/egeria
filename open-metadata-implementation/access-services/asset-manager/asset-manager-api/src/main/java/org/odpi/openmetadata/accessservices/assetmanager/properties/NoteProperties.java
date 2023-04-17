@@ -27,9 +27,9 @@ public class NoteProperties extends ReferenceableProperties
     /*
      * Attributes of a Note
      */
-    protected String text = null;
-    protected Date   lastUpdate = null;
-    protected String user = null;
+    private String title = null;
+    private String text  = null;
+
 
 
     /**
@@ -52,15 +52,31 @@ public class NoteProperties extends ReferenceableProperties
 
         if (template != null)
         {
+            title = template.getTitle();
             text = template.getText();
-            user = template.getUser();
-
-            Date templateLastUpdate = template.getLastUpdate();
-            if (templateLastUpdate != null)
-            {
-                lastUpdate = new Date(templateLastUpdate.getTime());
-            }
         }
+    }
+
+
+    /**
+     * Return the title.
+     *
+     * @return string
+     */
+    public String getTitle()
+    {
+        return title;
+    }
+
+
+    /**
+     * Set up the title.
+     *
+     * @param title string
+     */
+    public void setTitle(String title)
+    {
+        this.title = title;
     }
 
 
@@ -84,56 +100,6 @@ public class NoteProperties extends ReferenceableProperties
 
 
     /**
-     * Return the last time a change was made to this note.
-     *
-     * @return Date last updated
-     */
-    public Date getLastUpdate()
-    {
-        if (lastUpdate == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new Date(lastUpdate.getTime());
-        }
-    }
-
-
-    /**
-     * Set up the last time a change was made to this note.
-     *
-     * @param lastUpdate Date last updated
-     */
-    public void setLastUpdate(Date lastUpdate)
-    {
-        this.lastUpdate = lastUpdate;
-    }
-
-
-    /**
-     * Return the user id of the person who created the note.  Null means the user id is not known.
-     *
-     * @return String user making notes
-     */
-    public String getUser() {
-        return user;
-    }
-
-
-    /**
-     * Set up the user id of the person who created the note.  Null means the user id is not known.
-     *
-     * @param user String user making notes
-     */
-    public void setUser(String user)
-    {
-        this.user = user;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -142,9 +108,8 @@ public class NoteProperties extends ReferenceableProperties
     public String toString()
     {
         return "NoteProperties{" +
-                       "text='" + text + '\'' +
-                       ", lastUpdate=" + lastUpdate +
-                       ", user='" + user + '\'' +
+                       "title='" + title + '\'' +
+                       ", text='" + text + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", effectiveFrom=" + getEffectiveFrom() +
@@ -169,18 +134,15 @@ public class NoteProperties extends ReferenceableProperties
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof NoteProperties that))
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
-        NoteProperties note = (NoteProperties) objectToCompare;
-        return Objects.equals(getText(), note.getText()) &&
-                       Objects.equals(getLastUpdate(), note.getLastUpdate()) &&
-                       Objects.equals(getUser(), note.getUser());
+        return Objects.equals(title, that.title) && Objects.equals(text, that.text);
     }
 
 
@@ -192,6 +154,6 @@ public class NoteProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getText(), getLastUpdate(), getUser());
+        return Objects.hash(super.hashCode(), title, text);
     }
 }

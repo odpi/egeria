@@ -149,8 +149,8 @@ public class GlossaryBrowserInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public GlossaryManagementClient getGlossaryManagementClient(String serverName,
-                                                                String userId,
+    public GlossaryManagementClient getGlossaryManagementClient(String userId,
+                                                                String serverName,
                                                                 String serviceOperationName) throws InvalidParameterException,
                                                                                                     PropertyServerException,
                                                                                                     UserNotAuthorizedException

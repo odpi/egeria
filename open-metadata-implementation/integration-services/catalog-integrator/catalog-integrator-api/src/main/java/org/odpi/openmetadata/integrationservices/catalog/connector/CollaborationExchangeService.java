@@ -36,12 +36,12 @@ public class CollaborationExchangeService
      * @param auditLog logging destination
      */
     CollaborationExchangeService(CollaborationExchangeClient collaborationExchangeClient,
-                                 SynchronizationDirection synchronizationDirection,
-                                 String                   userId,
-                                 String                   assetManagerGUID,
-                                 String                   assetManagerName,
-                                 String                   connectorName,
-                                 AuditLog                 auditLog)
+                                 SynchronizationDirection    synchronizationDirection,
+                                 String                      userId,
+                                 String                      assetManagerGUID,
+                                 String                      assetManagerName,
+                                 String                      connectorName,
+                                 AuditLog                    auditLog)
     {
         this.collaborationExchangeClient = collaborationExchangeClient;
         this.synchronizationDirection    = synchronizationDirection;

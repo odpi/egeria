@@ -3,12 +3,15 @@
 package org.odpi.openmetadata.accessservices.assetmanager.server;
 
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.CommentExchangeHandler;
+import org.odpi.openmetadata.accessservices.assetmanager.handlers.NoteLogExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.InformalTagElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.LikeElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RatingElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.CommentProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.FeedbackProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.LikeProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteLogProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.RatingProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.StarRating;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.TagProperties;
@@ -18,16 +21,20 @@ import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQuery
 import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagUpdateRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.NameRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.NoteElementResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.NoteElementsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.NoteLogElementResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.NoteLogElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ReferenceableUpdateRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.RelationshipRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.InformalTagHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.LikeHandler;
@@ -463,7 +470,6 @@ public class CollaborationExchangeRESTServices
      * PropertyServerException There is a problem updating the element properties in the metadata repository.
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @SuppressWarnings(value = "unused")
     public VoidResponse   updateComment(String                         serverName,
                                         String                         userId,
                                         String                         commentGUID,
@@ -473,7 +479,6 @@ public class CollaborationExchangeRESTServices
                                         boolean                        forDuplicateProcessing,
                                         ReferenceableUpdateRequestBody requestBody)
     {
-        final String guidParameterName = "commentGUID";
         final String methodName        = "updateComment";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -520,7 +525,6 @@ public class CollaborationExchangeRESTServices
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
 
 
     /**
@@ -622,7 +626,7 @@ public class CollaborationExchangeRESTServices
                                             boolean                       forDuplicateProcessing,
                                             EffectiveTimeQueryRequestBody requestBody)
     {
-        final String methodName = "clearCategoryParent";
+        final String methodName = "clearAcceptedAnswer";
 
         RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1530,6 +1534,843 @@ public class CollaborationExchangeRESTServices
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /* =====================================================================================================================
+     * A note log maintains an ordered list of notes.  It can be used to support release note, blogs and similar
+     * broadcast information.  Notelogs are typically maintained by the owners/stewards of an element.
+     */
+
+    /**
+     * Create a new metadata element to represent a note log and attach it to an element (if supplied).
+     * Any supplied element becomes the note log's anchor, causing the note log to be deleted if/when the element is deleted.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param assetManagerIsHome      ensure that only the asset manager can update this element
+     * @param elementGUID unique identifier of the element where the note log is located
+     * @param isPublic                 is this element visible to other people.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to control the type of the request
+     *
+     * @return unique identifier of the new note log or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public  GUIDResponse createNoteLog(String                         serverName,
+                                       String                         userId,
+                                       String                         elementGUID,
+                                       boolean                        assetManagerIsHome,
+                                       boolean                        isPublic,
+                                       boolean                        forLineage,
+                                       boolean                        forDuplicateProcessing,
+                                       ReferenceableUpdateRequestBody requestBody)
+    {
+        final String methodName = "createNoteLog";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getElementProperties() instanceof NoteLogProperties properties)
+                {
+                    NoteLogExchangeHandler handler = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
+
+                    response.setGUID(handler.createNoteLog(userId,
+                                                           elementGUID,
+                                                           requestBody.getMetadataCorrelationProperties(),
+                                                           assetManagerIsHome,
+                                                           properties,
+                                                           isPublic,
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           requestBody.getEffectiveTime(),
+                                                           methodName));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(NoteLogProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Update the metadata element representing a note log.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param noteLogGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param isPublic                 is this element visible to other people.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody new properties for the metadata element
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse updateNoteLog(String                         serverName,
+                                      String                         userId,
+                                      String                         noteLogGUID,
+                                      boolean                        isMergeUpdate,
+                                      boolean                        isPublic,
+                                      boolean                        forLineage,
+                                      boolean                        forDuplicateProcessing,
+                                      ReferenceableUpdateRequestBody requestBody)
+    {
+        final String methodName                 = "updateNoteLog";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getElementProperties() instanceof NoteLogProperties properties)
+                {
+                    NoteLogExchangeHandler handler = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
+
+                    handler.updateNoteLog(userId,
+                                          requestBody.getMetadataCorrelationProperties(),
+                                          noteLogGUID,
+                                          properties,
+                                          isMergeUpdate,
+                                          isPublic,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          requestBody.getEffectiveTime(),
+                                          methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(NoteLogProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove the metadata element representing a note log.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param noteLogGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse removeNoteLog(String                         serverName,
+                                      String                         userId,
+                                      String                         noteLogGUID,
+                                      boolean                        forLineage,
+                                      boolean                        forDuplicateProcessing,
+                                      ReferenceableUpdateRequestBody requestBody)
+    {
+        final String methodName = "removeNoteLog";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            NoteLogExchangeHandler handler = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.removeNoteLog(userId,
+                                      requestBody.getMetadataCorrelationProperties(),
+                                      noteLogGUID,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      requestBody.getEffectiveTime(),
+                                      methodName);
+            }
+            else
+            {
+                handler.removeNoteLog(userId,
+                                      null,
+                                      noteLogGUID,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      null,
+                                      methodName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of note log metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody string to find in the properties and correlators
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public NoteLogElementsResponse findNoteLogs(String                  serverName,
+                                                String                  userId,
+                                                int                     startFrom,
+                                                int                     pageSize,
+                                                boolean                 forLineage,
+                                                boolean                 forDuplicateProcessing,
+                                                SearchStringRequestBody requestBody)
+    {
+        final String methodName = "findNoteLogs";
+        final String searchStringParameterName = "searchString";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        NoteLogElementsResponse response = new NoteLogElementsResponse();
+        AuditLog                auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                NoteLogExchangeHandler handler = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
+
+                response.setElementList(handler.findNoteLogs(userId,
+                                                             requestBody.getAssetManagerGUID(),
+                                                             requestBody.getAssetManagerName(),
+                                                             requestBody.getSearchString(),
+                                                             searchStringParameterName,
+                                                             startFrom,
+                                                             pageSize,
+                                                             requestBody.getEffectiveTime(),
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of note log metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody name to search for and correlators
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public NoteLogElementsResponse getNoteLogsByName(String          serverName,
+                                                     String          userId,
+                                                     int             startFrom,
+                                                     int             pageSize,
+                                                     boolean         forLineage,
+                                                     boolean         forDuplicateProcessing,
+                                                     NameRequestBody requestBody)
+    {
+        final String methodName        = "getNoteLogsByName";
+        final String nameParameterName = "name";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        NoteLogElementsResponse response = new NoteLogElementsResponse();
+        AuditLog                auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                NoteLogExchangeHandler handler = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
+
+                response.setElementList(handler.getNoteLogsByName(userId,
+                                                                  requestBody.getAssetManagerGUID(),
+                                                                  requestBody.getAssetManagerName(),
+                                                                  requestBody.getName(),
+                                                                  nameParameterName,
+                                                                  startFrom,
+                                                                  pageSize,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing,
+                                                                  requestBody.getEffectiveTime(),
+                                                                  methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the note log metadata element with the supplied unique identifier.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param noteLogGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody correlators
+     *
+     * @return requested metadata element or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public NoteLogElementResponse getNoteLogByGUID(String                        serverName,
+                                                   String                        userId,
+                                                   String                        noteLogGUID,
+                                                   boolean                       forLineage,
+                                                   boolean                       forDuplicateProcessing,
+                                                   EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName = "getNoteLogByGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        NoteLogElementResponse response = new NoteLogElementResponse();
+        AuditLog                auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                NoteLogExchangeHandler handler = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
+
+                response.setElement(handler.getNoteLogByGUID(userId,
+                                                             requestBody.getAssetManagerGUID(),
+                                                             requestBody.getAssetManagerName(),
+                                                             noteLogGUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             requestBody.getEffectiveTime(),
+                                                             methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /* ===============================================================================
+     * A element typically contains many notes, linked with relationships.
+     */
+
+    /**
+     * Create a new metadata element to represent a note.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param assetManagerIsHome      ensure that only the asset manager can update this element
+     * @param noteLogGUID unique identifier of the element where the note is located
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return unique identifier of the new metadata element for the note or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GUIDResponse createNote(String                         serverName,
+                                   String                         userId,
+                                   boolean                        assetManagerIsHome,
+                                   String                         noteLogGUID,
+                                   boolean                        forLineage,
+                                   boolean                        forDuplicateProcessing,
+                                   ReferenceableUpdateRequestBody requestBody)
+    {
+        final String methodName                  = "createNote";
+
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getElementProperties() instanceof NoteProperties properties)
+                {
+                    NoteLogExchangeHandler handler = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
+
+                    response.setGUID(handler.createNote(userId,
+                                                        noteLogGUID,
+                                                        requestBody.getMetadataCorrelationProperties(),
+                                                        assetManagerIsHome,
+                                                        properties,
+                                                        requestBody.getEffectiveTime(),
+                                                        forLineage,
+                                                        forDuplicateProcessing,
+                                                        methodName));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(NoteProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Update the properties of the metadata element representing a note.
+     *
+     * @param userId calling user
+     * @param serverName   name of the server instances for this request
+     * @param noteGUID unique identifier of the note to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse updateNote(String                         serverName,
+                                   String                         userId,
+                                   String                         noteGUID,
+                                   boolean                        isMergeUpdate,
+                                   boolean                        forLineage,
+                                   boolean                        forDuplicateProcessing,
+                                   ReferenceableUpdateRequestBody requestBody)
+    {
+        final String methodName              = "updateNote";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getElementProperties() instanceof NoteProperties properties)
+                {
+                    NoteLogExchangeHandler handler = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
+
+                    handler.updateNote(userId,
+                                       requestBody.getMetadataCorrelationProperties(),
+                                       noteGUID,
+                                       properties,
+                                       isMergeUpdate,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       requestBody.getEffectiveTime(),
+                                       methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(NoteProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove the metadata element representing a note.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param noteGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse removeNote(String                         serverName,
+                                   String                         userId,
+                                   String                         noteGUID,
+                                   boolean                        forLineage,
+                                   boolean                        forDuplicateProcessing,
+                                   ReferenceableUpdateRequestBody requestBody)
+    {
+        final String methodName = "removeNote";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            NoteLogExchangeHandler handler = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.removeNote(userId,
+                                   requestBody.getMetadataCorrelationProperties(),
+                                   noteGUID,
+                                   forLineage,
+                                   forDuplicateProcessing,
+                                   requestBody.getEffectiveTime(), methodName);
+            }
+            else
+            {
+                handler.removeNote(userId,
+                                   null,
+                                   noteGUID,
+                                   forLineage,
+                                   forDuplicateProcessing,
+                                   null,
+                                   methodName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of note metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody string to find in the properties and correlators
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public NoteElementsResponse findNotes(String                  serverName,
+                                          String                  userId,
+                                          int                     startFrom,
+                                          int                     pageSize,
+                                          boolean                 forLineage,
+                                          boolean                 forDuplicateProcessing,
+                                          SearchStringRequestBody requestBody)
+    {
+        final String methodName                = "findNotes";
+        final String searchStringParameterName = "searchString";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        NoteElementsResponse response = new NoteElementsResponse();
+        AuditLog                auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                NoteLogExchangeHandler handler = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
+
+                response.setElementList(handler.findNotes(userId,
+                                                          requestBody.getAssetManagerGUID(),
+                                                          requestBody.getAssetManagerName(),
+                                                          requestBody.getSearchString(),
+                                                          searchStringParameterName,
+                                                          startFrom,
+                                                          pageSize,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          requestBody.getEffectiveTime(),
+                                                          methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of notes associated with a note log.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param noteLogGUID unique identifier of the note log of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody asset manager identifiers
+     *
+     * @return list of associated metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public NoteElementsResponse getNotesForNoteLog(String                           serverName,
+                                                   String                        userId,
+                                                   String                        noteLogGUID,
+                                                   int                           startFrom,
+                                                   int                           pageSize,
+                                                   boolean                       forLineage,
+                                                   boolean                       forDuplicateProcessing,
+                                                   EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName = "getNotesForNoteLog";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        NoteElementsResponse response = new NoteElementsResponse();
+        AuditLog                auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                NoteLogExchangeHandler handler = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
+
+                response.setElementList(handler.getNotesForNoteLog(userId,
+                                                                   requestBody.getAssetManagerGUID(),
+                                                                   requestBody.getAssetManagerName(),
+                                                                   noteLogGUID,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   requestBody.getEffectiveTime(),
+                                                                   methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the note metadata element with the supplied unique identifier.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param noteGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody asset manager identifiers
+     *
+     * @return matching metadata element or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public NoteElementResponse getNoteByGUID(String                        serverName,
+                                             String                        userId,
+                                             String                        noteGUID,
+                                             boolean                       forLineage,
+                                             boolean                       forDuplicateProcessing,
+                                             EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName = "getNoteByGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        NoteElementResponse response = new NoteElementResponse();
+        AuditLog            auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                NoteLogExchangeHandler handler = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
+
+                response.setElement(handler.getNoteByGUID(userId,
+                                                          requestBody.getAssetManagerGUID(),
+                                                          requestBody.getAssetManagerName(),
+                                                          noteGUID,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          requestBody.getEffectiveTime(),
+                                                          methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
         return response;
     }
 }

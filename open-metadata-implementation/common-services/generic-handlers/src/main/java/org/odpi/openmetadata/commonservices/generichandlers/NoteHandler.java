@@ -94,8 +94,8 @@ public class NoteHandler<B> extends ReferenceableHandler<B>
         return super.countAttachments(userId,
                                       elementGUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                      OpenMetadataAPIMapper.NOTE_ENTRY_TYPE_GUID,
-                                      OpenMetadataAPIMapper.NOTE_ENTRY_TYPE_NAME,
+                                      OpenMetadataAPIMapper.NOTE_TYPE_GUID,
+                                      OpenMetadataAPIMapper.NOTE_TYPE_NAME,
                                       2,
                                       forLineage,
                                       forDuplicateProcessing,
@@ -458,5 +458,51 @@ public class NoteHandler<B> extends ReferenceableHandler<B>
                                         pageSize,
                                         effectiveTime,
                                         methodName);
+    }
+
+    /**
+     * Retrieve the list of metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param searchStringParameterName name of parameter supplying the search string
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<B> findNotes(String  userId,
+                             String  searchString,
+                             String  searchStringParameterName,
+                             int     startFrom,
+                             int     pageSize,
+                             boolean forLineage,
+                             boolean forDuplicateProcessing,
+                             Date    effectiveTime,
+                             String  methodName) throws InvalidParameterException,
+                                                        UserNotAuthorizedException,
+                                                        PropertyServerException
+    {
+        return this.findBeans(userId,
+                              searchString,
+                              searchStringParameterName,
+                              OpenMetadataAPIMapper.NOTE_TYPE_GUID,
+                              OpenMetadataAPIMapper.NOTE_TYPE_NAME,
+                              null,
+                              startFrom,
+                              pageSize,
+                              forLineage,
+                              forDuplicateProcessing,
+                              effectiveTime,
+                              methodName);
     }
 }

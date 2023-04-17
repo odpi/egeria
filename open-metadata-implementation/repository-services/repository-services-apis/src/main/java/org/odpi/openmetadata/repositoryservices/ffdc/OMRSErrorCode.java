@@ -793,7 +793,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "Raise a Github issue so that this can be fixed."),
     UNKNOWN_TYPEDEF(500, "OMRS-CONTENT-MANAGER-500-005",
             "The repository content manager has detected an unknown TypeDef {0} ({1}) from {2}. It was passed to method {3} via parameters {4} and {5}",
-            "There is an internal problem in the Open Metadata Ecosystem code or its callers because an invalid unique identifier, or name off a type has been passed to the Open Metadata Repository Services (OMRS).",
+            "There is an internal problem in the Open Metadata Ecosystem code or its callers because an invalid unique identifier, or name of a type has been passed to the Open Metadata Repository Services (OMRS).",
             "Trace the caller of the request to determine where the type information was specified.  If the error is in the Egeria code, or you need help from the community, raise a Github issue so this can be addressed."),
     ARCHIVE_UNAVAILABLE(500, "OMRS-OPEN-METADATA-ARCHIVE-500-001",
             "The archive builder failed to initialize.",

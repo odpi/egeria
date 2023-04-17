@@ -75,11 +75,12 @@ public class NoteConverter<B> extends AssetManagerOMASConverter<B>
                 if (entity != null)
                 {
                     instanceProperties = new InstanceProperties(entity.getProperties());
-                    properties.setUser(entity.getCreatedBy());
-                    properties.setLastUpdate(entity.getUpdateTime());
+                    bean.setUser(entity.getCreatedBy());
+                    bean.setLastUpdate(entity.getUpdateTime());
 
                     properties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     properties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    properties.setTitle(this.removeTitle(instanceProperties));
                     properties.setText(this.removeText(instanceProperties));
 
                     /*

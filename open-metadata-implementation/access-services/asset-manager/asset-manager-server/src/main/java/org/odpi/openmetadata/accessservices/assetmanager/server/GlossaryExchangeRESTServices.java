@@ -1420,6 +1420,7 @@ public class GlossaryExchangeRESTServices
                                                ReferenceableUpdateRequestBody requestBody)
     {
         final String methodName = "removeGlossaryCategory";
+
         RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
@@ -2142,7 +2143,6 @@ public class GlossaryExchangeRESTServices
                 if (requestBody.getElementProperties() instanceof GlossaryTermProperties properties)
                 {
                     GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
-
 
                     handler.updateGlossaryTerm(userId,
                                                requestBody.getMetadataCorrelationProperties(),
