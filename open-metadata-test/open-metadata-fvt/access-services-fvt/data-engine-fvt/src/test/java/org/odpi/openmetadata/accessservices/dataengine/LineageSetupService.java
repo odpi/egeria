@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.dataengine;
 import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineClient;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFlow;
-import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortType;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
@@ -32,7 +31,6 @@ public class LineageSetupService {
     private static final String SEPARATOR = "_";
     private static final String ATTRIBUTE = "attribute";
     private static final String PORT_IMPLEMENTATION = "portImplementation";
-    private static final String PORT_ALIAS = "portAlias";
     private static final String SCHEMA_TYPE = "schemaType";
     private static final String JOB_PROCESS = "jobProcess";
     private static final String STAGE_PROCESS = "stageProcess";
@@ -150,12 +148,6 @@ public class LineageSetupService {
         job.setQualifiedName(name);
         job.setDisplayName(getDisplayName(name));
 
-        String inputPortAliasDelegation = getPortImplementationName(FIRST_STAGE_PROCESS_NAME, FIRST_STAGE_INPUT_PORT_NAME);
-        PortAlias inputPortAlias = createPortAlias(inputPortAliasDelegation, PortType.INPUT_PORT);
-        String outputPortAliasDelegation = getPortImplementationName(THIRD_STAGE_PROCESS_NAME, THIRD_STAGE_OUTPUT_PORT_NAME);
-        PortAlias outputPortAlias = createPortAlias(outputPortAliasDelegation, PortType.OUTPUT_PORT);
-        job.setPortAliases(Arrays.asList(inputPortAlias, outputPortAlias));
-
         List<DataFlow> dataFlows = createDataFlows(FIRST_STAGE_PROCESS_NAME, SECOND_STAGE_PROCESS_NAME,
                 FIRST_STAGE_OUTPUT_PORT_NAME, SECOND_STAGE_INPUT_PORT_NAME, PortType.OUTPUT_PORT.getName(),
                 PortType.INPUT_PORT.getName(), csvHeaderAttributeNames);
@@ -184,16 +176,6 @@ public class LineageSetupService {
         processHierarchy.setProcessContainmentType(ProcessContainmentType.OWNED);
 
         return processHierarchy;
-    }
-
-    private PortAlias createPortAlias(String delegatesTo, PortType type) {
-        PortAlias portAlias = new PortAlias();
-        String name = getPortAliasName(delegatesTo);
-        portAlias.setQualifiedName(name);
-        portAlias.setDisplayName(getDisplayName(name));
-        portAlias.setPortType(type);
-        portAlias.setDelegatesTo(delegatesTo);
-        return portAlias;
     }
 
     private Process createFirstStageProcess(String userId, DataEngineClient dataEngineOMASClient)
@@ -319,10 +301,6 @@ public class LineageSetupService {
 
     private String getStageProcessName(String processName) {
         return STAGE_PROCESS + SEPARATOR + processName;
-    }
-
-    private String getPortAliasName(String delegatesTo) {
-        return String.join(SEPARATOR, PORT_ALIAS, JOB_NAME, delegatesTo);
     }
 
     private String getPortImplementationName(String processName, String portName) {
