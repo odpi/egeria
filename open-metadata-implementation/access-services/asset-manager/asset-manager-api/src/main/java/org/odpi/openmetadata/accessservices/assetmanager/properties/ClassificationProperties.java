@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.ActivityDescriptionProperties;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -30,13 +31,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
+                @JsonSubTypes.Type(value = ActivityDescriptionProperties.class, name = "ActivityDescriptionProperties"),
                 @JsonSubTypes.Type(value = AssetOriginProperties.class, name = "AssetOriginProperties"),
                 @JsonSubTypes.Type(value = CanonicalVocabularyProperties.class, name = "CanonicalVocabularyProperties"),
                 @JsonSubTypes.Type(value = DataFieldValuesProperties.class, name = "DataFieldValuesProperties"),
                 @JsonSubTypes.Type(value = EditingGlossaryProperties.class, name = "EditingGlossaryProperties"),
+                @JsonSubTypes.Type(value = GlossaryTermContextDefinition.class, name = "GlossaryTermContextDefinition"),
                 @JsonSubTypes.Type(value = GovernanceClassificationBase.class, name = "GovernanceClassificationBase"),
                 @JsonSubTypes.Type(value = OwnerProperties.class, name = "OwnerProperties"),
                 @JsonSubTypes.Type(value = SecurityTagsProperties.class, name = "SecurityTagsProperties"),
+                @JsonSubTypes.Type(value = SubjectAreaMemberProperties.class, name = "SubjectAreaMemberProperties"),
                 @JsonSubTypes.Type(value = TaxonomyProperties.class, name = "TaxonomyProperties"),
         })
 public class ClassificationProperties implements Serializable

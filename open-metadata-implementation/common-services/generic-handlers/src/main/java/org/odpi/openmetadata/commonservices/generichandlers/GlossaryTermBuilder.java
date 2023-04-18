@@ -15,12 +15,13 @@ import java.util.Map;
  */
 public class GlossaryTermBuilder extends ReferenceableBuilder
 {
-    private String displayName  = null;
-    private String description  = null;
-    private String summary      = null;
-    private String examples     = null;
-    private String abbreviation = null;
-    private String usage        = null;
+    private String displayName              = null;
+    private String description              = null;
+    private String summary                  = null;
+    private String examples                 = null;
+    private String abbreviation             = null;
+    private String usage                    = null;
+    private String publishVersionIdentifier = null;
 
 
     /**
@@ -49,12 +50,14 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
      * @param repositoryHelper helper methods
      * @param displayName display name of glossary term
      * @param description new description for the glossary term.
+     * @param publishVersionIdentifier author controlled identifier
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
     GlossaryTermBuilder(String               qualifiedName,
                         String               displayName,
                         String               description,
+                        String               publishVersionIdentifier,
                         OMRSRepositoryHelper repositoryHelper,
                         String               serviceName,
                         String               serverName)
@@ -63,6 +66,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
 
         this.displayName = displayName;
         this.description = description;
+        this.publishVersionIdentifier = publishVersionIdentifier;
     }
 
 
@@ -80,7 +84,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    public GlossaryTermBuilder(String        qualifiedName,
+    public GlossaryTermBuilder(String               qualifiedName,
                                String               displayName,
                                String               description,
                                String               summary,
@@ -112,6 +116,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
      * @param examples  example
      * @param abbreviation abbreviation
      * @param usage usage guidance
+     * @param publishVersionIdentifier user controlled version identifier
      * @param additionalProperties additional properties
      * @param extendedProperties  properties from the subtype.
      * @param initialStatus glossary term status to use when the object is created
@@ -126,6 +131,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
                                String                   examples,
                                String                   abbreviation,
                                String                   usage,
+                               String                   publishVersionIdentifier,
                                Map<String, String>      additionalProperties,
                                Map<String, Object>      extendedProperties,
                                InstanceStatus           initialStatus,
@@ -149,6 +155,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
         this.examples = examples;
         this.abbreviation = abbreviation;
         this.usage = usage;
+        this.publishVersionIdentifier = publishVersionIdentifier;
     }
 
 
@@ -199,6 +206,12 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
                                                                       OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
                                                                       usage,
                                                                       methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.PUBLISH_VERSION_ID_PROPERTY_NAME,
+                                                                  publishVersionIdentifier,
+                                                                  methodName);
 
         return properties;
     }

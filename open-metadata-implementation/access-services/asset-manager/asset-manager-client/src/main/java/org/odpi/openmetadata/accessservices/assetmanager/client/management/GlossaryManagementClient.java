@@ -22,6 +22,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTerm
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermContextDefinition;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermRelationship;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermRelationshipStatus;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermStatus;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.TaxonomyProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties;
@@ -1834,7 +1835,15 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
     {
-        return client.getTermsForGlossary(userId, null, null, glossaryGUID, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
+        return client.getTermsForGlossary(userId,
+                                          null,
+                                          null,
+                                          glossaryGUID,
+                                          startFrom,
+                                          pageSize,
+                                          effectiveTime,
+                                          forLineage,
+                                          forDuplicateProcessing);
     }
 
 
@@ -1843,6 +1852,8 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
      *
      * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the glossary category of interest
+     * @param limitResultsByStatus By default, term relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -1856,9 +1867,10 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<GlossaryTermElement>    getTermsForGlossaryCategory(String  userId,
-                                                                    String  glossaryCategoryGUID,
-                                                                    int     startFrom,
+    public List<GlossaryTermElement>    getTermsForGlossaryCategory(String                               userId,
+                                                                    String                               glossaryCategoryGUID,
+                                                                    List<GlossaryTermRelationshipStatus> limitResultsByStatus,
+                                                                    int                            startFrom,
                                                                     int     pageSize,
                                                                     Date    effectiveTime,
                                                                     boolean forLineage,
@@ -1866,7 +1878,60 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
                                                                                                            UserNotAuthorizedException,
                                                                                                            PropertyServerException
     {
-        return client.getTermsForGlossaryCategory(userId, null, null, glossaryCategoryGUID, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
+        return client.getTermsForGlossaryCategory(userId,
+                                                  null,
+                                                  null,
+                                                  glossaryCategoryGUID,
+                                                  limitResultsByStatus,
+                                                  startFrom,
+                                                  pageSize,
+                                                  effectiveTime,
+                                                  forLineage,
+                                                  forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve the list of glossary terms associated with the requested glossary term.
+     *
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the glossary term of interest
+     * @param limitResultsByStatus By default, term relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of associated metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<GlossaryTermElement>    getRelatedTerms(String                               userId,
+                                                        String                               glossaryTermGUID,
+                                                        List<GlossaryTermRelationshipStatus> limitResultsByStatus,
+                                                        int                                  startFrom,
+                                                        int                                  pageSize,
+                                                        Date                                 effectiveTime,
+                                                        boolean                              forLineage,
+                                                        boolean                              forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                            UserNotAuthorizedException,
+                                                                                                                            PropertyServerException
+    {
+        return client.getRelatedTerms(userId,
+                                      null,
+                                      null,
+                                      glossaryTermGUID,
+                                      limitResultsByStatus,
+                                      startFrom,
+                                      pageSize,
+                                      effectiveTime,
+                                      forLineage,
+                                      forDuplicateProcessing);
     }
 
 

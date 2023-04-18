@@ -3109,12 +3109,14 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
 
     /**
-     * Retrieve the list of glossary terms associated with a glossary category.
+     * Retrieve the list of glossary terms associated with the requested glossary term.
      *
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software capability representing the caller
      * @param assetManagerName unique name of software capability representing the caller
-     * @param glossaryCategoryGUID unique identifier of the glossary category of interest
+     * @param glossaryTermGUID unique identifier of the glossary term of interest
+     * @param limitResultsByStatus By default, term relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -3128,17 +3130,77 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<GlossaryTermElement>    getTermsForGlossaryCategory(String  userId,
-                                                                    String  assetManagerGUID,
-                                                                    String  assetManagerName,
-                                                                    String  glossaryCategoryGUID,
-                                                                    int     startFrom,
-                                                                    int     pageSize,
-                                                                    Date    effectiveTime,
-                                                                    boolean forLineage,
-                                                                    boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                                           UserNotAuthorizedException,
-                                                                                                           PropertyServerException
+    public List<GlossaryTermElement>    getRelatedTerms(String                               userId,
+                                                        String                               assetManagerGUID,
+                                                        String                               assetManagerName,
+                                                        String                               glossaryTermGUID,
+                                                        List<GlossaryTermRelationshipStatus> limitResultsByStatus,
+                                                        int                                  startFrom,
+                                                        int                                  pageSize,
+                                                        Date                                 effectiveTime,
+                                                        boolean                              forLineage,
+                                                        boolean                              forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                            UserNotAuthorizedException,
+                                                                                                                            PropertyServerException
+    {
+        final String methodName        = "getRelatedTerms";
+        final String guidParameterName = "glossaryTermGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, guidParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/related-terms?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
+
+        GlossaryTermElementsResponse restResult = restClient.callGlossaryTermsPostRESTCall(methodName,
+                                                                                           urlTemplate,
+                                                                                           getGlossaryTermRelationshipRequestBody(assetManagerGUID, assetManagerName, limitResultsByStatus, effectiveTime),
+                                                                                           serverName,
+                                                                                           userId,
+                                                                                           glossaryTermGUID,
+                                                                                           startFrom,
+                                                                                           validatedPageSize,
+                                                                                           forLineage,
+                                                                                           forDuplicateProcessing);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
+     * Retrieve the list of glossary terms associated with a glossary category.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryCategoryGUID unique identifier of the glossary category of interest
+     * @param limitResultsByStatus By default, term relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of associated metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<GlossaryTermElement>    getTermsForGlossaryCategory(String                               userId,
+                                                                    String                               assetManagerGUID,
+                                                                    String                               assetManagerName,
+                                                                    String                               glossaryCategoryGUID,
+                                                                    List<GlossaryTermRelationshipStatus> limitResultsByStatus,
+                                                                    int                                  startFrom,
+                                                                    int                                  pageSize,
+                                                                    Date                                 effectiveTime,
+                                                                    boolean                              forLineage,
+                                                                    boolean                              forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                                        UserNotAuthorizedException,
+                                                                                                                                        PropertyServerException
     {
         final String methodName        = "getTermsForGlossaryCategory";
         final String guidParameterName = "glossaryCategoryGUID";
@@ -3151,7 +3213,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         GlossaryTermElementsResponse restResult = restClient.callGlossaryTermsPostRESTCall(methodName,
                                                                                            urlTemplate,
-                                                                                           getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                                           getGlossaryTermRelationshipRequestBody(assetManagerGUID, assetManagerName, limitResultsByStatus, effectiveTime),
                                                                                            serverName,
                                                                                            userId,
                                                                                            glossaryCategoryGUID,

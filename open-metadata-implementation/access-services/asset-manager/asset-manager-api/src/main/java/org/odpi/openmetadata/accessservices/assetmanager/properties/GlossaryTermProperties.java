@@ -25,12 +25,13 @@ public class GlossaryTermProperties extends ReferenceableProperties
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private String displayName  = null;
-    private String summary      = null;
-    private String description  = null;
-    private String examples     = null;
-    private String abbreviation = null;
-    private String usage        = null;
+    private String displayName              = null;
+    private String summary                  = null;
+    private String description              = null;
+    private String examples                 = null;
+    private String abbreviation             = null;
+    private String usage                    = null;
+    private String publishVersionIdentifier = null;
 
 
     /**
@@ -59,6 +60,7 @@ public class GlossaryTermProperties extends ReferenceableProperties
             examples = template.getExamples();
             abbreviation = template.getAbbreviation();
             usage = template.getUsage();
+            usage = template.getPublishVersionIdentifier();
         }
     }
 
@@ -198,6 +200,28 @@ public class GlossaryTermProperties extends ReferenceableProperties
 
 
     /**
+     * Return the author-controlled version identifier.
+     *
+     * @return version identifier
+     */
+    public String getPublishVersionIdentifier()
+    {
+        return publishVersionIdentifier;
+    }
+
+
+    /**
+     * Set up the author-controlled version identifier.
+     *
+     * @param publishVersionIdentifier version identifier
+     */
+    public void setPublishVersionIdentifier(String publishVersionIdentifier)
+    {
+        this.publishVersionIdentifier = publishVersionIdentifier;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -212,8 +236,11 @@ public class GlossaryTermProperties extends ReferenceableProperties
                        ", examples='" + examples + '\'' +
                        ", abbreviation='" + abbreviation + '\'' +
                        ", usage='" + usage + '\'' +
+                       ", publishVersionNumber='" + publishVersionIdentifier + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
@@ -248,7 +275,8 @@ public class GlossaryTermProperties extends ReferenceableProperties
                        Objects.equals(getDescription(), that.getDescription()) &&
                        Objects.equals(getExamples(), that.getExamples()) &&
                        Objects.equals(getAbbreviation(), that.getAbbreviation()) &&
-                       Objects.equals(getUsage(), that.getUsage());
+                       Objects.equals(getUsage(), that.getUsage()) &&
+                       Objects.equals(getPublishVersionIdentifier(), that.getPublishVersionIdentifier());
     }
 
 
@@ -260,6 +288,6 @@ public class GlossaryTermProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getDisplayName(), getSummary(), getDescription(), getExamples(), getAbbreviation(), getUsage());
+        return Objects.hash(super.hashCode(), getDisplayName(), getSummary(), getDescription(), getExamples(), getAbbreviation(), getUsage(), getPublishVersionIdentifier());
     }
 }

@@ -22,8 +22,8 @@ public enum OperationalStatus implements Serializable
     DISABLED (0,  0,  "Disabled", "The component is deployed but not operational."),
     ENABLED  (1,  1,  "Enabled",  "The component is operational.");
 
-    public static final String ENUM_TYPE_GUID  = "24e1e33e-9250-4a6c-8b07-05c7adec3a1d";
-    public static final String ENUM_TYPE_NAME  = "OperationalStatus";
+    private static final String ENUM_TYPE_GUID  = "24e1e33e-9250-4a6c-8b07-05c7adec3a1d";
+    private static final String ENUM_TYPE_NAME  = "OperationalStatus";
 
     private final int    openTypeOrdinal;
 

@@ -1215,6 +1215,7 @@ public class OpenMetadataAPIMapper
     public static final String SUMMARY_PROPERTY_NAME                             = "summary";       /* from GlossaryTerm and GovernanceDefinition entity */
     public static final String EXAMPLES_PROPERTY_NAME                            = "examples";      /* from GlossaryTerm entity */
     public static final String ABBREVIATION_PROPERTY_NAME                        = "abbreviation";  /* from GlossaryTerm entity */
+    public static final String PUBLISH_VERSION_ID_PROPERTY_NAME                  = "publishVersionIdentifier";  /* from GlossaryTerm entity */
 
     public static final String TERM_RELATIONSHIP_STATUS_ENUM_TYPE_GUID           = "42282652-7d60-435e-ad3e-7cfe5291bcc7";
     public static final String TERM_RELATIONSHIP_STATUS_ENUM_TYPE_NAME           = "TermRelationshipStatus";     /* from Area 3 */

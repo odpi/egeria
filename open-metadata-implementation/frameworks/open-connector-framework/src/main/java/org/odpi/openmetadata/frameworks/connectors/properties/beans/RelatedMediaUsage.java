@@ -26,8 +26,8 @@ public enum RelatedMediaUsage implements Serializable
     USAGE_GUIDANCE (3, 3, "Usage Guidance", "Provides guidance to a person on how to use the asset."),
     OTHER          (99, 99, "Other", "Another usage.");
 
-    public static final String ENUM_TYPE_GUID  = "c6861a72-7485-48c9-8040-876f6c342b61";
-    public static final String ENUM_TYPE_NAME  = "MediaUsage";
+    private static final String ENUM_TYPE_GUID  = "c6861a72-7485-48c9-8040-876f6c342b61";
+    private static final String ENUM_TYPE_NAME  = "MediaUsage";
 
     private final int    openTypeOrdinal;
 

@@ -61,8 +61,8 @@ public enum KeyPattern implements Serializable
      */
     OTHER         (99, 99, "Other", "Another key pattern.");
 
-    public static final String ENUM_TYPE_GUID  = "8904df8f-1aca-4de8-9abd-1ef2aadba300";
-    public static final String ENUM_TYPE_NAME  = "KeyPattern";
+    private static final String ENUM_TYPE_GUID  = "8904df8f-1aca-4de8-9abd-1ef2aadba300";
+    private static final String ENUM_TYPE_NAME  = "KeyPattern";
 
 
     private final int    ordinal;

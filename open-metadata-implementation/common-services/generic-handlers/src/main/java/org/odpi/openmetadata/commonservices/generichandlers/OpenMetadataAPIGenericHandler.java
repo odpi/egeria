@@ -8447,6 +8447,151 @@ public class OpenMetadataAPIGenericHandler<B>
         return null;
     }
 
+    /**
+     * Return the elements of the requested type attached to an entity identified by the starting GUID.
+     *
+     * @param userId     calling user
+     * @param startingGUID identifier for the entity that the identifier is attached to
+     * @param startingGUIDParameterName name of parameter supplying the GUID
+     * @param startingTypeName name of the type of object being attached to
+     * @param attachmentRelationshipTypeGUID unique identifier of the relationship type connect to the attachment
+     * @param attachmentRelationshipTypeName unique name of the relationship type connect to the attachment
+     * @param attachmentEntityTypeName unique name of the attached entity's type
+     * @param requiredClassificationName  String the name of the classification that must be on the attached entity.
+     * @param omittedClassificationName   String the name of a classification that must not be on the attached entity.
+     * @param limitResultsByEnumValues  The list of ordinals for the enum value.
+     * @param enumPropertyName   String the name of a property in the relationship that is an enum.
+     * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
+     * @param forDuplicateProcessing this request os for duplicate processing so do not deduplicate
+     * @param forLineage this request is for lineage so ignore Memento classifications
+     * @param startingFrom start position for results
+     * @param pageSize     maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of retrieved objects or null if none found
+     *
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the repositories
+     */
+    public   List<B> getAttachedElements(String         userId,
+                                         String         startingGUID,
+                                         String         startingGUIDParameterName,
+                                         String         startingTypeName,
+                                         String         attachmentRelationshipTypeGUID,
+                                         String         attachmentRelationshipTypeName,
+                                         String         attachmentEntityTypeName,
+                                         String         requiredClassificationName,
+                                         String         omittedClassificationName,
+                                         List<Integer>  limitResultsByEnumValues,
+                                         String         enumPropertyName,
+                                         int            selectionEnd,
+                                         boolean        forLineage,
+                                         boolean        forDuplicateProcessing,
+                                         int            startingFrom,
+                                         int            pageSize,
+                                         Date           effectiveTime,
+                                         String         methodName) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
+
+        EntityDetail anchorEntity = this.validateAnchorEntity(userId,
+                                                              startingGUID,
+                                                              startingGUIDParameterName,
+                                                              startingTypeName,
+                                                              false,
+                                                              forLineage,
+                                                              forDuplicateProcessing,
+                                                              supportedZones,
+                                                              effectiveTime,
+                                                              methodName);
+
+        /*
+         * Validates the parameters and retrieves the links to attached keywords that are visible to this user.
+         * Relationships are returned so that the isPublic property from the relationship can be retrieved.
+         */
+        List<Relationship>  relationships = this.getAttachmentLinks(userId,
+                                                                    startingGUID,
+                                                                    startingGUIDParameterName,
+                                                                    startingTypeName,
+                                                                    attachmentRelationshipTypeGUID,
+                                                                    attachmentRelationshipTypeName,
+                                                                    null,
+                                                                    attachmentEntityTypeName,
+                                                                    selectionEnd,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    supportedZones,
+                                                                    startingFrom,
+                                                                    pageSize,
+                                                                    effectiveTime,
+                                                                    methodName);
+
+        if ((relationships == null) || (relationships.isEmpty()))
+        {
+            return null;
+        }
+
+        List<B>  results = new ArrayList<>();
+
+        for (Relationship  relationship : relationships)
+        {
+            if (relationship != null)
+            {
+                try
+                {
+                    Integer relationshipOrdinal = repositoryHelper.getEnumPropertyOrdinal(serviceName,
+                                                                                          enumPropertyName,
+                                                                                          relationship.getProperties(),
+                                                                                          methodName);
+
+                    if (limitResultsByEnumValues.contains(relationshipOrdinal))
+                    {
+                        B bean = this.getAttachedElement(userId,
+                                                         startingGUID,
+                                                         startingGUIDParameterName,
+                                                         startingTypeName,
+                                                         relationship,
+                                                         attachmentEntityTypeName,
+                                                         requiredClassificationName,
+                                                         omittedClassificationName,
+                                                         selectionEnd,
+                                                         forLineage,
+                                                         forDuplicateProcessing,
+                                                         supportedZones,
+                                                         effectiveTime,
+                                                         methodName);
+                        if (bean != null)
+                        {
+                            results.add(bean);
+                        }
+                    }
+                }
+                catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException inaccessibleEntity)
+                {
+                    // skip entities that are not visible to this user
+                    if (log.isDebugEnabled())
+                    {
+                        log.debug("Skipping inaccessible entity: " + inaccessibleEntity);
+                    }
+                }
+            }
+        }
+
+        if (results.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return results;
+        }
+    }
+
 
     /**
      * Return the elements of the requested type attached to an entity identified by the starting GUID.

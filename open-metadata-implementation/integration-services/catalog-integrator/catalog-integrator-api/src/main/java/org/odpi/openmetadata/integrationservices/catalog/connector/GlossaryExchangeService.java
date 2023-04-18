@@ -2362,6 +2362,8 @@ public class GlossaryExchangeService
      * Retrieve the list of glossary terms associated with a glossary category.
      *
      * @param glossaryCategoryGUID unique identifier of the glossary category of interest
+     * @param limitResultsByStatus By default, term relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -2372,17 +2374,19 @@ public class GlossaryExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<GlossaryTermElement>    getTermsForGlossaryCategory(String glossaryCategoryGUID,
-                                                                    int    startFrom,
-                                                                    int    pageSize,
-                                                                    Date   effectiveTime) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException
+    public List<GlossaryTermElement>    getTermsForGlossaryCategory(String                               glossaryCategoryGUID,
+                                                                    List<GlossaryTermRelationshipStatus> limitResultsByStatus,
+                                                                    int                                  startFrom,
+                                                                    int                                  pageSize,
+                                                                    Date                                 effectiveTime) throws InvalidParameterException,
+                                                                                                                               UserNotAuthorizedException,
+                                                                                                                               PropertyServerException
     {
         return glossaryManagerClient.getTermsForGlossaryCategory(userId,
                                                                  assetManagerGUID,
                                                                  assetManagerName,
                                                                  glossaryCategoryGUID,
+                                                                 limitResultsByStatus,
                                                                  startFrom,
                                                                  pageSize,
                                                                  effectiveTime,
@@ -2390,6 +2394,42 @@ public class GlossaryExchangeService
                                                                  forDuplicateProcessing);
     }
 
+
+    /**
+     * Retrieve the list of glossary terms associated with the requested glossary term.
+     *
+     * @param glossaryTermGUID unique identifier of the glossary of interest
+     * @param limitResultsByStatus By default, term relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     *
+     * @return list of associated metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<GlossaryTermElement>    getRelatedTerms(String                               glossaryTermGUID,
+                                                        List<GlossaryTermRelationshipStatus> limitResultsByStatus,
+                                                        int                                  startFrom,
+                                                        int                                  pageSize,
+                                                        Date                                 effectiveTime) throws InvalidParameterException,
+                                                                                                                   UserNotAuthorizedException,
+                                                                                                                   PropertyServerException
+    {
+        return glossaryManagerClient.getRelatedTerms(userId,
+                                                     assetManagerGUID,
+                                                     assetManagerName,
+                                                     glossaryTermGUID,
+                                                     limitResultsByStatus,
+                                                     startFrom,
+                                                     pageSize,
+                                                     effectiveTime,
+                                                     forLineage,
+                                                     forDuplicateProcessing);
+    }
 
     /**
      * Retrieve the list of glossary term metadata elements with a matching qualified or display name.

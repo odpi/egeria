@@ -2055,8 +2055,8 @@ public class GlossaryExchangeRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GUIDResponse createGlossaryTermFromTemplate(String                       serverName,
-                                                       String                       glossaryGUID,
                                                        String                       userId,
+                                                       String                       glossaryGUID,
                                                        String                       templateGUID,
                                                        boolean                      assetManagerIsHome,
                                                        boolean                      deepCopy,
@@ -3664,7 +3664,13 @@ public class GlossaryExchangeRESTServices
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                response.setElement(handler.undoGlossaryTermUpdate(userId,
+                                                                   null,
+                                                                   glossaryTermGUID,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                  null,
+                                                                   methodName));
             }
         }
         catch (Exception error)
@@ -3896,14 +3902,14 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GlossaryTermElementsResponse getTermsForGlossary(String                        serverName,
-                                                            String                        userId,
-                                                            String                        glossaryGUID,
-                                                            int                           startFrom,
-                                                            int                           pageSize,
-                                                            boolean                       forLineage,
-                                                            boolean                       forDuplicateProcessing,
-                                                            EffectiveTimeQueryRequestBody requestBody)
+    public GlossaryTermElementsResponse getTermsForGlossary(String                              serverName,
+                                                            String                              userId,
+                                                            String                              glossaryGUID,
+                                                            int                                 startFrom,
+                                                            int                                 pageSize,
+                                                            boolean                             forLineage,
+                                                            boolean                             forDuplicateProcessing,
+                                                            EffectiveTimeQueryRequestBody       requestBody)
     {
         final String methodName = "getTermsForGlossary";
 
@@ -3974,14 +3980,14 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GlossaryTermElementsResponse getTermsForGlossaryCategory(String                        serverName,
-                                                                    String                        userId,
-                                                                    String                        glossaryCategoryGUID,
-                                                                    int                           startFrom,
-                                                                    int                           pageSize,
-                                                                    boolean                       forLineage,
-                                                                    boolean                       forDuplicateProcessing,
-                                                                    EffectiveTimeQueryRequestBody requestBody)
+    public GlossaryTermElementsResponse getTermsForGlossaryCategory(String                              serverName,
+                                                                    String                              userId,
+                                                                    String                              glossaryCategoryGUID,
+                                                                    int                                 startFrom,
+                                                                    int                                 pageSize,
+                                                                    boolean                             forLineage,
+                                                                    boolean                             forDuplicateProcessing,
+                                                                    GlossaryTermRelationshipRequestBody requestBody)
     {
         final String methodName = "getTermsForGlossaryCategory";
 
@@ -4002,6 +4008,7 @@ public class GlossaryExchangeRESTServices
                                                                             requestBody.getAssetManagerGUID(),
                                                                             requestBody.getAssetManagerName(),
                                                                             glossaryCategoryGUID,
+                                                                            requestBody.getLimitResultsByStatus(),
                                                                             startFrom,
                                                                             pageSize,
                                                                             forLineage,
@@ -4015,12 +4022,92 @@ public class GlossaryExchangeRESTServices
                                                                             null,
                                                                             null,
                                                                             glossaryCategoryGUID,
+                                                                            null,
                                                                             startFrom,
                                                                             pageSize,
                                                                             forLineage,
                                                                             forDuplicateProcessing,
                                                                             null,
                                                                             methodName));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of glossary terms associated with the requested glossary term.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the glossary term of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody asset manager identifiers
+     *
+     * @return list of associated metadata elements or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GlossaryTermElementsResponse getRelatedTerms(String                              serverName,
+                                                        String                              userId,
+                                                        String                              glossaryTermGUID,
+                                                        int                                 startFrom,
+                                                        int                                 pageSize,
+                                                        boolean                             forLineage,
+                                                        boolean                             forDuplicateProcessing,
+                                                        GlossaryTermRelationshipRequestBody requestBody)
+    {
+        final String methodName = "getRelatedTerms";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GlossaryTermElementsResponse response = new GlossaryTermElementsResponse();
+        AuditLog                     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElementList(handler.getRelatedTerms(userId,
+                                                                requestBody.getAssetManagerGUID(),
+                                                                requestBody.getAssetManagerName(),
+                                                                glossaryTermGUID,
+                                                                requestBody.getLimitResultsByStatus(),
+                                                                startFrom,
+                                                                pageSize,
+                                                                forLineage,
+                                                                forDuplicateProcessing,
+                                                                requestBody.getEffectiveTime(),
+                                                                methodName));
+            }
+            else
+            {
+                response.setElementList(handler.getRelatedTerms(userId,
+                                                                null,
+                                                                null,
+                                                                glossaryTermGUID,
+                                                                null,
+                                                                startFrom,
+                                                                pageSize,
+                                                                forLineage,
+                                                                forDuplicateProcessing,
+                                                                null,
+                                                                methodName));
             }
         }
         catch (Exception error)
@@ -4211,10 +4298,10 @@ public class GlossaryExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
-
                 response.setElementList(handler.getGlossaryTermHistory(userId,
                                                                        requestBody.getAssetManagerGUID(),
                                                                        requestBody.getAssetManagerName(),
@@ -4231,7 +4318,19 @@ public class GlossaryExchangeRESTServices
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                response.setElementList(handler.getGlossaryTermHistory(userId,
+                                                                       null,
+                                                                       null,
+                                                                       guid,
+                                                                       null,
+                                                                       null,
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       oldestFirst,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
+                                                                       null,
+                                                                       methodName));
             }
         }
         catch (Exception error)

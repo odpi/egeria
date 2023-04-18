@@ -34,8 +34,8 @@ public enum ConfidenceLevel implements Serializable
     OTHER         (99, 99, "Other",
                                "Another classification assignment status.");
 
-    public static final String ENUM_TYPE_GUID  = "ae846797-d88a-4421-ad9a-318bf7c1fe6f";
-    public static final String ENUM_TYPE_NAME  = "ConfidenceLevel";
+    private static final String ENUM_TYPE_GUID  = "ae846797-d88a-4421-ad9a-318bf7c1fe6f";
+    private static final String ENUM_TYPE_NAME  = "ConfidenceLevel";
 
     private final int    openTypeOrdinal;
 

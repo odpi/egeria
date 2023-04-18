@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.ffdc.AssetManagerErrorC
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ClassificationProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermRelationshipStatus;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceableProperties;
@@ -15,6 +16,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProp
 import org.odpi.openmetadata.accessservices.assetmanager.rest.AssetManagerIdentifiersRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ClassificationRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermRelationshipRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.NameRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ReferenceableRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ReferenceableUpdateRequestBody;
@@ -400,6 +402,36 @@ public class AssetManagerBaseClient
             requestBody.setAssetManagerName(assetManagerName);
         }
 
+        requestBody.setEffectiveTime(effectiveTime);
+
+        return requestBody;
+    }
+
+
+
+    /**
+     * Return the asset manager identifiers packaged in an appropriate request body.
+     * @param assetManagerGUID unique identifier for the asset manager
+     * @param assetManagerName unique name for the asset manager
+     * @param limitResultsByStatus By default, term relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @return request body
+     */
+    protected GlossaryTermRelationshipRequestBody getGlossaryTermRelationshipRequestBody(String assetManagerGUID,
+                                                                                         String                               assetManagerName,
+                                                                                         List<GlossaryTermRelationshipStatus> limitResultsByStatus,
+                                                                                         Date                                 effectiveTime)
+    {
+        GlossaryTermRelationshipRequestBody requestBody = new GlossaryTermRelationshipRequestBody();
+
+        if (assetManagerGUID != null)
+        {
+            requestBody.setAssetManagerGUID(assetManagerGUID);
+            requestBody.setAssetManagerName(assetManagerName);
+        }
+
+        requestBody.setLimitResultsByStatus(limitResultsByStatus);
         requestBody.setEffectiveTime(effectiveTime);
 
         return requestBody;

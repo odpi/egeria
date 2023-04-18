@@ -5237,6 +5237,7 @@ public class SimpleCatalogArchiveHelper
      * @param assetGUID unique identifier for the element to classify
      * @param securityLabels list of security labels
      * @param securityProperties map of security properties
+     * @param accessGroups access group assignments
      */
     public void addSecurityTagsClassification(String                    assetGUID,
                                               List<String>              securityLabels,

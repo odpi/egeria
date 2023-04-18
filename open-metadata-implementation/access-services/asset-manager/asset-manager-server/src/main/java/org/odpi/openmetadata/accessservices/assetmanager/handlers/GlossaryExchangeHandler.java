@@ -1974,6 +1974,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                                          glossaryTermProperties.getExamples(),
                                                                          glossaryTermProperties.getAbbreviation(),
                                                                          glossaryTermProperties.getUsage(),
+                                                                         glossaryTermProperties.getPublishVersionIdentifier(),
                                                                          glossaryTermProperties.getAdditionalProperties(),
                                                                          glossaryTermProperties.getTypeName(),
                                                                          glossaryTermProperties.getExtendedProperties(),
@@ -2114,6 +2115,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                                          glossaryTermProperties.getExamples(),
                                                                          glossaryTermProperties.getAbbreviation(),
                                                                          glossaryTermProperties.getUsage(),
+                                                                         glossaryTermProperties.getPublishVersionIdentifier(),
                                                                          glossaryTermProperties.getAdditionalProperties(),
                                                                          typeName,
                                                                          glossaryTermProperties.getExtendedProperties(),
@@ -2196,6 +2198,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                                                      templateProperties.getQualifiedName(),
                                                                                      templateProperties.getDisplayName(),
                                                                                      templateProperties.getDescription(),
+                                                                                     templateProperties.getVersionIdentifier(),
                                                                                      getInstanceStatus(initialStatus),
                                                                                      deepCopy,
                                                                                      methodName);
@@ -2281,6 +2284,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                glossaryTermProperties.getExamples(),
                                                glossaryTermProperties.getAbbreviation(),
                                                glossaryTermProperties.getUsage(),
+                                               glossaryTermProperties.getPublishVersionIdentifier(),
                                                glossaryTermProperties.getAdditionalProperties(),
                                                OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
                                                glossaryTermProperties.getExtendedProperties(),
@@ -3910,6 +3914,37 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
         return null;
     }
 
+
+    /**
+     * Convert the list of status enums into a list of ordinals for the equivalent open metadata type.
+     *
+     * @param glossaryTermRelationshipStatuses relationship statuses
+     * @return list of integers, or null
+     */
+    private List<Integer> getEnumOrdinals(List<GlossaryTermRelationshipStatus> glossaryTermRelationshipStatuses)
+    {
+        if (glossaryTermRelationshipStatuses != null)
+        {
+            List<Integer> ordinals = new ArrayList<>();
+
+            for (GlossaryTermRelationshipStatus status : glossaryTermRelationshipStatuses)
+            {
+                if (status != null)
+                {
+                    ordinals.add(status.getOpenTypeOrdinal());
+                }
+            }
+
+            if (! ordinals.isEmpty())
+            {
+                return ordinals;
+            }
+        }
+
+        return null;
+    }
+
+
     /**
      * Retrieve the list of glossary terms associated with a glossary.
      *
@@ -3943,6 +3978,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
+
         List<GlossaryTermElement> results = glossaryTermHandler.getTermsForGlossary(userId,
                                                                                     glossaryGUID,
                                                                                     glossaryGUIDParameterName,
@@ -3966,8 +4002,6 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
     }
 
 
-
-
     /**
      * Retrieve the list of glossary terms associated with a glossary category.
      *
@@ -3975,6 +4009,8 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryCategoryGUID unique identifier of the glossary category of interest
+     * @param limitResultsByStatus By default, term relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param forLineage return elements marked with the Memento classification?
@@ -3988,28 +4024,90 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<GlossaryTermElement>    getTermsForGlossaryCategory(String  userId,
-                                                                    String  assetManagerGUID,
-                                                                    String  assetManagerName,
-                                                                    String  glossaryCategoryGUID,
-                                                                    int     startFrom,
-                                                                    int     pageSize,
-                                                                    boolean forLineage,
-                                                                    boolean forDuplicateProcessing,
-                                                                    Date    effectiveTime,
-                                                                    String  methodName) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
+    public List<GlossaryTermElement>    getTermsForGlossaryCategory(String                               userId,
+                                                                    String                               assetManagerGUID,
+                                                                    String                               assetManagerName,
+                                                                    String                               glossaryCategoryGUID,
+                                                                    List<GlossaryTermRelationshipStatus> limitResultsByStatus,
+                                                                    int                                  startFrom,
+                                                                    int                                  pageSize,
+                                                                    boolean                              forLineage,
+                                                                    boolean                              forDuplicateProcessing,
+                                                                    Date                                 effectiveTime,
+                                                                    String                               methodName) throws InvalidParameterException,
+                                                                                                                            UserNotAuthorizedException,
+                                                                                                                            PropertyServerException
     {
         List<GlossaryTermElement> results = glossaryTermHandler.getTermsForGlossaryCategory(userId,
                                                                                             glossaryCategoryGUID,
                                                                                             glossaryCategoryGUIDParameterName,
+                                                                                            getEnumOrdinals(limitResultsByStatus),
                                                                                             startFrom,
                                                                                             pageSize,
                                                                                             forLineage,
                                                                                             forDuplicateProcessing,
                                                                                             effectiveTime,
                                                                                             methodName);
+
+        this.addCorrelationPropertiesToGlossaryTerms(userId,
+                                                     assetManagerGUID,
+                                                     assetManagerName,
+                                                     results,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     effectiveTime,
+                                                     methodName);
+
+        return results;
+    }
+
+
+    /**
+     * Retrieve the list of glossary terms associated with the requested glossary term.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param glossaryTermGUID unique identifier of the glossary term of interest
+     * @param limitResultsByStatus By default, term relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param methodName calling method
+     *
+     * @return list of associated metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<GlossaryTermElement>    getRelatedTerms(String                               userId,
+                                                        String                               assetManagerGUID,
+                                                        String                               assetManagerName,
+                                                        String                               glossaryTermGUID,
+                                                        List<GlossaryTermRelationshipStatus> limitResultsByStatus,
+                                                        int                                  startFrom,
+                                                        int                                  pageSize,
+                                                        boolean                              forLineage,
+                                                        boolean                              forDuplicateProcessing,
+                                                        Date                                 effectiveTime,
+                                                        String                               methodName) throws InvalidParameterException,
+                                                                                                                UserNotAuthorizedException,
+                                                                                                                PropertyServerException
+    {
+        List<GlossaryTermElement> results = glossaryTermHandler.getRelatedTerms(userId,
+                                                                                glossaryTermGUID,
+                                                                                glossaryTermGUIDParameterName,
+                                                                                getEnumOrdinals(limitResultsByStatus),
+                                                                                startFrom,
+                                                                                pageSize,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                effectiveTime,
+                                                                                methodName);
 
         this.addCorrelationPropertiesToGlossaryTerms(userId,
                                                      assetManagerGUID,

@@ -324,6 +324,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      * @param typeName name of process subtype to use - default is GovernanceActionProcess
      * @param qualifiedName unique name for the capability
      * @param name display name for the capability
+     * @param versionIdentifier identifier of the version for the process implementation
      * @param description description about the capability
      * @param formula logic for the process
      * @param domainIdentifier which governance domain - 0=all
