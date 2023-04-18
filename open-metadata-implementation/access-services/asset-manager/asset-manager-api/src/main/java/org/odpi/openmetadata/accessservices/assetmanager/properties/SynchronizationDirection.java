@@ -86,8 +86,8 @@ public enum SynchronizationDirection implements Serializable
         this.description     = description;
     }
 
-    public static final String ENUM_TYPE_GUID  = "973a9f4c-93fa-43a5-a0c5-d97dbd164e78";
-    public static final String ENUM_TYPE_NAME  = "PermittedSynchronization";
+    private static final String ENUM_TYPE_GUID  = "973a9f4c-93fa-43a5-a0c5-d97dbd164e78";
+    private static final String ENUM_TYPE_NAME  = "PermittedSynchronization";
 
     /**
      * Return the code for this enum instance

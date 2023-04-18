@@ -1899,6 +1899,88 @@ public class CollaborationExchangeRESTServices
     }
 
 
+
+    /**
+     * Retrieve the list of note log metadata elements attached to the element.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param elementGUID unique identifier of the note log of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody asset manager identifiers
+     *
+     * @return list of associated metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public NoteLogElementsResponse getNoteLogsForElement(String                        serverName,
+                                                         String                        userId,
+                                                         String                        elementGUID,
+                                                         int                           startFrom,
+                                                         int                           pageSize,
+                                                         boolean                       forLineage,
+                                                         boolean                       forDuplicateProcessing,
+                                                         EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName = "getNotesForNoteLog";
+        final String elementGUIDParameter = "elementGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        NoteLogElementsResponse response = new NoteLogElementsResponse();
+        AuditLog                auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            NoteLogExchangeHandler handler = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElementList(handler.getNoteLogsForElement(userId,
+                                                                      requestBody.getAssetManagerGUID(),
+                                                                      requestBody.getAssetManagerName(),
+                                                                      elementGUID,
+                                                                      elementGUIDParameter,
+                                                                      startFrom,
+                                                                      pageSize,
+                                                                      forLineage,
+                                                                      forDuplicateProcessing,
+                                                                      requestBody.getEffectiveTime(),
+                                                                      methodName));
+            }
+            else
+            {
+                response.setElementList(handler.getNoteLogsForElement(userId,
+                                                                      null,
+                                                                      null,
+                                                                      elementGUID,
+                                                                      elementGUIDParameter,
+                                                                      startFrom,
+                                                                      pageSize,
+                                                                      forLineage,
+                                                                      forDuplicateProcessing,
+                                                                      null,
+                                                                      methodName));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+
     /**
      * Retrieve the note log metadata element with the supplied unique identifier.
      *
@@ -2282,10 +2364,10 @@ public class CollaborationExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            NoteLogExchangeHandler handler = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                NoteLogExchangeHandler handler = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
-
                 response.setElementList(handler.getNotesForNoteLog(userId,
                                                                    requestBody.getAssetManagerGUID(),
                                                                    requestBody.getAssetManagerName(),
@@ -2299,7 +2381,16 @@ public class CollaborationExchangeRESTServices
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                response.setElementList(handler.getNotesForNoteLog(userId,
+                                                                   null,
+                                                                   null,
+                                                                   noteLogGUID,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   null,
+                                                                   methodName));
             }
         }
         catch (Exception error)

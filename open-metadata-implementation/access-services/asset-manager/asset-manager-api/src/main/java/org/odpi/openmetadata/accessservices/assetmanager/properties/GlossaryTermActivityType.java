@@ -49,8 +49,8 @@ public enum GlossaryTermActivityType implements Serializable
      */
     OTHER      (99, 99, "Other",    "Another type of activity.");
 
-    public static final String ENUM_TYPE_GUID  = "af7e403d-9865-4ebb-8c1a-1fd57b4f4bca";
-    public static final String ENUM_TYPE_NAME  = "ActivityType";
+    private static final String ENUM_TYPE_GUID  = "af7e403d-9865-4ebb-8c1a-1fd57b4f4bca";
+    private static final String ENUM_TYPE_NAME  = "ActivityType";
 
     private final int    openTypeOrdinal;
 

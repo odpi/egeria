@@ -386,7 +386,7 @@ public class CreateManagementGlossaryTest extends AssetManagerTestBase
 
             client.setupTermCategory(userId, glossaryCategoryGUID, glossaryTermGUID, categorizationProperties, null, false, false);
 
-            List<GlossaryTermElement> glossaryTermList = client.getTermsForGlossaryCategory(userId, glossaryCategoryGUID, 0 , 0, null, false, false);
+            List<GlossaryTermElement> glossaryTermList = client.getTermsForGlossaryCategory(userId, glossaryCategoryGUID, null, 0 , 0, null, false, false);
 
             this.validateGlossaryTermElements(testCaseName,
                                               activityName,

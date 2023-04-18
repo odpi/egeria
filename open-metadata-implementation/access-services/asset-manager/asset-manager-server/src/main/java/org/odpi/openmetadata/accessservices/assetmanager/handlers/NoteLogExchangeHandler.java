@@ -525,6 +525,66 @@ public class NoteLogExchangeHandler extends ExchangeHandlerBase
 
 
     /**
+     * Retrieve the list of note log metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param elementGUID guid to search for
+     * @param elementParameterName parameter name
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<NoteLogElement>   getNoteLogsForElement(String  userId,
+                                                        String  assetManagerGUID,
+                                                        String  assetManagerName,
+                                                        String  elementGUID,
+                                                        String  elementParameterName,
+                                                        int     startFrom,
+                                                        int     pageSize,
+                                                        boolean forLineage,
+                                                        boolean forDuplicateProcessing,
+                                                        Date    effectiveTime,
+                                                        String  methodName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        List<NoteLogElement> results = noteLogHandler.getAttachedNoteLogs(userId,
+                                                                          elementGUID,
+                                                                          elementParameterName,
+                                                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                          startFrom,
+                                                                          pageSize,
+                                                                          forLineage,
+                                                                          forDuplicateProcessing,
+                                                                          effectiveTime,
+                                                                          methodName);
+
+        this.addCorrelationPropertiesToNoteLogs(userId,
+                                                assetManagerGUID,
+                                                assetManagerName,
+                                                results,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
+                                                methodName);
+
+        return results;
+    }
+
+
+    /**
      * Retrieve the note log metadata element with the supplied unique identifier.
      *
      * @param userId calling user

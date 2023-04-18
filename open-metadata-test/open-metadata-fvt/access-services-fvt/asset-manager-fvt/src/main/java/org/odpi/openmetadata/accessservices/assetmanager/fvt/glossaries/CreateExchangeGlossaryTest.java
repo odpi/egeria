@@ -481,7 +481,7 @@ public class CreateExchangeGlossaryTest extends AssetManagerTestBase
 
             client.setupTermCategory(userId, assetManagerGUID, assetManagerName, glossaryCategoryGUID, glossaryTermGUID, categorizationProperties, null, false, false);
 
-            List<GlossaryTermElement> glossaryTermList = client.getTermsForGlossaryCategory(userId, null, null, glossaryCategoryGUID, 0 , 0, null, false, false);
+            List<GlossaryTermElement> glossaryTermList = client.getTermsForGlossaryCategory(userId, null, null, glossaryCategoryGUID, null, 0 , 0, null, false, false);
 
             this.validateGlossaryTermElements(testCaseName,
                                               activityName,
@@ -839,7 +839,7 @@ public class CreateExchangeGlossaryTest extends AssetManagerTestBase
                                          extendedProperties,
                                          status);
 
-            glossaryTermList = client.getTermsForGlossary(userId, null, null, glossaryGUID, 0, 0, null, false, false);
+            glossaryTermList = client.getTermsForGlossary(userId, null, null, glossaryGUID,0, 0, null, false, false);
 
             validateGlossaryTermElements(testCaseName,
                                          activityName,

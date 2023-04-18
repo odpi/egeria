@@ -165,6 +165,7 @@ public class OpenMetadataTypesArchive
          * Add the type updates
          */
         update0011ManagingReferenceables();
+        update0210DataStores();
         update0385ControlledGlossaryDevelopment();
         update0423SecurityAccessControl();
         update504ImplementationSnippets();
@@ -292,6 +293,7 @@ public class OpenMetadataTypesArchive
         this.archiveBuilder.addClassificationDef(getEditingGlossaryClassification());
         this.archiveBuilder.addClassificationDef(getEditingGlossaryCopyClassification());
         this.archiveBuilder.addTypeDefPatch(deprecateGlossaryTermEvolution());
+        this.archiveBuilder.addTypeDefPatch(updateGlossaryTermEntity());
     }
 
     private ClassificationDef getEditingGlossaryClassification()
@@ -364,6 +366,40 @@ public class OpenMetadataTypesArchive
 
         return typeDefPatch;
     }
+
+    private TypeDefPatch updateGlossaryTermEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "GlossaryTerm";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "publishVersionIdentifier";
+        final String attribute1Description     = "The author-controlled version identifier for the term.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
 
     /*
      * -------------------------------------------------------------------------------------------------------

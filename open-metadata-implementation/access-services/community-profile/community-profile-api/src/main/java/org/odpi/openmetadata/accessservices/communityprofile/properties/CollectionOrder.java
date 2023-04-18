@@ -37,8 +37,8 @@ public enum CollectionOrder implements Serializable
 
     private static final long serialVersionUID = 1L;
 
-    public static final String ENUM_TYPE_GUID  = "1d412439-4272-4a7e-a940-1065f889fc56";
-    public static final String ENUM_TYPE_NAME  = "OrderBy";
+    private static final String ENUM_TYPE_GUID  = "1d412439-4272-4a7e-a940-1065f889fc56";
+    private static final String ENUM_TYPE_NAME  = "OrderBy";
 
     private final int    openTypeOrdinal;
 

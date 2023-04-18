@@ -981,6 +981,41 @@ public class CollaborationExchangeResource
 
 
     /**
+     * Retrieve the list of note log metadata elements attached to the element.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param elementGUID element to start from
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody name to search for and correlators
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/elements/{elementGUID}/note-logs/retrieve")
+
+    public NoteLogElementsResponse getNoteLogsForElement(@PathVariable String          serverName,
+                                                         @PathVariable String          userId,
+                                                         @PathVariable String          elementGUID,
+                                                         @RequestParam int             startFrom,
+                                                         @RequestParam int             pageSize,
+                                                         @RequestParam (required = false, defaultValue = "false")
+                                                                       boolean         forLineage,
+                                                         @RequestParam (required = false, defaultValue = "false")
+                                                                       boolean         forDuplicateProcessing,
+                                                         @RequestBody (required = false)
+                                                                      EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getNoteLogsForElement(serverName, userId, elementGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
      * Retrieve the note log metadata element with the supplied unique identifier.
      *
      * @param serverName   name of the server instances for this request

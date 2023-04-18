@@ -44,8 +44,8 @@ public enum GlossaryTermRelationshipStatus implements Serializable
      */
     OTHER      (99, 99, "Other",      "Another term relationship status.");
 
-    public static final String ENUM_TYPE_GUID  = "42282652-7d60-435e-ad3e-7cfe5291bcc7";
-    public static final String ENUM_TYPE_NAME  = "TermRelationshipStatus";
+    private static final String ENUM_TYPE_GUID  = "42282652-7d60-435e-ad3e-7cfe5291bcc7";
+    private static final String ENUM_TYPE_NAME  = "TermRelationshipStatus";
 
     private final int    openTypeOrdinal;
 

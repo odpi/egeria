@@ -36,8 +36,8 @@ public enum ContactMethodType implements Serializable
 
     private static final long serialVersionUID = 1L;
 
-    public static final String ENUM_TYPE_GUID  = "30e7d8cd-df01-46e8-9247-a24c5650910d";
-    public static final String ENUM_TYPE_NAME  = "ContactMethodType";
+    private static final String ENUM_TYPE_GUID  = "30e7d8cd-df01-46e8-9247-a24c5650910d";
+    private static final String ENUM_TYPE_NAME  = "ContactMethodType";
 
     private final int    openTypeOrdinal;
 

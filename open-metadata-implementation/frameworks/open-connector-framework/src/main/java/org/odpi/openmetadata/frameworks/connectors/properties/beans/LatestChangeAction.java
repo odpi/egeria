@@ -24,8 +24,8 @@ public enum LatestChangeAction implements Serializable
     DELETED (2, 2,"Deleted", "The target element has been deleted."),
     OTHER   (99, 99,"Other",  "Another type of action.");
 
-    public static final String ENUM_TYPE_GUID  = "032d844b-868f-4c4a-bc5d-81f0f9704c4d";
-    public static final String ENUM_TYPE_NAME  = "LatestChangeAction";
+    private static final String ENUM_TYPE_GUID  = "032d844b-868f-4c4a-bc5d-81f0f9704c4d";
+    private static final String ENUM_TYPE_NAME  = "LatestChangeAction";
 
     private final int    openTypeOrdinal;
 

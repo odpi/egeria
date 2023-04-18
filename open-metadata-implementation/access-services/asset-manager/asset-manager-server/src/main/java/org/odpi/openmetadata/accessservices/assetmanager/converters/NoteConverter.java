@@ -101,11 +101,9 @@ public class NoteConverter<B> extends AssetManagerOMASConverter<B>
                 {
                     FeedbackTargetElement feedbackTargetElement = new FeedbackTargetElement();
 
-                    instanceProperties = new InstanceProperties(relationship.getProperties());
-
                     feedbackTargetElement.setRelationshipHeader(super.getMetadataElementHeader(beanClass, relationship, null, methodName));
                     feedbackTargetElement.setRelatedElement(super.getElementStub(beanClass, relationship.getEntityOneProxy(), methodName));
-                    feedbackTargetElement.setIsPublic(this.getIsPublic(instanceProperties));
+                    feedbackTargetElement.setIsPublic(true);
 
                     bean.setFeedbackTargetElement(feedbackTargetElement);
                 }

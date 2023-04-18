@@ -43,8 +43,8 @@ public enum DataItemSortOrder implements Serializable
     UNSORTED   (3, 99, "Unsorted",   "The instances of the schema attribute may appear in any order.");
 
 
-    public static final String ENUM_TYPE_GUID  = "aaa4df8f-1aca-4de8-9abd-1ef2aadba300";
-    public static final String ENUM_TYPE_NAME  = "DataItemSortOrder";
+    private static final String ENUM_TYPE_GUID  = "aaa4df8f-1aca-4de8-9abd-1ef2aadba300";
+    private static final String ENUM_TYPE_NAME  = "DataItemSortOrder";
 
 
     private final int    ordinal;

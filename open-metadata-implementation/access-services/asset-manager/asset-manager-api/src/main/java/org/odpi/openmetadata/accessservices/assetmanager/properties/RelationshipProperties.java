@@ -31,18 +31,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = AssetConnectionProperties.class, name = "AssetConnectionProperties"),
-                @JsonSubTypes.Type(value = DataContentForDataSetProperties.class, name = "DataContentForDataSetProperties"),
-                @JsonSubTypes.Type(value = ServerAssetUseProperties.class, name = "ServerAssetUseProperties"),
-                @JsonSubTypes.Type(value = ExternalGlossaryElementLinkProperties.class, name = "ExternalGlossaryElementLinkProperties"),
                 @JsonSubTypes.Type(value = CapabilityDeploymentProperties.class, name = "CapabilityDeploymentProperties"),
-                @JsonSubTypes.Type(value = DeploymentProperties.class, name = "DeploymentProperties"),
                 @JsonSubTypes.Type(value = ControlFlowProperties.class, name = "ControlFlowProperties"),
+                @JsonSubTypes.Type(value = DataContentForDataSetProperties.class, name = "DataContentForDataSetProperties"),
                 @JsonSubTypes.Type(value = DataFlowProperties.class, name = "DataFlowProperties"),
-                @JsonSubTypes.Type(value = ProcessCallProperties.class, name = "ProcessCallProperties"),
-                @JsonSubTypes.Type(value = LineageMappingProperties.class, name = "LineageMappingProperties"),
+                @JsonSubTypes.Type(value = DeploymentProperties.class, name = "DeploymentProperties"),
+                @JsonSubTypes.Type(value = EmbeddedConnectionProperties.class, name = "EmbeddedConnectionProperties"),
+                @JsonSubTypes.Type(value = ExternalGlossaryElementLinkProperties.class, name = "ExternalGlossaryElementLinkProperties"),
+                @JsonSubTypes.Type(value = ExternalReferenceLinkProperties.class, name = "ExternalReferenceLinkProperties"),
+                @JsonSubTypes.Type(value = FeedbackProperties.class, name = "FeedbackProperties"),
+                @JsonSubTypes.Type(value = ForeignKeyProperties.class, name = "ForeignKeyProperties"),
                 @JsonSubTypes.Type(value = GlossaryTermCategorization.class, name = "GlossaryTermCategorization"),
                 @JsonSubTypes.Type(value = GlossaryTermRelationship.class, name = "GlossaryTermRelationship"),
-                @JsonSubTypes.Type(value = ForeignKeyProperties.class, name = "ForeignKeyProperties"),
+                @JsonSubTypes.Type(value = LineageMappingProperties.class, name = "LineageMappingProperties"),
+                @JsonSubTypes.Type(value = ProcessCallProperties.class, name = "ProcessCallProperties"),
+                @JsonSubTypes.Type(value = ProcessContainmentProperties.class, name = "ProcessContainmentProperties"),
+                @JsonSubTypes.Type(value = SemanticAssignmentProperties.class, name = "SemanticAssignmentProperties"),
+                @JsonSubTypes.Type(value = ServerAssetUseProperties.class, name = "ServerAssetUseProperties"),
         })
 public class RelationshipProperties implements Serializable
 {

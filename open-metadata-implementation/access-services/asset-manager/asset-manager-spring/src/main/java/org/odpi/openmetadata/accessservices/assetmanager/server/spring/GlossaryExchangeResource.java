@@ -1085,7 +1085,8 @@ public class GlossaryExchangeResource
                                                         boolean                 forLineage,
                                           @RequestParam (required = false, defaultValue = "false")
                                                         boolean                 forDuplicateProcessing,
-                                          @RequestBody  RelationshipRequestBody requestBody)
+                                          @RequestBody  (required = false)
+                                                        RelationshipRequestBody requestBody)
     {
         return restAPI.setupTermCategory(serverName, userId, glossaryCategoryGUID, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1862,17 +1863,17 @@ public class GlossaryExchangeResource
      */
     @PostMapping(path = "/glossaries/{glossaryGUID}/terms/retrieve")
 
-    public GlossaryTermElementsResponse getTermsForGlossary(@PathVariable String                        serverName,
-                                                            @PathVariable String                        userId,
-                                                            @PathVariable String                        glossaryGUID,
-                                                            @RequestParam int                           startFrom,
-                                                            @RequestParam int                           pageSize,
+    public GlossaryTermElementsResponse getTermsForGlossary(@PathVariable String                              serverName,
+                                                            @PathVariable String                              userId,
+                                                            @PathVariable String                              glossaryGUID,
+                                                            @RequestParam int                                 startFrom,
+                                                            @RequestParam int                                 pageSize,
                                                             @RequestParam (required = false, defaultValue = "false")
-                                                                          boolean                       forLineage,
+                                                                          boolean                             forLineage,
                                                             @RequestParam (required = false, defaultValue = "false")
-                                                                          boolean                       forDuplicateProcessing,
+                                                                          boolean                             forDuplicateProcessing,
                                                             @RequestBody(required = false)
-                                                                          EffectiveTimeQueryRequestBody requestBody)
+                                                                          EffectiveTimeQueryRequestBody       requestBody)
     {
         return restAPI.getTermsForGlossary(serverName, userId, glossaryGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1903,13 +1904,49 @@ public class GlossaryExchangeResource
                                                                     @RequestParam int                                startFrom,
                                                                     @RequestParam int                                pageSize,
                                                                     @RequestParam (required = false, defaultValue = "false")
-                                                                            boolean                      forLineage,
+                                                                                  boolean                            forLineage,
                                                                     @RequestParam (required = false, defaultValue = "false")
-                                                                            boolean                      forDuplicateProcessing,
+                                                                                  boolean                            forDuplicateProcessing,
                                                                     @RequestBody(required = false)
-                                                                                  EffectiveTimeQueryRequestBody requestBody)
+                                                                                  GlossaryTermRelationshipRequestBody requestBody)
     {
         return restAPI.getTermsForGlossaryCategory(serverName, userId, glossaryCategoryGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+
+    /**
+     * Retrieve the list of glossary terms associated with a glossary.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the glossary of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody asset manager identifiers
+     *
+     * @return list of associated metadata elements or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/related-terms")
+
+    public GlossaryTermElementsResponse getRelatedTerms(@PathVariable String                              serverName,
+                                                        @PathVariable String                              userId,
+                                                        @PathVariable String                              glossaryTermGUID,
+                                                        @RequestParam int                                 startFrom,
+                                                        @RequestParam int                                 pageSize,
+                                                        @RequestParam (required = false, defaultValue = "false")
+                                                                      boolean                             forLineage,
+                                                        @RequestParam (required = false, defaultValue = "false")
+                                                                      boolean                             forDuplicateProcessing,
+                                                        @RequestBody(required = false)
+                                                                      GlossaryTermRelationshipRequestBody requestBody)
+    {
+        return restAPI.getRelatedTerms(serverName, userId, glossaryTermGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 

@@ -34,8 +34,8 @@ public enum PortType implements Serializable
 
     private static final long serialVersionUID = 1L;
 
-    public static final String ENUM_TYPE_GUID  = "b57Fbce7-42ac-71D1-D6a6-9f62Cb7C6dc3";
-    public static final String ENUM_TYPE_NAME  = "PortType";
+    private static final String ENUM_TYPE_GUID  = "b57Fbce7-42ac-71D1-D6a6-9f62Cb7C6dc3";
+    private static final String ENUM_TYPE_NAME  = "PortType";
 
     private final int    ordinal;
     private final String openTypeSymbolicName;

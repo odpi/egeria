@@ -4551,6 +4551,29 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
 
+    /**
+     * Extract and remove the publishVersionIdentifier property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from governance entities
+     * @return string property or null
+     */
+    protected String removePublishVersionIdentifier(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removePublishVersionIdentifier";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.PUBLISH_VERSION_ID_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+
 
 
     /**

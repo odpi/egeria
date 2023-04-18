@@ -1221,6 +1221,7 @@ public interface GlossaryExchangeInterface
      * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param properties descriptive properties for the data field
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1767,7 +1768,6 @@ public interface GlossaryExchangeInterface
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException;
 
-
     /**
      * Retrieve the list of glossary terms associated with a glossary category.
      *
@@ -1775,6 +1775,8 @@ public interface GlossaryExchangeInterface
      * @param assetManagerGUID unique identifier of software capability representing the caller
      * @param assetManagerName unique name of software capability representing the caller
      * @param glossaryCategoryGUID unique identifier of the glossary category of interest
+     * @param limitResultsByStatus By default, term relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -1787,17 +1789,51 @@ public interface GlossaryExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<GlossaryTermElement>    getTermsForGlossaryCategory(String  userId,
-                                                             String  assetManagerGUID,
-                                                             String  assetManagerName,
-                                                             String  glossaryCategoryGUID,
-                                                             int     startFrom,
-                                                             int     pageSize,
-                                                             Date    effectiveTime,
-                                                             boolean forLineage,
-                                                             boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException;
+    List<GlossaryTermElement>    getTermsForGlossaryCategory(String                               userId,
+                                                             String                               assetManagerGUID,
+                                                             String                               assetManagerName,
+                                                             String                               glossaryCategoryGUID,
+                                                             List<GlossaryTermRelationshipStatus> limitResultsByStatus,
+                                                             int                                  startFrom,
+                                                             int                                  pageSize,
+                                                             Date                                 effectiveTime,
+                                                             boolean                              forLineage,
+                                                             boolean                              forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                                 UserNotAuthorizedException,
+                                                                                                                                 PropertyServerException;
+
+
+    /**
+     * Retrieve the list of glossary terms associated with the requested glossary term.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryTermGUID unique identifier of the glossary term of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of associated metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<GlossaryTermElement>    getRelatedTerms(String                               userId,
+                                                 String                               assetManagerGUID,
+                                                 String                               assetManagerName,
+                                                 String                               glossaryTermGUID,
+                                                 List<GlossaryTermRelationshipStatus> limitResultsByStatus,
+                                                 int                                  startFrom,
+                                                 int                                  pageSize,
+                                                 Date                                 effectiveTime,
+                                                 boolean                              forLineage,
+                                                 boolean                              forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                     UserNotAuthorizedException,
+                                                                                                                     PropertyServerException;
 
 
     /**

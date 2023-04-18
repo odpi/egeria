@@ -35,8 +35,8 @@ public enum GovernanceClassificationStatus implements Serializable
     OTHER     (99, 99, "Other",
                                "Another classification assignment status.");
 
-    public static final String ENUM_TYPE_GUID  = "cc540586-ac7c-41ba-8cc1-4da694a6a8e4";
-    public static final String ENUM_TYPE_NAME  = "GovernanceClassificationStatus";
+    private static final String ENUM_TYPE_GUID  = "cc540586-ac7c-41ba-8cc1-4da694a6a8e4";
+    private static final String ENUM_TYPE_NAME  = "GovernanceClassificationStatus";
 
     private final int    openTypeOrdinal;
 

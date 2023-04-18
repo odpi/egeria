@@ -1511,6 +1511,13 @@ public class StewardshipExchangeRESTServices
                 {
                     SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getAssetManagerHandler(userId, serverName, methodName);
 
+                    int statusOrdinal = 0;
+
+                    if (properties.getStatus() != null)
+                    {
+                        statusOrdinal = properties.getStatus().getOpenTypeOrdinal();
+                    }
+
                     handler.saveSemanticAssignment(userId,
                                                    requestBody.getAssetManagerGUID(),
                                                    requestBody.getAssetManagerName(),
@@ -1520,7 +1527,7 @@ public class StewardshipExchangeRESTServices
                                                    glossaryTermGUIDParameterName,
                                                    properties.getDescription(),
                                                    properties.getExpression(),
-                                                   properties.getStatus().getOpenTypeOrdinal(),
+                                                   statusOrdinal,
                                                    properties.getConfidence(),
                                                    properties.getCreatedBy(),
                                                    properties.getSteward(),

@@ -29,8 +29,8 @@ public enum CommentType implements Serializable
 
     private static final long     serialVersionUID = 1L;
 
-    public static final String ENUM_TYPE_GUID  = "06d5032e-192a-4f77-ade1-a4b97926e867";
-    public static final String ENUM_TYPE_NAME  = "CommentType";
+    private static final String ENUM_TYPE_GUID  = "06d5032e-192a-4f77-ade1-a4b97926e867";
+    private static final String ENUM_TYPE_NAME  = "CommentType";
 
     private final int    openTypeOrdinal;
 

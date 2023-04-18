@@ -22,8 +22,8 @@ public enum ByteOrdering implements Serializable
     BIG_ENDIAN     (0,  0,  "BigEndian",    "Bits or bytes order from the big end."),
     LITTLE_ENDIAN  (1,  1,  "LittleEndian", "Bits or bytes ordered from the little end.");
 
-    public static final String ENUM_TYPE_GUID  = "e5612c3a-49bd-4148-8f67-cfdf145d5fd8";
-    public static final String ENUM_TYPE_NAME  = "Endianness";
+    private static final String ENUM_TYPE_GUID  = "e5612c3a-49bd-4148-8f67-cfdf145d5fd8";
+    private static final String ENUM_TYPE_NAME  = "Endianness";
 
     private final int    openTypeOrdinal;
 
