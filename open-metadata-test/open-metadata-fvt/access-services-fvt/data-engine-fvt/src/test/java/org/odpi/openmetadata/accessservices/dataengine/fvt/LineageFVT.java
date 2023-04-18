@@ -8,11 +8,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.odpi.openmetadata.accessservices.dataengine.RepositoryService;
 import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineClient;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
+import org.odpi.openmetadata.accessservices.dataengine.model.DataFlow;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
-import org.odpi.openmetadata.accessservices.dataengine.model.DataFlow;
 import org.odpi.openmetadata.accessservices.dataengine.model.Port;
-import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
@@ -32,29 +31,31 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Holds FVTs related to feature lineage
  */
-public class LineageFVT extends DataEngineFVT{
+public class LineageFVT extends DataEngineFVT {
 
     @ParameterizedTest
     @MethodSource("org.odpi.openmetadata.accessservices.dataengine.PlatformConnectionProvider#getConnectionDetails")
     public void verifyDataFlowsForAJobProcess(String userId, DataEngineClient dataEngineClient, RepositoryService repositoryService)
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, ConnectorCheckedException,
-            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
-            FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-            RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
+                   org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
+                   FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
+                   RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
 
         engineSetupService.createExternalDataEngine(userId, dataEngineClient, null);
         List<Process> processes = lineageSetupService.createJobProcessWithContent(userId, dataEngineClient);
-        for(Process process : processes){
+
+        for (Process process : processes) {
             validate(process, repositoryService);
         }
 
@@ -86,8 +87,8 @@ public class LineageFVT extends DataEngineFVT{
 
     private void validate(Process process, RepositoryService repositoryService)
             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
-            FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-            RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
+                   FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
+                   RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
 
         List<EntityDetail> processes = repositoryService.findEntityByPropertyValue(PROCESS_TYPE_GUID, process.getQualifiedName());
         assertNotNull(processes);
@@ -97,54 +98,49 @@ public class LineageFVT extends DataEngineFVT{
         assertEquals(process.getQualifiedName(), processAsEntityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
         assertEquals(process.getDisplayName(), processAsEntityDetail.getProperties().getPropertyValue(DISPLAY_NAME).valueAsString());
 
-        if(process.getPortAliases() != null && !process.getPortAliases().isEmpty()){
-            for(PortAlias portAlias : process.getPortAliases()){
-                validatePortFields(PORT_ALIAS_TYPE_GUID, portAlias, repositoryService);
+        if (process.getPortImplementations() != null && !process.getPortImplementations().isEmpty()) {
+            for (PortImplementation portImplementation : process.getPortImplementations()) {
+                validatePortFields(portImplementation, repositoryService);
             }
         }
 
-        if(process.getPortImplementations() != null && !process.getPortImplementations().isEmpty()){
-            for(PortImplementation portImplementation : process.getPortImplementations()){
-                validatePortFields(PORT_IMPLEMENTATION_TYPE_GUID, portImplementation, repositoryService);
-            }
-        }
         validateProcessStructure(process, processAsEntityDetail, repositoryService);
     }
 
     private void validateProcessStructure(Process process, EntityDetail processAsEntityDetail, RepositoryService repositoryService)
             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
-            FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-            RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException{
-
-        if((process.getPortAliases() == null || process.getPortAliases().isEmpty()) &&
-                (process.getPortImplementations() == null || process.getPortImplementations().isEmpty())){
-            fail("Inconsistent process. No PortAlias(es) nor PortImplementation(s) defined");
-        }
+                   FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
+                   RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
         boolean stageProcess = process.getPortImplementations() != null && !process.getPortImplementations().isEmpty();
 
-        // case of stage Process, neighbours are already PortImplementations
-        List<EntityDetail> neighboursViaProcessPortRelationships =
-                repositoryService.getRelatedEntities(processAsEntityDetail.getGUID(), PROCESS_PORT_RELATIONSHIP_GUID);
-        assertNotNull(neighboursViaProcessPortRelationships);
-        List<EntityDetail> portImplementations = new ArrayList<>(neighboursViaProcessPortRelationships);
-
-        if(!stageProcess){
-            // case of main Process, neighbours are PortAlias; we need to traverse one more relationship of type PortDelegation
+        List<EntityDetail> neighboursViaProcessPortRelationships;
+        Set<EntityDetail> portImplementations = new HashSet<>();
+        if (stageProcess) {
+            // case of stage Process, neighbours are already PortImplementations
+            neighboursViaProcessPortRelationships =
+                    repositoryService.getRelatedEntities(processAsEntityDetail.getGUID(), PROCESS_PORT_RELATIONSHIP_GUID);
+            portImplementations = new HashSet<>(neighboursViaProcessPortRelationships);
+            assertNotNull(portImplementations);
+            assertEquals(2, portImplementations.size());
+        } else {
+            // case of main Process, neighbours are stage processes; we need to traverse one more relationship of type ProcessHierarchy
             // to reach PortImplementations
-            portImplementations.clear();
-            for(EntityDetail entityDetail : neighboursViaProcessPortRelationships){
-                List<EntityDetail> neighboursViaPortDelegationRelationships =
-                        repositoryService.getRelatedEntities(entityDetail.getGUID(), PORT_DELEGATION_RELATIONSHIP_GUID);
-                assertNotNull(neighboursViaPortDelegationRelationships);
-                assertEquals(1, neighboursViaPortDelegationRelationships.size());
+            List<EntityDetail> neighboursViaProcessHierarchiesRelationships =
+                    repositoryService.getRelatedEntities(processAsEntityDetail.getGUID(), PROCESS_HIERARCHY_RELATIONSHIP_GUID);
+            for (EntityDetail entityDetail : neighboursViaProcessHierarchiesRelationships) {
+                neighboursViaProcessPortRelationships =
+                        repositoryService.getRelatedEntities(entityDetail.getGUID(), PROCESS_PORT_RELATIONSHIP_GUID);
+                assertNotNull(neighboursViaProcessPortRelationships);
+                assertEquals(2, neighboursViaProcessPortRelationships.size());
 
-                portImplementations.addAll(neighboursViaPortDelegationRelationships);
+                portImplementations.addAll(neighboursViaProcessPortRelationships);
             }
+            assertNotNull(portImplementations);
+            assertEquals(6, portImplementations.size());
         }
 
-        assertNotNull(portImplementations);
-        assertEquals(2, portImplementations.size());
-        for(EntityDetail portImplementation : portImplementations){
+
+        for (EntityDetail portImplementation : portImplementations) {
             List<EntityDetail> tabularSchemaTypes =
                     repositoryService.getRelatedEntities(portImplementation.getGUID(), PORT_SCHEMA_RELATIONSHIP_GUID);
             assertNotNull(tabularSchemaTypes);
@@ -157,12 +153,12 @@ public class LineageFVT extends DataEngineFVT{
         }
     }
 
-    private void validatePortFields(String portTypeGuid, Port port, RepositoryService repositoryService)
+    private void validatePortFields(Port port, RepositoryService repositoryService)
             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
-            FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-            RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
+                   FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
+                   RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
 
-        List<EntityDetail> ports = repositoryService.findEntityByPropertyValue(portTypeGuid, port.getQualifiedName());
+        List<EntityDetail> ports = repositoryService.findEntityByPropertyValue(PORT_IMPLEMENTATION_TYPE_GUID, port.getQualifiedName());
         assertNotNull(ports);
         assertEquals(1, ports.size());
 
@@ -171,17 +167,15 @@ public class LineageFVT extends DataEngineFVT{
         assertEquals(port.getDisplayName(), portAsEntityDetail.getProperties().getPropertyValue(DISPLAY_NAME).valueAsString());
         assertEquals(port.getPortType().getName(), portAsEntityDetail.getProperties().getPropertyValue(PORT_TYPE).valueAsString());
 
-        // assert Schema for PortImplementation only
-        if(PORT_IMPLEMENTATION_TYPE_GUID.equals(portTypeGuid)) {
-            List<EntityDetail> schemas = repositoryService.getRelatedEntities(portAsEntityDetail.getGUID(), PORT_SCHEMA_RELATIONSHIP_GUID);
-            assertNotNull(schemas);
-            assertEquals(1, schemas.size());
+        List<EntityDetail> schemas = repositoryService.getRelatedEntities(portAsEntityDetail.getGUID(), PORT_SCHEMA_RELATIONSHIP_GUID);
+        assertNotNull(schemas);
+        assertEquals(1, schemas.size());
 
-            EntityDetail schemaAsEntityDetail = schemas.get(0);
-            SchemaType schemaType = ((PortImplementation) port).getSchemaType();
-            assertEquals(schemaType.getQualifiedName(), schemaAsEntityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
-            assertEquals(schemaType.getDisplayName(), schemaAsEntityDetail.getProperties().getPropertyValue(DISPLAY_NAME).valueAsString());
-        }
+        EntityDetail schemaAsEntityDetail = schemas.get(0);
+        SchemaType schemaType = ((PortImplementation) port).getSchemaType();
+        assertEquals(schemaType.getQualifiedName(), schemaAsEntityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
+        assertEquals(schemaType.getDisplayName(), schemaAsEntityDetail.getProperties().getPropertyValue(DISPLAY_NAME).valueAsString());
+
     }
 
     private void validateCurrentAttribute(String currentAttribute, EntityDetail entityDetail) {
@@ -195,9 +189,9 @@ public class LineageFVT extends DataEngineFVT{
     @MethodSource("org.odpi.openmetadata.accessservices.dataengine.PlatformConnectionProvider#getConnectionDetails")
     public void verifyHighLevelLineage(String userId, DataEngineClient dataEngineClient, RepositoryService repositoryService)
             throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException,
-            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
-            org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
-            PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
+                   org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
+                   org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
+                   PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
 
         engineSetupService.createExternalDataEngine(userId, dataEngineClient, null);
         Database database = dataStoreAndRelationalTableSetupService.upsertDatabase(userId, dataEngineClient, null);
@@ -223,7 +217,8 @@ public class LineageFVT extends DataEngineFVT{
         List<EntityDetail> targetProcesses = repositoryService.getRelatedEntities(targetDataFiles.get(0).getGUID(), DATA_FLOW_RELATIONSHIP_GUID);
         assertProcess(process, targetProcesses);
 
-        List<EntityDetail> targetRelationalTable = repositoryService.findEntityByPropertyValue(RELATIONAL_TABLE_TYPE_GUID, relationalTable.getQualifiedName());
+        List<EntityDetail> targetRelationalTable =
+                repositoryService.findEntityByPropertyValue(RELATIONAL_TABLE_TYPE_GUID, relationalTable.getQualifiedName());
         assertRelationalTable(relationalTable, targetRelationalTable);
 
         targetProcesses = repositoryService.getRelatedEntities(targetRelationalTable.get(0).getGUID(), DATA_FLOW_RELATIONSHIP_GUID);

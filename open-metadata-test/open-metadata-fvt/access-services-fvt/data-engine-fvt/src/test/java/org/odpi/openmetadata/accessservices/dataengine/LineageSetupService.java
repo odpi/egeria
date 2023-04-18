@@ -9,6 +9,8 @@ import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortType;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
+import org.odpi.openmetadata.accessservices.dataengine.model.ProcessContainmentType;
+import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -73,25 +75,32 @@ public class LineageSetupService {
                 getDataFlowAttributesForColumn(headerAttribute)));
     }
 
-    /** retrieves the list of qualified names for the attributes that are linked in data flows, in the order they can be
+    /**
+     * retrieves the list of qualified names for the attributes that are linked in data flows, in the order they can be
      * traversed from the CSV column to the DB column. This list is retrieved for each of the columns. This is the order in
      * which the process was constructed and intended to be and is used by the FVT to check the result of all the creation calls.
-     * @return a list of data flow attribute names in order for each CSV column
+     *
+     * @return a map of data flow attribute names in order for each CSV column
      */
     public Map<String, List<String>> getJobProcessDataFlowsProxiesByCsvColumn() {
         return jobProcessDataFlowsProxies;
     }
 
-    /** Creates the job process containing all the stage processes, port implementations, schemas, attributes and virtual assets
-     * @param userId the user which created the job process
+    /**
+     * Creates the job process containing all the stage processes, port implementations, schemas, attributes and virtual assets
+     *
+     * @param userId               the user which created the job process
      * @param dataEngineOMASClient the data engine client that is used to create the job process
      *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws ConnectorCheckedException  there are errors in the initialization of the connector.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<Process> createJobProcessWithContent(String userId, DataEngineClient dataEngineOMASClient) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, ConnectorCheckedException {
+    public List<Process> createJobProcessWithContent(String userId, DataEngineClient dataEngineOMASClient) throws InvalidParameterException,
+                                                                                                                  PropertyServerException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  ConnectorCheckedException {
         createVirtualAssets(userId, dataEngineOMASClient);
 
         List<Process> processes = new ArrayList<>();
@@ -156,7 +165,25 @@ public class LineageSetupService {
 
         dataEngineOMASClient.createOrUpdateProcess(userId, job);
         dataEngineOMASClient.addDataFlows(userId, dataFlows);
+
+        List<ProcessHierarchy> processHierarchies = new ArrayList<>();
+        processHierarchies.add(getProcessHierarchy(getStageProcessName(FIRST_STAGE_PROCESS_NAME), name));
+        processHierarchies.add(getProcessHierarchy(getStageProcessName(SECOND_STAGE_PROCESS_NAME), name));
+        processHierarchies.add(getProcessHierarchy(getStageProcessName(THIRD_STAGE_PROCESS_NAME), name));
+        for(ProcessHierarchy processHierarchy : processHierarchies) {
+            dataEngineOMASClient.addProcessHierarchy(userId, processHierarchy);
+        }
+
         return job;
+    }
+
+    private ProcessHierarchy getProcessHierarchy(String childQualifiedName, String parentQualifiedName) {
+        ProcessHierarchy processHierarchy = new ProcessHierarchy();
+        processHierarchy.setChildProcess(childQualifiedName);
+        processHierarchy.setParentProcess(parentQualifiedName);
+        processHierarchy.setProcessContainmentType(ProcessContainmentType.OWNED);
+
+        return processHierarchy;
     }
 
     private PortAlias createPortAlias(String delegatesTo, PortType type) {
@@ -194,7 +221,8 @@ public class LineageSetupService {
         List<DataFlow> dataFlows = new ArrayList<>();
         csvToDatabase.forEach((csvColumn, databaseColumn) -> {
             String sourceName = getAttributeName(SECOND_STAGE_PROCESS_NAME, SECOND_STAGE_INPUT_PORT_NAME, PortType.INPUT_PORT.getName(), csvColumn);
-            String targetName = getAttributeName(SECOND_STAGE_PROCESS_NAME, SECOND_STAGE_OUTPUT_PORT_NAME, PortType.OUTPUT_PORT.getName(), databaseColumn);
+            String targetName =
+                    getAttributeName(SECOND_STAGE_PROCESS_NAME, SECOND_STAGE_OUTPUT_PORT_NAME, PortType.OUTPUT_PORT.getName(), databaseColumn);
             DataFlow dataFlow = createDataFlow(sourceName, targetName);
             dataFlows.add(dataFlow);
         });
@@ -228,13 +256,16 @@ public class LineageSetupService {
             String targetName = getAttributeName(targetProcessName, targetPort, targetPortType, csvColumn);
             DataFlow dataFlow = createDataFlow(sourceName, targetName);
             dataFlows.add(dataFlow);
-        } );
+        });
         return dataFlows;
     }
 
-    private Process createStageProcess(String processName, String inputPortName, String outputPortName, List<String> inputAttributeNames, List<String> outputAttributeNames) {
-        PortImplementation inputPortImplementation = createPortImplementationWithSchema(inputAttributeNames, processName, inputPortName, PortType.INPUT_PORT);
-        PortImplementation outputPortImplementation = createPortImplementationWithSchema(outputAttributeNames, processName, outputPortName, PortType.OUTPUT_PORT);
+    private Process createStageProcess(String processName, String inputPortName, String outputPortName, List<String> inputAttributeNames,
+                                       List<String> outputAttributeNames) {
+        PortImplementation inputPortImplementation =
+                createPortImplementationWithSchema(inputAttributeNames, processName, inputPortName, PortType.INPUT_PORT);
+        PortImplementation outputPortImplementation =
+                createPortImplementationWithSchema(outputAttributeNames, processName, outputPortName, PortType.OUTPUT_PORT);
         List<PortImplementation> portImplementations = Arrays.asList(inputPortImplementation, outputPortImplementation);
         Process process = new Process();
         String name = getStageProcessName(processName);
@@ -244,7 +275,8 @@ public class LineageSetupService {
         return process;
     }
 
-    private PortImplementation createPortImplementationWithSchema(List<String> attributeNames, String processName, String portName, PortType portType) {
+    private PortImplementation createPortImplementationWithSchema(List<String> attributeNames, String processName, String portName,
+                                                                  PortType portType) {
         List<Attribute> attributes = createAttributes(attributeNames, processName, portName, portType);
         SchemaType schemaType = createSchemaType(processName, portName, attributes);
         return createPortImplementation(processName, portName, schemaType, portType);
