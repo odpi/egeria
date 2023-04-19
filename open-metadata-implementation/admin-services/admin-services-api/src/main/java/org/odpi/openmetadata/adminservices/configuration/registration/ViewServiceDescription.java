@@ -49,17 +49,34 @@ public enum ViewServiceDescription implements Serializable
                  "Server Author OMVS",
                  "server-author",
                  "Author servers.",
-                 "https://egeria-project.org/services/omvs/server-author/overview/");
+                 "https://egeria-project.org/services/omvs/server-author/overview/"),
+
+    GLOSSARY_BROWSER(805,
+                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                      "Glossary Browser",
+                      "Glossary Browser OMVS",
+                      "glossary-browser",
+                      "View glossary terms and categories within a glossary.",
+                      "https://egeria-project.org/services/omvs/glossary-browser/overview/"),
+
+    GLOSSARY_WORKFLOW(806,
+                  ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                 "Glossary Workflow",
+                         "Glossary Workflow OMVS",
+                         "glossary-workflow",
+                         "Create glossary terms and organize them into categories as part of a controlled workflow process. It supports the editing glossary and multiple states.",
+                         "https://egeria-project.org/services/omvs/glossary-workflow/overview/"),
+    ;
 
     private static final long serialVersionUID = 1L;
 
-    private int                        viewServiceCode;
-    private ComponentDevelopmentStatus viewServiceDevelopmentStatus;
-    private String                     viewServiceName;
-    private String                     viewServiceFullName;
-    private String                     viewServiceURLMarker;
-    private String                     viewServiceDescription;
-    private String                     viewServiceWiki;
+    private final int                        viewServiceCode;
+    private final ComponentDevelopmentStatus viewServiceDevelopmentStatus;
+    private final String                     viewServiceName;
+    private final String                     viewServiceFullName;
+    private final String                     viewServiceURLMarker;
+    private final String                     viewServiceDescription;
+    private final String                     viewServiceWiki;
 
 
     /**
@@ -180,6 +197,4 @@ public enum ViewServiceDescription implements Serializable
     public String getViewServiceWiki() {
         return viewServiceWiki;
     }
-
-
 }

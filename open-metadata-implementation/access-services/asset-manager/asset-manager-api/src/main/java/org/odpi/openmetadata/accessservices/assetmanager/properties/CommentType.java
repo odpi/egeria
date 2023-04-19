@@ -20,17 +20,40 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum CommentType implements Serializable
 {
-    STANDARD_COMMENT (0,  0, "Comment", "General comment about the asset."),
-    QUESTION         (1,  1, "Question", "Asks a question to the people owning, managing or using the asset."),
+    /**
+     * Comment - General comment about the element.
+     */
+    STANDARD_COMMENT (0,  0, "Comment", "General comment about the element."),
+
+    /**
+     * Question - Asks a question to the people owning, managing or using the element.
+     */
+    QUESTION         (1,  1, "Question", "Asks a question to the people owning, managing or using the element."),
+
+    /**
+     * Answer - Answers a question (posted as a reply to the question).
+     */
     ANSWER           (2,  2, "Answer", "Answers a question (posted as a reply to the question)."),
-    SUGGESTION       (3,  3, "Suggestion", "Provides a suggestion on how to improve the asset or its properties and description."),
+
+    /**
+     * Suggestion - Provides a suggestion on how to improve the element or its properties and description.
+     */
+    SUGGESTION       (3,  3, "Suggestion", "Provides a suggestion on how to improve the element or its properties and description."),
+
+    /**
+     * Experience - Describes situations where this asset has been used and related hints and tips.
+     */
     USAGE_EXPERIENCE (4,  4, "Experience", "Describes situations where this asset has been used and related hints and tips."),
+
+    /**
+     * Other - Unknown comment type.
+     */
     OTHER            (99, 99, "Other", "Unknown comment type.");
 
     private static final long     serialVersionUID = 1L;
 
-    public static final String ENUM_TYPE_GUID  = "06d5032e-192a-4f77-ade1-a4b97926e867";
-    public static final String ENUM_TYPE_NAME  = "CommentType";
+    private static final String ENUM_TYPE_GUID  = "06d5032e-192a-4f77-ade1-a4b97926e867";
+    private static final String ENUM_TYPE_NAME  = "CommentType";
 
     private final int    openTypeOrdinal;
 

@@ -22,6 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * RepositoryGovernanceAdmin is called during server start-up and initializes the Repository Governance OMES.
+ */
 public class RepositoryGovernanceAdmin extends EngineServiceAdmin
 {
     private RepositoryGovernanceInstance archiveManagerInstance = null;

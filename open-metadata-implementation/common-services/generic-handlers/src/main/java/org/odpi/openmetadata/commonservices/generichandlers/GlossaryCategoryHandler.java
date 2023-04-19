@@ -79,6 +79,8 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * Create the glossary category object.
      *
      * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param glossaryGUID unique identifier of the owning glossary
      * @param glossaryGUIDParameterName parameter supplying glossaryGUID
      * @param qualifiedName unique name for the category - used in other configuration
@@ -98,6 +100,8 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException security access problem
      */
     public String createGlossaryCategory(String              userId,
+                                         String              externalSourceGUID,
+                                         String              externalSourceName,
                                          String              glossaryGUID,
                                          String              glossaryGUIDParameterName,
                                          String              qualifiedName,
@@ -142,8 +146,8 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         String glossaryCategoryGUID = this.createBeanInRepository(userId,
-                                                                  null,
-                                                                  null,
+                                                                  externalSourceGUID,
+                                                                  externalSourceName,
                                                                   typeGUID,
                                                                   typeName,
                                                                   builder,
@@ -158,8 +162,8 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
             final String glossaryCategoryGUIDParameterName = "glossaryCategoryGUID";
 
             this.uncheckedLinkElementToElement(userId,
-                                               null,
-                                               null,
+                                               externalSourceGUID,
+                                               externalSourceName,
                                                glossaryGUID,
                                                glossaryGUIDParameterName,
                                                OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
@@ -184,10 +188,15 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * Create a category from a template.
      *
      * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param glossaryGUID unique identifier of the glossary where the category is located
+     * @param glossaryGUIDParameterName parameter supplying glossaryGUID
      * @param templateGUID unique identifier of the metadata element to copy
      * @param qualifiedName unique name for the category - used in other configuration
      * @param displayName short display name for the category
      * @param description description of the category
+     * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element
@@ -196,14 +205,19 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createGlossaryCategoryFromTemplate(String userId,
-                                                     String templateGUID,
-                                                     String qualifiedName,
-                                                     String displayName,
-                                                     String description,
-                                                     String methodName) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public String createGlossaryCategoryFromTemplate(String  userId,
+                                                     String  externalSourceGUID,
+                                                     String  externalSourceName,
+                                                     String  glossaryGUID,
+                                                     String  glossaryGUIDParameterName,
+                                                     String  templateGUID,
+                                                     String  qualifiedName,
+                                                     String  displayName,
+                                                     String  description,
+                                                     boolean deepCopy,
+                                                     String  methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         final String templateGUIDParameterName   = "templateGUID";
         final String qualifiedNameParameterName  = "qualifiedName";
@@ -219,18 +233,49 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                                       serviceName,
                                                                       serverName);
 
-        return this.createBeanFromTemplate(userId,
-                                           null,
-                                           null,
-                                           templateGUID,
-                                           templateGUIDParameterName,
-                                           OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
-                                           OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
-                                           qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                           builder,
-                                           supportedZones,
-                                           methodName);
+        builder.setAnchors(userId, glossaryGUID, methodName);
+
+        String glossaryCategoryGUID = this.createBeanFromTemplate(userId,
+                                                                  externalSourceGUID,
+                                                                  externalSourceName,
+                                                                  templateGUID,
+                                                                  templateGUIDParameterName,
+                                                                  OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
+                                                                  OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                  qualifiedName,
+                                                                  OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                  builder,
+                                                                  supportedZones,
+                                                                  deepCopy,
+                                                                  methodName);
+
+        if (glossaryCategoryGUID != null)
+        {
+            /*
+             * Link the category to its glossary.  This relationship is always effective.
+             */
+            final String glossaryCategoryGUIDParameterName = "glossaryCategoryGUID";
+
+            this.uncheckedLinkElementToElement(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               glossaryGUID,
+                                               glossaryGUIDParameterName,
+                                               OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                               glossaryCategoryGUID,
+                                               glossaryCategoryGUIDParameterName,
+                                               OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                               true,
+                                               true,
+                                               supportedZones,
+                                               OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_GUID,
+                                               OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_NAME,
+                                               null,
+                                               null,
+                                               methodName);
+        }
+
+        return glossaryCategoryGUID;
     }
 
 
@@ -238,6 +283,8 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * Update the category.
      *
      * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param glossaryCategoryGUID unique identifier for the category to update
      * @param glossaryCategoryGUIDParameterName parameter supplying the category
      * @param qualifiedName unique name for the category - used in other configuration
@@ -249,6 +296,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @param effectiveFrom  the time that the element must be effective from (null for any time, new Date() for now)
      * @param effectiveTo  the time that the must be effective to (null for any time, new Date() for now)
      * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param methodName calling method
@@ -258,6 +306,8 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException security access problem
      */
     public void   updateGlossaryCategory(String              userId,
+                                         String              externalSourceGUID,
+                                         String              externalSourceName,
                                          String              glossaryCategoryGUID,
                                          String              glossaryCategoryGUIDParameterName,
                                          String              qualifiedName,
@@ -269,6 +319,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                          Date                effectiveFrom,
                                          Date                effectiveTo,
                                          Date                effectiveTime,
+                                         boolean             isMergeUpdate,
                                          boolean             forLineage,
                                          boolean             forDuplicateProcessing,
                                          String              methodName) throws InvalidParameterException,
@@ -306,8 +357,8 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         this.updateBeanInRepository(userId,
-                                    null,
-                                    null,
+                                    externalSourceGUID,
+                                    externalSourceName,
                                     glossaryCategoryGUID,
                                     glossaryCategoryGUIDParameterName,
                                     typeGUID,
@@ -316,7 +367,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                     forDuplicateProcessing,
                                     supportedZones,
                                     builder.getInstanceProperties(methodName),
-                                    false,
+                                    isMergeUpdate,
                                     effectiveTime,
                                     methodName);
     }
@@ -326,6 +377,8 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * Create a parent-child relationship between two categories.
      *
      * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param glossaryParentCategoryGUID unique identifier of the glossary super-category
      * @param glossaryParentCategoryGUIDParameterName parameter supplying the super-category
      * @param glossaryChildCategoryGUID unique identifier of the glossary subcategory
@@ -342,6 +395,8 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void setupCategoryParent(String  userId,
+                                    String  externalSourceGUID,
+                                    String  externalSourceName,
                                     String  glossaryParentCategoryGUID,
                                     String  glossaryParentCategoryGUIDParameterName,
                                     String  glossaryChildCategoryGUID,
@@ -356,8 +411,8 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                                PropertyServerException
     {
         this.linkElementToElement(userId,
-                                  null,
-                                  null,
+                                  externalSourceGUID,
+                                  externalSourceName,
                                   glossaryParentCategoryGUID,
                                   glossaryParentCategoryGUIDParameterName,
                                   OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
@@ -381,6 +436,8 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * Remove a parent-child relationship between two categories.
      *
      * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param glossaryParentCategoryGUID unique identifier of the glossary super-category
      * @param glossaryParentCategoryGUIDParameterName parameter supplying the super-category
      * @param glossaryChildCategoryGUID unique identifier of the glossary subcategory
@@ -395,6 +452,8 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void clearCategoryParent(String  userId,
+                                    String  externalSourceGUID,
+                                    String  externalSourceName,
                                     String  glossaryParentCategoryGUID,
                                     String  glossaryParentCategoryGUIDParameterName,
                                     String  glossaryChildCategoryGUID,
@@ -408,8 +467,8 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
     {
         this.unlinkElementFromElement(userId,
                                       false,
-                                      null,
-                                      null,
+                                      externalSourceGUID,
+                                      externalSourceName,
                                       glossaryParentCategoryGUID,
                                       glossaryParentCategoryGUIDParameterName,
                                       OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
@@ -430,6 +489,8 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * Remove the metadata element representing a glossary category.
      *
      * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param glossaryCategoryGUID unique identifier of the metadata element to remove
      * @param glossaryCategoryGUIDParameterName parameter for glossaryCategoryGUID
      * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -442,6 +503,8 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void removeGlossaryCategory(String  userId,
+                                       String  externalSourceGUID,
+                                       String  externalSourceName,
                                        String  glossaryCategoryGUID,
                                        String  glossaryCategoryGUIDParameterName,
                                        Date    effectiveTime,
@@ -452,8 +515,8 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                                   PropertyServerException
     {
         this.deleteBeanInRepository(userId,
-                                    null,
-                                    null,
+                                    externalSourceGUID,
+                                    externalSourceName,
                                     glossaryCategoryGUID,
                                     glossaryCategoryGUIDParameterName,
                                     OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,

@@ -465,11 +465,11 @@ public class InvalidParameterHandler
      * @return unique identifier (guid) of typeName
      * @throws InvalidParameterException the type name is not correct
      */
-    public String validateTypeName(String                typeName,
-                                   String                superTypeName,
-                                   String                serviceName,
-                                   String                methodName,
-                                   OMRSRepositoryHelper  repositoryHelper) throws InvalidParameterException
+    public TypeDef validateTypeDefName(String                typeName,
+                                       String                superTypeName,
+                                       String                serviceName,
+                                       String                methodName,
+                                       OMRSRepositoryHelper  repositoryHelper) throws InvalidParameterException
 
     {
         final String parameterName = "typeName";
@@ -507,7 +507,32 @@ public class InvalidParameterHandler
                                                 parameterName);
         }
 
-        return typeDef.getGUID();
+        return typeDef;
+    }
+
+
+    /**
+     * Throw an exception if the supplied type name is not of the correct subclass
+     *
+     * @param typeName name of type
+     * @param superTypeName name of expected supertype (or null if no super type)
+     * @param serviceName calling service
+     * @param methodName calling method
+     * @param repositoryHelper helper class that can return information about type
+     *
+     * @return unique identifier (guid) of typeName
+     * @throws InvalidParameterException the type name is not correct
+     */
+    public String validateTypeName(String                typeName,
+                                   String                superTypeName,
+                                   String                serviceName,
+                                   String                methodName,
+                                   OMRSRepositoryHelper  repositoryHelper) throws InvalidParameterException
+
+    {
+        TypeDef validTypeDef = this.validateTypeDefName(typeName, superTypeName, serviceName, methodName, repositoryHelper);
+
+        return validTypeDef.getGUID();
     }
 
 

@@ -26,6 +26,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -402,7 +403,92 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                              effectiveTime,
                                              methodName);
     }
-    
+
+
+    /**
+     * Add the asset origin classification to an asset.  The method needs to build a before an after image of the
+     * asset to perform a security check before the update is pushed to the repository.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param assetGUIDParameterName parameter name supplying assetGUID
+     * @param organizationGUID Unique identifier (GUID) of the organization where this asset originated from - or null
+     * @param organizationGUIDParameterName parameter name supplying organizationGUID
+     * @param businessCapabilityGUID  Unique identifier (GUID) of the business capability where this asset originated from.
+     * @param businessCapabilityGUIDParameterName parameter name supplying businessCapabilityGUID
+     * @param otherOriginValues Descriptive labels describing origin of the asset
+     * @param effectiveFrom the time that the elements must be effective from (null for any time)
+     * @param effectiveTo the time that the elements must be effective from (null for any time)
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  addAssetOrigin(String                userId,
+                                String                assetGUID,
+                                String                assetGUIDParameterName,
+                                String                organizationGUID,
+                                String                organizationGUIDParameterName,
+                                String                businessCapabilityGUID,
+                                String                businessCapabilityGUIDParameterName,
+                                Map<String, String>   otherOriginValues,
+                                Date                  effectiveFrom,
+                                Date                  effectiveTo,
+                                boolean               isMergeUpdate,
+                                boolean               forLineage,
+                                boolean               forDuplicateProcessing,
+                                Date                  effectiveTime,
+                                String                methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        assetHandler.addAssetOrigin(userId,
+                                    assetGUID,
+                                    assetGUIDParameterName,
+                                    organizationGUID,
+                                    organizationGUIDParameterName,
+                                    businessCapabilityGUID,
+                                    businessCapabilityGUIDParameterName,
+                                    otherOriginValues, effectiveFrom,
+                                    effectiveTo, isMergeUpdate,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
+                                    methodName);
+    }
+
+
+    /**
+     * Remove the asset origin classification to an asset.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param assetGUIDParameterName parameter name supplying assetGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  removeAssetOrigin(String  userId,
+                                   String  assetGUID,
+                                   String  assetGUIDParameterName,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime,
+                                   String  methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
+    {
+        assetHandler.removeAssetOrigin(userId, assetGUID, assetGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+    }
 
     /**
      * Update the zones for the asset so that it becomes visible to consumers.

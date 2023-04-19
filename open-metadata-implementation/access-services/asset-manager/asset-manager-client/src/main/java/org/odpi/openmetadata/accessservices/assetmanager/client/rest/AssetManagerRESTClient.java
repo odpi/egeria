@@ -89,6 +89,35 @@ public class AssetManagerRESTClient extends FFDCRESTClient
     }
 
 
+
+    /**
+     * Issue a POST REST call that returns a RelatedElementsResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public RelatedElementsResponse callRelatedElementsPostRESTCall(String    methodName,
+                                                                   String    urlTemplate,
+                                                                   Object    requestBody,
+                                                                   Object... params) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        RelatedElementsResponse restResult = this.callPostRESTCall(methodName, RelatedElementsResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
     /**
      * Issue a POST REST call that returns a ExternalReferenceElementResponse object.
      *
@@ -368,6 +397,7 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -375,13 +405,14 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public CommentElementResponse callCommentElementGetRESTCall(String    methodName,
-                                                                String    urlTemplate,
-                                                                Object... params) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    public CommentElementResponse callCommentElementPostRESTCall(String    methodName,
+                                                                 String    urlTemplate,
+                                                                 Object    requestBody,
+                                                                 Object... params) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
-        CommentElementResponse restResult = this.callGetRESTCall(methodName, CommentElementResponse.class, urlTemplate, params);
+        CommentElementResponse restResult = this.callPostRESTCall(methodName, CommentElementResponse.class, urlTemplate, requestBody, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -444,10 +475,11 @@ public class AssetManagerRESTClient extends FFDCRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a NoteLogElementResponse object.
+     * Issue a POST REST call that returns a NoteLogElementResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -455,13 +487,14 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public NoteLogElementResponse callNoteLogElementGetRESTCall(String    methodName,
-                                                                String    urlTemplate,
-                                                                Object... params) throws InvalidParameterException,
+    public NoteLogElementResponse callNoteLogElementPostRESTCall(String    methodName,
+                                                                 String    urlTemplate,
+                                                                 Object    requestBody,
+                                                                 Object... params) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        NoteLogElementResponse restResult = this.callGetRESTCall(methodName, NoteLogElementResponse.class, urlTemplate, params);
+        NoteLogElementResponse restResult = this.callPostRESTCall(methodName, NoteLogElementResponse.class, urlTemplate, requestBody, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -499,10 +532,11 @@ public class AssetManagerRESTClient extends FFDCRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a NoteLogElementResponse object.
+     * Issue a POST REST call that returns a NoteLogElementResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -510,13 +544,14 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public NoteElementResponse callNoteElementGetRESTCall(String    methodName,
-                                                          String    urlTemplate,
-                                                          Object... params) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+    public NoteElementResponse callNoteElementPostRESTCall(String    methodName,
+                                                           String    urlTemplate,
+                                                           Object    requestBody,
+                                                           Object... params) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
-        NoteElementResponse restResult = this.callGetRESTCall(methodName, NoteElementResponse.class, urlTemplate, params);
+        NoteElementResponse restResult = this.callPostRESTCall(methodName, NoteElementResponse.class, urlTemplate, requestBody, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 

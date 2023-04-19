@@ -23,6 +23,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * AssetAnalysisAdmin is called during server start up to set up the Asset Analysis OMES.
+ */
 public class AssetAnalysisAdmin extends EngineServiceAdmin
 {
     private AssetAnalysisInstance assetAnalysisInstance = null;

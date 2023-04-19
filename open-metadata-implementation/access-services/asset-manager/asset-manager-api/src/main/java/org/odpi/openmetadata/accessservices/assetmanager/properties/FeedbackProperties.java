@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class FeedbackProperties implements Serializable
+public class FeedbackProperties extends RelationshipProperties
 {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -81,43 +81,6 @@ public class FeedbackProperties implements Serializable
     @Override
     public String toString()
     {
-        return "FeedbackProperties{" +
-                ", isPublic=" + isPublic +
-                '}';
-    }
-
-
-    /**
-     * Equals method that returns true if containing properties are the same.
-     *
-     * @param objectToCompare object to compare
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        FeedbackProperties that = (FeedbackProperties) objectToCompare;
-        return getIsPublic() == that.getIsPublic();
-    }
-
-
-
-    /**
-     * Return hash code for this object
-     *
-     * @return int hash code
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(getIsPublic());
+        return "FeedbackProperties{" + '}';
     }
 }

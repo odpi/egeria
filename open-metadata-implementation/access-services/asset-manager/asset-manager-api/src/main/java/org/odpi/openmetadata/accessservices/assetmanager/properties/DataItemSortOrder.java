@@ -19,18 +19,32 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum DataItemSortOrder implements Serializable
 {
-    UNKNOWN    (0, 99, "<Unknown>",  "The sort order is not specified."),
-    ASCENDING  (1, 0, "Ascending",  "The attribute instances are organized so that the " +
-            "smallest/lowest value is first and the rest of the instances follow in " +
-            "ascending order."),
+    /**
+     * Unknown - The sort order is not specified.
+     */
+    UNKNOWN    (0, 99, "Unknown",  "The sort order is not specified."),
+
+    /**
+     * Ascending - The attribute instances are organized so that the smallest/lowest values first and the rest of the instances follow in ascending order.
+     */
+    ASCENDING  (1, 0, "Ascending",  "The attribute instances are organized so that the smallest/lowest value" +
+                                            " is first and the rest of the instances follow in ascending order."),
+
+    /**
+     * Descending - The attribute instances are organized so that the largest/highest value is first and the rest of the instances follow in descending order.
+     */
     DESCENDING (2, 1, "Descending", "The attribute instances are organized so that the " +
             "largest/highest value is first and the rest of the instances follow in " +
             "descending order."),
+
+    /**
+     * Unsorted - The instances of the schema attribute may appear in any order.
+     */
     UNSORTED   (3, 99, "Unsorted",   "The instances of the schema attribute may appear in any order.");
 
 
-    public static final String ENUM_TYPE_GUID  = "aaa4df8f-1aca-4de8-9abd-1ef2aadba300";
-    public static final String ENUM_TYPE_NAME  = "DataItemSortOrder";
+    private static final String ENUM_TYPE_GUID  = "aaa4df8f-1aca-4de8-9abd-1ef2aadba300";
+    private static final String ENUM_TYPE_NAME  = "DataItemSortOrder";
 
 
     private final int    ordinal;

@@ -81,15 +81,17 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
 
     private static final String RETENTION_CLASSIFICATION_TYPE_NAME                = "Retention";
 
-    private static final String GOVERNANCE_CLASSIFICATION_STATUS_PROPERTY_NAME       = "status";
-    private static final String GOVERNANCE_CLASSIFICATION_CONFIDENCE_PROPERTY_NAME   = "confidence";
-    private static final String GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME      = "steward";
-    private static final String GOVERNANCE_CLASSIFICATION_SOURCE_PROPERTY_NAME       = "source";
-    private static final String GOVERNANCE_CLASSIFICATION_NOTES_PROPERTY_NAME        = "notes";
+    private static final String GOVERNANCE_CLASSIFICATION_STATUS_PROPERTY_NAME                = "status";
+    private static final String GOVERNANCE_CLASSIFICATION_CONFIDENCE_PROPERTY_NAME            = "confidence";
+    private static final String GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME               = "steward";
+    private static final String GOVERNANCE_CLASSIFICATION_STEWARD_TYPE_NAME_PROPERTY_NAME     = "stewardTypeName";
+    private static final String GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME_PROPERTY_NAME = "stewardPropertyName";
+    private static final String GOVERNANCE_CLASSIFICATION_SOURCE_PROPERTY_NAME                = "source";
+    private static final String GOVERNANCE_CLASSIFICATION_NOTES_PROPERTY_NAME                 = "notes";
 
-    private static final String RETENTION_ASSOCIATED_GUID_PROPERTY_NAME              = "associatedGUID";
-    private static final String RETENTION_ARCHIVE_AFTER_PROPERTY_NAME                = "archiveAfter";
-    private static final String RETENTION_DELETE_AFTER_PROPERTY_NAME                 = "deleteAfter";
+    private static final String RETENTION_ASSOCIATED_GUID_PROPERTY_NAME = "associatedGUID";
+    private static final String RETENTION_ARCHIVE_AFTER_PROPERTY_NAME   = "archiveAfter";
+    private static final String RETENTION_DELETE_AFTER_PROPERTY_NAME    = "deleteAfter";
 
     private static final String SECURITY_TAG_CLASSIFICATION_TYPE_NAME             = "SecurityTags";
     private static final String SECURITY_LABELS_PROPERTY_NAME                     = "securityLabels";
@@ -112,6 +114,8 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     private static final String OWNERSHIP_CLASSIFICATION_TYPE_NAME        = "Ownership";
 
     private static final String OWNER_PROPERTY_NAME                       = "owner";                                /* from Area 4 */
+    private static final String OWNER_TYPE_NAME_PROPERTY_NAME             = "ownerTypeName";                        /* from Area 4 */
+    private static final String OWNER_PROPERTY_NAME_PROPERTY_NAME         = "ownerPropertyName";                   /* from Area 4 */
     private static final String OWNER_TYPE_PROPERTY_NAME                  = "ownerType"; /* deprecated */
 
 
@@ -594,6 +598,14 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                                          GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME,
                                                                          confidentialityProperties,
                                                                          methodName));
+            classification.setStewardTypeName(repositoryHelper.getStringProperty(serviceName,
+                                                                                 GOVERNANCE_CLASSIFICATION_STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                                 confidentialityProperties,
+                                                                                 methodName));
+            classification.setStewardPropertyName(repositoryHelper.getStringProperty(serviceName,
+                                                                                     GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                                     confidentialityProperties,
+                                                                                     methodName));
             classification.setSource(repositoryHelper.getStringProperty(serviceName,
                                                                         GOVERNANCE_CLASSIFICATION_SOURCE_PROPERTY_NAME,
                                                                         confidentialityProperties,
@@ -624,6 +636,14 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                                          GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME,
                                                                          confidenceProperties,
                                                                          methodName));
+            classification.setStewardTypeName(repositoryHelper.getStringProperty(serviceName,
+                                                                                 GOVERNANCE_CLASSIFICATION_STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                                 confidenceProperties,
+                                                                                 methodName));
+            classification.setStewardPropertyName(repositoryHelper.getStringProperty(serviceName,
+                                                                                     GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                                     confidenceProperties,
+                                                                                     methodName));
             classification.setSource(repositoryHelper.getStringProperty(serviceName,
                                                                         GOVERNANCE_CLASSIFICATION_SOURCE_PROPERTY_NAME,
                                                                         confidenceProperties,
@@ -654,6 +674,14 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                                          GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME,
                                                                          criticalityProperties,
                                                                          methodName));
+            classification.setStewardTypeName(repositoryHelper.getStringProperty(serviceName,
+                                                                                 GOVERNANCE_CLASSIFICATION_STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                                 criticalityProperties,
+                                                                                 methodName));
+            classification.setStewardPropertyName(repositoryHelper.getStringProperty(serviceName,
+                                                                                     GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                                     criticalityProperties,
+                                                                                     methodName));
             classification.setSource(repositoryHelper.getStringProperty(serviceName,
                                                                         GOVERNANCE_CLASSIFICATION_SOURCE_PROPERTY_NAME,
                                                                         criticalityProperties,
@@ -684,6 +712,14 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                                          GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME,
                                                                          impactProperties,
                                                                          methodName));
+            classification.setStewardTypeName(repositoryHelper.getStringProperty(serviceName,
+                                                                                 GOVERNANCE_CLASSIFICATION_STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                                 impactProperties,
+                                                                                 methodName));
+            classification.setStewardPropertyName(repositoryHelper.getStringProperty(serviceName,
+                                                                                     GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                                     impactProperties,
+                                                                                     methodName));
             classification.setSource(repositoryHelper.getStringProperty(serviceName,
                                                                         GOVERNANCE_CLASSIFICATION_SOURCE_PROPERTY_NAME,
                                                                         impactProperties,
@@ -714,6 +750,14 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                                          GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME,
                                                                          retentionProperties,
                                                                          methodName));
+            classification.setStewardTypeName(repositoryHelper.getStringProperty(serviceName,
+                                                                                 GOVERNANCE_CLASSIFICATION_STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                                 retentionProperties,
+                                                                                 methodName));
+            classification.setStewardPropertyName(repositoryHelper.getStringProperty(serviceName,
+                                                                                     GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                                     retentionProperties,
+                                                                                     methodName));
             classification.setSource(repositoryHelper.getStringProperty(serviceName,
                                                                         GOVERNANCE_CLASSIFICATION_SOURCE_PROPERTY_NAME,
                                                                         retentionProperties,
@@ -746,10 +790,14 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                                   OWNER_PROPERTY_NAME,
                                                                   ownershipProperties,
                                                                   methodName));
-            assetBean.setOwnerType(repositoryHelper.getEnumPropertyOrdinal(serviceName,
-                                                                           OWNER_TYPE_PROPERTY_NAME,
-                                                                           ownershipProperties,
-                                                                           methodName));
+            assetBean.setOwnerTypeName(repositoryHelper.removeStringProperty(serviceName,
+                                                                             OWNER_TYPE_NAME_PROPERTY_NAME,
+                                                                             properties,
+                                                                             methodName));
+            assetBean.setOwnerPropertyName(repositoryHelper.removeStringProperty(serviceName,
+                                                                                 OWNER_PROPERTY_NAME_PROPERTY_NAME,
+                                                                                 properties,
+                                                                                 methodName));
         }
 
         if (zoneProperties != null)
@@ -1619,6 +1667,14 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                                          GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME,
                                                                          confidentialityProperties,
                                                                          methodName));
+            classification.setStewardTypeName(repositoryHelper.getStringProperty(serviceName,
+                                                                                 GOVERNANCE_CLASSIFICATION_STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                                 confidentialityProperties,
+                                                                                 methodName));
+            classification.setStewardPropertyName(repositoryHelper.getStringProperty(serviceName,
+                                                                                     GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                                     confidentialityProperties,
+                                                                                     methodName));
             classification.setSource(repositoryHelper.getStringProperty(serviceName,
                                                                         GOVERNANCE_CLASSIFICATION_SOURCE_PROPERTY_NAME,
                                                                         confidentialityProperties,
@@ -1649,6 +1705,14 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                                          GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME,
                                                                          confidenceProperties,
                                                                          methodName));
+            classification.setStewardTypeName(repositoryHelper.getStringProperty(serviceName,
+                                                                                 GOVERNANCE_CLASSIFICATION_STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                                 confidenceProperties,
+                                                                                 methodName));
+            classification.setStewardPropertyName(repositoryHelper.getStringProperty(serviceName,
+                                                                                     GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                                     confidenceProperties,
+                                                                                     methodName));
             classification.setSource(repositoryHelper.getStringProperty(serviceName,
                                                                         GOVERNANCE_CLASSIFICATION_SOURCE_PROPERTY_NAME,
                                                                         confidenceProperties,
@@ -1679,6 +1743,14 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                                          GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME,
                                                                          criticalityProperties,
                                                                          methodName));
+            classification.setStewardTypeName(repositoryHelper.getStringProperty(serviceName,
+                                                                                 GOVERNANCE_CLASSIFICATION_STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                                 criticalityProperties,
+                                                                                 methodName));
+            classification.setStewardPropertyName(repositoryHelper.getStringProperty(serviceName,
+                                                                                     GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                                     criticalityProperties,
+                                                                                     methodName));
             classification.setSource(repositoryHelper.getStringProperty(serviceName,
                                                                         GOVERNANCE_CLASSIFICATION_SOURCE_PROPERTY_NAME,
                                                                         criticalityProperties,
@@ -1709,6 +1781,14 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                                          GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME,
                                                                          impactProperties,
                                                                          methodName));
+            classification.setStewardTypeName(repositoryHelper.getStringProperty(serviceName,
+                                                                                 GOVERNANCE_CLASSIFICATION_STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                                 impactProperties,
+                                                                                 methodName));
+            classification.setStewardPropertyName(repositoryHelper.getStringProperty(serviceName,
+                                                                                     GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                                     impactProperties,
+                                                                                     methodName));
             classification.setSource(repositoryHelper.getStringProperty(serviceName,
                                                                         GOVERNANCE_CLASSIFICATION_SOURCE_PROPERTY_NAME,
                                                                         impactProperties,
@@ -1739,6 +1819,14 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                                          GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME,
                                                                          retentionProperties,
                                                                          methodName));
+            classification.setStewardTypeName(repositoryHelper.getStringProperty(serviceName,
+                                                                                 GOVERNANCE_CLASSIFICATION_STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                                 retentionProperties,
+                                                                                 methodName));
+            classification.setStewardPropertyName(repositoryHelper.getStringProperty(serviceName,
+                                                                                     GOVERNANCE_CLASSIFICATION_STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                                     retentionProperties,
+                                                                                     methodName));
             classification.setSource(repositoryHelper.getStringProperty(serviceName,
                                                                         GOVERNANCE_CLASSIFICATION_SOURCE_PROPERTY_NAME,
                                                                         retentionProperties,
@@ -1771,10 +1859,14 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                                  OWNER_PROPERTY_NAME,
                                                                  ownershipProperties,
                                                                  methodName));
-            glossary.setOwnerType(repositoryHelper.getEnumPropertyOrdinal(serviceName,
-                                                                          OWNER_TYPE_PROPERTY_NAME,
-                                                                          ownershipProperties,
-                                                                          methodName));
+            glossary.setOwnerTypeName(repositoryHelper.removeStringProperty(serviceName,
+                                                                            OWNER_TYPE_NAME_PROPERTY_NAME,
+                                                                            properties,
+                                                                            methodName));
+            glossary.setOwnerPropertyName(repositoryHelper.removeStringProperty(serviceName,
+                                                                                OWNER_PROPERTY_NAME_PROPERTY_NAME,
+                                                                                properties,
+                                                                                methodName));
         }
     }
 

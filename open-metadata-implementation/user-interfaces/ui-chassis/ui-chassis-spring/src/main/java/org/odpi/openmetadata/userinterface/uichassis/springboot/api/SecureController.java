@@ -24,16 +24,10 @@ public class SecureController {
 
     /**
      * Return user name if there is one or null. Passing null as the user to a rest call should result in a user not authorized error.
-     * @param request servlet request
      * @return userName or null if there is not one
      */
-    protected String getUser(HttpServletRequest request) {
-        String userName = null;
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if(auth != null && auth.getDetails() != null && (auth.getDetails() instanceof TokenUser)){
-            userName = ((TokenUser) auth.getDetails()).getUsername();
-        }
-
+    protected String getUser() {
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         if(userName ==  null){
             throw new UserNotAuthorizedException("User is not authorized");
         }

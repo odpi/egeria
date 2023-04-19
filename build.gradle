@@ -97,7 +97,11 @@ subprojects {
 
         // javadoc
         javadoc {
-            options.addBooleanOption('html5', true)
+            options
+            {
+                addBooleanOption('html5', true)
+                setMemberLevel JavadocMemberLevel.PUBLIC
+            }
         }
 
         publishing {

@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeade
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,7 +31,9 @@ public class NoteElement implements MetadataElement, Serializable
 
     private ElementHeader                   elementHeader         = null;
     private List<MetadataCorrelationHeader> correlationHeaders    = null;
-    private NoteProperties           properties            = null;
+    private NoteProperties                  properties            = null;
+    private Date                            lastUpdate            = null;
+    private String                          user                  = null;
     private FeedbackTargetElement           feedbackTargetElement = null;
 
 
@@ -56,6 +59,13 @@ public class NoteElement implements MetadataElement, Serializable
             correlationHeaders = template.getCorrelationHeaders();
             properties = template.getProperties();
             feedbackTargetElement = template.getFeedbackTargetElement();
+            user = template.getUser();
+
+            Date templateLastUpdate = template.getLastUpdate();
+            if (templateLastUpdate != null)
+            {
+                lastUpdate = new Date(templateLastUpdate.getTime());
+            }
         }
     }
 
@@ -167,6 +177,57 @@ public class NoteElement implements MetadataElement, Serializable
     }
 
 
+
+    /**
+     * Return the last time a change was made to this note.
+     *
+     * @return Date last updated
+     */
+    public Date getLastUpdate()
+    {
+        if (lastUpdate == null)
+        {
+            return null;
+        }
+        else
+        {
+            return new Date(lastUpdate.getTime());
+        }
+    }
+
+
+    /**
+     * Set up the last time a change was made to this note.
+     *
+     * @param lastUpdate Date last updated
+     */
+    public void setLastUpdate(Date lastUpdate)
+    {
+        this.lastUpdate = lastUpdate;
+    }
+
+
+    /**
+     * Return the user id of the person who created the note.  Null means the user id is not known.
+     *
+     * @return String user making notes
+     */
+    public String getUser() {
+        return user;
+    }
+
+
+    /**
+     * Set up the user id of the person who created the note.  Null means the user id is not known.
+     *
+     * @param user String user making notes
+     */
+    public void setUser(String user)
+    {
+        this.user = user;
+    }
+
+
     /**
      * JSON-style toString
      *
@@ -179,6 +240,8 @@ public class NoteElement implements MetadataElement, Serializable
                        "elementHeader=" + elementHeader +
                        ", correlationHeaders=" + correlationHeaders +
                        ", properties=" + properties +
+                       ", lastUpdate=" + lastUpdate +
+                       ", user='" + user + '\'' +
                        ", feedbackTargetElement=" + feedbackTargetElement +
                        '}';
     }
@@ -204,6 +267,7 @@ public class NoteElement implements MetadataElement, Serializable
         return Objects.equals(elementHeader, that.elementHeader) &&
                        Objects.equals(correlationHeaders, that.correlationHeaders) &&
                        Objects.equals(properties, that.properties) &&
+                       Objects.equals(lastUpdate, that.lastUpdate) && Objects.equals(user, that.user) &&
                        Objects.equals(feedbackTargetElement, that.feedbackTargetElement);
     }
 
@@ -216,6 +280,6 @@ public class NoteElement implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(elementHeader, correlationHeaders, properties, feedbackTargetElement);
+        return Objects.hash(elementHeader, correlationHeaders, properties, feedbackTargetElement, user, lastUpdate);
     }
 }

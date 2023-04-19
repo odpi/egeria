@@ -34,8 +34,8 @@ public enum ToDoStatus implements Serializable
 
     private static final long serialVersionUID = 1L;
 
-    public static final String ENUM_TYPE_GUID  = "7197ea39-334d-403f-a70b-d40231092df7";
-    public static final String ENUM_TYPE_NAME  = "ToDoStatus";
+    private static final String ENUM_TYPE_GUID  = "7197ea39-334d-403f-a70b-d40231092df7";
+    private static final String ENUM_TYPE_NAME  = "ToDoStatus";
 
     private final int    openTypeOrdinal;
 

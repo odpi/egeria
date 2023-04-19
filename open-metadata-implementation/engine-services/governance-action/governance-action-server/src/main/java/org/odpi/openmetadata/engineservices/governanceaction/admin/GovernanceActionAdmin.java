@@ -22,6 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * GovernanceActionAdmin is called during server start-up and initializes the Governance Action OMES.
+ */
 public class GovernanceActionAdmin extends EngineServiceAdmin
 {
     private GovernanceActionInstance  governanceActionInstance = null;

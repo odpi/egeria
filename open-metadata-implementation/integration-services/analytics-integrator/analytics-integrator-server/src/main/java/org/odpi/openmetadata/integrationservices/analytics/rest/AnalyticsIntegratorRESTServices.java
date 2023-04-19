@@ -13,6 +13,7 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registr
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonInstanceHandler;
 import org.odpi.openmetadata.integrationservices.analytics.api.AnalyticsIntegratorAPI;
 import org.odpi.openmetadata.integrationservices.analytics.connector.AnalyticsIntegratorConnector;
+import org.odpi.openmetadata.integrationservices.analytics.connector.AnalyticsIntegratorOMISConnector;
 import org.odpi.openmetadata.integrationservices.analytics.contextmanager.AnalyticsIntegratorContextManager;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +39,7 @@ public class AnalyticsIntegratorRESTServices
     {
         IntegrationServiceRegistry.registerIntegrationService(IntegrationServiceDescription.ANALYTICS_INTEGRATOR_OMIS,
                                                               AnalyticsIntegratorContextManager.class.getName(),
-                                                              AnalyticsIntegratorAPI.class.getName());
+                                                              AnalyticsIntegratorOMISConnector.class.getName());
     }
 
 

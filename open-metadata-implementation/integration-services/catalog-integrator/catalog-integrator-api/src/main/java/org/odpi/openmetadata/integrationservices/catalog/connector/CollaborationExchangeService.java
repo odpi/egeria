@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.integrationservices.catalog.connector;
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.CollaborationExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.CollaborationExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
@@ -36,12 +36,12 @@ public class CollaborationExchangeService
      * @param auditLog logging destination
      */
     CollaborationExchangeService(CollaborationExchangeClient collaborationExchangeClient,
-                                 SynchronizationDirection synchronizationDirection,
-                                 String                   userId,
-                                 String                   assetManagerGUID,
-                                 String                   assetManagerName,
-                                 String                   connectorName,
-                                 AuditLog                 auditLog)
+                                 SynchronizationDirection    synchronizationDirection,
+                                 String                      userId,
+                                 String                      assetManagerGUID,
+                                 String                      assetManagerName,
+                                 String                      connectorName,
+                                 AuditLog                    auditLog)
     {
         this.collaborationExchangeClient = collaborationExchangeClient;
         this.synchronizationDirection    = synchronizationDirection;

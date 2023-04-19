@@ -1,6 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 /**
  * The converters are responsible for converting entities, classifications and relationships retrieved from the
@@ -11,3 +10,5 @@ package org.odpi.openmetadata.accessservices.communityprofile.converters;
  * When a converter is created, it is passed the entity with its embedded classifications and a relationship if
  * required on the constructor.  The bean is retrieved by calling getBean().
  */
+package org.odpi.openmetadata.accessservices.communityprofile.converters;
+

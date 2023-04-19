@@ -32,8 +32,8 @@ public enum CriticalityLevel implements Serializable
     OTHER        (99, 99,"Other",
                                "Another criticality level.");
 
-    public static final String ENUM_TYPE_GUID  = "22bcbf49-83e1-4432-b008-e09a8f842a1e";
-    public static final String ENUM_TYPE_NAME  = "CriticalityLevel";
+    private static final String ENUM_TYPE_GUID  = "22bcbf49-83e1-4432-b008-e09a8f842a1e";
+    private static final String ENUM_TYPE_NAME  = "CriticalityLevel";
 
     private final int    openTypeOrdinal;
 

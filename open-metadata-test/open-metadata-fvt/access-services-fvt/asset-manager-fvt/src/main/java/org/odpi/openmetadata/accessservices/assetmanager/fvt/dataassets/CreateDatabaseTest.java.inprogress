@@ -3,8 +3,8 @@
 
 package org.odpi.openmetadata.accessservices.assetmanager.fvt.dataassets;
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.DataAssetExchangeClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.ExternalAssetManagerClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.DataAssetExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ExternalAssetManagerClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.DataAssetElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SchemaAttributeElement;

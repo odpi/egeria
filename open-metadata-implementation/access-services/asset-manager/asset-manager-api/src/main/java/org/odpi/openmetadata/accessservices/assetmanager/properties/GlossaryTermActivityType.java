@@ -19,15 +19,38 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum GlossaryTermActivityType implements Serializable
 {
-    OPERATION  (0,  0,  "Operation","Normal processing."),
+    /**
+     * Operation - A small, well defined processing operation.
+     */
+    OPERATION  (0,  0,  "Operation","A small, well defined processing operation."),
+
+    /**
+     * Action - A requested or required change.
+     */
     ACTION     (1,  1,  "Action",   "A requested or required change."),
+
+    /**
+     * Task - A piece of work for a person, organization or engine.
+     */
     TASK       (2,  2,  "Task",     "A piece of work for a person, organization or engine."),
+
+    /**
+     * Process - A sequence of tasks.
+     */
     PROCESS    (3,  3,  "Process",  "A sequence of tasks."),
+
+    /**
+     * Project - An organized activity to achieve a specific goal.
+     */
     PROJECT    (4,  4,  "Project",  "An organized activity to achieve a specific goal."),
+
+    /**
+     * Other - An organized activity to achieve a specific goal.
+     */
     OTHER      (99, 99, "Other",    "Another type of activity.");
 
-    public static final String ENUM_TYPE_GUID  = "af7e403d-9865-4ebb-8c1a-1fd57b4f4bca";
-    public static final String ENUM_TYPE_NAME  = "ActivityType";
+    private static final String ENUM_TYPE_GUID  = "af7e403d-9865-4ebb-8c1a-1fd57b4f4bca";
+    private static final String ENUM_TYPE_NAME  = "ActivityType";
 
     private final int    openTypeOrdinal;
 

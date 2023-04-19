@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -169,9 +170,28 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                                     serviceName,
                                                     serverName);
 
-        if (anchorGUID != null)
+        EntityDetail parentEntity = this.getEntityFromRepository(userId,
+                                                                 parentGUID,
+                                                                 parentGUIDParameterName,
+                                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                 null,
+                                                                 null,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 supportedZones,
+                                                                 effectiveTime,
+                                                                 methodName);
+
+        String parentAnchorGUID = anchorGUID;
+
+        if (parentEntity != null)
         {
-            builder.setAnchors(userId, anchorGUID, methodName);
+            parentAnchorGUID = this.getAnchorGUIDFromAnchorsClassification(parentEntity, methodName);
+        }
+
+        if (parentAnchorGUID != null)
+        {
+            builder.setAnchors(userId, parentAnchorGUID, methodName);
         }
 
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
@@ -187,25 +207,23 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
 
         if (commentGUID != null)
         {
-            this.linkElementToElement(userId,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      parentGUID,
-                                      parentGUIDParameterName,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                      commentGUID,
-                                      commentGUIDParameter,
-                                      OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      supportedZones,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
-                                      builder.getRelationshipInstanceProperties(methodName),
-                                      effectiveFrom,
-                                      effectiveTo,
-                                      effectiveTime,
-                                      methodName);
+            this.uncheckedLinkElementToElement(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               parentGUID,
+                                               parentGUIDParameterName,
+                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                               commentGUID,
+                                               commentGUIDParameter,
+                                               OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               supportedZones,
+                                               OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
+                                               OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
+                                               builder.getRelationshipInstanceProperties(methodName),
+                                               effectiveFrom,
+                                               methodName);
         }
 
         return commentGUID;
@@ -220,9 +238,11 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param commentGUID   unique identifier for the comment to change
      * @param commentGUIDParameterName name of parameter for commentGUID
+     * @param qualifiedName unique name of the comment
      * @param commentType   type of comment enum.
      * @param commentText   the text of the comment.
      * @param isPublic      indicates whether the feedback should be shared or only be visible to the originating user
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param forLineage return elements marked with the Memento classification?
@@ -234,22 +254,24 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem adding the asset properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void   updateComment(String      userId,
-                                String      externalSourceGUID,
-                                String      externalSourceName,
-                                String      commentGUID,
-                                String      commentGUIDParameterName,
-                                int         commentType,
-                                String      commentText,
-                                boolean     isPublic,
-                                Date        effectiveFrom,
-                                Date        effectiveTo,
-                                boolean     forLineage,
-                                boolean     forDuplicateProcessing,
-                                Date        effectiveTime,
-                                String      methodName) throws InvalidParameterException,
-                                                               PropertyServerException,
-                                                               UserNotAuthorizedException
+    public void   updateComment(String              userId,
+                                String              externalSourceGUID,
+                                String              externalSourceName,
+                                String              commentGUID,
+                                String              commentGUIDParameterName,
+                                String              qualifiedName,
+                                int                 commentType,
+                                String              commentText,
+                                boolean             isPublic,
+                                boolean             isMergeUpdate,
+                                Date                effectiveFrom,
+                                Date                effectiveTo,
+                                boolean             forLineage,
+                                boolean             forDuplicateProcessing,
+                                Date                effectiveTime,
+                                String              methodName) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException
     {
         final String textParameter = "commentText";
 
@@ -264,7 +286,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                                                         effectiveTime,
                                                                         methodName);
 
-        CommentBuilder builder = new CommentBuilder(null,
+        CommentBuilder builder = new CommentBuilder(qualifiedName,
                                                     commentType,
                                                     commentText,
                                                     isPublic,
@@ -285,7 +307,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                     forDuplicateProcessing,
                                     supportedZones,
                                     builder.getInstanceProperties(methodName),
-                                    true,
+                                    isMergeUpdate,
                                     effectiveTime,
                                     methodName);
 
@@ -381,6 +403,124 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
 
 
     /**
+     * Link a comment that contains the best answer to a question posed in another comment.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param questionCommentGUID unique identifier of the comment containing the question
+     * @param questionCommentGUIDParameterName parameter supplying questionCommentGUID
+     * @param answerCommentGUID unique identifier of the comment containing the accepted answer
+     * @param answerCommentGUIDParameterName parameter supplying the answerCommentGUID
+     * @param isPublic who can retrieve the relationship
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupAcceptedAnswer(String  userId,
+                                    String  externalSourceGUID,
+                                    String  externalSourceName,
+                                    String  questionCommentGUID,
+                                    String  questionCommentGUIDParameterName,
+                                    String  answerCommentGUID,
+                                    String  answerCommentGUIDParameterName,
+                                    boolean isPublic,
+                                    Date    effectiveFrom,
+                                    Date    effectiveTo,
+                                    Date    effectiveTime,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    String  methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        InstanceProperties instanceProperties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
+                                                                                              null,
+                                                                                              OpenMetadataAPIMapper.IS_PUBLIC_PROPERTY_NAME,
+                                                                                              isPublic,
+                                                                                              methodName);
+        this.linkElementToElement(userId,
+                                  externalSourceGUID,
+                                  externalSourceName,
+                                  questionCommentGUID,
+                                  questionCommentGUIDParameterName,
+                                  OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                  answerCommentGUID,
+                                  answerCommentGUIDParameterName,
+                                  OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                  forLineage,
+                                  forDuplicateProcessing,
+                                  supportedZones,
+                                  OpenMetadataAPIMapper.ANSWER_RELATIONSHIP_TYPE_GUID,
+                                  OpenMetadataAPIMapper.ANSWER_RELATIONSHIP_TYPE_NAME,
+                                  instanceProperties,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
+                                  methodName);
+    }
+
+
+    /**
+     * Unlink a comment that contains an answer to a question posed in another comment.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param questionCommentGUID unique identifier of the comment containing the question
+     * @param questionCommentGUIDParameterName parameter supplying questionCommentGUID
+     * @param answerCommentGUID unique identifier of the comment containing the accepted answer
+     * @param answerCommentGUIDParameterName parameter supplying answerCommentGUID
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearAcceptedAnswer(String  userId,
+                                    String  externalSourceGUID,
+                                    String  externalSourceName,
+                                    String  questionCommentGUID,
+                                    String  questionCommentGUIDParameterName,
+                                    String  answerCommentGUID,
+                                    String  answerCommentGUIDParameterName,
+                                    Date    effectiveTime,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    String  methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        this.unlinkElementFromElement(userId,
+                                      false,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      questionCommentGUID,
+                                      questionCommentGUIDParameterName,
+                                      OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                      answerCommentGUID,
+                                      answerCommentGUIDParameterName,
+                                      OpenMetadataAPIMapper.COMMENT_TYPE_GUID,
+                                      OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      OpenMetadataAPIMapper.ANSWER_RELATIONSHIP_TYPE_GUID,
+                                      OpenMetadataAPIMapper.ANSWER_RELATIONSHIP_TYPE_NAME,
+                                      effectiveTime,
+                                      methodName);
+    }
+
+    /**
      * Return the comments attached to an entity.
      *
      * @param userId     calling user
@@ -430,64 +570,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                         OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
                                         null,
                                         null,
-                                        0,
-                                        forLineage,
-                                        forDuplicateProcessing,
-                                        serviceSupportedZones,
-                                        startingFrom,
-                                        pageSize,
-                                        effectiveTime,
-                                        methodName);
-    }
-
-
-    /**
-     * Return the comments attached to an entity. (No special security checking is required).
-     *
-     * @param userId     calling user
-     * @param elementGUID identifier for the entity that the comment is attached to
-     * @param elementGUIDParameterName name of the parameter providing the element GUID
-     * @param elementTypeName name of the type of the anchor entity
-     * @param serviceSupportedZones supported zones for the particular service
-     * @param startingFrom where to start from in the list
-     * @param pageSize maximum number of results that can be returned
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return list of retrieved objects
-     *
-     * @throws InvalidParameterException  the input properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public List<B>  getComments(String       userId,
-                                String       elementGUID,
-                                String       elementGUIDParameterName,
-                                String       elementTypeName,
-                                List<String> serviceSupportedZones,
-                                int          startingFrom,
-                                int          pageSize,
-                                boolean      forLineage,
-                                boolean      forDuplicateProcessing,
-                                Date         effectiveTime,
-                                String       methodName) throws InvalidParameterException,
-                                                                PropertyServerException,
-                                                                UserNotAuthorizedException
-    {
-        return this.getAttachedElements(userId,
-                                        null,
-                                        null,
-                                        elementGUID,
-                                        elementGUIDParameterName,
-                                        elementTypeName,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
-                                        OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
-                                        null,
-                                        null,
-                                        0,
+                                        2,
                                         forLineage,
                                         forDuplicateProcessing,
                                         serviceSupportedZones,
@@ -542,7 +625,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                         OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
                                         null,
                                         null,
-                                        0,
+                                        2,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,

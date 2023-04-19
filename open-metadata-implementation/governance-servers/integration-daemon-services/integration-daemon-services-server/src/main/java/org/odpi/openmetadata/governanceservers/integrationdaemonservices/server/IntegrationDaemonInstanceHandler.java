@@ -10,6 +10,7 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handler
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupSummary;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * IntegrationDaemonInstanceHandler retrieves information from the instance map for the
@@ -126,24 +127,24 @@ public class IntegrationDaemonInstanceHandler extends GovernanceServerServiceIns
      * @param userId calling user
      * @param serverName name of the server tied to the request
      * @param integrationGroupName qualifiedName of the requested integration group
-     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @param methodName name of the REST API call (typically the top-level methodName)
      *
      * @throws InvalidParameterException no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    void  refreshConfig(String userId,
-                        String serverName,
-                        String integrationGroupName,
-                        String serviceOperationName) throws InvalidParameterException,
+    void refreshIntegrationGroupConfig(String userId,
+                                       String serverName,
+                                       String integrationGroupName,
+                                       String methodName) throws InvalidParameterException,
                                                             UserNotAuthorizedException,
                                                             PropertyServerException
     {
-        IntegrationDaemonInstance instance = (IntegrationDaemonInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
+        IntegrationDaemonInstance instance = (IntegrationDaemonInstance)super.getServerServiceInstance(userId, serverName, methodName);
 
         if (instance != null)
         {
-            instance.refreshConfig(integrationGroupName, serviceOperationName);
+            instance.refreshIntegrationGroupConfig(integrationGroupName, methodName);
         }
     }
 
@@ -203,5 +204,124 @@ public class IntegrationDaemonInstanceHandler extends GovernanceServerServiceIns
         }
 
         return null;
+    }
+
+
+    /**
+     * Retrieve the configuration properties of the named connector.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @param connectorName name of a specific connector
+     *
+     * @return property map
+     * @throws InvalidParameterException the connector name is not recognized
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    public Map<String, Object> getConfigurationProperties(String userId,
+                                                          String serverName,
+                                                          String serviceOperationName,
+                                                          String connectorName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        IntegrationDaemonInstance instance = (IntegrationDaemonInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getConfigurationProperties(connectorName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Update the configuration properties of the named connector.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @param connectorName name of a specific connector
+     * @param isMergeUpdate should the properties be merged into the existing properties or replace them
+     * @param configurationProperties new configuration properties
+     *
+     * @throws InvalidParameterException the connector name is not recognized
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    public void updateConfigurationProperties(String              userId,
+                                              String              serverName,
+                                              String              serviceOperationName,
+                                              String              connectorName,
+                                              boolean             isMergeUpdate,
+                                              Map<String, Object> configurationProperties) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        IntegrationDaemonInstance instance = (IntegrationDaemonInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            instance.updateConfigurationProperties(userId, connectorName, isMergeUpdate, configurationProperties);
+        }
+    }
+
+
+    /**
+     * Refresh the named connector.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @param connectorName name of a specific connector
+     *
+     * @throws InvalidParameterException the connector name is not recognized
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    public void refreshConnector(String userId,
+                                 String serverName,
+                                 String serviceOperationName,
+                                 String connectorName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
+    {
+        IntegrationDaemonInstance instance = (IntegrationDaemonInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            instance.refreshConnector(connectorName);
+        }
+    }
+
+
+    /**
+     * Restart the named connector.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @param connectorName name of a specific connector
+     *
+     * @throws InvalidParameterException the connector name is not recognized
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    public void restartConnector(String userId,
+                                 String serverName,
+                                 String serviceOperationName,
+                                 String connectorName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
+    {
+        IntegrationDaemonInstance instance = (IntegrationDaemonInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            instance.restartConnector(connectorName);
+        }
     }
 }

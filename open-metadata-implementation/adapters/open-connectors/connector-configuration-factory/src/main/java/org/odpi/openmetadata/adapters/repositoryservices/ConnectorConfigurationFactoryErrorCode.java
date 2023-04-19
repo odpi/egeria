@@ -5,11 +5,6 @@ package org.odpi.openmetadata.adapters.repositoryservices;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.text.MessageFormat;
-import java.util.Arrays;
 
 
 /**
@@ -41,7 +36,7 @@ public enum ConnectorConfigurationFactoryErrorCode implements ExceptionMessageSe
                                        "the connection's connectorType. Then retry the request.");
 
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
 
     /**
@@ -52,9 +47,8 @@ public enum ConnectorConfigurationFactoryErrorCode implements ExceptionMessageSe
      *
      * This will expand out to the 5 parameters shown below.
      *
-     *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique Id for the message
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error

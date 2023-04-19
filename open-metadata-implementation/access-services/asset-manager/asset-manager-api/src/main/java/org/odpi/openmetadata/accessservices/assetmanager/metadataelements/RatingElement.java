@@ -30,7 +30,7 @@ public class RatingElement implements MetadataElement, Serializable
 
     private ElementHeader                   elementHeader         = null;
     private List<MetadataCorrelationHeader> correlationHeaders    = null;
-    private RatingProperties           properties            = null;
+    private RatingProperties                properties            = null;
     private FeedbackTargetElement           feedbackTargetElement = null;
 
 

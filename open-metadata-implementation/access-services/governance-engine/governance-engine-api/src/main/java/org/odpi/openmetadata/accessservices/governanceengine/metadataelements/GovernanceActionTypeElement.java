@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceActionTypeProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -23,7 +24,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceActionTypeElement implements MetadataElement, Serializable
 {
-    private static final long     serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private ElementHeader                  elementHeader        = null;
     private GovernanceActionTypeProperties actionTypeProperties = null;

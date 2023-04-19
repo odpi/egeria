@@ -4,8 +4,8 @@
 package org.odpi.openmetadata.accessservices.assetmanager.fvt.clientconstructors;
 
 import org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerEventClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.GlossaryExchangeClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.ExternalAssetManagerClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ExternalAssetManagerClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GlossaryExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.fvt.common.AssetManagerTestBase;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;

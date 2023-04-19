@@ -22,6 +22,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.List;
 
+/**
+ * GovernanceEngineAdmin is called during server start up to set up the Governance Engine OMAS.
+ */
 public class GovernanceEngineAdmin extends AccessServiceAdmin
 {
     private AuditLog                          auditLog       = null;

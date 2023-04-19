@@ -63,6 +63,17 @@ public class IntegrationServiceRegistry
 
 
     /**
+     * Return a map from service-url-root to the context manager class name.
+     *
+     * @return list of registered OMIS serviceURLMarkers
+     */
+    public static List<String> getRegisteredServiceURLMarkers()
+    {
+        return new ArrayList<>(serviceContextManagerClasses.keySet());
+    }
+
+
+    /**
      * Retrieve a partially filled configuration properties object for an integration service.  It needs the connections for the
      * integration connectors to be added.  Called from admin services.
      *

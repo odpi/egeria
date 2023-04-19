@@ -30,17 +30,9 @@ public enum IntegrationDaemonServicesErrorCode implements ExceptionMessageSet
     
     NO_CONFIG_DOC(400,"INTEGRATION-DAEMON-SERVICES-400-001",
                   "Integration daemon {0} has been passed a null configuration document section for the integration daemon services",
-                  "The integration daemon services can not retrieve its configuration values.  " +
-                          "The hosting integration daemon server fails to start.",
-                  "This is an internal logic error since the admin services should not have initialized the integration daemon services" +
-                          "without this section of the configuration document filled in.  Raise an issue to get this fixed."),
-
-    NO_INTEGRATION_SERVICES_CONFIGURED(400,"INTEGRATION-DAEMON-SERVICES-400-002",
-                                       "Integration daemon {0} is not configured with any integration services",
-                                       "The integration daemon, fails to start because it would be bored " +
-                                               "with nothing to do.",
-                                       "Add the configuration for at least one integration service to the integration service's section" +
-                                               "of this integration daemon's configuration document and then restart the integration daemon."),
+                  "The integration daemon services can not retrieve any configuration values.  " +
+                          "The integration daemon fails to start because it would be bored with nothing to do.",
+                  "Add the configuration for at least one integration service or integration group to this integration daemon's configuration document and then restart the integration daemon."),
 
     NO_OMAS_SERVER_URL(400,"INTEGRATION-DAEMON-SERVICES-400-003",
                        "Integration service {0} is not configured with the platform URL root for the {1}",
@@ -157,10 +149,11 @@ public enum IntegrationDaemonServicesErrorCode implements ExceptionMessageSet
                                      "raise an issue to get it fixed.  Once the cause is resolved, retry the request."),
 
     UNKNOWN_CONNECTOR_NAME(400, "INTEGRATION-DAEMON-SERVICES-400-031",
-                                "Integration connector named {0} is not running in the integration service {1} in integration daemon {2}",
-                                "The integration connector specified on a request is not known to the integration service.",
+                                "Integration connector named {0} is not running in the integration daemon {1}",
+                                "The integration connector specified on a request is not known to the integration daemon.",
                                 "This may be a configuration error in the integration daemon or an error in the caller.  " +
-                                        "The supported integration connectors are listed in the integration service's configuration.  " +
+                                        "The supported integration connectors may be listed in the integration service's configuration" +
+                                        "or be part of one of the configured integration groups.  " +
                                         "Check the configuration document for the daemon and then its start up messages to ensure the correct " +
                                         "integration services and connectors are started successfully.  " +
                                         "Look for other error messages that indicate that an error occurred during " +
@@ -170,8 +163,8 @@ public enum IntegrationDaemonServicesErrorCode implements ExceptionMessageSet
                                         "If all of this is correct then it may be a code error in the integration daemon services and you need to " +
                                         "raise an issue to get it fixed.  Once the cause is resolved, retry the request."),
 
-    UNKNOWN_GOVERNANCE_ENGINE_CONFIG(400, "INTEGRATION-DAEMON-SERVICES-400-032",
-                                     "Properties for integration group called {0} have not been returned by open metadata server {1} to integration" +
+    UNKNOWN_INTEGRATION_GROUP_CONFIG(400, "INTEGRATION-DAEMON-SERVICES-400-032",
+                                     "Properties for integration group called {0} have not been returned by open metadata server {1} to the integration" +
                                              " daemon services in server {2}",
                                      "The integration daemon is still not able to initialize the integration group and so it will not be " +
                                              "able to support any integration connectors for this group.",

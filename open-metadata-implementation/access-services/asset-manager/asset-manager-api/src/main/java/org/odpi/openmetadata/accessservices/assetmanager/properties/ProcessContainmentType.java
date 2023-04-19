@@ -26,14 +26,25 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public enum ProcessContainmentType implements Serializable
 {
+    /**
+     * Owned - The parent process owns the child process in the relationship, such that if the parent is removed the child should also be removed. A child can have at most one such parent.
+     */
     OWNED (0,  0,  "Owned",  "The parent process owns the child process in the relationship, such that if the parent is removed the child should also be removed. A child can have at most one such parent."),
+
+    /**
+     * Used - The child process is simply used by the parent. A child process can have many such relationships to parents.
+     */
     USED  (1,  1,  "Used",   "The child process is simply used by the parent. A child process can have many such relationships to parents."),
+
+    /**
+     * Other - None of the above.
+     */
     OTHER (99, 99, "Other",  "None of the above.");
 
     private static final long serialVersionUID = 1L;
 
-    public static final String ENUM_TYPE_GUID  = "1bb4b908-7983-4802-a2b5-91b095552ee9";
-    public static final String ENUM_TYPE_NAME  = "ProcessContainmentType";
+    private static final String ENUM_TYPE_GUID  = "1bb4b908-7983-4802-a2b5-91b095552ee9";
+    private static final String ENUM_TYPE_NAME  = "ProcessContainmentType";
 
     private final int    ordinal;
     private final int    openTypeOrdinal;
