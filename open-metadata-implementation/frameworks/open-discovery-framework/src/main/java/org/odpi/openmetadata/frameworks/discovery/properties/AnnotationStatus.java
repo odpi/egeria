@@ -30,8 +30,8 @@ public enum AnnotationStatus implements Serializable
 
     private static final long     serialVersionUID = 1L;
 
-    public static final String ENUM_TYPE_GUID  = "71187df6-ef66-4f88-bc03-cd3c7f925165";
-    public static final String ENUM_TYPE_NAME  = "AnnotationStatus";
+    private static final String ENUM_TYPE_GUID  = "71187df6-ef66-4f88-bc03-cd3c7f925165";
+    private static final String ENUM_TYPE_NAME  = "AnnotationStatus";
 
     private int    statusCode;
     private int    openTypeOrdinal;

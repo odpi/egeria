@@ -27,8 +27,8 @@ public enum StarRating implements Serializable
     FOUR_STARS       (4, 4, "****", "Very Good"),
     FIVE_STARS       (5, 5, "*****", "Excellent");
 
-    public static final String ENUM_TYPE_GUID  = "77fea3ef-6ec1-4223-8408-38567e9d3c93";
-    public static final String ENUM_TYPE_NAME  = "StarRating";
+    private static final String ENUM_TYPE_GUID  = "77fea3ef-6ec1-4223-8408-38567e9d3c93";
+    private static final String ENUM_TYPE_NAME  = "StarRating";
 
     private final int    openTypeOrdinal;
 

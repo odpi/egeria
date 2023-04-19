@@ -32,8 +32,8 @@ public enum RelatedMediaType implements Serializable
     VIDEO(3,    3,  "Video",    "The media is a video recording."),
     OTHER(99,   99, "Other",    "The media type is not supported.");
 
-    public static final String ENUM_TYPE_GUID  = "9548390c-69f5-4dc6-950d-6fdffb257b56";
-    public static final String ENUM_TYPE_NAME  = "MediaType";
+    private static final String ENUM_TYPE_GUID  = "9548390c-69f5-4dc6-950d-6fdffb257b56";
+    private static final String ENUM_TYPE_NAME  = "MediaType";
 
     private final int    openTypeOrdinal;
 

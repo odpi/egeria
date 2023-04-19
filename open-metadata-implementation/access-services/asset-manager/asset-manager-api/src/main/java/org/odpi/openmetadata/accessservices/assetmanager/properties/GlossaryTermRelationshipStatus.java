@@ -19,14 +19,33 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum GlossaryTermRelationshipStatus implements Serializable
 {
+    /**
+     * Draft - The term relationship is in development.
+     */
     DRAFT      (0,  0,  "Draft",      "The term relationship is in development."),
+
+    /**
+     * Active - The term relationship is approved and in use.
+     */
     ACTIVE     (1,  1,  "Active",     "The term relationship is approved and in use."),
+
+    /**
+     * Deprecated - The term relationship should no longer be used.
+     */
     DEPRECATED (2,  2,  "Deprecated", "The term relationship should no longer be used."),
+
+    /**
+     * Obsolete - The term relationship must no longer be used.
+     */
     OBSOLETE   (3,  3,  "Obsolete",   "The term relationship must no longer be used."),
+
+    /**
+     * Other - Another term relationship status.
+     */
     OTHER      (99, 99, "Other",      "Another term relationship status.");
 
-    public static final String ENUM_TYPE_GUID  = "42282652-7d60-435e-ad3e-7cfe5291bcc7";
-    public static final String ENUM_TYPE_NAME  = "TermRelationshipStatus";
+    private static final String ENUM_TYPE_GUID  = "42282652-7d60-435e-ad3e-7cfe5291bcc7";
+    private static final String ENUM_TYPE_NAME  = "TermRelationshipStatus";
 
     private final int    openTypeOrdinal;
 

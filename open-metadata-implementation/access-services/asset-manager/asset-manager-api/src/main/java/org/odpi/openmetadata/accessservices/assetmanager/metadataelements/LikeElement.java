@@ -30,7 +30,7 @@ public class LikeElement implements MetadataElement, Serializable
 
     private ElementHeader                   elementHeader         = null;
     private List<MetadataCorrelationHeader> correlationHeaders    = null;
-    private LikeProperties           properties            = null;
+    private LikeProperties                  properties            = null;
     private FeedbackTargetElement           feedbackTargetElement = null;
 
 

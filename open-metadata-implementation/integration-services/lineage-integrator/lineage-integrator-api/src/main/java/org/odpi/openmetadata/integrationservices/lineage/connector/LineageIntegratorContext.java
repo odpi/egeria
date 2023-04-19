@@ -5,10 +5,9 @@ package org.odpi.openmetadata.integrationservices.lineage.connector;
 
 import org.odpi.openmetadata.accessservices.assetmanager.api.AssetManagerEventListener;
 import org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerEventClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.DataAssetExchangeClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.GovernanceExchangeClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.LineageExchangeClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.StewardshipExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.DataAssetExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GovernanceExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.LineageExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -38,7 +37,6 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
     private final DataAssetExchangeClient    dataAssetExchangeClient;
     private final LineageExchangeClient      lineageExchangeClient;
     private final GovernanceExchangeClient   governanceExchangeClient;
-    private final StewardshipExchangeClient  stewardshipExchangeClient;
     private final AssetManagerEventClient    eventClient;
     private final String                     integrationServiceName;
     private final AuditLog                   auditLog;
@@ -59,7 +57,6 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
      * @param dataAssetExchangeClient client for data asset requests
      * @param lineageExchangeClient client for lineage requests
      * @param governanceExchangeClient client for governance actions and related elements
-     * @param stewardshipExchangeClient client for attaching governance metadata
      * @param eventClient client managing listeners for the OMAS OutTopic
      * @param generateIntegrationReport should the connector generate an integration reports?
      * @param permittedSynchronization the direction of integration permitted by the integration connector
@@ -80,7 +77,6 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
                                     DataAssetExchangeClient      dataAssetExchangeClient,
                                     LineageExchangeClient        lineageExchangeClient,
                                     GovernanceExchangeClient     governanceExchangeClient,
-                                    StewardshipExchangeClient    stewardshipExchangeClient,
                                     AssetManagerEventClient      eventClient,
                                     boolean                      generateIntegrationReport,
                                     PermittedSynchronization     permittedSynchronization,
@@ -106,7 +102,6 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
         this.dataAssetExchangeClient    = dataAssetExchangeClient;
         this.lineageExchangeClient      = lineageExchangeClient;
         this.governanceExchangeClient   = governanceExchangeClient;
-        this.stewardshipExchangeClient  = stewardshipExchangeClient;
         this.eventClient                = eventClient;
         this.integrationServiceName     = integrationServiceName;
         this.auditLog                   = auditLog;
@@ -2927,7 +2922,14 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
     {
-        return lineageExchangeClient.getDestinationLineageMappings(userId, externalSourceGUID, externalSourceName, sourceElementGUID, startFrom, pageSize, effectiveTime, forLineage,
+        return lineageExchangeClient.getDestinationLineageMappings(userId,
+                                                                   externalSourceGUID,
+                                                                   externalSourceName,
+                                                                   sourceElementGUID,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   effectiveTime,
+                                                                   forLineage,
                                                                    forDuplicateProcessing);
     }
 
@@ -2953,7 +2955,14 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        return lineageExchangeClient.getSourceLineageMappings(userId, externalSourceGUID, externalSourceName, destinationElementGUID, startFrom, pageSize, effectiveTime, forLineage,
+        return lineageExchangeClient.getSourceLineageMappings(userId,
+                                                              externalSourceGUID,
+                                                              externalSourceName,
+                                                              destinationElementGUID,
+                                                              startFrom,
+                                                              pageSize,
+                                                              effectiveTime,
+                                                              forLineage,
                                                               forDuplicateProcessing);
     }
 
@@ -2963,7 +2972,6 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
      * Classify the element with the Memento classification to indicate that it has been logically deleted for by lineage requests.
      *
      * @param elementGUID unique identifier of the metadata element to update
-     * @param elementExternalIdentifier unique identifier of the element in the external asset manager
      * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -2976,14 +2984,14 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
-        stewardshipExchangeClient.addMementoClassification(userId,
-                                                           externalSourceGUID,
-                                                           externalSourceName,
-                                                           elementGUID,
-                                                           elementExternalIdentifier,
-                                                           effectiveTime,
-                                                           forLineage,
-                                                           forDuplicateProcessing);
+        lineageExchangeClient.addMementoClassification(userId,
+                                                       externalSourceGUID,
+                                                       externalSourceName,
+                                                       elementGUID,
+                                                       elementExternalIdentifier,
+                                                       effectiveTime,
+                                                       forLineage,
+                                                       forDuplicateProcessing);
     }
 
 
@@ -2991,7 +2999,6 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
      * Remove the memento designation from the element.
      *
      * @param elementGUID unique identifier of the metadata element to update
-     * @param elementExternalIdentifier unique identifier of the element in the external asset manager
      * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -3001,17 +3008,17 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
     public void clearMementoClassification(String elementGUID,
                                            String elementExternalIdentifier,
                                            Date   effectiveTime) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
-        stewardshipExchangeClient.clearMementoClassification(userId,
-                                                             externalSourceGUID,
-                                                             externalSourceName,
-                                                             elementGUID,
-                                                             elementExternalIdentifier,
-                                                             effectiveTime,
-                                                             forLineage,
-                                                             forDuplicateProcessing);
+        lineageExchangeClient.clearMementoClassification(userId,
+                                                         externalSourceGUID,
+                                                         externalSourceName,
+                                                         elementGUID,
+                                                         elementExternalIdentifier,
+                                                         effectiveTime,
+                                                         forLineage,
+                                                         forDuplicateProcessing);
     }
 
 
@@ -3032,14 +3039,14 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        stewardshipExchangeClient.addIncompleteClassification(userId,
-                                                              externalSourceGUID,
-                                                              externalSourceName,
-                                                              elementGUID,
-                                                              elementExternalIdentifier,
-                                                              effectiveTime,
-                                                              forLineage,
-                                                              forDuplicateProcessing);
+        lineageExchangeClient.addIncompleteClassification(userId,
+                                                          externalSourceGUID,
+                                                          externalSourceName,
+                                                          elementGUID,
+                                                          elementExternalIdentifier,
+                                                          effectiveTime,
+                                                          forLineage,
+                                                          forDuplicateProcessing);
     }
 
 
@@ -3060,14 +3067,14 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        stewardshipExchangeClient.clearIncompleteClassification(userId,
-                                                                externalSourceGUID,
-                                                                externalSourceName,
-                                                                elementGUID,
-                                                                elementExternalIdentifier,
-                                                                effectiveTime,
-                                                                forLineage,
-                                                                forDuplicateProcessing);
+        lineageExchangeClient.clearIncompleteClassification(userId,
+                                                            externalSourceGUID,
+                                                            externalSourceName,
+                                                            elementGUID,
+                                                            elementExternalIdentifier,
+                                                            effectiveTime,
+                                                            forLineage,
+                                                            forDuplicateProcessing);
     }
 
 

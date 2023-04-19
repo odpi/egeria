@@ -3,8 +3,8 @@
 
 package org.odpi.openmetadata.accessservices.assetmanager.fvt.connections;
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.ConnectionExchangeClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.ExternalAssetManagerClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ConnectionExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ExternalAssetManagerClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ConnectorTypeElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ConnectionElement;

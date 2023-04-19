@@ -32,6 +32,7 @@ public class GlossaryTermElement implements MetadataElement, Serializable
     private ElementHeader                   elementHeader          = null;
     private List<MetadataCorrelationHeader> correlationHeaders     = null;
     private GlossaryTermProperties          glossaryTermProperties = null;
+    private RelatedElement                  relatedElement         = null;
 
 
     /**
@@ -137,6 +138,28 @@ public class GlossaryTermElement implements MetadataElement, Serializable
     public void setGlossaryTermProperties(GlossaryTermProperties glossaryTermProperties)
     {
         this.glossaryTermProperties = glossaryTermProperties;
+    }
+
+
+    /**
+     * Return details of the relationship used to retrieve the element.
+     *
+     * @return relationship properties and starting element
+     */
+    public RelatedElement getRelatedElement()
+    {
+        return relatedElement;
+    }
+
+
+    /**
+     * Set up details of the relationship used to retrieve the element.
+     *
+     * @param relatedElement relationship properties and starting element
+     */
+    public void setRelatedElement(RelatedElement relatedElement)
+    {
+        this.relatedElement = relatedElement;
     }
 
 

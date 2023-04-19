@@ -182,6 +182,8 @@ public class Asset extends Referenceable
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", owner='" + getOwner() + '\'' +
                        ", ownerType=" + getOwnerType() +
+                       ", ownerTypeName='" + getOwnerTypeName() + '\'' +
+                       ", ownerPropertyName='" + getOwnerPropertyName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        ", securityLabels=" + getSecurityLabels() +
                        ", securityProperties=" + getSecurityProperties() +

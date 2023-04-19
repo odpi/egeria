@@ -39,9 +39,9 @@ public enum OwnerType implements Serializable {
     @Setter(AccessLevel.NONE)
     private static final long serialVersionUID = 1L;
 
-    public static final String ENUM_TYPE_GUID = "9548390c-69f5-4dc6-950d-6feeee257b56";
+    private static final String ENUM_TYPE_GUID = "9548390c-69f5-4dc6-950d-6feeee257b56";
 
-    public static final String ENUM_TYPE_NAME = "AssetOwnerType";
+    private static final String ENUM_TYPE_NAME = "AssetOwnerType";
 
     /**
      * The code for this enum that comes from the Open Metadata Type that this enum represents

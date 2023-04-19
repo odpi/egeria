@@ -28,10 +28,29 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum GovernanceDefinitionStatus implements Serializable
 {
+    /**
+     * Draft - The governance definition is still in development.
+     */
     DRAFT        (0,  "Draft",      "The governance definition is still in development."),
+
+    /**
+     * Proposed - The governance definition is in review and not yet active.
+     */
     PROPOSED     (1,  "Proposed",   "The governance definition is in review and not yet active."),
+
+    /**
+     * Active - The governance definition is approved and in use.
+     */
     ACTIVE       (2,  "Active",     "The governance definition is approved and in use."),
+
+    /**
+     * Deprecated - The governance definition has been superseded.
+     */
     DEPRECATED   (3,  "Deprecated", "The governance definition has been superseded."),
+
+    /**
+     * Other - The governance definition in a locally defined state.
+     */
     OTHER        (99, "Other",      "The governance definition in a locally defined state.");
 
     private static final long serialVersionUID = 1L;

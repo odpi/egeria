@@ -29,8 +29,8 @@ public enum DiscoveryRequestStatus implements Serializable
 
     private static final long     serialVersionUID = 1L;
 
-    public static final String ENUM_TYPE_GUID  = "b2fdeddd-24eb-4e9c-a2a4-2693828d4a69";
-    public static final String ENUM_TYPE_NAME  = "DiscoveryServiceRequestStatus";
+    private static final String ENUM_TYPE_GUID  = "b2fdeddd-24eb-4e9c-a2a4-2693828d4a69";
+    private static final String ENUM_TYPE_NAME  = "DiscoveryServiceRequestStatus";
 
     private String statusName;
     private String statusDescription;

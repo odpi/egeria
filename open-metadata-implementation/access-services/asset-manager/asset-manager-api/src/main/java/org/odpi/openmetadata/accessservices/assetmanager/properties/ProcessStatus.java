@@ -28,10 +28,29 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum ProcessStatus implements Serializable
 {
-    UNKNOWN   (0,0,  "<Unknown>","Unknown process status."),
+    /**
+     * Unknown- Unknown process status.
+     */
+    UNKNOWN   (0,0,  "Unknown",  "Unknown process status."),
+
+    /**
+     * Draft - The process is incomplete.
+     */
     DRAFT     (1,1,  "Draft",    "The process is incomplete."),
+
+    /**
+     * Proposed - The process is in review.
+     */
     PROPOSED  (2,3,  "Proposed", "The process is in review."),
+
+    /**
+     * Approved - The process is approved.
+     */
     APPROVED  (3,4,  "Approved", "The process is approved."),
+
+    /**
+     * Active - The process is approved and in use.
+     */
     ACTIVE    (4,15, "Active",   "The process is approved and in use.");
 
 
@@ -40,7 +59,7 @@ public enum ProcessStatus implements Serializable
     private final String name;
     private final String description;
 
-    private static final long     serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
 
     /**

@@ -5,6 +5,17 @@ package org.odpi.openmetadata.integrationservices.catalog.connector;
 
 import org.odpi.openmetadata.accessservices.assetmanager.api.AssetManagerEventListener;
 import org.odpi.openmetadata.accessservices.assetmanager.client.*;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.CollaborationExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ConnectionExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.DataAssetExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ExternalAssetManagerClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ExternalReferenceExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GlossaryExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GovernanceExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.InfrastructureExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.LineageExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.StewardshipExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ValidValuesExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -38,8 +49,8 @@ public class CatalogIntegratorContext extends IntegrationContext
     public final static String validValuesExchangeServiceName       = "ValidValuesExchangeService";
 
 
-    private final ExternalAssetManagerClient       assetManagerClient;
-    private final AssetManagerEventClient          eventClient;
+    private final ExternalAssetManagerClient assetManagerClient;
+    private final AssetManagerEventClient    eventClient;
     private final ConnectorFactoryService          connectorFactoryService;
     private final CollaborationExchangeService     collaborationExchangeService;
     private final ConnectionExchangeService        connectionExchangeService;

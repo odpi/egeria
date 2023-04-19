@@ -639,6 +639,35 @@ public abstract class OpenMetadataClient implements MetadataElementInterface,
 
 
     /**
+     * Using the named governance action process as a template, initiate a chain of governance actions.
+     *
+     * @param userId caller's userId
+     * @param processQualifiedName unique name of the governance action process to use
+     * @param requestSourceGUIDs  request source elements for the resulting governance action service
+     * @param actionTargets map of action target names to GUIDs for the resulting governance action service
+     * @param startTime future start time or null for "as soon as possible"
+     * @param requestParameters request properties to be passed to the first governance action
+     * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
+     * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine).
+     *
+     * @return unique identifier of the first governance action of the process
+     * @throws InvalidParameterException null or unrecognized qualified name of the process
+     * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action process
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    public abstract String initiateGovernanceActionProcess(String                userId,
+                                                           String                processQualifiedName,
+                                                           List<String>          requestSourceGUIDs,
+                                                           List<NewActionTarget> actionTargets,
+                                                           Date                  startTime,
+                                                           Map<String, String>   requestParameters,
+                                                           String                originatorServiceName,
+                                                           String                originatorEngineName) throws InvalidParameterException,
+                                                                                                              UserNotAuthorizedException,
+                                                                                                              PropertyServerException;
+
+
+    /**
      * Create an incident report to capture the situation detected by this governance action service.
      * This incident report will be processed by other governance activities.
      *

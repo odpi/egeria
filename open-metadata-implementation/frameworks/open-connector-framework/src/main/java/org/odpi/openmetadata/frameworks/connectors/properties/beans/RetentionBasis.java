@@ -36,8 +36,8 @@ public enum RetentionBasis implements Serializable
     OTHER             (99, 99, "Other",
                                "Another basis for determining the retention requirement.");
 
-    public static final String ENUM_TYPE_GUID  = "de79bf78-ecb0-4fd0-978f-ecc2cb4ff6c7";
-    public static final String ENUM_TYPE_NAME  = "RetentionBasis";
+    private static final String ENUM_TYPE_GUID  = "de79bf78-ecb0-4fd0-978f-ecc2cb4ff6c7";
+    private static final String ENUM_TYPE_NAME  = "RetentionBasis";
 
     private final int    openTypeOrdinal;
 

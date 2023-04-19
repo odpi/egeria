@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.assetmanager.fvt;
 import org.odpi.openmetadata.accessservices.assetmanager.fvt.clientconstructors.ClientConstructorTest;
 import org.odpi.openmetadata.accessservices.assetmanager.fvt.connections.CreateConnectionTest;
 import org.odpi.openmetadata.accessservices.assetmanager.fvt.externalidentifiers.ManageExternalIdsTest;
-import org.odpi.openmetadata.accessservices.assetmanager.fvt.glossaries.CreateGlossaryTest;
+import org.odpi.openmetadata.accessservices.assetmanager.fvt.glossaries.CreateExchangeGlossaryTest;
 import org.odpi.openmetadata.accessservices.assetmanager.fvt.errorhandling.InvalidParameterTest;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.FVTSuiteBase;
@@ -93,7 +93,7 @@ public class AssetManagerOMASFVTSuite extends FVTSuiteBase
         }
         results.printResults(serverName);
 
-        results = CreateGlossaryTest.performFVT(serverName, serverPlatformRootURL, userId);
+        results = CreateExchangeGlossaryTest.performFVT(serverName, serverPlatformRootURL, userId);
         if (! results.isSuccessful())
         {
             returnCode --;

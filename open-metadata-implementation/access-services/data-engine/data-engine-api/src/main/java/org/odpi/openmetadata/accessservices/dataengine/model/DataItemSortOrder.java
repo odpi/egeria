@@ -36,9 +36,9 @@ public enum DataItemSortOrder implements Serializable {
     @Setter(AccessLevel.NONE)
     private static final long serialVersionUID = 1L;
 
-    public static final String ENUM_TYPE_GUID = "aaa4df8f-1aca-4de8-9abd-1ef2aadba300";
+    private static final String ENUM_TYPE_GUID = "aaa4df8f-1aca-4de8-9abd-1ef2aadba300";
 
-    public static final String ENUM_TYPE_NAME = "DataItemSortOrder";
+    private static final String ENUM_TYPE_NAME = "DataItemSortOrder";
 
     /**
      * The code for this enum that comes from the Open Metadata Type that this enum represents

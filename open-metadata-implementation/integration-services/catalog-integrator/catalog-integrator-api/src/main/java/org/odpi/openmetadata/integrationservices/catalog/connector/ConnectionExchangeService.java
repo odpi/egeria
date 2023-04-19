@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.integrationservices.catalog.connector;
 
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.ConnectionExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ConnectionExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ConnectionElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ConnectorTypeElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.EndpointElement;
@@ -17,7 +17,6 @@ import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorE
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 
 /**

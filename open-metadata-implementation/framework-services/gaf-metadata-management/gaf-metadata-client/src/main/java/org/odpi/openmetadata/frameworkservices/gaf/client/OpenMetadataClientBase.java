@@ -1886,6 +1886,63 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
 
     /**
+     * Using the named governance action process as a template, initiate a chain of governance actions.
+     *
+     * @param userId caller's userId
+     * @param processQualifiedName unique name of the governance action process to use
+     * @param requestSourceGUIDs  request source elements for the resulting governance action service
+     * @param actionTargets list of action target names to GUIDs for the resulting governance action service
+     * @param startTime future start time or null for "as soon as possible".
+     * @param requestParameters request properties to be passed to the first governance action
+     * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
+     * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine).
+     *
+     * @return unique identifier of the first governance action of the process
+     * @throws InvalidParameterException null or unrecognized qualified name of the process
+     * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action process
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    @Override
+    public String initiateGovernanceActionProcess(String                userId,
+                                                  String                processQualifiedName,
+                                                  List<String>          requestSourceGUIDs,
+                                                  List<NewActionTarget> actionTargets,
+                                                  Date                  startTime,
+                                                  Map<String, String>   requestParameters,
+                                                  String                originatorServiceName,
+                                                  String                originatorEngineName) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
+    {
+        final String methodName = "initiateGovernanceActionProcess";
+        final String qualifiedNameParameterName = "processQualifiedName";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-governance-service/users/{2}/governance-action-processes/initiate";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(processQualifiedName, qualifiedNameParameterName, methodName);
+
+        GovernanceActionProcessRequestBody requestBody = new GovernanceActionProcessRequestBody();
+
+        requestBody.setProcessQualifiedName(processQualifiedName);
+        requestBody.setRequestSourceGUIDs(requestSourceGUIDs);
+        requestBody.setActionTargets(actionTargets);
+        requestBody.setStartTime(startTime);
+        requestBody.setRequestParameters(requestParameters);
+        requestBody.setOriginatorServiceName(originatorServiceName);
+        requestBody.setOriginatorEngineName(originatorEngineName);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  serviceURLMarker,
+                                                                  userId);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
      * Create an incident report to capture the situation detected by this governance action service.
      * This incident report will be processed by other governance activities.
      *

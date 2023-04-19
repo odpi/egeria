@@ -1,7 +1,6 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
   
-![InDev](../../images/egeria-content-status-in-development.png#pagewidth)
 
 # Open Metadata View Services (OMVS)
 
@@ -9,41 +8,38 @@ The Open Metadata View Services (OMVS) provide task oriented, domain-specific se
 for user interfaces to integrate with open metadata.
 
 The view services are as follows:
+The Open Metadata View Services (OMVS) provide task oriented, domain-specific services for user interfaces to integrate with open metadata.  They provide REST APIs.
 
-* **[glossary-author-view](glossary-author-view)** - develop a definition of a subject area including glossary
-terms, reference data and rules. 
+The view services are as follows:
 
-  The Glossary Author OMVS is for user interfaces that support subject matter experts
-who are defining glossaries around data for a specific
-subject area, such as "customer data".  It supports the development of a comprehensive
-definition of the subject area and the standards that support it.
-These definitions can then be folded into the Governance Program,
-and used by Asset Owner's to improve the findability and understandability
-of their assets by linking their asset's structure to relevant parts of
-the subject area definition.
+* **[Glossary Author](glossary-author)** - develop new glossary terms and categories.
 
-* **[rex-view](rex-view)** - explorer interface to inspect instances across a cohort of repositories.
+  The Glossary Author OMVS is for user interfaces supporting the creating and editing of glossary content, such as glossary terms and categories.  The changes made are immediately visible to all users.
 
-  The Repository Explorer (Rex) OMVS is for user interfaces that support enterprise architects
-who need to inspect, navigate or explore the instance data stored in a repository or a cohort of 
-repositories. It enables the retrieval of instance data (entities and relationships) and exploration 
-of the graph of instances connected to those entities. This enables the user to construct a graph 
-(as a diagram) to visualize the details and connectivity of a group of instances of interest to the 
-user.
+* **[Glossary Browser](glossary-browser)** - search and view the contents of specific glossaries and their links to governance definitions and assets.
 
-* **[tex-view](tex-view)** - explorer interface to inspect types across a cohort of repositories.
+  The Glossary Browser OMVS is for user interfaces that wish to provide search facilities within a single glossary (or glossaries) along with the ability to browse the structure of the glossary and view an element within a glossary along with connected governance classifications, governance definitions, user feedback and attached assets.
 
-  The Type Explorer (Tex) OMVS is for user interfaces that support enterprise architects
-who need to inspect, navigate or explore the open metadata types supported by a repository or a cohort of 
-repositories. It enables the retrieval of type data (relating to entities, relationships and classifications)
-and exploration of the graphs of entity type inheritance and the supported combinations of entity and
-relationship types.
+* **[Glossary Workflow](glossary-workflow)** - develop new glossary terms and categories in a controlled workflow process.
 
-* **[dino-view](dino-view)** - admin interface to inspect servers, services, cohorts and platforms.
+  The Glossary Workflow OMVS is for user interfaces supporting the creation and editing of glossary content, such as glossary terms and categories, in a controlled workflow process.  This means that as terms and categories are created, updated and deleted, these changes are invisible to the general user until they are approved.
 
-  The Dino OMVS is for user interfaces that support Egeria operators who need to inspect, navigate or explore 
-  the open metadata servers, services, cohorts and platforms that are configured or actively running. It is intended 
-  for operations and problem-determination.
+* **[Repository Explorer](rex-view)** - explorer interface to inspect instances across a cohort of repositories.
+
+  The Repository Explorer (Rex) OMVS is for user interfaces that support enterprise architects who need to inspect, navigate or explore the instance data stored in an open metadata repository or a cohort of repositories. It enables the retrieval of instance data (entities and relationships) and exploration of the graph of instances connected to those entities. This enables the user to construct a graph (as a diagram) to visualize the details and connectivity of a group of instances of interest to the user.
+
+* **[Type Explorer](tex-view)** - explorer interface to inspect types across a cohort of repositories.
+
+  The Type Explorer (Tex) OMVS is for user interfaces that support enterprise architects who need to inspect, navigate or explore the open metadata types supported by a repository or a cohort of repositories. It enables the retrieval of type data (relating to entities, relationships and classifications) and exploration of the graphs of entity type inheritance and the supported combinations of entity and relationship types.
+
+* **[Dynamic Infrastructure and Operations](dino-view)** - admin interface to inspect servers, services, cohorts and platforms.
+
+  The Dino OMVS is for user interfaces that support Egeria operators who need to inspect, navigate or explore the open metadata servers, services, cohorts and platforms that are configured or actively running. It is intended for operations and problem-determination.
+
+* **[Server Author](server-author-view)** - an authoring interface for servers
+
+  The Server Author OMVS is for user interfaces that support Egeria Server authors. This user interface allows the author to create, delete or update a server configuration using an intuitive UI, rather than needing to use the low level admin rest calls and associated json payloads.
+
 
 
 ## Inside an OMVS

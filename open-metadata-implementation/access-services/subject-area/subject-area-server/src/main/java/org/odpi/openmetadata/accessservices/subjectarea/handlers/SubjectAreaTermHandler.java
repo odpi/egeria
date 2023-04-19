@@ -131,6 +131,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                                                       suppliedTerm.getExamples(),
                                                                       suppliedTerm.getAbbreviation(),
                                                                       suppliedTerm.getUsage(),
+                                                                      null,
                                                                       suppliedTerm.getAdditionalProperties(),
                                                                       suppliedTerm.getExtendedProperties(),
                                                                       null,

@@ -164,6 +164,8 @@ public class OpenMetadataTypesArchive
         /*
          * Add the type updates
          */
+        update0011ManagingReferenceables();
+        update0210DataStores();
         update0385ControlledGlossaryDevelopment();
         update0423SecurityAccessControl();
         update504ImplementationSnippets();
@@ -171,6 +173,115 @@ public class OpenMetadataTypesArchive
     }
 
 
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    private void update0011ManagingReferenceables()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateSourcedFromRelationship());
+    }
+
+
+    private TypeDefPatch updateSourcedFromRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "SourcedFrom";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "sourceVersionNumber";
+        final String attribute1Description     = "The version number of the template element when the copy was created.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getLongTypeDefAttribute(attribute1Name,
+                                                         attribute1Description,
+                                                         attribute1DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0210DataStores()
+    {
+        this.archiveBuilder.addClassificationDef(getDataFieldValuesClassification());
+    }
+
+    private ClassificationDef getDataFieldValuesClassification()
+    {
+        final String guid            = "740e76e1-77b4-4426-ad52-d0a4ed15fff9";
+        final String name            = "DataFieldValues";
+        final String description     = "Characterizations of a collection of data values.";
+        final String descriptionGUID = null;
+
+        final String linkedToEntity = "Referenceable";
+
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
+                                                                                 name,
+                                                                                 null,
+                                                                                 description,
+                                                                                 descriptionGUID,
+                                                                                 this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                                                 false);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "defaultValue";
+        final String attribute1Description     = "Value that is used when an instance of the data field is created.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "sampleValues";
+        final String attribute2Description     = "List of sample values for the data field.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "dataPattern";
+        final String attribute3Description     = "A regular expression that characterizes the values in the data field.";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "namePattern";
+        final String attribute4Description     = "A regular expression that characterizes the name of the data field.";
+        final String attribute4DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getArrayStringTypeDefAttribute(attribute2Name,
+                                                                attribute2Description,
+                                                                attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+                                                           attribute4Description,
+                                                           attribute4DescriptionGUID);
+        properties.add(property);
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
+    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -180,6 +291,9 @@ public class OpenMetadataTypesArchive
     private void update0385ControlledGlossaryDevelopment()
     {
         this.archiveBuilder.addClassificationDef(getEditingGlossaryClassification());
+        this.archiveBuilder.addClassificationDef(getEditingGlossaryCopyClassification());
+        this.archiveBuilder.addTypeDefPatch(deprecateGlossaryTermEvolution());
+        this.archiveBuilder.addTypeDefPatch(updateGlossaryTermEntity());
     }
 
     private ClassificationDef getEditingGlossaryClassification()
@@ -218,6 +332,73 @@ public class OpenMetadataTypesArchive
 
         return classificationDef;
     }
+
+    private ClassificationDef getEditingGlossaryCopyClassification()
+    {
+        final String guid            = "361fa044-e703-404c-bb83-9402f9221f54";
+        final String name            = "EditingGlossaryCopy";
+        final String description     = "An element that is part of an editing glossary's scope and is a temporary copy of another element.";
+        final String descriptionGUID = null;
+
+        final String linkedToEntity = "Referenceable";
+
+        return archiveHelper.getClassificationDef(guid,
+                                                  name,
+                                                  null,
+                                                  description,
+                                                  descriptionGUID,
+                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  false);
+    }
+
+    private TypeDefPatch deprecateGlossaryTermEvolution()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "GlossaryTermEvolution";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch updateGlossaryTermEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "GlossaryTerm";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "publishVersionIdentifier";
+        final String attribute1Description     = "The author-controlled version identifier for the term.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
 
 
     /*

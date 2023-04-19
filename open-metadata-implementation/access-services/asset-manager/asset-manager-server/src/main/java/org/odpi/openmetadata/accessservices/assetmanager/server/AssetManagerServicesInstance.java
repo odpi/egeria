@@ -5,10 +5,12 @@ package org.odpi.openmetadata.accessservices.assetmanager.server;
 import org.odpi.openmetadata.accessservices.assetmanager.connectors.outtopic.AssetManagerOutTopicClientProvider;
 import org.odpi.openmetadata.accessservices.assetmanager.converters.*;
 import org.odpi.openmetadata.accessservices.assetmanager.ffdc.AssetManagerErrorCode;
+import org.odpi.openmetadata.accessservices.assetmanager.handlers.CommentExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.ConnectionExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.DataAssetExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.ExternalReferenceExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.GlossaryExchangeHandler;
+import org.odpi.openmetadata.accessservices.assetmanager.handlers.NoteLogExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.ProcessExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.SchemaExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
@@ -46,7 +48,8 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
     private final InformalTagHandler<InformalTagElement>                              informalTagHandler;
     private final LikeHandler<LikeElement>                                            likeHandler;
     private final RatingHandler<RatingElement>                                        ratingHandler;
-    private final CommentHandler<CommentElement>                                      commentHandler;
+    private final CommentExchangeHandler commentHandler;
+    private final NoteLogExchangeHandler noteLogHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -278,19 +281,29 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
                                                  publishZones,
                                                  auditLog);
 
-        this.commentHandler = new CommentHandler<>(new CommentConverter<>(repositoryHelper, serviceName, serverName),
-                                                   CommentElement.class,
-                                                   serviceName,
-                                                   serverName,
-                                                   invalidParameterHandler,
-                                                   repositoryHandler,
-                                                   repositoryHelper,
-                                                   localServerUserId,
-                                                   securityVerifier,
-                                                   supportedZones,
-                                                   defaultZones,
-                                                   publishZones,
-                                                   auditLog);
+        this.commentHandler = new CommentExchangeHandler(serviceName,
+                                                         serverName,
+                                                         invalidParameterHandler,
+                                                         repositoryHandler,
+                                                         repositoryHelper,
+                                                         localServerUserId,
+                                                         securityVerifier,
+                                                         supportedZones,
+                                                         defaultZones,
+                                                         publishZones,
+                                                         auditLog);
+
+        this.noteLogHandler = new NoteLogExchangeHandler(serviceName,
+                                                         serverName,
+                                                         invalidParameterHandler,
+                                                         repositoryHandler,
+                                                         repositoryHelper,
+                                                         localServerUserId,
+                                                         securityVerifier,
+                                                         supportedZones,
+                                                         defaultZones,
+                                                         publishZones,
+                                                         auditLog);
     }
 
 
@@ -525,12 +538,28 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    CommentHandler<CommentElement> getCommentHandler() throws PropertyServerException
+    CommentExchangeHandler getCommentHandler() throws PropertyServerException
     {
         final String methodName = "getCommentHandler";
 
         validateActiveRepository(methodName);
 
         return commentHandler;
+    }
+
+
+    /**
+     * Return the handler for managing notelogs and notes objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    NoteLogExchangeHandler getNoteLogHandler() throws PropertyServerException
+    {
+        final String methodName = "getNoteLogHandler";
+
+        validateActiveRepository(methodName);
+
+        return noteLogHandler;
     }
 }
