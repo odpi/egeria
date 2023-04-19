@@ -129,7 +129,7 @@ loadScripts(document, 'script');</script>
  <a href="../event/AssetLineageEventType.html" title="enum class in org.odpi.openmetadata.accessservices.assetlineage.event">AssetLineageEventType</a>&nbsp;assetLineageEventType)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishDataFlowRelationshipEvent(org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship,org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType)" class="member-name-link">publishDataFlowRelationshipEvent</a><wbr>(<a href="../model/LineageRelationship.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.model">LineageRelationship</a>&nbsp;lineageRelationship,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishDataFlowOrLineageMappingRelationshipEvent(org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship,org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType)" class="member-name-link">publishDataFlowOrLineageMappingRelationshipEvent</a><wbr>(<a href="../model/LineageRelationship.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.model">LineageRelationship</a>&nbsp;lineageRelationship,
  <a href="../event/AssetLineageEventType.html" title="enum class in org.odpi.openmetadata.accessservices.assetlineage.event">AssetLineageEventType</a>&nbsp;eventType)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Publishes a <a href="../event/LineageRelationshipEvent.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.event"><code>LineageRelationshipEvent</code></a> containing a <a href="../model/LineageRelationship.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.model"><code>LineageRelationship</code></a>.</div>
@@ -371,14 +371,14 @@ com.fasterxml.jackson.core.JsonProcessingException</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="publishDataFlowRelationshipEvent(org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship,org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType)">
-<h3>publishDataFlowRelationshipEvent</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishDataFlowRelationshipEvent</span><wbr><span class="parameters">(<a href="../model/LineageRelationship.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.model">LineageRelationship</a>&nbsp;lineageRelationship,
+<section class="detail" id="publishDataFlowOrLineageMappingRelationshipEvent(org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship,org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType)">
+<h3>publishDataFlowOrLineageMappingRelationshipEvent</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishDataFlowOrLineageMappingRelationshipEvent</span><wbr><span class="parameters">(<a href="../model/LineageRelationship.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.model">LineageRelationship</a>&nbsp;lineageRelationship,
  <a href="../event/AssetLineageEventType.html" title="enum class in org.odpi.openmetadata.accessservices.assetlineage.event">AssetLineageEventType</a>&nbsp;eventType)</span>
-                                      throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/OCFCheckedExceptionBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFCheckedExceptionBase</a>,
+                                                      throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/OCFCheckedExceptionBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFCheckedExceptionBase</a>,
 com.fasterxml.jackson.core.JsonProcessingException</span></div>
-<div class="block">Publishes a <a href="../event/LineageRelationshipEvent.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.event"><code>LineageRelationshipEvent</code></a> containing a <a href="../model/LineageRelationship.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.model"><code>LineageRelationship</code></a>. For each end of the relationship it publishes a
- <a href="../event/LineageRelationshipsEvent.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.event"><code>LineageRelationshipsEvent</code></a> containing the column context if available</div>
+<div class="block">Publishes a <a href="../event/LineageRelationshipEvent.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.event"><code>LineageRelationshipEvent</code></a> containing a <a href="../model/LineageRelationship.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.model"><code>LineageRelationship</code></a>. For each end of the
+ relationship it publishes a <a href="../event/LineageRelationshipsEvent.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.event"><code>LineageRelationshipsEvent</code></a> containing the column context if available</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>lineageRelationship</code> - the LineageRelationship to be published</dd>
