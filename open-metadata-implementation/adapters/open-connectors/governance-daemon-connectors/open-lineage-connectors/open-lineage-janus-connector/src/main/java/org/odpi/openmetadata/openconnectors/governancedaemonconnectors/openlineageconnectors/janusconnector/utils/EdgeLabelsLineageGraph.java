@@ -11,6 +11,7 @@ public enum EdgeLabelsLineageGraph {
     SCHEMA_TYPE,
     SCHEMA_ATTRIBUTE_TYPE,
     DATA_FLOW,
+    LINEAGE_MAPPING,
     NESTED_FILE,
     FOLDER_HIERARCHY,
     ASSET_TO_CONNECTION,

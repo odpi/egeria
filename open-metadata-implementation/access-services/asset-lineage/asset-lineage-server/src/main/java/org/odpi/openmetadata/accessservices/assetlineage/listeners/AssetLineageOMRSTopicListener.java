@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_FLOW;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.LINEAGE_MAPPING;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS_HIERARCHY;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.SEMANTIC_ASSIGNMENT;
@@ -314,8 +315,8 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                 publisher.publishLineageRelationshipEvent(converter.createLineageRelationship(relationship),
                         AssetLineageEventType.NEW_RELATIONSHIP_EVENT);
                 break;
-            case DATA_FLOW:
-                publisher.publishDataFlowRelationshipEvent(converter.createLineageRelationship(relationship),
+            case DATA_FLOW, LINEAGE_MAPPING:
+                publisher.publishDataFlowOrLineageMappingRelationshipEvent(converter.createLineageRelationship(relationship),
                         AssetLineageEventType.NEW_RELATIONSHIP_EVENT);
                 break;
             default:
