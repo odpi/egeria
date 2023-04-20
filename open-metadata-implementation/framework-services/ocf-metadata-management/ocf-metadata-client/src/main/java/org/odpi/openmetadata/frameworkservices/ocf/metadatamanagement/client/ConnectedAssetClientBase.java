@@ -482,11 +482,10 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
         return restResult.getGUID();
     }
 
+
     /**
      * Returns the anchor asset of the supplied entity.
      *
-     * @param restClient initialized client for calling REST APIs.
-     * @param serviceName name of the calling service.
      * @param userId the userId of the requesting user.
      * @param entityGUID unique identifier for the entity.
      *
@@ -496,22 +495,24 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    protected Asset getAnchorAssetForEntity(OCFRESTClient restClient,
-                                            String        serviceName,
-                                            String        userId,
-                                            String        entityGUID) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException
+    public Asset getAnchorAssetFromGUID(String userId,
+                                        String entityGUID) throws InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException
     {
-        final String methodName = "getAnchorAssetForEntity";
+        final String methodName = "getAnchorAssetFromGUID";
+        final String guidParameterName = "guid";
         final String urlTemplate = "/servers/{0}/open-metadata/framework-services/{1}/connected-asset/users/{2}/assets/from-anchor/{3}";
 
-        AssetResponse restResult = restClient.callOCFAssetGetRESTCall(methodName,
-                                                                      serverPlatformURLRoot + urlTemplate,
-                                                                      serverName,
-                                                                      serviceName,
-                                                                      userId,
-                                                                      entityGUID);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(entityGUID, guidParameterName, methodName);
+
+        AssetResponse restResult = ocfrestClient.callOCFAssetGetRESTCall(methodName,
+                                                                         serverPlatformURLRoot + urlTemplate,
+                                                                         serverName,
+                                                                         serviceURLMarker,
+                                                                         userId,
+                                                                         entityGUID);
 
         return restResult.getAsset();
     }
@@ -682,30 +683,5 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
         return this.getConnectorForConnection(ocfrestClient, serviceURLMarker, userId, connection, methodName);
     }
 
-    /**
-     * Returns the anchor asset of the supplied entity.
-     *
-     * @param userId the userId of the requesting user.
-     * @param entityGUID unique identifier for the entity.
-     *
-     * @return anchor asset of the entity.
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @Override
-    public Asset getAnchorAssetForEntity(String userId,
-                                         String entityGUID) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
-    {
-        final String methodName = "getAnchorAssetForEntity";
-        final String guidParameterName = "guid";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(entityGUID, guidParameterName, methodName);
-
-        return this.getAnchorAssetForEntity(ocfrestClient, serviceURLMarker, userId, entityGUID);
-    }
 }

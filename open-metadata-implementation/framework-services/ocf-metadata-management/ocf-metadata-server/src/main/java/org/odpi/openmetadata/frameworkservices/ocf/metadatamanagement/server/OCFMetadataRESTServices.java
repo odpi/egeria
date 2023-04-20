@@ -7,6 +7,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
@@ -1760,12 +1761,12 @@ public class OCFMetadataRESTServices
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public AssetResponse getAnchorAssetForEntity(String serverName,
-                                                 String serviceURLName,
-                                                 String userId,
-                                                 String entityGUID)
+    public AssetResponse getAnchorAssetFromGUID(String serverName,
+                                                String serviceURLName,
+                                                String userId,
+                                                String entityGUID)
     {
-        final String methodName = "getAnchorAssetForEntity";
+        final String methodName = "getAnchorAssetFromGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1776,24 +1777,53 @@ public class OCFMetadataRESTServices
 
         try 
         {
+            ReferenceableHandler<Referenceable> referenceableHandler = instanceHandler.getReferenceableHandler(userId, serverName, methodName);
+            RepositoryHandler repositoryHandler = instanceHandler.getRepositoryHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ReferenceableHandler<Referenceable> referenceableHandler = instanceHandler.getReferenceableHandler(userId, serverName, methodName);
-            EntityDetail entity = referenceableHandler.getEntityFromRepository(userId,
-                                                                               entityGUID,
-                                                                               OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
-                                                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                               null,
-                                                                               null,
-                                                                               false,
-                                                                               false,
-                                                                               effectiveTime,
-                                                                               methodName);
+            EntityDetail entity = repositoryHandler.getEntityByGUID(userId,
+                                                                    entityGUID,
+                                                                    OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    false,
+                                                                    false,
+                                                                    effectiveTime,
+                                                                    methodName);
 
             if (entity != null)
             {
-                String anchorGUID = referenceableHandler.getAnchorGUIDFromAnchorsClassification(entity, methodName);
-                response = getAssetResponse(serverName, serviceURLName, userId, anchorGUID, null, methodName);
+                if (repositoryHandler.isEntityATypeOf(userId,
+                                                      entityGUID,
+                                                      OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                      effectiveTime,
+                                                      methodName))
+                {
+                    response = getAssetResponse(serverName, serviceURLName, userId, entityGUID, null, methodName);
+                }
+                else
+                {
+                    EntityDetail anchorEntity = referenceableHandler.validateAnchorEntity(userId,
+                                                                                          entityGUID,
+                                                                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                                          entity,
+                                                                                          OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                                                                                          false,
+                                                                                          false,
+                                                                                          false,
+                                                                                          null,
+                                                                                          effectiveTime,
+                                                                                          methodName);
+                    if (repositoryHandler.isEntityATypeOf(userId,
+                                                          anchorEntity.getGUID(),
+                                                          OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                          effectiveTime,
+                                                          methodName))
+                    {
+                        response = getAssetResponse(serverName, serviceURLName, userId, anchorEntity.getGUID(), null, methodName);
+                    }
+                }
             }
         }
         catch (Exception error)

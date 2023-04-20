@@ -178,12 +178,12 @@ public class ConnectedAssetResource
      */
     @GetMapping(path = "/assets/from-anchor/{entityGUID}")
 
-    public AssetResponse getAnchorAssetForEntity(@PathVariable String serverName,
-                                                 @PathVariable String serviceURLName,
-                                                 @PathVariable String userId,
-                                                 @PathVariable String entityGUID)
+    public AssetResponse getAnchorAssetFromGUID(@PathVariable String serverName,
+                                                @PathVariable String serviceURLName,
+                                                @PathVariable String userId,
+                                                @PathVariable String entityGUID)
     {
-        return restAPI.getAnchorAssetForEntity(serverName, serviceURLName, userId, entityGUID);
+        return restAPI.getAnchorAssetFromGUID(serverName, serviceURLName, userId, entityGUID);
     }
 
 
