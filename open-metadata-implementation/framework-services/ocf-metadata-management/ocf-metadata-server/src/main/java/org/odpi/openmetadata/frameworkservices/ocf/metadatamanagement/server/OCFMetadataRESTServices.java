@@ -1774,7 +1774,8 @@ public class OCFMetadataRESTServices
 
         Date effectiveTime = new Date();
 
-        try {
+        try 
+        {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             ReferenceableHandler<Referenceable> referenceableHandler = instanceHandler.getReferenceableHandler(userId, serverName, methodName);
