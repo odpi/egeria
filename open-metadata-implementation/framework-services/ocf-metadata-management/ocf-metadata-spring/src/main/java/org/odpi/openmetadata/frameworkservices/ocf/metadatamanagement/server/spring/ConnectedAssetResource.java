@@ -164,6 +164,30 @@ public class ConnectedAssetResource
 
 
     /**
+     * Returns the anchor asset of an entity.
+     *
+     * @param serverName  String   name of server instance to call.
+     * @param serviceURLName String   name of the service that created the connector that issued this request.
+     * @param userId      String   userId of user making request.
+     * @param entityGUID   String   unique id for the entity.
+     * @return a bean with the basic properties about the anchor asset or
+     * InvalidParameterException - the userId is null or invalid or
+     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
+     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @GetMapping(path = "/assets/from-anchor/{entityGUID}")
+
+    public AssetResponse getAnchorAssetForEntity(@PathVariable String serverName,
+                                                 @PathVariable String serviceURLName,
+                                                 @PathVariable String userId,
+                                                 @PathVariable String entityGUID)
+    {
+        return restAPI.getAnchorAssetForEntity(serverName, serviceURLName, userId, entityGUID);
+    }
+
+
+    /**
      * Returns the basic information about the asset.
      *
      * @param serverName  String   name of server instance to call.

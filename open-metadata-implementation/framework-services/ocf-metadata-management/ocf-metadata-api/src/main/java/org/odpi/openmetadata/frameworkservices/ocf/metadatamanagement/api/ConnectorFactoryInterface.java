@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 
@@ -108,4 +109,20 @@ public interface ConnectorFactoryInterface
                                                                       ConnectionCheckedException,
                                                                       ConnectorCheckedException,
                                                                       PropertyServerException;
+    /**
+     * Returns the anchor asset of the supplied entity.
+     *
+     * @param userId       userId of user making request.
+     * @param entityGUID   unique identifier of the requested entity.
+     *
+     * @return    anchor asset of the entity.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    Asset getAnchorAssetForEntity(String userId,
+                                  String entityGUID) throws InvalidParameterException,
+                                                            PropertyServerException,
+                                                            UserNotAuthorizedException;
 }

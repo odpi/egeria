@@ -1745,4 +1745,63 @@ public class OCFMetadataRESTServices
 
         return response;
     }
+
+    /**
+     * Returns the anchor asset of the supplied entity.
+     *
+     * @param serverName String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
+     * @param userId     String   userId of user making request.
+     * @param entityGUID  String   unique id for the entity.
+     *
+     * @return a bean with the basic properties about the anchor asset or
+     * InvalidParameterException - the userId is null or invalid or
+     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
+     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public AssetResponse getAnchorAssetForEntity(String serverName,
+                                                 String serviceURLName,
+                                                 String userId,
+                                                 String entityGUID)
+    {
+        final String methodName = "getAnchorAssetForEntity";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AssetResponse response = new AssetResponse();
+        AuditLog      auditLog = null;
+
+        Date effectiveTime = new Date();
+
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ReferenceableHandler<Referenceable> referenceableHandler = instanceHandler.getReferenceableHandler(userId, serverName, methodName);
+            EntityDetail entity = referenceableHandler.getEntityFromRepository(userId,
+                                                                               entityGUID,
+                                                                               OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                                                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                               null,
+                                                                               null,
+                                                                               false,
+                                                                               false,
+                                                                               effectiveTime,
+                                                                               methodName);
+
+            if (entity != null)
+            {
+                String anchorGUID = referenceableHandler.getAnchorGUIDFromAnchorsClassification(entity, methodName);
+                response = getAssetResponse(serverName, serviceURLName, userId, anchorGUID, null, methodName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
 }
