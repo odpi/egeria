@@ -31,6 +31,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FILE_AND_SUBTYPES;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.EVENT_SCHEMA_ATTRIBUTE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FLOW;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.LINEAGE_MAPPING;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.NESTED_SCHEMA_ATTRIBUTE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PORT_DELEGATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PORT_IMPLEMENTATION;
@@ -113,7 +114,7 @@ public class LineageJobHelper {
     private List<Vertex> getInputPathsForColumns(GraphTraversalSource g, String guid) {
         List<Vertex> inputPathsForColumns = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out(PROCESS_PORT).out(PORT_DELEGATION)
                 .has(PORT_IMPLEMENTATION, PROPERTY_NAME_PORT_TYPE, INPUT_PORT)
-                .out(PORT_SCHEMA).out(ATTRIBUTE_FOR_SCHEMA).in(DATA_FLOW)
+                .out(PORT_SCHEMA).out(ATTRIBUTE_FOR_SCHEMA).in(DATA_FLOW, LINEAGE_MAPPING)
                 .or(__.in(ATTRIBUTE_FOR_SCHEMA).in(ASSET_SCHEMA_TYPE).has(PROPERTY_KEY_LABEL, P.within(DATA_FILE_AND_SUBTYPES)),
                         __.in(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE),
                         __.in(ATTRIBUTE_FOR_SCHEMA).in(SCHEMA_TYPE_OPTION).in(ASSET_SCHEMA_TYPE).has(PROPERTY_KEY_LABEL, TOPIC)).toList();
@@ -147,7 +148,7 @@ public class LineageJobHelper {
     private List<Vertex> getSchemaElementVertices(GraphTraversalSource g, Vertex columnIn) {
         List<Vertex> schemaElementVertices = g.V()
                 .has(PROPERTY_KEY_ENTITY_GUID, g.V(columnIn.id()).elementMap(PROPERTY_KEY_ENTITY_GUID).toList().get(0).get(PROPERTY_KEY_ENTITY_GUID))
-                .out(DATA_FLOW)
+                .out(DATA_FLOW, LINEAGE_MAPPING)
                 .toList();
         return schemaElementVertices;
     }
@@ -195,7 +196,7 @@ public class LineageJobHelper {
             if (isEndColumn(g, endingVertex)) {
                 endVertices.add(endingVertex);
             } else {
-                List<Vertex> nextVertices = g.V(endingVertex.id()).out(DATA_FLOW).toList();
+                List<Vertex> nextVertices = g.V(endingVertex.id()).out(DATA_FLOW, LINEAGE_MAPPING).toList();
 
                 for (Vertex vertex : nextVertices) {
                     if (vertex.equals(startingVertex)) {

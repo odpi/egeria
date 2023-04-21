@@ -22,7 +22,7 @@ The Glossary Term Context Event contains the description of the term plus the fu
 Glossary Category or Schema Elements that are involved in lineage relationship with the processed term. 
 This is send only when the Semantic Assigment or Term Categorization relationships are created.
 
-The event sent for Process entities includes information about the lineage process, the data flows and context of the Schema Elements. 
+The event sent for Process entities includes information about the lineage process, the data flows, the lineage mappings and context of the Schema Elements. 
 The full context of the Process is first time sent when the status of the entity is changed from DRAFT to ACTIVE, for the rest of the lineage entity types 
 the Lineage Event sent contains only the entity that has been changed.
 
