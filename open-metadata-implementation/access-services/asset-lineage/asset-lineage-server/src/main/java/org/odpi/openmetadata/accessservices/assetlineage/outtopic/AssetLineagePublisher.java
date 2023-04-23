@@ -355,8 +355,8 @@ public class AssetLineagePublisher {
     }
 
     /**
-     * Publishes a {@link LineageRelationshipEvent} containing a {@link LineageRelationship}. For each end of the relationship it publishes a
-     * {@link LineageRelationshipsEvent} containing the column context if available
+     * Publishes a {@link LineageRelationshipEvent} containing a {@link LineageRelationship}. For each end of the
+     * relationship it publishes a {@link LineageRelationshipsEvent} containing the column context if available
      *
      * @param lineageRelationship the LineageRelationship to be published
      * @param eventType           the type on the event
@@ -364,25 +364,25 @@ public class AssetLineagePublisher {
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      * @throws JsonProcessingException   exception parsing the event json
      */
-    public void publishDataFlowRelationshipEvent(LineageRelationship lineageRelationship, AssetLineageEventType eventType) throws
-                                                                                                                                 OCFCheckedExceptionBase,
-                                                                                                                                 JsonProcessingException {
+    public void publishDataFlowOrLineageMappingRelationshipEvent(LineageRelationship lineageRelationship, AssetLineageEventType eventType)
+            throws OCFCheckedExceptionBase, JsonProcessingException {
+
         publishLineageRelationshipEvent(lineageRelationship, eventType);
 
-        publishDataFlowContext(lineageRelationship.getSourceEntity());
-        publishDataFlowContext(lineageRelationship.getTargetEntity());
+        publishDataFlowOrLineageMappingContext(lineageRelationship.getSourceEntity());
+        publishDataFlowOrLineageMappingContext(lineageRelationship.getTargetEntity());
     }
 
     /**
-     * Publishes the context for an entity involved in a data flow. If the entity is of type column, it will publish the column context.
-     * If the entity is of type asset, it will publish the asset context.
+     * Publishes the context for an entity involved in a data flow or lineage mapping. If the entity is of type column,
+     * it will publish the column context. If the entity is of type asset, it will publish the asset context.
      *
      * @param lineageEntity the lineage entity
      *
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      * @throws JsonProcessingException   exception parsing the event json
      */
-    private void publishDataFlowContext(LineageEntity lineageEntity) throws JsonProcessingException, OCFCheckedExceptionBase {
+    private void publishDataFlowOrLineageMappingContext(LineageEntity lineageEntity) throws JsonProcessingException, OCFCheckedExceptionBase {
         publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildColumnContext(serverUserName, lineageEntity)));
         publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildAssetContext(serverUserName, lineageEntity)));
 
