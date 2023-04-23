@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.ffdc.AssetManagerErrorC
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ClassificationProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.FindProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermRelationshipStatus;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
@@ -16,6 +17,8 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProp
 import org.odpi.openmetadata.accessservices.assetmanager.rest.AssetManagerIdentifiersRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ClassificationRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.ElementStubsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.FindByPropertiesRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermRelationshipRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.NameRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ReferenceableRequestBody;
@@ -32,6 +35,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.util.Date;
 import java.util.List;
@@ -1095,13 +1099,11 @@ public class AssetManagerBaseClient
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
-        final String qualifiedNameParameterName = "qualifiedName";
-        final String requestParamsURLTemplate   = "?assetManagerIsHome={3}&isPublic={4}&forLineage={5}&forDuplicateProcessing={6}";
+        final String requestParamsURLTemplate = "?assetManagerIsHome={3}&isPublic={4}&forLineage={5}&forDuplicateProcessing={6}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(parentGUID, parentGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
         ReferenceableUpdateRequestBody requestBody = new ReferenceableUpdateRequestBody();
 
@@ -1678,6 +1680,7 @@ public class AssetManagerBaseClient
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingElementGUID, startingElementGUIDParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         RelatedElementsResponse restResult = restClient.callRelatedElementsPostRESTCall(methodName,
                                                                                         urlTemplate + requestParamsURLTemplate,
@@ -1688,9 +1691,69 @@ public class AssetManagerBaseClient
                                                                                         userId,
                                                                                         startingElementGUID,
                                                                                         startFrom,
-                                                                                        pageSize,
+                                                                                        validatedPageSize,
                                                                                         forLineage,
                                                                                         forDuplicateProcessing);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
+     * Retrieve a collection of classified elements.
+     *
+     * @param userId   calling user
+     * @param assetManagerGUID                unique identifier of software capability representing the caller
+     * @param assetManagerName                unique name of software capability representing the caller
+     * @param properties                       values to search on
+     * @param urlTemplate  URL to call (no expected placeholders)
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime                     the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param methodName    calling method
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    protected List<ElementStub> getClassifiedElements(String         userId,
+                                                      String         assetManagerGUID,
+                                                      String         assetManagerName,
+                                                      FindProperties properties,
+                                                      String         urlTemplate,
+                                                      int            startFrom,
+                                                      int            pageSize,
+                                                      Date           effectiveTime,
+                                                      boolean        forLineage,
+                                                      boolean        forDuplicateProcessing,
+                                                      String         methodName) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        final String requestParamsURLTemplate = "?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        FindByPropertiesRequestBody requestBody = new FindByPropertiesRequestBody();
+
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setEffectiveTime(effectiveTime);
+        requestBody.setProperties(properties);
+
+        ElementStubsResponse restResult = restClient.callElementStubsPostRESTCall(methodName,
+                                                                                  urlTemplate + requestParamsURLTemplate,
+                                                                                  requestBody,
+                                                                                  serverName,
+                                                                                  userId,
+                                                                                  startFrom,
+                                                                                  validatedPageSize,
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing);
 
         return restResult.getElementList();
     }

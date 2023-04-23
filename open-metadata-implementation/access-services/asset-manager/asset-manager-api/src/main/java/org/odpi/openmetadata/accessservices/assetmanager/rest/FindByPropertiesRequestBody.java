@@ -2,11 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.rest;
 
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryCategoryProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.FindProperties;
 
 import java.io.Serial;
 import java.util.Objects;
@@ -16,87 +15,89 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * GlossaryCategoryRequestBody describes the request body used to create/update glossary category properties.
+ * FindByPropertiesRequestBody is the request body structure used on OMAG REST API calls that passes a name that is used to retrieve
+ * an element by name.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GlossaryCategoryRequestBody extends UpdateRequestBody
+public class FindByPropertiesRequestBody extends EffectiveTimeQueryRequestBody
 {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private GlossaryCategoryProperties elementProperties = null;
+    private FindProperties properties        = null;
 
 
     /**
      * Default constructor
      */
-    public GlossaryCategoryRequestBody()
+    public FindByPropertiesRequestBody()
     {
         super();
     }
 
 
     /**
-     * Copy/clone constructor.
+     * Copy/clone constructor
      *
      * @param template object to copy
      */
-    public GlossaryCategoryRequestBody(GlossaryCategoryRequestBody template)
+    public FindByPropertiesRequestBody(FindByPropertiesRequestBody template)
     {
         super(template);
 
         if (template != null)
         {
-            elementProperties = template.getElementProperties();
+            properties = template.getProperties();
         }
     }
 
 
     /**
-     * Return the properties for the element.
+     * Return the name for the query request.
      *
-     * @return properties object
+     * @return string name
      */
-    public GlossaryCategoryProperties getElementProperties()
+    public FindProperties getProperties()
     {
-        return elementProperties;
+        return properties;
     }
 
 
     /**
-     * Set up the properties for the element.
+     * Set up the name for the query request.
      *
-     * @param elementProperties properties object
+     * @param properties string
      */
-    public void setElementProperties(GlossaryCategoryProperties elementProperties)
+    public void setProperties(FindProperties properties)
     {
-        this.elementProperties = elementProperties;
+        this.properties = properties;
     }
 
 
     /**
-     * JSON-style toString
+     * Standard toString method.
      *
-     * @return return string containing the property names and values
+     * @return print out of variables in a JSON-style
      */
     @Override
     public String toString()
     {
-        return "GlossaryCategoryRequestBody{" +
-                       "elementProperties=" + elementProperties +
-                       ", metadataCorrelationProperties=" + getMetadataCorrelationProperties() +
+        return "FindByPropertiesRequestBody{" +
+                       "properties=" + properties +
                        ", effectiveTime=" + getEffectiveTime() +
+                       ", assetManagerGUID='" + getAssetManagerGUID() + '\'' +
+                       ", assetManagerName='" + getAssetManagerName() + '\'' +
                        '}';
     }
 
 
     /**
-     * Return comparison result based on the content of the properties.
+     * Compare the values of the supplied object with those stored in the current object.
      *
-     * @param objectToCompare test object
-     * @return result of comparison
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -113,19 +114,19 @@ public class GlossaryCategoryRequestBody extends UpdateRequestBody
         {
             return false;
         }
-        GlossaryCategoryRequestBody that = (GlossaryCategoryRequestBody) objectToCompare;
-        return Objects.equals(elementProperties, that.elementProperties);
+        FindByPropertiesRequestBody that = (FindByPropertiesRequestBody) objectToCompare;
+        return Objects.equals(properties, that.properties);
     }
 
 
     /**
-     * Return hash code for this object
+     * Create a hash code for this element type.
      *
      * @return int hash code
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementProperties);
+        return Objects.hash(super.hashCode(), properties);
     }
 }

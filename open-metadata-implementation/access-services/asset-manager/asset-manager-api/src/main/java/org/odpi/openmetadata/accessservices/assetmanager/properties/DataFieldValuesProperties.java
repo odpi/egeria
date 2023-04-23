@@ -28,8 +28,8 @@ public class DataFieldValuesProperties extends ClassificationProperties
 
     private String       defaultValue = null;
     private List<String> sampleValues = null;
-    private String       dataPattern = null;
-    private String       namePattern = null;
+    private List<String> dataPattern = null;
+    private List<String> namePattern = null;
 
 
     /**
@@ -109,7 +109,7 @@ public class DataFieldValuesProperties extends ClassificationProperties
      *
      * @return string
      */
-    public String getDataPattern()
+    public List<String> getDataPattern()
     {
         return dataPattern;
     }
@@ -120,7 +120,7 @@ public class DataFieldValuesProperties extends ClassificationProperties
      *
      * @param dataPattern string
      */
-    public void setDataPattern(String dataPattern)
+    public void setDataPattern(List<String> dataPattern)
     {
         this.dataPattern = dataPattern;
     }
@@ -131,7 +131,7 @@ public class DataFieldValuesProperties extends ClassificationProperties
      *
      * @return string
      */
-    public String getNamePattern()
+    public List<String> getNamePattern()
     {
         return namePattern;
     }
@@ -142,7 +142,7 @@ public class DataFieldValuesProperties extends ClassificationProperties
      *
      * @param namePattern string
      */
-    public void setNamePattern(String namePattern)
+    public void setNamePattern(List<String> namePattern)
     {
         this.namePattern = namePattern;
     }

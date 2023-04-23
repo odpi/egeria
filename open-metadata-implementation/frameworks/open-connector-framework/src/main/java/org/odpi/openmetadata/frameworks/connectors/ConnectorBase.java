@@ -11,6 +11,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperti
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
+import java.io.Serial;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -34,20 +36,15 @@ import java.util.UUID;
  * particular type of asset it supports.  For example, a JDBC connector would add the standard JDBC SQL interface, the
  * OMRS Connectors add the metadata repository management APIs...
  */
-public abstract class ConnectorBase extends Connector
+public abstract class ConnectorBase extends Connector implements SecureConnectorExtension
 {
     protected String                   connectorInstanceId      = null;
     protected ConnectionProperties     connectionProperties     = null;
     protected Connection               connectionBean           = null;
-    protected ConnectedAssetProperties connectedAssetProperties = null;
+    protected ConnectedAssetProperties           connectedAssetProperties = null;
+    protected Map<String, SecretsStoreConnector> secretsStoreConnectorMap = new HashMap<>();
 
     private volatile boolean           isActive                 = false;
-
-    /*
-     * Secured properties are protected properties from the connection.  They are retrieved as a protected
-     * variable to allow subclasses of ConnectorBase to access them.
-     */
-    protected Map<String, String> securedProperties = null;
 
     private static final Logger   log = LoggerFactory.getLogger(ConnectorBase.class);
 
@@ -86,7 +83,6 @@ public abstract class ConnectorBase extends Connector
          * Set up the secured properties and the connection bean
          */
         ProtectedConnection  protectedConnection = new ProtectedConnection(connectionProperties);
-        this.securedProperties = protectedConnection.getSecuredProperties();
         this.connectionBean = protectedConnection.getConnectionBean();
 
         log.debug("New Connector initialized: " + connectorInstanceId + ", " + connectionProperties.getQualifiedName() + "," + connectionProperties.getDisplayName());
@@ -130,6 +126,27 @@ public abstract class ConnectorBase extends Connector
     public void initializeConnectedAssetProperties(ConnectedAssetProperties connectedAssetProperties)
     {
         this.connectedAssetProperties = connectedAssetProperties;
+    }
+
+
+    /**
+     * Set up information about an embedded connector that this connector can use to support secure access to its resources.
+     *
+     * @param displayName name of the secrets store
+     * @param secretsStoreConnector an embedded secrets store connector
+     */
+    @Override
+    public void initializeSecretsStoreConnector(String                displayName,
+                                                SecretsStoreConnector secretsStoreConnector)
+    {
+        if (displayName != null)
+        {
+            secretsStoreConnectorMap.put(displayName, secretsStoreConnector);
+        }
+        else
+        {
+            secretsStoreConnectorMap.put(String.valueOf(secretsStoreConnectorMap.size()), secretsStoreConnector);
+        }
     }
 
 
@@ -181,8 +198,6 @@ public abstract class ConnectorBase extends Connector
     {
         isActive = false;
     }
-
-
 
 
     /**
@@ -260,26 +275,18 @@ public abstract class ConnectorBase extends Connector
      */
     protected static class ProtectedConnection extends ConnectionProperties
     {
-        private static final long    serialVersionUID = 1L;
+        @Serial
+        private static final long serialVersionUID = 1L;
 
+        /**
+         * Copy/clone connector.
+         *
+         * @param templateConnection connection to copy
+         */
         ProtectedConnection(ConnectionProperties templateConnection)
         {
             super(templateConnection);
         }
-
-        /**
-         * Return a copy of the secured properties.  Null means no secured properties are available.
-         * This method is protected so only OCF (or subclasses) can access them.  When Connector is passed to calling
-         * OMAS, the secured properties are not available.
-         *
-         * @return secured properties   typically user credentials for the connection
-         */
-        @Override
-        protected Map<String, String> getSecuredProperties()
-        {
-            return super.getConnectionBean().getSecuredProperties();
-        }
-
 
         /**
          * Return a copy of the ConnectionBean.

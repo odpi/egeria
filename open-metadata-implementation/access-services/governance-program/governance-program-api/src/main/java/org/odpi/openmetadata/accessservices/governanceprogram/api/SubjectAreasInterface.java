@@ -219,6 +219,7 @@ public interface SubjectAreasInterface
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException;
 
+
     /**
      * Return information about the contents of a subject area such as the glossaries, reference data sets and quality definitions.
      *

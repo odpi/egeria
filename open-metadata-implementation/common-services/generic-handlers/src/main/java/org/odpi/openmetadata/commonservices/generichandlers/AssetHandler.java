@@ -1576,7 +1576,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         /*
          * Validate the organization and the business capability exist.
          */
-        if (organizationGUID  != null)
+        if (organizationGUID != null)
         {
             this.validateAnchorEntity(userId,
                                       organizationGUID,
@@ -1668,6 +1668,156 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                 forDuplicateProcessing,
                                                 effectiveTime,
                                                 methodName);
+    }
+
+
+    /**
+     * Returns the list of assets that are classified with a specific origin.
+     *
+     * @param userId          userId of user making request
+     * @param organizationGUID Unique identifier (GUID) of the organization where this asset originated from - or null
+     * @param businessCapabilityGUID  Unique identifier (GUID) of the business capability where this asset originated from.
+     * @param otherOriginValues Descriptive labels describing origin of the asset
+     * @param startFrom int      starting position for fist returned element.
+     * @param pageSize  int      maximum number of elements to return on the call.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName String calling method
+     *
+     * @return a list of elements or
+     * @throws InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public List<B> getAssetsFromOrigin(String              userId,
+                                       String              organizationGUID,
+                                       String              businessCapabilityGUID,
+                                       Map<String, String> otherOriginValues,
+                                       int                 startFrom,
+                                       int                 pageSize,
+                                       boolean             forLineage,
+                                       boolean             forDuplicateProcessing,
+                                       Date                effectiveTime,
+                                       String              methodName) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
+    {
+        final String guidParameterName = "originEntity.getGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        List<EntityDetail> entities = repositoryHandler.getEntitiesForClassificationType(userId,
+                                                                                         OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                         OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME,
+                                                                                         forLineage,
+                                                                                         forDuplicateProcessing,
+                                                                                         startFrom,
+                                                                                         queryPageSize,
+                                                                                         effectiveTime,
+                                                                                         methodName);
+
+        if (entities != null)
+        {
+            List<B>  beans = new ArrayList<>();
+
+            for (EntityDetail entity : entities)
+            {
+                if (entity != null)
+                {
+                    try
+                    {
+                        this.validateAnchorEntity(userId,
+                                                  entity.getGUID(),
+                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                  entity,
+                                                  guidParameterName,
+                                                  false,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
+                                                  supportedZones,
+                                                  effectiveTime,
+                                                  methodName);
+
+                        Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
+                                                                                                     entity,
+                                                                                                     OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME,
+                                                                                                     methodName);
+                        if (classification != null)
+                        {
+                            String orgGUID = repositoryHelper.getStringProperty(serviceName,
+                                                                                OpenMetadataAPIMapper.ORGANIZATION_PROPERTY_NAME,
+                                                                                classification.getProperties(),
+                                                                                methodName);
+
+                            String bcGUID = repositoryHelper.getStringProperty(serviceName,
+                                                                               OpenMetadataAPIMapper.BUSINESS_CAPABILITY_PROPERTY_NAME,
+                                                                               classification.getProperties(),
+                                                                               methodName);
+
+                            if ((organizationGUID == null) || (organizationGUID.equals(orgGUID)))
+                            {
+                                if (((businessCapabilityGUID == null) || (businessCapabilityGUID.equals(bcGUID))))
+                                {
+                                    if ((otherOriginValues == null) || (otherOriginValues.isEmpty()))
+                                    {
+                                        beans.add(converter.getNewBean(beanClass, entity, methodName));
+                                    }
+                                    else
+                                    {
+                                        Map<String, String> retrievedOtherOriginValues = repositoryHelper.getStringMapFromProperty(serviceName,
+                                                                                                                                   OpenMetadataAPIMapper.OTHER_ORIGIN_VALUES_PROPERTY_NAME,
+                                                                                                                                   classification.getProperties(),
+                                                                                                                                   methodName);
+
+                                        if ((retrievedOtherOriginValues != null) && (! retrievedOtherOriginValues.isEmpty()))
+                                        {
+                                            boolean match = true;
+
+                                            for (String otherOrgValuePropertyName : otherOriginValues.keySet())
+                                            {
+                                                if (otherOrgValuePropertyName != null)
+                                                {
+                                                    if (otherOriginValues.get(otherOrgValuePropertyName) != null)
+                                                    {
+                                                        if (! otherOriginValues.get(otherOrgValuePropertyName).equals(retrievedOtherOriginValues.get(otherOrgValuePropertyName)))
+                                                        {
+                                                            match = false;
+                                                        }
+                                                    }
+                                                    else if (retrievedOtherOriginValues.get(otherOrgValuePropertyName) != null)
+                                                    {
+                                                        match = false;
+                                                    }
+                                                }
+                                            }
+
+                                            if (match)
+                                            {
+                                                beans.add(converter.getNewBean(beanClass, entity, methodName));
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception notVisible)
+                    {
+                        // entity not visible
+                    }
+                }
+            }
+
+            if (! beans.isEmpty())
+            {
+                return beans;
+            }
+        }
+
+        return null;
     }
 
 

@@ -6,6 +6,8 @@ package org.odpi.openmetadata.frameworks.integration.context;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
@@ -13,6 +15,7 @@ import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.reports.IntegrationReportWriter;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * IntegrationContext is the base class for the integration context provided to the integration connector to provide access to open metadata
@@ -92,7 +95,6 @@ public class IntegrationContext
                                                                                   integrationReportWriter);
 
     }
-
 
 
     /**
@@ -312,5 +314,39 @@ public class IntegrationContext
         {
             integrationReportWriter.publishReport();
         }
+    }
+
+
+
+    /**
+     * Retrieve the anchorGUID from the Anchors classification.
+     *
+     * @param elementHeader element header where the classifications reside
+     * @return anchorGUID or null
+     */
+    public String getAnchorGUID(ElementHeader elementHeader)
+    {
+        if (elementHeader.getClassifications() != null)
+        {
+            for (ElementClassification classification : elementHeader.getClassifications())
+            {
+                if (classification.getClassificationName().equals("Anchors"))
+                {
+                    Map<String, Object> properties = classification.getClassificationProperties();
+
+                    if (properties != null)
+                    {
+                        Object anchorGUID = properties.get("anchorGUID");
+
+                        if (anchorGUID != null)
+                        {
+                            return anchorGUID.toString();
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 }

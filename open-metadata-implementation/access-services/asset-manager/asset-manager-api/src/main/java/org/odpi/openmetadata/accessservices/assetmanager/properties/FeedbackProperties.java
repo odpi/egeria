@@ -42,7 +42,9 @@ public class FeedbackProperties extends RelationshipProperties
      */
     public FeedbackProperties(FeedbackProperties template)
     {
-       if (template != null)
+        super(template);
+
+        if (template != null)
         {
             this.isPublic = template.getIsPublic();
         }
