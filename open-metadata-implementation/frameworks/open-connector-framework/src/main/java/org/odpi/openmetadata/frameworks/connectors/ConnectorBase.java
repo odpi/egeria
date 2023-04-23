@@ -11,6 +11,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperti
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
+import java.io.Serial;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -34,12 +36,13 @@ import java.util.UUID;
  * particular type of asset it supports.  For example, a JDBC connector would add the standard JDBC SQL interface, the
  * OMRS Connectors add the metadata repository management APIs...
  */
-public abstract class ConnectorBase extends Connector
+public abstract class ConnectorBase extends Connector implements SecureConnectorExtension
 {
     protected String                   connectorInstanceId      = null;
     protected ConnectionProperties     connectionProperties     = null;
     protected Connection               connectionBean           = null;
-    protected ConnectedAssetProperties connectedAssetProperties = null;
+    protected ConnectedAssetProperties           connectedAssetProperties = null;
+    protected Map<String, SecretsStoreConnector> secretsStoreConnectorMap = new HashMap<>();
 
     private volatile boolean           isActive                 = false;
 
@@ -134,6 +137,27 @@ public abstract class ConnectorBase extends Connector
 
 
     /**
+     * Set up information about an embedded connector that this connector can use to support secure access to its resources.
+     *
+     * @param displayName name of the secrets store
+     * @param secretsStoreConnector an embedded secrets store connector
+     */
+    @Override
+    public void initializeSecretsStoreConnector(String                displayName,
+                                                SecretsStoreConnector secretsStoreConnector)
+    {
+        if (displayName != null)
+        {
+            secretsStoreConnectorMap.put(displayName, secretsStoreConnector);
+        }
+        else
+        {
+            secretsStoreConnectorMap.put(String.valueOf(secretsStoreConnectorMap.size()), secretsStoreConnector);
+        }
+    }
+
+
+    /**
      * Returns the properties that contain the metadata for the asset.  The asset metadata is retrieved from the
      * metadata repository and cached in the ConnectedAssetProperties object each time the getConnectedAssetProperties
      * method is requested by the caller.   Once the ConnectedAssetProperties object has the metadata cached, it can be
@@ -181,8 +205,6 @@ public abstract class ConnectorBase extends Connector
     {
         isActive = false;
     }
-
-
 
 
     /**
@@ -260,8 +282,14 @@ public abstract class ConnectorBase extends Connector
      */
     protected static class ProtectedConnection extends ConnectionProperties
     {
-        private static final long    serialVersionUID = 1L;
+        @Serial
+        private static final long serialVersionUID = 1L;
 
+        /**
+         * Copy/clone connector.
+         *
+         * @param templateConnection connection to copy
+         */
         ProtectedConnection(ConnectionProperties templateConnection)
         {
             super(templateConnection);

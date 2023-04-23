@@ -22,6 +22,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -34,6 +35,9 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
 {
     private static final AccessServiceDescription myDescription = AccessServiceDescription.ASSET_MANAGER_OMAS;
 
+    private final ReferenceableHandler<ElementStub>                                   elementStubHandler;
+    private final ReferenceableHandler<RelatedElement>                                relatedElementHandler;
+    private final AssetHandler<AssetElement>                                          assetHandler;
     private final SoftwareCapabilityHandler<SoftwareCapabilityElement>                assetManagerHandler;
     private final ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> externalIdentifierHandler;
     private final ConnectionExchangeHandler                                           connectionExchangeHandler;
@@ -48,8 +52,8 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
     private final InformalTagHandler<InformalTagElement>                              informalTagHandler;
     private final LikeHandler<LikeElement>                                            likeHandler;
     private final RatingHandler<RatingElement>                                        ratingHandler;
-    private final CommentExchangeHandler commentHandler;
-    private final NoteLogExchangeHandler noteLogHandler;
+    private final CommentExchangeHandler                                              commentHandler;
+    private final NoteLogExchangeHandler                                              noteLogHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -95,6 +99,48 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
                                            methodName);
 
         }
+
+        this.elementStubHandler = new ReferenceableHandler<>(new ElementStubConverter<>(repositoryHelper, serviceName, serverName),
+                                                             ElementStub.class,
+                                                             serviceName,
+                                                             serverName,
+                                                             invalidParameterHandler,
+                                                             repositoryHandler,
+                                                             repositoryHelper,
+                                                             localServerUserId,
+                                                             securityVerifier,
+                                                             supportedZones,
+                                                             defaultZones,
+                                                             publishZones,
+                                                             auditLog);
+
+        this.relatedElementHandler = new ReferenceableHandler<>(new RelatedElementConverter<>(repositoryHelper, serviceName, serverName),
+                                                                RelatedElement.class,
+                                                                serviceName,
+                                                                serverName,
+                                                                invalidParameterHandler,
+                                                                repositoryHandler,
+                                                                repositoryHelper,
+                                                                localServerUserId,
+                                                                securityVerifier,
+                                                                supportedZones,
+                                                                defaultZones,
+                                                                publishZones,
+                                                                auditLog);
+
+        this.assetHandler = new AssetHandler<>(new AssetConverter<>(repositoryHelper, serviceName, serverName),
+                                               AssetElement.class,
+                                               serviceName,
+                                               serverName,
+                                               invalidParameterHandler,
+                                               repositoryHandler,
+                                               repositoryHelper,
+                                               localServerUserId,
+                                               securityVerifier,
+                                               supportedZones,
+                                               defaultZones,
+                                               publishZones,
+                                               auditLog);
 
         this.assetManagerHandler = new SoftwareCapabilityHandler<>(new AssetManagerConverter<>(repositoryHelper, serviceName, serverName),
                                                                    SoftwareCapabilityElement.class,
@@ -320,6 +366,54 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return assetManagerHandler;
+    }
+
+
+    /**
+     * Return the handler for managing assets.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    AssetHandler<AssetElement> getAssetHandler() throws PropertyServerException
+    {
+        final String methodName = "getAssetHandler";
+
+        validateActiveRepository(methodName);
+
+        return assetHandler;
+    }
+
+
+    /**
+     * Return the handler for managing arbitrary referenceable objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    ReferenceableHandler<ElementStub> getElementStubHandler() throws PropertyServerException
+    {
+        final String methodName = "getElementStubHandler";
+
+        validateActiveRepository(methodName);
+
+        return elementStubHandler;
+    }
+
+
+    /**
+     * Return the handler for managing arbitrary referenceable objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    ReferenceableHandler<RelatedElement> getRelatedElementHandler() throws PropertyServerException
+    {
+        final String methodName = "getRelatedElementHandler";
+
+        validateActiveRepository(methodName);
+
+        return relatedElementHandler;
     }
 
 

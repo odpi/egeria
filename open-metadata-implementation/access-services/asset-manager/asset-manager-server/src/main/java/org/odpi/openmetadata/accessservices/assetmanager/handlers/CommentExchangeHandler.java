@@ -168,12 +168,11 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
                                                                                  PropertyServerException
     {
         final String propertiesParameterName    = "commentProperties";
-        final String qualifiedNameParameterName = "commentProperties.qualifiedName";
+        final String commentText = "commentProperties.getText";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-
         invalidParameterHandler.validateObject(commentProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(commentProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        invalidParameterHandler.validateName(commentProperties.getCommentText(), commentText, methodName);
 
         int commentType = CommentType.STANDARD_COMMENT.getOpenTypeOrdinal();
 

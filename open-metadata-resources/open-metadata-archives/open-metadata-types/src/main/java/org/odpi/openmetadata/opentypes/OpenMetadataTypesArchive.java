@@ -269,13 +269,13 @@ public class OpenMetadataTypesArchive
                                                                 attribute2Description,
                                                                 attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
+        property = archiveHelper.getArrayStringTypeDefAttribute(attribute3Name,
+                                                                attribute3Description,
+                                                                attribute3DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
+        property = archiveHelper.getArrayStringTypeDefAttribute(attribute4Name,
+                                                                attribute4Description,
+                                                                attribute4DescriptionGUID);
         properties.add(property);
 
         classificationDef.setPropertiesDefinition(properties);

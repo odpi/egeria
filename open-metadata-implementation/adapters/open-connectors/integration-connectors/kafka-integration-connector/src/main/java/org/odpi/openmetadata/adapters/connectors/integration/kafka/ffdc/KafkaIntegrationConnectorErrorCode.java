@@ -26,6 +26,9 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  */
 public enum KafkaIntegrationConnectorErrorCode implements ExceptionMessageSet
 {
+    /**
+     * KAFKA-INTEGRATION-CONNECTOR-500-001 - The {0} integration connector received an unexpected exception {1} when cataloguing topics; the error message was: {2}
+     */
     UNEXPECTED_EXCEPTION(500, "KAFKA-INTEGRATION-CONNECTOR-500-001",
              "The {0} integration connector received an unexpected exception {1} when cataloguing topics; the error message was: {2}",
              "The connector is unable to catalog one or more topics.",
@@ -33,7 +36,7 @@ public enum KafkaIntegrationConnectorErrorCode implements ExceptionMessageSet
     ;
 
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
 
     /**

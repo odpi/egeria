@@ -49,7 +49,9 @@ These connectors enable the OMRS to be adapted to many different platforms.
 * **[rest-client-connectors](rest-client-connectors)** provides a connector to call a REST API from
 Java.
 
-In addition there is the **[connector-configuration-factory](connector-configuration-factory)**
+* **[secrets-store-connectors](secrets-store-connectors)** provides connectors to access secrets (passwords, certificates etc) at runtime.
+
+In addition, there is the **[connector-configuration-factory](connector-configuration-factory)**
 that creates **Connection** objects to configure these connectors.
 
 ----

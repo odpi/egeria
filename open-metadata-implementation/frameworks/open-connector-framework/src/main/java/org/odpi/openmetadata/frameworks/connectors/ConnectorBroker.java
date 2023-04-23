@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 
+import java.io.Serial;
 import java.util.*;
 
 /**
@@ -24,8 +25,10 @@ import java.util.*;
 public class ConnectorBroker
 {
     private static final Logger log      = LoggerFactory.getLogger(ConnectorBroker.class);
-    private final        int    hashCode = UUID.randomUUID().hashCode();
 
+    private static final String userIdPropertyName = "userId";
+    private static final String clearPasswordPropertyName = "clearPassword";
+    private static final String encryptedPasswordPropertyName = "encryptedPassword";
 
     private AuditLog auditLog = null;
 
@@ -55,12 +58,12 @@ public class ConnectorBroker
      * are not null.
      *
      * @param connection connection properties
-     * @param methodName calling method
      * @throws ConnectionCheckedException null connection detected
      */
-    private void  validateConnectionNotNull(ConnectionProperties  connection,
-                                            String                methodName) throws ConnectionCheckedException
+    private void  validateConnectionNotNull(ConnectionProperties  connection) throws ConnectionCheckedException
     {
+        final String methodName = "validateConnectionNotNull";
+
         if (connection == null)
         {
             /*
@@ -71,9 +74,8 @@ public class ConnectorBroker
                                                  methodName);
         }
 
-        if (connection instanceof VirtualConnectionProperties)
+        if (connection instanceof VirtualConnectionProperties virtualConnection)
         {
-            VirtualConnectionProperties         virtualConnection = (VirtualConnectionProperties)connection;
             List<EmbeddedConnectionProperties>  embeddedConnections = virtualConnection.getEmbeddedConnections();
 
             if ((embeddedConnections == null) || (embeddedConnections.isEmpty()))
@@ -135,7 +137,7 @@ public class ConnectorBroker
         if (connectorProviderClassName == null)
         {
             /*
-             * The connector provider class name is blank so it is not possible to create the
+             * The connector provider class name is blank, so it is not possible to create the
              * connector provider.  Throw an exception.
              */
             throw new ConnectionCheckedException(OCFErrorCode.NULL_CONNECTOR_PROVIDER.getMessageDefinition(connectionName),
@@ -217,8 +219,6 @@ public class ConnectorBroker
             AccessibleConnection accessibleConnection = new AccessibleConnection(embeddedConnection.getConnectionProperties());
             Connection           connectionBean       = accessibleConnection.getConnectionBean();
 
-            int                  position             = embeddedConnection.getPosition();
-            String               displayName          = embeddedConnection.getDisplayName();
             Map<String, Object>  arguments            = embeddedConnection.getArguments();
 
             if (arguments != null)
@@ -256,7 +256,7 @@ public class ConnectorBroker
      * @param connection connection properties
      * @throws ConnectionCheckedException an error with the connection.
      */
-    public void validateConnection(Connection    connection) throws ConnectionCheckedException
+    public void validateConnection(Connection connection) throws ConnectionCheckedException
     {
         if (connection == null)
         {
@@ -282,7 +282,7 @@ public class ConnectorBroker
 
         log.debug("==> ConnectorBroker." + methodName);
 
-        validateConnectionNotNull(connection, methodName);
+        validateConnectionNotNull(connection);
 
         ConnectorTypeProperties requestedConnectorType = this.getConnectorType(connection, methodName);
 
@@ -365,7 +365,7 @@ public class ConnectorBroker
         /*
          * At this point we hopefully have a valid connector provider so all that is left to do is call
          * it to get the connector instance.  This is done in a different try ... catch block from the
-         * instantiation of the connector provider so we can separate errors in the Connection from
+         * instantiation of the connector provider, so we can separate errors in the Connection from
          * errors generated in the Connector Provider, since both classes are
          * potentially code from a source outside of Egeria.
          */
@@ -373,6 +373,9 @@ public class ConnectorBroker
 
         try
         {
+            /*
+             * The connector is initialized status at this point.
+             */
             connectorInstance = connectorProvider.getConnector(connection);
         }
         catch (ConnectionCheckedException | ConnectorCheckedException ocfError)
@@ -417,11 +420,12 @@ public class ConnectorBroker
          * should have created a VirtualConnector and (2) the connector broker needs to create
          * connectors for its embedded connections.
          */
-        if (connection instanceof VirtualConnectionProperties)
+        if (connection instanceof VirtualConnectionProperties virtualConnectionProperties)
         {
-            if (connectorInstance instanceof VirtualConnectorExtension)
+            if (connectorInstance instanceof VirtualConnectorExtension virtualConnectorExtension)
             {
-                VirtualConnectorExtension virtualConnectorExtension = (VirtualConnectorExtension)connectorInstance;
+                AccessibleConnection accessibleConnection = new AccessibleConnection(connection);
+                Connection           connectionBean       = accessibleConnection.getConnectionBean();
 
                 /*
                  * All ok so create the embedded connectors.  Note: one of these connectors may itself be
@@ -430,13 +434,64 @@ public class ConnectorBroker
                  */
                 log.debug("Creating embedded connectors for connection name: " + connectionName + "; connectorId: " + connectorInstance.getConnectorInstanceId());
 
-                VirtualConnectionProperties        virtualConnectionProperties = (VirtualConnectionProperties) connection;
                 List<EmbeddedConnectionProperties> embeddedConnections         = virtualConnectionProperties.getEmbeddedConnections();
                 List<Connector>                    embeddedConnectors          = new ArrayList<>();
 
                 for (EmbeddedConnectionProperties  embeddedConnection : embeddedConnections)
                 {
-                    embeddedConnectors.add(getConnector(this.getConnection(embeddedConnection)));
+                    Connector embeddedConnector = getConnector(this.getConnection(embeddedConnection));
+
+                    /*
+                     * If the embedded connector is a secrets store connector, extract the standard secrets and add them to the new
+                     * connector's connection.  It first tries to retrieve the secrets directly from the store, or via any names specified in the
+                     * securedProperties.
+                     */
+                    if (embeddedConnector instanceof SecretsStoreConnector secretsStoreConnector)
+                    {
+                        if (connectionBean.getUserId() == null)
+                        {
+                            connectionBean.setUserId(secretsStoreConnector.getSecret(userIdPropertyName));
+
+                            if (connectionBean.getUserId() == null)
+                            {
+                                if ((connection.getSecuredProperties() != null) && (connection.getSecuredProperties().get(userIdPropertyName) != null))
+                                {
+                                    connectionBean.setUserId(secretsStoreConnector.getSecret(connection.getSecuredProperties().get(userIdPropertyName)));
+                                }
+                            }
+                        }
+                        if (connection.getClearPassword() == null)
+                        {
+                            connectionBean.setClearPassword(secretsStoreConnector.getSecret(clearPasswordPropertyName));
+
+                            if (connectionBean.getClearPassword() == null)
+                            {
+                                if ((connection.getSecuredProperties() != null) && (connection.getSecuredProperties().get(clearPasswordPropertyName) != null))
+                                {
+                                    connectionBean.setClearPassword(secretsStoreConnector.getSecret(connection.getSecuredProperties().get(clearPasswordPropertyName)));
+                                }
+                            }
+                        }
+                        if (connection.getEncryptedPassword() == null)
+                        {
+                            connectionBean.setEncryptedPassword(secretsStoreConnector.getSecret(encryptedPasswordPropertyName));
+
+                            if (connectionBean.getEncryptedPassword() == null)
+                            {
+                                if ((connection.getSecuredProperties() != null) && (connection.getSecuredProperties().get(encryptedPasswordPropertyName) != null))
+                                {
+                                    connectionBean.setEncryptedPassword(secretsStoreConnector.getSecret(connection.getSecuredProperties().get(encryptedPasswordPropertyName)));
+                                }
+                            }
+                        }
+
+                        if (connectorInstance instanceof SecureConnectorExtension secureConnectorExtension)
+                        {
+                            secureConnectorExtension.initializeSecretsStoreConnector(embeddedConnection.getDisplayName(), secretsStoreConnector);
+                        }
+                    }
+
+                    embeddedConnectors.add(embeddedConnector);
                 }
 
                 virtualConnectorExtension.initializeEmbeddedConnectors(embeddedConnectors);
@@ -467,43 +522,6 @@ public class ConnectorBroker
 
 
     /**
-     * Provide an implementation of hashCode for all OCF Connector Broker objects.  The UUID is unique and
-     * is randomly assigned and so its hashCode is as good as anything to describe the hash code of the connector
-     * broker object.
-     */
-    public int hashCode()
-    {
-        return hashCode;
-    }
-
-
-    /**
-     * Provide a common implementation of equals for all OCF Connector Broker objects.  The UUID is unique and
-     * is randomly assigned and so its hashCode is as good as anything to evaluate the equality of the connector
-     * broker object.
-     *
-     * @param object   object to test
-     * @return boolean flag
-     */
-    @Override
-    public boolean equals(Object object)
-    {
-        if (this == object)
-        {
-            return true;
-        }
-        if (object == null || getClass() != object.getClass())
-        {
-            return false;
-        }
-
-        ConnectorBroker that = (ConnectorBroker) object;
-
-        return hashCode == that.hashCode;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -511,9 +529,7 @@ public class ConnectorBroker
     @Override
     public String toString()
     {
-        return "ConnectorBroker{" +
-                "hashCode=" + hashCode +
-                '}';
+        return "ConnectorBroker{}";
     }
 
 
@@ -523,7 +539,8 @@ public class ConnectorBroker
      */
     private static class AccessibleConnection extends ConnectionProperties
     {
-        private static final long     serialVersionUID = 1L;
+        @Serial
+        private static final long serialVersionUID = 1L;
 
         AccessibleConnection(ConnectionProperties templateConnection)
         {
