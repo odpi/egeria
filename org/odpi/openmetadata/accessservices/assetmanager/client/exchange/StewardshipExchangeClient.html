@@ -317,6 +317,165 @@ implements <a href="../../api/exchange/StewardshipExchangeInterface.html" title=
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove a semantic assignment relationship between an element and its glossary term.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../metadataelements/AssetElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">AssetElement</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetsByOrigin(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.AssetOriginProperties,int,int,java.util.Date,boolean,boolean)" class="member-name-link">getAssetsByOrigin</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
+ <a href="../../properties/AssetOriginProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">AssetOriginProperties</a>&nbsp;properties,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return information about the assets from a specific origin.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConfidenceClassifiedElements(java.lang.String,java.lang.String,java.lang.String,boolean,int,int,int,java.util.Date,boolean,boolean)" class="member-name-link">getConfidenceClassifiedElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
+ boolean&nbsp;returnSpecificLevel,
+ int&nbsp;levelIdentifier,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return information about the elements classified with the confidence classification.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConfidentialityClassifiedElements(java.lang.String,java.lang.String,java.lang.String,boolean,int,int,int,java.util.Date,boolean,boolean)" class="member-name-link">getConfidentialityClassifiedElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
+ boolean&nbsp;returnSpecificLevel,
+ int&nbsp;levelIdentifier,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return information about the elements classified with the confidentiality classification.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCriticalityClassifiedElements(java.lang.String,java.lang.String,java.lang.String,boolean,int,int,int,java.util.Date,boolean,boolean)" class="member-name-link">getCriticalityClassifiedElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
+ boolean&nbsp;returnSpecificLevel,
+ int&nbsp;levelIdentifier,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return information about the elements classified with the criticality classification.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../metadataelements/GovernanceDefinitionElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">GovernanceDefinitionElement</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernedByDefinitions(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)" class="member-name-link">getGovernedByDefinitions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the governance definitions linked via a "GovernedBy" relationship to the requested element.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">RelatedElement</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernedElements(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)" class="member-name-link">getGovernedElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceDefinitionGUID,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the elements linked via a "GovernedBy" relationship to the requested governance definition.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../metadataelements/GlossaryTermElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">GlossaryTermElement</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMeanings(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)" class="member-name-link">getMeanings</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the glossary terms linked via a "SemanticAssignment" relationship to the requested element.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMembersOfSubjectArea(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)" class="member-name-link">getMembersOfSubjectArea</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subjectAreaName,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return information about the contents of a subject area such as the glossaries, reference data sets and quality definitions.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOwnersElements(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)" class="member-name-link">getOwnersElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;owner,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return information about the contents of a subject area such as the glossaries, reference data sets and quality definitions.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRetentionClassifiedElements(java.lang.String,java.lang.String,java.lang.String,boolean,int,int,int,java.util.Date,boolean,boolean)" class="member-name-link">getRetentionClassifiedElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
+ boolean&nbsp;returnSpecificBasisIdentifier,
+ int&nbsp;basisIdentifier,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return information about the elements classified with the retention classification.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSecurityTaggedElements(java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)" class="member-name-link">getSecurityTaggedElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return information about the contents of a subject area such as the glossaries, reference data sets and quality definitions.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">RelatedElement</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSemanticAssignees(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)" class="member-name-link">getSemanticAssignees</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryTermGUID,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the elements linked via a "SemanticAssignment" relationship to the requested glossary term.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeElementFromSubjectArea(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)" class="member-name-link">removeElementFromSubjectArea</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
@@ -415,7 +574,7 @@ implements <a href="../../api/exchange/StewardshipExchangeInterface.html" title=
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerBaseClient">Methods inherited from class&nbsp;org.odpi.openmetadata.accessservices.assetmanager.client.<a href="../AssetManagerBaseClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">AssetManagerBaseClient</a></h3>
-<code><a href="../AssetManagerBaseClient.html#clearRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean,java.lang.String)">clearRelationship</a>, <a href="../AssetManagerBaseClient.html#clearRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean,java.lang.String)">clearRelationship</a>, <a href="../AssetManagerBaseClient.html#createFeedbackFromTemplateWithParent(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,boolean,java.lang.String,java.lang.String)">createFeedbackFromTemplateWithParent</a>, <a href="../AssetManagerBaseClient.html#createFeedbackWithParent(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceableProperties,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,java.lang.String,java.util.Date,boolean,boolean,java.lang.String)">createFeedbackWithParent</a>, <a href="../AssetManagerBaseClient.html#createReferenceable(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceableProperties,java.lang.String,java.lang.String,java.lang.String)">createReferenceable</a>, <a href="../AssetManagerBaseClient.html#createReferenceableFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,java.lang.String,boolean,java.lang.String)">createReferenceableFromTemplate</a>, <a href="../AssetManagerBaseClient.html#createReferenceableFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,java.lang.String,java.lang.String)">createReferenceableFromTemplate</a>, <a href="../AssetManagerBaseClient.html#createReferenceableFromTemplateWithParent(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,boolean,java.lang.String,java.lang.String)">createReferenceableFromTemplateWithParent</a>, <a href="../AssetManagerBaseClient.html#createReferenceableFromTemplateWithParent(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,java.lang.String,java.lang.String)">createReferenceableFromTemplateWithParent</a>, <a href="../AssetManagerBaseClient.html#createReferenceableWithParent(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceableProperties,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,java.lang.String,java.util.Date,boolean,boolean,java.lang.String)">createReferenceableWithParent</a>, <a href="../AssetManagerBaseClient.html#getAssetManagerIdentifiersRequestBody(java.lang.String,java.lang.String)">getAssetManagerIdentifiersRequestBody</a>, <a href="../AssetManagerBaseClient.html#getCorrelationProperties(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getCorrelationProperties</a>, <a href="../AssetManagerBaseClient.html#getCorrelationProperties(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,java.lang.String)">getCorrelationProperties</a>, <a href="../AssetManagerBaseClient.html#getCorrelationProperties(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,java.lang.String)">getCorrelationProperties</a>, <a href="../AssetManagerBaseClient.html#getEffectiveTimeQueryRequestBody(java.lang.String,java.lang.String,java.util.Date)">getEffectiveTimeQueryRequestBody</a>, <a href="../AssetManagerBaseClient.html#getGlossaryTermRelationshipRequestBody(java.lang.String,java.lang.String,java.util.List,java.util.Date)">getGlossaryTermRelationshipRequestBody</a>, <a href="../AssetManagerBaseClient.html#getNameRequestBody(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">getNameRequestBody</a>, <a href="../AssetManagerBaseClient.html#getNameRequestBody(java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.lang.String)">getNameRequestBody</a>, <a href="../AssetManagerBaseClient.html#getQualifiedNameRequestBody(java.lang.String,java.lang.String,java.lang.String,java.util.Date)">getQualifiedNameRequestBody</a>, <a href="../AssetManagerBaseClient.html#getRelatedElements(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean,java.lang.String)">getRelatedElements</a>, <a href="../AssetManagerBaseClient.html#getRelationshipRequestBody(java.lang.String,java.lang.String,java.util.Date,org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties)">getRelationshipRequestBody</a>, <a href="../AssetManagerBaseClient.html#getSearchStringRequestBody(java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.lang.String)">getSearchStringRequestBody</a>, <a href="../AssetManagerBaseClient.html#getUpdateRequestBody(java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.lang.String)">getUpdateRequestBody</a>, <a href="../AssetManagerBaseClient.html#handleMissingScope(java.lang.String,java.lang.String)">handleMissingScope</a>, <a href="../AssetManagerBaseClient.html#removeReferenceable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean,java.lang.String)">removeReferenceable</a>, <a href="../AssetManagerBaseClient.html#removeReferenceableClassification(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean,java.lang.String)">removeReferenceableClassification</a>, <a href="../AssetManagerBaseClient.html#setReferenceableClassification(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ClassificationProperties,java.lang.String,java.util.Date,boolean,boolean,java.lang.String)">setReferenceableClassification</a>, <a href="../AssetManagerBaseClient.html#setupRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean,java.lang.String)">setupRelationship</a>, <a href="../AssetManagerBaseClient.html#setupRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean,java.lang.String)">setupRelationship</a>, <a href="../AssetManagerBaseClient.html#updateFeedback(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceableProperties,java.lang.String,java.lang.String,java.util.Date,boolean,boolean,java.lang.String)">updateFeedback</a>, <a href="../AssetManagerBaseClient.html#updateReferenceable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceableProperties,java.lang.String,java.lang.String,java.util.Date,boolean,boolean,java.lang.String)">updateReferenceable</a></code></div>
+<code><a href="../AssetManagerBaseClient.html#clearRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean,java.lang.String)">clearRelationship</a>, <a href="../AssetManagerBaseClient.html#clearRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean,java.lang.String)">clearRelationship</a>, <a href="../AssetManagerBaseClient.html#createFeedbackFromTemplateWithParent(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,boolean,java.lang.String,java.lang.String)">createFeedbackFromTemplateWithParent</a>, <a href="../AssetManagerBaseClient.html#createFeedbackWithParent(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceableProperties,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,java.lang.String,java.util.Date,boolean,boolean,java.lang.String)">createFeedbackWithParent</a>, <a href="../AssetManagerBaseClient.html#createReferenceable(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceableProperties,java.lang.String,java.lang.String,java.lang.String)">createReferenceable</a>, <a href="../AssetManagerBaseClient.html#createReferenceableFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,java.lang.String,boolean,java.lang.String)">createReferenceableFromTemplate</a>, <a href="../AssetManagerBaseClient.html#createReferenceableFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,java.lang.String,java.lang.String)">createReferenceableFromTemplate</a>, <a href="../AssetManagerBaseClient.html#createReferenceableFromTemplateWithParent(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,boolean,java.lang.String,java.lang.String)">createReferenceableFromTemplateWithParent</a>, <a href="../AssetManagerBaseClient.html#createReferenceableFromTemplateWithParent(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,java.lang.String,java.lang.String)">createReferenceableFromTemplateWithParent</a>, <a href="../AssetManagerBaseClient.html#createReferenceableWithParent(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceableProperties,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,java.lang.String,java.util.Date,boolean,boolean,java.lang.String)">createReferenceableWithParent</a>, <a href="../AssetManagerBaseClient.html#getAssetManagerIdentifiersRequestBody(java.lang.String,java.lang.String)">getAssetManagerIdentifiersRequestBody</a>, <a href="../AssetManagerBaseClient.html#getClassifiedElements(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.FindProperties,java.lang.String,int,int,java.util.Date,boolean,boolean,java.lang.String)">getClassifiedElements</a>, <a href="../AssetManagerBaseClient.html#getCorrelationProperties(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getCorrelationProperties</a>, <a href="../AssetManagerBaseClient.html#getCorrelationProperties(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,java.lang.String)">getCorrelationProperties</a>, <a href="../AssetManagerBaseClient.html#getCorrelationProperties(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,java.lang.String)">getCorrelationProperties</a>, <a href="../AssetManagerBaseClient.html#getEffectiveTimeQueryRequestBody(java.lang.String,java.lang.String,java.util.Date)">getEffectiveTimeQueryRequestBody</a>, <a href="../AssetManagerBaseClient.html#getGlossaryTermRelationshipRequestBody(java.lang.String,java.lang.String,java.util.List,java.util.Date)">getGlossaryTermRelationshipRequestBody</a>, <a href="../AssetManagerBaseClient.html#getNameRequestBody(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">getNameRequestBody</a>, <a href="../AssetManagerBaseClient.html#getNameRequestBody(java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.lang.String)">getNameRequestBody</a>, <a href="../AssetManagerBaseClient.html#getQualifiedNameRequestBody(java.lang.String,java.lang.String,java.lang.String,java.util.Date)">getQualifiedNameRequestBody</a>, <a href="../AssetManagerBaseClient.html#getRelatedElements(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean,java.lang.String)">getRelatedElements</a>, <a href="../AssetManagerBaseClient.html#getRelationshipRequestBody(java.lang.String,java.lang.String,java.util.Date,org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties)">getRelationshipRequestBody</a>, <a href="../AssetManagerBaseClient.html#getSearchStringRequestBody(java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.lang.String)">getSearchStringRequestBody</a>, <a href="../AssetManagerBaseClient.html#getUpdateRequestBody(java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.lang.String)">getUpdateRequestBody</a>, <a href="../AssetManagerBaseClient.html#handleMissingScope(java.lang.String,java.lang.String)">handleMissingScope</a>, <a href="../AssetManagerBaseClient.html#removeReferenceable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean,java.lang.String)">removeReferenceable</a>, <a href="../AssetManagerBaseClient.html#removeReferenceableClassification(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean,java.lang.String)">removeReferenceableClassification</a>, <a href="../AssetManagerBaseClient.html#setReferenceableClassification(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ClassificationProperties,java.lang.String,java.util.Date,boolean,boolean,java.lang.String)">setReferenceableClassification</a>, <a href="../AssetManagerBaseClient.html#setupRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean,java.lang.String)">setupRelationship</a>, <a href="../AssetManagerBaseClient.html#setupRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean,java.lang.String)">setupRelationship</a>, <a href="../AssetManagerBaseClient.html#updateFeedback(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceableProperties,java.lang.String,java.lang.String,java.util.Date,boolean,boolean,java.lang.String)">updateFeedback</a>, <a href="../AssetManagerBaseClient.html#updateReferenceable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceableProperties,java.lang.String,java.lang.String,java.util.Date,boolean,boolean,java.lang.String)">updateReferenceable</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -617,6 +776,46 @@ implements <a href="../../api/exchange/StewardshipExchangeInterface.html" title=
 </section>
 </li>
 <li>
+<section class="detail" id="getConfidenceClassifiedElements(java.lang.String,java.lang.String,java.lang.String,boolean,int,int,int,java.util.Date,boolean,boolean)">
+<h3>getConfidenceClassifiedElements</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;</span>&nbsp;<span class="element-name">getConfidenceClassifiedElements</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
+ boolean&nbsp;returnSpecificLevel,
+ int&nbsp;levelIdentifier,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing)</span>
+                                                  throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Return information about the elements classified with the confidence classification.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../api/exchange/StewardshipExchangeInterface.html#getConfidenceClassifiedElements(java.lang.String,java.lang.String,java.lang.String,boolean,int,int,int,java.util.Date,boolean,boolean)">getConfidenceClassifiedElements</a></code>&nbsp;in interface&nbsp;<code><a href="../../api/exchange/StewardshipExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api.exchange">StewardshipExchangeInterface</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
+<dd><code>returnSpecificLevel</code> - should the results be filtered by levelIdentifier?</dd>
+<dd><code>levelIdentifier</code> - the identifier to filter by (if returnSpecificLevel=true)</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
+<dt>Returns:</dt>
+<dd>list of element stubs</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - qualifiedName or userId is null</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="setCriticalityClassification(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.GovernanceClassificationProperties,java.lang.String,java.util.Date,boolean,boolean)">
 <h3>setCriticalityClassification</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setCriticalityClassification</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -685,6 +884,46 @@ implements <a href="../../api/exchange/StewardshipExchangeInterface.html" title=
 <dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getCriticalityClassifiedElements(java.lang.String,java.lang.String,java.lang.String,boolean,int,int,int,java.util.Date,boolean,boolean)">
+<h3>getCriticalityClassifiedElements</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;</span>&nbsp;<span class="element-name">getCriticalityClassifiedElements</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
+ boolean&nbsp;returnSpecificLevel,
+ int&nbsp;levelIdentifier,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing)</span>
+                                                   throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Return information about the elements classified with the criticality classification.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../api/exchange/StewardshipExchangeInterface.html#getCriticalityClassifiedElements(java.lang.String,java.lang.String,java.lang.String,boolean,int,int,int,java.util.Date,boolean,boolean)">getCriticalityClassifiedElements</a></code>&nbsp;in interface&nbsp;<code><a href="../../api/exchange/StewardshipExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api.exchange">StewardshipExchangeInterface</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
+<dd><code>returnSpecificLevel</code> - should the results be filtered by levelIdentifier?</dd>
+<dd><code>levelIdentifier</code> - the identifier to filter by (if returnSpecificLevel=true)</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
+<dt>Returns:</dt>
+<dd>list of element stubs</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - qualifiedName or userId is null</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </section>
 </li>
@@ -763,6 +1002,46 @@ implements <a href="../../api/exchange/StewardshipExchangeInterface.html" title=
 </section>
 </li>
 <li>
+<section class="detail" id="getConfidentialityClassifiedElements(java.lang.String,java.lang.String,java.lang.String,boolean,int,int,int,java.util.Date,boolean,boolean)">
+<h3>getConfidentialityClassifiedElements</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;</span>&nbsp;<span class="element-name">getConfidentialityClassifiedElements</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
+ boolean&nbsp;returnSpecificLevel,
+ int&nbsp;levelIdentifier,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing)</span>
+                                                       throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Return information about the elements classified with the confidentiality classification.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../api/exchange/StewardshipExchangeInterface.html#getConfidentialityClassifiedElements(java.lang.String,java.lang.String,java.lang.String,boolean,int,int,int,java.util.Date,boolean,boolean)">getConfidentialityClassifiedElements</a></code>&nbsp;in interface&nbsp;<code><a href="../../api/exchange/StewardshipExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api.exchange">StewardshipExchangeInterface</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
+<dd><code>returnSpecificLevel</code> - should the results be filtered by levelIdentifier?</dd>
+<dd><code>levelIdentifier</code> - the identifier to filter by (if returnSpecificLevel=true)</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
+<dt>Returns:</dt>
+<dd>list of element stubs</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - qualifiedName or userId is null</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="setRetentionClassification(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.RetentionClassificationProperties,java.util.Date,boolean,boolean)">
 <h3>setRetentionClassification</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRetentionClassification</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -837,6 +1116,46 @@ implements <a href="../../api/exchange/StewardshipExchangeInterface.html" title=
 </section>
 </li>
 <li>
+<section class="detail" id="getRetentionClassifiedElements(java.lang.String,java.lang.String,java.lang.String,boolean,int,int,int,java.util.Date,boolean,boolean)">
+<h3>getRetentionClassifiedElements</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;</span>&nbsp;<span class="element-name">getRetentionClassifiedElements</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
+ boolean&nbsp;returnSpecificBasisIdentifier,
+ int&nbsp;basisIdentifier,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing)</span>
+                                                 throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Return information about the elements classified with the retention classification.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../api/exchange/StewardshipExchangeInterface.html#getRetentionClassifiedElements(java.lang.String,java.lang.String,java.lang.String,boolean,int,int,int,java.util.Date,boolean,boolean)">getRetentionClassifiedElements</a></code>&nbsp;in interface&nbsp;<code><a href="../../api/exchange/StewardshipExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api.exchange">StewardshipExchangeInterface</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
+<dd><code>returnSpecificBasisIdentifier</code> - should the results be filtered by basisIdentifier?</dd>
+<dd><code>basisIdentifier</code> - the identifier to filter by (if returnSpecificBasisIdentifier=true)</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
+<dt>Returns:</dt>
+<dd>list of element stubs</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - qualifiedName or userId is null</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="addSecurityTags(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.SecurityTagsProperties,java.util.Date,boolean,boolean)">
 <h3>addSecurityTags</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addSecurityTags</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -901,6 +1220,42 @@ implements <a href="../../api/exchange/StewardshipExchangeInterface.html" title=
 <dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - asset or element not known, null userId or guid</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSecurityTaggedElements(java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">
+<h3>getSecurityTaggedElements</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;</span>&nbsp;<span class="element-name">getSecurityTaggedElements</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing)</span>
+                                            throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Return information about the contents of a subject area such as the glossaries, reference data sets and quality definitions.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../api/exchange/StewardshipExchangeInterface.html#getSecurityTaggedElements(java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">getSecurityTaggedElements</a></code>&nbsp;in interface&nbsp;<code><a href="../../api/exchange/StewardshipExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api.exchange">StewardshipExchangeInterface</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
+<dt>Returns:</dt>
+<dd>list of element stubs</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - qualifiedName or userId is null</dd>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
@@ -977,6 +1332,44 @@ implements <a href="../../api/exchange/StewardshipExchangeInterface.html" title=
 </section>
 </li>
 <li>
+<section class="detail" id="getOwnersElements(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">
+<h3>getOwnersElements</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;</span>&nbsp;<span class="element-name">getOwnersElements</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;owner,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing)</span>
+                                    throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Return information about the contents of a subject area such as the glossaries, reference data sets and quality definitions.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../api/exchange/StewardshipExchangeInterface.html#getOwnersElements(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">getOwnersElements</a></code>&nbsp;in interface&nbsp;<code><a href="../../api/exchange/StewardshipExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api.exchange">StewardshipExchangeInterface</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
+<dd><code>owner</code> - unique identifier for the owner</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
+<dt>Returns:</dt>
+<dd>list of element stubs</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - qualifiedName or userId is null</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="addAssetOrigin(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.AssetOriginProperties,java.util.Date,boolean,boolean)">
 <h3>addAssetOrigin</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addAssetOrigin</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -1041,6 +1434,44 @@ implements <a href="../../api/exchange/StewardshipExchangeInterface.html" title=
 <dd><code>externalIdentifier</code> - unique identifier of the element in the external asset manager</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - asset or element not known, null userId or guid</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getAssetsByOrigin(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.AssetOriginProperties,int,int,java.util.Date,boolean,boolean)">
+<h3>getAssetsByOrigin</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../metadataelements/AssetElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">AssetElement</a>&gt;</span>&nbsp;<span class="element-name">getAssetsByOrigin</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
+ <a href="../../properties/AssetOriginProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">AssetOriginProperties</a>&nbsp;properties,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing)</span>
+                                     throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Return information about the assets from a specific origin.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../api/exchange/StewardshipExchangeInterface.html#getAssetsByOrigin(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.AssetOriginProperties,int,int,java.util.Date,boolean,boolean)">getAssetsByOrigin</a></code>&nbsp;in interface&nbsp;<code><a href="../../api/exchange/StewardshipExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api.exchange">StewardshipExchangeInterface</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
+<dd><code>properties</code> - values to search on - null means any value</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
+<dt>Returns:</dt>
+<dd>list of the assets</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - qualifiedName or userId is null</dd>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
@@ -1117,6 +1548,44 @@ implements <a href="../../api/exchange/StewardshipExchangeInterface.html" title=
 </section>
 </li>
 <li>
+<section class="detail" id="getMembersOfSubjectArea(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">
+<h3>getMembersOfSubjectArea</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;</span>&nbsp;<span class="element-name">getMembersOfSubjectArea</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subjectAreaName,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing)</span>
+                                          throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Return information about the contents of a subject area such as the glossaries, reference data sets and quality definitions.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../api/exchange/StewardshipExchangeInterface.html#getMembersOfSubjectArea(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">getMembersOfSubjectArea</a></code>&nbsp;in interface&nbsp;<code><a href="../../api/exchange/StewardshipExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api.exchange">StewardshipExchangeInterface</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
+<dd><code>subjectAreaName</code> - unique identifier for the subject area</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
+<dt>Returns:</dt>
+<dd>list of element stubs</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - qualifiedName or userId is null</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="setupSemanticAssignment(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.SemanticAssignmentProperties,java.util.Date,boolean,boolean)">
 <h3>setupSemanticAssignment</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setupSemanticAssignment</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -1188,6 +1657,82 @@ implements <a href="../../api/exchange/StewardshipExchangeInterface.html" title=
 </section>
 </li>
 <li>
+<section class="detail" id="getMeanings(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">
+<h3>getMeanings</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../metadataelements/GlossaryTermElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">GlossaryTermElement</a>&gt;</span>&nbsp;<span class="element-name">getMeanings</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing)</span>
+                                      throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Retrieve the glossary terms linked via a "SemanticAssignment" relationship to the requested element.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../api/exchange/StewardshipExchangeInterface.html#getMeanings(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">getMeanings</a></code>&nbsp;in interface&nbsp;<code><a href="../../api/exchange/StewardshipExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api.exchange">StewardshipExchangeInterface</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
+<dd><code>elementGUID</code> - unique identifier of the element</dd>
+<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
+<dd><code>pageSize</code> - maximum number of elements to return.</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
+<dt>Returns:</dt>
+<dd>list of related elements</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSemanticAssignees(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">
+<h3>getSemanticAssignees</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">RelatedElement</a>&gt;</span>&nbsp;<span class="element-name">getSemanticAssignees</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;glossaryTermGUID,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing)</span>
+                                          throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Retrieve the elements linked via a "SemanticAssignment" relationship to the requested glossary term.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../api/exchange/StewardshipExchangeInterface.html#getSemanticAssignees(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">getSemanticAssignees</a></code>&nbsp;in interface&nbsp;<code><a href="../../api/exchange/StewardshipExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api.exchange">StewardshipExchangeInterface</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
+<dd><code>glossaryTermGUID</code> - unique identifier of the glossary term that the returned elements are linked to</dd>
+<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
+<dd><code>pageSize</code> - maximum number of elements to return.</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
+<dt>Returns:</dt>
+<dd>list of related elements</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="addGovernanceDefinitionToElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">
 <h3>addGovernanceDefinitionToElement</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addGovernanceDefinitionToElement</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -1248,6 +1793,82 @@ implements <a href="../../api/exchange/StewardshipExchangeInterface.html" title=
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
 <dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
 <dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getGovernedByDefinitions(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">
+<h3>getGovernedByDefinitions</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../metadataelements/GovernanceDefinitionElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">GovernanceDefinitionElement</a>&gt;</span>&nbsp;<span class="element-name">getGovernedByDefinitions</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing)</span>
+                                                           throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Retrieve the governance definitions linked via a "GovernedBy" relationship to the requested element.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../api/exchange/StewardshipExchangeInterface.html#getGovernedByDefinitions(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">getGovernedByDefinitions</a></code>&nbsp;in interface&nbsp;<code><a href="../../api/exchange/StewardshipExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api.exchange">StewardshipExchangeInterface</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
+<dd><code>elementGUID</code> - unique identifier of the element</dd>
+<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
+<dd><code>pageSize</code> - maximum number of elements to return.</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
+<dt>Returns:</dt>
+<dd>list of related elements</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getGovernedElements(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">
+<h3>getGovernedElements</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">RelatedElement</a>&gt;</span>&nbsp;<span class="element-name">getGovernedElements</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceDefinitionGUID,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing)</span>
+                                         throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Retrieve the elements linked via a "GovernedBy" relationship to the requested governance definition.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../api/exchange/StewardshipExchangeInterface.html#getGovernedElements(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">getGovernedElements</a></code>&nbsp;in interface&nbsp;<code><a href="../../api/exchange/StewardshipExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api.exchange">StewardshipExchangeInterface</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
+<dd><code>governanceDefinitionGUID</code> - unique identifier of the glossary term that the returned elements are linked to</dd>
+<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
+<dd><code>pageSize</code> - maximum number of elements to return.</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
+<dt>Returns:</dt>
+<dd>list of related elements</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>

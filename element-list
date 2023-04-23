@@ -429,6 +429,9 @@ org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning
 org.odpi.openmetadata.adapters.connectors.governanceactions.remediation
 org.odpi.openmetadata.adapters.connectors.governanceactions.verification
 org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog
+org.odpi.openmetadata.adapters.connectors.integration.apacheatlas
+org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ffdc
+org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.properties
 org.odpi.openmetadata.adapters.connectors.integration.basicfiles
 org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.exception
@@ -446,6 +449,7 @@ org.odpi.openmetadata.adapters.connectors.restclients.factory
 org.odpi.openmetadata.adapters.connectors.restclients.ffdc
 org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions
 org.odpi.openmetadata.adapters.connectors.restclients.spring
+org.odpi.openmetadata.adapters.connectors.secretsstore.envar
 org.odpi.openmetadata.adapters.eventbus.topic.inmemory
 org.odpi.openmetadata.adapters.eventbus.topic.kafka
 org.odpi.openmetadata.adapters.repositoryservices

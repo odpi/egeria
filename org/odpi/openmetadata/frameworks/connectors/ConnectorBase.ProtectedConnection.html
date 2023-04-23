@@ -135,17 +135,12 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a copy of the ConnectionBean.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSecuredProperties()" class="member-name-link">getSecuredProperties</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return a copy of the secured properties.</div>
-</div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionProperties</a></h3>
-<code><a href="properties/ConnectionProperties.html#equals(java.lang.Object)">equals</a>, <a href="properties/ConnectionProperties.html#getClearPassword()">getClearPassword</a>, <a href="properties/ConnectionProperties.html#getConfigurationProperties()">getConfigurationProperties</a>, <a href="properties/ConnectionProperties.html#getConnectionName()">getConnectionName</a>, <a href="properties/ConnectionProperties.html#getConnectorType()">getConnectorType</a>, <a href="properties/ConnectionProperties.html#getDescription()">getDescription</a>, <a href="properties/ConnectionProperties.html#getDisplayName()">getDisplayName</a>, <a href="properties/ConnectionProperties.html#getEncryptedPassword()">getEncryptedPassword</a>, <a href="properties/ConnectionProperties.html#getEndpoint()">getEndpoint</a>, <a href="properties/ConnectionProperties.html#getUserId()">getUserId</a>, <a href="properties/ConnectionProperties.html#hashCode()">hashCode</a>, <a href="properties/ConnectionProperties.html#toString()">toString</a></code></div>
+<code><a href="properties/ConnectionProperties.html#equals(java.lang.Object)">equals</a>, <a href="properties/ConnectionProperties.html#getClearPassword()">getClearPassword</a>, <a href="properties/ConnectionProperties.html#getConfigurationProperties()">getConfigurationProperties</a>, <a href="properties/ConnectionProperties.html#getConnectionName()">getConnectionName</a>, <a href="properties/ConnectionProperties.html#getConnectorType()">getConnectorType</a>, <a href="properties/ConnectionProperties.html#getDescription()">getDescription</a>, <a href="properties/ConnectionProperties.html#getDisplayName()">getDisplayName</a>, <a href="properties/ConnectionProperties.html#getEncryptedPassword()">getEncryptedPassword</a>, <a href="properties/ConnectionProperties.html#getEndpoint()">getEndpoint</a>, <a href="properties/ConnectionProperties.html#getSecuredProperties()">getSecuredProperties</a>, <a href="properties/ConnectionProperties.html#getUserId()">getUserId</a>, <a href="properties/ConnectionProperties.html#hashCode()">hashCode</a>, <a href="properties/ConnectionProperties.html#toString()">toString</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.properties.AssetReferenceable">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="properties/AssetReferenceable.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetReferenceable</a></h3>
 <code><a href="properties/AssetReferenceable.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="properties/AssetReferenceable.html#getQualifiedName()">getQualifiedName</a>, <a href="properties/AssetReferenceable.html#getReferenceableBean()">getReferenceableBean</a>, <a href="properties/AssetReferenceable.html#setBean(org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable)">setBean</a></code></div>
@@ -166,21 +161,6 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="getSecuredProperties()">
-<h3>getSecuredProperties</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getSecuredProperties</span>()</div>
-<div class="block">Return a copy of the secured properties.  Null means no secured properties are available.
- This method is protected so only OCF (or subclasses) can access them.  When Connector is passed to calling
- OMAS, the secured properties are not available.</div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code><a href="properties/ConnectionProperties.html#getSecuredProperties()">getSecuredProperties</a></code>&nbsp;in class&nbsp;<code><a href="properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionProperties</a></code></dd>
-<dt>Returns:</dt>
-<dd>secured properties   typically user credentials for the connection</dd>
-</dl>
-</section>
-</li>
 <li>
 <section class="detail" id="getConnectionBean()">
 <h3>getConnectionBean</h3>
