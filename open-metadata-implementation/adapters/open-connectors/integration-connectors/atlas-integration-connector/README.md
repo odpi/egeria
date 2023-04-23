@@ -7,7 +7,7 @@ The Apache Atlas integration connector publishes glossary terms to Apache Atlas.
 
 ## Deployment and configuration
 
-The kafka monitor integration connector is included in the main Egeria assembly.
+The Apache Atlas integration connector is included in the main Egeria assembly.
 It runs in the [Catalog Integrator OMIS](../../../../integration-services/catalog-integrator).
 
 ----

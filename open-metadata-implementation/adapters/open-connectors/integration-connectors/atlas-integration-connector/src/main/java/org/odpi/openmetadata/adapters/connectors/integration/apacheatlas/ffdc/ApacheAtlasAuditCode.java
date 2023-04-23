@@ -9,7 +9,6 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 
 /**
  * The ApacheAtlasAuditCode is used to define the message content for the OMRS Audit Log.
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>Log Message Id - to uniquely identify the message</li>
@@ -34,7 +33,7 @@ public enum ApacheAtlasAuditCode implements AuditLogMessageSet
                                 "The connector is designed to publish changes to all active glossary terms from the name glossary to an equivalent glossary on Apache Atlas.",
                                 "No specific action is required.  This message is to confirm the configuration for the integration connector limits which glossaries are to be published."),
 
-    BAD_CONFIGURATION("APACHE-ATLAS-INTEGRATION-CONNECTOR-0002",
+    BAD_CONFIGURATION("APACHE-ATLAS-INTEGRATION-CONNECTOR-0003",
                           OMRSAuditLogRecordSeverity.EXCEPTION,
                           "The {0} integration connector encountered an {1} exception when opening event broker {2} during the {3} method.  The exception message included was {4}",
                           "The exception is passed back to the Topic Integrator OMIS in the integration daemon that is hosting " +
@@ -135,12 +134,12 @@ public enum ApacheAtlasAuditCode implements AuditLogMessageSet
     /**
      * The constructor for ApacheAtlasAuditCode expects to be passed one of the enumeration rows defined in
      * ApacheAtlasAuditCode above.   For example:
-     *
+     * <br>
      *     ApacheAtlasAuditCode   auditCode = ApacheAtlasAuditCode.SERVER_NOT_AVAILABLE;
-     *
+     * <br>
      * This will expand out to the 4 parameters shown below.
      *
-     * @param messageId - unique Id for the message
+     * @param messageId - unique id for the message
      * @param severity - severity of the message
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened

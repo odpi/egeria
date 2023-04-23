@@ -1678,7 +1678,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param organizationGUID Unique identifier (GUID) of the organization where this asset originated from - or null
      * @param businessCapabilityGUID  Unique identifier (GUID) of the business capability where this asset originated from.
      * @param otherOriginValues Descriptive labels describing origin of the asset
-     * @param serviceSupportedZones supported zones for calling service
      * @param startFrom int      starting position for fist returned element.
      * @param pageSize  int      maximum number of elements to return on the call.
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned

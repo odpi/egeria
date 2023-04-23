@@ -918,7 +918,6 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @param userId       String   userId of user making request.
      * @param ownerName    String   unique identifier for the owner.
-     * @param serviceSupportedZones supported zones for calling service
      * @param startFrom int      starting position for fist returned element.
      * @param pageSize  int      maximum number of elements to return on the call.
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned

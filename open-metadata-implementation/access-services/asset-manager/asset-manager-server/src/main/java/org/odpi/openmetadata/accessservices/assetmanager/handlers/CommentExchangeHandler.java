@@ -182,7 +182,7 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
         }
 
         String commentGUID = commentHandler.attachNewComment(userId,
-                                                             correlationProperties.getAssetManagerGUID(),
+                                                             getExternalSourceGUID(correlationProperties),
                                                              getExternalSourceName(correlationProperties),
                                                              guid,
                                                              guid,
@@ -330,8 +330,8 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
         if (correlationProperties != null)
         {
             commentHandler.removeCommentFromElement(userId,
-                                                    correlationProperties.getAssetManagerGUID(),
-                                                    correlationProperties.getAssetManagerName(),
+                                                    this.getExternalSourceGUID(correlationProperties),
+                                                    this.getExternalSourceName(correlationProperties),
                                                     commentGUID,
                                                     commentGUIDParameterName,
                                                     forLineage,
@@ -567,7 +567,7 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
         List<CommentElement> results = commentHandler.getComments(userId,
                                                                   elementGUID,
                                                                   elementGUIDParameterName,
-                                                                  OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                   startFrom,
                                                                   pageSize,
                                                                   forLineage,

@@ -46,12 +46,6 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
 
     private volatile boolean           isActive                 = false;
 
-    /*
-     * Secured properties are protected properties from the connection.  They are retrieved as a protected
-     * variable to allow subclasses of ConnectorBase to access them.
-     */
-    protected Map<String, String> securedProperties = null;
-
     private static final Logger   log = LoggerFactory.getLogger(ConnectorBase.class);
 
     private        final int      hashCode = UUID.randomUUID().hashCode();
@@ -89,7 +83,6 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
          * Set up the secured properties and the connection bean
          */
         ProtectedConnection  protectedConnection = new ProtectedConnection(connectionProperties);
-        this.securedProperties = protectedConnection.getSecuredProperties();
         this.connectionBean = protectedConnection.getConnectionBean();
 
         log.debug("New Connector initialized: " + connectorInstanceId + ", " + connectionProperties.getQualifiedName() + "," + connectionProperties.getDisplayName());
@@ -294,20 +287,6 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
         {
             super(templateConnection);
         }
-
-        /**
-         * Return a copy of the secured properties.  Null means no secured properties are available.
-         * This method is protected so only OCF (or subclasses) can access them.  When Connector is passed to calling
-         * OMAS, the secured properties are not available.
-         *
-         * @return secured properties   typically user credentials for the connection
-         */
-        @Override
-        protected Map<String, String> getSecuredProperties()
-        {
-            return super.getConnectionBean().getSecuredProperties();
-        }
-
 
         /**
          * Return a copy of the ConnectionBean.

@@ -30,7 +30,7 @@ public class NoteLogElement implements MetadataElement, Serializable
 
     private ElementHeader                   elementHeader         = null;
     private List<MetadataCorrelationHeader> correlationHeaders    = null;
-    private NoteLogProperties           properties            = null;
+    private NoteLogProperties               properties            = null;
     private FeedbackTargetElement           feedbackTargetElement = null;
 
 
