@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +25,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceServiceRegistrationRequestBody implements Serializable
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private String              governanceServiceGUID = null;
     private String              requestType           = null;
@@ -112,7 +114,7 @@ public class GovernanceServiceRegistrationRequestBody implements Serializable
      */
     public String getServiceRequestType()
     {
-        return requestType;
+        return serviceRequestType;
     }
 
 
@@ -125,7 +127,7 @@ public class GovernanceServiceRegistrationRequestBody implements Serializable
      */
     public void setServiceRequestType(String requestType)
     {
-        this.requestType = requestType;
+        this.serviceRequestType = requestType;
     }
 
 
