@@ -40,10 +40,10 @@ class InMemoryOMRSMetadataStore
      * @param versionEndTime time when this version was superseded
      * @return boolean flag - true means it is valid
      */
-    static boolean checkInclusiveDate(Date           fromTime,
-                                      Date           toTime,
-                                      InstanceHeader instanceHeader,
-                                      Date           versionEndTime)
+    static synchronized boolean checkInclusiveDate(Date           fromTime,
+                                                   Date           toTime,
+                                                   InstanceHeader instanceHeader,
+                                                   Date           versionEndTime)
     {
         Date versionStartTime = instanceHeader.getUpdateTime();
 
@@ -642,7 +642,7 @@ class InMemoryOMRSMetadataStore
          *
          * @param entitySummary header of either an entity or an entity proxy
          */
-        private void saveHomeClassifications(EntitySummary entitySummary)
+        private synchronized void saveHomeClassifications(EntitySummary entitySummary)
         {
             List<Classification>  entityClassifications = entitySummary.getClassifications();
 
@@ -661,7 +661,7 @@ class InMemoryOMRSMetadataStore
          *
          * @param classification potential classification to save
          */
-        private void saveHomeClassification(Classification classification)
+        private synchronized void saveHomeClassification(Classification classification)
         {
             if (classification != null)
             {
@@ -689,7 +689,7 @@ class InMemoryOMRSMetadataStore
          *
          * @param entitySummary entity/entity proxy
          */
-        private void addHomeClassifications(EntitySummary entitySummary)
+        private synchronized void addHomeClassifications(EntitySummary entitySummary)
         {
             if (! homeClassifications.isEmpty())
             {
@@ -736,7 +736,7 @@ class InMemoryOMRSMetadataStore
          *
          * @return list of classifications or null
          */
-        List<Classification> getHomeClassifications()
+        synchronized List<Classification> getHomeClassifications()
         {
             if (! homeClassifications.isEmpty())
             {
@@ -749,11 +749,9 @@ class InMemoryOMRSMetadataStore
                     {
                         results.add(homeClassification);
                     }
-
-                    return results;
                 }
 
-                return null;
+                return results;
             }
 
             return null;
@@ -765,7 +763,7 @@ class InMemoryOMRSMetadataStore
          *
          * @param classificationName classification to remove
          */
-        EntityDetail removeClassificationFromEntity(String classificationName)
+        synchronized EntityDetail removeClassificationFromEntity(String classificationName)
         {
             final String methodName = "removeClassificationFromEntity";
 
@@ -800,7 +798,7 @@ class InMemoryOMRSMetadataStore
          *
          * @param classificationName classification to remove
          */
-        Classification removeClassificationFromEntityProxy(String classificationName)
+        synchronized Classification removeClassificationFromEntityProxy(String classificationName)
         {
             final String methodName = "removeClassificationFromEntityProxy";
 
@@ -888,7 +886,7 @@ class InMemoryOMRSMetadataStore
          * @param entity entity object
          * @throws RepositoryErrorException problem forming entity proxy
          */
-        void saveEntity(EntityDetail entity) throws RepositoryErrorException
+        synchronized void saveEntity(EntityDetail entity) throws RepositoryErrorException
         {
             saveHomeClassifications(entity);
 
@@ -917,7 +915,7 @@ class InMemoryOMRSMetadataStore
          *
          * @param entityProxy entity proxy
          */
-        void saveEntityProxy(EntityProxy entityProxy)
+        synchronized void saveEntityProxy(EntityProxy entityProxy)
         {
             /*
              * The proxy is saved if it is not older than the stored proxy.  Note the entity proxy may (temporarily)
@@ -945,7 +943,7 @@ class InMemoryOMRSMetadataStore
          *
          * @param classification classification to save
          */
-        void saveClassification(Classification classification)
+        synchronized void saveClassification(Classification classification)
         {
             final String methodName = "saveClassification";
 
@@ -971,7 +969,7 @@ class InMemoryOMRSMetadataStore
          *
          * @return entity object
          */
-        EntityDetail  getEntity()
+        synchronized EntityDetail  getEntity()
         {
             return entity;
         }
@@ -982,7 +980,7 @@ class InMemoryOMRSMetadataStore
          *
          * @return entity proxy object
          */
-        EntityProxy  getEntityProxy()
+        synchronized EntityProxy  getEntityProxy()
         {
             return entityProxy;
         }
@@ -994,7 +992,7 @@ class InMemoryOMRSMetadataStore
          * @param asOfTime time to use on the query
          * @return selected instance
          */
-        EntityDetail getEntity(Date asOfTime)
+        synchronized EntityDetail getEntity(Date asOfTime)
         {
             if (asOfTime == null)
             {
@@ -1060,9 +1058,9 @@ class InMemoryOMRSMetadataStore
          * @param oldestFirst ordering of results
          * @return list of versions of this relationship
          */
-        List<EntityDetail> getEntityHistory(Date    fromTime,
-                                            Date    toTime,
-                                            boolean oldestFirst)
+        synchronized List<EntityDetail> getEntityHistory(Date    fromTime,
+                                                         Date    toTime,
+                                                         boolean oldestFirst)
         {
             List<EntityDetail> historyResults = new ArrayList<>();
 
@@ -1131,7 +1129,7 @@ class InMemoryOMRSMetadataStore
          *
          * @return first element in the history
          */
-        EntityDetail retrievePreviousVersion()
+        synchronized EntityDetail retrievePreviousVersion()
         {
             if (! entityHistory.isEmpty())
             {
@@ -1167,7 +1165,7 @@ class InMemoryOMRSMetadataStore
              *
              * @return active classification or null if the classification has been deleted
              */
-            Classification getHomeClassification()
+            synchronized Classification getHomeClassification()
             {
                 return this.latestClassification;
             }
@@ -1178,7 +1176,7 @@ class InMemoryOMRSMetadataStore
              *
              * @param classification latest version of the classification
              */
-            void saveClassification(Classification classification)
+            synchronized void saveClassification(Classification classification)
             {
                 if (this.latestClassification == null)
                 {
@@ -1203,7 +1201,7 @@ class InMemoryOMRSMetadataStore
              *
              * @param classification optional classification from the caller
              */
-            void deleteClassification(Classification classification)
+            synchronized void deleteClassification(Classification classification)
             {
                 if (this.latestClassification != null)
                 {
@@ -1250,7 +1248,7 @@ class InMemoryOMRSMetadataStore
          *
          * @param relationship new instance
          */
-        void saveRelationship(Relationship relationship)
+        synchronized void saveRelationship(Relationship relationship)
         {
             if (this.relationship != null)
             {
@@ -1264,7 +1262,7 @@ class InMemoryOMRSMetadataStore
         /**
          * Remove the current version of the instance.  The history is still in place.
          **/
-        void purgeRelationship()
+        synchronized void purgeRelationship()
         {
             if (this.relationship != null)
             {
@@ -1281,7 +1279,7 @@ class InMemoryOMRSMetadataStore
          *
          * @return selected instance
          */
-        Relationship getRelationship()
+        synchronized Relationship getRelationship()
         {
             if (relationship != null)
             {
@@ -1298,7 +1296,7 @@ class InMemoryOMRSMetadataStore
          * @param asOfTime time to use on the query
          * @return selected instance
          */
-        Relationship getRelationship(Date asOfTime)
+        synchronized Relationship getRelationship(Date asOfTime)
         {
             if (asOfTime == null)
             {
@@ -1363,9 +1361,9 @@ class InMemoryOMRSMetadataStore
          * @param oldestFirst ordering of results
          * @return list of versions of this relationship
          */
-        List<Relationship> getRelationshipHistory(Date    fromTime,
-                                                  Date    toTime,
-                                                  boolean oldestFirst)
+        synchronized List<Relationship> getRelationshipHistory(Date    fromTime,
+                                                               Date    toTime,
+                                                               boolean oldestFirst)
         {
             List<Relationship> historyResults = new ArrayList<>();
             Date               followingUpdateTime = null;
@@ -1453,7 +1451,7 @@ class InMemoryOMRSMetadataStore
          *
          * @return first element in the history
          */
-        Relationship retrievePreviousVersion()
+        synchronized Relationship retrievePreviousVersion()
         {
             if (! relationshipHistory.isEmpty())
             {
@@ -1470,7 +1468,7 @@ class InMemoryOMRSMetadataStore
          * @param storedRelationship relationship retrieved from one of the relationship stores.
          * @return a cloned relationship with the latest proxies.
          */
-        private Relationship refreshRelationshipProxies(Relationship storedRelationship)
+        private synchronized Relationship refreshRelationshipProxies(Relationship storedRelationship)
         {
             if (storedRelationship != null)
             {

@@ -303,7 +303,7 @@ public class GlossaryExchangeResource
      * Classify a glossary to declare that it has no two GlossaryTerm definitions with
      * the same name.  This means there is only one definition for each term.  Typically, the terms are also of a similar
      * level of granularity and are limited to a specific scope of use.
-     *
+     * <br>
      * Canonical vocabularies are used to semantically classify assets in an unambiguous way.
      *
      * @param serverName name of the server to route the request to
