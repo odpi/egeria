@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConn
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,8 @@ import java.util.Objects;
  */
 public class VirtualConnectionProperties extends ConnectionProperties
 {
-    private static final long     serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     protected VirtualConnection connectionBean;
 
@@ -209,7 +211,7 @@ public class VirtualConnectionProperties extends ConnectionProperties
      *
      * @return secured properties typically user credentials for the connection
      */
-    protected Map<String, String> getSecuredProperties()
+    public Map<String, String> getSecuredProperties()
     {
         return connectionBean.getSecuredProperties();
     }

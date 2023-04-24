@@ -133,12 +133,6 @@ public class AssetOriginProperties extends ClassificationProperties
 
 
     /**
-     * Equals method that returns true if containing properties are the same.
-     *
-     * @param objectToCompare object to compare
-     * @return boolean result of comparison
-     */
-    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -154,6 +148,29 @@ public class AssetOriginProperties extends ClassificationProperties
                        ", effectiveTo=" + getEffectiveTo() +
                        ", extendedProperties=" + getExtendedProperties() +
                        '}';
+    }
+
+
+    /**
+     * Equals method that returns true if containing properties are the same.
+     *
+     * @param objectToCompare object to compare
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (! (objectToCompare instanceof AssetOriginProperties that))
+        {
+            return false;
+        }
+        return Objects.equals(organizationGUID, that.organizationGUID) &&
+                       Objects.equals(businessCapabilityGUID, that.businessCapabilityGUID) &&
+                       Objects.equals(otherOriginValues, that.otherOriginValues);
     }
 
 

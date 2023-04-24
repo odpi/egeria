@@ -20,7 +20,6 @@ public class OwnerProperties extends ClassificationProperties
     private String ownerPropertyName = null;
 
 
-
     /**
      * Default constructor
      */

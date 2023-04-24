@@ -22,8 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * The CollaborationExchangeInterface supports the exchange of comments, likes, reviews/ratings and
- * informal tags.
+ * The CollaborationExchangeInterface supports the exchange of comments, likes, reviews/ratings and informal tags.
  */
 public interface CollaborationExchangeInterface
 {
@@ -764,6 +763,38 @@ public interface CollaborationExchangeInterface
                                              boolean forDuplicateProcessing) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException;
+
+
+    /**
+     * Retrieve the list of note log metadata elements attached to the element.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique elementGUID of software capability representing the caller
+     * @param elementGUID element to start from
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<NoteLogElement>   getNoteLogsForElement(String  userId,
+                                                 String  assetManagerGUID,
+                                                 String  assetManagerName,
+                                                 String  elementGUID,
+                                                 int     startFrom,
+                                                 int     pageSize,
+                                                 Date    effectiveTime,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException;
 
 
     /**

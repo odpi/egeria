@@ -1009,7 +1009,7 @@ public class CollaborationExchangeResource
                                                          @RequestParam (required = false, defaultValue = "false")
                                                                        boolean         forDuplicateProcessing,
                                                          @RequestBody (required = false)
-                                                                      EffectiveTimeQueryRequestBody requestBody)
+                                                                       EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.getNoteLogsForElement(serverName, userId, elementGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }

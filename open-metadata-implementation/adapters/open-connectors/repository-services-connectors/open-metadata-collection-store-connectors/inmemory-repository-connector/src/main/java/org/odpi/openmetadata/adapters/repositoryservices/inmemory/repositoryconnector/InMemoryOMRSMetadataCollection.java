@@ -1715,14 +1715,22 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          */
         EntityDetail currentEntity  = repositoryStore.getEntity(entityGUID);
         EntityDetail restoredEntity = repositoryStore.retrievePreviousVersionOfEntity(entityGUID);
-        restoredEntity = repositoryHelper.incrementVersion(userId, currentEntity, restoredEntity);
 
-        repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, restoredEntity, methodName);
-        repositoryValidator.validateEntityIsNotDeleted(repositoryName, restoredEntity, methodName);
+        if (restoredEntity != null)
+        {
+            restoredEntity = repositoryHelper.incrementVersion(userId, currentEntity, restoredEntity);
 
-        repositoryStore.addEntityToStore(restoredEntity);
+            repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, restoredEntity, methodName);
+            repositoryValidator.validateEntityIsNotDeleted(repositoryName, restoredEntity, methodName);
 
-        return repositoryStore.getEntity(entityGUID);
+            repositoryStore.addEntityToStore(restoredEntity);
+
+            return repositoryStore.getEntity(entityGUID);
+        }
+        else
+        {
+            return null;
+        }
     }
 
 

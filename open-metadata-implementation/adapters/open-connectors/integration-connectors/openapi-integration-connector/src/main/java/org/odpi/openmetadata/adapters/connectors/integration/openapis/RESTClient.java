@@ -24,7 +24,7 @@ public class RESTClient
     protected AuditLog auditLog = null;        /* Initialized in constructor */
 
     
-    private RESTClientConnector clientConnector;    /* Initialized in constructor */
+    private final RESTClientConnector clientConnector;    /* Initialized in constructor */
 
 
     /**
