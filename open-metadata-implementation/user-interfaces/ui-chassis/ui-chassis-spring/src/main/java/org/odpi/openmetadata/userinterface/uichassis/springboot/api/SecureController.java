@@ -3,12 +3,6 @@
 package org.odpi.openmetadata.userinterface.uichassis.springboot.api;
 
 import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.UserNotAuthorizedException;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.AuthService;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.TokenUser;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
