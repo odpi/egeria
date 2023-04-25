@@ -400,22 +400,27 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                  methodName);
         }
 
-        /*
-         * Start the governance action running if all conditions are satisfied.
-         */
-        runGovernanceActionIfReady(userId,
-                                   governanceActionGUID,
-                                   governanceActionTypeName + ":" + UUID.randomUUID(),
-                                   mandatoryGuards,
-                                   startDate,
-                                   governanceEngineName,
-                                   requestType,
-                                   requestParameters,
-                                   governanceActionTypeName,
-                                   requestSourceName,
-                                   methodName);
+        if (governanceActionGUID != null)
+        {
+            /*
+             * Start the governance action running if all conditions are satisfied.
+             */
+            runGovernanceActionIfReady(userId,
+                                       governanceActionGUID,
+                                       governanceActionTypeName + ":" + UUID.randomUUID(),
+                                       mandatoryGuards,
+                                       startDate,
+                                       governanceEngineName,
+                                       requestType,
+                                       requestParameters,
+                                       governanceActionTypeName,
+                                       requestSourceName,
+                                       methodName);
 
-        return governanceActionGUID;
+            return governanceActionGUID;
+        }
+
+        return null;
     }
 
 

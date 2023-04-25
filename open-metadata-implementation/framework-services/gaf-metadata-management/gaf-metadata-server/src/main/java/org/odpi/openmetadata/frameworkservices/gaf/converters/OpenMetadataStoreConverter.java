@@ -113,10 +113,10 @@ abstract public class OpenMetadataStoreConverter<B> extends OCFConverter<B>
      * @param properties  entity properties
      * @return OwnerType  enum value
      */
-    GovernanceActionStatus removeActionStatus(String               propertyName,
-                                              InstanceProperties   properties)
+    protected GovernanceActionStatus removeActionStatus(String               propertyName,
+                                                        InstanceProperties   properties)
     {
-        GovernanceActionStatus ownerCategory = this.getActionStatus(propertyName, properties);
+        GovernanceActionStatus actionStatus = this.getActionStatus(propertyName, properties);
 
         if (properties != null)
         {
@@ -130,7 +130,7 @@ abstract public class OpenMetadataStoreConverter<B> extends OCFConverter<B>
             properties.setInstanceProperties(instancePropertiesMap);
         }
 
-        return ownerCategory;
+        return actionStatus;
     }
 
 
@@ -212,8 +212,8 @@ abstract public class OpenMetadataStoreConverter<B> extends OCFConverter<B>
      * @param entities list of retrieved entities
      * @return new bean or null if guid is not in list
      */
-    OpenMetadataElement getOpenMetadataElement(String              entityGUID,
-                                               List<EntityDetail>  entities)
+    protected OpenMetadataElement getOpenMetadataElement(String entityGUID,
+                                                         List<EntityDetail> entities)
     {
         OpenMetadataElement metadataElement = new OpenMetadataElement();
 
