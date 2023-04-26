@@ -139,7 +139,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
     /**
      * Set up a new security verifier (the handler runs with a default verifier until this method is called).
-     *
+     * <br><br>
      * The security verifier provides authorization checks for access and maintenance
      * changes to open metadata.  Authorization checks are enabled through the
      * OpenMetadataServerSecurityConnector.
@@ -3030,15 +3030,15 @@ public class OpenMetadataAPIGenericHandler<B>
     /**
      * Validates whether an operation is valid based on the type of entity it is connecting to, who the user is and whether it is a read or an
      * update.
-     *
+     * <br><br>
      * The first part of this method is looking to see if the connectToEntity is an anchor entity. In which case it calls any specific validation
      * for that entity and returns the connectToEntity, assuming all is ok - exceptions are thrown if the entity is not valid or the user does not
      * have access to it.
-     *
+     * <br><br>
      * If the connectToEntity is of a type that has a lifecycle that is linked to the lifecycle of another entity - typically a referenceable -
      * then that other entity is its anchor (examples are schema elements, comments, connections).  The anchor entity needs to be retrieved and
      * validated.
-     *
+     * <br><br>
      * Some anchor entities have specific validation to perform.
      *
      * @param userId           userId of user making request.
@@ -10674,7 +10674,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *
      * @param userId caller's userId
      * @param metadataElementTypeName type of interest (null means any element type)
-     * @param metadataElementSubtypeName optional list of the subtypes of the metadataElementTypeName to
+     * @param metadataElementSubtypeNames optional list of the subtypes of the metadataElementTypeName to
      *                           include in the search results. Null means all subtypes.
      * @param searchProperties Optional list of entity property conditions to match.
      * @param limitResultsByStatus By default, entities in all statuses (other than DELETE) are returned.  However, it is possible
@@ -10699,7 +10699,7 @@ public class OpenMetadataAPIGenericHandler<B>
      */
     public List<EntityDetail> findEntities(String                userId,
                                            String                metadataElementTypeName,
-                                           List<String>          metadataElementSubtypeName,
+                                           List<String>          metadataElementSubtypeNames,
                                            SearchProperties      searchProperties,
                                            List<InstanceStatus>  limitResultsByStatus,
                                            SearchClassifications searchClassifications,
@@ -10722,6 +10722,35 @@ public class OpenMetadataAPIGenericHandler<B>
 
         int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
 
+        String typeGUID = invalidParameterHandler.validateTypeName(metadataElementTypeName,
+                                                                   OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                   serviceName,
+                                                                   methodName,
+                                                                   repositoryHelper);
+
+        List<String> subTypeGUIDs = null;
+
+        if (metadataElementSubtypeNames != null)
+        {
+            subTypeGUIDs = new ArrayList<>();
+
+            for (String typeName : metadataElementSubtypeNames)
+            {
+                if (typeName != null)
+                {
+                    String subTypeGUID = invalidParameterHandler.validateTypeName(typeName,
+                                                                                  OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                                  serviceName,
+                                                                                  methodName,
+                                                                                  repositoryHelper);
+
+                    if (subTypeGUID != null)
+                    {
+                        subTypeGUIDs.add(subTypeGUID);
+                    }
+                }
+            }
+        }
 
         /*
          * Validate that the anchor guid means that the entity is visible to caller.
@@ -10729,8 +10758,8 @@ public class OpenMetadataAPIGenericHandler<B>
         RepositoryFindEntitiesIterator iterator = new RepositoryFindEntitiesIterator(repositoryHandler,
                                                                                      invalidParameterHandler,
                                                                                      userId,
-                                                                                     metadataElementTypeName,
-                                                                                     metadataElementSubtypeName,
+                                                                                     typeGUID,
+                                                                                     subTypeGUIDs,
                                                                                      searchProperties,
                                                                                      limitResultsByStatus,
                                                                                      searchClassifications,

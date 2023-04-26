@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifica
 import org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +28,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class FindRequestBody implements Serializable
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private String                metadataElementTypeName    = null;
     private List<String>          metadataElementSubtypeName = null;

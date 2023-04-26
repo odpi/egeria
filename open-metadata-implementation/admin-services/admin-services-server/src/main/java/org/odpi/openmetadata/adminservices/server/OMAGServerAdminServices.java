@@ -603,7 +603,7 @@ public class OMAGServerAdminServices
 
             if ((configurationProperties == null) || (configurationProperties.isEmpty()))
             {
-                eventBusConfig.setConfigurationProperties(configurationProperties);
+                eventBusConfig.setConfigurationProperties(null);
             }
             else
             {
@@ -617,7 +617,7 @@ public class OMAGServerAdminServices
                 configAuditTrail = new ArrayList<>();
             }
 
-            configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for default event bus.");
+            configAuditTrail.add(new Date() + " " + userId + " updated configuration for default event bus.");
 
             serverConfig.setAuditTrail(configAuditTrail);
             serverConfig.setEventBusConfig(eventBusConfig);

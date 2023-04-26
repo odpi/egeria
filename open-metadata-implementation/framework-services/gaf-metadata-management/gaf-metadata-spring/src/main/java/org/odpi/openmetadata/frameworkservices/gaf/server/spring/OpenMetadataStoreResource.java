@@ -283,12 +283,18 @@ public class OpenMetadataStoreResource
     public OpenMetadataElementsResponse findMetadataElements(@PathVariable String          serverName,
                                                              @PathVariable String          serviceURLMarker,
                                                              @PathVariable String          userId,
-                                                             @RequestParam boolean         forLineage,
-                                                             @RequestParam boolean         forDuplicateProcessing,
-                                                             @RequestParam long            effectiveTime,
-                                                             @RequestParam int             startFrom,
-                                                             @RequestParam int             pageSize,
-                                                             @RequestBody FindRequestBody requestBody)
+                                                             @RequestParam(required = false, defaultValue = "false")
+                                                                           boolean         forLineage,
+                                                             @RequestParam(required = false, defaultValue = "false")
+                                                                 boolean         forDuplicateProcessing,
+                                                             @RequestParam(required = false, defaultValue = "0")
+                                                                 long            effectiveTime,
+                                                             @RequestParam(required = false, defaultValue = "0")
+                                                                 int             startFrom,
+                                                             @RequestParam(required = false, defaultValue = "0")
+                                                                 int             pageSize,
+                                                             @RequestBody(required = false)
+                                                                 FindRequestBody requestBody)
     {
         return restAPI.findMetadataElements(serverName, serviceURLMarker, userId, forLineage, forDuplicateProcessing, effectiveTime, startFrom, pageSize, requestBody);
     }
