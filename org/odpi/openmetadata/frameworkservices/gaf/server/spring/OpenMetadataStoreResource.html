@@ -820,17 +820,17 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @RequestParam
+ @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forLineage,
- @RequestParam
+ @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  long&nbsp;effectiveTime,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  int&nbsp;startFrom,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  int&nbsp;pageSize,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../rest/FindRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">FindRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.</div>
 <dl class="notes">
