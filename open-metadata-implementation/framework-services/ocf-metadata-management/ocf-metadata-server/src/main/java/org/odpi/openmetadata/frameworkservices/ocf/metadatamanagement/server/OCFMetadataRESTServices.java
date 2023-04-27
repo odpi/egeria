@@ -7,6 +7,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
@@ -1734,6 +1735,95 @@ public class OCFMetadataRESTServices
                 }
 
                 response.setList(resultsList);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+    /**
+     * Returns the anchor asset.
+     *
+     * @param serverName String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
+     * @param userId     String   userId of user making request.
+     * @param guid  String   unique id for the metadata element.
+     *
+     * @return a bean with the basic properties about the anchor asset or
+     * InvalidParameterException - the userId is null or invalid or
+     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
+     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public AssetResponse getAnchorAssetFromGUID(String serverName,
+                                                String serviceURLName,
+                                                String userId,
+                                                String guid)
+    {
+        final String methodName = "getAnchorAssetFromGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AssetResponse response = new AssetResponse();
+        AuditLog      auditLog = null;
+
+        Date effectiveTime = new Date();
+
+        try 
+        {
+            ReferenceableHandler<Referenceable> referenceableHandler = instanceHandler.getReferenceableHandler(userId, serverName, methodName);
+            RepositoryHandler repositoryHandler = instanceHandler.getRepositoryHandler(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            EntityDetail entity = repositoryHandler.getEntityByGUID(userId,
+                                                                    guid,
+                                                                    OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    false,
+                                                                    false,
+                                                                    effectiveTime,
+                                                                    methodName);
+
+            if (entity != null)
+            {
+                if (repositoryHandler.isEntityATypeOf(userId,
+                                                      guid,
+                                                      OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                      effectiveTime,
+                                                      methodName))
+                {
+                    response = getAssetResponse(serverName, serviceURLName, userId, guid, null, methodName);
+                }
+                else
+                {
+                    EntityDetail anchorEntity = referenceableHandler.validateAnchorEntity(userId,
+                                                                                          guid,
+                                                                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                                          entity,
+                                                                                          OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                                                                                          false,
+                                                                                          false,
+                                                                                          false,
+                                                                                          null,
+                                                                                          effectiveTime,
+                                                                                          methodName);
+                    if (anchorEntity != null && repositoryHandler.isEntityATypeOf(userId,
+                                                                                  anchorEntity.getGUID(),
+                                                                                  OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                                                                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                  effectiveTime,
+                                                                                  methodName))
+                    {
+                        response = getAssetResponse(serverName, serviceURLName, userId, anchorEntity.getGUID(), null, methodName);
+                    }
+                }
             }
         }
         catch (Exception error)
