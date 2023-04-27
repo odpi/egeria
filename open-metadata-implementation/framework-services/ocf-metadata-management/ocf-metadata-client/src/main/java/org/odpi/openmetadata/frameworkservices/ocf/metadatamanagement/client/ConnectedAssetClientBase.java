@@ -483,6 +483,41 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
     }
 
 
+    /**
+     * Returns the anchor asset.
+     *
+     * @param userId the userId of the requesting user.
+     * @param guid unique identifier for the metadata element.
+     *
+     * @return the anchor asset.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public Asset getAnchorAssetFromGUID(String userId,
+                                        String guid) throws InvalidParameterException,
+                                                            PropertyServerException,
+                                                            UserNotAuthorizedException
+    {
+        final String methodName = "getAnchorAssetFromGUID";
+        final String guidParameterName = "guid";
+        final String urlTemplate = "/servers/{0}/open-metadata/framework-services/{1}/connected-asset/users/{2}/assets/from-anchor/{3}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
+
+        AssetResponse restResult = ocfrestClient.callOCFAssetGetRESTCall(methodName,
+                                                                         serverPlatformURLRoot + urlTemplate,
+                                                                         serverName,
+                                                                         serviceURLMarker,
+                                                                         userId,
+                                                                         guid);
+
+        return restResult.getAsset();
+    }
+
+
     /*
      * ===============================================
      * ConnectorFactoryInterface
@@ -647,4 +682,6 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
 
         return this.getConnectorForConnection(ocfrestClient, serviceURLMarker, userId, connection, methodName);
     }
+
+
 }
