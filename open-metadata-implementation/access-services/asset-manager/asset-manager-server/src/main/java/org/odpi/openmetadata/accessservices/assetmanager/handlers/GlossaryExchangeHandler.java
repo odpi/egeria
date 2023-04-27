@@ -4317,6 +4317,66 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
     }
 
 
+    /**
+     * Retrieve the glossary terms linked via a "SemanticAssignment" relationship to the requested element.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param glossaryTermGUID unique identifier of object to retrieve
+     * @param startFrom the starting element number of the historical versions to return. This is used when retrieving
+     *                         versions beyond the first page of results. Zero means start from the first element.
+     * @param pageSize the maximum number of result versions that can be returned on this request. Zero means unrestricted
+     *                 return results size.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @return list of beans
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem removing the properties from the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<GlossaryTermElement> getMeanings(String                 userId,
+                                                 String                 assetManagerGUID,
+                                                 String                 assetManagerName,
+                                                 String                 glossaryTermGUID,
+                                                 int                    startFrom,
+                                                 int                    pageSize,
+                                                 boolean                forLineage,
+                                                 boolean                forDuplicateProcessing,
+                                                 Date                   effectiveTime,
+                                                 String                 methodName) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        final String guidParameterName  = "glossaryTermGUID";
+
+        List<GlossaryTermElement> results = glossaryTermHandler.getMeanings(userId,
+                                                                               glossaryTermGUID,
+                                                                               guidParameterName,
+                                                                               OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                               startFrom,
+                                                                               pageSize,
+                                                                               forLineage,
+                                                                               forDuplicateProcessing,
+                                                                               effectiveTime,
+                                                                               methodName);
+
+        this.addCorrelationPropertiesToGlossaryTerms(userId,
+                                                     assetManagerGUID,
+                                                     assetManagerName,
+                                                     results,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     effectiveTime,
+                                                     methodName);
+
+        return results;
+    }
+
+
     /* =========================================================================================
      * Support for linkage to external glossary resources.  These glossary resources are not
      * stored as metadata - they could be web pages, ontologies or some other format.

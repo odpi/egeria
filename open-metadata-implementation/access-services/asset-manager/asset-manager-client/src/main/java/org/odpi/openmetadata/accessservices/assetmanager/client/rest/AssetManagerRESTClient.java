@@ -91,6 +91,34 @@ public class AssetManagerRESTClient extends FFDCRESTClient
 
 
     /**
+     * Issue a POST REST call that returns a ElementStubsResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public ElementStubsResponse callElementStubsPostRESTCall(String    methodName,
+                                                             String    urlTemplate,
+                                                             Object    requestBody,
+                                                             Object... params) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        ElementStubsResponse restResult = this.callPostRESTCall(methodName, ElementStubsResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
      * Issue a POST REST call that returns a RelatedElementsResponse object.
      *
      * @param methodName  name of the method being called.
@@ -107,8 +135,8 @@ public class AssetManagerRESTClient extends FFDCRESTClient
                                                                    String    urlTemplate,
                                                                    Object    requestBody,
                                                                    Object... params) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
         RelatedElementsResponse restResult = this.callPostRESTCall(methodName, RelatedElementsResponse.class, urlTemplate, requestBody, params);
 
@@ -1095,6 +1123,34 @@ public class AssetManagerRESTClient extends FFDCRESTClient
                                                                                          PropertyServerException
     {
         DataAssetElementsResponse restResult = this.callPostRESTCall(methodName, DataAssetElementsResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a AssetsResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public AssetElementsResponse callAssetsPostRESTCall(String    methodName,
+                                                        String    urlTemplate,
+                                                        Object    requestBody,
+                                                        Object... params) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        AssetElementsResponse restResult = this.callPostRESTCall(methodName, AssetElementsResponse.class, urlTemplate, requestBody, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 

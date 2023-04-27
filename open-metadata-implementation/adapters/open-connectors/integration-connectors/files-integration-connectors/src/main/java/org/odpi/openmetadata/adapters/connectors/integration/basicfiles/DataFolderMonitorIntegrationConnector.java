@@ -107,36 +107,41 @@ public class DataFolderMonitorIntegrationConnector extends BasicFilesMonitorInte
                 properties.setName(folderFile.getName());
 
                 this.getContext().addDataFolderToCatalog(properties, null);
+                folderElement = super.getFolderElement();
             }
 
-            directoryName = folderFile.getName();
-            fileFolderPathName = folderElement.getFileFolderProperties().getPathName();
-
-            Date lastRecordedChange = folderElement.getFileFolderProperties().getModifiedTime();
-
-            if ((lastRecordedChange == null) || (lastRecordedChange.before(new Date(folderFile.lastModified()))))
+            if ((folderElement != null) && (folderElement.getFileFolderProperties() != null) && (folderElement.getFileFolderProperties().getPathName() != null))
             {
-                FileFolderProperties properties = new FileFolderProperties();
+                directoryName = folderFile.getName();
+                fileFolderPathName = folderElement.getFileFolderProperties().getPathName();
 
-                properties.setModifiedTime(modifiedTime);
-                this.getContext().updateDataFolderInCatalog(folderElement.getElementHeader().getGUID(), true, properties);
+                Date lastRecordedChange = folderElement.getFileFolderProperties().getModifiedTime();
 
-                if (auditLog != null)
+                if ((lastRecordedChange == null) || (lastRecordedChange.before(new Date(folderFile.lastModified()))))
                 {
-                    if (fileChanged == null)
+                    FileFolderProperties properties = new FileFolderProperties();
+
+                    properties.setModifiedTime(modifiedTime);
+                    this.getContext().updateDataFolderInCatalog(folderElement.getElementHeader().getGUID(), true, properties);
+
+                    if (auditLog != null)
                     {
-                        auditLog.logMessage(methodName,
-                                            BasicFilesIntegrationConnectorsAuditCode.DATA_FOLDER_UPDATED.getMessageDefinition(connectorName,
-                                                                                                                              fileFolderPathName,
-                                                                                                                              modifiedTime.toString()));
-                    }
-                    else
-                    {
-                        auditLog.logMessage(methodName,
-                                            BasicFilesIntegrationConnectorsAuditCode.DATA_FOLDER_UPDATED_FOR_FILE.getMessageDefinition(connectorName,
-                                                                                                                                       fileFolderPathName,
-                                                                                                                                       modifiedTime.toString(),
-                                                                                                                                       fileChanged.getAbsolutePath()));
+                        if (fileChanged == null)
+                        {
+                            auditLog.logMessage(methodName,
+                                                BasicFilesIntegrationConnectorsAuditCode.DATA_FOLDER_UPDATED.getMessageDefinition(connectorName,
+                                                                                                                                  fileFolderPathName,
+                                                                                                                                  modifiedTime.toString()));
+                        }
+                        else
+                        {
+                            auditLog.logMessage(methodName,
+                                                BasicFilesIntegrationConnectorsAuditCode.DATA_FOLDER_UPDATED_FOR_FILE.getMessageDefinition(
+                                                        connectorName,
+                                                        fileFolderPathName,
+                                                        modifiedTime.toString(),
+                                                        fileChanged.getAbsolutePath()));
+                        }
                     }
                 }
             }

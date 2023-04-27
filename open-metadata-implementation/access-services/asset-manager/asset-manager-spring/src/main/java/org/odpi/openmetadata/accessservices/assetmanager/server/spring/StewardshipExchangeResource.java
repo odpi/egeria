@@ -4,8 +4,11 @@ package org.odpi.openmetadata.accessservices.assetmanager.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.AssetElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ClassificationRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.ElementStubsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.FindByPropertiesRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.server.StewardshipExchangeRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -64,11 +67,11 @@ public class StewardshipExchangeResource
                                                     @PathVariable String                    userId,
                                                     @PathVariable String                    elementGUID,
                                                     @RequestParam(required = false, defaultValue = "false")
-                                                                  boolean                   forLineage,
+                                                    boolean                   forLineage,
                                                     @RequestParam (required = false, defaultValue = "false")
-                                                                  boolean                   forDuplicateProcessing,
+                                                    boolean                   forDuplicateProcessing,
                                                     @RequestBody  (required = false)
-                                                                  ClassificationRequestBody requestBody)
+                                                    ClassificationRequestBody requestBody)
     {
         return restAPI.setConfidenceClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -96,13 +99,48 @@ public class StewardshipExchangeResource
                                                       @PathVariable String                    userId,
                                                       @PathVariable String                    elementGUID,
                                                       @RequestParam(required = false, defaultValue = "false")
-                                                                    boolean                   forLineage,
+                                                      boolean                   forLineage,
                                                       @RequestParam (required = false, defaultValue = "false")
-                                                                    boolean                   forDuplicateProcessing,
+                                                      boolean                   forDuplicateProcessing,
                                                       @RequestBody  (required = false)
-                                                                    ClassificationRequestBody requestBody)
+                                                      ClassificationRequestBody requestBody)
     {
         return restAPI.clearConfidenceClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Return information about the elements classified with the confidence classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/by-confidence")
+
+    public ElementStubsResponse getConfidenceClassifiedElements(@PathVariable String                      serverName,
+                                                                @PathVariable String                      userId,
+                                                                @RequestParam(required = false, defaultValue = "0")
+                                                                int                         startFrom,
+                                                                @RequestParam(required = false, defaultValue = "0")
+                                                                int                         pageSize,
+                                                                @RequestParam(required = false, defaultValue = "false")
+                                                                boolean                     forLineage,
+                                                                @RequestParam(required = false, defaultValue = "false")
+                                                                boolean                     forDuplicateProcessing,
+                                                                @RequestBody(required = false)
+                                                                FindByPropertiesRequestBody requestBody)
+    {
+        return restAPI.getConfidenceClassifiedElements(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -128,11 +166,11 @@ public class StewardshipExchangeResource
                                                      @PathVariable String                    userId,
                                                      @PathVariable String                    elementGUID,
                                                      @RequestParam(required = false, defaultValue = "false")
-                                                                   boolean                   forLineage,
+                                                     boolean                   forLineage,
                                                      @RequestParam (required = false, defaultValue = "false")
-                                                                   boolean                   forDuplicateProcessing,
+                                                     boolean                   forDuplicateProcessing,
                                                      @RequestBody  (required = false)
-                                                                   ClassificationRequestBody requestBody)
+                                                     ClassificationRequestBody requestBody)
     {
         return restAPI.setCriticalityClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -160,13 +198,48 @@ public class StewardshipExchangeResource
                                                        @PathVariable String                    userId,
                                                        @PathVariable String                    elementGUID,
                                                        @RequestParam(required = false, defaultValue = "false")
-                                                                     boolean                   forLineage,
+                                                       boolean                   forLineage,
                                                        @RequestParam (required = false, defaultValue = "false")
-                                                                     boolean                   forDuplicateProcessing,
+                                                       boolean                   forDuplicateProcessing,
                                                        @RequestBody  (required = false)
-                                                                     ClassificationRequestBody requestBody)
+                                                       ClassificationRequestBody requestBody)
     {
         return restAPI.clearCriticalityClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Return information about the elements classified with the criticality classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/by-criticality")
+
+    public ElementStubsResponse getCriticalityClassifiedElements(@PathVariable String                      serverName,
+                                                                 @PathVariable String                      userId,
+                                                                 @RequestParam(required = false, defaultValue = "0")
+                                                                 int                         startFrom,
+                                                                 @RequestParam(required = false, defaultValue = "0")
+                                                                 int                         pageSize,
+                                                                 @RequestParam(required = false, defaultValue = "false")
+                                                                 boolean                     forLineage,
+                                                                 @RequestParam(required = false, defaultValue = "false")
+                                                                 boolean                     forDuplicateProcessing,
+                                                                 @RequestBody(required = false)
+                                                                 FindByPropertiesRequestBody requestBody)
+    {
+        return restAPI.getCriticalityClassifiedElements(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -194,11 +267,11 @@ public class StewardshipExchangeResource
                                                          @PathVariable String                    userId,
                                                          @PathVariable String                    elementGUID,
                                                          @RequestParam(required = false, defaultValue = "false")
-                                                                       boolean                   forLineage,
+                                                         boolean                   forLineage,
                                                          @RequestParam (required = false, defaultValue = "false")
-                                                                       boolean                   forDuplicateProcessing,
+                                                         boolean                   forDuplicateProcessing,
                                                          @RequestBody  (required = false)
-                                                                       ClassificationRequestBody requestBody)
+                                                         ClassificationRequestBody requestBody)
     {
         return restAPI.setConfidentialityClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -226,14 +299,50 @@ public class StewardshipExchangeResource
                                                            @PathVariable String                    userId,
                                                            @PathVariable String                    elementGUID,
                                                            @RequestParam(required = false, defaultValue = "false")
-                                                                         boolean                   forLineage,
+                                                           boolean                   forLineage,
                                                            @RequestParam (required = false, defaultValue = "false")
-                                                                         boolean                   forDuplicateProcessing,
+                                                           boolean                   forDuplicateProcessing,
                                                            @RequestBody  (required = false)
-                                                                         ClassificationRequestBody requestBody)
+                                                           ClassificationRequestBody requestBody)
     {
         return restAPI.clearConfidentialityClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
+
+
+    /**
+     * Return information about the elements classified with the confidentiality classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/by-confidentiality")
+
+    public ElementStubsResponse getConfidentialityClassifiedElements(@PathVariable String                      serverName,
+                                                                     @PathVariable String                      userId,
+                                                                     @RequestParam(required = false, defaultValue = "0")
+                                                                     int                         startFrom,
+                                                                     @RequestParam(required = false, defaultValue = "0")
+                                                                     int                         pageSize,
+                                                                     @RequestParam(required = false, defaultValue = "false")
+                                                                     boolean                     forLineage,
+                                                                     @RequestParam(required = false, defaultValue = "false")
+                                                                     boolean                     forDuplicateProcessing,
+                                                                     @RequestBody(required = false)
+                                                                     FindByPropertiesRequestBody requestBody)
+    {
+        return restAPI.getConfidentialityClassifiedElements(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
 
 
     /**
@@ -260,11 +369,11 @@ public class StewardshipExchangeResource
                                                    @PathVariable String                    userId,
                                                    @PathVariable String                    elementGUID,
                                                    @RequestParam(required = false, defaultValue = "false")
-                                                                 boolean                   forLineage,
+                                                   boolean                   forLineage,
                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                 boolean                   forDuplicateProcessing,
+                                                   boolean                   forDuplicateProcessing,
                                                    @RequestBody  (required = false)
-                                                                 ClassificationRequestBody requestBody)
+                                                   ClassificationRequestBody requestBody)
     {
         return restAPI.setRetentionClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -292,14 +401,50 @@ public class StewardshipExchangeResource
                                                      @PathVariable String                    userId,
                                                      @PathVariable String                    elementGUID,
                                                      @RequestParam(required = false, defaultValue = "false")
-                                                                   boolean                   forLineage,
+                                                     boolean                   forLineage,
                                                      @RequestParam (required = false, defaultValue = "false")
-                                                                   boolean                   forDuplicateProcessing,
+                                                     boolean                   forDuplicateProcessing,
                                                      @RequestBody  (required = false)
-                                                                   ClassificationRequestBody requestBody)
+                                                     ClassificationRequestBody requestBody)
     {
         return restAPI.clearRetentionClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
+
+
+    /**
+     * Return information about the elements classified with the confidence classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/by-retention")
+
+    public ElementStubsResponse getRetentionClassifiedElements(@PathVariable String                      serverName,
+                                                               @PathVariable String                      userId,
+                                                               @RequestParam(required = false, defaultValue = "0")
+                                                               int                         startFrom,
+                                                               @RequestParam(required = false, defaultValue = "0")
+                                                               int                         pageSize,
+                                                               @RequestParam(required = false, defaultValue = "false")
+                                                               boolean                     forLineage,
+                                                               @RequestParam(required = false, defaultValue = "false")
+                                                               boolean                     forDuplicateProcessing,
+                                                               @RequestBody(required = false)
+                                                               FindByPropertiesRequestBody requestBody)
+    {
+        return restAPI.getRetentionClassifiedElements(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
 
 
     /**
@@ -323,11 +468,11 @@ public class StewardshipExchangeResource
                                         @PathVariable String                    userId,
                                         @PathVariable String                    elementGUID,
                                         @RequestParam(required = false, defaultValue = "false")
-                                                      boolean                   forLineage,
+                                        boolean                   forLineage,
                                         @RequestParam (required = false, defaultValue = "false")
-                                                      boolean                   forDuplicateProcessing,
+                                        boolean                   forDuplicateProcessing,
                                         @RequestBody  (required = false)
-                                                      ClassificationRequestBody requestBody)
+                                        ClassificationRequestBody requestBody)
     {
         return restAPI.addSecurityTags(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -354,13 +499,48 @@ public class StewardshipExchangeResource
                                            @PathVariable String          userId,
                                            @PathVariable String          elementGUID,
                                            @RequestParam (required = false, defaultValue = "false")
-                                               boolean                   forLineage,
+                                           boolean                   forLineage,
                                            @RequestParam (required = false, defaultValue = "false")
-                                               boolean                   forDuplicateProcessing,
+                                           boolean                   forDuplicateProcessing,
                                            @RequestBody(required = false)
-                                               ClassificationRequestBody requestBody)
+                                           ClassificationRequestBody requestBody)
     {
         return restAPI.removeSecurityTags(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Return information about the elements classified with the security tags classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/by-security-tags")
+
+    public ElementStubsResponse getSecurityTaggedElements(@PathVariable String                      serverName,
+                                                          @PathVariable String                      userId,
+                                                          @RequestParam(required = false, defaultValue = "0")
+                                                          int                         startFrom,
+                                                          @RequestParam(required = false, defaultValue = "0")
+                                                          int                         pageSize,
+                                                          @RequestParam(required = false, defaultValue = "false")
+                                                          boolean                     forLineage,
+                                                          @RequestParam(required = false, defaultValue = "false")
+                                                          boolean                     forDuplicateProcessing,
+                                                          @RequestBody(required = false)
+                                                          FindByPropertiesRequestBody requestBody)
+    {
+        return restAPI.getSecurityTaggedElements(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -385,11 +565,11 @@ public class StewardshipExchangeResource
                                      @PathVariable String                    userId,
                                      @PathVariable String                    elementGUID,
                                      @RequestParam(required = false, defaultValue = "false")
-                                                   boolean                   forLineage,
+                                     boolean                   forLineage,
                                      @RequestParam (required = false, defaultValue = "false")
-                                                   boolean                   forDuplicateProcessing,
+                                     boolean                   forDuplicateProcessing,
                                      @RequestBody  (required = false)
-                                                   ClassificationRequestBody requestBody)
+                                     ClassificationRequestBody requestBody)
     {
         return restAPI.addOwnership(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -416,13 +596,48 @@ public class StewardshipExchangeResource
                                        @PathVariable String                    userId,
                                        @PathVariable String                    elementGUID,
                                        @RequestParam(required = false, defaultValue = "false")
-                                                     boolean                   forLineage,
+                                       boolean                   forLineage,
                                        @RequestParam (required = false, defaultValue = "false")
-                                                     boolean                   forDuplicateProcessing,
+                                       boolean                   forDuplicateProcessing,
                                        @RequestBody  (required = false)
-                                                     ClassificationRequestBody requestBody)
+                                       ClassificationRequestBody requestBody)
     {
         return restAPI.clearOwnership(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Return information about the elements classified with the security tags classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/by-ownership")
+
+    public ElementStubsResponse getOwnersElements(@PathVariable String                      serverName,
+                                                  @PathVariable String                      userId,
+                                                  @RequestParam(required = false, defaultValue = "0")
+                                                  int                         startFrom,
+                                                  @RequestParam(required = false, defaultValue = "0")
+                                                  int                         pageSize,
+                                                  @RequestParam(required = false, defaultValue = "false")
+                                                  boolean                     forLineage,
+                                                  @RequestParam(required = false, defaultValue = "false")
+                                                  boolean                     forDuplicateProcessing,
+                                                  @RequestBody(required = false)
+                                                  FindByPropertiesRequestBody requestBody)
+    {
+        return restAPI.getOwnersElements(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -447,11 +662,11 @@ public class StewardshipExchangeResource
                                        @PathVariable String                    userId,
                                        @PathVariable String                    assetGUID,
                                        @RequestParam(required = false, defaultValue = "false")
-                                                     boolean                   forLineage,
+                                       boolean                   forLineage,
                                        @RequestParam (required = false, defaultValue = "false")
-                                                     boolean                   forDuplicateProcessing,
+                                       boolean                   forDuplicateProcessing,
                                        @RequestBody  (required = false)
-                                                     ClassificationRequestBody requestBody)
+                                       ClassificationRequestBody requestBody)
     {
         return restAPI.addAssetOrigin(serverName, userId, assetGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -478,13 +693,48 @@ public class StewardshipExchangeResource
                                          @PathVariable String                    userId,
                                          @PathVariable String                    assetGUID,
                                          @RequestParam(required = false, defaultValue = "false")
-                                                       boolean                   forLineage,
+                                         boolean                   forLineage,
                                          @RequestParam (required = false, defaultValue = "false")
-                                                       boolean                   forDuplicateProcessing,
+                                         boolean                   forDuplicateProcessing,
                                          @RequestBody  (required = false)
-                                                       ClassificationRequestBody requestBody)
+                                         ClassificationRequestBody requestBody)
     {
         return restAPI.clearAssetOrigin(serverName, userId, assetGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Return information about the elements classified with the confidence classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/asset/by-origin")
+
+    public AssetElementsResponse getAssetsByOrigin(@PathVariable String                      serverName,
+                                                   @PathVariable String                      userId,
+                                                   @RequestParam(required = false, defaultValue = "0")
+                                                   int                         startFrom,
+                                                   @RequestParam(required = false, defaultValue = "0")
+                                                   int                         pageSize,
+                                                   @RequestParam(required = false, defaultValue = "false")
+                                                   boolean                     forLineage,
+                                                   @RequestParam(required = false, defaultValue = "false")
+                                                   boolean                     forDuplicateProcessing,
+                                                   @RequestBody(required = false)
+                                                   FindByPropertiesRequestBody requestBody)
+    {
+        return restAPI.getAssetsByOrigin(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -509,11 +759,11 @@ public class StewardshipExchangeResource
                                                 @PathVariable String                    userId,
                                                 @PathVariable String                    elementGUID,
                                                 @RequestParam(required = false, defaultValue = "false")
-                                                              boolean                   forLineage,
+                                                boolean                   forLineage,
                                                 @RequestParam (required = false, defaultValue = "false")
-                                                              boolean                   forDuplicateProcessing,
+                                                boolean                   forDuplicateProcessing,
                                                 @RequestBody  (required = false)
-                                                              ClassificationRequestBody requestBody)
+                                                ClassificationRequestBody requestBody)
     {
         return restAPI.addElementToSubjectArea(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -540,13 +790,49 @@ public class StewardshipExchangeResource
                                                      @PathVariable String                    userId,
                                                      @PathVariable String                    elementGUID,
                                                      @RequestParam(required = false, defaultValue = "false")
-                                                                   boolean                   forLineage,
+                                                     boolean                   forLineage,
                                                      @RequestParam (required = false, defaultValue = "false")
-                                                                   boolean                   forDuplicateProcessing,
+                                                     boolean                   forDuplicateProcessing,
                                                      @RequestBody  (required = false)
-                                                                   ClassificationRequestBody requestBody)
+                                                     ClassificationRequestBody requestBody)
     {
         return restAPI.removeElementFromSubjectArea(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+
+    /**
+     * Return information about the elements classified with the security tags classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/by-subject-area-membership")
+
+    public ElementStubsResponse getMembersOfSubjectArea(@PathVariable String                      serverName,
+                                                  @PathVariable String                      userId,
+                                                  @RequestParam(required = false, defaultValue = "0")
+                                                  int                         startFrom,
+                                                  @RequestParam(required = false, defaultValue = "0")
+                                                  int                         pageSize,
+                                                  @RequestParam(required = false, defaultValue = "false")
+                                                  boolean                     forLineage,
+                                                  @RequestParam(required = false, defaultValue = "false")
+                                                  boolean                     forDuplicateProcessing,
+                                                  @RequestBody(required = false)
+                                                  FindByPropertiesRequestBody requestBody)
+    {
+        return restAPI.getMembersOfSubjectArea(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -574,11 +860,11 @@ public class StewardshipExchangeResource
                                                 @PathVariable String                  elementGUID,
                                                 @PathVariable String                  glossaryTermGUID,
                                                 @RequestParam(required = false, defaultValue = "false")
-                                                              boolean                 forLineage,
+                                                boolean                 forLineage,
                                                 @RequestParam (required = false, defaultValue = "false")
-                                                              boolean                 forDuplicateProcessing,
+                                                boolean                 forDuplicateProcessing,
                                                 @RequestBody  (required = false)
-                                                              RelationshipRequestBody requestBody)
+                                                RelationshipRequestBody requestBody)
     {
         return restAPI.setupSemanticAssignment(serverName, userId, elementGUID, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -607,11 +893,11 @@ public class StewardshipExchangeResource
                                                 @PathVariable String                        elementGUID,
                                                 @PathVariable String                        glossaryTermGUID,
                                                 @RequestParam(required = false, defaultValue = "false")
-                                                              boolean                       forLineage,
+                                                boolean                       forLineage,
                                                 @RequestParam (required = false, defaultValue = "false")
-                                                              boolean                       forDuplicateProcessing,
+                                                boolean                       forDuplicateProcessing,
                                                 @RequestBody  (required = false)
-                                                              EffectiveTimeQueryRequestBody requestBody)
+                                                EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.clearSemanticAssignment(serverName, userId, elementGUID, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -640,11 +926,11 @@ public class StewardshipExchangeResource
                                                          @PathVariable String                  definitionGUID,
                                                          @PathVariable String                  elementGUID,
                                                          @RequestParam(required = false, defaultValue = "false")
-                                                                       boolean                 forLineage,
+                                                         boolean                 forLineage,
                                                          @RequestParam (required = false, defaultValue = "false")
-                                                                       boolean                 forDuplicateProcessing,
+                                                         boolean                 forDuplicateProcessing,
                                                          @RequestBody  (required = false)
-                                                                       RelationshipRequestBody requestBody)
+                                                         RelationshipRequestBody requestBody)
     {
         return restAPI.addGovernanceDefinitionToElement(serverName, userId, definitionGUID, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -673,11 +959,11 @@ public class StewardshipExchangeResource
                                                               @PathVariable String                        definitionGUID,
                                                               @PathVariable String                        elementGUID,
                                                               @RequestParam(required = false, defaultValue = "false")
-                                                                            boolean                       forLineage,
+                                                              boolean                       forLineage,
                                                               @RequestParam (required = false, defaultValue = "false")
-                                                                            boolean                       forDuplicateProcessing,
+                                                              boolean                       forDuplicateProcessing,
                                                               @RequestBody  (required = false)
-                                                                            EffectiveTimeQueryRequestBody requestBody)
+                                                              EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.removeGovernanceDefinitionFromElement(serverName, userId, definitionGUID, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }

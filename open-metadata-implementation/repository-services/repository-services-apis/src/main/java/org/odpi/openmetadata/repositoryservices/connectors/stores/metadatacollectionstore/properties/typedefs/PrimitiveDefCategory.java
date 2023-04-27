@@ -37,10 +37,10 @@ public enum PrimitiveDefCategory implements Serializable
 
     private static final long serialVersionUID = 1L;
 
-    private  int         code;
-    private  String      name;
-    private  String      javaClassName;
-    private  String      guid;
+    private final int    code;
+    private final String name;
+    private final String javaClassName;
+    private final String guid;
 
 
     /**
@@ -74,7 +74,8 @@ public enum PrimitiveDefCategory implements Serializable
      *
      * @return String type name
      */
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 

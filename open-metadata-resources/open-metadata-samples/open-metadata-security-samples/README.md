@@ -22,8 +22,12 @@ a security service.
 
 The samples are based on the [Coco Pharmaceuticals persona](https://egeria-project.org/practices/coco-pharmaceuticals).
 
+## Platform services
+
 Gary Geeke (`garygeeke`) is the IT Infrastructure Administrator and the IT Infrastructure Governance Officer.
 He is the only person able to issue platform services requests, and work with assets in the **infrastructure** zone.
+
+## Asset Management
 
 Peter Profile (`peterprofile`), Information Analyst, and Erin Overview (`erinoverview`),
 their Information Architect and Deputy Chief Data Officer,
@@ -46,7 +50,7 @@ The other zones defined in the sample are:
 * **manufacturing** zone - Assets used in the manufacturing process currently managed by Stew Faster (`stewfaster`).
 * **governance** zone - Assets used to govern the organization.  These are effectively the governance leadership team of Jules Keeper (`juleskeeper`),
   Erin Overview (`erinoverview`), Gary Geeke (`garygeeke`), Polly Tasker (`pollytasker`), Faith Broker (`faithbroker`), Ivor Padlock (`ivorpadlock`) and Reggie Mint (`reggiemint`).
-* **trash-can** zone - Assets that are waiting to be deleted or archived - this is handled by their archiver processes.  All of the NPA accounts have access to this zone to
+* **trash-can** zone - Assets that are waiting to be deleted or archived - this is handled by their archiver processes.  All the NPA accounts have access to this zone to
   enable processes to retrieve files from the trash can and restore them to their original zones.
 
 An asset may be in multiple zones and a person is typically able to access the asset if any of its zones permit access to them.
@@ -55,15 +59,57 @@ For example, the **quarantine** zone rules override any other zone's rules
 to allow the onboarding team to set up the zones as part of the onboarding process.
 Only when the **quarantine** zone is removed, do the other zones take effect.
 
+## Controlling access to services
+
 It is also possible to have special rules for particular services.
 Coco Pharmaceuticals have decided that the **assetDelete** method from Asset Owner OMAS is too powerful
-to use and so they have disabled it using this connector.
+to use, and so they have disabled it using this connector.
 Only non-personal accounts (NPA) can use this method.
 Coco Pharmaceutical's staff delete an asset by moving it to the
 "trash-can" zone where it is cleaned up by automated archiver
 processes the next day.
 
-Finally Coco Pharmaceuticals only permit non-personal accounts (NPAs)
+## Controlling access to glossaries
+
+The connector illustrates how the **SecurityTags** classification can be used to
+guide its look up for a user/group in an external authorization service.
+
+This look up needs to know who the requesting user is, and which group/role to use
+to look up whether the user is permitted to perform a specific action.
+
+The **SecurityTags** classification can be attached to an element to show which group
+in the external authorization service controls the access to the element.
+
+In the server security connector, this style is illustrated in the glossary security interface.
+There is no external authorization service so the access control lists are stored directly in the
+**SecurityTags** classification properties - in the **accessGroups** properties to be precise.
+
+The **accessGroups** property is a map from name to string array.
+The name can be one of the following, and it is mapped to a list of userIds.
+
+* glossaryCreate - who can create new glossaries
+* glossaryDetailUpdate - who can change the properties of a glossary element
+* glossaryMemberUpdate - who can create/update a glossary term or glossary category
+* glossaryMemberStatusUpdate - who can change the status of a glossary term
+* glossaryFeedback - who can add comments and other feedback to the glossary and its terms and categories.
+* glossaryRead - who can read the terms and categories in the glossary
+* glossaryDelete - who can delete a glossary and all of its contents
+
+Here is an example in JSON - used for setting the access groups on the REST API.
+
+```json
+
+accessGroups = {
+    "glossaryMemberUpdate" : [ erinsUserId , harrysUserId ],
+    "glossaryMemberStatusUpdate" : [ erinsUserId ],
+    "glossaryRead" : [ erinsUserId , harrysUserId ]
+}
+```
+
+
+## Connection security
+
+Finally, Coco Pharmaceuticals only permit non-personal accounts (NPAs)
 to access Connection object that have security information in it such as userIds and passwords.
 
 

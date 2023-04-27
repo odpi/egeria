@@ -4,24 +4,38 @@
 package org.odpi.openmetadata.accessservices.assetmanager.server;
 
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.DataAssetExchangeHandler;
+import org.odpi.openmetadata.accessservices.assetmanager.handlers.GlossaryExchangeHandler;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.AssetElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SoftwareCapabilityElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetOriginProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.FindAssetOriginProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.FindNameProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GovernanceClassificationProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.LevelIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.OwnerProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.RetentionClassificationProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SecurityTagsProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SemanticAssignmentProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SubjectAreaMemberProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.AssetElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ClassificationRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.ElementStubsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.FindByPropertiesRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermElementsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.RelatedElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.slf4j.LoggerFactory;
 
 
@@ -251,6 +265,99 @@ public class StewardshipExchangeRESTServices
 
 
     /**
+     * Return information about the elements classified with the confidence classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    public ElementStubsResponse getConfidenceClassifiedElements(String                      serverName,
+                                                                String                      userId,
+                                                                int                         startFrom,
+                                                                int                         pageSize,
+                                                                boolean                     forLineage,
+                                                                boolean                     forDuplicateProcessing,
+                                                                FindByPropertiesRequestBody requestBody)
+    {
+        final String methodName = "getConfidenceClassifiedElements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        ElementStubsResponse response = new ElementStubsResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ReferenceableHandler<ElementStub> handler = instanceHandler.getElementStubHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
+                {
+                    response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
+                                                                                          OpenMetadataAPIMapper.CONFIDENCE_CLASSIFICATION_TYPE_NAME,
+                                                                                          properties.getReturnSpecificLevel(),
+                                                                                          properties.getLevelIdentifier(),
+                                                                                          startFrom,
+                                                                                          pageSize,
+                                                                                          forLineage,
+                                                                                          forDuplicateProcessing,
+                                                                                          requestBody.getEffectiveTime(),
+                                                                                          methodName));
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
+                                                                                          OpenMetadataAPIMapper.CONFIDENCE_CLASSIFICATION_TYPE_NAME,
+                                                                                          false,
+                                                                                          0,
+                                                                                          startFrom,
+                                                                                          pageSize,
+                                                                                          forLineage,
+                                                                                          forDuplicateProcessing,
+                                                                                          requestBody.getEffectiveTime(),
+                                                                                          methodName));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(LevelIdentifierProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
+                                                                                      OpenMetadataAPIMapper.CONFIDENCE_CLASSIFICATION_TYPE_NAME,
+                                                                                      false,
+                                                                                      0,
+                                                                                      startFrom,
+                                                                                      pageSize,
+                                                                                      forLineage,
+                                                                                      forDuplicateProcessing,
+                                                                                      null,
+                                                                                      methodName));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
      * Classify/reclassify the element (typically an asset) to indicate how critical the element (or associated resource)
      * is to the organization.  The level of criticality is expressed by the levelIdentifier property.
      *
@@ -442,6 +549,99 @@ public class StewardshipExchangeRESTServices
             else
             {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return information about the elements classified with the criticality classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    public ElementStubsResponse getCriticalityClassifiedElements(String                      serverName,
+                                                                 String                      userId,
+                                                                 int                         startFrom,
+                                                                 int                         pageSize,
+                                                                 boolean                     forLineage,
+                                                                 boolean                     forDuplicateProcessing,
+                                                                 FindByPropertiesRequestBody requestBody)
+    {
+        final String methodName = "getCriticalityClassifiedElements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        ElementStubsResponse response = new ElementStubsResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ReferenceableHandler<ElementStub> handler = instanceHandler.getElementStubHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
+                {
+                    response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
+                                                                                          OpenMetadataAPIMapper.CRITICALITY_CLASSIFICATION_TYPE_NAME,
+                                                                                          properties.getReturnSpecificLevel(),
+                                                                                          properties.getLevelIdentifier(),
+                                                                                          startFrom,
+                                                                                          pageSize,
+                                                                                          forLineage,
+                                                                                          forDuplicateProcessing,
+                                                                                          requestBody.getEffectiveTime(),
+                                                                                          methodName));
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
+                                                                                          OpenMetadataAPIMapper.CRITICALITY_CLASSIFICATION_TYPE_NAME,
+                                                                                          false,
+                                                                                          0,
+                                                                                          startFrom,
+                                                                                          pageSize,
+                                                                                          forLineage,
+                                                                                          forDuplicateProcessing,
+                                                                                          requestBody.getEffectiveTime(),
+                                                                                          methodName));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(LevelIdentifierProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
+                                                                                      OpenMetadataAPIMapper.CRITICALITY_CLASSIFICATION_TYPE_NAME,
+                                                                                      false,
+                                                                                      0,
+                                                                                      startFrom,
+                                                                                      pageSize,
+                                                                                      forLineage,
+                                                                                      forDuplicateProcessing,
+                                                                                      null,
+                                                                                      methodName));
             }
         }
         catch (Exception error)
@@ -661,6 +861,99 @@ public class StewardshipExchangeRESTServices
 
 
     /**
+     * Return information about the elements classified with the confidentiality classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    public ElementStubsResponse getConfidentialityClassifiedElements(String                      serverName,
+                                                                     String                      userId,
+                                                                     int                         startFrom,
+                                                                     int                         pageSize,
+                                                                     boolean                     forLineage,
+                                                                     boolean                     forDuplicateProcessing,
+                                                                     FindByPropertiesRequestBody requestBody)
+    {
+        final String methodName = "getConfidentialityClassifiedElements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        ElementStubsResponse response = new ElementStubsResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ReferenceableHandler<ElementStub> handler = instanceHandler.getElementStubHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
+                {
+                    response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
+                                                                                          OpenMetadataAPIMapper.CONFIDENTIALITY_CLASSIFICATION_TYPE_NAME,
+                                                                                          properties.getReturnSpecificLevel(),
+                                                                                          properties.getLevelIdentifier(),
+                                                                                          startFrom,
+                                                                                          pageSize,
+                                                                                          forLineage,
+                                                                                          forDuplicateProcessing,
+                                                                                          requestBody.getEffectiveTime(),
+                                                                                          methodName));
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
+                                                                                          OpenMetadataAPIMapper.CONFIDENTIALITY_CLASSIFICATION_TYPE_NAME,
+                                                                                          false,
+                                                                                          0,
+                                                                                          startFrom,
+                                                                                          pageSize,
+                                                                                          forLineage,
+                                                                                          forDuplicateProcessing,
+                                                                                          requestBody.getEffectiveTime(),
+                                                                                          methodName));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(LevelIdentifierProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
+                                                                                      OpenMetadataAPIMapper.CONFIDENTIALITY_CLASSIFICATION_TYPE_NAME,
+                                                                                      false,
+                                                                                      0,
+                                                                                      startFrom,
+                                                                                      pageSize,
+                                                                                      forLineage,
+                                                                                      forDuplicateProcessing,
+                                                                                      null,
+                                                                                      methodName));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
      * Classify/reclassify the element (typically an asset) to indicate how long the element (or associated resource)
      * is to be retained by the organization.  The policy to apply to the element/resource is captured by the retentionBasis
      * property.  The dates after which the element/resource is archived and then deleted are specified in the archiveAfter and deleteAfter
@@ -865,6 +1158,96 @@ public class StewardshipExchangeRESTServices
 
 
     /**
+     * Return information about the elements classified with the confidence classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    public ElementStubsResponse getRetentionClassifiedElements(String                      serverName,
+                                                               String                      userId,
+                                                               int                         startFrom,
+                                                               int                         pageSize,
+                                                               boolean                     forLineage,
+                                                               boolean                     forDuplicateProcessing,
+                                                               FindByPropertiesRequestBody requestBody)
+    {
+        final String methodName = "getRetentionClassifiedElements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        ElementStubsResponse response = new ElementStubsResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ReferenceableHandler<ElementStub> handler = instanceHandler.getElementStubHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
+                {
+                    response.setElementList(handler.getRetentionClassifiedElements(userId,
+                                                                                   properties.getReturnSpecificLevel(),
+                                                                                   properties.getLevelIdentifier(),
+                                                                                   startFrom,
+                                                                                   pageSize,
+                                                                                   forLineage,
+                                                                                   forDuplicateProcessing,
+                                                                                   requestBody.getEffectiveTime(),
+                                                                                   methodName));
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    response.setElementList(handler.getRetentionClassifiedElements(userId,
+                                                                                   false,
+                                                                                   0,
+                                                                                   startFrom,
+                                                                                   pageSize,
+                                                                                   forLineage,
+                                                                                   forDuplicateProcessing,
+                                                                                   requestBody.getEffectiveTime(),
+                                                                                   methodName));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(LevelIdentifierProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                response.setElementList(handler.getRetentionClassifiedElements(userId,
+                                                                               false,
+                                                                               0,
+                                                                               startFrom,
+                                                                               pageSize,
+                                                                               forLineage,
+                                                                               forDuplicateProcessing,
+                                                                               null,
+                                                                               methodName));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
      * Add or replace the security tags for an element.
      *
      * @param serverName  name of the server instance to connect to
@@ -993,6 +1376,73 @@ public class StewardshipExchangeRESTServices
                                            forDuplicateProcessing,
                                            null,
                                            methodName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return information about the elements classified with the security tags classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    public ElementStubsResponse getSecurityTaggedElements(String                      serverName,
+                                                          String                      userId,
+                                                          int                         startFrom,
+                                                          int                         pageSize,
+                                                          boolean                     forLineage,
+                                                          boolean                     forDuplicateProcessing,
+                                                          FindByPropertiesRequestBody requestBody)
+    {
+        final String methodName = "getSecurityTaggedElements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        ElementStubsResponse response = new ElementStubsResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ReferenceableHandler<ElementStub> handler = instanceHandler.getElementStubHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElementList(handler.getSecurityTagsClassifiedElements(userId,
+                                                                                  startFrom,
+                                                                                  pageSize,
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing,
+                                                                                  requestBody.getEffectiveTime(),
+                                                                                  methodName));
+            }
+            else
+            {
+                response.setElementList(handler.getSecurityTagsClassifiedElements(userId,
+                                                                                  startFrom,
+                                                                                  pageSize,
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing,
+                                                                                  null,
+                                                                                  methodName));
             }
         }
         catch (Exception error)
@@ -1146,6 +1596,93 @@ public class StewardshipExchangeRESTServices
 
 
     /**
+     * Return information about the elements classified with the confidence classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    public ElementStubsResponse getOwnersElements(String                      serverName,
+                                                  String                      userId,
+                                                  int                         startFrom,
+                                                  int                         pageSize,
+                                                  boolean                     forLineage,
+                                                  boolean                     forDuplicateProcessing,
+                                                  FindByPropertiesRequestBody requestBody)
+    {
+        final String methodName = "getOwnersElements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        ElementStubsResponse response = new ElementStubsResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ReferenceableHandler<ElementStub> handler = instanceHandler.getElementStubHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof FindNameProperties properties)
+                {
+                    response.setElementList(handler.getOwnersElements(userId,
+                                                                      properties.getName(),
+                                                                      startFrom,
+                                                                      pageSize,
+                                                                      forLineage,
+                                                                      forDuplicateProcessing,
+                                                                      requestBody.getEffectiveTime(),
+                                                                      methodName));
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    response.setElementList(handler.getOwnersElements(userId,
+                                                                      null,
+                                                                      startFrom,
+                                                                      pageSize,
+                                                                      forLineage,
+                                                                      forDuplicateProcessing,
+                                                                      requestBody.getEffectiveTime(),
+                                                                      methodName));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(FindNameProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                response.setElementList(handler.getOwnersElements(userId,
+                                                                  null,
+                                                                  startFrom,
+                                                                  pageSize,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing,
+                                                                  null,
+                                                                  methodName));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
      * Add or replace the origin classification for an asset.
      *
      * @param serverName  name of the server instance to connect to
@@ -1160,11 +1697,11 @@ public class StewardshipExchangeRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse addAssetOrigin(String  serverName,
-                                       String                userId,
-                                       String                assetGUID,
-                                       boolean               forLineage,
-                                       boolean               forDuplicateProcessing,
+    public VoidResponse addAssetOrigin(String                    serverName,
+                                       String                    userId,
+                                       String                    assetGUID,
+                                       boolean                   forLineage,
+                                       boolean                   forDuplicateProcessing,
                                        ClassificationRequestBody requestBody)
     {
         final String   methodName = "addAssetOrigin";
@@ -1277,6 +1814,99 @@ public class StewardshipExchangeRESTServices
                                           forDuplicateProcessing,
                                           null,
                                           methodName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return information about the elements classified with the confidence classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    public AssetElementsResponse getAssetsByOrigin(String                      serverName,
+                                                   String                      userId,
+                                                   int                         startFrom,
+                                                   int                         pageSize,
+                                                   boolean                     forLineage,
+                                                   boolean                     forDuplicateProcessing,
+                                                   FindByPropertiesRequestBody requestBody)
+    {
+        final String methodName = "getAssetsByOrigin";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AssetElementsResponse response = new AssetElementsResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof FindAssetOriginProperties properties)
+                {
+                    response.setElementList(handler.getAssetsFromOrigin(userId,
+                                                                        properties.getOrganizationGUID(),
+                                                                        properties.getBusinessCapabilityGUID(),
+                                                                        properties.getOtherOriginValues(),
+                                                                        startFrom,
+                                                                        pageSize,
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
+                                                                        requestBody.getEffectiveTime(),
+                                                                        methodName));
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    response.setElementList(handler.getAssetsFromOrigin(userId,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        startFrom,
+                                                                        pageSize,
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
+                                                                        requestBody.getEffectiveTime(),
+                                                                        methodName));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(FindAssetOriginProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                response.setElementList(handler.getAssetsFromOrigin(userId,
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    null,
+                                                                    methodName));
             }
         }
         catch (Exception error)
@@ -1468,6 +2098,93 @@ public class StewardshipExchangeRESTServices
 
 
     /**
+     * Return information about the elements classified with the confidence classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    public ElementStubsResponse getMembersOfSubjectArea(String                      serverName,
+                                                        String                      userId,
+                                                        int                         startFrom,
+                                                        int                         pageSize,
+                                                        boolean                     forLineage,
+                                                        boolean                     forDuplicateProcessing,
+                                                        FindByPropertiesRequestBody requestBody)
+    {
+        final String methodName = "getMembersOfSubjectArea";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        ElementStubsResponse response = new ElementStubsResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ReferenceableHandler<ElementStub> handler = instanceHandler.getElementStubHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof FindNameProperties properties)
+                {
+                    response.setElementList(handler.getSubjectAreaMembers(userId,
+                                                                          properties.getName(),
+                                                                          startFrom,
+                                                                          pageSize,
+                                                                          forLineage,
+                                                                          forDuplicateProcessing,
+                                                                          requestBody.getEffectiveTime(),
+                                                                          methodName));
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    response.setElementList(handler.getSubjectAreaMembers(userId,
+                                                                          null,
+                                                                          startFrom,
+                                                                          pageSize,
+                                                                          forLineage,
+                                                                          forDuplicateProcessing,
+                                                                          requestBody.getEffectiveTime(),
+                                                                          methodName));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(FindNameProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                response.setElementList(handler.getSubjectAreaMembers(userId,
+                                                                      null,
+                                                                      startFrom,
+                                                                      pageSize,
+                                                                      forLineage,
+                                                                      forDuplicateProcessing,
+                                                                      null,
+                                                                      methodName));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
      * Create a semantic assignment relationship between a glossary term and an element (normally a schema attribute, data field or asset).
      * This relationship indicates that the data associated with the element meaning matches the description in the glossary term.
      *
@@ -1601,16 +2318,16 @@ public class StewardshipExchangeRESTServices
             if (requestBody == null)
             {
                 handler.removeSemanticAssignment(userId,
-                                                        null,
-                                                        null,
-                                                        elementGUID,
-                                                        elementGUIDParameterName,
-                                                        glossaryTermGUID,
-                                                        glossaryTermGUIDParameterName,
-                                                        forLineage,
-                                                        forDuplicateProcessing,
-                                                        null,
-                                                        methodName);
+                                                 null,
+                                                 null,
+                                                 elementGUID,
+                                                 elementGUIDParameterName,
+                                                 glossaryTermGUID,
+                                                 glossaryTermGUIDParameterName,
+                                                 forLineage,
+                                                 forDuplicateProcessing,
+                                                 null,
+                                                 methodName);
             }
             else
             {
@@ -1625,6 +2342,157 @@ public class StewardshipExchangeRESTServices
                                                  forDuplicateProcessing,
                                                  requestBody.getEffectiveTime(),
                                                  methodName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the glossary terms linked via a "SemanticAssignment" relationship to the requested element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element that is being assigned to the glossary term
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public GlossaryTermElementsResponse getMeanings(String                        serverName,
+                                                    String                        userId,
+                                                    String                        elementGUID,
+                                                    int                           startFrom,
+                                                    int                           pageSize,
+                                                    boolean                       forLineage,
+                                                    boolean                       forDuplicateProcessing,
+                                                    EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName = "getMeanings";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GlossaryTermElementsResponse response = new GlossaryTermElementsResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                response.setElementList(handler.getMeanings(userId,
+                                                            null,
+                                                            null,
+                                                            elementGUID,
+                                                            startFrom,
+                                                            pageSize,
+                                                            forLineage,
+                                                            forDuplicateProcessing,
+                                                            null,
+                                                            methodName));
+            }
+            else
+            {
+                response.setElementList(handler.getMeanings(userId,
+                                                            requestBody.getAssetManagerGUID(),
+                                                            requestBody.getAssetManagerName(),
+                                                            elementGUID,
+                                                            startFrom,
+                                                            pageSize,
+                                                            forLineage,
+                                                            forDuplicateProcessing,
+                                                            requestBody.getEffectiveTime(),
+                                                            methodName));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the glossary terms linked via a "SemanticAssignment" relationship to the requested element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the glossary term that the returned elements are linked to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public RelatedElementsResponse getSemanticAssignees(String                        serverName,
+                                                        String                        userId,
+                                                        String                        glossaryTermGUID,
+                                                        int                           startFrom,
+                                                        int                           pageSize,
+                                                        boolean                       forLineage,
+                                                        boolean                       forDuplicateProcessing,
+                                                        EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName = "getMeanings";
+        final String elementGUIDParameterName = "glossaryTermGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                response.setElementList(handler.getSemanticAssignments(userId,
+                                                                       glossaryTermGUID,
+                                                                       elementGUIDParameterName,
+                                                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
+                                                                       null,
+                                                                       methodName));
+            }
+            else
+            {
+                response.setElementList(handler.getSemanticAssignments(userId,
+                                                                       glossaryTermGUID,
+                                                                       elementGUIDParameterName,
+                                                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
+                                                                       requestBody.getEffectiveTime(),
+                                                                       methodName));
             }
         }
         catch (Exception error)
@@ -1780,6 +2648,82 @@ public class StewardshipExchangeRESTServices
                                          forDuplicateProcessing,
                                          requestBody.getEffectiveTime(),
                                          methodName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the elements linked via a "GovernedBy" relationship to the requested governance definition.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param governanceDefinitionGUID unique identifier of the glossary term that the returned elements are linked to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public RelatedElementsResponse getGovernedElements(String                        serverName,
+                                                       String                        userId,
+                                                       String                        governanceDefinitionGUID,
+                                                       int                           startFrom,
+                                                       int                           pageSize,
+                                                       boolean                       forLineage,
+                                                       boolean                       forDuplicateProcessing,
+                                                       EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName = "getGovernedElements";
+        final String elementGUIDParameterName = "governanceDefinitionGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                response.setElementList(handler.getGovernedElements(userId,
+                                                                    governanceDefinitionGUID,
+                                                                    elementGUIDParameterName,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    null,
+                                                                    methodName));
+            }
+            else
+            {
+                response.setElementList(handler.getGovernedElements(userId,
+                                                                    governanceDefinitionGUID,
+                                                                    elementGUIDParameterName,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    requestBody.getEffectiveTime(),
+                                                                    methodName));
             }
         }
         catch (Exception error)

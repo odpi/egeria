@@ -168,12 +168,11 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
                                                                                  PropertyServerException
     {
         final String propertiesParameterName    = "commentProperties";
-        final String qualifiedNameParameterName = "commentProperties.qualifiedName";
+        final String commentText = "commentProperties.getText";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-
         invalidParameterHandler.validateObject(commentProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(commentProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        invalidParameterHandler.validateName(commentProperties.getCommentText(), commentText, methodName);
 
         int commentType = CommentType.STANDARD_COMMENT.getOpenTypeOrdinal();
 
@@ -183,7 +182,7 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
         }
 
         String commentGUID = commentHandler.attachNewComment(userId,
-                                                             correlationProperties.getAssetManagerGUID(),
+                                                             getExternalSourceGUID(correlationProperties),
                                                              getExternalSourceName(correlationProperties),
                                                              guid,
                                                              guid,
@@ -331,8 +330,8 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
         if (correlationProperties != null)
         {
             commentHandler.removeCommentFromElement(userId,
-                                                    correlationProperties.getAssetManagerGUID(),
-                                                    correlationProperties.getAssetManagerName(),
+                                                    this.getExternalSourceGUID(correlationProperties),
+                                                    this.getExternalSourceName(correlationProperties),
                                                     commentGUID,
                                                     commentGUIDParameterName,
                                                     forLineage,
@@ -568,7 +567,7 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
         List<CommentElement> results = commentHandler.getComments(userId,
                                                                   elementGUID,
                                                                   elementGUIDParameterName,
-                                                                  OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
+                                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                   startFrom,
                                                                   pageSize,
                                                                   forLineage,

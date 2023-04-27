@@ -150,6 +150,70 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
     {
+        return attachNewComment(userId,
+                                externalSourceGUID,
+                                externalSourceName,
+                                anchorGUID,
+                                parentGUID,
+                                parentGUIDParameterName,
+                                null,
+                                commentType,
+                                commentText,
+                                isPublic,
+                                effectiveFrom,
+                                effectiveTo,
+                                forLineage,
+                                forDuplicateProcessing,
+                                effectiveTime,
+                                methodName);
+    }
+
+
+    /**
+     * Adds a comment and link it to the supplied parent entity.
+     *
+     * @param userId        String - userId of user making request.
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param anchorGUID    head of the comment chain
+     * @param parentGUID    String - unique id for a referenceable entity that the comment is to be attached to.
+     * @param parentGUIDParameterName name of parameter that supplied the entity's unique identifier.
+     * @param suppliedQualifiedName unique identifier for the comment
+     * @param commentType   ordinal of comment enum.
+     * @param commentText   String - the text of the comment.
+     * @param isPublic      should this be visible to all or private to the caller
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName    calling method
+     *
+     * @return guid of new comment.
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException There is a problem adding the asset properties to
+     *                                   the property server.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public  String attachNewComment(String      userId,
+                                    String      externalSourceGUID,
+                                    String      externalSourceName,
+                                    String      anchorGUID,
+                                    String      parentGUID,
+                                    String      parentGUIDParameterName,
+                                    String      suppliedQualifiedName,
+                                    int         commentType,
+                                    String      commentText,
+                                    boolean     isPublic,
+                                    Date        effectiveFrom,
+                                    Date        effectiveTo,
+                                    boolean     forLineage,
+                                    boolean     forDuplicateProcessing,
+                                    Date        effectiveTime,
+                                    String      methodName) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
+    {
         final String textParameter = "commentText";
         final String commentGUIDParameter = "commentGUID";
 
@@ -157,11 +221,16 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateGUID(parentGUID, parentGUIDParameterName, methodName);
         invalidParameterHandler.validateText(commentText, textParameter, methodName);
 
+        String qualifiedName = suppliedQualifiedName;
+        if (qualifiedName == null)
+        {
+            qualifiedName = UUID.randomUUID().toString();
+        }
+
         /*
          * A comment is a referenceable.  It needs a unique qualified name.  There is no obvious value to use so
          * a UUID is used to create a unique string.
          */
-        String qualifiedName = UUID.randomUUID().toString();
         CommentBuilder builder = new CommentBuilder(qualifiedName,
                                                     commentType,
                                                     commentText,
