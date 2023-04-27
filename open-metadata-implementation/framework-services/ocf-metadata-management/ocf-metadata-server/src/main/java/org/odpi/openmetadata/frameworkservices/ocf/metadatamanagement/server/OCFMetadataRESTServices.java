@@ -1748,12 +1748,12 @@ public class OCFMetadataRESTServices
     }
 
     /**
-     * Returns the anchor asset of the supplied entity.
+     * Returns the anchor asset.
      *
      * @param serverName String   name of server instance to call.
      * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId     String   userId of user making request.
-     * @param entityGUID  String   unique id for the entity.
+     * @param guid  String   unique id for the metadata element.
      *
      * @return a bean with the basic properties about the anchor asset or
      * InvalidParameterException - the userId is null or invalid or
@@ -1764,7 +1764,7 @@ public class OCFMetadataRESTServices
     public AssetResponse getAnchorAssetFromGUID(String serverName,
                                                 String serviceURLName,
                                                 String userId,
-                                                String entityGUID)
+                                                String guid)
     {
         final String methodName = "getAnchorAssetFromGUID";
 
@@ -1782,7 +1782,7 @@ public class OCFMetadataRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             EntityDetail entity = repositoryHandler.getEntityByGUID(userId,
-                                                                    entityGUID,
+                                                                    guid,
                                                                     OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                     false,
@@ -1793,18 +1793,18 @@ public class OCFMetadataRESTServices
             if (entity != null)
             {
                 if (repositoryHandler.isEntityATypeOf(userId,
-                                                      entityGUID,
+                                                      guid,
                                                       OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
                                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                       effectiveTime,
                                                       methodName))
                 {
-                    response = getAssetResponse(serverName, serviceURLName, userId, entityGUID, null, methodName);
+                    response = getAssetResponse(serverName, serviceURLName, userId, guid, null, methodName);
                 }
                 else
                 {
                     EntityDetail anchorEntity = referenceableHandler.validateAnchorEntity(userId,
-                                                                                          entityGUID,
+                                                                                          guid,
                                                                                           OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                                           entity,
                                                                                           OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
@@ -1814,12 +1814,12 @@ public class OCFMetadataRESTServices
                                                                                           null,
                                                                                           effectiveTime,
                                                                                           methodName);
-                    if (repositoryHandler.isEntityATypeOf(userId,
-                                                          anchorEntity.getGUID(),
-                                                          OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
-                                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                          effectiveTime,
-                                                          methodName))
+                    if (anchorEntity != null && repositoryHandler.isEntityATypeOf(userId,
+                                                                                  anchorEntity.getGUID(),
+                                                                                  OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                                                                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                  effectiveTime,
+                                                                                  methodName))
                     {
                         response = getAssetResponse(serverName, serviceURLName, userId, anchorEntity.getGUID(), null, methodName);
                     }
