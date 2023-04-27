@@ -31,7 +31,7 @@ public class Classification extends InstanceAuditHeader
 
     private String               classificationName       = null;
     private InstanceProperties   classificationProperties = null;
-    private ClassificationOrigin classificationOrigin     = null;
+    private ClassificationOrigin classificationOrigin     = ClassificationOrigin.ASSIGNED;
     private String               classificationOriginGUID = null;
 
     /*
