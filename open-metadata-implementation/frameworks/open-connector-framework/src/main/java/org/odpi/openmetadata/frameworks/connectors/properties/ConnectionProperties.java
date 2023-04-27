@@ -6,6 +6,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -66,7 +67,8 @@ import java.util.Objects;
  */
 public class ConnectionProperties extends AssetReferenceable
 {
-    private static final long     serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     protected Connection    connectionBean;
 
@@ -279,7 +281,7 @@ public class ConnectionProperties extends AssetReferenceable
      *
      * @return secured properties typically user credentials for the connection
      */
-    protected Map<String, String> getSecuredProperties()
+    public Map<String, String> getSecuredProperties()
     {
         return connectionBean.getSecuredProperties();
     }

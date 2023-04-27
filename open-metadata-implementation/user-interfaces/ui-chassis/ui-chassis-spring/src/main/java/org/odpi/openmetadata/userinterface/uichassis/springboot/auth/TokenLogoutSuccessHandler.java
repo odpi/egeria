@@ -11,6 +11,9 @@ import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuc
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
 import java.io.IOException;
 
 public class TokenLogoutSuccessHandler extends
@@ -35,12 +38,15 @@ public class TokenLogoutSuccessHandler extends
         String refererUrl = request.getHeader("Referer");
         log.debug("Logout from: {}", refererUrl);
 
-        String token = request.getHeader(AuthService.AUTH_HEADER_NAME);
+//        return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getHeader("Authorization");
+
+        String token = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                .getRequest().getHeader("Authorization");
 
         if(tokenClient!=null && token != null ){
             tokenClient.del(token);
         }
-        response.addHeader(AuthService.AUTH_HEADER_NAME,"");
+
         response.sendRedirect("login?logoutSuccessful");
         super.onLogoutSuccess(request, response, authentication);
     }

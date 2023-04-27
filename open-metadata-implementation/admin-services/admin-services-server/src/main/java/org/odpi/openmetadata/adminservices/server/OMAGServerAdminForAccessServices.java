@@ -33,15 +33,15 @@ import java.util.*;
  */
 public class OMAGServerAdminForAccessServices
 {
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminForAccessServices.class),
-                                                                      CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminForAccessServices.class),
+                                                                            CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
 
     private static final String      defaultInTopicName = "InTopic";
     private static final String      defaultOutTopicName = "OutTopic";
 
-    private OMAGServerAdminStoreServices   configStore = new OMAGServerAdminStoreServices();
-    private OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
-    private OMAGServerExceptionHandler     exceptionHandler = new OMAGServerExceptionHandler();
+    private final OMAGServerAdminStoreServices configStore      = new OMAGServerAdminStoreServices();
+    private final OMAGServerErrorHandler     errorHandler     = new OMAGServerErrorHandler();
+    private final OMAGServerExceptionHandler exceptionHandler = new OMAGServerExceptionHandler();
 
 
     /**

@@ -256,48 +256,23 @@ public class ExternalReferenceExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateObject(externalReferenceProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(externalReferenceProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        String externalReferenceGUID;
-
-        if (assetManagerIsHome)
-        {
-            externalReferenceGUID = externalReferenceHandler.createExternalReference(userId,
-                                                                                     correlationProperties.getAssetManagerGUID(),
-                                                                                     correlationProperties.getAssetManagerName(),
-                                                                                     anchorGUID,
-                                                                                     externalReferenceProperties.getQualifiedName(),
-                                                                                     externalReferenceProperties.getDisplayName(),
-                                                                                     externalReferenceProperties.getDescription(),
-                                                                                     externalReferenceProperties.getUrl(),
-                                                                                     externalReferenceProperties.getVersion(),
-                                                                                     externalReferenceProperties.getOrganization(),
-                                                                                     externalReferenceProperties.getAdditionalProperties(),
-                                                                                     externalReferenceProperties.getTypeName(),
-                                                                                     externalReferenceProperties.getExtendedProperties(),
-                                                                                     externalReferenceProperties.getEffectiveFrom(),
-                                                                                     externalReferenceProperties.getEffectiveTo(),
-                                                                                     new Date(),
-                                                                                     methodName);
-        }
-        else
-        {
-            externalReferenceGUID = externalReferenceHandler.createExternalReference(userId,
-                                                                                     null,
-                                                                                     null,
-                                                                                     anchorGUID,
-                                                                                     externalReferenceProperties.getQualifiedName(),
-                                                                                     externalReferenceProperties.getDisplayName(),
-                                                                                     externalReferenceProperties.getDescription(),
-                                                                                     externalReferenceProperties.getUrl(),
-                                                                                     externalReferenceProperties.getVersion(),
-                                                                                     externalReferenceProperties.getOrganization(),
-                                                                                     externalReferenceProperties.getAdditionalProperties(),
-                                                                                     externalReferenceProperties.getTypeName(),
-                                                                                     externalReferenceProperties.getExtendedProperties(),
-                                                                                     externalReferenceProperties.getEffectiveFrom(),
-                                                                                     externalReferenceProperties.getEffectiveTo(),
-                                                                                     new Date(),
-                                                                                     methodName);
-        }
+        String externalReferenceGUID = externalReferenceHandler.createExternalReference(userId,
+                                                                                        this.getExternalSourceGUID(correlationProperties, assetManagerIsHome),
+                                                                                        this.getExternalSourceName(correlationProperties, assetManagerIsHome),
+                                                                                        anchorGUID,
+                                                                                        externalReferenceProperties.getQualifiedName(),
+                                                                                        externalReferenceProperties.getDisplayName(),
+                                                                                        externalReferenceProperties.getDescription(),
+                                                                                        externalReferenceProperties.getUrl(),
+                                                                                        externalReferenceProperties.getVersion(),
+                                                                                        externalReferenceProperties.getOrganization(),
+                                                                                        externalReferenceProperties.getAdditionalProperties(),
+                                                                                        externalReferenceProperties.getTypeName(),
+                                                                                        externalReferenceProperties.getExtendedProperties(),
+                                                                                        externalReferenceProperties.getEffectiveFrom(),
+                                                                                        externalReferenceProperties.getEffectiveTo(),
+                                                                                        new Date(),
+                                                                                        methodName);
 
         if (externalReferenceGUID != null)
         {
@@ -368,8 +343,8 @@ public class ExternalReferenceExchangeHandler extends ExchangeHandlerBase
                                         methodName);
 
         externalReferenceHandler.updateExternalReference(userId,
-                                                         correlationProperties.getAssetManagerGUID(),
-                                                         correlationProperties.getAssetManagerName(),
+                                                         this.getExternalSourceGUID(correlationProperties),
+                                                         this.getExternalSourceName(correlationProperties),
                                                          externalReferenceGUID,
                                                          externalReferenceGUIDParameterName,
                                                          externalReferenceProperties.getQualifiedName(),
@@ -433,8 +408,8 @@ public class ExternalReferenceExchangeHandler extends ExchangeHandlerBase
         if (correlationProperties != null)
         {
             externalReferenceHandler.removeExternalReference(userId,
-                                                             correlationProperties.getAssetManagerGUID(),
-                                                             correlationProperties.getAssetManagerName(),
+                                                             this.getExternalSourceGUID(correlationProperties),
+                                                             this.getExternalSourceName(correlationProperties),
                                                              externalReferenceGUID,
                                                              externalReferenceGUIDParameterName,
                                                              forLineage,

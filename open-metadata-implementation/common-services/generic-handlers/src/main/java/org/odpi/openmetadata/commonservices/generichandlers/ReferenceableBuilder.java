@@ -420,8 +420,8 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
      */
     InstanceProperties getDataFieldValuesProperties(String              defaultValue,
                                                     List<String>        sampleValues,
-                                                    String              dataPattern,
-                                                    String              namePattern,
+                                                    List<String>        dataPattern,
+                                                    List<String>        namePattern,
                                                     String              methodName)
     {
         InstanceProperties properties;
@@ -438,17 +438,17 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
                                                                        sampleValues,
                                                                        methodName);
 
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.DATA_PATTERN_PROPERTY_NAME,
                                                                   dataPattern,
                                                                   methodName);
 
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                  properties,
-                                                                  OpenMetadataAPIMapper.NAME_PATTERN_PROPERTY_NAME,
-                                                                  namePattern,
-                                                                  methodName);
+        properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
+                                                                       properties,
+                                                                       OpenMetadataAPIMapper.NAME_PATTERN_PROPERTY_NAME,
+                                                                       namePattern,
+                                                                       methodName);
 
         setEffectivityDates(properties);
 

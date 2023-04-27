@@ -711,7 +711,7 @@ public class AssetManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
+            if ((requestBody != null) && (requestBody.getMetadataCorrelationProperties() != null))
             {
                 ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> handler = instanceHandler.getExternalIdentifierHandler(userId,
                                                                                                                                            serverName,
