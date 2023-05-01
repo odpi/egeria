@@ -20,6 +20,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteProperti
 import org.odpi.openmetadata.accessservices.assetmanager.properties.RatingProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.CommentElementResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.CommentElementsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagUpdateRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagsResponse;
@@ -1267,6 +1268,9 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
         final String methodName                  = "createNoteLog";
         final String guidParameterName           = "elementGUID";
         final String propertiesParameterName     = "noteLogProperties";
+        final String qualifiedNameParameterName  = "qualifiedName";
+
+        invalidParameterHandler.validateName(noteLogProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/{2}/note-logs";
 
@@ -1510,6 +1514,67 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
                                                                                         requestBody,
                                                                                         serverName,
                                                                                         userId,
+                                                                                        startFrom,
+                                                                                        validatedPageSize,
+                                                                                        forLineage,
+                                                                                        forDuplicateProcessing);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
+     * Retrieve the list of note log metadata elements attached to the element.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique elementGUID of software capability representing the caller
+     * @param elementGUID element to start from
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<NoteLogElement>   getNoteLogsForElement(String  userId,
+                                                        String  assetManagerGUID,
+                                                        String  assetManagerName,
+                                                        String  elementGUID,
+                                                        int     startFrom,
+                                                        int     pageSize,
+                                                        Date    effectiveTime,
+                                                        boolean forLineage,
+                                                        boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        final String methodName        = "getNoteLogsForElement";
+        final String guidParameterName = "elementGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        EffectiveTimeQueryRequestBody requestBody = new EffectiveTimeQueryRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setEffectiveTime(effectiveTime);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/{2}/note-logs/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
+
+        NoteLogElementsResponse restResult = restClient.callNoteLogElementsPostRESTCall(methodName,
+                                                                                        urlTemplate,
+                                                                                        requestBody,
+                                                                                        serverName,
+                                                                                        userId,
+                                                                                        elementGUID,
                                                                                         startFrom,
                                                                                         validatedPageSize,
                                                                                         forLineage,

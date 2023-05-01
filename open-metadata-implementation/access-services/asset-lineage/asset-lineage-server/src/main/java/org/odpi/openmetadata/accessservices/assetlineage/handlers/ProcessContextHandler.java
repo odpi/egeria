@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ATTRIBUTE_FOR_SCHEMA;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.COLLECTION_MEMBERSHIP;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_FLOW;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.LINEAGE_MAPPING;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_IMPLEMENTATION;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_SCHEMA;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
@@ -100,33 +101,39 @@ public class ProcessContextHandler {
                     .map(GraphContext::getToVertex).collect(Collectors.toSet());
 
             for (LineageEntity tabularColumn : tabularColumns) {
-                addDataFlowsContextForColumn(userId, context, tabularColumn.getGuid(), tabularColumn.getTypeDefName());
+                addContextForColumn(userId, context, tabularColumn.getGuid(), tabularColumn.getTypeDefName(),
+                        DATA_FLOW, AssetLineageEventType.DATA_FLOWS_EVENT);
+                addContextForColumn(userId, context, tabularColumn.getGuid(), tabularColumn.getTypeDefName(),
+                        LINEAGE_MAPPING, AssetLineageEventType.LINEAGE_MAPPINGS_EVENT);
             }
         }
         return context;
     }
 
     /**
-     * Adds data flows context for the tabular column. It adds the data flows for the column and the column context for all the technical assets
-     * that have data flows to it.
+     * Adds context for the tabular column. It adds the specified relationships for the column and the column context for
+     * all the technical assets that have specified relationships to it.
      *
-     * @param userId      userId of user making request.
-     * @param context     the context to be updated
-     * @param columnGUID  the column GUID
-     * @param typeDefName the column type name
+     * @param userId                  userId of user making request.
+     * @param context                 the context to be updated
+     * @param columnGUID              the column GUID
+     * @param typeDefName             the column type name
+     * @param relationshipTypeDefName the relationship type name
+     * @param assetLineageEventType   the asset lineage event type
      *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-    private void addDataFlowsContextForColumn(String userId, Multimap<String, RelationshipsContext> context, String columnGUID,
-                                              String typeDefName) throws OCFCheckedExceptionBase {
-        List<Relationship> dataFlows = handlerHelper.getRelationshipsByType(userId, columnGUID, DATA_FLOW, typeDefName);
+    private void addContextForColumn(String userId, Multimap<String, RelationshipsContext> context, String columnGUID,
+                                    String typeDefName, String relationshipTypeDefName, AssetLineageEventType assetLineageEventType)
+            throws OCFCheckedExceptionBase {
+        List<Relationship> relationships = handlerHelper.getRelationshipsByType(userId, columnGUID, relationshipTypeDefName, typeDefName);
 
-        context.put(AssetLineageEventType.DATA_FLOWS_EVENT.getEventTypeName(),
-                handlerHelper.buildContextForRelationships(userId, columnGUID, dataFlows));
+        context.put(assetLineageEventType.getEventTypeName(),
+                handlerHelper.buildContextForRelationships(userId, columnGUID, relationships));
 
-        for (Relationship dataFlow : dataFlows) {
+        for (Relationship relationship : relationships) {
             context.putAll(Multimaps.forMap(assetContextHandler.buildSchemaElementContext(userId, handlerHelper.getEntityAtTheEnd(userId,
-                    columnGUID, dataFlow))));
+                    columnGUID, relationship))));
         }
     }
 

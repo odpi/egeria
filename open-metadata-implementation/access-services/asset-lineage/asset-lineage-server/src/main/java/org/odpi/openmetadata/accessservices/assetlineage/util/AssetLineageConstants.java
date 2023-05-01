@@ -51,6 +51,7 @@ public final class AssetLineageConstants {
     public static final String PROCESS_PORT = "ProcessPort";
     public static final String COLLECTION_MEMBERSHIP = "CollectionMembership";
     public static final String DATA_FLOW = "DataFlow";
+    public static final String LINEAGE_MAPPING = "LineageMapping";
     public static final String PORT_SCHEMA = "PortSchema";
     public static final String NESTED_FILE = "NestedFile";
     public static final String FOLDER_HIERARCHY = "FolderHierarchy";

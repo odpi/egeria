@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project */
 package org.odpi.openmetadata.viewservices.glossarybrowser.server.spring;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
 import org.odpi.openmetadata.viewservices.glossarybrowser.server.GlossaryBrowserRESTServices;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +44,12 @@ public class GlossaryBrowserResource
      * @return list of enum values
      */
     @GetMapping(path = "/glossaries/terms/status-list")
+
+    @Operation(summary="getGlossaryTermStatuses",
+               description="Return the list of glossary term status enum values.",
+               externalDocs=@ExternalDocumentation(description="Controlled glossary terms",
+                                                   url="https://egeria-project.org/services/omas/asset-manager/overview"))
+
 
     public GlossaryTermStatusListResponse getGlossaryTermStatuses(@PathVariable String serverName,
                                                                   @PathVariable String userId)

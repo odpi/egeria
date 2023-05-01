@@ -113,11 +113,11 @@ public enum KafkaIntegrationConnectorAuditCode implements AuditLogMessageSet
 
     ;
 
-    private String                     logMessageId;
-    private OMRSAuditLogRecordSeverity severity;
-    private String                     logMessage;
-    private String                     systemAction;
-    private String                     userAction;
+    private final String                     logMessageId;
+    private final OMRSAuditLogRecordSeverity severity;
+    private final String                     logMessage;
+    private final String                     systemAction;
+    private final String                     userAction;
 
 
     /**
@@ -135,10 +135,10 @@ public enum KafkaIntegrationConnectorAuditCode implements AuditLogMessageSet
      * @param userAction - instructions for resolving the situation, if any
      */
     KafkaIntegrationConnectorAuditCode(String                     messageId,
-                                             OMRSAuditLogRecordSeverity severity,
-                                             String                     message,
-                                             String                     systemAction,
-                                             String                     userAction)
+                                       OMRSAuditLogRecordSeverity severity,
+                                       String                     message,
+                                       String                     systemAction,
+                                       String                     userAction)
     {
         this.logMessageId = messageId;
         this.severity = severity;
