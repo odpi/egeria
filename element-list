@@ -481,6 +481,8 @@ org.odpi.openmetadata.adminservices.samples.configure
 org.odpi.openmetadata.adminservices.server
 org.odpi.openmetadata.adminservices.spring
 org.odpi.openmetadata.adminservices.store
+org.odpi.openmetadata.archiveutilities.bigglossaries
+org.odpi.openmetadata.archiveutilities.bigglossaries.catalogcontent
 org.odpi.openmetadata.archiveutilities.designmodels.base
 org.odpi.openmetadata.archiveutilities.designmodels.base.properties
 org.odpi.openmetadata.archiveutilities.designmodels.owlcanonicalglossarymodel
