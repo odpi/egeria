@@ -25,7 +25,7 @@ public class ReferenceableUpdateRequestBody extends ReferenceableRequestBody
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private Date effectiveTime       = null;
+    private Date   effectiveTime     = null;
     private String updateDescription = null;
 
     /**

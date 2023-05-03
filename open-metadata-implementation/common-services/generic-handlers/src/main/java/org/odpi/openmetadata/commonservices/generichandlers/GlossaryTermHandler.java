@@ -10,10 +10,14 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
@@ -73,6 +77,34 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
               defaultZones,
               publishZones,
               auditLog);
+    }
+
+
+    /**
+     * Return the list of term-to-term relationship names.
+     *
+     * @return list of type names that are subtypes of asset
+     */
+    public List<String> getTermRelationshipTypeNames()
+    {
+        List<TypeDef>  knownTypeDefs = repositoryHelper.getKnownTypeDefs();
+        List<String>   relationshipNames = new ArrayList<>();
+        if (knownTypeDefs != null)
+        {
+            for (TypeDef typeDef : knownTypeDefs)
+            {
+                if ((typeDef != null) && (typeDef.getStatus() == TypeDefStatus.ACTIVE_TYPEDEF) && (typeDef instanceof RelationshipDef relationshipDef))
+                {
+                    if ((relationshipDef.getEndDef1().getEntityType().getName().equals(OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME)) &&
+                        (relationshipDef.getEndDef2().getEntityType().getName().equals(OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME)))
+                    {
+                        relationshipNames.add(relationshipDef.getName());
+                    }
+                }
+            }
+        }
+
+       return relationshipNames;
     }
 
 
@@ -240,6 +272,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
      * @param publishVersionIdentifier author controlled version identifier
      * @param initialStatus glossary term status to use when the object is created
      * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
+     * @param templateSubstitute is this element a template substitute (used as the "other end" of a new/updated relationship)
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element for the glossary term
@@ -260,6 +293,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                  String         publishVersionIdentifier,
                                                  InstanceStatus initialStatus,
                                                  boolean        deepCopy,
+                                                 boolean        templateSubstitute,
                                                  String         methodName) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
@@ -293,6 +327,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                               builder,
                                                               supportedZones,
                                                               deepCopy,
+                                                              templateSubstitute,
                                                               methodName);
 
         if (glossaryTermGUID != null)
@@ -496,6 +531,244 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                           glossaryTermStatusParameterName,
                                           effectiveTime,
                                           methodName);
+    }
+
+
+    /**
+     * Update the glossary term using the properties and classifications from the parentGUID stored in the request body.
+     * This may be turned into a method for generic types in the future.  At the moment it does not traverse the associated anchored elements
+     * and so only works for glossary workflow cases.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
+     * @param glossaryTermGUID unique identifier of the glossary term to update
+     * @param glossaryTermGUIDParameterName parameter name for glossaryTermGUID
+     * @param templateGUID identifier for the new glossary
+     * @param templateGUIDParameterName parameter name for the templateGUID value
+     * @param isMergeClassifications should the classification be merged or replace the target entity?
+     * @param isMergeProperties should the properties be merged with the existing ones or replace them
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateGlossaryTermFromTemplate(String         userId,
+                                               String         externalSourceGUID,
+                                               String         externalSourceName,
+                                               String         glossaryTermGUID,
+                                               String         glossaryTermGUIDParameterName,
+                                               String         templateGUID,
+                                               String         templateGUIDParameterName,
+                                               boolean        isMergeClassifications,
+                                               boolean        isMergeProperties,
+                                               Date           effectiveTime,
+                                               boolean        forLineage,
+                                               boolean        forDuplicateProcessing,
+                                               String         methodName) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        EntityDetail templateEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                        templateGUID,
+                                                                        templateGUIDParameterName,
+                                                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
+                                                                        effectiveTime,
+                                                                        methodName);
+
+        EntityDetail termEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                    glossaryTermGUID,
+                                                                    glossaryTermGUIDParameterName,
+                                                                    OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    effectiveTime,
+                                                                    methodName);
+
+        if (templateEntity != null)
+        {
+            this.updateBeanInRepository(userId,
+                                        externalSourceGUID,
+                                        externalSourceName,
+                                        termEntity,
+                                        glossaryTermGUIDParameterName,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
+                                        OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        templateEntity.getProperties(),
+                                        isMergeProperties,
+                                        effectiveTime,
+                                        methodName);
+
+            List<String>         updatedClassifications = new ArrayList<>();
+
+            if (templateEntity.getClassifications() != null)
+            {
+                for (Classification classification : templateEntity.getClassifications())
+                {
+                    this.setClassificationInRepository(userId,
+                                                       externalSourceGUID,
+                                                       externalSourceName,
+                                                       termEntity,
+                                                       glossaryTermGUIDParameterName,
+                                                       OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                       classification.getType().getTypeDefGUID(),
+                                                       classification.getType().getTypeDefName(),
+                                                       classification.getProperties(),
+                                                       isMergeProperties,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       supportedZones,
+                                                       effectiveTime,
+                                                       methodName);
+                    updatedClassifications.add(classification.getName());
+                }
+            }
+
+            if ((! isMergeClassifications) && (termEntity.getClassifications() != null))
+            {
+                for (Classification classification : termEntity.getClassifications())
+                {
+                    if (! updatedClassifications.contains(classification.getName()))
+                    {
+                        this.removeClassificationFromRepository(userId,
+                                                                externalSourceGUID,
+                                                                externalSourceName,
+                                                                termEntity.getGUID(),
+                                                                glossaryTermGUIDParameterName,
+                                                                OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                classification.getType().getTypeDefGUID(),
+                                                                classification.getType().getTypeDefName(),
+                                                                forLineage,
+                                                                forDuplicateProcessing,
+                                                                supportedZones,
+                                                                effectiveTime,
+                                                                methodName);
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Move a glossary term from one glossary to another.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
+     * @param glossaryTermGUID unique identifier of the glossary term to update
+     * @param glossaryTermGUIDParameterName parameter name for glossaryTermGUID
+     * @param newGlossaryGUID identifier for the new glossary
+     * @param newGlossaryGUIDParameterName parameter name for the newGlossaryGUID value
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void moveGlossaryTerm(String         userId,
+                                 String         externalSourceGUID,
+                                 String         externalSourceName,
+                                 String         glossaryTermGUID,
+                                 String         glossaryTermGUIDParameterName,
+                                 String         newGlossaryGUID,
+                                 String         newGlossaryGUIDParameterName,
+                                 Date           effectiveTime,
+                                 boolean        forLineage,
+                                 boolean        forDuplicateProcessing,
+                                 String         methodName) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        EntityDetail termEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                    glossaryTermGUID,
+                                                                    glossaryTermGUIDParameterName,
+                                                                    OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    effectiveTime,
+                                                                    methodName);
+
+        List<Relationship> termAnchors = this.getAttachmentLinks(userId,
+                                                                 termEntity.getGUID(),
+                                                                 glossaryTermGUIDParameterName,
+                                                                 OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                 OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
+                                                                 OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_NAME,
+                                                                 null,
+                                                                 OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                                 1,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 0,
+                                                                 0,
+                                                                 effectiveTime,
+                                                                 methodName);
+
+        /*
+         * Remove the current term anchor (should only be one but this cleans up any extra relationships).
+         */
+        if (termAnchors != null)
+        {
+            for (Relationship termAnchor : termAnchors)
+            {
+                if (termAnchor != null)
+                {
+                    repositoryHandler.removeRelationship(userId, externalSourceGUID, externalSourceName, termAnchor, methodName);
+                }
+            }
+        }
+
+        /*
+         * Remove the original anchor.
+         */
+        this.removeClassificationFromRepository(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                termEntity.getGUID(),
+                                                glossaryTermGUIDParameterName,
+                                                OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
+                                                methodName);
+
+        /*
+         * This will set up the correct anchor
+         */
+        this.linkElementToElement(userId,
+                                  externalSourceGUID,
+                                  externalSourceName,
+                                  newGlossaryGUID,
+                                  newGlossaryGUIDParameterName,
+                                  OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                  termEntity.getGUID(),
+                                  glossaryTermGUIDParameterName,
+                                  OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                  forLineage,
+                                  forDuplicateProcessing,
+                                  supportedZones,
+                                  OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
+                                  OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_NAME,
+                                  null,
+                                  null,
+                                  null,
+                                  effectiveTime,
+                                  methodName);
     }
 
 

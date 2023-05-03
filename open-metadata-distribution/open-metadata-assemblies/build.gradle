@@ -100,6 +100,7 @@ dependencies {
     implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types-utility')
     implementation project(':open-metadata-resources:open-metadata-archives:open-connector-archives')
     implementation project(':open-metadata-resources:open-metadata-archives:design-model-archives:glossary-canonical-model')
+    implementation project(':open-metadata-resources:open-metadata-samples:sample-metadata:big-glossaries')
     implementation project(':open-metadata-resources:open-metadata-samples:governance-services-sample')
 
 }
@@ -154,6 +155,7 @@ distributions {
             into('utilities') {
                 from { project(':open-metadata-resources:open-metadata-archives:design-model-archives:glossary-canonical-model').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-archives:open-metadata-types-utility').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:sample-metadata:big-glossaries').shadowJar }
                 fileMode = 0755
             }
             into('samples') {

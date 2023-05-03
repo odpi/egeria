@@ -20,6 +20,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTerm
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermRelationship;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermRelationshipStatus;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermStatus;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.StagingGlossaryProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.TaxonomyProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ActivityDescriptionProperties;
@@ -122,8 +123,8 @@ public interface GlossaryManagementInterface
 
     /**
      * Classify the glossary to indicate that it is an editing glossary - this means it is
-     * a temporary collection of glossary updates that will be merged into another glossary.
-     * *
+     * a collection of glossary updates that will be merged into its source glossary.
+     *
      * @param userId calling user
      * @param glossaryGUID unique identifier of the metadata element to remove
      * @param properties description of the purpose of the editing glossary
@@ -159,6 +160,53 @@ public interface GlossaryManagementInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     void clearGlossaryAsEditingGlossary(String  userId,
+                                        String  glossaryGUID,
+                                        Date    effectiveTime,
+                                        boolean forLineage,
+                                        boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException;
+
+
+    /**
+     * Classify the glossary to indicate that it is a staging glossary - this means it is
+     * a collection of glossary updates that will be merged into another glossary.
+     *
+     * @param userId calling user
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param properties description of the purpose of the editing glossary
+     * @param effectiveTime           the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void setGlossaryAsStagingGlossary(String                    userId,
+                                      String                    glossaryGUID,
+                                      StagingGlossaryProperties properties,
+                                      Date                      effectiveTime,
+                                      boolean                   forLineage,
+                                      boolean                   forDuplicateProcessing) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException;
+
+
+    /**
+     * Remove the staging glossary classification from the glossary.
+     *
+     * @param userId calling user
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param effectiveTime           the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void clearGlossaryAsStagingGlossary(String  userId,
                                         String  glossaryGUID,
                                         Date    effectiveTime,
                                         boolean forLineage,
@@ -383,6 +431,7 @@ public interface GlossaryManagementInterface
      * @param userId calling user
      * @param glossaryGUID unique identifier of the glossary where the category is located
      * @param glossaryCategoryProperties properties about the glossary category to store
+     * @param isRootCategory is this category a root category?
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime optional date for effective time of the query.  Null means any effective time
@@ -396,6 +445,7 @@ public interface GlossaryManagementInterface
     String createGlossaryCategory(String                       userId,
                                   String                       glossaryGUID,
                                   GlossaryCategoryProperties   glossaryCategoryProperties,
+                                  boolean                      isRootCategory,
                                   Date                         effectiveTime,
                                   boolean                      forLineage,
                                   boolean                      forDuplicateProcessing) throws InvalidParameterException,
@@ -754,6 +804,8 @@ public interface GlossaryManagementInterface
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
+     * @param templateSubstitute is this element a template substitute (used as the "other end" of a new/updated relationship)
+     * @param initialStatus what status should the copy be set to
      *
      * @return unique identifier of the new metadata element for the glossary term
      *
@@ -765,9 +817,11 @@ public interface GlossaryManagementInterface
                                           String                       glossaryGUID,
                                           String                       templateGUID,
                                           TemplateProperties           templateProperties,
-                                          boolean                      deepCopy) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException;
+                                          boolean                      deepCopy,
+                                          boolean                      templateSubstitute,
+                                          GlossaryTermStatus           initialStatus) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException;
 
 
     /**
@@ -820,6 +874,59 @@ public interface GlossaryManagementInterface
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException;
 
+
+    /**
+     * Update the glossary term using the properties and classifications from the parentGUID stored in the request body.
+     *
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the glossary term to update
+     * @param templateGUID identifier for the template glossary term
+     * @param isMergeClassifications should the classification be merged or replace the target entity?
+     * @param isMergeProperties should the properties be merged with the existing ones or replace them
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void updateGlossaryTermFromTemplate(String             userId,
+                                        String             glossaryTermGUID,
+                                        String             templateGUID,
+                                        boolean            isMergeClassifications,
+                                        boolean            isMergeProperties,
+                                        Date               effectiveTime,
+                                        boolean            forLineage,
+                                        boolean            forDuplicateProcessing) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException;
+
+
+    /**
+     * Move a glossary term from one glossary to another.
+     *
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the glossary term to update
+     * @param newGlossaryGUID identifier for the new glossary
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void moveGlossaryTerm(String             userId,
+                          String             glossaryTermGUID,
+                          String             newGlossaryGUID,
+                          Date               effectiveTime,
+                          boolean            forLineage,
+                          boolean            forDuplicateProcessing) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException;
+
+
     /**
      * Link a term to a category.
      *
@@ -868,6 +975,19 @@ public interface GlossaryManagementInterface
                            boolean forDuplicateProcessing) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException;
+
+    /**
+     * Return the list of term-to-term relationship names.
+     *
+     * @param userId calling user
+     * @return list of type names that are subtypes of asset
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<String> getTermRelationshipTypeNames(String userId) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException;
 
 
     /**

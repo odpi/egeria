@@ -183,7 +183,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      *
      * @param userId calling user
      * @return list of type names that are subtypes of asset
-     * @throws InvalidParameterException full path or userId is null
+     * @throws InvalidParameterException userId is null
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */

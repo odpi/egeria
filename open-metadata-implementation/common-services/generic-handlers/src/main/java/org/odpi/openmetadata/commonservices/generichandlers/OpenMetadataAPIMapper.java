@@ -44,6 +44,11 @@ public class OpenMetadataAPIMapper
     public static final String DISPLAY_NAME_PROPERTY_NAME                = "displayName";           /* from many entities */
     public static final String DESCRIPTION_PROPERTY_NAME                 = "description";           /* from many entities */
 
+    public static final String SAMPLE_DATA_TYPE_GUID                     = "0ee9c0f1-a89b-4806-8276-7c74f07fe190";
+    public static final String SAMPLE_DATA_TYPE_NAME                     = "SampleData";
+
+    public static final String SAMPLING_METHOD_PROPERTY_NAME             = "samplingMethod";       /* from SampleData relationship */
+
     public static final String ANCHORS_CLASSIFICATION_TYPE_GUID                  = "aa44f302-2e43-4669-a1e7-edaae414fc6e";
     public static final String ANCHORS_CLASSIFICATION_TYPE_NAME                  = "Anchors";
     public static final String ANCHOR_GUID_PROPERTY_NAME                         = "anchorGUID";
@@ -82,6 +87,10 @@ public class OpenMetadataAPIMapper
 
     public static final String TEMPLATE_CLASSIFICATION_TYPE_GUID                 = "25fad4a2-c2d6-440d-a5b1-e537881f84ee";
     public static final String TEMPLATE_CLASSIFICATION_TYPE_NAME                 = "Template";
+
+    public static final String TEMPLATE_SUBSTITUTE_CLASSIFICATION_TYPE_GUID      = "93b293c3-1185-4921-aa1c-237d3f0a5d5c";
+    public static final String TEMPLATE_SUBSTITUTE_CLASSIFICATION_TYPE_NAME      = "TemplateSubstitute";
+
     public static final String TEMPLATE_NAME_PROPERTY_NAME                       = "name";
     public static final String TEMPLATE_DESCRIPTION_PROPERTY_NAME                = "description";
     public static final String TEMPLATE_ADDITIONAL_PROPERTIES_PROPERTY_NAME      = "additionalProperties";
@@ -1187,6 +1196,9 @@ public class OpenMetadataAPIMapper
     public static final String GLOSSARY_CATEGORY_TYPE_NAME                       = "GlossaryCategory";       /* from Area 3 */
     /* Referenceable */
 
+    public static final String ROOT_CATEGORY_CLASSIFICATION_TYPE_GUID            = "1d0fec82-7444-4e4c-abd4-4765bb855ce3";
+    public static final String ROOT_CATEGORY_CLASSIFICATION_TYPE_NAME            = "RootCategory";
+
     public static final String CATEGORY_ANCHOR_TYPE_GUID                         = "c628938e-815e-47db-8d1c-59bb2e84e028";
     public static final String CATEGORY_ANCHOR_TYPE_NAME                         = "CategoryAnchor";     /* from Area 3 */
 
@@ -1208,8 +1220,8 @@ public class OpenMetadataAPIMapper
     public static final String EDITING_GLOSSARY_CLASSIFICATION_TYPE_NAME         = "EditingGlossary";           /* from Area 3 */
     /* Glossary */
 
-    public static final String EDITING_GLOSSARY_COPY_CLASSIFICATION_TYPE_GUID    = "361fa044-e703-404c-bb83-9402f9221f54";
-    public static final String EDITING_GLOSSARY_COPY_CLASSIFICATION_TYPE_NAME    = "EditingGlossaryCopy";       /* from Area 3 */
+    public static final String STAGING_GLOSSARY_CLASSIFICATION_TYPE_GUID         = "361fa044-e703-404c-bb83-9402f9221f54";
+    public static final String STAGING_GLOSSARY_CLASSIFICATION_TYPE_NAME         = "StagingGlossary";       /* from Area 3 */
     /* Glossary */
 
     public static final String SUMMARY_PROPERTY_NAME                             = "summary";       /* from GlossaryTerm and GovernanceDefinition entity */

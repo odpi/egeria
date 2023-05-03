@@ -164,8 +164,10 @@ public class OpenMetadataTypesArchive
         /*
          * Add the type updates
          */
+        update0010BasicModel();
         update0011ManagingReferenceables();
         update0210DataStores();
+        update0320CategoryHierarchy();
         update0385ControlledGlossaryDevelopment();
         update0423SecurityAccessControl();
         update504ImplementationSnippets();
@@ -178,8 +180,91 @@ public class OpenMetadataTypesArchive
      */
 
 
+    private void update0010BasicModel()
+    {
+        this.archiveBuilder.addRelationshipDef(getSampleDataRelationship());
+    }
+
+    private RelationshipDef getSampleDataRelationship()
+    {
+        final String guid            = "0ee9c0f1-a89b-4806-8276-7c74f07fe190";
+        final String name            = "SampleData";
+        final String description     = "Links an Asset entity describing a collection of sample data that originates from the resource represented by the Referenceable entity.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "Referenceable";
+        final String                     end1AttributeName            = "sourceOfSample";
+        final String                     end1AttributeDescription     = "Represents the resource where the sample was taken from.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "Asset";
+        final String                     end2AttributeName            = "sampleData";
+        final String                     end2AttributeDescription     = "Describes the location of the resource that holds the sampe data.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "samplingMethod";
+        final String attribute1Description     = "Description of the technique used to create the sample.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
     private void update0011ManagingReferenceables()
     {
+        this.archiveBuilder.addClassificationDef(getTemplateSubstituteClassification());
         this.archiveBuilder.addTypeDefPatch(updateSourcedFromRelationship());
     }
 
@@ -214,6 +299,24 @@ public class OpenMetadataTypesArchive
         typeDefPatch.setPropertyDefinitions(properties);
 
         return typeDefPatch;
+    }
+
+    private ClassificationDef getTemplateSubstituteClassification()
+    {
+        final String guid            = "93b293c3-1185-4921-aa1c-237d3f0a5d5c";
+        final String name            = "TemplateSubstitute";
+        final String description     = "An element that has been introduced in a template to provide an end to a relationship that is part of the template but should not be visible outside of the template use.";
+        final String descriptionGUID = null;
+
+        final String linkedToEntity = "Referenceable";
+
+        return archiveHelper.getClassificationDef(guid,
+                                                  name,
+                                                  null,
+                                                  description,
+                                                  descriptionGUID,
+                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  false);
     }
 
     /*
@@ -288,10 +391,38 @@ public class OpenMetadataTypesArchive
      */
 
 
+    private void update0320CategoryHierarchy()
+    {
+        this.archiveBuilder.addClassificationDef(getRootCategoryClassification());
+    }
+
+    private ClassificationDef getRootCategoryClassification()
+    {
+        final String guid            = "1d0fec82-7444-4e4c-abd4-4765bb855ce3";
+        final String name            = "RootCategory";
+        final String description     = "A category that is at the top of a category hierarchy";
+        final String descriptionGUID = null;
+
+        final String linkedToEntity = "GlossaryCategory";
+
+        return archiveHelper.getClassificationDef(guid,
+                                                  name,
+                                                  null,
+                                                  description,
+                                                  descriptionGUID,
+                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  false);
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
     private void update0385ControlledGlossaryDevelopment()
     {
         this.archiveBuilder.addClassificationDef(getEditingGlossaryClassification());
-        this.archiveBuilder.addClassificationDef(getEditingGlossaryCopyClassification());
+        this.archiveBuilder.addClassificationDef(getStagingGlossaryClassification());
         this.archiveBuilder.addTypeDefPatch(deprecateGlossaryTermEvolution());
         this.archiveBuilder.addTypeDefPatch(updateGlossaryTermEntity());
     }
@@ -300,7 +431,7 @@ public class OpenMetadataTypesArchive
     {
         final String guid            = "173614ba-c582-4ecc-8fcc-cde5fb664548";
         final String name            = "EditingGlossary";
-        final String description     = "A temporary glossary holding glossary content that is being edited.";
+        final String description     = "A glossary holding copies of glossary content that is being edited.  The glossary content is typically sourced from another glossary";
         final String descriptionGUID = null;
 
         final String linkedToEntity = "Glossary";
@@ -333,22 +464,42 @@ public class OpenMetadataTypesArchive
         return classificationDef;
     }
 
-    private ClassificationDef getEditingGlossaryCopyClassification()
+
+    private ClassificationDef getStagingGlossaryClassification()
     {
         final String guid            = "361fa044-e703-404c-bb83-9402f9221f54";
-        final String name            = "EditingGlossaryCopy";
-        final String description     = "An element that is part of an editing glossary's scope and is a temporary copy of another element.";
+        final String name            = "StagingGlossary";
+        final String description     = "A glossary that is acting as a temporary home for glossary elements that are being introduced into another glossary.";
         final String descriptionGUID = null;
 
         final String linkedToEntity = "Referenceable";
 
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
-                                                  null,
-                                                  description,
-                                                  descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
-                                                  false);
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
+                                                                                 name,
+                                                                                 null,
+                                                                                 description,
+                                                                                 descriptionGUID,
+                                                                                 this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                                                 false);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "description";
+        final String attribute1Description     = "Description of the updates.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
     }
 
     private TypeDefPatch deprecateGlossaryTermEvolution()

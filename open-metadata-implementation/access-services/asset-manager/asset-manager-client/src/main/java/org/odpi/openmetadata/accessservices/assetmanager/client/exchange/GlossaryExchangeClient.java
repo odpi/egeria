@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameListResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -276,7 +277,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
     /**
      * Classify the glossary to indicate that it is an editing glossary - this means it is
-     * a temporary collection of glossary updates that will be merged into another glossary.
+     * a collection of glossary updates that will be merged into its source glossary.
      *
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software capability representing the caller
@@ -305,7 +306,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                                                                                       UserNotAuthorizedException,
                                                                                                       PropertyServerException
     {
-        final String methodName                  = "setGlossaryAsTaxonomy";
+        final String methodName                  = "setGlossaryAsEditingGlossary";
         final String glossaryGUIDParameterName   = "glossaryGUID";
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/is-editing-glossary";
@@ -357,6 +358,104 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
         final String glossaryGUIDParameterName   = "glossaryGUID";
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/is-editing-glossary/remove";
+
+        super.removeReferenceableClassification(userId,
+                                                assetManagerGUID,
+                                                assetManagerName,
+                                                glossaryGUID,
+                                                glossaryGUIDParameterName,
+                                                glossaryExternalIdentifier,
+                                                urlTemplate,
+                                                effectiveTime,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                methodName);
+    }
+
+
+    /**
+     * Classify the glossary to indicate that it is an editing glossary - this means it is
+     * a collection of glossary updates that will be merged into another glossary.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
+     * @param properties description of the purpose of the editing glossary
+     * @param effectiveTime           the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void setGlossaryAsStagingGlossary(String                    userId,
+                                             String                    assetManagerGUID,
+                                             String                    assetManagerName,
+                                             String                    glossaryGUID,
+                                             String                    glossaryExternalIdentifier,
+                                             StagingGlossaryProperties properties,
+                                             Date                      effectiveTime,
+                                             boolean                   forLineage,
+                                             boolean                   forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        final String methodName                  = "setGlossaryAsStagingGlossary";
+        final String glossaryGUIDParameterName   = "glossaryGUID";
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/is-staging-glossary";
+
+        super.setReferenceableClassification(userId,
+                                             assetManagerGUID,
+                                             assetManagerName,
+                                             glossaryGUID,
+                                             glossaryGUIDParameterName,
+                                             glossaryExternalIdentifier,
+                                             properties,
+                                             urlTemplate,
+                                             effectiveTime,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             methodName);
+    }
+
+
+    /**
+     * Remove the staging glossary classification from the glossary.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
+     * @param effectiveTime           the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void clearGlossaryAsStagingGlossary(String  userId,
+                                               String  assetManagerGUID,
+                                               String  assetManagerName,
+                                               String  glossaryGUID,
+                                               String  glossaryExternalIdentifier,
+                                               Date    effectiveTime,
+                                               boolean forLineage,
+                                               boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        final String methodName                  = "clearGlossaryAsStagingGlossary";
+        final String glossaryGUIDParameterName   = "glossaryGUID";
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/is-staging-glossary/remove";
 
         super.removeReferenceableClassification(userId,
                                                 assetManagerGUID,
@@ -861,6 +960,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
      * @param glossaryGUID unique identifier of the glossary where the category is located
      * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param glossaryCategoryProperties properties about the glossary category to store
+     * @param isRootCategory is this category a root category?
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -879,6 +979,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                          String                       glossaryGUID,
                                          ExternalIdentifierProperties externalIdentifierProperties,
                                          GlossaryCategoryProperties   glossaryCategoryProperties,
+                                         boolean                      isRootCategory,
                                          Date                         effectiveTime,
                                          boolean                      forLineage,
                                          boolean                      forDuplicateProcessing) throws InvalidParameterException, 
@@ -891,20 +992,36 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/categories";
 
-        return super.createReferenceableWithParent(userId,
-                                                   assetManagerGUID,
-                                                   assetManagerName,
-                                                   assetManagerIsHome,
-                                                   glossaryGUID,
-                                                   guidParameterName,
-                                                   glossaryCategoryProperties,
-                                                   propertiesParameterName,
-                                                   externalIdentifierProperties,
-                                                   urlTemplate,
-                                                   effectiveTime,
-                                                   forLineage,
-                                                   forDuplicateProcessing,
-                                                   methodName);
+        final String qualifiedNameParameterName = "qualifiedName";
+        final String requestParamsURLTemplate   = "?assetManagerIsHome={3}&forLineage={4}&forDuplicateProcessing={5}&isRootCategory";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryGUID, guidParameterName, methodName);
+        invalidParameterHandler.validateObject(glossaryCategoryProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(glossaryCategoryProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        ReferenceableUpdateRequestBody requestBody = new ReferenceableUpdateRequestBody();
+
+        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
+                                                                                   assetManagerName,
+                                                                                   externalIdentifierProperties,
+                                                                                   methodName));
+        requestBody.setParentGUID(glossaryGUID);
+        requestBody.setElementProperties(glossaryCategoryProperties);
+        requestBody.setEffectiveTime(effectiveTime);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate + requestParamsURLTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId,
+                                                                  glossaryGUID,
+                                                                  assetManagerIsHome,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing,
+                                                                  isRootCategory);
+
+        return restResult.getGUID();
     }
 
 
@@ -1640,6 +1757,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
      * @param glossaryGUID unique identifier of the glossary where the term is located
      * @param templateGUID unique identifier of the metadata element to copy
      * @param externalIdentifierProperties optional properties used to define an external identifier
+     * @param initialStatus what status should the copy be set to
      * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
      * @param templateProperties properties that override the template
      *
@@ -1658,6 +1776,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                                  String                       templateGUID,
                                                  ExternalIdentifierProperties externalIdentifierProperties,
                                                  boolean                      deepCopy,
+                                                 GlossaryTermStatus           initialStatus,
                                                  TemplateProperties           templateProperties) throws InvalidParameterException,
                                                                                                          UserNotAuthorizedException,
                                                                                                          PropertyServerException
@@ -1667,18 +1786,36 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/terms/from-template/{3}";
 
-        return super.createReferenceableFromTemplateWithParent(userId,
-                                                               assetManagerGUID,
-                                                               assetManagerName,
-                                                               assetManagerIsHome,
-                                                               glossaryGUID,
-                                                               guidParameterName,
-                                                               templateGUID,
-                                                               templateProperties,
-                                                               externalIdentifierProperties,
-                                                               deepCopy,
-                                                               urlTemplate,
-                                                               methodName);
+        final String templateGUIDParameterName  = "templateGUID";
+        final String propertiesParameterName    = "templateProperties";
+        final String qualifiedNameParameterName = "qualifiedName";
+        final String requestParamsURLTemplate   = "?assetManagerIsHome={4}&deepCopy={5}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(glossaryGUID, guidParameterName, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        GlossaryTemplateRequestBody requestBody = new GlossaryTemplateRequestBody();
+
+        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
+                                                                                   assetManagerName,
+                                                                                   externalIdentifierProperties,
+                                                                                   methodName));
+        requestBody.setParentGUID(glossaryGUID);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate + requestParamsURLTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId,
+                                                                  glossaryGUID,
+                                                                  templateGUID,
+                                                                  assetManagerIsHome,
+                                                                  deepCopy);
+
+        return restResult.getGUID();
     }
 
 
@@ -1798,6 +1935,130 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
 
     /**
+     * Update the glossary term using the properties and classifications from the parentGUID stored in the request body.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryTermGUID unique identifier of the glossary term to update
+     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param templateGUID identifier for the template glossary term
+     * @param isMergeClassifications should the classification be merged or replace the target entity?
+     * @param isMergeProperties should the properties be merged with the existing ones or replace them
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void updateGlossaryTermFromTemplate(String             userId,
+                                               String             assetManagerGUID,
+                                               String             assetManagerName,
+                                               String             glossaryTermGUID,
+                                               String             glossaryTermExternalIdentifier,
+                                               String             templateGUID,
+                                               boolean            isMergeClassifications,
+                                               boolean            isMergeProperties,
+                                               Date               effectiveTime,
+                                               boolean            forLineage,
+                                               boolean            forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        final String methodName                    = "updateGlossaryTermFromTemplate";
+        final String glossaryGUIDParameterName     = "templateGUID";
+        final String glossaryTermGUIDParameterName = "glossaryTermGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, glossaryTermGUIDParameterName, methodName);
+
+        ReferenceableUpdateRequestBody requestBody = new ReferenceableUpdateRequestBody();
+        requestBody.setParentGUID(templateGUID);
+        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
+                                                                                   assetManagerName,
+                                                                                   glossaryTermExternalIdentifier,
+                                                                                   methodName));
+        requestBody.setEffectiveTime(effectiveTime);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/update/from-template?isMergeClassifications={3}&isMergeProperties={4}&forLineage={5}&forDuplicateProcessing={6}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        glossaryTermGUID,
+                                        isMergeClassifications,
+                                        isMergeProperties,
+                                        forLineage,
+                                        forDuplicateProcessing);
+    }
+
+
+    /**
+     * Move a glossary term from one glossary to another.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param glossaryTermGUID unique identifier of the glossary term to update
+     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param newGlossaryGUID identifier for the new glossary
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void moveGlossaryTerm(String             userId,
+                                 String             assetManagerGUID,
+                                 String             assetManagerName,
+                                 String             glossaryTermGUID,
+                                 String             glossaryTermExternalIdentifier,
+                                 String             newGlossaryGUID,
+                                 Date               effectiveTime,
+                                 boolean            forLineage,
+                                 boolean            forDuplicateProcessing) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String methodName                    = "moveGlossaryTerm";
+        final String glossaryGUIDParameterName     = "newGlossaryGUID";
+        final String glossaryTermGUIDParameterName = "glossaryTermGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(newGlossaryGUID, glossaryTermGUIDParameterName, methodName);
+
+        ReferenceableUpdateRequestBody requestBody = new ReferenceableUpdateRequestBody();
+        requestBody.setParentGUID(newGlossaryGUID);
+        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
+                                                                                   assetManagerName,
+                                                                                   glossaryTermExternalIdentifier,
+                                                                                   methodName));
+        requestBody.setEffectiveTime(effectiveTime);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/move?forLineage={3}&forDuplicateProcessing={4}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        glossaryTermGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
+    }
+
+
+    /**
      * Link a term to a category.
      *
      * @param userId calling user
@@ -1895,6 +2156,34 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                 forLineage,
                                 forDuplicateProcessing,
                                 methodName);
+    }
+
+
+    /**
+     * Return the list of term-to-term relationship names.
+     *
+     * @param userId calling user
+     * @return list of type names that are subtypes of asset
+     * @throws InvalidParameterException userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public List<String> getTermRelationshipTypeNames(String userId) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        final String   methodName = "getTermRelationshipTypeNames";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}/glossaries/terms/relationships/type-names";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        NameListResponse restResult = restClient.callNameListGetRESTCall(methodName,
+                                                                         urlTemplate,
+                                                                         serverName,
+                                                                         userId);
+
+        return restResult.getNames();
     }
 
 

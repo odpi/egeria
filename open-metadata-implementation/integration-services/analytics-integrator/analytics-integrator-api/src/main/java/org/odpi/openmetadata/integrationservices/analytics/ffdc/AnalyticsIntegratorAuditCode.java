@@ -24,7 +24,7 @@ public enum AnalyticsIntegratorAuditCode implements AuditLogMessageSet
 {
     CONTEXT_INITIALIZING("OMIS-ANALYTICS-INTEGRATOR-0001",
                          OMRSAuditLogRecordSeverity.STARTUP,
-                         "The topic integrator context manager is being initialized for calls to server {0} on platform {1}",
+                         "The analytics integrator context manager is being initialized for calls to server {0} on platform {1}",
                          "The Analytics Integrator OMIS is initializing its context manager.",
                          "Verify that the start up sequence goes on to initialize the context for each connector configured for this service."),
 
