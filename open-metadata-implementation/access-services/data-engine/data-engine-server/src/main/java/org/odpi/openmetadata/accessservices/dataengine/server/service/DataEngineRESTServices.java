@@ -95,7 +95,6 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.EVENT_TYPE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FILE_TYPE_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESS_TYPE_NAME;
@@ -151,7 +150,6 @@ public class DataEngineRESTServices {
      * @param serverName  name of server instance to call
      * @param userId      the name of the calling user
      * @param requestBody properties of the server
-     *
      * @return the unique identifier (guid) of the created external data engine
      */
     public GUIDResponse createExternalDataEngine(String serverName, String userId,
@@ -180,7 +178,6 @@ public class DataEngineRESTServices {
      * @param serverName    name of the service to route the request to
      * @param userId        identifier of calling user
      * @param qualifiedName qualified name of the external data engine
-     *
      * @return the unique identifier from an engine definition for an external data engine
      */
     public GUIDResponse getExternalDataEngine(String serverName, String userId, String qualifiedName) {
@@ -208,7 +205,6 @@ public class DataEngineRESTServices {
      * @param serverName  name of the service to route the request to
      * @param userId      identifier of calling user
      * @param requestBody properties of the external data engine
-     *
      * @return void response
      */
     public VoidResponse deleteExternalDataEngine(String userId, String serverName, DeleteRequestBody requestBody) {
@@ -234,7 +230,6 @@ public class DataEngineRESTServices {
      * @param guid               the unique identifier of the schema type
      * @param qualifiedName      the qualified name of the schema type
      * @param deleteSemantic     the delete semantic
-     *
      * @throws InvalidParameterException     the bean properties are invalid
      * @throws UserNotAuthorizedException    user not authorized to issue this request
      * @throws PropertyServerException       problem accessing the property server
@@ -242,8 +237,8 @@ public class DataEngineRESTServices {
      */
     public void deleteExternalDataEngine(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
                                          DeleteSemantic deleteSemantic) throws InvalidParameterException, UserNotAuthorizedException,
-                                                                               PropertyServerException,
-                                                                               FunctionNotSupportedException {
+            PropertyServerException,
+            FunctionNotSupportedException {
         final String methodName = "deleteExternalDataEngine";
 
         DataEngineRegistrationHandler dataEngineRegistrationHandler = instanceHandler.getRegistrationHandler(userId, serverName, methodName);
@@ -268,16 +263,14 @@ public class DataEngineRESTServices {
      * @param userId        identifier of calling user
      * @param qualifiedName qualified name of the port
      * @param typeName      the type name of the entity
-     *
      * @return the unique identifier of the entity or empty optional
-     *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
     public Optional<String> getEntityGUID(String serverName, String userId, String qualifiedName, String typeName) throws InvalidParameterException,
-                                                                                                                          PropertyServerException,
-                                                                                                                          UserNotAuthorizedException {
+            PropertyServerException,
+            UserNotAuthorizedException {
         return getEntityDetails(serverName, userId, qualifiedName, typeName).map(InstanceHeader::getGUID);
     }
 
@@ -288,17 +281,15 @@ public class DataEngineRESTServices {
      * @param userId        identifier of calling user
      * @param qualifiedName qualified name of the port
      * @param typeName      the type name of the entity
-     *
      * @return the entity details of the entity or empty optional
-     *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
     public Optional<EntityDetail> getEntityDetails(String serverName, String userId, String qualifiedName, String typeName) throws
-                                                                                                                            InvalidParameterException,
-                                                                                                                            PropertyServerException,
-                                                                                                                            UserNotAuthorizedException {
+            InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException {
         final String methodName = "getEntityDetails";
         if (StringUtils.isEmpty(qualifiedName)) {
             return Optional.empty();
@@ -314,7 +305,6 @@ public class DataEngineRESTServices {
      * @param serverName            name of server instance to call
      * @param userId                the name of the calling user
      * @param schemaTypeRequestBody properties of the schema type
-     *
      * @return the unique identifier (guid) of the created schema type
      */
     public GUIDResponse upsertSchemaType(String userId, String serverName, SchemaTypeRequestBody schemaTypeRequestBody) {
@@ -343,7 +333,6 @@ public class DataEngineRESTServices {
      * @param serverName  name of server instance to call
      * @param userId      the name of the calling user
      * @param requestBody properties of the schema type
-     *
      * @return void response
      */
     public VoidResponse deleteSchemaType(String userId, String serverName, DeleteRequestBody requestBody) {
@@ -372,7 +361,6 @@ public class DataEngineRESTServices {
      * @param guid               the unique identifier of the schema type
      * @param qualifiedName      the qualified name of the schema type
      * @param deleteSemantic     the delete semantic
-     *
      * @throws InvalidParameterException     the bean properties are invalid
      * @throws UserNotAuthorizedException    user not authorized to issue this request
      * @throws PropertyServerException       problem accessing the property server
@@ -381,8 +369,8 @@ public class DataEngineRESTServices {
      */
     public void deleteSchemaType(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
                                  DeleteSemantic deleteSemantic) throws InvalidParameterException, UserNotAuthorizedException,
-                                                                       PropertyServerException, FunctionNotSupportedException,
-                                                                       EntityNotDeletedException {
+            PropertyServerException, FunctionNotSupportedException,
+            EntityNotDeletedException {
         final String methodName = "deleteSchemaType";
 
         DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler = instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
@@ -398,7 +386,6 @@ public class DataEngineRESTServices {
      * @param serverName                    name of server instance to call
      * @param userId                        the name of the calling user
      * @param portImplementationRequestBody properties of the port
-     *
      * @return the unique identifier (guid) of the created port
      */
     public GUIDResponse upsertPortImplementation(String userId, String serverName, PortImplementationRequestBody portImplementationRequestBody) {
@@ -434,7 +421,6 @@ public class DataEngineRESTServices {
      * @param userId      the name of the calling user
      * @param requestBody properties of the port
      * @param portType    the type of the port
-     *
      * @return void response
      */
     public VoidResponse deletePort(String userId, String serverName, DeleteRequestBody requestBody, String portType) {
@@ -463,7 +449,6 @@ public class DataEngineRESTServices {
      * @param qualifiedName      the qualified name of the port
      * @param portType           the port type
      * @param deleteSemantic     the delete semantic
-     *
      * @throws InvalidParameterException     the bean properties are invalid
      * @throws UserNotAuthorizedException    user not authorized to issue this request
      * @throws PropertyServerException       problem accessing the property server
@@ -472,7 +457,7 @@ public class DataEngineRESTServices {
      */
     public void deletePort(String userId, String serverName, String externalSourceName, String guid, String qualifiedName, String portType,
                            DeleteSemantic deleteSemantic) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException,
-                                                                 FunctionNotSupportedException, EntityNotDeletedException {
+            FunctionNotSupportedException, EntityNotDeletedException {
         final String methodName = "deletePort";
 
         String portGUID = getEntityGUID(userId, serverName, guid, qualifiedName, PORT_TYPE_NAME, methodName);
@@ -496,7 +481,6 @@ public class DataEngineRESTServices {
      * @param serverName                  name of server instance to call
      * @param userId                      the name of the calling user
      * @param processHierarchyRequestBody properties of the process hierarchy
-     *
      * @return the unique identifier (guid) of the child of the process hierarchy that was updated
      */
     public GUIDResponse addProcessHierarchy(String userId, String serverName, ProcessHierarchyRequestBody processHierarchyRequestBody) {
@@ -522,7 +506,6 @@ public class DataEngineRESTServices {
      * @param userId             the name of the calling user
      * @param serverName         name of server instance to call
      * @param processRequestBody properties of the process
-     *
      * @return a list unique identifiers (GUIDs) of the created/updated process
      */
     public GUIDResponse upsertProcess(String userId, String serverName, ProcessRequestBody processRequestBody) {
@@ -549,7 +532,6 @@ public class DataEngineRESTServices {
      * @param userId      the name of the calling user
      * @param serverName  name of server instance to call
      * @param requestBody properties of the processes
-     *
      * @return void response
      */
     public VoidResponse deleteProcess(String userId, String serverName, DeleteRequestBody requestBody) {
@@ -570,7 +552,7 @@ public class DataEngineRESTServices {
 
     public void deleteProcess(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
                               DeleteSemantic deleteSemantic) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException,
-                                                                    FunctionNotSupportedException, EntityNotDeletedException {
+            FunctionNotSupportedException, EntityNotDeletedException {
         final String methodName = "deleteProcess";
 
         String processGUID = getEntityGUID(userId, serverName, guid, qualifiedName, PROCESS_TYPE_NAME, methodName);
@@ -582,10 +564,6 @@ public class DataEngineRESTServices {
             deletePort(userId, serverName, externalSourceName, port.getGUID(), null, PORT_IMPLEMENTATION_TYPE_NAME, deleteSemantic);
         }
 
-        Set<EntityDetail> portAliases = processHandler.getPortsForProcess(userId, processGUID, PORT_ALIAS_TYPE_NAME);
-        for (EntityDetail port : portAliases) {
-            deletePort(userId, serverName, externalSourceName, port.getGUID(), null, PORT_ALIAS_TYPE_NAME, deleteSemantic);
-        }
         processHandler.removeProcess(userId, processGUID, externalSourceName, deleteSemantic);
         log.debug(DEBUG_DELETE_MESSAGE, processGUID, PROCESS_TYPE_NAME);
     }
@@ -597,17 +575,15 @@ public class DataEngineRESTServices {
      * @param serverName         name of server instance to call
      * @param processHierarchy   the process hierarchy values
      * @param externalSourceName the unique name of the external source
-     *
      * @return the unique identifier (guid) of the child of the process hierarchy that was updated
-     *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
     public String addProcessHierarchyToProcess(String userId, String serverName, ProcessHierarchy processHierarchy, String externalSourceName) throws
-                                                                                                                                               InvalidParameterException,
-                                                                                                                                               PropertyServerException,
-                                                                                                                                               UserNotAuthorizedException {
+            InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException {
         final String methodName = "addProcessHierarchyToProcess";
 
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, processHierarchy);
@@ -643,9 +619,7 @@ public class DataEngineRESTServices {
      * @param portImplementation the port implementation values
      * @param processGUID        the unique identifier of the process
      * @param externalSourceName the unique name of the external source
-     *
      * @return the unique identifier (guid) of the created port implementation
-     *
      * @throws InvalidParameterException     the bean properties are invalid
      * @throws UserNotAuthorizedException    user not authorized to issue this request
      * @throws PropertyServerException       problem accessing the property server
@@ -653,7 +627,7 @@ public class DataEngineRESTServices {
      */
     public String upsertPortImplementation(String userId, String serverName, PortImplementation portImplementation, String processGUID,
                                            String externalSourceName) throws InvalidParameterException, PropertyServerException,
-                                                                             UserNotAuthorizedException, FunctionNotSupportedException {
+            UserNotAuthorizedException, FunctionNotSupportedException {
         final String methodName = "upsertPortImplementation";
         log.trace(DEBUG_MESSAGE_METHOD_DETAILS, methodName, portImplementation);
 
@@ -688,17 +662,15 @@ public class DataEngineRESTServices {
      * @param userId     the name of the calling user
      * @param serverName name of server instance to call
      * @param engine     the engine values
-     *
      * @return he unique identifier (guid) of the created external data engine
-     *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
     public String createExternalDataEngine(String userId, String serverName, Engine engine) throws
-                                                                                                                                InvalidParameterException,
-                                                                                                                                PropertyServerException,
-                                                                                                                                UserNotAuthorizedException {
+            InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException {
         final String methodName = "createExternalDataEngine";
 
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, engine);
@@ -720,19 +692,18 @@ public class DataEngineRESTServices {
      *
      * @param userId             the name of the calling user
      * @param serverName         name of server instance to call
-     * @param dataFlows    the list of daa flows to be created
+     * @param dataFlows          the list of daa flows to be created
      * @param response           the response object that will capture the exceptions that might occur during
      *                           parallel processing
      * @param externalSourceName the unique name of the external source
-     *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
     public void addDataFlows(String userId, String serverName, List<DataFlow> dataFlows, FFDCResponseBase response,
                              String externalSourceName) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException {
+            PropertyServerException,
+            UserNotAuthorizedException {
         final String methodName = "addDataFlows";
 
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, dataFlows);
@@ -757,10 +728,9 @@ public class DataEngineRESTServices {
     /**
      * Create DataFlow relationships between schema attributes
      *
-     * @param userId                     the name of the calling user
-     * @param serverName                 ame of server instance to call
+     * @param userId               the name of the calling user
+     * @param serverName           ame of server instance to call
      * @param dataFlowsRequestBody list of data flows
-     *
      * @return void response
      */
     public VoidResponse addDataFlows(String userId, String serverName, DataFlowsRequestBody dataFlowsRequestBody) {
@@ -789,7 +759,6 @@ public class DataEngineRESTServices {
      *
      * @param serverName the name of server instance to call
      * @param userId     the name/identifier of the calling user
-     *
      * @return OCF API ConnectionResponse object describing the details for the input topic connection used
      * or
      * InvalidParameterException one of the parameters is null or invalid or
@@ -819,9 +788,7 @@ public class DataEngineRESTServices {
      * @param portImplementationGUID the unique identifier of the port implementation
      * @param schemaType             the schema type values
      * @param externalSourceName     the unique name of the external source
-     *
      * @return the unique identifier (guid) of the created schema type
-     *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
@@ -849,7 +816,6 @@ public class DataEngineRESTServices {
      * @param serverName          name of server instance to call
      * @param userId              the name of the calling user
      * @param databaseRequestBody properties of the database
-     *
      * @return the unique identifier (guid) of the created database
      */
     public GUIDResponse upsertDatabase(String userId, String serverName, DatabaseRequestBody databaseRequestBody) {
@@ -874,16 +840,14 @@ public class DataEngineRESTServices {
      * @param serverName         name of server instance to call
      * @param database           the database values
      * @param externalSourceName the unique name of the external source
-     *
      * @return the unique identifier (guid) of the created database
-     *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
     public String upsertDatabase(String userId, String serverName, Database database, String externalSourceName) throws InvalidParameterException,
-                                                                                                                        UserNotAuthorizedException,
-                                                                                                                        PropertyServerException {
+            UserNotAuthorizedException,
+            PropertyServerException {
         final String methodName = "upsertDatabase";
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, database);
         DatabaseSchema databaseSchema = database.getDatabaseSchema();
@@ -905,7 +869,6 @@ public class DataEngineRESTServices {
      * @param serverName                name of server instance to call
      * @param userId                    the name of the calling user
      * @param databaseSchemaRequestBody RequestBody properties of the database
-     *
      * @return the unique identifier (guid) of the created database
      */
     public GUIDResponse upsertDatabaseSchema(String userId, String serverName, DatabaseSchemaRequestBody databaseSchemaRequestBody) {
@@ -933,16 +896,14 @@ public class DataEngineRESTServices {
      * @param databaseQualifiedName the database entity to which the database schema will be linked, if it exists
      * @param databaseSchema        the database schema values
      * @param externalSourceName    the unique name of the external source
-     *
      * @return the unique identifier (guid) of the created database schema
-     *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
     public String upsertDatabaseSchema(String userId, String serverName, String databaseQualifiedName, DatabaseSchema databaseSchema,
                                        String externalSourceName) throws InvalidParameterException, UserNotAuthorizedException,
-                                                                         PropertyServerException {
+            PropertyServerException {
 
         final String methodName = "upsertDatabaseSchema";
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, databaseSchema);
@@ -968,7 +929,6 @@ public class DataEngineRESTServices {
      * @param serverName  name of server instance to call
      * @param userId      the name of the calling user
      * @param requestBody properties of the database
-     *
      * @return void response
      */
     public VoidResponse deleteDatabase(String userId, String serverName, DeleteRequestBody requestBody) {
@@ -997,7 +957,6 @@ public class DataEngineRESTServices {
      * @param guid               the unique identifier of the database
      * @param qualifiedName      the qualified name of the database
      * @param deleteSemantic     the delete semantic
-     *
      * @throws InvalidParameterException     the bean properties are invalid
      * @throws UserNotAuthorizedException    user not authorized to issue this request
      * @throws PropertyServerException       problem accessing the property server
@@ -1006,7 +965,7 @@ public class DataEngineRESTServices {
      */
     public void deleteDatabase(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
                                DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
-                                                                     EntityNotDeletedException, FunctionNotSupportedException {
+            EntityNotDeletedException, FunctionNotSupportedException {
 
         final String methodName = "deleteDatabase";
 
@@ -1023,7 +982,6 @@ public class DataEngineRESTServices {
      * @param serverName  name of server instance to call
      * @param userId      the name of the calling user
      * @param requestBody properties of the database schema
-     *
      * @return void response
      */
     public VoidResponse deleteDatabaseSchema(String userId, String serverName, DeleteRequestBody requestBody) {
@@ -1052,7 +1010,6 @@ public class DataEngineRESTServices {
      * @param guid               the unique identifier of the database schema
      * @param qualifiedName      the qualified name of the database schema
      * @param deleteSemantic     the delete semantic
-     *
      * @throws InvalidParameterException     the bean properties are invalid
      * @throws UserNotAuthorizedException    user not authorized to issue this request
      * @throws PropertyServerException       problem accessing the property server
@@ -1061,8 +1018,8 @@ public class DataEngineRESTServices {
      */
     public void deleteDatabaseSchema(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
                                      DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException,
-                                                                           UserNotAuthorizedException,
-                                                                           EntityNotDeletedException, FunctionNotSupportedException {
+            UserNotAuthorizedException,
+            EntityNotDeletedException, FunctionNotSupportedException {
 
         final String methodName = "deleteDatabaseSchema";
 
@@ -1079,7 +1036,6 @@ public class DataEngineRESTServices {
      * @param serverName                 name of server instance to call
      * @param userId                     the name of the calling user
      * @param relationalTableRequestBody properties of the relational table
-     *
      * @return the unique identifier (guid) of the created relational table
      */
     public GUIDResponse upsertRelationalTable(String userId, String serverName, RelationalTableRequestBody relationalTableRequestBody) {
@@ -1107,16 +1063,14 @@ public class DataEngineRESTServices {
      * @param databaseSchemaQualifiedName the unique name of the database
      * @param relationalTable             the relational table values
      * @param externalSourceName          the unique name of the external source
-     *
      * @return the unique identifier (guid) of the created relational table
-     *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
     public String upsertRelationalTable(String userId, String serverName, String databaseSchemaQualifiedName, RelationalTable relationalTable,
                                         String externalSourceName) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException, PropertyServerException {
+            UserNotAuthorizedException, PropertyServerException {
         final String methodName = "upsertRelationalTable";
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, relationalTable);
 
@@ -1136,7 +1090,6 @@ public class DataEngineRESTServices {
      * @param serverName  name of server instance to call
      * @param userId      the name of the calling user
      * @param requestBody properties of the relational table
-     *
      * @return void response
      */
     public VoidResponse deleteRelationalTable(String userId, String serverName, DeleteRequestBody requestBody) {
@@ -1165,7 +1118,6 @@ public class DataEngineRESTServices {
      * @param guid               the unique identifier of the relational table
      * @param qualifiedName      the qualified name of the relational table
      * @param deleteSemantic     the delete semantic
-     *
      * @throws InvalidParameterException     the bean properties are invalid
      * @throws UserNotAuthorizedException    user not authorized to issue this request
      * @throws PropertyServerException       problem accessing the property server
@@ -1174,8 +1126,8 @@ public class DataEngineRESTServices {
      */
     public void deleteRelationalTable(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
                                       DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException,
-                                                                            UserNotAuthorizedException, EntityNotDeletedException,
-                                                                            FunctionNotSupportedException {
+            UserNotAuthorizedException, EntityNotDeletedException,
+            FunctionNotSupportedException {
 
         final String methodName = "deleteRelationalTable";
 
@@ -1193,7 +1145,6 @@ public class DataEngineRESTServices {
      * @param userId              the name of the calling user
      * @param serverName          name of server instance to call
      * @param dataFileRequestBody properties of the data file
-     *
      * @return the unique identifier (guid) of the created data file
      */
     public GUIDResponse upsertDataFile(String serverName, String userId, DataFileRequestBody dataFileRequestBody) {
@@ -1219,16 +1170,14 @@ public class DataEngineRESTServices {
      * @param serverName         name of server instance to call
      * @param file               the data file properties
      * @param externalSourceName the unique name of the external source
-     *
      * @return the unique identifier (guid) of the created data file
-     *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
     public String upsertDataFile(String userId, String serverName, DataFile file, String externalSourceName) throws InvalidParameterException,
-                                                                                                                    UserNotAuthorizedException,
-                                                                                                                    PropertyServerException {
+            UserNotAuthorizedException,
+            PropertyServerException {
         String methodName = "upsertDataFile";
 
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, file);
@@ -1265,7 +1214,6 @@ public class DataEngineRESTServices {
      * @param serverName  name of server instance to call
      * @param userId      the name of the calling user
      * @param requestBody properties of the data file
-     *
      * @return void response
      */
     public VoidResponse deleteDataFile(String userId, String serverName, DeleteRequestBody requestBody) {
@@ -1294,7 +1242,6 @@ public class DataEngineRESTServices {
      * @param guid               the unique identifier of the data file
      * @param qualifiedName      the qualified name of the data file
      * @param deleteSemantic     the delete semantic
-     *
      * @throws InvalidParameterException     the bean properties are invalid
      * @throws UserNotAuthorizedException    user not authorized to issue this request
      * @throws PropertyServerException       problem accessing the property server
@@ -1303,7 +1250,7 @@ public class DataEngineRESTServices {
      */
     public void deleteDataFile(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
                                DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, EntityNotDeletedException,
-                                                                     UserNotAuthorizedException, FunctionNotSupportedException {
+            UserNotAuthorizedException, FunctionNotSupportedException {
         final String methodName = "deleteDataFile";
 
         DataEngineDataFileHandler dataFileHandler = instanceHandler.getDataFileHandler(userId, serverName, methodName);
@@ -1322,7 +1269,6 @@ public class DataEngineRESTServices {
      * @param serverName  name of server instance to call
      * @param userId      the name of the calling user
      * @param requestBody properties of the folder
-     *
      * @return void response
      */
     public VoidResponse deleteFolder(String userId, String serverName, DeleteRequestBody requestBody) {
@@ -1351,7 +1297,6 @@ public class DataEngineRESTServices {
      * @param guid               the unique identifier of the folder
      * @param qualifiedName      the qualified name of the folder
      * @param deleteSemantic     the delete semantic
-     *
      * @throws InvalidParameterException     the bean properties are invalid
      * @throws UserNotAuthorizedException    user not authorized to issue this request
      * @throws PropertyServerException       problem accessing the property server
@@ -1360,7 +1305,7 @@ public class DataEngineRESTServices {
      */
     public void deleteFolder(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
                              DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
-                                                                   EntityNotDeletedException, FunctionNotSupportedException {
+            EntityNotDeletedException, FunctionNotSupportedException {
 
         final String methodName = "deleteFolder";
         String folderGUID = getEntityGUID(userId, serverName, guid, qualifiedName, FILE_FOLDER_TYPE_NAME, methodName);
@@ -1377,7 +1322,6 @@ public class DataEngineRESTServices {
      * @param serverName  name of server instance to call
      * @param userId      the name of the calling user
      * @param requestBody properties of the connection
-     *
      * @return void response
      */
     public VoidResponse deleteConnection(String userId, String serverName, DeleteRequestBody requestBody) {
@@ -1406,7 +1350,6 @@ public class DataEngineRESTServices {
      * @param guid               the unique identifier of the connection
      * @param qualifiedName      the qualified name of the connection
      * @param deleteSemantic     the delete semantic
-     *
      * @throws InvalidParameterException     the bean properties are invalid
      * @throws UserNotAuthorizedException    user not authorized to issue this request
      * @throws PropertyServerException       problem accessing the property server
@@ -1415,7 +1358,7 @@ public class DataEngineRESTServices {
      */
     public void deleteConnection(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
                                  DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, EntityNotDeletedException,
-                                                                       UserNotAuthorizedException, FunctionNotSupportedException {
+            UserNotAuthorizedException, FunctionNotSupportedException {
 
         final String methodName = "deleteConnection";
         String connectionGUID = getEntityGUID(userId, serverName, guid, qualifiedName, CONNECTION_TYPE_NAME, methodName);
@@ -1436,7 +1379,6 @@ public class DataEngineRESTServices {
      * @param serverName  name of server instance to call
      * @param userId      the name of the calling user
      * @param requestBody properties of the endpoint
-     *
      * @return void response
      */
     public VoidResponse deleteEndpoint(String userId, String serverName, DeleteRequestBody requestBody) {
@@ -1465,7 +1407,6 @@ public class DataEngineRESTServices {
      * @param guid               the unique identifier of the endpoint
      * @param qualifiedName      the qualified name of the endpoint
      * @param deleteSemantic     the delete semantic
-     *
      * @throws InvalidParameterException     the bean properties are invalid
      * @throws UserNotAuthorizedException    user not authorized to issue this request
      * @throws PropertyServerException       problem accessing the property server
@@ -1474,7 +1415,7 @@ public class DataEngineRESTServices {
      */
     public void deleteEndpoint(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
                                DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, EntityNotDeletedException,
-                                                                     UserNotAuthorizedException, FunctionNotSupportedException {
+            UserNotAuthorizedException, FunctionNotSupportedException {
 
         final String methodName = "deleteEndpoint";
         String endpointGUID = getEntityGUID(userId, serverName, guid, qualifiedName, ENDPOINT_TYPE_NAME, methodName);
@@ -1489,10 +1430,10 @@ public class DataEngineRESTServices {
     }
 
     private String getEntityGUID(String userId, String serverName, String guid, String qualifiedName, String entityTypeName, String methodName) throws
-                                                                                                                                                InvalidParameterException,
-                                                                                                                                                PropertyServerException,
-                                                                                                                                                UserNotAuthorizedException,
-                                                                                                                                                EntityNotDeletedException {
+            InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException,
+            EntityNotDeletedException {
         Optional<String> entityGUIDOptional = Optional.ofNullable(guid);
         if (entityGUIDOptional.isEmpty()) {
             entityGUIDOptional = getEntityGUID(serverName, userId, qualifiedName, entityTypeName);
@@ -1507,7 +1448,7 @@ public class DataEngineRESTServices {
 
     private void deleteObsoleteSchemaType(String userId, String serverName, String schemaTypeQualifiedName, String oldSchemaTypeQualifiedName,
                                           String externalSourceName) throws InvalidParameterException, UserNotAuthorizedException,
-                                                                            PropertyServerException, FunctionNotSupportedException {
+            PropertyServerException, FunctionNotSupportedException {
         final String methodName = "deleteObsoleteSchemaType";
 
         if (oldSchemaTypeQualifiedName.equalsIgnoreCase(schemaTypeQualifiedName)) {
@@ -1550,7 +1491,6 @@ public class DataEngineRESTServices {
      * @param userId             the name of the calling user
      * @param process            properties of the process
      * @param externalSourceName the name of the external source
-     *
      * @return the unique identifier (guid) of the created process
      */
     public GUIDResponse upsertProcess(String userId, String serverName, Process process, String externalSourceName) {
@@ -1577,7 +1517,7 @@ public class DataEngineRESTServices {
                 processHandler.updateProcessStatus(userId, processGUID, InstanceStatus.DRAFT, externalSourceName);
 
                 if (updateSemantic == UpdateSemantic.REPLACE) {
-                    deleteObsoletePorts(userId, serverName, portImplementations, processGUID, PORT_IMPLEMENTATION_TYPE_NAME, response,
+                    deleteObsoletePorts(userId, serverName, portImplementations, processGUID, response,
                             externalSourceName);
                 }
             }
@@ -1606,9 +1546,9 @@ public class DataEngineRESTServices {
     }
 
     private String createCollection(String userId, String serverName, Collection collection, String externalSourceName) throws
-                                                                                                                        UserNotAuthorizedException,
-                                                                                                                        PropertyServerException,
-                                                                                                                        InvalidParameterException {
+            UserNotAuthorizedException,
+            PropertyServerException,
+            InvalidParameterException {
         final String methodName = "createCollection";
         DataEngineCollectionHandler dataEngineCollectionHandler = instanceHandler.getCollectionHandler(userId, serverName, methodName);
 
@@ -1647,7 +1587,7 @@ public class DataEngineRESTServices {
 
     private void addProcessCollectionRelationship(String userId, String serverName, String processGUID, String collectionGUID,
                                                   String externalSourceName) throws InvalidParameterException, PropertyServerException,
-                                                                                    UserNotAuthorizedException {
+            UserNotAuthorizedException {
 
         final String methodName = "addProcessCollectionRelationship";
 
@@ -1656,10 +1596,8 @@ public class DataEngineRESTServices {
         dataEngineCollectionHandler.addCollectionMembershipRelationship(userId, collectionGUID, processGUID, externalSourceName);
     }
 
-    private void deleteObsoletePorts(String userId, String serverName, List<? extends Port> ports, String processGUID, String portTypeName,
-                                     GUIDResponse response, String externalSourceName) throws InvalidParameterException,
-                                                                                              PropertyServerException,
-                                                                                              UserNotAuthorizedException {
+    private void deleteObsoletePorts(String userId, String serverName, List<? extends Port> ports, String processGUID,
+                                     GUIDResponse response, String externalSourceName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         final String methodName = "deleteObsoletePorts";
         if (CollectionUtils.isEmpty(ports)) {
             return;
@@ -1668,7 +1606,7 @@ public class DataEngineRESTServices {
         DataEngineProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
         DataEnginePortHandler dataEnginePortHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
-        Set<EntityDetail> existingPorts = processHandler.getPortsForProcess(userId, processGUID, portTypeName);
+        Set<EntityDetail> existingPorts = processHandler.getPortsForProcess(userId, processGUID, PORT_IMPLEMENTATION_TYPE_NAME);
         Set<String> portQualifiedNames = existingPorts.stream()
                 .map(entityDetail -> entityDetail.getProperties().getPropertyValue(QUALIFIED_NAME_PROPERTY_NAME).valueAsString())
                 .collect(Collectors.toSet());
@@ -1701,7 +1639,7 @@ public class DataEngineRESTServices {
         // first create port implementations sequentially
         try {
             for (PortImplementation portImplementation : portImplementations) {
-                if(portImplementation == null){
+                if (portImplementation == null) {
                     continue;
                 }
                 String portGUID = upsertPortImplementation(userId, serverName, portImplementation, processGUID, externalSourceName);
@@ -1723,7 +1661,7 @@ public class DataEngineRESTServices {
     }
 
     private void validateDatabaseRequestBody(String userId, String serverName, DatabaseRequestBody databaseRequestBody, String methodName) throws
-                                                                                                                                             InvalidParameterException {
+            InvalidParameterException {
         validateRequestBody(userId, serverName, databaseRequestBody, methodName);
 
         if (databaseRequestBody.getDatabase() == null) {
@@ -1732,7 +1670,7 @@ public class DataEngineRESTServices {
     }
 
     private void validateDatabaseSchemaRequestBody(String userId, String serverName, DatabaseSchemaRequestBody databaseSchemaRequestBody,
-                                                      String methodName) throws InvalidParameterException {
+                                                   String methodName) throws InvalidParameterException {
         validateRequestBody(userId, serverName, databaseSchemaRequestBody, methodName);
 
         if (databaseSchemaRequestBody.getDatabaseSchema() == null) {
@@ -1785,10 +1723,10 @@ public class DataEngineRESTServices {
     }
 
     private void throwEntityNotDeletedException(String userId, String serverName, String methodName, String qualifiedName) throws
-                                                                                                                           InvalidParameterException,
-                                                                                                                           UserNotAuthorizedException,
-                                                                                                                           PropertyServerException,
-                                                                                                                           EntityNotDeletedException {
+            InvalidParameterException,
+            UserNotAuthorizedException,
+            PropertyServerException,
+            EntityNotDeletedException {
         DataEngineCommonHandler dataEngineCommonHandler = instanceHandler.getCommonHandler(userId, serverName, methodName);
         dataEngineCommonHandler.throwEntityNotDeletedException(DataEngineErrorCode.ENTITY_NOT_DELETED, methodName, qualifiedName);
     }
@@ -1799,7 +1737,6 @@ public class DataEngineRESTServices {
      * @param userId          user id
      * @param serverName      server name
      * @param findRequestBody contains find criteria
-     *
      * @return a list of GUIDs
      */
     public GUIDListResponse find(String userId, String serverName, FindRequestBody findRequestBody) {
@@ -1825,7 +1762,6 @@ public class DataEngineRESTServices {
      * @param serverName       name of server instance to call
      * @param userId           the name of the calling user
      * @param topicRequestBody properties of the topic
-     *
      * @return the unique identifier (guid) of the created topic
      */
     public GUIDResponse upsertTopic(String userId, String serverName, TopicRequestBody topicRequestBody) {
@@ -1850,16 +1786,14 @@ public class DataEngineRESTServices {
      * @param serverName         name of server instance to call
      * @param topic              the topic values
      * @param externalSourceName the unique name of the external source
-     *
      * @return the unique identifier (guid) of the created topic
-     *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
     public String upsertTopic(String userId, String serverName, Topic topic, String externalSourceName) throws InvalidParameterException,
-                                                                                                               PropertyServerException,
-                                                                                                               UserNotAuthorizedException {
+            PropertyServerException,
+            UserNotAuthorizedException {
         final String methodName = "upsertTopic";
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, topic);
 
@@ -1881,15 +1815,14 @@ public class DataEngineRESTServices {
      * @param eventTypes         the event type list
      * @param topicGUID          the unique identifier of the topic
      * @param externalSourceName the unique name of the external source
-     *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
     private void upsertEventTypes(String userId, String serverName, List<EventType> eventTypes, String topicGUID, String externalSourceName) throws
-                                                                                                                                             InvalidParameterException,
-                                                                                                                                             PropertyServerException,
-                                                                                                                                             UserNotAuthorizedException {
+            InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException {
         if (CollectionUtils.isEmpty(eventTypes)) {
             return;
         }
@@ -1904,7 +1837,6 @@ public class DataEngineRESTServices {
      * @param serverName  name of server instance to call
      * @param userId      the name of the calling user
      * @param requestBody properties of the topic
-     *
      * @return void response
      */
     public VoidResponse deleteTopic(String userId, String serverName, DeleteRequestBody requestBody) {
@@ -1931,7 +1863,6 @@ public class DataEngineRESTServices {
      * @param guid               the unique identifier of the topic
      * @param qualifiedName      the qualified name of the topic
      * @param deleteSemantic     the delete semantic
-     *
      * @throws InvalidParameterException     the bean properties are invalid
      * @throws UserNotAuthorizedException    user not authorized to issue this request
      * @throws PropertyServerException       problem accessing the property server
@@ -1940,7 +1871,7 @@ public class DataEngineRESTServices {
      */
     public void deleteTopic(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
                             DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
-                                                                  EntityNotDeletedException, FunctionNotSupportedException {
+            EntityNotDeletedException, FunctionNotSupportedException {
         final String methodName = "deleteTopic";
 
         DataEngineTopicHandler dataEngineTopicHandler = instanceHandler.getTopicHandler(userId, serverName, methodName);
@@ -1956,7 +1887,6 @@ public class DataEngineRESTServices {
      * @param serverName           name of server instance to call
      * @param userId               the name of the calling user
      * @param eventTypeRequestBody properties of the event type
-     *
      * @return the unique identifier (guid) of the created event type
      */
     public GUIDResponse upsertEventType(String userId, String serverName, EventTypeRequestBody eventTypeRequestBody) {
@@ -1984,16 +1914,14 @@ public class DataEngineRESTServices {
      * @param userId             identifier of calling user
      * @param topicQualifiedName qualified name of the topic
      * @param methodName         the name of the calling method
-     *
      * @return the unique identifier of the entity
-     *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
     public String getTopicGUID(String userId, String serverName, String topicQualifiedName, String methodName) throws InvalidParameterException,
-                                                                                                                      UserNotAuthorizedException,
-                                                                                                                      PropertyServerException {
+            UserNotAuthorizedException,
+            PropertyServerException {
         DataEngineTopicHandler dataEngineTopicHandler = instanceHandler.getTopicHandler(userId, serverName, methodName);
         DataEngineCommonHandler dataEngineCommonHandler = instanceHandler.getCommonHandler(userId, serverName, methodName);
         Optional<EntityDetail> topicEntity = dataEngineTopicHandler.findTopicEntity(userId, topicQualifiedName);
@@ -2011,17 +1939,15 @@ public class DataEngineRESTServices {
      * @param eventType          the event type values
      * @param topicGUID          the unique identifier of the topic
      * @param externalSourceName the unique name of the external source
-     *
      * @return the unique identifier (guid) of the created event type
-     *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
     public String upsertEventType(String userId, String serverName, EventType eventType, String topicGUID, String externalSourceName) throws
-                                                                                                                                      InvalidParameterException,
-                                                                                                                                      PropertyServerException,
-                                                                                                                                      UserNotAuthorizedException {
+            InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException {
         final String methodName = "upsertEventType";
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, eventType);
 
@@ -2038,7 +1964,6 @@ public class DataEngineRESTServices {
      * @param serverName  name of server instance to call
      * @param userId      the name of the calling user
      * @param requestBody properties of the event type
-     *
      * @return void response
      */
     public VoidResponse deleteEventType(String userId, String serverName, DeleteRequestBody requestBody) {
@@ -2065,7 +1990,6 @@ public class DataEngineRESTServices {
      * @param guid               the unique identifier of the event type
      * @param qualifiedName      the qualified name of the event type
      * @param deleteSemantic     the delete semantic
-     *
      * @throws InvalidParameterException     the bean properties are invalid
      * @throws UserNotAuthorizedException    user not authorized to issue this request
      * @throws PropertyServerException       problem accessing the property server
@@ -2074,8 +1998,8 @@ public class DataEngineRESTServices {
      */
     public void deleteEventType(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
                                 DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException,
-                                                                      UserNotAuthorizedException, EntityNotDeletedException,
-                                                                      FunctionNotSupportedException {
+            UserNotAuthorizedException, EntityNotDeletedException,
+            FunctionNotSupportedException {
 
         final String methodName = "deleteEventType";
 
@@ -2151,7 +2075,7 @@ public class DataEngineRESTServices {
     }
 
     private boolean isTopicRequestBodyValid(String userId, String serverName, TopicRequestBody topicRequestBody, String methodName) throws
-                                                                                                                                    InvalidParameterException {
+            InvalidParameterException {
         validateRequestBody(userId, serverName, topicRequestBody, methodName);
 
         if (topicRequestBody.getTopic() == null) {
@@ -2162,7 +2086,7 @@ public class DataEngineRESTServices {
     }
 
     private boolean isEventTypeRequestBodyValid(String userId, String serverName, EventTypeRequestBody eventTypeRequestBody, String methodName) throws
-                                                                                                                                                InvalidParameterException {
+            InvalidParameterException {
         validateRequestBody(userId, serverName, eventTypeRequestBody, methodName);
 
         if (eventTypeRequestBody.getTopicQualifiedName() == null) {

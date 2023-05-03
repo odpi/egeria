@@ -133,7 +133,6 @@ class DataEngineRESTServicesTest {
     private static final String USAGE = "usage";
     private static final String ENCODING_STANDARD = "encodingStandard";
     private static final String VERSION_NUMBER = "versionNumber";
-    private static final String DELEGATED_QUALIFIED_NAME = "delegatedQualifiedName";
     private static final String FORMULA = "formula";
     private static final String OWNER = "OWNER";
     private static final String SOURCE_QUALIFIED_NAME = "source";
@@ -521,7 +520,6 @@ class DataEngineRESTServicesTest {
     void createProcess() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         mockSchemaTypeHandler("upsertSchemaType");
         mockPortHandler("upsertPortImplementation");
-        mockPortHandler("upsertPortAliasWithDelegation");
         mockProcessHandler("upsertProcess");
         mockProcessHandler("updateProcessStatus");
         mockCollectionHandler("createCollection");
@@ -540,8 +538,6 @@ class DataEngineRESTServicesTest {
 
         verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, getSchemaType(), PORT_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(dataEnginePortHandler, times(1)).createPortImplementation(USER, portImplementation, PROCESS_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
-        verify(dataEnginePortHandler, times(1)).addPortDelegationRelationship(USER, GUID, PortType.INOUT_PORT, DELEGATED_QUALIFIED_NAME,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(processHandler, times(1)).updateProcessStatus(USER, PROCESS_GUID, InstanceStatus.ACTIVE, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(dataEngineCollectionHandler, times(1)).addCollectionMembershipRelationship(USER, COLLECTION_GUID, PROCESS_GUID,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
@@ -599,7 +595,6 @@ class DataEngineRESTServicesTest {
         mockSchemaTypeHandler("deleteObsoleteSchemaType");
         mockSchemaTypeHandler("getSchemaTypeGUID");
         mockPortHandler("upsertPortImplementation");
-        mockPortHandler("upsertPortAliasWithDelegation");
         mockPortHandler("upsertSchemaType");
         mockPortHandler("deleteObsoletePorts");
         mockPortHandler("getPortGUID");
@@ -631,8 +626,6 @@ class DataEngineRESTServicesTest {
         verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, getSchemaType(), PORT_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(dataEnginePortHandler, times(1)).updatePortImplementation(USER, portEntity.get(), portImplementation,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
-        verify(dataEnginePortHandler, times(1)).addPortDelegationRelationship(USER, PORT_GUID, PortType.INOUT_PORT,
-                DELEGATED_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(processHandler, times(2)).updateProcessStatus(any(), any(), instanceStatuses.capture(), any());
 
@@ -892,7 +885,6 @@ class DataEngineRESTServicesTest {
 
         verify(dataEnginePortHandler, times(1)).removePort(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
         verify(dataEngineSchemaTypeHandler, times(1)).removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
-        verify(dataEnginePortHandler, times(0)).findPortEntity(USER, QUALIFIED_NAME);
     }
 
     @Test

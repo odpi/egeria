@@ -37,7 +37,6 @@ public enum DataEngineEventType implements Serializable {
     DELETE_DATA_ENGINE_EVENT(7, "DeleteDataEngineEvent", "An event that deletes an external data engine."),
     DELETE_SCHEMA_TYPE_EVENT(8, "DeleteSchemaTypeEvent", "An event that deletes a schema type."),
     DELETE_PORT_IMPLEMENTATION_EVENT(9, "DeletePortImplementationEvent", "An event that deletes a port implementation."),
-    DELETE_PORT_ALIAS_EVENT(10, "DeletePortAliasesEvent", "An event that deletes a port alias."),
     DATABASE_EVENT(11, "DatabaseEvent", "An event that creates or updates databases."),
     DATABASE_SCHEMA_EVENT(12, "DatabaseSchemaEvent", "An event that creates or updates database schemas."),
     RELATIONAL_TABLE_EVENT(13, "RelationalTableEvent", "An event that creates or updates relational tables."),

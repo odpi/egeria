@@ -11,7 +11,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.Port;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
@@ -23,8 +22,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetailDifferences;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
@@ -32,23 +29,10 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 import static org.odpi.openmetadata.accessservices.dataengine.server.util.MockedExceptionUtil.mockException;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_TYPE_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.*;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
@@ -57,7 +41,6 @@ class DataEnginePortHandlerTest {
     private static final String QUALIFIED_NAME = "qualifiedName";
     private static final String NAME = "name";
     private static final String GUID = "guid";
-    private static final String DELEGATED_QUALIFIED_NAME = "delegated";
     private static final String SCHEMA_GUID = "schemaGuid";
     private static final String PORT_GUID = "portGuid";
     private static final String PROCESS_GUID = "portGuid";
@@ -267,32 +250,6 @@ class DataEnginePortHandlerTest {
     }
 
     @Test
-    void addPortDelegationRelationship_InvalidPortType() throws UserNotAuthorizedException, PropertyServerException,
-                                                                InvalidParameterException {
-        mockDelegatedPortEntity(PortType.OUTIN_PORT);
-
-        dataEnginePortHandler.addPortDelegationRelationship(USER, GUID, PortType.INPUT_PORT, DELEGATED_QUALIFIED_NAME,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
-
-        verify(dataEngineCommonHandler, times(1)).throwInvalidParameterException(DataEngineErrorCode.INVALID_PORT_TYPE,
-                "addPortDelegationRelationship", DELEGATED_QUALIFIED_NAME, PortType.OUTIN_PORT.getName());
-    }
-
-
-    @Test
-    void addPortDelegationRelationship() throws UserNotAuthorizedException, PropertyServerException,
-                                                InvalidParameterException {
-        mockDelegatedPortEntity(PortType.INPUT_PORT);
-
-        dataEnginePortHandler.addPortDelegationRelationship(USER, GUID, PortType.INPUT_PORT, DELEGATED_QUALIFIED_NAME,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
-
-        verify(portHandler, times(1)).setupPortDelegation(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                GUID, "portGUID", PORT_GUID, "portGUID", null, null,
-                false, false, null, "addPortDelegationRelationship");
-    }
-
-    @Test
     void findPortImplementation() throws InvalidParameterException, PropertyServerException,
                                          UserNotAuthorizedException {
 
@@ -326,37 +283,6 @@ class DataEnginePortHandlerTest {
     }
 
     @Test
-    void findPortAlias() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        EntityDetail entityDetail = mock(EntityDetail.class);
-        when(entityDetail.getGUID()).thenReturn(GUID);
-        Optional<EntityDetail> optionalOfMockedEntity = Optional.of(entityDetail);
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, PORT_ALIAS_TYPE_NAME)).thenReturn(optionalOfMockedEntity);
-
-        Optional<EntityDetail> result = dataEnginePortHandler.findPortAliasEntity(USER, QUALIFIED_NAME);
-
-        assertTrue(result.isPresent());
-        assertEquals(GUID, result.get().getGUID());
-    }
-
-    @Test
-    void findPortAlias_throwsUserNotAuthorizedException() throws PropertyServerException,
-                                                                 UserNotAuthorizedException,
-                                                                 InvocationTargetException,
-                                                                 NoSuchMethodException,
-                                                                 InstantiationException,
-                                                                 IllegalAccessException, InvalidParameterException {
-        String methodName = "findPort";
-
-        UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, PORT_ALIAS_TYPE_NAME)).thenThrow(mockedException);
-
-        UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
-                dataEnginePortHandler.findPortAliasEntity(USER, QUALIFIED_NAME));
-
-        assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
-    }
-
-    @Test
     void removePort() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, FunctionNotSupportedException {
 
         dataEnginePortHandler.removePort(USER, PORT_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
@@ -372,24 +298,6 @@ class DataEnginePortHandlerTest {
 
        assertThrows(FunctionNotSupportedException.class, () ->
                dataEnginePortHandler.removePort(USER, PORT_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.HARD));
-    }
-
-    private void mockDelegatedPortEntity(PortType portType) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
-        EntityDetail mockedPortEntity = mock(EntityDetail.class);
-        when(mockedPortEntity.getGUID()).thenReturn(PORT_GUID);
-        Optional<EntityDetail> mockedEntity = Optional.of(mockedPortEntity);
-
-        when(dataEngineCommonHandler.findEntity(USER, DELEGATED_QUALIFIED_NAME, PORT_ALIAS_TYPE_NAME)).thenReturn(mockedEntity);
-
-        InstanceProperties mockedInstanceProperties = new InstanceProperties();
-        EnumPropertyValue mockedEnumValue = new EnumPropertyValue();
-        mockedEnumValue.setSymbolicName(portType.getName());
-        mockedEnumValue.setOrdinal(portType.getOrdinal());
-        mockedEnumValue.setDescription(portType.getDescription());
-        mockedInstanceProperties.setProperty(PORT_TYPE_PROPERTY_NAME, mockedEnumValue);
-
-        when(mockedPortEntity.getProperties()).thenReturn(mockedInstanceProperties);
-
     }
 
     private void mockTypeDef() {
