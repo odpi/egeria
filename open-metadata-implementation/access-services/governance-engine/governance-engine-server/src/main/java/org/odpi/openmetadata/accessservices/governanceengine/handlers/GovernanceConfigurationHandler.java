@@ -2074,8 +2074,8 @@ public class GovernanceConfigurationHandler
         List<Relationship>  relationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                      integrationConnectorGUID,
                                                                                      OpenMetadataAPIMapper.INTEGRATION_CONNECTOR_TYPE_NAME,
-                                                                                     OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
-                                                                                     OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                                     OpenMetadataAPIMapper.REGISTERED_INTEGRATION_CONNECTOR_TYPE_GUID,
+                                                                                     OpenMetadataAPIMapper.REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME,
                                                                                      1,
                                                                                      false,
                                                                                      false,
@@ -2091,9 +2091,9 @@ public class GovernanceConfigurationHandler
             {
                 if (relationship != null)
                 {
-                    if (relationship.getGUID() != null)
+                    if (relationship.getEntityOneProxy().getGUID() != null)
                     {
-                        results.add(relationship.getGUID());
+                        results.add(relationship.getEntityOneProxy().getGUID());
                     }
                 }
             }
@@ -2120,7 +2120,7 @@ public class GovernanceConfigurationHandler
      * @param isMergeUpdate should the supplied properties be merged with existing properties (true) only replacing the properties with
      *                      matching names, or should the entire properties of the instance be replaced?
      * @param qualifiedName new value for unique name of integration connector.
-     * @param versionIdentifier version identifier ofthe connector.
+     * @param versionIdentifier version identifier of the connector.
      * @param displayName new value for the display name.
      * @param description new value for the description.
      * @param connection connection used to create an instance of this integration connector.

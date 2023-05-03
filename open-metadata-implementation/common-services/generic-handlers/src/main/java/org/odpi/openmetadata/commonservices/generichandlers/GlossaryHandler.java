@@ -211,6 +211,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                            builder,
                                            supportedZones,
                                            deepCopy,
+                                           false,
                                            methodName);
     }
 
@@ -311,7 +312,6 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
     }
 
 
-
     /**
      * Mark the glossary as an editing glossary.
      *
@@ -410,6 +410,104 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                                 methodName);
     }
 
+
+    /**
+     * Mark the glossary as a staging glossary.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
+     * @param glossaryGUID unique identifier of asset
+     * @param glossaryGUIDParameterName parameter name supplying glossaryGUID
+     * @param description how the category hierarchy is organized
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime           the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  addStagingGlossaryClassificationToGlossary(String  userId,
+                                                            String  externalSourceGUID,
+                                                            String  externalSourceName,
+                                                            String  glossaryGUID,
+                                                            String  glossaryGUIDParameterName,
+                                                            String  description,
+                                                            boolean forLineage,
+                                                            boolean forDuplicateProcessing,
+                                                            Date    effectiveTime,
+                                                            String  methodName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
+
+        GlossaryBuilder builder = new GlossaryBuilder(repositoryHelper, serviceName, serverName);
+
+        this.setClassificationInRepository(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
+                                           glossaryGUID,
+                                           glossaryGUIDParameterName,
+                                           OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                           OpenMetadataAPIMapper.STAGING_GLOSSARY_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataAPIMapper.STAGING_GLOSSARY_CLASSIFICATION_TYPE_NAME,
+                                           builder.getStagingGlossaryProperties(description, methodName),
+                                           false,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
+                                           methodName);
+    }
+
+
+    /**
+     * Remove the staging glossary designation from a glossary.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
+     * @param glossaryGUID unique identifier of asset
+     * @param glossaryGUIDParameterName parameter name supplying glossaryGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime           the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  removeStagingGlossaryClassificationFromGlossary(String  userId,
+                                                                 String  externalSourceGUID,
+                                                                 String  externalSourceName,
+                                                                 String  glossaryGUID,
+                                                                 String  glossaryGUIDParameterName,
+                                                                 boolean forLineage,
+                                                                 boolean forDuplicateProcessing,
+                                                                 Date    effectiveTime,
+                                                                 String  methodName) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
+
+        this.removeClassificationFromRepository(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                glossaryGUID,
+                                                glossaryGUIDParameterName,
+                                                OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                                OpenMetadataAPIMapper.STAGING_GLOSSARY_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataAPIMapper.STAGING_GLOSSARY_CLASSIFICATION_TYPE_NAME,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
+                                                methodName);
+    }
 
 
     /**

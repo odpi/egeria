@@ -8,8 +8,12 @@ import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRES
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties;
 import org.odpi.openmetadata.accessservices.assetowner.properties.PrimitiveSchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.assetowner.properties.TemplateProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.PrimitiveSchemaType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
@@ -42,8 +46,13 @@ public class CreateAssetTest
     private final static String assetDisplaySummary     = "Asset displaySummary";
     private final static String assetAbbreviation     = "Asset abbreviation";
     private final static String assetUsage     = "Asset usage";
+    private final static String assetOriginPropertyName = "Asset origin";
+    private final static String assetOriginPropertyValue = "Asset origin value";
     private final static String assetAdditionalPropertyName = "TestAsset additionalPropertyName";
     private final static String assetAdditionalPropertyValue = "TestAsset additionalPropertyValue";
+
+    private final static String assetCopyResourceName   = "Asset resourceName Copy";
+
 
     /*
      * The schemaType name is constant - the guid is created as part of the test.
@@ -85,7 +94,7 @@ public class CreateAssetTest
 
 
     /**
-     * Run all of the tests in this class.
+     * Run all the tests in this class.
      *
      * @param serverPlatformRootURL root url of the server
      * @param serverName name of the server
@@ -111,6 +120,7 @@ public class CreateAssetTest
         String assetGUID = thisTest.getAsset(client, userId);
         String fullAssetGUID = thisTest.getFullAsset(client, userId);
         String schemaTypeGUID = thisTest.getSchemaType(client, assetGUID, userId);
+        String copyAssetGUID = thisTest.getCopyAsset(client, fullAssetGUID, userId);
     }
 
 
@@ -170,6 +180,11 @@ public class CreateAssetTest
             properties.setAdditionalProperties(additionalProperties);
 
             String assetGUID = client.addAssetToCatalog(userId, properties);
+
+            Map<String, String> otherOriginValues = new HashMap<>();
+            otherOriginValues.put(assetOriginPropertyName, assetOriginPropertyValue);
+
+            client.addAssetOrigin(userId, assetGUID, null, null, otherOriginValues);
 
             this.validateAsset(client,
                                userId,
@@ -286,6 +301,11 @@ public class CreateAssetTest
             properties.setAdditionalProperties(additionalProperties);
 
             String assetGUID = client.addAssetToCatalog(userId, properties);
+
+            Map<String, String> otherOriginValues = new HashMap<>();
+            otherOriginValues.put(assetOriginPropertyName, assetOriginPropertyValue);
+
+            client.addAssetOrigin(userId, assetGUID, null, null, otherOriginValues);
 
             this.validateAsset(client,
                                userId,
@@ -546,6 +566,11 @@ public class CreateAssetTest
                 }
             }
 
+            if (retrievedAsset.getOtherOriginValues() == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(null origin values from Retrieve)");
+            }
+
             List<AssetElement> assetList = client.getAssetsByName(userId, qualifiedName, 0, maxPageSize);
 
             if (assetList == null)
@@ -670,10 +695,99 @@ public class CreateAssetTest
 
             if (schemaTypeGUID == null)
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for Create)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for CreateSchemaType)");
+            }
+
+            AssetUniverse     assetUniverse = client.getAssetProperties(userId, assetGUID);
+
+            if (assetUniverse == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no asset universe for CreateSchemaType)");
+            }
+
+            SchemaType schemaType = assetUniverse.getSchema();
+
+            if (schemaType == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no schema type for CreateSchemaType)");
+            }
+
+            if (! schemaTypeGUID.equals(schemaType.getGUID()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(wrong schema type GUID for CreateSchemaType - " + schemaType.getGUID() + "rather than" + schemaTypeGUID + ")");
+            }
+
+            if (! schemaTypeName.equals(schemaType.getQualifiedName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(wrong qualifiedName for CreateSchemaType - " + schemaType.getQualifiedName() + "rather than" + schemaTypeName + ")");
+            }
+
+            if (! schemaTypeDisplayName.equals(schemaType.getDisplayName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(wrong displayName for CreateSchemaType - " + schemaType.getDisplayName() + "rather than" + schemaTypeDisplayName + ")");
+            }
+
+            if (! schemaTypeDescription.equals(schemaType.getDescription()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(wrong description for CreateSchemaType - " + schemaType.getDescription() + "rather than" + schemaTypeDescription + ")");
+            }
+
+            if (schemaType instanceof PrimitiveSchemaType primitiveSchemaType)
+            {
+                if (! schemaTypeType.equals(primitiveSchemaType.getDataType()))
+                {
+                    throw new FVTUnexpectedCondition(testCaseName,
+                                                     activityName + "(wrong data type for CreateSchemaType - " + primitiveSchemaType.getDataType() + "rather than" + schemaTypeType + ")");
+                }
+            }
+            else
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(wrong type for CreateSchemaType - " + schemaType.getClass().getName() + "rather than PrimitiveSchemaType)");
             }
 
             return schemaTypeGUID;
+        }
+        catch (FVTUnexpectedCondition testCaseError)
+        {
+            throw testCaseError;
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+    }
+
+    /**
+     * Create a copy of the full asset and return its GUID.
+     *
+     * @param client interface to Asset Owner OMAS
+     * @param assetGUID unique id of the schemaType manager
+     * @param userId calling user
+     * @return GUID of schemaType
+     * @throws FVTUnexpectedCondition the test case failed
+     */
+    private String getCopyAsset(AssetOwner client,
+                                String     assetGUID,
+                                String     userId) throws FVTUnexpectedCondition
+    {
+        final String activityName = "getCopyAsset";
+
+        try
+        {
+            TemplateProperties properties = new TemplateProperties();
+
+            properties.setQualifiedName(assetCopyResourceName);
+
+            String assetCopyGUID = client.addAssetToCatalogUsingTemplate(userId, assetGUID, properties);
+
+            if (assetCopyGUID == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for CreateByTemplate)");
+            }
+
+
+
+            return assetCopyGUID;
         }
         catch (FVTUnexpectedCondition testCaseError)
         {

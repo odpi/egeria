@@ -1400,8 +1400,21 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                               PropertyServerException,
                                                                               UserNotAuthorizedException
     {
-        removeClassificationFromRepository(userId, externalSourceGUID, externalSourceName, beanGUID, beanGUIDParameterName, beanGUIDTypeName, classificationTypeGUID, classificationTypeName, forLineage, forDuplicateProcessing, supportedZones, effectiveTime, methodName);
+        removeClassificationFromRepository(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
+                                           beanGUID,
+                                           beanGUIDParameterName,
+                                           beanGUIDTypeName,
+                                           classificationTypeGUID,
+                                           classificationTypeName,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           supportedZones,
+                                           effectiveTime,
+                                           methodName);
     }
+
 
     /**
      * Remove the requested classification from the matching entity in the repository.
@@ -5461,7 +5474,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                           PropertyServerException,
                                                                                           UserNotAuthorizedException
     {
-        return createBeanFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateGUIDParameterName, entityTypeGUID, entityTypeName, uniqueParameterValue, uniqueParameterName, propertyBuilder, supportedZones, true, methodName);
+        return createBeanFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateGUIDParameterName, entityTypeGUID, entityTypeName, uniqueParameterValue, uniqueParameterName, propertyBuilder, supportedZones, true, false, methodName);
     }
 
 
@@ -5503,7 +5516,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                           PropertyServerException,
                                                                                           UserNotAuthorizedException
     {
-        return createBeanFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateGUIDParameterName, entityTypeGUID, entityTypeName, uniqueParameterValue, uniqueParameterName, propertyBuilder, serviceSupportedZones,true, methodName);
+        return createBeanFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateGUIDParameterName, entityTypeGUID, entityTypeName, uniqueParameterValue, uniqueParameterName, propertyBuilder, serviceSupportedZones, true, false, methodName);
     }
 
 
@@ -5525,6 +5538,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *                        properties and classification.
      * @param serviceSupportedZones list of supported zones for this service
      * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
+     * @param templateSubstitute is this element a template substitute (used as the "other end" of a new/updated relationship)
      * @param methodName calling method
      * @return unique identifier of the new bean
      * @throws InvalidParameterException one of the parameters is invalid
@@ -5543,6 +5557,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          OpenMetadataAPIGenericBuilder propertyBuilder,
                                          List<String>                  serviceSupportedZones,
                                          boolean                       deepCopy,
+                                         boolean                       templateSubstitute,
                                          String                        methodName) throws InvalidParameterException,
                                                                                           PropertyServerException,
                                                                                           UserNotAuthorizedException
@@ -5561,6 +5576,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                    propertyBuilder,
                                                                    serviceSupportedZones,
                                                                    deepCopy,
+                                                                   templateSubstitute,
                                                                    methodName);
 
         if (templateProgress != null)
@@ -5633,6 +5649,7 @@ public class OpenMetadataAPIGenericHandler<B>
      *                        properties and classification.
      * @param serviceSupportedZones list of supported zones for this service
      * @param deepCopy should the template creation extend to the anchored element or just the direct entity?
+     * @param templateSubstitute is this element a template substitute (used as the "other end" of a new/updated relationship)
      * @param methodName calling method
      *
      * @return current progress of the template replication
@@ -5655,6 +5672,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                     OpenMetadataAPIGenericBuilder propertyBuilder,
                                                     List<String>                  serviceSupportedZones,
                                                     boolean                       deepCopy,
+                                                    boolean                       templateSubstitute,
                                                     String                        methodName) throws InvalidParameterException,
                                                                                                      PropertyServerException,
                                                                                                      UserNotAuthorizedException
@@ -5679,6 +5697,32 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                         forDuplicateProcessing,
                                                                         effectiveTime,
                                                                         methodName);
+
+        if (templateEntity != null)
+        {
+            Classification classification = this.getExistingClassification(templateEntity,
+                                                                           OpenMetadataAPIMapper.TEMPLATE_SUBSTITUTE_CLASSIFICATION_TYPE_NAME);
+
+            if (classification != null)
+            {
+                /*
+                 * The template element is a substitute for the real entity to connect.
+                 */
+                templateEntity = getAttachedEntity(userId,
+                                                   templateEntity.getGUID(),
+                                                   templateGUIDParameterName,
+                                                   entityTypeName,
+                                                   OpenMetadataAPIMapper.SOURCED_FROM_RELATIONSHIP_TYPE_GUID,
+                                                   OpenMetadataAPIMapper.SOURCED_FROM_RELATIONSHIP_TYPE_NAME,
+                                                   entityTypeName,
+                                                   1,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   serviceSupportedZones,
+                                                   effectiveTime,
+                                                   methodName);
+            }
+        }
 
         if (templateEntity != null)
         {
@@ -5725,6 +5769,14 @@ public class OpenMetadataAPIGenericHandler<B>
             }
 
             /*
+             * If the resulting bean is to be used as a template substitute then add the classification.
+             */
+            if ((firstIteration) && (templateSubstitute))
+            {
+                propertyBuilder.setTemplateSubstitute(userId, methodName);
+            }
+
+            /*
              * Set the properties and classifications from the template entity as the default properties.
              */
             propertyBuilder.setTemplateProperties(templateEntity.getProperties());
@@ -5755,6 +5807,7 @@ public class OpenMetadataAPIGenericHandler<B>
                     if (templateClassification != null)
                     {
                         if ((! OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME.equals(templateClassification.getName())) &&
+                            (! OpenMetadataAPIMapper.TEMPLATE_CLASSIFICATION_TYPE_NAME.equals(templateClassification.getName())) &&
                             (! OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME.equals(templateClassification.getName())))
                         {
                             newClassificationMap.put(templateClassification.getName(), templateClassification);
@@ -6073,6 +6126,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                            builder,
                                                                            serviceSupportedZones,
                                                                            true,
+                                                                           false,
                                                                            methodName);
 
                             nextBeanEntityGUID = templateProgress.newBeanGUID;
