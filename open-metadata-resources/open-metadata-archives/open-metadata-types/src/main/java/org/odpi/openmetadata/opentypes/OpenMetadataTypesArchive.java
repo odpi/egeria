@@ -775,7 +775,8 @@ public class OpenMetadataTypesArchive
         this.archiveBuilder.addTypeDefPatch(updateDigitalProductClassification());
     }
 
-    private void update0010BaseModel() {
+    private void update0010BaseModel()
+    {
         this.archiveBuilder.addTypeDefPatch(updateProcess());
     }
 
