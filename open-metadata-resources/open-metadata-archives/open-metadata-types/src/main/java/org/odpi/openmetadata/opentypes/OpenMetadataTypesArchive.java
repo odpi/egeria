@@ -779,7 +779,8 @@ public class OpenMetadataTypesArchive
         this.archiveBuilder.addTypeDefPatch(updateProcess());
     }
 
-    private TypeDefPatch updateProcess() {
+    private TypeDefPatch updateProcess()
+    {
         /*
          * Create the Patch
          */
