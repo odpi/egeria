@@ -21,6 +21,9 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  */
 public enum SubjectAreaAuditCode implements AuditLogMessageSet
 {
+    /**
+     * The Subject Area Open Metadata Access Service (OMAS) is initializing a new server instance
+     */
     SERVICE_INITIALIZING("OMAS-SUBJECT_AREA-0001",
              OMRSAuditLogRecordSeverity.STARTUP,
              "The Subject Area Open Metadata Access Service (OMAS) is initializing a new server instance",
@@ -31,7 +34,9 @@ public enum SubjectAreaAuditCode implements AuditLogMessageSet
              "No action is required as long as this service is expected to be started for this server.  " +
                                  "If it is not required, then remove the configuration for this service " +
                                  "from the access service list in this server's configuration document."),
-
+    /**
+     * The Subject Area Open Metadata Access Service (OMAS) has initialized a new instance for a server.
+     */
     SERVICE_INITIALIZED("OMAS-SUBJECT_AREA-0003",
              OMRSAuditLogRecordSeverity.STARTUP,
              "The Subject Area Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
@@ -39,20 +44,26 @@ public enum SubjectAreaAuditCode implements AuditLogMessageSet
              "Verify that this service has initialized successfully. " +
                                 "Investigate any reported errors. Also ensure that the enterprise repository " +
                                 "services and the OCF metadata management services are initialized."),
-
+    /**
+     *  The Subject Area Open Metadata Access Service (OMAS) is shutting down its instance for a server.
+     */
     SERVICE_SHUTDOWN("OMAS-SUBJECT_AREA-0004",
              OMRSAuditLogRecordSeverity.SHUTDOWN,
              "The Subject Area Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
              "The local administrator has requested shut down of an Subject Area OMAS instance.",
              "No action is required if the server shutdown was intentional."),
-
+    /**
+     * The Subject Area Open Metadata Access Service (OMAS) is unable to initialize a new instance on a server.
+     */
     SERVICE_INSTANCE_FAILURE("OMAS-SUBJECT_AREA-0005",
              OMRSAuditLogRecordSeverity.EXCEPTION,
              "The Subject Area Open Metadata Access Service (OMAS) is unable to initialize a new instance in server {0}; the {1} exception " +
                                      "occurred with error message: {2}",
              "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
                              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
-
+    /**
+     * The Open Metadata Service has generated an unexpected exception.
+     */
     UNEXPECTED_EXCEPTION("OMAS-SUBJECT_AREA-0006",
                          OMRSAuditLogRecordSeverity.EXCEPTION,
                          "The Open Metadata Service has generated an unexpected {0} exception during method {1}.  The message was: {2}",
