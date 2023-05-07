@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.assetmanager.api.exchange;
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.ActivityDescriptionProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.ActivityDescriptionProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;

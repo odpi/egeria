@@ -3,7 +3,6 @@
 
 package org.odpi.openmetadata.accessservices.assetmanager.properties;
 
-import java.io.Serial;
 import java.util.Objects;
 
 /**
@@ -11,10 +10,6 @@ import java.util.Objects;
  */
 public class OwnerProperties extends ClassificationProperties
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-
     private String owner             = null;
     private String ownerTypeName     = null;
     private String ownerPropertyName = null;

@@ -22,6 +22,7 @@ public class GovernanceDefinitionElement implements Serializable, MetadataElemen
     private ElementHeader                   elementHeader      = null;
     private List<MetadataCorrelationHeader> correlationHeaders = null;
     private GovernanceDefinitionProperties  properties         = null;
+    private RelatedElement                  relatedElement     = null;
 
 
 
@@ -44,7 +45,9 @@ public class GovernanceDefinitionElement implements Serializable, MetadataElemen
         if (template != null)
         {
             this.elementHeader = template.getElementHeader();
+            this.correlationHeaders = template.getCorrelationHeaders();
             this.properties = template.getProperties();
+            this.relatedElement = template.getRelatedElement();
         }
     }
 
@@ -130,6 +133,30 @@ public class GovernanceDefinitionElement implements Serializable, MetadataElemen
 
 
     /**
+     * Return details of the relationship used to retrieve this element.
+     * Will be null if the element was retrieved directly rather than via a relationship.
+     *
+     * @return list of element stubs
+     */
+    public RelatedElement getRelatedElement()
+    {
+        return relatedElement;
+    }
+
+
+    /**
+     * Set up details of the relationship used to retrieve this element.
+     * Will be null if the element was retrieved directly rather than via a relationship.
+     *
+     * @param relatedElement relationship details
+     */
+    public void setRelatedElement(RelatedElement relatedElement)
+    {
+        this.relatedElement = relatedElement;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -139,6 +166,9 @@ public class GovernanceDefinitionElement implements Serializable, MetadataElemen
     {
         return "GovernanceDefinitionElement{" +
                        "elementHeader=" + elementHeader +
+                       ", correlationHeaders=" + correlationHeaders +
+                       ", properties=" + properties +
+                       ", relatedElement=" + relatedElement +
                        '}';
     }
 
@@ -156,12 +186,14 @@ public class GovernanceDefinitionElement implements Serializable, MetadataElemen
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof GovernanceDefinitionElement that))
         {
             return false;
         }
-        GovernanceDefinitionElement that = (GovernanceDefinitionElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader);
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                       Objects.equals(correlationHeaders, that.correlationHeaders) &&
+                       Objects.equals(properties, that.properties) &&
+                       Objects.equals(relatedElement, that.relatedElement);
     }
 
 
@@ -173,6 +205,6 @@ public class GovernanceDefinitionElement implements Serializable, MetadataElemen
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader);
+        return Objects.hash(super.hashCode(), elementHeader, correlationHeaders, properties, relatedElement);
     }
 }

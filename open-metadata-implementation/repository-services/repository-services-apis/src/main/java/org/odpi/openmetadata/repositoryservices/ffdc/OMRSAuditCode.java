@@ -362,6 +362,17 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                                 "The connector will not be able to support access to the open metadata repositories connected via the cohort.",
                                 "Review the message to discover why the connector failed to start."),
 
+    CREATING_REAL_CONNECTOR("OMRS-AUDIT-0044",
+                             OMRSAuditLogRecordSeverity.STARTUP,
+                             "The connector for the local repository is being started in mode {0} using connector provider {1} and configuration properties {2}",
+                             "This repository connector provides the metadata storage mechanism for this server.  It may be read only (and populated using events and open metadata archives) or provides read/write storage or access to a third party repository.",
+                             "Verify that the correct type of repository, with the correct type of storage has been configured for this server."),
+
+    NEW_REAL_CONNECTOR("OMRS-AUDIT-0045",
+                       OMRSAuditLogRecordSeverity.STARTUP,
+                       "The connector for the local repository has been started",
+                       "The server continues initializing.",
+                       "Verify that the repository connector initialized without error."),
     PROCESSING_ARCHIVE("OMRS-AUDIT-0050",
                        OMRSAuditLogRecordSeverity.INFO,
                        "The Open Metadata Repository Services (OMRS) is about to process open metadata archive {0}",

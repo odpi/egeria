@@ -10,6 +10,8 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Glossa
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GovernanceDefinitionElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetOriginProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.DataFieldQueryProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.DataFieldValuesProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.FindAssetOriginProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.FindNameProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GovernanceClassificationProperties;
@@ -22,6 +24,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.SubjectAreaM
 import org.odpi.openmetadata.accessservices.assetmanager.rest.AssetElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.FindByPropertiesRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermElementsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceDefinitionsResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -131,6 +134,154 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
                                      String password) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password);
+    }
+
+
+    /**
+     * Classify the element to indicate that it describes a data field and supply
+     * properties that describe the characteristics of the data values found within.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param externalIdentifier unique identifier of the element in the external asset manager
+     * @param properties descriptive properties for the data field
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void setElementAsDataField(String                    userId,
+                                      String                    assetManagerGUID,
+                                      String                    assetManagerName,
+                                      String                    elementGUID,
+                                      String                    externalIdentifier,
+                                      DataFieldValuesProperties properties,
+                                      Date                      effectiveTime,
+                                      boolean                   forLineage,
+                                      boolean                   forDuplicateProcessing) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        final String methodName = "setElementAsDataField";
+        final String elementGUIDParameter = "elementGUID";
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/{2}/data-field";
+
+        super.setReferenceableClassification(userId,
+                                             assetManagerGUID,
+                                             assetManagerName,
+                                             elementGUID,
+                                             elementGUIDParameter,
+                                             externalIdentifier,
+                                             properties,
+                                             urlTemplate,
+                                             effectiveTime,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             methodName);
+    }
+
+
+    /**
+     * Remove the data field designation from the element.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param externalIdentifier unique identifier of the element in the external asset manager
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void clearElementAsDataField(String  userId,
+                                        String  assetManagerGUID,
+                                        String  assetManagerName,
+                                        String  elementGUID,
+                                        String  externalIdentifier,
+                                        Date    effectiveTime,
+                                        boolean forLineage,
+                                        boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final String   methodName = "clearElementAsDataField";
+        final String   elementGUIDParameter = "elementGUID";
+
+        final String   urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/{2}/data-field/remove";
+
+        super.removeReferenceableClassification(userId,
+                                                assetManagerGUID,
+                                                assetManagerName,
+                                                elementGUID,
+                                                elementGUIDParameter,
+                                                externalIdentifier,
+                                                urlTemplate,
+                                                effectiveTime,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                methodName);
+    }
+
+
+    /**
+     * Return information about the elements classified with the DataField classification.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param properties values to match on
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of element stubs
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public List<ElementStub> getDataFieldClassifiedElements(String                   userId,
+                                                            String                   assetManagerGUID,
+                                                            String                   assetManagerName,
+                                                            DataFieldQueryProperties properties,
+                                                            int                      startFrom,
+                                                            int                      pageSize,
+                                                            Date                     effectiveTime,
+                                                            boolean                  forLineage,
+                                                            boolean                  forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                    UserNotAuthorizedException,
+                                                                                                                    PropertyServerException
+    {
+        final String methodName = "getDataFieldClassifiedElements";
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/by-data-field";
+
+        return super.getClassifiedElements(userId,
+                                           assetManagerGUID,
+                                           assetManagerName,
+                                           properties,
+                                           urlTemplate,
+                                           startFrom,
+                                           pageSize,
+                                           effectiveTime,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           methodName);
     }
 
 
@@ -1172,17 +1323,17 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<AssetElement> getAssetsByOrigin(String                userId,
-                                                String                assetManagerGUID,
-                                                String                assetManagerName,
-                                                AssetOriginProperties properties,
-                                                int                   startFrom,
-                                                int                   pageSize,
-                                                Date                  effectiveTime,
-                                                boolean               forLineage,
-                                                boolean               forDuplicateProcessing) throws InvalidParameterException,
-                                                                                                     UserNotAuthorizedException,
-                                                                                                     PropertyServerException
+    public List<AssetElement> getAssetsByOrigin(String                    userId,
+                                                String                    assetManagerGUID,
+                                                String                    assetManagerName,
+                                                FindAssetOriginProperties properties,
+                                                int                       startFrom,
+                                                int                       pageSize,
+                                                Date                      effectiveTime,
+                                                boolean                   forLineage,
+                                                boolean                   forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
     {
         final String methodName = "getAssetsByOrigin";
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/assets/by-origin";
@@ -1191,18 +1342,12 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
         invalidParameterHandler.validateUserId(userId, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        FindAssetOriginProperties findProperties = new FindAssetOriginProperties();
-
-        findProperties.setOrganizationGUID(properties.getOrganizationGUID());
-        findProperties.setBusinessCapabilityGUID(properties.getBusinessCapabilityGUID());
-        findProperties.setOtherOriginValues(properties.getOtherOriginValues());
-
         FindByPropertiesRequestBody requestBody = new FindByPropertiesRequestBody();
 
         requestBody.setAssetManagerGUID(assetManagerGUID);
         requestBody.setAssetManagerName(assetManagerName);
         requestBody.setEffectiveTime(effectiveTime);
-        requestBody.setProperties(findProperties);
+        requestBody.setProperties(properties);
 
         AssetElementsResponse restResult = restClient.callAssetsPostRESTCall(methodName,
                                                                              urlTemplate + requestParamsURLTemplate,
@@ -1707,7 +1852,31 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
                                                                                                              UserNotAuthorizedException,
                                                                                                              PropertyServerException
     {
-        return null;
+        final String methodName = "getGovernedByDefinitions";
+        final String elementGUIDParameterName = "elementGUID";
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/{2}/governed-by";
+
+        final String requestParamsURLTemplate = "?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        GovernanceDefinitionsResponse restResult = restClient.callGovernanceDefinitionsPostRESTCall(methodName,
+                                                                                                    urlTemplate + requestParamsURLTemplate,
+                                                                                                    getEffectiveTimeQueryRequestBody(assetManagerGUID,
+                                                                                                                                     assetManagerName,
+                                                                                                                                     effectiveTime),
+                                                                                                    serverName,
+                                                                                                    userId,
+                                                                                                    elementGUID,
+                                                                                                    startFrom,
+                                                                                                    validatedPageSize,
+                                                                                                    forLineage,
+                                                                                                    forDuplicateProcessing);
+
+        return restResult.getElements();
     }
 
 
@@ -1751,6 +1920,110 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
                                         assetManagerGUID,
                                         assetManagerName,
                                         governanceDefinitionGUID,
+                                        elementGUIDParameterName,
+                                        urlTemplate,
+                                        startFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        methodName);
+    }
+
+
+    /**
+     * Retrieve the elements linked via a "SourceFrom" relationship to the requested element.
+     * The elements returned were used to create the requested element.  Typically only one element is returned.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param elementGUID unique identifier of the glossary term that the returned elements are linked to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<RelatedElement> getSourceElements(String  userId,
+                                                    String  assetManagerGUID,
+                                                    String  assetManagerName,
+                                                    String  elementGUID,
+                                                    int     startFrom,
+                                                    int     pageSize,
+                                                    Date    effectiveTime,
+                                                    boolean forLineage,
+                                                    boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        final String methodName = "getSourceElements";
+        final String elementGUIDParameterName = "elementGUID";
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/sourced-from/{2}";
+
+        return super.getRelatedElements(userId,
+                                        assetManagerGUID,
+                                        assetManagerName,
+                                        elementGUID,
+                                        elementGUIDParameterName,
+                                        urlTemplate,
+                                        startFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        methodName);
+    }
+
+
+    /**
+     * Retrieve the elements linked via a "SourceFrom" relationship to the requested element.
+     * The elements returned were created using the requested element as a template.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param elementGUID unique identifier of the glossary term that the returned elements are linked to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<RelatedElement> getElementsSourceFrom(String  userId,
+                                                    String  assetManagerGUID,
+                                                    String  assetManagerName,
+                                                    String  elementGUID,
+                                                    int     startFrom,
+                                                    int     pageSize,
+                                                    Date    effectiveTime,
+                                                    boolean forLineage,
+                                                    boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        final String methodName = "getElementsSourceFrom";
+        final String elementGUIDParameterName = "elementGUID";
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/{2}/sourced-from";
+
+        return super.getRelatedElements(userId,
+                                        assetManagerGUID,
+                                        assetManagerName,
+                                        elementGUID,
                                         elementGUIDParameterName,
                                         urlTemplate,
                                         startFrom,

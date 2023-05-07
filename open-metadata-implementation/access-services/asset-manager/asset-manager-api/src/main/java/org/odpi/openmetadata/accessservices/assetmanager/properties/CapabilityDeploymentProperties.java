@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serial;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,9 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CapabilityDeploymentProperties extends RelationshipProperties
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private static final String deploymentTimeProperty       = "deploymentTime";
     private static final String deployerProperty             = "deployer";
     private static final String deployerTypeNameProperty     = "deployerTypeName";

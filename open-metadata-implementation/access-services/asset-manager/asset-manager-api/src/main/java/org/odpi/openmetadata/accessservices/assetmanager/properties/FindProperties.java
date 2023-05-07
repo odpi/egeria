@@ -7,14 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.ActivityDescriptionProperties;
-
-import java.io.Serial;
-import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -31,12 +23,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = LevelIdentifierProperties.class, name = "LevelIdentifierProperties"),
+                @JsonSubTypes.Type(value = DataFieldQueryProperties.class, name = "DataFieldQueryProperties"),
+                @JsonSubTypes.Type(value = FindNameProperties.class, name = "FindNameProperties"),
+                @JsonSubTypes.Type(value = FindAssetOriginProperties.class, name = "FindAssetOriginProperties"),
         })
-public class FindProperties implements Serializable
+public class FindProperties
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     /**
      * Default constructor
      */

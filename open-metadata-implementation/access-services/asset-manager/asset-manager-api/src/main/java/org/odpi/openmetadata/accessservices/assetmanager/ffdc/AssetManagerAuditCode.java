@@ -22,7 +22,9 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  */
 public enum AssetManagerAuditCode implements AuditLogMessageSet
 {
-
+    /**
+     * OMAS-ASSET-MANAGER-0001 The Asset Manager Open Metadata Access Service (OMAS) is initializing a new server instance
+     */
     SERVICE_INITIALIZING("OMAS-ASSET-MANAGER-0001",
                          OMRSAuditLogRecordSeverity.STARTUP,
                          "The Asset Manager Open Metadata Access Service (OMAS) is initializing a new server instance",
@@ -33,6 +35,9 @@ public enum AssetManagerAuditCode implements AuditLogMessageSet
                                  "list in the configuration document for this server.  It will then not be started " +
                                  "the next time the server starts up."),
 
+    /**
+     * OMAS-ASSET-MANAGER-0002 The Asset Manager Open Metadata Access Service (OMAS) is ready to publish asset manager notifications to topic {0}
+     */
     SERVICE_PUBLISHING("OMAS-ASSET-MANAGER-0002",
                        OMRSAuditLogRecordSeverity.STARTUP,
                        "The Asset Manager Open Metadata Access Service (OMAS) is ready to publish asset manager notifications to topic {0}",
@@ -40,6 +45,9 @@ public enum AssetManagerAuditCode implements AuditLogMessageSet
                                "It will begin publishing asset manager metadata changes to its out topic.",
                        "This is part of the normal start up of the service. Check that there are no errors from the event bus."),
 
+    /**
+     * OMAS-ASSET-MANAGER-0005 The Asset Manager Open Metadata Access Service (OMAS) has initialized a new instance for server {0}
+     */
     SERVICE_INITIALIZED("OMAS-ASSET-MANAGER-0005",
             OMRSAuditLogRecordSeverity.STARTUP,
             "The Asset Manager Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
@@ -49,12 +57,18 @@ public enum AssetManagerAuditCode implements AuditLogMessageSet
                                 "and default zones defined.  Investigate any reported errors.  Also ensure that the" +
                                 "enterprise repository services and the OCF metadata management services are initialized."),
 
+    /**
+     * OMAS-ASSET-MANAGER-0006 The Asset Manager Open Metadata Access Service (OMAS) is shutting down server instance {0}
+     */
     SERVICE_SHUTDOWN("OMAS-ASSET-MANAGER-0006",
             OMRSAuditLogRecordSeverity.SHUTDOWN,
             "The Asset Manager Open Metadata Access Service (OMAS) is shutting down server instance {0}",
             "The local server has requested shut down of an Asset Manager OMAS server instance.",
             "No action is required if this shutdown was intended."),
 
+    /**
+     * OMAS-ASSET-MANAGER-0007 The Asset Manager Open Metadata Access Service (OMAS) is no longer publishing events to topic {0}
+     */
     PUBLISHING_SHUTDOWN("OMAS-ASSET-MANAGER-0007",
                         OMRSAuditLogRecordSeverity.SHUTDOWN,
                         "The Asset Manager Open Metadata Access Service (OMAS) is no longer publishing events to topic {0}",
@@ -63,6 +77,10 @@ public enum AssetManagerAuditCode implements AuditLogMessageSet
                         "This is part of the normal shutdown of the service.   No action is required if this is service" +
                                 "shutdown was intentional."),
 
+    /**
+     * OMAS-ASSET-MANAGER-0008 The Asset Manager Open Metadata Access Service (OMAS) caught an unexpected {0} exception whilst shutting down the out
+     * topic {1}. The error message was: {2}
+     */
     PUBLISHING_SHUTDOWN_ERROR("OMAS-ASSET-MANAGER-0008",
                               OMRSAuditLogRecordSeverity.SHUTDOWN,
                               "The Asset Manager Open Metadata Access Service (OMAS) caught an unexpected {0} exception whilst shutting down the out " +
@@ -74,12 +92,18 @@ public enum AssetManagerAuditCode implements AuditLogMessageSet
                                       "is the consequence of a previous error. Review the error message and any other reported failures to " +
                                       "determine if this exception needs special attention."),
 
+    /**
+     * OMAS-ASSET-MANAGER-0011 The Asset Manager Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0
+     */
     SERVICE_INSTANCE_FAILURE("OMAS-ASSET-MANAGER-0011",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "The Asset Manager Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
             "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
-    
+
+    /**
+     * OMAS-ASSET-MANAGER-0012 The Asset Manager Open Metadata Access Service (OMAS) is unable to terminate a new instance; error message is {0}
+     */
     SERVICE_INSTANCE_TERMINATION_FAILURE("OMAS-ASSET-MANAGER-0012",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "The Asset Manager Open Metadata Access Service (OMAS) is unable to terminate a new instance; error message is {0}",
@@ -87,6 +111,9 @@ public enum AssetManagerAuditCode implements AuditLogMessageSet
             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, try to shut " +
                                                  "down the server."),
 
+    /**
+     * OMAS-ASSET-MANAGER-0013 The Asset Manager Open Metadata Access Service (OMAS) has sent event of type: {0}
+     */
     OUT_TOPIC_EVENT("OMAS-ASSET-MANAGER-0013",
                     OMRSAuditLogRecordSeverity.EVENT,
                     "The Asset Manager Open Metadata Access Service (OMAS) has sent event of type: {0}",
@@ -94,12 +121,18 @@ public enum AssetManagerAuditCode implements AuditLogMessageSet
                             "asset managers.  This message is to create a record of the events that are being published.",
                     "This event indicates that one of the assets within an asset manager has changed."),
 
+    /**
+     * OMAS-ASSET-MANAGER-0014 Event {0} could not be published due to {1} exception with message: {2}
+     */
     PROCESS_EVENT_EXCEPTION("OMAS-ASSET-MANAGER-0014",
                             OMRSAuditLogRecordSeverity.EXCEPTION,
                             "Event {0} could not be published due to {1} exception with message: {2}",
                             "The system is unable to publish the event to the Asset Manager OMAS's OutTopic.",
                             "Verify the topic configuration and that the event broker is running."),
 
+    /**
+     * OMAS-ASSET-MANAGER-0015 Inbound event {0} could not be parsed. IOException included the following message: {1}
+     */
     PARSE_EVENT_EXCEPTION("OMAS-ASSET-MANAGER-0015",
           OMRSAuditLogRecordSeverity.EXCEPTION,
           "Inbound event {0} could not be parsed. IOException included the following message: {1}",

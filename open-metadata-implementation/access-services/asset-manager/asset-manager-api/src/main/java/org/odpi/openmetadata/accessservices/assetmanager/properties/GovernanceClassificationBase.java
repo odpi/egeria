@@ -8,8 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -32,9 +30,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class GovernanceClassificationBase extends ClassificationProperties
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private int    status              = 0;
     private int    confidence          = 0;
     private String steward             = null;

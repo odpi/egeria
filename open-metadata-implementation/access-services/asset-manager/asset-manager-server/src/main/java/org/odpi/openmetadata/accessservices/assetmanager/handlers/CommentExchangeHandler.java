@@ -147,6 +147,7 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
      * @param commentProperties properties to store
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element
@@ -163,6 +164,7 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
                                 CommentProperties             commentProperties,
                                 boolean                       forLineage,
                                 boolean                       forDuplicateProcessing,
+                                Date                          effectiveTime,
                                 String                        methodName) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
@@ -194,7 +196,7 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
                                                              commentProperties.getEffectiveTo(),
                                                              forLineage,
                                                              forDuplicateProcessing,
-                                                             null,
+                                                             effectiveTime,
                                                              methodName);
 
         if (commentGUID != null)
@@ -206,7 +208,7 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
                                           correlationProperties,
                                           forLineage,
                                           forDuplicateProcessing,
-                                          null,
+                                          effectiveTime,
                                           methodName);
         }
 

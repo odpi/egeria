@@ -27,7 +27,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTerm
 import org.odpi.openmetadata.accessservices.assetmanager.properties.StagingGlossaryProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.TaxonomyProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.ActivityDescriptionProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.ActivityDescriptionProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;

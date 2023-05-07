@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -16,9 +14,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * RatingProperties stores information about a rating connected to an asset.  Ratings provide informal feedback on the quality of assets
  * and can be added at any time.
- *
+ * <br><br>
  * Ratings have the userId of the person who added it, a star rating and an optional review comment.
- *
+ * <br><br>
  * The content of the rating is a personal judgement (which is why the user's id is in the object)
  * and there is no formal review of the ratings.  However, they can be used as a basis for crowd-sourcing
  * feedback to asset owners.
@@ -26,11 +24,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RatingProperties implements Serializable
+public class RatingProperties
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private StarRating starRating = null;
     private String     review     = null;
     private String     user       = null;

@@ -5,24 +5,24 @@ package org.odpi.openmetadata.viewservices.glossaryworkflow.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.ArchiveRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.ClassificationRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.ControlledGlossaryTermRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTemplateRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermActivityTypeListResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermElementResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermRelationshipStatusListResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermStatusListResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermStatusRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.ReferenceableUpdateRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.RelationshipRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.TemplateRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.UpdateRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.ArchiveRequestBody;
+import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.ClassificationRequestBody;
+import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.ControlledGlossaryTermRequestBody;
+import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.EffectiveTimeQueryRequestBody;
+import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.GlossaryTemplateRequestBody;
+import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.GlossaryTermActivityTypeListResponse;
+import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.GlossaryTermRelationshipStatusListResponse;
+import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.GlossaryTermStatusListResponse;
+import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.GlossaryTermStatusRequestBody;
+import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.ReferenceableRequestBody;
+import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.ReferenceableUpdateRequestBody;
+import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.RelationshipRequestBody;
+import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.TemplateRequestBody;
 import org.odpi.openmetadata.viewservices.glossaryworkflow.server.GlossaryWorkflowRESTServices;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -392,7 +392,7 @@ public class GlossaryWorkflowResource
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/glossaries/{glossaryGUID}/is-canonical")
+    @PostMapping(path = "/glossaries/{glossaryGUID}/is-canonical-vocabulary")
 
     public VoidResponse setGlossaryAsCanonical(@PathVariable String                    serverName,
                                                @PathVariable String                    userId,
@@ -408,7 +408,7 @@ public class GlossaryWorkflowResource
 
 
     /**
-     * Remove the canonical designation from the glossary.
+     * Remove the canonical vocabulary designation from the glossary.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
@@ -422,7 +422,7 @@ public class GlossaryWorkflowResource
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/glossaries/{glossaryGUID}/is-canonical/remove")
+    @PostMapping(path = "/glossaries/{glossaryGUID}/is-canonical-vocabulary/remove")
 
     public VoidResponse clearGlossaryAsCanonical(@PathVariable String                    serverName,
                                                  @PathVariable String                    userId,
@@ -1573,15 +1573,15 @@ public class GlossaryWorkflowResource
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/undo")
 
-    public GlossaryTermElementResponse undoGlossaryTermUpdate(@PathVariable String             serverName,
-                                                              @PathVariable String             userId,
-                                                              @PathVariable String             glossaryTermGUID,
+    public GlossaryTermElementResponse undoGlossaryTermUpdate(@PathVariable String                        serverName,
+                                                              @PathVariable String                        userId,
+                                                              @PathVariable String                        glossaryTermGUID,
                                                               @RequestParam (required = false, defaultValue = "false")
-                                                                            boolean           forLineage,
+                                                                            boolean                       forLineage,
                                                               @RequestParam (required = false, defaultValue = "false")
-                                                                            boolean           forDuplicateProcessing,
+                                                                            boolean                       forDuplicateProcessing,
                                                               @RequestBody(required = false)
-                                                                            UpdateRequestBody requestBody)
+                                                                            EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.undoGlossaryTermUpdate(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1643,5 +1643,791 @@ public class GlossaryWorkflowResource
                                                          ReferenceableUpdateRequestBody requestBody)
     {
         return restAPI.removeGlossaryTerm(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+
+
+    /* =====================================================================================================================
+     * A note log maintains an ordered list of notes.  It can be used to support release note, blogs and similar
+     * broadcast information.  Notelogs are typically maintained by the owners/stewards of an element.
+     */
+
+    /**
+     * Create a new metadata element to represent a note log and attach it to an element (if supplied).
+     * Any supplied element becomes the note log's anchor, causing the note log to be deleted if/when the element is deleted.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element where the note log is located
+     * @param isPublic                 is this element visible to other people.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to control the type of the request
+     *
+     * @return unique identifier of the new note log or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/elements/{elementGUID}/note-logs")
+
+    public  GUIDResponse createNoteLog(@PathVariable String                         serverName,
+                                       @PathVariable String                         userId,
+                                       @PathVariable String                         elementGUID,
+                                       @RequestParam (required = false, defaultValue = "true")
+                                       boolean                        isPublic,
+                                       @RequestParam (required = false, defaultValue = "false")
+                                       boolean                        forLineage,
+                                       @RequestParam (required = false, defaultValue = "false")
+                                       boolean                        forDuplicateProcessing,
+                                       @RequestBody  ReferenceableUpdateRequestBody requestBody)
+    {
+        return restAPI.createNoteLog(serverName, userId, elementGUID, isPublic, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Update the metadata element representing a note log.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param noteLogGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param isPublic                 is this element visible to other people.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody new properties for the metadata element
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/note-logs/{noteLogGUID}/update")
+
+    public VoidResponse updateNoteLog(@PathVariable String                         serverName,
+                                      @PathVariable String                         userId,
+                                      @PathVariable String                         noteLogGUID,
+                                      @RequestParam (required = false, defaultValue = "false")
+                                      boolean                        isMergeUpdate,
+                                      @RequestParam (required = false, defaultValue = "true")
+                                      boolean                        isPublic,
+                                      @RequestParam (required = false, defaultValue = "false")
+                                      boolean                        forLineage,
+                                      @RequestParam (required = false, defaultValue = "false")
+                                      boolean                        forDuplicateProcessing,
+                                      @RequestBody  ReferenceableUpdateRequestBody requestBody)
+    {
+        return restAPI.updateNoteLog(serverName, userId, noteLogGUID, isMergeUpdate, isPublic, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Remove the metadata element representing a note log.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param noteLogGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/note-logs/{noteLogGUID}/remove")
+
+    public VoidResponse removeNoteLog(@PathVariable String                         serverName,
+                                      @PathVariable String                         userId,
+                                      @PathVariable String                         noteLogGUID,
+                                      @RequestParam (required = false, defaultValue = "false")
+                                      boolean                        forLineage,
+                                      @RequestParam (required = false, defaultValue = "false")
+                                      boolean                        forDuplicateProcessing,
+                                      @RequestBody(required = false)
+                                      ReferenceableUpdateRequestBody requestBody)
+    {
+        return restAPI.removeNoteLog(serverName, userId, noteLogGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /* ===============================================================================
+     * A element typically contains many notes, linked with relationships.
+     */
+
+    /**
+     * Create a new metadata element to represent a note.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param noteLogGUID unique identifier of the element where the note is located
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return unique identifier of the new metadata element for the note or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/note-logs/{noteLogGUID}/notes")
+
+    public GUIDResponse createNote(@PathVariable String                         serverName,
+                                   @PathVariable String                         userId,
+                                   @PathVariable String                         noteLogGUID,
+                                   @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                        forLineage,
+                                   @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                        forDuplicateProcessing,
+                                   @RequestBody  ReferenceableUpdateRequestBody requestBody)
+    {
+        return restAPI.createNote(serverName, userId, noteLogGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Update the properties of the metadata element representing a note.
+     *
+     * @param userId calling user
+     * @param serverName   name of the server instances for this request
+     * @param noteGUID unique identifier of the note to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/note-logs/notes/{noteGUID}/update")
+
+    public VoidResponse updateNote(@PathVariable String                         serverName,
+                                   @PathVariable String                         userId,
+                                   @PathVariable String                         noteGUID,
+                                   @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                        isMergeUpdate,
+                                   @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                        forLineage,
+                                   @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                        forDuplicateProcessing,
+                                   @RequestBody  ReferenceableUpdateRequestBody requestBody)
+    {
+        return restAPI.updateNote(serverName, userId, noteGUID, isMergeUpdate, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Remove the metadata element representing a note.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param noteGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/note-logs/notes/{noteGUID}/remove")
+
+    public VoidResponse removeNote(@PathVariable String                         serverName,
+                                   @PathVariable String                         userId,
+                                   @PathVariable String                         noteGUID,
+                                   @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                        forLineage,
+                                   @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                        forDuplicateProcessing,
+                                   @RequestBody(required = false)
+                                                 ReferenceableUpdateRequestBody requestBody)
+    {
+        return restAPI.removeNote(serverName, userId, noteGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Classify/reclassify the element (typically an asset) to indicate the level of confidence that the organization
+     * has that the data is complete, accurate and up-to-date.  The level of confidence is expressed by the
+     * levelIdentifier property.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to classify
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/confidence")
+
+    public VoidResponse setConfidenceClassification(@PathVariable String                    serverName,
+                                                    @PathVariable String                    userId,
+                                                    @PathVariable String                    elementGUID,
+                                                    @RequestParam(required = false, defaultValue = "false")
+                                                                  boolean                   forLineage,
+                                                    @RequestParam (required = false, defaultValue = "false")
+                                                                  boolean                   forDuplicateProcessing,
+                                                    @RequestBody  (required = false)
+                                                                  ClassificationRequestBody requestBody)
+    {
+        return restAPI.setConfidenceClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Remove the confidence classification from the element.  This normally occurs when the organization has lost track of the level of
+     * confidence to assign to the element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *       InvalidParameterException full path or userId is null or
+     *       PropertyServerException problem accessing property server or
+     *       UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/confidence/remove")
+
+    public VoidResponse clearConfidenceClassification(@PathVariable String                    serverName,
+                                                      @PathVariable String                    userId,
+                                                      @PathVariable String                    elementGUID,
+                                                      @RequestParam(required = false, defaultValue = "false")
+                                                      boolean                   forLineage,
+                                                      @RequestParam (required = false, defaultValue = "false")
+                                                      boolean                   forDuplicateProcessing,
+                                                      @RequestBody  (required = false)
+                                                          EffectiveTimeRequestBody requestBody)
+    {
+        return restAPI.clearConfidenceClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Classify/reclassify the element (typically an asset) to indicate how critical the element (or associated resource)
+     * is to the organization.  The level of criticality is expressed by the levelIdentifier property.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to classify
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *       InvalidParameterException full path or userId is null or
+     *       PropertyServerException problem accessing property server or
+     *       UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/criticality")
+
+    public VoidResponse setCriticalityClassification(@PathVariable String                    serverName,
+                                                     @PathVariable String                    userId,
+                                                     @PathVariable String                    elementGUID,
+                                                     @RequestParam(required = false, defaultValue = "false")
+                                                                   boolean                   forLineage,
+                                                     @RequestParam (required = false, defaultValue = "false")
+                                                                   boolean                   forDuplicateProcessing,
+                                                     @RequestBody  (required = false)
+                                                                   ClassificationRequestBody requestBody)
+    {
+        return restAPI.setCriticalityClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Remove the criticality classification from the element.  This normally occurs when the organization has lost track of the level of
+     * criticality to assign to the element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *       InvalidParameterException full path or userId is null or
+     *       PropertyServerException problem accessing property server or
+     *       UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/criticality/remove")
+
+    public VoidResponse clearCriticalityClassification(@PathVariable String                    serverName,
+                                                       @PathVariable String                    userId,
+                                                       @PathVariable String                    elementGUID,
+                                                       @RequestParam(required = false, defaultValue = "false")
+                                                                     boolean                   forLineage,
+                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                   forDuplicateProcessing,
+                                                       @RequestBody  (required = false)
+                                                                     EffectiveTimeRequestBody requestBody)
+    {
+        return restAPI.clearCriticalityClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Classify/reclassify the element (typically a data field, schema attribute or glossary term) to indicate the level of confidentiality
+     * that any data associated with the element should be given.  If the classification is attached to a glossary term, the level
+     * of confidentiality is a suggestion for any element linked to the glossary term via the SemanticAssignment classification.
+     * The level of confidence is expressed by the levelIdentifier property.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to classify
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *       InvalidParameterException full path or userId is null or
+     *       PropertyServerException problem accessing property server or
+     *       UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/confidentiality")
+
+    public VoidResponse setConfidentialityClassification(@PathVariable String                    serverName,
+                                                         @PathVariable String                    userId,
+                                                         @PathVariable String                    elementGUID,
+                                                         @RequestParam(required = false, defaultValue = "false")
+                                                         boolean                   forLineage,
+                                                         @RequestParam (required = false, defaultValue = "false")
+                                                         boolean                   forDuplicateProcessing,
+                                                         @RequestBody  (required = false)
+                                                         ClassificationRequestBody requestBody)
+    {
+        return restAPI.setConfidentialityClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Remove the confidence classification from the element.  This normally occurs when the organization has lost track of the level of
+     * confidentiality to assign to the element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/confidentiality/remove")
+
+    public VoidResponse clearConfidentialityClassification(@PathVariable String                    serverName,
+                                                           @PathVariable String                    userId,
+                                                           @PathVariable String                    elementGUID,
+                                                           @RequestParam(required = false, defaultValue = "false")
+                                                           boolean                   forLineage,
+                                                           @RequestParam (required = false, defaultValue = "false")
+                                                           boolean                   forDuplicateProcessing,
+                                                           @RequestBody  (required = false)
+                                                           EffectiveTimeRequestBody requestBody)
+    {
+        return restAPI.clearConfidentialityClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Classify/reclassify the element (typically an asset) to indicate how long the element (or associated resource)
+     * is to be retained by the organization.  The policy to apply to the element/resource is captured by the retentionBasis
+     * property.  The dates after which the element/resource is archived and then deleted are specified in the archiveAfter and deleteAfter
+     * properties respectively.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to classify
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *       InvalidParameterException full path or userId is null or
+     *       PropertyServerException problem accessing property server or
+     *       UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/retention")
+
+    public VoidResponse setRetentionClassification(@PathVariable String                    serverName,
+                                                   @PathVariable String                    userId,
+                                                   @PathVariable String                    elementGUID,
+                                                   @RequestParam(required = false, defaultValue = "false")
+                                                   boolean                   forLineage,
+                                                   @RequestParam (required = false, defaultValue = "false")
+                                                   boolean                   forDuplicateProcessing,
+                                                   @RequestBody  (required = false)
+                                                   ClassificationRequestBody requestBody)
+    {
+        return restAPI.setRetentionClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Remove the retention classification from the element.  This normally occurs when the organization has lost track of, or no longer needs to
+     * track the retention period to assign to the element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *       InvalidParameterException full path or userId is null or
+     *       PropertyServerException problem accessing property server or
+     *       UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/retention/remove")
+
+    public VoidResponse clearRetentionClassification(@PathVariable String                    serverName,
+                                                     @PathVariable String                    userId,
+                                                     @PathVariable String                    elementGUID,
+                                                     @RequestParam(required = false, defaultValue = "false")
+                                                     boolean                   forLineage,
+                                                     @RequestParam (required = false, defaultValue = "false")
+                                                     boolean                   forDuplicateProcessing,
+                                                     @RequestBody  (required = false)
+                                                     EffectiveTimeRequestBody requestBody)
+    {
+        return restAPI.clearRetentionClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Add or replace the security tags for an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId      calling user
+     * @param elementGUID unique identifier of element to attach to
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody list of security labels and properties
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/security-tags")
+
+    public VoidResponse addSecurityTags(@PathVariable String                    serverName,
+                                        @PathVariable String                    userId,
+                                        @PathVariable String                    elementGUID,
+                                        @RequestParam(required = false, defaultValue = "false")
+                                        boolean                   forLineage,
+                                        @RequestParam (required = false, defaultValue = "false")
+                                        boolean                   forDuplicateProcessing,
+                                        @RequestBody  (required = false)
+                                        ClassificationRequestBody requestBody)
+    {
+        return restAPI.addSecurityTags(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Remove the security tags classification from an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId      calling user
+     * @param elementGUID   unique identifier of element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/security-tags/remove")
+
+    public VoidResponse clearSecurityTags(@PathVariable String          serverName,
+                                          @PathVariable String          userId,
+                                          @PathVariable String          elementGUID,
+                                          @RequestParam (required = false, defaultValue = "false")
+                                                        boolean                   forLineage,
+                                          @RequestParam (required = false, defaultValue = "false")
+                                                        boolean                   forDuplicateProcessing,
+                                          @RequestBody(required = false)
+                                                        ClassificationRequestBody requestBody)
+    {
+        return restAPI.clearSecurityTags(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Add or replace the ownership classification for an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID element to link it to - its type must inherit from Referenceable.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for classification request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/ownership")
+
+    public VoidResponse addOwnership(@PathVariable String                    serverName,
+                                     @PathVariable String                    userId,
+                                     @PathVariable String                    elementGUID,
+                                     @RequestParam(required = false, defaultValue = "false")
+                                     boolean                   forLineage,
+                                     @RequestParam (required = false, defaultValue = "false")
+                                     boolean                   forDuplicateProcessing,
+                                     @RequestBody  (required = false)
+                                     ClassificationRequestBody requestBody)
+    {
+        return restAPI.addOwnership(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Remove the ownership classification from an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID element where the classification needs to be removed.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for classification request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/ownership/remove")
+
+    public VoidResponse clearOwnership(@PathVariable String                    serverName,
+                                       @PathVariable String                    userId,
+                                       @PathVariable String                    elementGUID,
+                                       @RequestParam(required = false, defaultValue = "false")
+                                       boolean                   forLineage,
+                                       @RequestParam (required = false, defaultValue = "false")
+                                       boolean                   forDuplicateProcessing,
+                                       @RequestBody  (required = false)
+                                       ClassificationRequestBody requestBody)
+    {
+        return restAPI.clearOwnership(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Classify the element to assert that the definitions it represents are part of a subject area definition.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for classification request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/subject-area-member")
+
+    public VoidResponse addElementToSubjectArea(@PathVariable String                    serverName,
+                                                @PathVariable String                    userId,
+                                                @PathVariable String                    elementGUID,
+                                                @RequestParam(required = false, defaultValue = "false")
+                                                boolean                   forLineage,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                boolean                   forDuplicateProcessing,
+                                                @RequestBody  (required = false)
+                                                ClassificationRequestBody requestBody)
+    {
+        return restAPI.addElementToSubjectArea(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Remove the subject area designation from the identified element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for classification request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/subject-area-member/remove")
+
+    public VoidResponse removeElementFromSubjectArea(@PathVariable String                    serverName,
+                                                     @PathVariable String                    userId,
+                                                     @PathVariable String                    elementGUID,
+                                                     @RequestParam(required = false, defaultValue = "false")
+                                                     boolean                   forLineage,
+                                                     @RequestParam (required = false, defaultValue = "false")
+                                                     boolean                   forDuplicateProcessing,
+                                                     @RequestBody  (required = false)
+                                                     ClassificationRequestBody requestBody)
+    {
+        return restAPI.removeElementFromSubjectArea(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Create a semantic assignment relationship between a glossary term and an element (normally a schema attribute, data field or asset).
+     * This relationship indicates that the data associated with the element meaning matches the description in the glossary term.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element that is being assigned to the glossary term
+     * @param glossaryTermGUID unique identifier of the glossary term that provides the meaning
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/semantic-assignment/terms/{glossaryTermGUID}")
+
+    public VoidResponse setupSemanticAssignment(@PathVariable String                  serverName,
+                                                @PathVariable String                  userId,
+                                                @PathVariable String                  elementGUID,
+                                                @PathVariable String                  glossaryTermGUID,
+                                                @RequestParam(required = false, defaultValue = "false")
+                                                boolean                 forLineage,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                boolean                 forDuplicateProcessing,
+                                                @RequestBody  (required = false)
+                                                RelationshipRequestBody requestBody)
+    {
+        return restAPI.setupSemanticAssignment(serverName, userId, elementGUID, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Remove a semantic assignment relationship between an element and its glossary term.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element that is being assigned to the glossary term
+     * @param glossaryTermGUID unique identifier of the glossary term that provides the meaning
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/semantic-assignment/terms/{glossaryTermGUID}/remove")
+
+    public VoidResponse clearSemanticAssignment(@PathVariable String                        serverName,
+                                                @PathVariable String                        userId,
+                                                @PathVariable String                        elementGUID,
+                                                @PathVariable String                        glossaryTermGUID,
+                                                @RequestParam(required = false, defaultValue = "false")
+                                                boolean                       forLineage,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                boolean                       forDuplicateProcessing,
+                                                @RequestBody  (required = false)
+                                                EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.clearSemanticAssignment(serverName, userId, elementGUID, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Link a governance definition to an element using the GovernedBy relationship.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param definitionGUID identifier of the governance definition to link
+     * @param elementGUID unique identifier of the metadata element to link
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/governed-by/definition/{definitionGUID}")
+
+    public VoidResponse addGovernanceDefinitionToElement(@PathVariable String                  serverName,
+                                                         @PathVariable String                  userId,
+                                                         @PathVariable String                  definitionGUID,
+                                                         @PathVariable String                  elementGUID,
+                                                         @RequestParam(required = false, defaultValue = "false")
+                                                         boolean                 forLineage,
+                                                         @RequestParam (required = false, defaultValue = "false")
+                                                         boolean                 forDuplicateProcessing,
+                                                         @RequestBody  (required = false)
+                                                         RelationshipRequestBody requestBody)
+    {
+        return restAPI.addGovernanceDefinitionToElement(serverName, userId, definitionGUID, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Remove the GovernedBy relationship between a governance definition and an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param definitionGUID identifier of the governance definition to link
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/governed-by/definition/{definitionGUID}/remove")
+
+    public VoidResponse removeGovernanceDefinitionFromElement(@PathVariable String                        serverName,
+                                                              @PathVariable String                        userId,
+                                                              @PathVariable String                        definitionGUID,
+                                                              @PathVariable String                        elementGUID,
+                                                              @RequestParam(required = false, defaultValue = "false")
+                                                              boolean                       forLineage,
+                                                              @RequestParam (required = false, defaultValue = "false")
+                                                              boolean                       forDuplicateProcessing,
+                                                              @RequestBody  (required = false)
+                                                              EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.removeGovernanceDefinitionFromElement(serverName, userId, definitionGUID, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 }
