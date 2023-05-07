@@ -5,9 +5,6 @@ package org.odpi.openmetadata.accessservices.assetmanager.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serial;
-import java.io.Serializable;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -24,11 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MetadataCorrelationProperties extends ExternalIdentifierProperties
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    private String                   assetManagerGUID           = null;
-    private String                   assetManagerName           = null;
+    private String assetManagerGUID = null;
+    private String assetManagerName = null;
 
 
     /**

@@ -1,13 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.assetmanager.rest;
+package org.odpi.openmetadata.viewservices.glossaryworkflow.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CommentElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermStatus;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermRelationshipStatus;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.AssetManagerOMASAPIResponse;
 
 import java.io.Serial;
 import java.util.ArrayList;
@@ -19,23 +19,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * GlossaryTermStatusListResponse is a response object for passing back a list of enum values or an exception if the request failed.
+ * GlossaryTermRelationshipStatusListResponse is a response object for passing back a list of enum values or an exception if the request failed.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GlossaryTermStatusListResponse extends AssetManagerOMASAPIResponse
+public class GlossaryTermRelationshipStatusListResponse extends AssetManagerOMASAPIResponse
 {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private List<GlossaryTermStatus> statuses = null;
+    private List<GlossaryTermRelationshipStatus> statuses = null;
 
 
     /**
      * Default constructor
      */
-    public GlossaryTermStatusListResponse()
+    public GlossaryTermRelationshipStatusListResponse()
     {
     }
 
@@ -45,7 +45,7 @@ public class GlossaryTermStatusListResponse extends AssetManagerOMASAPIResponse
      *
      * @param template object to copy
      */
-    public GlossaryTermStatusListResponse(GlossaryTermStatusListResponse template)
+    public GlossaryTermRelationshipStatusListResponse(GlossaryTermRelationshipStatusListResponse template)
     {
         super(template);
 
@@ -61,7 +61,7 @@ public class GlossaryTermStatusListResponse extends AssetManagerOMASAPIResponse
      *
      * @return result object
      */
-    public List<GlossaryTermStatus> getStatuses()
+    public List<GlossaryTermRelationshipStatus> getStatuses()
     {
         if (statuses == null)
         {
@@ -83,7 +83,7 @@ public class GlossaryTermStatusListResponse extends AssetManagerOMASAPIResponse
      *
      * @param statuses result object
      */
-    public void setStatuses(List<GlossaryTermStatus> statuses)
+    public void setStatuses(List<GlossaryTermRelationshipStatus> statuses)
     {
         this.statuses = statuses;
     }
@@ -97,7 +97,7 @@ public class GlossaryTermStatusListResponse extends AssetManagerOMASAPIResponse
     @Override
     public String toString()
     {
-        return "GlossaryTermStatusListResponse{" +
+        return "GlossaryTermRelationshipStatusListResponse{" +
                        "statuses=" + statuses +
                        ", exceptionClassName='" + getExceptionClassName() + '\'' +
                        ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
@@ -134,7 +134,7 @@ public class GlossaryTermStatusListResponse extends AssetManagerOMASAPIResponse
         {
             return false;
         }
-        GlossaryTermStatusListResponse that = (GlossaryTermStatusListResponse) objectToCompare;
+        GlossaryTermRelationshipStatusListResponse that = (GlossaryTermRelationshipStatusListResponse) objectToCompare;
         return Objects.equals(statuses, that.statuses);
     }
 

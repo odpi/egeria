@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.assetmanager.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serial;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
@@ -21,9 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DataStoreProperties extends DataAssetProperties
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private String              pathName            = null;
     private Date                createTime          = null;
     private Date                modifiedTime        = null;

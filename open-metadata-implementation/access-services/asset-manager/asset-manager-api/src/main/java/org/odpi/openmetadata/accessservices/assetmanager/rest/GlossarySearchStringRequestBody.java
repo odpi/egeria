@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermStatus;
 
-import java.io.Serial;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,9 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GlossarySearchStringRequestBody extends SearchStringRequestBody
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private String                   glossaryGUID         = null;
     private List<GlossaryTermStatus> limitResultsByStatus = null;
 

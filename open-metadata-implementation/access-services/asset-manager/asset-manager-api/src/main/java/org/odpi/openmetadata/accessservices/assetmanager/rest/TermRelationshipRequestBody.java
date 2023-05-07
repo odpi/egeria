@@ -6,10 +6,8 @@ package org.odpi.openmetadata.accessservices.assetmanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermCategorization;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermRelationship;
 
-import java.io.Serial;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -24,9 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TermRelationshipRequestBody extends AssetManagerIdentifiersRequestBody
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private GlossaryTermRelationship properties = null;
 
 

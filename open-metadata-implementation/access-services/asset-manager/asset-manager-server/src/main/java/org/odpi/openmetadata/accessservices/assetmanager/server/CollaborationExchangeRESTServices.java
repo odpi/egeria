@@ -9,7 +9,6 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.LikeEl
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RatingElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.CommentProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.FeedbackProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.LikeProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteLogProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.RatingProperties;
@@ -65,7 +64,6 @@ public class CollaborationExchangeRESTServices
     public CollaborationExchangeRESTServices()
     {
     }
-
 
 
     /**
@@ -209,11 +207,12 @@ public class CollaborationExchangeRESTServices
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse addLikeToElement(String         serverName,
                                          String         userId,
                                          String         guid,
                                          boolean        isPublic,
-                                         LikeProperties requestBody)
+                                         NullRequestBody requestBody)
     {
         final String methodName        = "addLikeToElement";
         final String guidParameterName = "guid";
@@ -360,6 +359,7 @@ public class CollaborationExchangeRESTServices
                                                            commentProperties,
                                                            forLineage,
                                                            forDuplicateProcessing,
+                                                           requestBody.getEffectiveTime(),
                                                            methodName));
                 }
                 else
@@ -431,6 +431,7 @@ public class CollaborationExchangeRESTServices
                                                            commentProperties,
                                                            forLineage,
                                                            forDuplicateProcessing,
+                                                           requestBody.getEffectiveTime(),
                                                            methodName));
                 }
                 else
@@ -904,9 +905,9 @@ public class CollaborationExchangeRESTServices
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse createTag(String         serverName,
-                                  String         userId,
-                                  TagProperties requestBody)
+    public GUIDResponse createInformalTag(String        serverName,
+                                          String        userId,
+                                          TagProperties requestBody)
     {
         final String   methodName = "createTag";
 
@@ -1645,7 +1646,7 @@ public class CollaborationExchangeRESTServices
                                       boolean                        forDuplicateProcessing,
                                       ReferenceableUpdateRequestBody requestBody)
     {
-        final String methodName                 = "updateNoteLog";
+        final String methodName = "updateNoteLog";
 
         RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
 

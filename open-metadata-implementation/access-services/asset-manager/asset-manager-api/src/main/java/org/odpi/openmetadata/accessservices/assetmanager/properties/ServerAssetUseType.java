@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -24,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public enum ServerAssetUseType implements Serializable
+public enum ServerAssetUseType
 {
     /**
      * Owns - The asset is managed and updated via this relationship.
@@ -50,8 +48,6 @@ public enum ServerAssetUseType implements Serializable
      * Other - None of the above.
      */
     OTHER     (99, 99, "Other",    "None of the above.");
-
-    private static final long serialVersionUID = 1L;
 
     private static final String ENUM_TYPE_GUID  = "09439481-9489-467c-9ae5-178a6e0b6b5a";
     private static final String ENUM_TYPE_NAME  = "ServerAssetUseType";

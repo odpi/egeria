@@ -67,6 +67,34 @@ public class RESTExceptionHandler
     /**
      * Manage an unexpected exception
      *
+     * @param userId calling user
+     * @param methodName method that caught the exception
+     * @param serverName name of the server being called
+     * @param className name of the class to supply
+     * @throws InvalidParameterException exception to report error
+     */
+    public void handleNoRequestBody(String      userId,
+                                    String      methodName,
+                                    String      serverName,
+                                    String      className) throws InvalidParameterException
+    {
+        InvalidParameterException error =
+                new InvalidParameterException(OMAGCommonErrorCode.NO_REQUEST_BODY_FOR_CLASS.getMessageDefinition(userId,
+                                                                                                                 methodName,
+                                                                                                                 serverName,
+                                                                                                                 className),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              "requestBody");
+
+        log.error("No rest body supplied", error);
+        throw error;
+    }
+
+
+    /**
+     * Manage an unexpected exception
+     *
      * @param parameterName name of null parameter - use to help locate where the problem is
      * @param methodName method that caught the exception
      * @throws InvalidParameterException exception to report error

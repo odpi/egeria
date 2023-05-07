@@ -6,9 +6,11 @@ package org.odpi.openmetadata.accessservices.assetmanager.server;
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.DataAssetExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.GlossaryExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.AssetElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GovernanceDefinitionElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SoftwareCapabilityElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetOriginProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.DataFieldValuesProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.FindAssetOriginProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.FindNameProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GovernanceClassificationProperties;
@@ -24,6 +26,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQuery
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ElementStubsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.FindByPropertiesRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermElementsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceDefinitionsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.RelatedElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
@@ -31,6 +34,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.GovernanceDefinitionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
@@ -56,6 +60,268 @@ public class StewardshipExchangeRESTServices
      */
     public StewardshipExchangeRESTServices()
     {
+    }
+
+
+    /**
+     * Classify the element to indicate that it describes a data field and supply
+     * properties that describe the characteristics of the data values found within.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to classify
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    public VoidResponse setDataFieldClassification(String                    serverName,
+                                                   String                    userId,
+                                                   String                    elementGUID,
+                                                   boolean                   forLineage,
+                                                   boolean                   forDuplicateProcessing,
+                                                   ClassificationRequestBody requestBody)
+    {
+        final String methodName = "setDataFieldClassification";
+        final String elementGUIDParameter = "elementGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getAssetManagerHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof DataFieldValuesProperties properties)
+                {
+
+                    handler.addDataFieldValuesClassification(userId,
+                                                             elementGUID,
+                                                             elementGUIDParameter,
+                                                             OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                             properties.getDefaultValue(),
+                                                             properties.getSampleValues(),
+                                                             properties.getDataPattern(),
+                                                             properties.getNamePattern(),
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             requestBody.getEffectiveTime(),
+                                                             methodName);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.addDataFieldValuesClassification(userId,
+                                                             elementGUID,
+                                                             elementGUIDParameter,
+                                                             OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                             null,
+                                                             null,
+                                                             null,
+                                                             null,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             requestBody.getEffectiveTime(),
+                                                             methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(GovernanceClassificationProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                handler.addDataFieldValuesClassification(userId,
+                                                         elementGUID,
+                                                         elementGUIDParameter,
+                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                         null,
+                                                         null,
+                                                         null,
+                                                         null,
+                                                         forLineage,
+                                                         forDuplicateProcessing,
+                                                         null,
+                                                         methodName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove the data fields classification from the element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *       InvalidParameterException full path or userId is null or
+     *       PropertyServerException problem accessing property server or
+     *       UserNotAuthorizedException security access problem
+     */
+    public VoidResponse clearDataFieldClassification(String                    serverName,
+                                                     String                    userId,
+                                                     String                    elementGUID,
+                                                     boolean                   forLineage,
+                                                     boolean                   forDuplicateProcessing,
+                                                     ClassificationRequestBody requestBody)
+    {
+        final String   methodName = "clearDataFieldClassification";
+        final String   elementGUIDParameter = "elementGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getAssetManagerHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.removeDataFieldValuesClassification(userId,
+                                                            elementGUID,
+                                                            elementGUIDParameter,
+                                                            OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                            forLineage,
+                                                            forDuplicateProcessing,
+                                                            requestBody.getEffectiveTime(),
+                                                            methodName);
+            }
+            else
+            {
+                handler.removeDataFieldValuesClassification(userId,
+                                                            elementGUID,
+                                                            elementGUIDParameter,
+                                                            OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                            forLineage,
+                                                            forDuplicateProcessing,
+                                                            null,
+                                                            methodName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return information about the elements classified with the confidence classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    public ElementStubsResponse getDataFieldClassifiedElements(String                      serverName,
+                                                                String                      userId,
+                                                                int                         startFrom,
+                                                                int                         pageSize,
+                                                                boolean                     forLineage,
+                                                                boolean                     forDuplicateProcessing,
+                                                                FindByPropertiesRequestBody requestBody)
+    {
+        final String methodName = "getConfidenceClassifiedElements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        ElementStubsResponse response = new ElementStubsResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ReferenceableHandler<ElementStub> handler = instanceHandler.getElementStubHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
+                {
+                    response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
+                                                                                          OpenMetadataAPIMapper.CONFIDENCE_CLASSIFICATION_TYPE_NAME,
+                                                                                          properties.getReturnSpecificLevel(),
+                                                                                          properties.getLevelIdentifier(),
+                                                                                          startFrom,
+                                                                                          pageSize,
+                                                                                          forLineage,
+                                                                                          forDuplicateProcessing,
+                                                                                          requestBody.getEffectiveTime(),
+                                                                                          methodName));
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
+                                                                                          OpenMetadataAPIMapper.CONFIDENCE_CLASSIFICATION_TYPE_NAME,
+                                                                                          false,
+                                                                                          0,
+                                                                                          startFrom,
+                                                                                          pageSize,
+                                                                                          forLineage,
+                                                                                          forDuplicateProcessing,
+                                                                                          requestBody.getEffectiveTime(),
+                                                                                          methodName));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(LevelIdentifierProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
+                                                                                      OpenMetadataAPIMapper.CONFIDENCE_CLASSIFICATION_TYPE_NAME,
+                                                                                      false,
+                                                                                      0,
+                                                                                      startFrom,
+                                                                                      pageSize,
+                                                                                      forLineage,
+                                                                                      forDuplicateProcessing,
+                                                                                      null,
+                                                                                      methodName));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
     }
 
 
@@ -207,51 +473,55 @@ public class StewardshipExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getAssetManagerHandler(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof GovernanceClassificationProperties properties)
+                if (requestBody.getMetadataCorrelationProperties() != null)
                 {
-                    SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getAssetManagerHandler(userId, serverName, methodName);
-
-                    if (requestBody.getMetadataCorrelationProperties() != null)
-                    {
-                        handler.removeGovernanceActionClassification(userId,
-                                                                     requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
-                                                                     requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
-                                                                     elementGUID,
-                                                                     elementGUIDParameter,
-                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                     OpenMetadataAPIMapper.CONFIDENCE_CLASSIFICATION_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.CONFIDENCE_CLASSIFICATION_TYPE_NAME,
-                                                                     forLineage,
-                                                                     forDuplicateProcessing,
-                                                                     properties.getEffectiveFrom(),
-                                                                     methodName);
-                    }
-                    else
-                    {
-                        handler.removeGovernanceActionClassification(userId,
-                                                                     null,
-                                                                     null,
-                                                                     elementGUID,
-                                                                     elementGUIDParameter,
-                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                     OpenMetadataAPIMapper.CONFIDENCE_CLASSIFICATION_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.CONFIDENCE_CLASSIFICATION_TYPE_NAME,
-                                                                     forLineage,
-                                                                     forDuplicateProcessing,
-                                                                     properties.getEffectiveFrom(),
-                                                                     methodName);
-                    }
+                    handler.removeGovernanceActionClassification(userId,
+                                                                 requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
+                                                                 requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
+                                                                 elementGUID,
+                                                                 elementGUIDParameter,
+                                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                 OpenMetadataAPIMapper.CONFIDENCE_CLASSIFICATION_TYPE_GUID,
+                                                                 OpenMetadataAPIMapper.CONFIDENCE_CLASSIFICATION_TYPE_NAME,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 requestBody.getEffectiveTime(),
+                                                                 methodName);
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(GovernanceClassificationProperties.class.getName(), methodName);
+                    handler.removeGovernanceActionClassification(userId,
+                                                                 null,
+                                                                 null,
+                                                                 elementGUID,
+                                                                 elementGUIDParameter,
+                                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                 OpenMetadataAPIMapper.CONFIDENCE_CLASSIFICATION_TYPE_GUID,
+                                                                 OpenMetadataAPIMapper.CONFIDENCE_CLASSIFICATION_TYPE_NAME,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 requestBody.getEffectiveTime(),
+                                                                 methodName);
                 }
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.removeGovernanceActionClassification(userId,
+                                                             null,
+                                                             null,
+                                                             elementGUID,
+                                                             elementGUIDParameter,
+                                                             OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                             OpenMetadataAPIMapper.CONFIDENCE_CLASSIFICATION_TYPE_GUID,
+                                                             OpenMetadataAPIMapper.CONFIDENCE_CLASSIFICATION_TYPE_NAME,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             null,
+                                                             methodName);
             }
         }
         catch (Exception error)
@@ -504,51 +774,55 @@ public class StewardshipExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getAssetManagerHandler(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof GovernanceClassificationProperties properties)
+                if (requestBody.getMetadataCorrelationProperties() != null)
                 {
-                    SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getAssetManagerHandler(userId, serverName, methodName);
-
-                    if (requestBody.getMetadataCorrelationProperties() != null)
-                    {
-                        handler.removeGovernanceActionClassification(userId,
-                                                                     requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
-                                                                     requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
-                                                                     elementGUID,
-                                                                     elementGUIDParameter,
-                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                     OpenMetadataAPIMapper.CRITICALITY_CLASSIFICATION_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.CRITICALITY_CLASSIFICATION_TYPE_NAME,
-                                                                     forLineage,
-                                                                     forDuplicateProcessing,
-                                                                     properties.getEffectiveFrom(),
-                                                                     methodName);
-                    }
-                    else
-                    {
-                        handler.removeGovernanceActionClassification(userId,
-                                                                     null,
-                                                                     null,
-                                                                     elementGUID,
-                                                                     elementGUIDParameter,
-                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                     OpenMetadataAPIMapper.CRITICALITY_CLASSIFICATION_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.CRITICALITY_CLASSIFICATION_TYPE_NAME,
-                                                                     forLineage,
-                                                                     forDuplicateProcessing,
-                                                                     properties.getEffectiveFrom(),
-                                                                     methodName);
-                    }
+                    handler.removeGovernanceActionClassification(userId,
+                                                                 requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
+                                                                 requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
+                                                                 elementGUID,
+                                                                 elementGUIDParameter,
+                                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                 OpenMetadataAPIMapper.CRITICALITY_CLASSIFICATION_TYPE_GUID,
+                                                                 OpenMetadataAPIMapper.CRITICALITY_CLASSIFICATION_TYPE_NAME,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 requestBody.getEffectiveTime(),
+                                                                 methodName);
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(GovernanceClassificationProperties.class.getName(), methodName);
+                    handler.removeGovernanceActionClassification(userId,
+                                                                 null,
+                                                                 null,
+                                                                 elementGUID,
+                                                                 elementGUIDParameter,
+                                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                 OpenMetadataAPIMapper.CRITICALITY_CLASSIFICATION_TYPE_GUID,
+                                                                 OpenMetadataAPIMapper.CRITICALITY_CLASSIFICATION_TYPE_NAME,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 requestBody.getEffectiveTime(),
+                                                                 methodName);
                 }
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.removeGovernanceActionClassification(userId,
+                                                             null,
+                                                             null,
+                                                             elementGUID,
+                                                             elementGUIDParameter,
+                                                             OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                             OpenMetadataAPIMapper.CRITICALITY_CLASSIFICATION_TYPE_GUID,
+                                                             OpenMetadataAPIMapper.CRITICALITY_CLASSIFICATION_TYPE_NAME,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             null,
+                                                             methodName);
             }
         }
         catch (Exception error)
@@ -803,51 +1077,55 @@ public class StewardshipExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getAssetManagerHandler(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof GovernanceClassificationProperties properties)
+                if (requestBody.getMetadataCorrelationProperties() != null)
                 {
-                    SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getAssetManagerHandler(userId, serverName, methodName);
-
-                    if (requestBody.getMetadataCorrelationProperties() != null)
-                    {
-                        handler.removeGovernanceActionClassification(userId,
-                                                                     requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
-                                                                     requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
-                                                                     elementGUID,
-                                                                     elementGUIDParameter,
-                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                     OpenMetadataAPIMapper.CONFIDENTIALITY_CLASSIFICATION_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.CONFIDENTIALITY_CLASSIFICATION_TYPE_NAME,
-                                                                     forLineage,
-                                                                     forDuplicateProcessing,
-                                                                     properties.getEffectiveFrom(),
-                                                                     methodName);
-                    }
-                    else
-                    {
-                        handler.removeGovernanceActionClassification(userId,
-                                                                     null,
-                                                                     null,
-                                                                     elementGUID,
-                                                                     elementGUIDParameter,
-                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                     OpenMetadataAPIMapper.CONFIDENTIALITY_CLASSIFICATION_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.CONFIDENTIALITY_CLASSIFICATION_TYPE_NAME,
-                                                                     forLineage,
-                                                                     forDuplicateProcessing,
-                                                                     properties.getEffectiveFrom(),
-                                                                     methodName);
-                    }
+                    handler.removeGovernanceActionClassification(userId,
+                                                                 requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
+                                                                 requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
+                                                                 elementGUID,
+                                                                 elementGUIDParameter,
+                                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                 OpenMetadataAPIMapper.CONFIDENTIALITY_CLASSIFICATION_TYPE_GUID,
+                                                                 OpenMetadataAPIMapper.CONFIDENTIALITY_CLASSIFICATION_TYPE_NAME,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 requestBody.getEffectiveTime(),
+                                                                 methodName);
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(GovernanceClassificationProperties.class.getName(), methodName);
+                    handler.removeGovernanceActionClassification(userId,
+                                                                 null,
+                                                                 null,
+                                                                 elementGUID,
+                                                                 elementGUIDParameter,
+                                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                 OpenMetadataAPIMapper.CONFIDENTIALITY_CLASSIFICATION_TYPE_GUID,
+                                                                 OpenMetadataAPIMapper.CONFIDENTIALITY_CLASSIFICATION_TYPE_NAME,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 requestBody.getEffectiveTime(),
+                                                                 methodName);
                 }
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.removeGovernanceActionClassification(userId,
+                                                             null,
+                                                             null,
+                                                             elementGUID,
+                                                             elementGUIDParameter,
+                                                             OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                             OpenMetadataAPIMapper.CONFIDENTIALITY_CLASSIFICATION_TYPE_GUID,
+                                                             OpenMetadataAPIMapper.CONFIDENTIALITY_CLASSIFICATION_TYPE_NAME,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             null,
+                                                             methodName);
             }
         }
         catch (Exception error)
@@ -1103,48 +1381,49 @@ public class StewardshipExchangeRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getAssetManagerHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof GovernanceClassificationProperties properties)
+                if (requestBody.getMetadataCorrelationProperties() != null)
                 {
-                    SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getAssetManagerHandler(userId, serverName, methodName);
-
-                    if (requestBody.getMetadataCorrelationProperties() != null)
-                    {
-                        handler.removeRetentionClassification(userId,
-                                                              requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
-                                                              requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
-                                                              elementGUID,
-                                                              elementGUIDParameter,
-                                                              OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                              forLineage,
-                                                              forDuplicateProcessing,
-                                                              properties.getEffectiveFrom(),
-                                                              methodName);
-                    }
-                    else
-                    {
-                        handler.removeRetentionClassification(userId,
-                                                              null,
-                                                              null,
-                                                              elementGUID,
-                                                              elementGUIDParameter,
-                                                              OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                              forLineage,
-                                                              forDuplicateProcessing,
-                                                              properties.getEffectiveFrom(),
-                                                              methodName);
-                    }
+                    handler.removeRetentionClassification(userId,
+                                                          requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
+                                                          requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
+                                                          elementGUID,
+                                                          elementGUIDParameter,
+                                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          requestBody.getEffectiveTime(),
+                                                          methodName);
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(GovernanceClassificationProperties.class.getName(), methodName);
+                    handler.removeRetentionClassification(userId,
+                                                          null,
+                                                          null,
+                                                          elementGUID,
+                                                          elementGUIDParameter,
+                                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          requestBody.getEffectiveTime(),
+                                                          methodName);
                 }
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.removeRetentionClassification(userId,
+                                                      null,
+                                                      null,
+                                                      elementGUID,
+                                                      elementGUIDParameter,
+                                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                      forLineage,
+                                                      forDuplicateProcessing,
+                                                      null,
+                                                      methodName);
             }
         }
         catch (Exception error)
@@ -1827,7 +2106,7 @@ public class StewardshipExchangeRESTServices
 
 
     /**
-     * Return information about the elements classified with the confidence classification.
+     * Return information about the assets from a specific origin.
      *
      * @param serverName  name of the server instance to connect to
      * @param userId calling user
@@ -2455,7 +2734,7 @@ public class StewardshipExchangeRESTServices
                                                         boolean                       forDuplicateProcessing,
                                                         EffectiveTimeQueryRequestBody requestBody)
     {
-        final String methodName = "getMeanings";
+        final String methodName = "getSemanticAssignees";
         final String elementGUIDParameterName = "glossaryTermGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -2541,12 +2820,13 @@ public class StewardshipExchangeRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getAssetManagerHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof SemanticAssignmentProperties properties)
+
+                if (requestBody.getProperties() != null)
                 {
-                    SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getAssetManagerHandler(userId, serverName, methodName);
 
                     handler.addGovernedBy(userId,
                                           requestBody.getAssetManagerGUID(),
@@ -2555,8 +2835,8 @@ public class StewardshipExchangeRESTServices
                                           definitionGUIDParameterName,
                                           elementGUID,
                                           elementGUIDParameterName,
-                                          properties.getEffectiveFrom(),
-                                          properties.getEffectiveTo(),
+                                          requestBody.getProperties().getEffectiveFrom(),
+                                          requestBody.getProperties().getEffectiveTo(),
                                           forLineage,
                                           forDuplicateProcessing,
                                           requestBody.getEffectiveTime(),
@@ -2564,12 +2844,36 @@ public class StewardshipExchangeRESTServices
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SemanticAssignmentProperties.class.getName(), methodName);
+                    handler.addGovernedBy(userId,
+                                          requestBody.getAssetManagerGUID(),
+                                          requestBody.getAssetManagerName(),
+                                          definitionGUID,
+                                          definitionGUIDParameterName,
+                                          elementGUID,
+                                          elementGUIDParameterName,
+                                          null,
+                                          null,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          requestBody.getEffectiveTime(),
+                                          methodName);
                 }
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.addGovernedBy(userId,
+                                      null,
+                                      null,
+                                      definitionGUID,
+                                      definitionGUIDParameterName,
+                                      elementGUID,
+                                      elementGUIDParameterName,
+                                      null,
+                                      null,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      null,
+                                      methodName);
             }
         }
         catch (Exception error)
@@ -2661,11 +2965,11 @@ public class StewardshipExchangeRESTServices
 
 
     /**
-     * Retrieve the elements linked via a "GovernedBy" relationship to the requested governance definition.
+     * Retrieve the governance definitions linked via a "GovernedBy" relationship to the requested element.
      *
      * @param serverName  name of the server instance to connect to
      * @param userId calling user
-     * @param governanceDefinitionGUID unique identifier of the glossary term that the returned elements are linked to
+     * @param governanceDefinitionGUID unique identifier of the governance definition that the returned elements are linked to
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param forLineage return elements marked with the Memento classification?
@@ -2724,6 +3028,242 @@ public class StewardshipExchangeRESTServices
                                                                     forDuplicateProcessing,
                                                                     requestBody.getEffectiveTime(),
                                                                     methodName));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the elements linked via a "GovernedBy" relationship to the requested governance definition.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element that the returned elements are linked to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public GovernanceDefinitionsResponse getGovernedByDefinitions(String                        serverName,
+                                                                  String                        userId,
+                                                                  String                        elementGUID,
+                                                                  int                           startFrom,
+                                                                  int                           pageSize,
+                                                                  boolean                       forLineage,
+                                                                  boolean                       forDuplicateProcessing,
+                                                                  EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName = "getGovernedByDefinitions";
+        final String elementGUIDParameterName = "elementGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GovernanceDefinitionsResponse response = new GovernanceDefinitionsResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GovernanceDefinitionHandler<GovernanceDefinitionElement> handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                response.setElements(handler.getGoverningDefinitions(userId,
+                                                                     elementGUID,
+                                                                     elementGUIDParameterName,
+                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                     OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                                     startFrom,
+                                                                     pageSize,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     null,
+                                                                     methodName));
+            }
+            else
+            {
+                response.setElements(handler.getGoverningDefinitions(userId,
+                                                                     elementGUID,
+                                                                     elementGUIDParameterName,
+                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                     OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                                     startFrom,
+                                                                     pageSize,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     requestBody.getEffectiveTime(),
+                                                                     methodName));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the elements linked via a "SourceFrom" relationship to the requested element.
+     * The elements returned were used to create the requested element.  Typically only one element is returned.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the governance definition that the returned elements are linked to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public RelatedElementsResponse getSourceElements(String                        serverName,
+                                                     String                        userId,
+                                                     String                        elementGUID,
+                                                     int                           startFrom,
+                                                     int                           pageSize,
+                                                     boolean                       forLineage,
+                                                     boolean                       forDuplicateProcessing,
+                                                     EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName = "getSourceElements";
+        final String elementGUIDParameterName = "elementGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                response.setElementList(handler.getSourceElements(userId,
+                                                                  elementGUID,
+                                                                  elementGUIDParameterName,
+                                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                  startFrom,
+                                                                  pageSize,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing,
+                                                                  null,
+                                                                  methodName));
+            }
+            else
+            {
+                response.setElementList(handler.getSourceElements(userId,
+                                                                  elementGUID,
+                                                                  elementGUIDParameterName,
+                                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                  startFrom,
+                                                                  pageSize,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing,
+                                                                  requestBody.getEffectiveTime(),
+                                                                  methodName));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the elements linked via a "SourceFrom" relationship to the requested element.
+     * The elements returned were created using the requested element as a template.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element that the returned elements are linked to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public RelatedElementsResponse getElementsSourceFrom(String                        serverName,
+                                                         String                        userId,
+                                                         String                        elementGUID,
+                                                         int                           startFrom,
+                                                         int                           pageSize,
+                                                         boolean                       forLineage,
+                                                         boolean                       forDuplicateProcessing,
+                                                         EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName = "getElementsSourceFrom";
+        final String elementGUIDParameterName = "elementGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                response.setElementList(handler.getElementsSourceFrom(userId,
+                                                                      elementGUID,
+                                                                      elementGUIDParameterName,
+                                                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                      startFrom,
+                                                                      pageSize,
+                                                                      forLineage,
+                                                                      forDuplicateProcessing,
+                                                                      null,
+                                                                      methodName));
+            }
+            else
+            {
+                response.setElementList(handler.getElementsSourceFrom(userId,
+                                                                      elementGUID,
+                                                                      elementGUIDParameterName,
+                                                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                      startFrom,
+                                                                      pageSize,
+                                                                      forLineage,
+                                                                      forDuplicateProcessing,
+                                                                      requestBody.getEffectiveTime(),
+                                                                      methodName));
             }
         }
         catch (Exception error)

@@ -10,8 +10,6 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTerm
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermStatus;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -25,11 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ControlledGlossaryTermRequestBody implements Serializable
+public class ControlledGlossaryTermRequestBody
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private MetadataCorrelationProperties metadataCorrelationProperties = null;
     private GlossaryTermProperties        elementProperties = null;
     private GlossaryTermStatus            initialStatus = null;

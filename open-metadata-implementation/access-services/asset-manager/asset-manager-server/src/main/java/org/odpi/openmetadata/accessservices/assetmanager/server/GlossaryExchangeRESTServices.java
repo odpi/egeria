@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.accessservices.assetmanager.server;
 
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.GlossaryExchangeHandler;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.ActivityDescriptionProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.CanonicalVocabularyProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.DataFieldValuesProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.EditingGlossaryProperties;
@@ -3082,24 +3083,24 @@ public class GlossaryExchangeRESTServices
                 if (requestBody.getProperties() instanceof DataFieldValuesProperties properties)
                 {
                     handler.setTermAsDataField(userId,
-                                               requestBody.getMetadataCorrelationProperties(),
-                                               glossaryTermGUID,
-                                               properties,
-                                               forLineage,
-                                               forDuplicateProcessing,
-                                               requestBody.getEffectiveTime(),
-                                               methodName);
+                                                  requestBody.getMetadataCorrelationProperties(),
+                                                  glossaryTermGUID,
+                                                  properties,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
+                                                  requestBody.getEffectiveTime(),
+                                                  methodName);
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     handler.setTermAsDataField(userId,
-                                               requestBody.getMetadataCorrelationProperties(),
-                                               glossaryTermGUID,
-                                               null,
-                                               forLineage,
-                                               forDuplicateProcessing,
-                                               requestBody.getEffectiveTime(),
-                                               methodName);
+                                                  requestBody.getMetadataCorrelationProperties(),
+                                                  glossaryTermGUID,
+                                                  null,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
+                                                  requestBody.getEffectiveTime(),
+                                                  methodName);
                 }
                 else
                 {

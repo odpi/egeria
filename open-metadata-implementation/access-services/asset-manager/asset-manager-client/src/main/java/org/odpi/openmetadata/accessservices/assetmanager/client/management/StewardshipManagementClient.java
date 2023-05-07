@@ -11,6 +11,9 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Glossa
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GovernanceDefinitionElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetOriginProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.DataFieldQueryProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.DataFieldValuesProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.FindAssetOriginProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GovernanceClassificationProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.OwnerProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.RetentionClassificationProperties;
@@ -132,6 +135,101 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
 
 
     /**
+     * Classify the element to indicate that it describes a data field and supply
+     * properties that describe the characteristics of the data values found within.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param properties descriptive properties for the data field
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void setElementAsDataField(String                    userId,
+                                      String                    elementGUID,
+                                      DataFieldValuesProperties properties,
+                                      Date                      effectiveTime,
+                                      boolean                   forLineage,
+                                      boolean                   forDuplicateProcessing) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        client.setElementAsDataField(userId, null, null, elementGUID, null, properties, effectiveTime, forLineage, forDuplicateProcessing);
+    }
+
+
+    /**
+     * Remove the data field designation from the element.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void clearElementAsDataField(String  userId,
+                                        String  elementGUID,
+                                        Date    effectiveTime,
+                                        boolean forLineage,
+                                        boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        client.clearElementAsDataField(userId, null, null, elementGUID, null, effectiveTime, forLineage, forDuplicateProcessing);
+    }
+
+
+    /**
+     * Return information about the elements classified with the DataField classification.
+     *
+     * @param userId calling user
+     * @param properties values to match on
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of element stubs
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public List<ElementStub> getDataFieldClassifiedElements(String                   userId,
+                                                            DataFieldQueryProperties properties,
+                                                            int                      startFrom,
+                                                            int                      pageSize,
+                                                            Date                     effectiveTime,
+                                                            boolean                  forLineage,
+                                                            boolean                  forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                    UserNotAuthorizedException,
+                                                                                                                    PropertyServerException
+    {
+        return client.getDataFieldClassifiedElements(userId,
+                                                      null,
+                                                      null,
+                                                      properties,
+                                                      startFrom,
+                                                      pageSize,
+                                                      effectiveTime,
+                                                      forLineage,
+                                                      forDuplicateProcessing);
+    }
+
+
+    /**
      * Classify/reclassify the element (typically an asset) to indicate the level of confidence that the organization
      * has that the data is complete, accurate and up-to-date.  The level of confidence is expressed by the
      * levelIdentifier property.
@@ -196,6 +294,9 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * @param levelIdentifier the identifier to filter by (if returnSpecificLevel=true)
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of element stubs
      *
@@ -208,9 +309,12 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
                                                              boolean returnSpecificLevel,
                                                              int     levelIdentifier,
                                                              int     startFrom,
-                                                             int     pageSize) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+                                                             int     pageSize,
+                                                             Date    effectiveTime,
+                                                             boolean forLineage,
+                                                             boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
     {
         return client.getConfidenceClassifiedElements(userId,
                                                       null,
@@ -219,9 +323,9 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
                                                       levelIdentifier,
                                                       startFrom,
                                                       pageSize,
-                                                      null,
-                                                      false,
-                                                      false);
+                                                      effectiveTime,
+                                                      forLineage,
+                                                      forDuplicateProcessing);
     }
 
 
@@ -292,6 +396,9 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * @param levelIdentifier the identifier to filter by (if returnSpecificLevel=true)
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of element stubs
      *
@@ -304,9 +411,12 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
                                                               boolean returnSpecificLevel,
                                                               int     levelIdentifier,
                                                               int     startFrom,
-                                                              int     pageSize) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+                                                              int     pageSize,
+                                                              Date    effectiveTime,
+                                                              boolean forLineage,
+                                                              boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
     {
         return client.getCriticalityClassifiedElements(userId,
                                                        null,
@@ -315,9 +425,9 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
                                                        levelIdentifier,
                                                        startFrom,
                                                        pageSize,
-                                                       null,
-                                                       false,
-                                                       false);
+                                                       effectiveTime,
+                                                       forLineage,
+                                                       forDuplicateProcessing);
     }
 
 
@@ -387,6 +497,9 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * @param levelIdentifier the identifier to filter by (if returnSpecificLevel=true)
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of element stubs
      *
@@ -399,9 +512,12 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
                                                                   boolean returnSpecificLevel,
                                                                   int     levelIdentifier,
                                                                   int     startFrom,
-                                                                  int     pageSize) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+                                                                  int     pageSize,
+                                                                  Date    effectiveTime,
+                                                                  boolean forLineage,
+                                                                  boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
     {
         return client.getConfidentialityClassifiedElements(userId,
                                                            null,
@@ -410,9 +526,9 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
                                                            levelIdentifier,
                                                            startFrom,
                                                            pageSize,
-                                                           null,
-                                                           false,
-                                                           false);
+                                                           effectiveTime,
+                                                           forLineage,
+                                                           forDuplicateProcessing);
     }
 
 
@@ -483,6 +599,9 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * @param basisIdentifier the identifier to filter by (if returnSpecificBasisIdentifier=true)
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of element stubs
      *
@@ -495,9 +614,12 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
                                                             boolean returnSpecificBasisIdentifier,
                                                             int     basisIdentifier,
                                                             int     startFrom,
-                                                            int     pageSize) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+                                                            int     pageSize,
+                                                            Date    effectiveTime,
+                                                            boolean forLineage,
+                                                            boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
     {
         return client.getRetentionClassifiedElements(userId,
                                                      null,
@@ -506,9 +628,9 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
                                                      basisIdentifier,
                                                      startFrom,
                                                      pageSize,
-                                                     null,
-                                                     false,
-                                                     false);
+                                                     effectiveTime,
+                                                     forLineage,
+                                                     forDuplicateProcessing);
     }
 
 
@@ -572,6 +694,9 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of element stubs
      *
@@ -582,18 +707,21 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
     @Override
     public List<ElementStub> getSecurityTaggedElements(String userId,
                                                        int    startFrom,
-                                                       int    pageSize) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+                                                       int    pageSize,
+                                                       Date    effectiveTime,
+                                                       boolean forLineage,
+                                                       boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
     {
         return client.getSecurityTaggedElements(userId,
                                                 null,
                                                 null,
                                                 startFrom,
                                                 pageSize,
-                                                null,
-                                                false,
-                                                false);
+                                                effectiveTime,
+                                                forLineage,
+                                                forDuplicateProcessing);
     }
 
 
@@ -658,6 +786,9 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * @param owner unique identifier for the owner
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of element stubs
      *
@@ -669,9 +800,12 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
     public List<ElementStub> getOwnersElements(String userId,
                                                String owner,
                                                int    startFrom,
-                                               int    pageSize) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+                                               int    pageSize,
+                                               Date    effectiveTime,
+                                               boolean forLineage,
+                                               boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
         return client.getOwnersElements(userId,
                                         null,
@@ -679,9 +813,9 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
                                         owner,
                                         startFrom,
                                         pageSize,
-                                        null,
-                                        false,
-                                        false);
+                                        effectiveTime,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -709,7 +843,15 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        client.addAssetOrigin(userId, null, null, assetGUID, null, properties, effectiveTime, forLineage, forDuplicateProcessing);
+        client.addAssetOrigin(userId,
+                              null,
+                              null,
+                              assetGUID,
+                              null,
+                              properties,
+                              effectiveTime,
+                              forLineage,
+                              forDuplicateProcessing);
     }
 
 
@@ -735,7 +877,14 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
-        client.clearAssetOrigin(userId, null, null, assetGUID, null, effectiveTime, forLineage, forDuplicateProcessing);
+        client.clearAssetOrigin(userId,
+                                null,
+                                null,
+                                assetGUID,
+                                null,
+                                effectiveTime,
+                                forLineage,
+                                forDuplicateProcessing);
     }
 
 
@@ -746,6 +895,9 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * @param properties values to search on - null means any value
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of the assets
      *
@@ -754,12 +906,15 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<AssetElement> getAssetsByOrigin(String                userId,
-                                                AssetOriginProperties properties,
-                                                int                   startFrom,
-                                                int                   pageSize) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+    public List<AssetElement> getAssetsByOrigin(String                    userId,
+                                                FindAssetOriginProperties properties,
+                                                int                       startFrom,
+                                                int                       pageSize,
+                                                Date                      effectiveTime,
+                                                boolean                   forLineage,
+                                                boolean                   forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
 
     {
         return client.getAssetsByOrigin(userId,
@@ -768,9 +923,9 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
                                         properties,
                                         startFrom,
                                         pageSize,
-                                        null,
-                                        false,
-                                        false);
+                                        effectiveTime,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -835,6 +990,9 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * @param subjectAreaName unique identifier for the subject area
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of element stubs
      *
@@ -846,9 +1004,12 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
     public List<ElementStub> getMembersOfSubjectArea(String userId,
                                                      String subjectAreaName,
                                                      int    startFrom,
-                                                     int    pageSize) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+                                                     int    pageSize,
+                                                     Date    effectiveTime,
+                                                     boolean forLineage,
+                                                     boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
 
     {
         return client.getMembersOfSubjectArea(userId,
@@ -857,9 +1018,9 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
                                               subjectAreaName,
                                               startFrom,
                                               pageSize,
-                                              null,
-                                              false,
-                                              false);
+                                              effectiveTime,
+                                              forLineage,
+                                              forDuplicateProcessing);
     }
 
 
@@ -928,6 +1089,9 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * @param elementGUID unique identifier of the element
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -938,9 +1102,12 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
     public List<GlossaryTermElement> getMeanings(String userId,
                                                  String elementGUID,
                                                  int    startFrom,
-                                                 int    pageSize) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+                                                 int    pageSize,
+                                                 Date    effectiveTime,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
 
     {
         return client.getMeanings(userId,
@@ -949,9 +1116,9 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
                                   elementGUID,
                                   startFrom,
                                   pageSize,
-                                  null,
-                                  false,
-                                  false);
+                                  effectiveTime,
+                                  forLineage,
+                                  forDuplicateProcessing);
     }
 
 
@@ -962,6 +1129,9 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * @param glossaryTermGUID unique identifier of the glossary term that the returned elements are linked to
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -972,9 +1142,12 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
     public List<RelatedElement> getSemanticAssignees(String userId,
                                                      String glossaryTermGUID,
                                                      int    startFrom,
-                                                     int    pageSize) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+                                                     int    pageSize,
+                                                     Date    effectiveTime,
+                                                     boolean forLineage,
+                                                     boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
 
     {
         return client.getSemanticAssignees(userId,
@@ -983,9 +1156,9 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
                                            glossaryTermGUID,
                                            startFrom,
                                            pageSize,
-                                           null,
-                                           false,
-                                           false);
+                                           effectiveTime,
+                                           forLineage,
+                                           forDuplicateProcessing);
     }
 
 
@@ -1053,6 +1226,9 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * @param elementGUID unique identifier of the element
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1063,9 +1239,12 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
     public List<GovernanceDefinitionElement> getGovernedByDefinitions(String userId,
                                                                       String elementGUID,
                                                                       int    startFrom,
-                                                                      int    pageSize) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException
+                                                                      int    pageSize,
+                                                                      Date    effectiveTime,
+                                                                      boolean forLineage,
+                                                                      boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                             UserNotAuthorizedException,
+                                                                                                             PropertyServerException
 
     {
         return client.getGovernedByDefinitions(userId,
@@ -1074,9 +1253,9 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
                                                elementGUID,
                                                startFrom,
                                                pageSize,
-                                               null,
-                                               false,
-                                               false);
+                                               effectiveTime,
+                                               forLineage,
+                                               forDuplicateProcessing);
     }
 
 
@@ -1084,9 +1263,12 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * Retrieve the elements linked via a "GovernedBy" relationship to the requested governance definition.
      *
      * @param userId calling user
-     * @param governanceDefinitionGUID unique identifier of the glossary term that the returned elements are linked to
+     * @param governanceDefinitionGUID unique identifier of the governance definition that the returned elements are linked to
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1094,12 +1276,15 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getGovernedElements(String userId,
-                                                    String governanceDefinitionGUID,
-                                                    int    startFrom,
-                                                    int    pageSize) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public List<RelatedElement> getGovernedElements(String  userId,
+                                                    String  governanceDefinitionGUID,
+                                                    int     startFrom,
+                                                    int     pageSize,
+                                                    Date    effectiveTime,
+                                                    boolean forLineage,
+                                                    boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
 
     {
         return client.getGovernedElements(userId,
@@ -1108,8 +1293,90 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
                                           governanceDefinitionGUID,
                                           startFrom,
                                           pageSize,
-                                          null,
-                                          false,
-                                          false);
+                                          effectiveTime,
+                                          forLineage,
+                                          forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve the elements linked via a "SourceFrom" relationship to the requested element.
+     * The elements returned were used to create the requested element.  Typically only one element is returned.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<RelatedElement> getSourceElements(String  userId,
+                                                  String  elementGUID,
+                                                  int     startFrom,
+                                                  int     pageSize,
+                                                  Date    effectiveTime,
+                                                  boolean forLineage,
+                                                  boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+
+    {
+        return client.getSourceElements(userId,
+                                        null,
+                                        null,
+                                        elementGUID,
+                                        startFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        forLineage,
+                                        forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve the elements linked via a "SourceFrom" relationship to the requested element.
+     * The elements returned were created using the requested element as a template.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element that the returned elements are linked to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<RelatedElement> getElementsSourceFrom(String  userId,
+                                                      String  elementGUID,
+                                                      int     startFrom,
+                                                      int     pageSize,
+                                                      Date    effectiveTime,
+                                                      boolean forLineage,
+                                                      boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+
+    {
+        return client.getElementsSourceFrom(userId,
+                                            null,
+                                            null,
+                                            elementGUID,
+                                            startFrom,
+                                            pageSize,
+                                            effectiveTime,
+                                            forLineage,
+                                            forDuplicateProcessing);
     }
 }

@@ -2,13 +2,55 @@
 /* Copyright Contributors to the ODPi Egeria project */
 package org.odpi.openmetadata.viewservices.glossarybrowser.server.spring;
 
-import io.swagger.v3.oas.annotations.Operation;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
-import org.odpi.openmetadata.viewservices.glossarybrowser.server.GlossaryBrowserRESTServices;
-import org.springframework.web.bind.annotation.*;
-
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.FeedbackProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.RatingProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.TagProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.CommentElementResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.CommentElementsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.ElementStubsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryCategoryElementResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryCategoryElementsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryElementResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryElementsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermElementResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermElementsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceDefinitionsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.NoteElementResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.NoteElementsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.NoteLogElementResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.NoteLogElementsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.RelatedElementsResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody;
+import org.odpi.openmetadata.viewservices.glossarybrowser.rest.FindByPropertiesRequestBody;
+import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryNameRequestBody;
+import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossarySearchStringRequestBody;
+import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryTermActivityTypeListResponse;
+import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryTermRelationshipRequestBody;
+import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryTermRelationshipStatusListResponse;
+import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryTermStatusListResponse;
+import org.odpi.openmetadata.viewservices.glossarybrowser.rest.HistoryRequestBody;
+import org.odpi.openmetadata.viewservices.glossarybrowser.rest.InformalTagUpdateRequestBody;
+import org.odpi.openmetadata.viewservices.glossarybrowser.rest.ReferenceableUpdateRequestBody;
+import org.odpi.openmetadata.viewservices.glossarybrowser.rest.RelationshipRequestBody;
+import org.odpi.openmetadata.viewservices.glossarybrowser.server.GlossaryBrowserRESTServices;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 
 
@@ -20,7 +62,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/view-services/glossary-browser/users/{userId}")
 
-@Tag(name="Glossary Browser OMVS", description="Explore the contents of a glossary.", externalDocs=@ExternalDocumentation(description="Glossary Browser View Service (OMVS)",url="https://egeria-project.org/services/omvs/glossary-browser/overview/"))
+@Tag(name="Glossary Browser OMVS", description="Explore the contents of a glossary, such as its top-level glossary element, glossary categories and glossary terms, along with the elements that are linked to the terms, such assets.  Each operation includes optional forLineage and forDuplicateProcessing request parameters and an optional request body that includes an effective time field.  These affect the elements that are returned on the query.", externalDocs=@ExternalDocumentation(description="Glossary Browser View Service (OMVS)",url="https://egeria-project.org/services/omvs/glossary-browser/overview/"))
 
 public class GlossaryBrowserResource
 {
@@ -48,7 +90,7 @@ public class GlossaryBrowserResource
     @Operation(summary="getGlossaryTermStatuses",
                description="Return the list of glossary term status enum values.",
                externalDocs=@ExternalDocumentation(description="Controlled glossary terms",
-                                                   url="https://egeria-project.org/services/omas/asset-manager/overview"))
+                                                   url="https://egeria-project.org/services/omvs/glossary-workflow/overview/#controlled-glossary-terms"))
 
 
     public GlossaryTermStatusListResponse getGlossaryTermStatuses(@PathVariable String serverName,
@@ -67,6 +109,11 @@ public class GlossaryBrowserResource
      */
     @GetMapping(path = "/glossaries/terms/relationships/status-list")
 
+    @Operation(summary="getGlossaryTermRelationshipStatuses",
+               description="Return the list of glossary term relationship status enum values.",
+               externalDocs=@ExternalDocumentation(description="Relationship statuses",
+                                                   url="https://egeria-project.org/services/omvs/glossary-workflow/overview/#relationship-statuses"))
+
     public GlossaryTermRelationshipStatusListResponse getGlossaryTermRelationshipStatuses(@PathVariable String serverName,
                                                                                           @PathVariable String userId)
     {
@@ -75,7 +122,7 @@ public class GlossaryBrowserResource
 
 
     /**
-     * Return the list of glossary term relationship status enum values.
+     * Return the list of glossary term activity type enum values.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
@@ -83,11 +130,17 @@ public class GlossaryBrowserResource
      */
     @GetMapping(path = "/glossaries/terms/activity-types")
 
+    @Operation(summary="getGlossaryTermActivityTypes",
+               description="Return the list of glossary term activity type enum values.",
+               externalDocs=@ExternalDocumentation(description="Activity description",
+                                                   url="https://egeria-project.org/types/3/0340-Dictionary/#activitydescription"))
+
     public GlossaryTermActivityTypeListResponse getGlossaryTermActivityTypes(@PathVariable String serverName,
                                                                              @PathVariable String userId)
     {
         return restAPI.getGlossaryTermActivityTypes(serverName, userId);
     }
+
 
     /**
      * Retrieve the list of glossary metadata elements that contain the search string.
@@ -109,6 +162,11 @@ public class GlossaryBrowserResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/by-search-string")
+
+    @Operation(summary="findGlossaries",
+               description="Retrieve the list of glossary metadata elements that contain the search string.  The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.",
+               externalDocs=@ExternalDocumentation(description="Glossary metadata element",
+                                                   url="https://egeria-project.org/types/3/0310-Glossary/"))
 
     public GlossaryElementsResponse findGlossaries(@PathVariable String                          serverName,
                                                    @PathVariable String                          userId,
@@ -149,6 +207,11 @@ public class GlossaryBrowserResource
      */
     @PostMapping(path = "/glossaries/by-name")
 
+    @Operation(summary="getGlossariesByName",
+               description="Retrieve the list of glossary metadata elements with an exactly matching qualified or display name. There are no wildcards supported on this request.",
+               externalDocs=@ExternalDocumentation(description="Glossary metadata element",
+                                                   url="https://egeria-project.org/types/3/0310-Glossary/"))
+    
     public GlossaryElementsResponse   getGlossariesByName(@PathVariable String                  serverName,
                                                           @PathVariable String                  userId,
                                                           @RequestParam int                     startFrom,
@@ -180,6 +243,11 @@ public class GlossaryBrowserResource
      */
     @PostMapping(path = "/glossaries/{glossaryGUID}/retrieve")
 
+    @Operation(summary="getGlossaryByGUID",
+               description="Retrieve the glossary metadata element with the supplied unique identifier.  The optional request body allows you to specify that the glossary element should only be returned if it was effective at a particular time.",
+               externalDocs=@ExternalDocumentation(description="Glossary metadata element",
+                                                   url="https://egeria-project.org/types/3/0310-Glossary/"))
+
     public GlossaryElementResponse getGlossaryByGUID(@PathVariable String                        serverName,
                                                      @PathVariable String                        userId,
                                                      @PathVariable String                        glossaryGUID,
@@ -193,12 +261,9 @@ public class GlossaryBrowserResource
         return restAPI.getGlossaryByGUID(serverName, userId, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
-
-
-
+    
     /**
      * Retrieve the list of glossary category metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
@@ -218,20 +283,27 @@ public class GlossaryBrowserResource
      */
     @PostMapping(path = "/glossaries/categories/by-search-string")
 
+    @Operation(summary="findGlossaryCategories",
+               description="Retrieve the list of glossary category metadata elements that contain the search string.  The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.  The request body also supports the specification of a glossaryGUID to restrict the search to within a single glossary.",
+               externalDocs=@ExternalDocumentation(description="Glossary category metadata element",
+                                                   url="https://egeria-project.org/types/3/0320-Category-Hierarchy/"))
+
     public GlossaryCategoryElementsResponse findGlossaryCategories(@PathVariable String                          serverName,
                                                                    @PathVariable String                          userId,
-                                                                   @RequestParam int                             startFrom,
-                                                                   @RequestParam int                             pageSize,
+                                                                   @RequestParam (required = false, defaultValue = "0")
+                                                                                 int                             startFrom,
+                                                                   @RequestParam (required = false, defaultValue = "0")
+                                                                                 int                             pageSize,
                                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                                 boolean                        startsWith,
+                                                                                 boolean                         startsWith,
                                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                                 boolean                        endsWith,
+                                                                                 boolean                         endsWith,
                                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                                 boolean                        ignoreCase,
+                                                                                 boolean                         ignoreCase,
                                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                                 boolean                               forLineage,
+                                                                                 boolean                         forLineage,
                                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                                 boolean                               forDuplicateProcessing,
+                                                                                 boolean                         forDuplicateProcessing,
                                                                    @RequestBody  GlossarySearchStringRequestBody requestBody)
     {
         return restAPI.findGlossaryCategories(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, startsWith, endsWith, ignoreCase, requestBody);
@@ -257,17 +329,24 @@ public class GlossaryBrowserResource
      */
     @PostMapping(path = "/glossaries/{glossaryGUID}/categories/retrieve")
 
+    @Operation(summary="getCategoriesForGlossary",
+               description="Return the list of categories associated with a glossary.",
+               externalDocs=@ExternalDocumentation(description="Glossary category metadata element",
+                                                   url="https://egeria-project.org/types/3/0320-Category-Hierarchy/"))
+
     public GlossaryCategoryElementsResponse getCategoriesForGlossary(@PathVariable String                             serverName,
                                                                      @PathVariable String                             userId,
                                                                      @PathVariable String                             glossaryGUID,
-                                                                     @RequestParam int                                startFrom,
-                                                                     @RequestParam int                                pageSize,
+                                                                     @RequestParam (required = false, defaultValue = "0")
+                                                                                   int                                startFrom,
+                                                                     @RequestParam (required = false, defaultValue = "0")
+                                                                                   int                                pageSize,
                                                                      @RequestParam (required = false, defaultValue = "false")
-                                                                                   boolean                      forLineage,
+                                                                                   boolean                            forLineage,
                                                                      @RequestParam (required = false, defaultValue = "false")
-                                                                                   boolean                      forDuplicateProcessing,
+                                                                                   boolean                            forDuplicateProcessing,
                                                                      @RequestBody(required = false)
-                                                                                   EffectiveTimeQueryRequestBody requestBody)
+                                                                                   EffectiveTimeQueryRequestBody      requestBody)
     {
         return restAPI.getCategoriesForGlossary(serverName, userId, glossaryGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -292,14 +371,19 @@ public class GlossaryBrowserResource
      */
     @PostMapping(path = "/glossaries/categories/by-name")
 
+    @Operation(summary="getGlossaryCategoriesByName",
+               description="Retrieve the list of glossary category metadata elements that either have the requested qualified name or display name.  The name to search for is located in the request body and is interpreted as a plain string.  The request body also supports the specification of a glossaryGUID to restrict the search to within a single glossary.",
+               externalDocs=@ExternalDocumentation(description="Glossary category metadata element",
+                                                   url="https://egeria-project.org/types/3/0320-Category-Hierarchy/"))
+
     public GlossaryCategoryElementsResponse   getGlossaryCategoriesByName(@PathVariable String                  serverName,
                                                                           @PathVariable String                  userId,
                                                                           @RequestParam int                     startFrom,
                                                                           @RequestParam int                     pageSize,
                                                                           @RequestParam (required = false, defaultValue = "false")
-                                                                                        boolean                       forLineage,
+                                                                                        boolean                 forLineage,
                                                                           @RequestParam (required = false, defaultValue = "false")
-                                                                                        boolean                       forDuplicateProcessing,
+                                                                                        boolean                 forDuplicateProcessing,
                                                                           @RequestBody  GlossaryNameRequestBody requestBody)
     {
         return restAPI.getGlossaryCategoriesByName(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
@@ -323,6 +407,11 @@ public class GlossaryBrowserResource
      */
     @PostMapping(path = "/glossaries/categories/{glossaryCategoryGUID}/retrieve")
 
+    @Operation(summary="getGlossaryCategoryByGUID",
+               description="Retrieve the requested glossary category metadata element.  The optional request body contain an effective time for the query.",
+               externalDocs=@ExternalDocumentation(description="Glossary category metadata element",
+                                                   url="https://egeria-project.org/types/3/0320-Category-Hierarchy/"))
+
     public GlossaryCategoryElementResponse getGlossaryCategoryByGUID(@PathVariable String                             serverName,
                                                                      @PathVariable String                             userId,
                                                                      @PathVariable String                             glossaryCategoryGUID,
@@ -338,7 +427,8 @@ public class GlossaryBrowserResource
 
 
     /**
-     * Retrieve the glossary category metadata element with the supplied unique identifier.
+     * Retrieve the parent glossary category metadata element for the glossary category with the supplied unique identifier.  If the
+     * requested category does not have a parent category, null is returned.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
@@ -354,13 +444,18 @@ public class GlossaryBrowserResource
      */
     @PostMapping(path = "/glossaries/categories/{glossaryCategoryGUID}/parent/retrieve")
 
-    public GlossaryCategoryElementResponse getGlossaryCategoryParent(@PathVariable String                             serverName,
-                                                                     @PathVariable String                             userId,
-                                                                     @PathVariable String                             glossaryCategoryGUID,
+    @Operation(summary="getGlossaryCategoryParent",
+               description="Glossary categories can be organized in a hierarchy. Retrieve the parent glossary category metadata element for the glossary category with the supplied unique identifier.  If the requested category does not have a parent category, null is returned.  The optional request body contain an effective time for the query.",
+               externalDocs=@ExternalDocumentation(description="Glossary category metadata element",
+                                                   url="https://egeria-project.org/types/3/0320-Category-Hierarchy/"))
+
+    public GlossaryCategoryElementResponse getGlossaryCategoryParent(@PathVariable String                        serverName,
+                                                                     @PathVariable String                        userId,
+                                                                     @PathVariable String                        glossaryCategoryGUID,
                                                                      @RequestParam (required = false, defaultValue = "false")
-                                                                                   boolean                      forLineage,
+                                                                                   boolean                       forLineage,
                                                                      @RequestParam (required = false, defaultValue = "false")
-                                                                                   boolean                      forDuplicateProcessing,
+                                                                                   boolean                       forDuplicateProcessing,
                                                                      @RequestBody(required = false)
                                                                                    EffectiveTimeQueryRequestBody requestBody)
     {
@@ -369,7 +464,7 @@ public class GlossaryBrowserResource
 
 
     /**
-     * Retrieve the glossary category metadata element with the supplied unique identifier.
+     * Retrieve the subcategories for the glossary category metadata element with the supplied unique identifier.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
@@ -387,6 +482,11 @@ public class GlossaryBrowserResource
      */
     @PostMapping(path = "/glossaries/categories/{glossaryCategoryGUID}/subcategories/retrieve")
 
+    @Operation(summary="getGlossarySubCategories",
+               description="Glossary categories can be organized in a hierarchy. Retrieve the subcategories for the glossary category metadata element with the supplied unique identifier.  If the requested category does not have any subcategories, null is returned.  The optional request body contain an effective time for the query.",
+               externalDocs=@ExternalDocumentation(description="Glossary category metadata element",
+                                                   url="https://egeria-project.org/types/3/0320-Category-Hierarchy/"))
+
     public GlossaryCategoryElementsResponse getGlossarySubCategories(@PathVariable String                             serverName,
                                                                      @PathVariable String                             userId,
                                                                      @PathVariable String                             glossaryCategoryGUID,
@@ -401,7 +501,6 @@ public class GlossaryBrowserResource
     {
         return restAPI.getGlossarySubCategories(serverName, userId, glossaryCategoryGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
-
 
 
     /**
@@ -426,16 +525,21 @@ public class GlossaryBrowserResource
      */
     @PostMapping(path = "/glossaries/terms/by-search-string")
 
+    @Operation(summary="findGlossaryTerms",
+               description="Retrieve the list of glossary term metadata elements that contain the search string.  The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.  The request body also supports the specification of a glossaryGUID to restrict the search to within a single glossary.",
+               externalDocs=@ExternalDocumentation(description="Glossary term metadata element",
+                                                   url="https://egeria-project.org/types/3/0330-Terms/"))
+
     public GlossaryTermElementsResponse findGlossaryTerms(@PathVariable String                          serverName,
                                                           @PathVariable String                          userId,
                                                           @RequestParam int                             startFrom,
                                                           @RequestParam int                             pageSize,
                                                           @RequestParam (required = false, defaultValue = "false")
-                                                                        boolean                        startsWith,
+                                                                        boolean                         startsWith,
                                                           @RequestParam (required = false, defaultValue = "false")
-                                                                        boolean                        endsWith,
+                                                                        boolean                         endsWith,
                                                           @RequestParam (required = false, defaultValue = "false")
-                                                                        boolean                        ignoreCase,
+                                                                        boolean                         ignoreCase,
                                                           @RequestParam (required = false, defaultValue = "false")
                                                                         boolean                         forLineage,
                                                           @RequestParam (required = false, defaultValue = "false")
@@ -464,6 +568,11 @@ public class GlossaryBrowserResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/{glossaryGUID}/terms/retrieve")
+
+    @Operation(summary="getTermsForGlossary",
+               description="Retrieve the list of glossary terms associated with a glossary.  The request body also supports the specification of an effective time for the query.",
+               externalDocs=@ExternalDocumentation(description="Glossary term metadata element",
+                                                   url="https://egeria-project.org/types/3/0330-Terms/"))
 
     public GlossaryTermElementsResponse getTermsForGlossary(@PathVariable String                        serverName,
                                                             @PathVariable String                        userId,
@@ -653,4 +762,1630 @@ public class GlossaryBrowserResource
         return restAPI.getGlossaryTermHistory(serverName, userId, glossaryTermGUID, startFrom, pageSize, oldestFirst, forLineage, forDuplicateProcessing, requestBody);
     }
 
+    /**
+     * Adds a reply to a comment.
+     *
+     * @param serverName    name of the server instances for this request.
+     * @param userId        String - userId of user making request.
+     * @param commentGUID   String - unique id for an existing comment.  Used to add a reply to a comment.
+     * @param isPublic is this visible to other people
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody   containing type of comment enum and the text of the comment.
+     *
+     * @return elementGUID for new comment object or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * PropertyServerException There is a problem adding the element properties to
+     *                                   the metadata repository or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/comments/{commentGUID}/replies")
+
+    @Operation(summary="addCommentReply",
+               description="Adds a reply to a comment.",
+               externalDocs=@ExternalDocumentation(description="Element Feedback",
+                                                   url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
+
+    public GUIDResponse addCommentReply(@PathVariable String                         serverName,
+                                        @PathVariable String                         userId,
+                                        @PathVariable String                         commentGUID,
+                                        @RequestParam boolean                        isPublic,
+                                        @RequestParam (required = false, defaultValue = "false")
+                                        boolean                        forLineage,
+                                        @RequestParam (required = false, defaultValue = "false")
+                                        boolean                        forDuplicateProcessing,
+                                        @RequestBody  ReferenceableUpdateRequestBody requestBody)
+    {
+        return restAPI.addCommentReply(serverName, userId, commentGUID, isPublic, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Creates a comment and attaches it to an element.
+     *
+     * @param serverName name of the server instances for this request.
+     * @param userId      String - userId of user making request.
+     * @param elementGUID        String - unique id for the element.
+     * @param isPublic is this visible to other people
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody containing type of comment enum and the text of the comment.
+     *
+     * @return elementGUID for new comment object or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * PropertyServerException There is a problem adding the element properties to
+     *                                   the metadata repository or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/elements/{elementGUID}/comments")
+
+    @Operation(summary="addCommentToElement",
+               description="Creates a comment and attaches it to an element.",
+               externalDocs=@ExternalDocumentation(description="Element Feedback",
+                                                   url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
+
+    public GUIDResponse addCommentToElement(@PathVariable String                         serverName,
+                                            @PathVariable String                         userId,
+                                            @PathVariable String                         elementGUID,
+                                            @RequestParam boolean                        isPublic,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                            boolean                        forLineage,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                            boolean                        forDuplicateProcessing,
+                                            @RequestBody  ReferenceableUpdateRequestBody requestBody)
+    {
+        return restAPI.addCommentToElement(serverName, userId, elementGUID, isPublic, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Creates a "like" object and attaches it to an element.
+     *
+     * @param serverName  name of the server instances for this request.
+     * @param userId      String - userId of user making request.
+     * @param elementGUID   String - unique id for the element.
+     * @param isPublic is this visible to other people
+     * @param requestBody feedback request body.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * PropertyServerException There is a problem adding the element properties to
+     *                                   the metadata repository or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/elements/{elementGUID}/likes")
+
+    @Operation(summary="addLikeToElement",
+               description="Creates a <i>like</i> object and attaches it to an element.",
+               externalDocs=@ExternalDocumentation(description="Element Feedback",
+                                                   url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
+
+    public VoidResponse addLikeToElement(@PathVariable String         serverName,
+                                         @PathVariable String         userId,
+                                         @PathVariable String         elementGUID,
+                                         @RequestParam boolean        isPublic,
+                                         @RequestBody (required = false)
+                                         NullRequestBody requestBody)
+    {
+        return restAPI.addLikeToElement(serverName, userId, elementGUID, isPublic, requestBody);
+    }
+
+
+    /**
+     * Adds a star rating and optional review text to the element.
+     *
+     * @param serverName  name of the server instances for this request.
+     * @param userId      String - userId of user making request.
+     * @param elementGUID String - unique id for the element.
+     * @param isPublic    is this visible to other people
+     * @param requestBody containing the StarRating and user review of element.
+     *
+     * @return elementGUID for new review object or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * PropertyServerException There is a problem adding the element properties to the metadata repository or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/elements/{elementGUID}/ratings")
+
+    @Operation(summary="addRatingToElement",
+               description="Adds a star rating and optional review text to the element.",
+               externalDocs=@ExternalDocumentation(description="Element Feedback",
+                                                   url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
+
+    public VoidResponse addRatingToElement(@PathVariable String           serverName,
+                                           @PathVariable String           userId,
+                                           @PathVariable String           elementGUID,
+                                           @RequestParam boolean          isPublic,
+                                           @RequestBody RatingProperties requestBody)
+    {
+        return restAPI.addRatingToElement(serverName, userId, elementGUID, isPublic, requestBody);
+    }
+
+
+    /**
+     * Adds an informal tag (either private of public) to an element.
+     *
+     * @param serverName       name of the server instances for this request.
+     * @param userId           userId of user making request.
+     * @param elementGUID        unique id for the element.
+     * @param tagGUID          unique id of the tag.
+     * @param requestBody      null request body needed for correct protocol exchange.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * PropertyServerException There is a problem adding the element properties to the metadata repository or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/elements/{elementGUID}/tags/{tagGUID}")
+
+    @Operation(summary="addTagToElement",
+               description="Adds an informal tag (either private of public) to an element.",
+               externalDocs=@ExternalDocumentation(description="Element Classifiers",
+                                                   url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-classifiers"))
+
+    public VoidResponse addTagToElement(@PathVariable String             serverName,
+                                        @PathVariable String             userId,
+                                        @PathVariable String             elementGUID,
+                                        @PathVariable String             tagGUID,
+                                        @RequestBody FeedbackProperties requestBody)
+    {
+        return restAPI.addTagToElement(serverName, userId, elementGUID, tagGUID, requestBody);
+    }
+
+
+    /**
+     * Creates a new informal tag and returns the unique identifier for it.
+     *
+     * @param serverName   name of the server instances for this request.
+     * @param userId       userId of user making request.
+     * @param requestBody  public/private flag, name of the tag and (optional) description of the tag.
+     *
+     * @return new elementGUID or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * PropertyServerException There is a problem adding the element properties to the metadata repository or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/tags")
+
+    @Operation(summary="createInformalTag",
+               description="Creates a new informal tag and returns the unique identifier for it.",
+               externalDocs=@ExternalDocumentation(description="Informal Tag",
+                                                   url="https://egeria-project.org/concepts/informal-tag/"))
+
+    public GUIDResponse createInformalTag(@PathVariable String        serverName,
+                                          @PathVariable String        userId,
+                                          @RequestBody TagProperties requestBody)
+    {
+        return restAPI.createInformalTag(serverName, userId, requestBody);
+    }
+
+
+    /**
+     * Removes an informal tag from the repository.  All the tagging relationships to this informal tag are lost.
+     * A private tag can be deleted by its creator and all the references are lost;
+     * a public tag can be deleted by anyone, but only if it is not attached to any referenceable.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId       String - userId of user making request.
+     * @param tagGUID      String - unique id for the tag.
+     * @param requestBody  null request body.
+     *
+     * @return void or
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem updating the element properties in the metadata repository or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/tags/{tagGUID}/remove")
+
+    @Operation(summary="deleteTag",
+               description="Removes an informal tag from the repository.  All the tagging relationships to this informal tag are lost.  A private tag can be deleted by its creator and all the references are lost; a public tag can be deleted by anyone, but only if it is not attached to any referenceable.",
+               externalDocs=@ExternalDocumentation(description="Informal Tag",
+                                                   url="https://egeria-project.org/concepts/informal-tag/"))
+
+    public VoidResponse   deleteTag(@PathVariable                   String          serverName,
+                                    @PathVariable                   String          userId,
+                                    @PathVariable                   String          tagGUID,
+                                    @RequestBody(required = false)  NullRequestBody requestBody)
+    {
+        return restAPI.deleteTag(serverName, userId, tagGUID, requestBody);
+    }
+
+
+    /**
+     * Return the list of unique identifiers for elements that are linked to a specific tag either directly, or via one of its schema elements.
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId the name of the calling user.
+     * @param tagGUID unique identifier of tag.
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return element guid list or
+     * InvalidParameterException the userId is null or invalid or
+     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @GetMapping(path = "/elements/by-tag/{tagGUID}")
+
+    @Operation(summary="getElementsByTag",
+               description="Return the list of unique identifiers for elements that are linked to a specific tag either directly, or via one of its schema elements.",
+               externalDocs=@ExternalDocumentation(description="Element classifiers",
+                                                   url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-classifiers"))
+
+    public GUIDListResponse getElementsByTag(@PathVariable String serverName,
+                                             @PathVariable String userId,
+                                             @PathVariable String tagGUID,
+                                             @RequestParam int    startFrom,
+                                             @RequestParam int    pageSize)
+
+    {
+        return restAPI.getElementsByTag(serverName, userId, tagGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return the informal tag for the supplied unique identifier (tagGUID).
+     *
+     * @param serverName name of the server instances for this request.
+     * @param userId userId of the user making the request.
+     * @param tagGUID unique identifier of the meaning.
+     *
+     * @return tag object or
+     * InvalidParameterException the userId is null or invalid or
+     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @GetMapping(path = "/tags/{tagGUID}")
+
+    @Operation(summary="getTag",
+               description="Return the informal tag for the supplied unique identifier (tagGUID).",
+               externalDocs=@ExternalDocumentation(description="Informal Tag",
+                                                   url="https://egeria-project.org/concepts/informal-tag/"))
+
+    public InformalTagResponse getTag(@PathVariable String   serverName,
+                                      @PathVariable String   userId,
+                                      @PathVariable String   tagGUID)
+    {
+        return restAPI.getTag(serverName, userId, tagGUID);
+    }
+
+
+    /**
+     * Return the tags exactly matching the supplied name.
+     *
+     * @param serverName name of the server instances for this request.
+     * @param userId the name of the calling user.
+     * @param requestBody name of tag.
+     * @param startFrom  index of the list to start from (0 for start).
+     * @param pageSize   maximum number of elements to return.
+     * @return list of tag objects or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/tags/by-name")
+
+    @Operation(summary="getTagsByName",
+               description="Return the tags exactly matching the supplied name.",
+               externalDocs=@ExternalDocumentation(description="Informal Tag",
+                                                   url="https://egeria-project.org/concepts/informal-tag/"))
+
+    public InformalTagsResponse getTagsByName(@PathVariable String          serverName,
+                                              @PathVariable String          userId,
+                                              @RequestParam int             startFrom,
+                                              @RequestParam int             pageSize,
+                                              @RequestBody  NameRequestBody requestBody)
+    {
+        return restAPI.getTagsByName(serverName, userId, requestBody, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return the list of the calling user's private informal tags exactly matching the supplied name.
+     *
+     * @param serverName name of the server instances for this request.
+     * @param userId the name of the calling user.
+     * @param requestBody name of tag.
+     * @param startFrom  index of the list to start from (0 for start).
+     * @param pageSize   maximum number of elements to return.
+     * @return list of tag objects or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/tags/private/by-name")
+
+    @Operation(summary="getMyTagsByName",
+               description="Return the list of the calling user's private informal tags exactly matching the supplied name.",
+               externalDocs=@ExternalDocumentation(description="Informal Tag",
+                                                   url="https://egeria-project.org/concepts/informal-tag/"))
+
+    public InformalTagsResponse getMyTagsByName(@PathVariable String          serverName,
+                                                @PathVariable String          userId,
+                                                @RequestParam int             startFrom,
+                                                @RequestParam int             pageSize,
+                                                @RequestBody  NameRequestBody requestBody)
+    {
+        return restAPI.getMyTagsByName(serverName, userId, requestBody, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return the list of comments containing the supplied string.
+     *
+     * @param serverName name of the server instances for this request.
+     * @param userId the name of the calling user.
+     * @param startsWith does the value start with the supplied string?
+     * @param endsWith does the value end with the supplied string?
+     * @param ignoreCase should the search ignore case?
+     * @param startFrom  index of the list to start from (0 for start).
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody search string and effective time.
+     *
+     * @return list of comment objects or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/comments/by-search-string")
+
+    @Operation(summary="findComment",
+               description="Return the list of comments containing the supplied string. The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.  The request body also supports the specification of an effective time to restrict the search to element that are/were effective at a particular time.",
+               externalDocs=@ExternalDocumentation(description="Comment",
+                                                   url="https://egeria-project.org/concepts/comment/"))
+
+    public CommentElementsResponse findComments(@PathVariable String                  serverName,
+                                                @PathVariable String                  userId,
+                                                @RequestParam (required = false, defaultValue = "0")
+                                                              int                     startFrom,
+                                                @RequestParam (required = false, defaultValue = "0")
+                                                              int                     pageSize,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                              boolean                 startsWith,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                              boolean                 endsWith,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                              boolean                  ignoreCase,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                              boolean                  forLineage,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                              boolean                  forDuplicateProcessing,
+                                                @RequestBody  SearchStringRequestBody  requestBody)
+    {
+        return restAPI.findComments(serverName,
+                                    userId,
+                                    startFrom,
+                                    pageSize,
+                                    startsWith,
+                                    endsWith,
+                                    ignoreCase,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    requestBody);
+    }
+
+
+    /**
+     * Return the list of comments containing the supplied string in the text. The search string is a regular expression (RegEx).
+     *
+     * @param serverName name of the server instances for this request.
+     * @param userId the name of the calling user.
+     * @param startsWith does the value start with the supplied string?
+     * @param endsWith does the value end with the supplied string?
+     * @param ignoreCase should the search ignore case?
+     * @param startFrom  index of the list to start from (0 for start).
+     * @param pageSize   maximum number of elements to return.
+     * @param requestBody search string and effective time.
+     *
+     * @return list of tag objects or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/tags/by-search-string")
+
+    @Operation(summary="findTags",
+               description="Return the list of informal tags containing the supplied string in their name or description. The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.  The request body also supports the specification of an effective time to restrict the search to element that are/were effective at a particular time.",
+               externalDocs=@ExternalDocumentation(description="Informal Tag",
+                                                   url="https://egeria-project.org/concepts/informal-tag/"))
+
+    public InformalTagsResponse findTags(@PathVariable String                  serverName,
+                                         @PathVariable String                  userId,
+                                         @RequestParam (required = false, defaultValue = "0")
+                                             int                     startFrom,
+                                         @RequestParam (required = false, defaultValue = "0")
+                                             int                     pageSize,
+                                         @RequestParam (required = false, defaultValue = "false")
+                                             boolean                 startsWith,
+                                         @RequestParam (required = false, defaultValue = "false")
+                                             boolean                 endsWith,
+                                         @RequestParam (required = false, defaultValue = "false")
+                                             boolean                  ignoreCase,
+                                         @RequestBody  SearchStringRequestBody  requestBody)
+    {
+        return restAPI.findTags(serverName,
+                                userId,
+                                startFrom,
+                                pageSize,
+                                startsWith,
+                                endsWith,
+                                ignoreCase,
+                                requestBody);
+    }
+
+
+    /**
+     * Return the list of the calling user's private tags containing the supplied string in either the name or description.  The search string is a regular expression (RegEx).
+     *
+     * @param serverName name of the server instances for this request.
+     * @param userId the name of the calling user.
+     * @param startsWith does the value start with the supplied string?
+     * @param endsWith does the value end with the supplied string?
+     * @param ignoreCase should the search ignore case?
+     * @param startFrom  index of the list to start from (0 for start).
+     * @param pageSize   maximum number of elements to return.
+     * @param requestBody search string and effective time.
+     *
+     * @return list of tag objects or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/tags/private/by-search-string")
+
+    @Operation(summary="findMyTags",
+               description="Return the list of the calling user's private tags containing the supplied string in either the name or description.  The search string is a regular expression (RegEx).",
+               externalDocs=@ExternalDocumentation(description="Informal Tag",
+                                                   url="https://egeria-project.org/concepts/informal-tag/"))
+
+    public InformalTagsResponse findMyTags(@PathVariable String                  serverName,
+                                           @PathVariable String                  userId,
+                                           @RequestParam (required = false, defaultValue = "0")
+                                               int                     startFrom,
+                                           @RequestParam (required = false, defaultValue = "0")
+                                               int                     pageSize,
+                                           @RequestParam (required = false, defaultValue = "false")
+                                               boolean                 startsWith,
+                                           @RequestParam (required = false, defaultValue = "false")
+                                               boolean                 endsWith,
+                                           @RequestParam (required = false, defaultValue = "false")
+                                               boolean                  ignoreCase,
+                                           @RequestBody  SearchStringRequestBody  requestBody)
+    {
+        return restAPI.findMyTags(serverName,
+                                  userId,
+                                  startFrom,
+                                  pageSize,
+                                  startsWith,
+                                  endsWith,
+                                  ignoreCase,
+                                  requestBody);
+    }
+
+
+    /**
+     * Removes a comment added to the element by this user.  This deletes the link to the comment, the comment itself and any comment replies attached to it.
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId       String - userId of user making request.
+     * @param elementGUID  String - unique id for the element object
+     * @param commentGUID  String - unique id for the comment object
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody  containing type of comment enum and the text of the comment.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid.
+     * PropertyServerException There is a problem updating the element properties in the metadata repository.
+     * UserNotAuthorizedException the user does not have permission to perform this request.
+     */
+    @PostMapping(path = "/elements/{elementGUID}/comments/{commentGUID}/remove")
+
+    @Operation(summary="removeCommentFromElement",
+               description="Removes a comment added to the element by this user.  This deletes the link to the comment, the comment itself and any comment replies attached to it.",
+               externalDocs=@ExternalDocumentation(description="Element Feedback",
+                                                   url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
+
+    public VoidResponse removeCommentFromElement(@PathVariable String                         serverName,
+                                                 @PathVariable String                         userId,
+                                                 @PathVariable String                         elementGUID,
+                                                 @PathVariable String                         commentGUID,
+                                                 @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                        forLineage,
+                                                 @RequestParam (required = false, defaultValue = "false")
+                                                  boolean                        forDuplicateProcessing,
+                                                 @RequestBody(required = false)
+                                                                ReferenceableUpdateRequestBody requestBody)
+    {
+        return restAPI.removeCommentFromElement(serverName, userId, elementGUID, commentGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Return the requested comment.
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId       userId of user making request.
+     * @param commentGUID  unique identifier for the comment object.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties controlling the request
+     * @return comment properties or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  PropertyServerException there is a problem updating the element properties in the property server.
+     *  UserNotAuthorizedException the user does not have permission to perform this request.
+     */
+    @PostMapping(path = "/comments/{commentGUID}")
+
+    public CommentElementResponse getComment(@PathVariable String                        serverName,
+                                             @PathVariable String                        userId,
+                                             @PathVariable String                        commentGUID,
+                                             @RequestParam (required = false, defaultValue = "false")
+                                             boolean                       forLineage,
+                                             @RequestParam (required = false, defaultValue = "false")
+                                             boolean                       forDuplicateProcessing,
+                                             @RequestBody(required = false)
+                                             EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getCommentByGUID(serverName, userId, commentGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Return the comments attached to an element.
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId       userId of user making request.
+     * @param elementGUID    unique identifier for the element that the comments are connected to (maybe a comment too).
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties controlling the request
+     * @return list of comments or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  PropertyServerException there is a problem updating the element properties in the property server.
+     *  UserNotAuthorizedException the user does not have permission to perform this request.
+     */
+    @PostMapping(path = "/elements/{elementGUID}/comments/retrieve")
+
+    public CommentElementsResponse getAttachedComments(@PathVariable String                        serverName,
+                                                       @PathVariable String                        userId,
+                                                       @PathVariable String                        elementGUID,
+                                                       @RequestParam int                           startFrom,
+                                                       @RequestParam int                           pageSize,
+                                                       @RequestParam (required = false, defaultValue = "false")
+                                                       boolean                       forLineage,
+                                                       @RequestParam (required = false, defaultValue = "false")
+                                                       boolean                       forDuplicateProcessing,
+                                                       @RequestBody(required = false)
+                                                       EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getAttachedComments(serverName, userId, elementGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Removes a "Like" added to the element by this user.
+     *
+     * @param serverName   name of the server instances for this request.
+     * @param userId       String - userId of user making request.
+     * @param elementGUID    unique identifier for the element where the like is attached.
+     * @param requestBody  containing type of comment enum and the text of the comment.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid.
+     * PropertyServerException There is a problem updating the element properties in the metadata repository.
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/elements/{elementGUID}/likes/remove")
+
+    @Operation(summary="removeLikeFromElement",
+               description="Removes a <i>Like</i> added to the element by this user.",
+               externalDocs=@ExternalDocumentation(description="Element Feedback",
+                                                   url="https://egeria-project.org/patterns/metadata-manager/overview/#element-feedback"))
+
+    public VoidResponse   removeLikeFromElement(@PathVariable                  String          serverName,
+                                                @PathVariable                  String          userId,
+                                                @PathVariable                  String          elementGUID,
+                                                @RequestBody(required = false) NullRequestBody requestBody)
+    {
+        return restAPI.removeLikeFromElement(serverName, userId, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Removes of a star rating/review that was added to the element by this user.
+     *
+     * @param serverName   name of the server instances for this request.
+     * @param userId       String - userId of user making request.
+     * @param elementGUID         unique identifier for the element where the rating is attached.
+     * @param requestBody  containing type of comment enum and the text of the comment.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid.
+     * PropertyServerException There is a problem updating the element properties in the metadata repository.
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/elements/{elementGUID}/ratings/remove")
+
+    @Operation(summary="removeRatingFromElement",
+               description="Removes of a star rating/review that was added to the element by this user.",
+               externalDocs=@ExternalDocumentation(description="Element Feedback",
+                                                   url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
+
+    public VoidResponse   removeRatingFromElement(@PathVariable                  String          serverName,
+                                                  @PathVariable                  String          userId,
+                                                  @PathVariable                  String          elementGUID,
+                                                  @RequestBody(required = false) NullRequestBody requestBody)
+    {
+        return restAPI.removeRatingFromElement(serverName, userId, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Removes a link between a tag and an element that was added by this user.
+     *
+     * @param serverName   name of the server instances for this request.
+     * @param userId       String - userId of user making request.
+     * @param elementGUID    unique id for the element.
+     * @param tagGUID      unique id of the tag.
+     * @param requestBody  null request body needed for correct protocol exchange.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid.
+     * PropertyServerException There is a problem updating the element properties in the metadata repository.
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/elements/{elementGUID}/tags/{tagGUID}/remove")
+
+    @Operation(summary="removeTagFromElement",
+               description="Removes a link between a tag and an element that was added by this user.",
+               externalDocs=@ExternalDocumentation(description="Element classifiers",
+                                                   url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-classifiers"))
+
+    public VoidResponse removeTagFromElement(@PathVariable                  String          serverName,
+                                             @PathVariable                  String          userId,
+                                             @PathVariable                  String          elementGUID,
+                                             @PathVariable                  String          tagGUID,
+                                             @RequestBody(required = false) NullRequestBody requestBody)
+    {
+        return restAPI.removeTagFromElement(serverName, userId, elementGUID, tagGUID, requestBody);
+    }
+
+
+    /**
+     * Update an existing comment.
+     *
+     * @param serverName   name of the server instances for this request.
+     * @param userId       userId of user making request.
+     * @param commentGUID  unique identifier for the comment to change.
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param isPublic      is this visible to other people
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody  containing type of comment enum and the text of the comment.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid.
+     * PropertyServerException There is a problem updating the element properties in the metadata repository.
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/comments/{commentGUID}/update")
+
+    @Operation(summary="updateComment",
+               description="Update an existing comment.",
+               externalDocs=@ExternalDocumentation(description="Element Feedback",
+                                                   url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
+
+    public VoidResponse   updateComment(@PathVariable String                         serverName,
+                                        @PathVariable String                         userId,
+                                        @PathVariable String                         commentGUID,
+                                        @RequestParam (required = false, defaultValue = "false")
+                                        boolean                        isMergeUpdate,
+                                        @RequestParam boolean                        isPublic,
+                                        @RequestParam (required = false, defaultValue = "false")
+                                        boolean                        forLineage,
+                                        @RequestParam (required = false, defaultValue = "false")
+                                        boolean                        forDuplicateProcessing,
+                                        @RequestBody  ReferenceableUpdateRequestBody requestBody)
+    {
+        return restAPI.updateComment(serverName, userId, commentGUID, isMergeUpdate, isPublic, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Link a comment that contains the best answer to a question posed in another comment.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param questionCommentGUID unique identifier of the comment containing the question
+     * @param answerCommentGUID unique identifier of the comment containing the accepted answer
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/comments/questions/{questionCommentGUID}/answers/{answerCommentGUID}")
+
+    public VoidResponse setupAcceptedAnswer(@PathVariable String                  serverName,
+                                            @PathVariable String                  userId,
+                                            @PathVariable String                  questionCommentGUID,
+                                            @PathVariable String                  answerCommentGUID,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                            boolean                 forLineage,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                            boolean                 forDuplicateProcessing,
+                                            @RequestBody  RelationshipRequestBody requestBody)
+    {
+        return restAPI.setupAcceptedAnswer(serverName,
+                                           userId,
+                                           questionCommentGUID,
+                                           answerCommentGUID,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           requestBody);
+    }
+
+
+    /**
+     * Unlink a comment that contains an answer to a question posed in another comment.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param questionCommentGUID unique identifier of the comment containing the question
+     * @param answerCommentGUID unique identifier of the comment containing the accepted answer
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/comments/questions/{questionCommentGUID}/answers/{answerCommentGUID}/remove")
+
+    public VoidResponse clearAcceptedAnswer(@PathVariable String                        serverName,
+                                            @PathVariable String                        userId,
+                                            @PathVariable String                        questionCommentGUID,
+                                            @PathVariable String                        answerCommentGUID,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                            boolean                       forLineage,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                            boolean                       forDuplicateProcessing,
+                                            @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.clearAcceptedAnswer(serverName,
+                                           userId,
+                                           questionCommentGUID,
+                                           answerCommentGUID,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           requestBody);
+    }
+
+
+    /**
+     * Updates the description of an existing tag (either private or public).
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId       userId of user making request.
+     * @param tagGUID      unique id for the tag.
+     * @param requestBody  contains the name of the tag and (optional) description of the tag.
+     *
+     * @return void or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/tags/{tagGUID}/update")
+
+    @Operation(summary="updateTagDescription",
+               description="Updates the description of an existing tag (either private or public).",
+               externalDocs=@ExternalDocumentation(description="Informal Tag",
+                                                   url="https://egeria-project.org/concepts/informal-tag/"))
+
+    public VoidResponse   updateTagDescription(@PathVariable String                       serverName,
+                                               @PathVariable String                       userId,
+                                               @PathVariable String                       tagGUID,
+                                               @RequestBody  InformalTagUpdateRequestBody requestBody)
+    {
+        return restAPI.updateTagDescription(serverName, userId, tagGUID, requestBody);
+    }
+
+
+
+    /* =====================================================================================================================
+     * A note log maintains an ordered list of notes.  It can be used to support release note, blogs and similar
+     * broadcast information.  Notelogs are typically maintained by the owners/stewards of an element.
+     */
+
+
+    /**
+     * Retrieve the list of note log metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param serverName name of the server instances for this request.
+     * @param userId the name of the calling user.
+     * @param startsWith does the value start with the supplied string?
+     * @param endsWith does the value end with the supplied string?
+     * @param ignoreCase should the search ignore case?
+     * @param startFrom  index of the list to start from (0 for start).
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody search string and effective time.
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/note-logs/by-search-string")
+
+    public NoteLogElementsResponse findNoteLogs(@PathVariable String                  serverName,
+                                                @PathVariable String                  userId,
+                                                @RequestParam (required = false, defaultValue = "0")
+                                                    int                     startFrom,
+                                                @RequestParam (required = false, defaultValue = "0")
+                                                    int                     pageSize,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                 startsWith,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                 endsWith,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                  ignoreCase,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                  forLineage,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                  forDuplicateProcessing,
+                                                @RequestBody  SearchStringRequestBody  requestBody)
+    {
+        return restAPI.findNoteLogs(serverName,
+                                    userId,
+                                    startFrom,
+                                    pageSize,
+                                    startsWith,
+                                    endsWith,
+                                    ignoreCase,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of note log metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody name to search for and correlators
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/note-logs/by-name")
+
+    public NoteLogElementsResponse getNoteLogsByName(@PathVariable String          serverName,
+                                                     @PathVariable String          userId,
+                                                     @RequestParam int             startFrom,
+                                                     @RequestParam int             pageSize,
+                                                     @RequestParam (required = false, defaultValue = "false")
+                                                     boolean         forLineage,
+                                                     @RequestParam (required = false, defaultValue = "false")
+                                                     boolean         forDuplicateProcessing,
+                                                     @RequestBody  NameRequestBody requestBody)
+    {
+        return restAPI.getNoteLogsByName(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of note log metadata elements attached to the element.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param elementGUID element to start from
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody name to search for and correlators
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/elements/{elementGUID}/note-logs/retrieve")
+
+    public NoteLogElementsResponse getNoteLogsForElement(@PathVariable String          serverName,
+                                                         @PathVariable String          userId,
+                                                         @PathVariable String          elementGUID,
+                                                         @RequestParam int             startFrom,
+                                                         @RequestParam int             pageSize,
+                                                         @RequestParam (required = false, defaultValue = "false")
+                                                         boolean         forLineage,
+                                                         @RequestParam (required = false, defaultValue = "false")
+                                                         boolean         forDuplicateProcessing,
+                                                         @RequestBody (required = false)
+                                                         EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getNoteLogsForElement(serverName, userId, elementGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the note log metadata element with the supplied unique identifier.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param noteLogGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return requested metadata element or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/note-logs/{noteLogGUID}/retrieve")
+
+    public NoteLogElementResponse getNoteLogByGUID(@PathVariable String                        serverName,
+                                                   @PathVariable String                        userId,
+                                                   @PathVariable String                        noteLogGUID,
+                                                   @RequestParam (required = false, defaultValue = "false")
+                                                   boolean                       forLineage,
+                                                   @RequestParam (required = false, defaultValue = "false")
+                                                   boolean                       forDuplicateProcessing,
+                                                   @RequestBody(required = false)
+                                                   EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getNoteLogByGUID(serverName, userId, noteLogGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /* ===============================================================================
+     * A note log typically contains many notes, linked with relationships.
+     */
+
+
+    /**
+     * Retrieve the list of note metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param serverName name of the server instances for this request.
+     * @param userId the name of the calling user.
+     * @param startsWith does the value start with the supplied string?
+     * @param endsWith does the value end with the supplied string?
+     * @param ignoreCase should the search ignore case?
+     * @param startFrom  index of the list to start from (0 for start).
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody search string and effective time.
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/note-logs/notes/by-search-string")
+
+    public NoteElementsResponse findNotes(@PathVariable String                  serverName,
+                                          @PathVariable String                  userId,
+                                          @RequestParam (required = false, defaultValue = "0")
+                                              int                     startFrom,
+                                          @RequestParam (required = false, defaultValue = "0")
+                                              int                     pageSize,
+                                          @RequestParam (required = false, defaultValue = "false")
+                                              boolean                 startsWith,
+                                          @RequestParam (required = false, defaultValue = "false")
+                                              boolean                 endsWith,
+                                          @RequestParam (required = false, defaultValue = "false")
+                                              boolean                  ignoreCase,
+                                          @RequestParam (required = false, defaultValue = "false")
+                                              boolean                  forLineage,
+                                          @RequestParam (required = false, defaultValue = "false")
+                                              boolean                  forDuplicateProcessing,
+                                          @RequestBody  SearchStringRequestBody  requestBody)
+    {
+        return restAPI.findNotes(serverName,
+                                 userId,
+                                 startFrom,
+                                 pageSize,
+                                 startsWith,
+                                 endsWith,
+                                 ignoreCase,
+                                 forLineage,
+                                 forDuplicateProcessing,
+                                 requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of notes associated with a note log.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param noteLogGUID unique identifier of the note log of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody asset manager identifiers
+     *
+     * @return list of associated metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/note-logs/{noteLogGUID}/notes/retrieve")
+
+    public NoteElementsResponse getNotesForNoteLog(@PathVariable String                        serverName,
+                                                   @PathVariable String                        userId,
+                                                   @PathVariable String                        noteLogGUID,
+                                                   @RequestParam int                           startFrom,
+                                                   @RequestParam int                           pageSize,
+                                                   @RequestParam (required = false, defaultValue = "false")
+                                                   boolean                       forLineage,
+                                                   @RequestParam (required = false, defaultValue = "false")
+                                                   boolean                       forDuplicateProcessing,
+                                                   @RequestBody(required = false)
+                                                   EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getNotesForNoteLog(serverName, userId, noteLogGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the note metadata element with the supplied unique identifier.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param noteGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody asset manager identifiers
+     *
+     * @return matching metadata element or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/note-logs/notes/{noteGUID}/retrieve")
+
+    public NoteElementResponse getNoteByGUID(@PathVariable String                        serverName,
+                                             @PathVariable String                        userId,
+                                             @PathVariable String                        noteGUID,
+                                             @RequestParam (required = false, defaultValue = "false")
+                                             boolean                       forLineage,
+                                             @RequestParam (required = false, defaultValue = "false")
+                                             boolean                       forDuplicateProcessing,
+                                             @RequestBody(required = false)
+                                             EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getNoteByGUID(serverName, userId, noteGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Return information about the elements classified with the confidence classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return classified elements or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/by-data-field")
+
+    public ElementStubsResponse getDataFieldClassifiedElements(@PathVariable String                      serverName,
+                                                               @PathVariable String                      userId,
+                                                               @RequestParam(required = false, defaultValue = "0")
+                                                                             int                         startFrom,
+                                                               @RequestParam(required = false, defaultValue = "0")
+                                                                             int                         pageSize,
+                                                               @RequestParam(required = false, defaultValue = "false")
+                                                                             boolean                     forLineage,
+                                                               @RequestParam(required = false, defaultValue = "false")
+                                                                             boolean                     forDuplicateProcessing,
+                                                               @RequestBody(required = false)
+                                                                             FindByPropertiesRequestBody requestBody)
+    {
+        return restAPI.getDataFieldClassifiedElements(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+    /**
+     * Return information about the elements classified with the confidence classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return classified elements or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/by-confidence")
+
+    public ElementStubsResponse getConfidenceClassifiedElements(@PathVariable String                      serverName,
+                                                                @PathVariable String                      userId,
+                                                                @RequestParam(required = false, defaultValue = "0")
+                                                                int                         startFrom,
+                                                                @RequestParam(required = false, defaultValue = "0")
+                                                                int                         pageSize,
+                                                                @RequestParam(required = false, defaultValue = "false")
+                                                                boolean                     forLineage,
+                                                                @RequestParam(required = false, defaultValue = "false")
+                                                                boolean                     forDuplicateProcessing,
+                                                                @RequestBody(required = false)
+                                                                FindByPropertiesRequestBody requestBody)
+    {
+        return restAPI.getConfidenceClassifiedElements(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Return information about the elements classified with the criticality classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return classified elements or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/by-criticality")
+
+    public ElementStubsResponse getCriticalityClassifiedElements(@PathVariable String                      serverName,
+                                                                 @PathVariable String                      userId,
+                                                                 @RequestParam(required = false, defaultValue = "0")
+                                                                 int                         startFrom,
+                                                                 @RequestParam(required = false, defaultValue = "0")
+                                                                 int                         pageSize,
+                                                                 @RequestParam(required = false, defaultValue = "false")
+                                                                 boolean                     forLineage,
+                                                                 @RequestParam(required = false, defaultValue = "false")
+                                                                 boolean                     forDuplicateProcessing,
+                                                                 @RequestBody(required = false)
+                                                                 FindByPropertiesRequestBody requestBody)
+    {
+        return restAPI.getCriticalityClassifiedElements(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Return information about the elements classified with the confidentiality classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return classified elements or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/by-confidentiality")
+
+    public ElementStubsResponse getConfidentialityClassifiedElements(@PathVariable String                      serverName,
+                                                                     @PathVariable String                      userId,
+                                                                     @RequestParam(required = false, defaultValue = "0")
+                                                                     int                         startFrom,
+                                                                     @RequestParam(required = false, defaultValue = "0")
+                                                                     int                         pageSize,
+                                                                     @RequestParam(required = false, defaultValue = "false")
+                                                                     boolean                     forLineage,
+                                                                     @RequestParam(required = false, defaultValue = "false")
+                                                                     boolean                     forDuplicateProcessing,
+                                                                     @RequestBody(required = false)
+                                                                     FindByPropertiesRequestBody requestBody)
+    {
+        return restAPI.getConfidentialityClassifiedElements(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Return information about the elements classified with the confidence classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return classified elements or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/by-retention")
+
+    public ElementStubsResponse getRetentionClassifiedElements(@PathVariable String                      serverName,
+                                                               @PathVariable String                      userId,
+                                                               @RequestParam(required = false, defaultValue = "0")
+                                                               int                         startFrom,
+                                                               @RequestParam(required = false, defaultValue = "0")
+                                                               int                         pageSize,
+                                                               @RequestParam(required = false, defaultValue = "false")
+                                                               boolean                     forLineage,
+                                                               @RequestParam(required = false, defaultValue = "false")
+                                                               boolean                     forDuplicateProcessing,
+                                                               @RequestBody(required = false)
+                                                               FindByPropertiesRequestBody requestBody)
+    {
+        return restAPI.getRetentionClassifiedElements(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Return information about the elements classified with the security tags classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return classified elements or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/by-security-tags")
+
+    public ElementStubsResponse getSecurityTaggedElements(@PathVariable String                      serverName,
+                                                          @PathVariable String                      userId,
+                                                          @RequestParam(required = false, defaultValue = "0")
+                                                          int                         startFrom,
+                                                          @RequestParam(required = false, defaultValue = "0")
+                                                          int                         pageSize,
+                                                          @RequestParam(required = false, defaultValue = "false")
+                                                          boolean                     forLineage,
+                                                          @RequestParam(required = false, defaultValue = "false")
+                                                          boolean                     forDuplicateProcessing,
+                                                          @RequestBody(required = false)
+                                                          FindByPropertiesRequestBody requestBody)
+    {
+        return restAPI.getSecurityTaggedElements(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Return information about the elements classified with the security tags classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return classified elements or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/by-ownership")
+
+    public ElementStubsResponse getOwnersElements(@PathVariable String                      serverName,
+                                                  @PathVariable String                      userId,
+                                                  @RequestParam(required = false, defaultValue = "0")
+                                                  int                         startFrom,
+                                                  @RequestParam(required = false, defaultValue = "0")
+                                                  int                         pageSize,
+                                                  @RequestParam(required = false, defaultValue = "false")
+                                                  boolean                     forLineage,
+                                                  @RequestParam(required = false, defaultValue = "false")
+                                                  boolean                     forDuplicateProcessing,
+                                                  @RequestBody(required = false)
+                                                  FindByPropertiesRequestBody requestBody)
+    {
+        return restAPI.getOwnersElements(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Return information about the elements classified with the security tags classification.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return classified elements or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/by-subject-area-membership")
+
+    public ElementStubsResponse getMembersOfSubjectArea(@PathVariable String                      serverName,
+                                                        @PathVariable String                      userId,
+                                                        @RequestParam(required = false, defaultValue = "0")
+                                                        int                         startFrom,
+                                                        @RequestParam(required = false, defaultValue = "0")
+                                                        int                         pageSize,
+                                                        @RequestParam(required = false, defaultValue = "false")
+                                                        boolean                     forLineage,
+                                                        @RequestParam(required = false, defaultValue = "false")
+                                                        boolean                     forDuplicateProcessing,
+                                                        @RequestBody(required = false)
+                                                        FindByPropertiesRequestBody requestBody)
+    {
+        return restAPI.getMembersOfSubjectArea(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the glossary terms linked via a "SemanticAssignment" relationship to the requested element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element that is being assigned to the glossary term
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return linked elements or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+
+    @PostMapping("/glossaries/terms/by-semantic-assignment/{elementGUID}")
+
+    public GlossaryTermElementsResponse getMeanings(@PathVariable String                        serverName,
+                                                    @PathVariable String                        userId,
+                                                    @PathVariable String                        elementGUID,
+                                                    @RequestParam(required = false, defaultValue = "0")
+                                                    int                         startFrom,
+                                                    @RequestParam(required = false, defaultValue = "0")
+                                                    int                         pageSize,
+                                                    @RequestParam(required = false, defaultValue = "false")
+                                                    boolean                     forLineage,
+                                                    @RequestParam(required = false, defaultValue = "false")
+                                                    boolean                     forDuplicateProcessing,
+                                                    @RequestBody(required = false)
+                                                    EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getMeanings(serverName, userId, elementGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the glossary terms linked via a "SemanticAssignment" relationship to the requested element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the glossary term that the returned elements are linked to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return linked elements or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping("/elements/by-semantic-assignment/{glossaryTermGUID}")
+
+    public RelatedElementsResponse getSemanticAssignees(@PathVariable String                        serverName,
+                                                        @PathVariable String                        userId,
+                                                        @PathVariable String                        glossaryTermGUID,
+                                                        @RequestParam(required = false, defaultValue = "0")
+                                                        int                         startFrom,
+                                                        @RequestParam(required = false, defaultValue = "0")
+                                                        int                         pageSize,
+                                                        @RequestParam(required = false, defaultValue = "false")
+                                                        boolean                     forLineage,
+                                                        @RequestParam(required = false, defaultValue = "false")
+                                                        boolean                     forDuplicateProcessing,
+                                                        @RequestBody(required = false)
+                                                        EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getSemanticAssignees(serverName, userId, glossaryTermGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the governance definitions linked via a "GovernedBy" relationship to the requested element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param governanceDefinitionGUID unique identifier of the governance definition that the returned elements are linked to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return linked elements or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/governed-by/{governanceDefinitionGUID}")
+
+    public RelatedElementsResponse getGovernedElements(@PathVariable String                        serverName,
+                                                       @PathVariable String                        userId,
+                                                       @PathVariable String                        governanceDefinitionGUID,
+                                                       @RequestParam(required = false, defaultValue = "0")
+                                                       int                         startFrom,
+                                                       @RequestParam(required = false, defaultValue = "0")
+                                                       int                         pageSize,
+                                                       @RequestParam(required = false, defaultValue = "false")
+                                                       boolean                     forLineage,
+                                                       @RequestParam(required = false, defaultValue = "false")
+                                                       boolean                     forDuplicateProcessing,
+                                                       @RequestBody(required = false)
+                                                       EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getGovernedElements(serverName, userId, governanceDefinitionGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the elements linked via a "GovernedBy" relationship to the requested governance definition.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element that the returned elements are linked to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return linked elements or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/governed-by")
+
+    public GovernanceDefinitionsResponse getGovernedByDefinitions(@PathVariable String                        serverName,
+                                                                  @PathVariable String                        userId,
+                                                                  @PathVariable String                        elementGUID,
+                                                                  @RequestParam(required = false, defaultValue = "0")
+                                                                  int                         startFrom,
+                                                                  @RequestParam(required = false, defaultValue = "0")
+                                                                  int                         pageSize,
+                                                                  @RequestParam(required = false, defaultValue = "false")
+                                                                  boolean                     forLineage,
+                                                                  @RequestParam(required = false, defaultValue = "false")
+                                                                  boolean                     forDuplicateProcessing,
+                                                                  @RequestBody(required = false)
+                                                                  EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getGovernedByDefinitions(serverName, userId, elementGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the elements linked via a "SourceFrom" relationship to the requested element.
+     * The elements returned were used to create the requested element.  Typically only one element is returned.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element that the returned elements are linked to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return linked elements or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/sourced-from/{elementGUID}")
+
+    public RelatedElementsResponse getSourceElements(@PathVariable String                        serverName,
+                                                     @PathVariable String                        userId,
+                                                     @PathVariable String elementGUID,
+                                                     @RequestParam (required = false, defaultValue = "0")
+                                                                   int                         startFrom,
+                                                     @RequestParam (required = false, defaultValue = "0")
+                                                                   int                         pageSize,
+                                                     @RequestParam (required = false, defaultValue = "false")
+                                                                   boolean                     forLineage,
+                                                     @RequestParam (required = false, defaultValue = "false")
+                                                                   boolean                     forDuplicateProcessing,
+                                                     @RequestBody  (required = false)
+                                                                   EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getSourceElements(serverName, userId, elementGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the elements linked via a "SourceFrom" relationship to the requested element.
+     * The elements returned were created using the requested element as a template.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element that the returned elements are linked to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return linked elements or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/sourced-from")
+
+    public RelatedElementsResponse getElementsSourceFrom(@PathVariable String                        serverName,
+                                                         @PathVariable String                        userId,
+                                                         @PathVariable String                        elementGUID,
+                                                         @RequestParam (required = false, defaultValue = "0")
+                                                                       int                           startFrom,
+                                                         @RequestParam (required = false, defaultValue = "0")
+                                                                       int                           pageSize,
+                                                         @RequestParam (required = false, defaultValue = "false")
+                                                                       boolean                       forLineage,
+                                                         @RequestParam (required = false, defaultValue = "false")
+                                                                       boolean                       forDuplicateProcessing,
+                                                         @RequestBody  (required = false)
+                                                                       EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getElementsSourceFrom(serverName, userId, elementGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
 }
+
