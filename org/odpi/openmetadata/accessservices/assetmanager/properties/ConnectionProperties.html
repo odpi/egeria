@@ -77,16 +77,12 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <section class="class-description" id="class-description">
-<dl class="notes">
-<dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code></dd>
-</dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">ConnectionProperties</span>
 <span class="extends-implements">extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ReferenceableProperties</a></span></div>
 <div class="block">The connection is an object that contains the properties needed to create and initialise a connector to access a
  specific data assets.
-
+ <br><br>
  The properties for a connection are defined in model 0201.  They include the following options for connector name:
  <ul>
      <li>
@@ -109,7 +105,7 @@ loadScripts(document, 'script');</script>
  </ul>
 
   Either the guid, qualifiedName or displayName can be used to specify the name for a connection.
-
+ <br><br>
   Other properties for the connection include:
   <ul>
       <li>
@@ -149,16 +145,8 @@ loadScripts(document, 'script');</script>
       </li>
   </ul>
 
- The connection class is simply used to cache the properties for an connection.
+ The connection class is simply used to cache the properties for a connection.
  It is used by other classes to exchange this information between a metadata repository and a consumer.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../serialized-form.html#org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectionProperties">Serialized Form</a></li>
-</ul>
-</dd>
-</dl>
 </section>
 <section class="summary">
 <ul class="summary-list">

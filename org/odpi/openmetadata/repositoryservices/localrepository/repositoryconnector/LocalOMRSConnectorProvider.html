@@ -108,15 +108,6 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Constructor used by OMRSOperationalServices during server start-up.</div>
 </div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper.OMRSRepositoryEventMapperConnector,org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventManager,org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager,org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventExchangeRule)" class="member-name-link">LocalOMRSConnectorProvider</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localMetadataCollectionId,
- <a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;localRepositoryRemoteConnection,
- <a href="../../connectors/stores/metadatacollectionstore/repositoryeventmapper/OMRSRepositoryEventMapperConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper">OMRSRepositoryEventMapperConnector</a>&nbsp;realEventMapper,
- <a href="../../eventmanagement/OMRSRepositoryEventManager.html" title="class in org.odpi.openmetadata.repositoryservices.eventmanagement">OMRSRepositoryEventManager</a>&nbsp;outboundRepositoryEventManager,
- <a href="../repositorycontentmanager/OMRSRepositoryContentManager.html" title="class in org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager">OMRSRepositoryContentManager</a>&nbsp;repositoryContentManager,
- <a href="../../eventmanagement/OMRSRepositoryEventExchangeRule.html" title="class in org.odpi.openmetadata.repositoryservices.eventmanagement">OMRSRepositoryEventExchangeRule</a>&nbsp;saveExchangeRule)</code></div>
-<div class="col-last even-row-color">
-<div class="block">Constructor used by OMRSOperationalServices during server start-up.</div>
-</div>
 </div>
 </section>
 </li>
@@ -168,29 +159,6 @@ loadScripts(document, 'script');</script>
 <section class="constructor-details" id="constructor-detail">
 <h2>Constructor Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper.OMRSRepositoryEventMapperConnector,org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventManager,org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager,org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventExchangeRule)">
-<h3>LocalOMRSConnectorProvider</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">LocalOMRSConnectorProvider</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localMetadataCollectionId,
- <a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;localRepositoryRemoteConnection,
- <a href="../../connectors/stores/metadatacollectionstore/repositoryeventmapper/OMRSRepositoryEventMapperConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper">OMRSRepositoryEventMapperConnector</a>&nbsp;realEventMapper,
- <a href="../../eventmanagement/OMRSRepositoryEventManager.html" title="class in org.odpi.openmetadata.repositoryservices.eventmanagement">OMRSRepositoryEventManager</a>&nbsp;outboundRepositoryEventManager,
- <a href="../repositorycontentmanager/OMRSRepositoryContentManager.html" title="class in org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager">OMRSRepositoryContentManager</a>&nbsp;repositoryContentManager,
- <a href="../../eventmanagement/OMRSRepositoryEventExchangeRule.html" title="class in org.odpi.openmetadata.repositoryservices.eventmanagement">OMRSRepositoryEventExchangeRule</a>&nbsp;saveExchangeRule)</span></div>
-<div class="block">Constructor used by OMRSOperationalServices during server start-up. It
- provides the configuration information about the local server that is used to set up the
- local repository connector.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>localMetadataCollectionId</code> - metadata collection id for the local repository</dd>
-<dd><code>localRepositoryRemoteConnection</code> - connection object for creating a remote connector to this repository.</dd>
-<dd><code>realEventMapper</code> - optional event mapper for local repository</dd>
-<dd><code>outboundRepositoryEventManager</code> - event manager to call for outbound events.</dd>
-<dd><code>repositoryContentManager</code> - repositoryContentManager for supporting OMRS in managing TypeDefs.</dd>
-<dd><code>saveExchangeRule</code> - rule to determine what events to save to the local repository.</dd>
-</dl>
-</section>
-</li>
 <li>
 <section class="detail" id="&lt;init&gt;(java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryMode,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper.OMRSRepositoryEventMapperConnector,org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventManager,org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager,org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventExchangeRule,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
 <h3>LocalOMRSConnectorProvider</h3>

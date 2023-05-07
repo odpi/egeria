@@ -117,27 +117,50 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#OUT_TOPIC_EVENT" class="member-name-link">OUT_TOPIC_EVENT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-ASSET-MANAGER-0013 The Asset Manager Open Metadata Access Service (OMAS) has sent event of type: {0}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#PARSE_EVENT_EXCEPTION" class="member-name-link">PARSE_EVENT_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-ASSET-MANAGER-0015 Inbound event {0} could not be parsed.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#PROCESS_EVENT_EXCEPTION" class="member-name-link">PROCESS_EVENT_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-ASSET-MANAGER-0014 Event {0} could not be published due to {1} exception with message: {2}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#PUBLISHING_SHUTDOWN" class="member-name-link">PUBLISHING_SHUTDOWN</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-ASSET-MANAGER-0007 The Asset Manager Open Metadata Access Service (OMAS) is no longer publishing events to topic {0}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#PUBLISHING_SHUTDOWN_ERROR" class="member-name-link">PUBLISHING_SHUTDOWN_ERROR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-ASSET-MANAGER-0008 The Asset Manager Open Metadata Access Service (OMAS) caught an unexpected {0} exception whilst shutting down the out
+ topic {1}.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#SERVICE_INITIALIZED" class="member-name-link">SERVICE_INITIALIZED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-ASSET-MANAGER-0005 The Asset Manager Open Metadata Access Service (OMAS) has initialized a new instance for server {0}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#SERVICE_INITIALIZING" class="member-name-link">SERVICE_INITIALIZING</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-ASSET-MANAGER-0001 The Asset Manager Open Metadata Access Service (OMAS) is initializing a new server instance</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#SERVICE_INSTANCE_FAILURE" class="member-name-link">SERVICE_INSTANCE_FAILURE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-ASSET-MANAGER-0011 The Asset Manager Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#SERVICE_INSTANCE_TERMINATION_FAILURE" class="member-name-link">SERVICE_INSTANCE_TERMINATION_FAILURE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-ASSET-MANAGER-0012 The Asset Manager Open Metadata Access Service (OMAS) is unable to terminate a new instance; error message is {0}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#SERVICE_PUBLISHING" class="member-name-link">SERVICE_PUBLISHING</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-ASSET-MANAGER-0002 The Asset Manager Open Metadata Access Service (OMAS) is ready to publish asset manager notifications to topic {0}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#SERVICE_SHUTDOWN" class="member-name-link">SERVICE_SHUTDOWN</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-ASSET-MANAGER-0006 The Asset Manager Open Metadata Access Service (OMAS) is shutting down server instance {0}</div>
+</div>
 </div>
 </section>
 </li>
@@ -202,66 +225,78 @@ the order they are declared.</div>
 <section class="detail" id="SERVICE_INITIALIZING">
 <h3>SERVICE_INITIALIZING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetManagerAuditCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.ffdc">AssetManagerAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_INITIALIZING</span></div>
+<div class="block">OMAS-ASSET-MANAGER-0001 The Asset Manager Open Metadata Access Service (OMAS) is initializing a new server instance</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVICE_PUBLISHING">
 <h3>SERVICE_PUBLISHING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetManagerAuditCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.ffdc">AssetManagerAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_PUBLISHING</span></div>
+<div class="block">OMAS-ASSET-MANAGER-0002 The Asset Manager Open Metadata Access Service (OMAS) is ready to publish asset manager notifications to topic {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVICE_INITIALIZED">
 <h3>SERVICE_INITIALIZED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetManagerAuditCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.ffdc">AssetManagerAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_INITIALIZED</span></div>
+<div class="block">OMAS-ASSET-MANAGER-0005 The Asset Manager Open Metadata Access Service (OMAS) has initialized a new instance for server {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVICE_SHUTDOWN">
 <h3>SERVICE_SHUTDOWN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetManagerAuditCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.ffdc">AssetManagerAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_SHUTDOWN</span></div>
+<div class="block">OMAS-ASSET-MANAGER-0006 The Asset Manager Open Metadata Access Service (OMAS) is shutting down server instance {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="PUBLISHING_SHUTDOWN">
 <h3>PUBLISHING_SHUTDOWN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetManagerAuditCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.ffdc">AssetManagerAuditCode</a></span>&nbsp;<span class="element-name">PUBLISHING_SHUTDOWN</span></div>
+<div class="block">OMAS-ASSET-MANAGER-0007 The Asset Manager Open Metadata Access Service (OMAS) is no longer publishing events to topic {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="PUBLISHING_SHUTDOWN_ERROR">
 <h3>PUBLISHING_SHUTDOWN_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetManagerAuditCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.ffdc">AssetManagerAuditCode</a></span>&nbsp;<span class="element-name">PUBLISHING_SHUTDOWN_ERROR</span></div>
+<div class="block">OMAS-ASSET-MANAGER-0008 The Asset Manager Open Metadata Access Service (OMAS) caught an unexpected {0} exception whilst shutting down the out
+ topic {1}. The error message was: {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVICE_INSTANCE_FAILURE">
 <h3>SERVICE_INSTANCE_FAILURE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetManagerAuditCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.ffdc">AssetManagerAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_INSTANCE_FAILURE</span></div>
+<div class="block">OMAS-ASSET-MANAGER-0011 The Asset Manager Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVICE_INSTANCE_TERMINATION_FAILURE">
 <h3>SERVICE_INSTANCE_TERMINATION_FAILURE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetManagerAuditCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.ffdc">AssetManagerAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_INSTANCE_TERMINATION_FAILURE</span></div>
+<div class="block">OMAS-ASSET-MANAGER-0012 The Asset Manager Open Metadata Access Service (OMAS) is unable to terminate a new instance; error message is {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OUT_TOPIC_EVENT">
 <h3>OUT_TOPIC_EVENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetManagerAuditCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.ffdc">AssetManagerAuditCode</a></span>&nbsp;<span class="element-name">OUT_TOPIC_EVENT</span></div>
+<div class="block">OMAS-ASSET-MANAGER-0013 The Asset Manager Open Metadata Access Service (OMAS) has sent event of type: {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="PROCESS_EVENT_EXCEPTION">
 <h3>PROCESS_EVENT_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetManagerAuditCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.ffdc">AssetManagerAuditCode</a></span>&nbsp;<span class="element-name">PROCESS_EVENT_EXCEPTION</span></div>
+<div class="block">OMAS-ASSET-MANAGER-0014 Event {0} could not be published due to {1} exception with message: {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="PARSE_EVENT_EXCEPTION">
 <h3>PARSE_EVENT_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetManagerAuditCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.ffdc">AssetManagerAuditCode</a></span>&nbsp;<span class="element-name">PARSE_EVENT_EXCEPTION</span></div>
+<div class="block">OMAS-ASSET-MANAGER-0015 Inbound event {0} could not be parsed. IOException included the following message: {1}</div>
 </section>
 </li>
 </ul>

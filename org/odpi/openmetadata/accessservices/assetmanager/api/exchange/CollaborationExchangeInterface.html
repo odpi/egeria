@@ -124,10 +124,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Adds a comment to the element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#addLikeToElement(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.LikeProperties)" class="member-name-link">addLikeToElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#addLikeToElement(java.lang.String,java.lang.String,boolean)" class="member-name-link">addLikeToElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- boolean&nbsp;isPublic,
- <a href="../../properties/LikeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">LikeProperties</a>&nbsp;properties)</code></div>
+ boolean&nbsp;isPublic)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Adds a "LikeProperties" to the element.</div>
 </div>
@@ -160,8 +159,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Unlink a comment that contains an answer to a question posed in another comment.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createInformalTag(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.InformalTagProperties)" class="member-name-link">createInformalTag</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../../properties/InformalTagProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">InformalTagProperties</a>&nbsp;properties)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createInformalTag(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.TagProperties)" class="member-name-link">createInformalTag</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="../../properties/TagProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">TagProperties</a>&nbsp;properties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Creates a new informal tag and returns the unique identifier for it.</div>
 </div>
@@ -552,12 +551,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="addLikeToElement(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.LikeProperties)">
+<section class="detail" id="addLikeToElement(java.lang.String,java.lang.String,boolean)">
 <h3>addLikeToElement</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">addLikeToElement</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- boolean&nbsp;isPublic,
- <a href="../../properties/LikeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">LikeProperties</a>&nbsp;properties)</span>
+ boolean&nbsp;isPublic)</span>
                throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
@@ -568,7 +566,6 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - userId of user making request.</dd>
 <dd><code>elementGUID</code> - unique identifier for the element where the like is to be attached.</dd>
 <dd><code>isPublic</code> - is this visible to other people</dd>
-<dd><code>properties</code> - indicates whether the feedback should be shared or only be visible to the originating user</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem adding the element properties to the property server.</dd>
@@ -918,10 +915,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createInformalTag(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.InformalTagProperties)">
+<section class="detail" id="createInformalTag(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.TagProperties)">
 <h3>createInformalTag</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createInformalTag</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../../properties/InformalTagProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">InformalTagProperties</a>&nbsp;properties)</span>
+ <a href="../../properties/TagProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">TagProperties</a>&nbsp;properties)</span>
                   throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>

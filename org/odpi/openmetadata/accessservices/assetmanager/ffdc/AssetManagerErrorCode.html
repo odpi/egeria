@@ -123,21 +123,38 @@ implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#BAD_PARAMETER" class="member-name-link">BAD_PARAMETER</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-ASSET-MANAGER-400-002 At least one of the properties supplied for a new relationship of type {0} are invalid.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NO_SCOPE_FOR_EXTERNAL_ID" class="member-name-link">NO_SCOPE_FOR_EXTERNAL_ID</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-ASSET-MANAGER-400-001 An external identifier {0} has been passed on method {1} without a corresponding assetManagerGUID</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_CONNECTOR_RETURNED" class="member-name-link">NULL_CONNECTOR_RETURNED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-ASSET-MANAGER-500-006 The requested connector for connection named {0} has not been created.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NULL_LISTENER" class="member-name-link">NULL_LISTENER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-ASSET-MANAGER-500-001 A null topic listener has been passed by user {0} on method {1}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#OMRS_NOT_INITIALIZED" class="member-name-link">OMRS_NOT_INITIALIZED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-ASSET-MANAGER-404-001 The open metadata repository services are not initialized for the {0} operation</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNABLE_TO_SEND_EVENT" class="member-name-link">UNABLE_TO_SEND_EVENT</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-ASSET-MANAGER-500-004 An unexpected exception occurred when sending an event through connector {0} to the Asset Manager OMAS out topic.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNEXPECTED_INITIALIZATION_EXCEPTION" class="member-name-link">UNEXPECTED_INITIALIZATION_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-ASSET-MANAGER-503-005 A {0} exception was caught during start up of service {1} for server {2}.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#WRONG_TYPE_OF_CONNECTOR" class="member-name-link">WRONG_TYPE_OF_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-ASSET-MANAGER-500-007 The connector generated from the connection named {0} return by the {1} service running in OMAG Server {2}
+ at {3} is not of the required type.</div>
+</div>
 </div>
 </section>
 </li>
@@ -202,48 +219,59 @@ the order they are declared.</div>
 <section class="detail" id="NO_SCOPE_FOR_EXTERNAL_ID">
 <h3>NO_SCOPE_FOR_EXTERNAL_ID</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetManagerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.ffdc">AssetManagerErrorCode</a></span>&nbsp;<span class="element-name">NO_SCOPE_FOR_EXTERNAL_ID</span></div>
+<div class="block">OMAS-ASSET-MANAGER-400-001 An external identifier {0} has been passed on method {1} without a corresponding assetManagerGUID</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BAD_PARAMETER">
 <h3>BAD_PARAMETER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetManagerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.ffdc">AssetManagerErrorCode</a></span>&nbsp;<span class="element-name">BAD_PARAMETER</span></div>
+<div class="block">OMAS-ASSET-MANAGER-400-002 At least one of the properties supplied for a new relationship of type {0} are invalid.  The {1} exception was returned with error message: {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OMRS_NOT_INITIALIZED">
 <h3>OMRS_NOT_INITIALIZED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetManagerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.ffdc">AssetManagerErrorCode</a></span>&nbsp;<span class="element-name">OMRS_NOT_INITIALIZED</span></div>
+<div class="block">OMAS-ASSET-MANAGER-404-001 The open metadata repository services are not initialized for the {0} operation</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_LISTENER">
 <h3>NULL_LISTENER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetManagerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.ffdc">AssetManagerErrorCode</a></span>&nbsp;<span class="element-name">NULL_LISTENER</span></div>
+<div class="block">OMAS-ASSET-MANAGER-500-001 A null topic listener has been passed by user {0} on method {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNABLE_TO_SEND_EVENT">
 <h3>UNABLE_TO_SEND_EVENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetManagerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.ffdc">AssetManagerErrorCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_SEND_EVENT</span></div>
+<div class="block">OMAS-ASSET-MANAGER-500-004 An unexpected exception occurred when sending an event through connector {0} to the Asset Manager OMAS out topic.
+ The failing event was {1}, the exception was {2} with message {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNEXPECTED_INITIALIZATION_EXCEPTION">
 <h3>UNEXPECTED_INITIALIZATION_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetManagerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.ffdc">AssetManagerErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_INITIALIZATION_EXCEPTION</span></div>
+<div class="block">OMAS-ASSET-MANAGER-503-005 A {0} exception was caught during start up of service {1} for server {2}. The error message was: {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_CONNECTOR_RETURNED">
 <h3>NULL_CONNECTOR_RETURNED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetManagerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.ffdc">AssetManagerErrorCode</a></span>&nbsp;<span class="element-name">NULL_CONNECTOR_RETURNED</span></div>
+<div class="block">OMAS-ASSET-MANAGER-500-006 The requested connector for connection named {0} has not been created.
+ The connection was provided by the {1} service running in OMAG Server {2} at {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="WRONG_TYPE_OF_CONNECTOR">
 <h3>WRONG_TYPE_OF_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetManagerErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.ffdc">AssetManagerErrorCode</a></span>&nbsp;<span class="element-name">WRONG_TYPE_OF_CONNECTOR</span></div>
+<div class="block">OMAS-ASSET-MANAGER-500-007 The connector generated from the connection named {0} return by the {1} service running in OMAG Server {2}
+ at {3} is not of the required type. It should be an instance of {4}</div>
 </section>
 </li>
 </ul>

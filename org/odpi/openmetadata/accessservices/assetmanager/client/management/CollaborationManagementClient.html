@@ -166,10 +166,9 @@ implements <a href="../../api/management/CollaborationManagementInterface.html" 
 <div class="block">Adds a comment to the element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addLikeToElement(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.LikeProperties)" class="member-name-link">addLikeToElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addLikeToElement(java.lang.String,java.lang.String,boolean)" class="member-name-link">addLikeToElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- boolean&nbsp;isPublic,
- <a href="../../properties/LikeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">LikeProperties</a>&nbsp;properties)</code></div>
+ boolean&nbsp;isPublic)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Adds a "LikeProperties" to the element.</div>
 </div>
@@ -200,8 +199,8 @@ implements <a href="../../api/management/CollaborationManagementInterface.html" 
 <div class="block">Unlink a comment that contains an answer to a question posed in another comment.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createInformalTag(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.InformalTagProperties)" class="member-name-link">createInformalTag</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../../properties/InformalTagProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">InformalTagProperties</a>&nbsp;properties)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createInformalTag(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.TagProperties)" class="member-name-link">createInformalTag</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="../../properties/TagProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">TagProperties</a>&nbsp;properties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Creates a new informal tag and returns the unique identifier for it.</div>
 </div>
@@ -216,9 +215,10 @@ implements <a href="../../api/management/CollaborationManagementInterface.html" 
 <div class="block">Create a new metadata element to represent a note.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createNoteLog(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.NoteLogProperties,java.util.Date,boolean,boolean)" class="member-name-link">createNoteLog</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createNoteLog(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.NoteLogProperties,boolean,java.util.Date,boolean,boolean)" class="member-name-link">createNoteLog</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="../../properties/NoteLogProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">NoteLogProperties</a>&nbsp;noteLogProperties,
+ boolean&nbsp;isPublic,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing)</code></div>
@@ -463,9 +463,10 @@ implements <a href="../../api/management/CollaborationManagementInterface.html" 
 <div class="block">Update the properties of the metadata element representing a note.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateNoteLog(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.NoteLogProperties,java.util.Date,boolean,boolean)" class="member-name-link">updateNoteLog</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateNoteLog(java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.NoteLogProperties,java.util.Date,boolean,boolean)" class="member-name-link">updateNoteLog</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;noteLogGUID,
  boolean&nbsp;isMergeUpdate,
+ boolean&nbsp;isPublic,
  <a href="../../properties/NoteLogProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">NoteLogProperties</a>&nbsp;noteLogProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
  boolean&nbsp;forLineage,
@@ -662,24 +663,22 @@ implements <a href="../../api/management/CollaborationManagementInterface.html" 
 </section>
 </li>
 <li>
-<section class="detail" id="addLikeToElement(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.LikeProperties)">
+<section class="detail" id="addLikeToElement(java.lang.String,java.lang.String,boolean)">
 <h3>addLikeToElement</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addLikeToElement</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- boolean&nbsp;isPublic,
- <a href="../../properties/LikeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">LikeProperties</a>&nbsp;properties)</span>
+ boolean&nbsp;isPublic)</span>
                       throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Adds a "LikeProperties" to the element.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../api/management/CollaborationManagementInterface.html#addLikeToElement(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.LikeProperties)">addLikeToElement</a></code>&nbsp;in interface&nbsp;<code><a href="../../api/management/CollaborationManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api.management">CollaborationManagementInterface</a></code></dd>
+<dd><code><a href="../../api/management/CollaborationManagementInterface.html#addLikeToElement(java.lang.String,java.lang.String,boolean)">addLikeToElement</a></code>&nbsp;in interface&nbsp;<code><a href="../../api/management/CollaborationManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api.management">CollaborationManagementInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - userId of user making request</dd>
 <dd><code>elementGUID</code> - unique identifier for the element</dd>
 <dd><code>isPublic</code> - is this visible to other people</dd>
-<dd><code>properties</code> - indicates whether the feedback should be shared or only be visible to the originating user</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem adding the element properties to the property server.</dd>
@@ -1001,17 +1000,17 @@ implements <a href="../../api/management/CollaborationManagementInterface.html" 
 </section>
 </li>
 <li>
-<section class="detail" id="createInformalTag(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.InformalTagProperties)">
+<section class="detail" id="createInformalTag(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.TagProperties)">
 <h3>createInformalTag</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createInformalTag</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../../properties/InformalTagProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">InformalTagProperties</a>&nbsp;properties)</span>
+ <a href="../../properties/TagProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">TagProperties</a>&nbsp;properties)</span>
                          throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Creates a new informal tag and returns the unique identifier for it.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../api/management/CollaborationManagementInterface.html#createInformalTag(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.InformalTagProperties)">createInformalTag</a></code>&nbsp;in interface&nbsp;<code><a href="../../api/management/CollaborationManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api.management">CollaborationManagementInterface</a></code></dd>
+<dd><code><a href="../../api/management/CollaborationManagementInterface.html#createInformalTag(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.TagProperties)">createInformalTag</a></code>&nbsp;in interface&nbsp;<code><a href="../../api/management/CollaborationManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api.management">CollaborationManagementInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - userId of user making request.</dd>
 <dd><code>properties</code> - name of the tag and (optional) description.  Setting a description, particularly in a public tag
@@ -1291,11 +1290,12 @@ implements <a href="../../api/management/CollaborationManagementInterface.html" 
 </section>
 </li>
 <li>
-<section class="detail" id="createNoteLog(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.NoteLogProperties,java.util.Date,boolean,boolean)">
+<section class="detail" id="createNoteLog(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.NoteLogProperties,boolean,java.util.Date,boolean,boolean)">
 <h3>createNoteLog</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createNoteLog</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="../../properties/NoteLogProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">NoteLogProperties</a>&nbsp;noteLogProperties,
+ boolean&nbsp;isPublic,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing)</span>
@@ -1306,11 +1306,12 @@ implements <a href="../../api/management/CollaborationManagementInterface.html" 
  Any supplied element becomes the note log's anchor, causing the note log to be deleted if/when the element is deleted.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../api/management/CollaborationManagementInterface.html#createNoteLog(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.NoteLogProperties,java.util.Date,boolean,boolean)">createNoteLog</a></code>&nbsp;in interface&nbsp;<code><a href="../../api/management/CollaborationManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api.management">CollaborationManagementInterface</a></code></dd>
+<dd><code><a href="../../api/management/CollaborationManagementInterface.html#createNoteLog(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.NoteLogProperties,boolean,java.util.Date,boolean,boolean)">createNoteLog</a></code>&nbsp;in interface&nbsp;<code><a href="../../api/management/CollaborationManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api.management">CollaborationManagementInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>elementGUID</code> - unique identifier of the element where the note log is located</dd>
 <dd><code>noteLogProperties</code> - properties about the note log to store</dd>
+<dd><code>isPublic</code> - is this element visible to other people.</dd>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
 <dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
 <dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
@@ -1324,11 +1325,12 @@ implements <a href="../../api/management/CollaborationManagementInterface.html" 
 </section>
 </li>
 <li>
-<section class="detail" id="updateNoteLog(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.NoteLogProperties,java.util.Date,boolean,boolean)">
+<section class="detail" id="updateNoteLog(java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.NoteLogProperties,java.util.Date,boolean,boolean)">
 <h3>updateNoteLog</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateNoteLog</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;noteLogGUID,
  boolean&nbsp;isMergeUpdate,
+ boolean&nbsp;isPublic,
  <a href="../../properties/NoteLogProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">NoteLogProperties</a>&nbsp;noteLogProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
  boolean&nbsp;forLineage,
@@ -1339,11 +1341,12 @@ implements <a href="../../api/management/CollaborationManagementInterface.html" 
 <div class="block">Update the metadata element representing a note log.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../api/management/CollaborationManagementInterface.html#updateNoteLog(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.NoteLogProperties,java.util.Date,boolean,boolean)">updateNoteLog</a></code>&nbsp;in interface&nbsp;<code><a href="../../api/management/CollaborationManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api.management">CollaborationManagementInterface</a></code></dd>
+<dd><code><a href="../../api/management/CollaborationManagementInterface.html#updateNoteLog(java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.NoteLogProperties,java.util.Date,boolean,boolean)">updateNoteLog</a></code>&nbsp;in interface&nbsp;<code><a href="../../api/management/CollaborationManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api.management">CollaborationManagementInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>noteLogGUID</code> - unique identifier of the metadata element to update</dd>
 <dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
+<dd><code>isPublic</code> - is this element visible to other people.</dd>
 <dd><code>noteLogProperties</code> - new properties for the metadata element</dd>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
 <dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>

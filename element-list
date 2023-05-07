@@ -866,10 +866,12 @@ org.odpi.openmetadata.viewservices.glossaryauthor.server
 org.odpi.openmetadata.viewservices.glossaryauthor.services
 org.odpi.openmetadata.viewservices.glossarybrowser.admin
 org.odpi.openmetadata.viewservices.glossarybrowser.ffdc
+org.odpi.openmetadata.viewservices.glossarybrowser.rest
 org.odpi.openmetadata.viewservices.glossarybrowser.server
 org.odpi.openmetadata.viewservices.glossarybrowser.server.spring
 org.odpi.openmetadata.viewservices.glossaryworkflow.admin
 org.odpi.openmetadata.viewservices.glossaryworkflow.ffdc
+org.odpi.openmetadata.viewservices.glossaryworkflow.rest
 org.odpi.openmetadata.viewservices.glossaryworkflow.server
 org.odpi.openmetadata.viewservices.glossaryworkflow.server.spring
 org.odpi.openmetadata.viewservices.rex.admin
