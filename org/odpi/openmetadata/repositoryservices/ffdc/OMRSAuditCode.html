@@ -86,10 +86,9 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="OMRSAuditCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.ffdc">OMRSAuditCode</a>&gt;
 implements <a href="../../frameworks/auditlog/messagesets/AuditLogMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageSet</a></span></div>
 <div class="block">The OMRSAuditCode is used to define the message content for the OMRS Audit Log.
-
  The 5 fields in the enum are:
  <ul>
-     <li>Log Message Id: to uniquely identify the message</li>
+     <li>Log Message id: to uniquely identify the message</li>
      <li>Severity: is this an event, decision, action, error or exception</li>
      <li>Log Message Text: includes placeholder to allow additional values to be captured</li>
      <li>Additional Information: further parameters and data relating to the audit message (optional)</li>
@@ -354,9 +353,13 @@ implements <a href="../../frameworks/auditlog/messagesets/AuditLogMessageSet.htm
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="#SKIPPING_METADATA_COLLECTION" class="member-name-link">SKIPPING_METADATA_COLLECTION</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#STARTING_ENTERPRISE_CONNECTOR" class="member-name-link">STARTING_ENTERPRISE_CONNECTOR</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#STARTED_REAL_CONNECTOR" class="member-name-link">STARTED_REAL_CONNECTOR</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#STARTING_EVENT_MANAGER" class="member-name-link">STARTING_EVENT_MANAGER</a></code></div>
+<div class="col-first even-row-color"><code><a href="#STARTING_ENTERPRISE_CONNECTOR" class="member-name-link">STARTING_ENTERPRISE_CONNECTOR</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#STARTING_EVENT_MANAGER" class="member-name-link">STARTING_EVENT_MANAGER</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#STARTING_REAL_CONNECTOR" class="member-name-link">STARTING_REAL_CONNECTOR</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="#TYPE_ALREADY_KNOWN" class="member-name-link">TYPE_ALREADY_KNOWN</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
@@ -728,6 +731,18 @@ the order they are declared.</div>
 <section class="detail" id="NEW_REAL_CONNECTOR">
 <h3>NEW_REAL_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.ffdc">OMRSAuditCode</a></span>&nbsp;<span class="element-name">NEW_REAL_CONNECTOR</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="STARTING_REAL_CONNECTOR">
+<h3>STARTING_REAL_CONNECTOR</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.ffdc">OMRSAuditCode</a></span>&nbsp;<span class="element-name">STARTING_REAL_CONNECTOR</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="STARTED_REAL_CONNECTOR">
+<h3>STARTED_REAL_CONNECTOR</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.ffdc">OMRSAuditCode</a></span>&nbsp;<span class="element-name">STARTED_REAL_CONNECTOR</span></div>
 </section>
 </li>
 <li>

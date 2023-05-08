@@ -91,7 +91,7 @@ loadScripts(document, 'script');</script>
 implements <a href="../OMRSLocalRepository.html" title="interface in org.odpi.openmetadata.repositoryservices.localrepository">OMRSLocalRepository</a></span></div>
 <div class="block">LocalOMRSRepositoryConnector provides access the local metadata repository plus manages outbound
  repository events.
-
+ <br><br>
  It passes each request to both the real OMRS connector for the local metadata repository and an
  OMRSEventPublisher.  The OMRSEventPublisher will use its configuration to decide if it needs to
  pass on the request to the rest of the metadata repository cohort.</div>
@@ -353,7 +353,7 @@ implements <a href="../OMRSLocalRepository.html" title="interface in org.odpi.op
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSecurityVerifier</span><wbr><span class="parameters">(<a href="../../../metadatasecurity/server/OpenMetadataServerSecurityVerifier.html" title="class in org.odpi.openmetadata.metadatasecurity.server">OpenMetadataServerSecurityVerifier</a>&nbsp;securityVerifier)</span></div>
 <div class="block">Set up a new security verifier (the cohort manager runs with a default verifier until this
  method is called).
-
+ <br><br>
  The security verifier provides authorization checks for access and maintenance
  changes to open metadata.  Authorization checks are enabled through the
  OpenMetadataServerSecurityConnector.</div>
