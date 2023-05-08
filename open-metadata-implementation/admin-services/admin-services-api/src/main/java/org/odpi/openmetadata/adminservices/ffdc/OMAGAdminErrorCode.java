@@ -382,8 +382,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
 
     UNEXPECTED_EXCEPTION(500, "OMAG-ADMIN-500-001",
             "Method {1} for OMAG server {0} returned an unexpected exception of {2} with message {3}",
-            "The system is unable to configure the OMAG server.  No change was made to the server's configuration document.",
-            "This is likely to be either an operational or logic error. Look for other errors.  Validate the request.  If you are stuck, raise an issue."),
+            "The system is unable to work with the OMAG server.  No change was made to the server's configuration document.",
+            "This is likely to be either a configuration, operational or logic error. Look for other errors.  Validate the request.  If you are stuck, raise an issue."),
 
     UNEXPECTED_PLATFORM_EXCEPTION(500, "OMAG-ADMIN-500-002",
             "Method {0} returned an unexpected exception of {1} with message {2}",

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.repositoryservices.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 
 /**
@@ -129,8 +130,8 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "The system is unable to perform the request because the identifier for the AttributeTypeDef is needed to proceed.",
             "Correct the caller's code and try the request again."),
     NULL_METADATA_COLLECTION(400, "OMRS-REPOSITORY-400-025",
-            "Local metadata repository has not initialized correctly because it has a null metadata collection.",
-            "The system is unable to process requests for this repository without a metadata collection.",
+            "Local metadata repository has not initialized correctly because it was unable to create its metadata collection",
+            "The metadata collection object provides access to the storage, or remote metadata service that is supporting the repository.  The system is unable to process requests for this repository without a metadata collection.",
             "The repository connector for the local repository has not initialized correctly.  This may be an " +
                     "error in the repository connector's logic, or a missing or incorrect property in the connector's connection object stored in " +
                     "the server's configuration document, or a missing resource, or permission needed by the connector.  The repository connector should " +
@@ -433,6 +434,12 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "The connection {0} passed to the EnterpriseOMRSRepositoryConnector is invalid.",
             "The system is not able to populate the EnterpriseOMRSRepositoryConnector object because it needs the connection to identify the repository.",
             "Look for other error messages to identify what caused this error.  When the issue is fixed, retry the request."),
+
+    BAD_REAL_LOCAL_REPOSITORY_CONNECTOR(400, "OMRS-CONNECTOR-400-005",
+            "The connector to the local repository failed with a {0} exception and the following error message: {1}",
+            "The server fails to start.",
+            "Correct the configuration to ensure that the local repository local connection is valid."),
+
     NULL_TOPIC_CONNECTOR(400, "OMRS-TOPIC-CONNECTOR-400-001",
             "Unable to send or receive events for source {0} because the connector to the OMRS Topic failed to initialize",
             "The local server will not connect to the cohort.",

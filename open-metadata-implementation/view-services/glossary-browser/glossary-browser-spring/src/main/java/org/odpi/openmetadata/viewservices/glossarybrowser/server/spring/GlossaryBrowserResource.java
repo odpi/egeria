@@ -88,7 +88,7 @@ public class GlossaryBrowserResource
     @GetMapping(path = "/glossaries/terms/status-list")
 
     @Operation(summary="getGlossaryTermStatuses",
-               description="Return the list of glossary term status enum values.",
+               description="Return the list of glossary term status enum values.  These values are used in a glossary workflow to describe the state of the content of the term.",
                externalDocs=@ExternalDocumentation(description="Controlled glossary terms",
                                                    url="https://egeria-project.org/services/omvs/glossary-workflow/overview/#controlled-glossary-terms"))
 
@@ -110,7 +110,7 @@ public class GlossaryBrowserResource
     @GetMapping(path = "/glossaries/terms/relationships/status-list")
 
     @Operation(summary="getGlossaryTermRelationshipStatuses",
-               description="Return the list of glossary term relationship status enum values.",
+               description="Return the list of glossary term relationship status enum values.  These values are stored in a term-ot-term, or term-to-category, relationship and are used to indicate how much the relationship should be trusted",
                externalDocs=@ExternalDocumentation(description="Relationship statuses",
                                                    url="https://egeria-project.org/services/omvs/glossary-workflow/overview/#relationship-statuses"))
 
@@ -131,7 +131,7 @@ public class GlossaryBrowserResource
     @GetMapping(path = "/glossaries/terms/activity-types")
 
     @Operation(summary="getGlossaryTermActivityTypes",
-               description="Return the list of glossary term activity type enum values.",
+               description="Return the list of glossary term activity type enum values.  These values are used in the ActivityDescription classification that is attached to a glossary term that represents some type of activity.",
                externalDocs=@ExternalDocumentation(description="Activity description",
                                                    url="https://egeria-project.org/types/3/0340-Dictionary/#activitydescription"))
 

@@ -9,7 +9,6 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 
 /**
  * The AssetManagerAuditCode is used to define the message content for the OMRS Audit Log.
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>Log Message Id - to uniquely identify the message</li>
@@ -150,12 +149,12 @@ public enum AssetManagerAuditCode implements AuditLogMessageSet
     /**
      * The constructor for AssetManagerAuditCode expects to be passed one of the enumeration rows defined in
      * AssetManagerAuditCode above.   For example:
-     *
+     * <br>
      *     AssetManagerAuditCode   auditCode = AssetManagerAuditCode.SERVER_NOT_AVAILABLE;
-     *
+     * <br>
      * This will expand out to the 4 parameters shown below.
      *
-     * @param messageId - unique Id for the message
+     * @param messageId - unique id for the message
      * @param severity - severity of the message
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
