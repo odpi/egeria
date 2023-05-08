@@ -10,10 +10,9 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 
 /**
  * The OMRSAuditCode is used to define the message content for the OMRS Audit Log.
- *
  * The 5 fields in the enum are:
  * <ul>
- *     <li>Log Message Id: to uniquely identify the message</li>
+ *     <li>Log Message id: to uniquely identify the message</li>
  *     <li>Severity: is this an event, decision, action, error or exception</li>
  *     <li>Log Message Text: includes placeholder to allow additional values to be captured</li>
  *     <li>Additional Information: further parameters and data relating to the audit message (optional)</li>
@@ -370,9 +369,20 @@ public enum OMRSAuditCode implements AuditLogMessageSet
 
     NEW_REAL_CONNECTOR("OMRS-AUDIT-0045",
                        OMRSAuditLogRecordSeverity.STARTUP,
+                       "The connector for the local repository has been initialized",
+                       "The connector configuration identified a valid connector.  The server continues initializing.",
+                       "Verify that the repository connector initialized without error."),
+
+    STARTING_REAL_CONNECTOR("OMRS-AUDIT-0046",
+                           OMRSAuditLogRecordSeverity.STARTUP,
+                           "The connector for the local repository is about to be started",
+                           "The server calls start() on the connector.",
+                           "Verify that the repository connector returns from the start() without error. Look for message OMRS-AUDIT-0047"),
+    STARTED_REAL_CONNECTOR("OMRS-AUDIT-0047",
+                       OMRSAuditLogRecordSeverity.STARTUP,
                        "The connector for the local repository has been started",
                        "The server continues initializing.",
-                       "Verify that the repository connector initialized without error."),
+                       "Verify that the repository connector started without error."),
     PROCESSING_ARCHIVE("OMRS-AUDIT-0050",
                        OMRSAuditLogRecordSeverity.INFO,
                        "The Open Metadata Repository Services (OMRS) is about to process open metadata archive {0}",
@@ -1148,19 +1158,19 @@ public enum OMRSAuditCode implements AuditLogMessageSet
 
     ;
 
-    AuditLogMessageDefinition messageDefinition;
+    final AuditLogMessageDefinition messageDefinition;
 
 
 
     /**
      * The constructor for OMRSAuditCode expects to be passed one of the enumeration rows defined in
      * OMRSAuditCode above.   For example:
-     *
+     * <br>
      *     OMRSAuditCode   auditCode = OMRSAuditCode.SERVER_SHUTDOWN;
-     *
+     * <br>
      * This will expand out to the 4 parameters shown below.
      *
-     * @param messageId - unique Id for the message
+     * @param messageId - unique id for the message
      * @param severity - severity of the message
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened

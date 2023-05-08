@@ -1260,14 +1260,13 @@ public class OMRSOperationalServices
              * of the Connector to OMRSRepositoryConnector.  This could occur if the connector configured is a valid
              * OCF Connector but not an OMRSRepositoryConnector.
              */
-            String  connectionName = connection.getQualifiedName();
-
             auditLog.logException(methodName,
                                   OMRSAuditCode.BAD_REAL_LOCAL_REPOSITORY_CONNECTOR.getMessageDefinition(error.getClass().getName(),
                                                                                                          error.getMessage()),
                                   error);
 
-            throw new OMRSConfigErrorException(OMRSErrorCode.INVALID_OMRS_CONNECTION.getMessageDefinition(connectionName),
+            throw new OMRSConfigErrorException(OMRSErrorCode.BAD_REAL_LOCAL_REPOSITORY_CONNECTOR.getMessageDefinition(error.getClass().getName(),
+                                                                                                                      error.getMessage()),
                                                this.getClass().getName(),
                                                methodName,
                                                error);
