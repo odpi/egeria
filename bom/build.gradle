@@ -94,7 +94,7 @@ ext {
     spotbugsVersion = '4.7.3'
     springdataVersion = '3.0.3'
     springldapVersion = '3.0.1'
-    springsecurityVersion = '6.0.2'
+    springsecurityVersion = '6.0.3'
     springsecurityJwtVersion = '1.1.1.RELEASE'
     swaggerVersion = '2.2.9'
     testngVersion = '7.7.1'
