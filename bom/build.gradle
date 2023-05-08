@@ -70,7 +70,7 @@ ext {
     kafkaVersion = '3.4.0'
     lang3Version = '3.12.0'
     logbackVersion = '1.4.5'
-    lettuceVersion = '6.2.3.RELEASE'
+    lettuceVersion = '6.2.4.RELEASE'
     // TODO: Version 9 now available
     luceneVersion = '8.11.2'
     openlineageVersion = '0.24.0'
