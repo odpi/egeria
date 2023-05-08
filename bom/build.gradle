@@ -110,7 +110,7 @@ ext {
     protobufVersion = '3.22.2'
     osgiVersion = '8.0.0'
     log4jVersion = '2.20.0'
-    jacksonjdk8Version = '2.14.2'
+    jacksonjdk8Version = '2.15.0'
     reactivestreamsVersion = '1.0.4'
     springdocStarterVersion = '2.0.4'
     jacocoVersion = '0.8.8'
