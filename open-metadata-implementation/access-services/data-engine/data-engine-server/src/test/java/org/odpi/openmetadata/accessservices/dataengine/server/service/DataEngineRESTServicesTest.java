@@ -203,7 +203,7 @@ class DataEngineRESTServicesTest {
 
     private final Collection collection = getCollection();
 
-    private final Process process = getProcess(Collections.singletonList(portImplementation), Collections.emptyList());
+    private final Process process = getProcess(Collections.singletonList(portImplementation));
 
     @Captor
     private ArgumentCaptor<InstanceStatus> instanceStatuses;
@@ -1485,7 +1485,7 @@ class DataEngineRESTServicesTest {
         return portImplementation;
     }
 
-    private Process getProcess(List<PortImplementation> portImplementations, List<DataFlow> dataFlows) {
+    private Process getProcess(List<PortImplementation> portImplementations) {
         Process process = new Process();
 
         process.setQualifiedName(PROCESS_QUALIFIED_NAME);
