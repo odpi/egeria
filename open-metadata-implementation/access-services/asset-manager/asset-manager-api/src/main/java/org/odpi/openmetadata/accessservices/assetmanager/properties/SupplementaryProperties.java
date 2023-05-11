@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.assetmanager.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serial;
 import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -29,9 +28,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class SupplementaryProperties extends ReferenceableProperties
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private String displayName  = null;
     private String summary      = null;
     private String description  = null;

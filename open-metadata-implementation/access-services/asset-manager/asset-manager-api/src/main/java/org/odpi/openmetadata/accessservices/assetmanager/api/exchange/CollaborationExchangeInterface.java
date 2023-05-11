@@ -9,11 +9,10 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.NoteLo
 import org.odpi.openmetadata.accessservices.assetmanager.properties.CommentProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.FeedbackProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.InformalTagProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.LikeProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteLogProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.RatingProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.TagProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -71,7 +70,6 @@ public interface CollaborationExchangeInterface
      * @param userId      userId of user making request.
      * @param elementGUID   unique identifier for the element where the like is to be attached.
      * @param isPublic is this visible to other people
-     * @param properties    indicates whether the feedback should be shared or only be visible to the originating user
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem adding the element properties to the property server.
@@ -79,10 +77,9 @@ public interface CollaborationExchangeInterface
      */
     void   addLikeToElement(String         userId,
                             String         elementGUID,
-                            boolean        isPublic,
-                            LikeProperties properties) throws InvalidParameterException,
-                                                              PropertyServerException,
-                                                              UserNotAuthorizedException;
+                            boolean        isPublic) throws InvalidParameterException,
+                                                            PropertyServerException,
+                                                            UserNotAuthorizedException;
 
 
     /**
@@ -394,9 +391,9 @@ public interface CollaborationExchangeInterface
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     String createInformalTag(String                userId,
-                             InformalTagProperties properties) throws InvalidParameterException,
-                                                                      PropertyServerException,
-                                                                      UserNotAuthorizedException;
+                             TagProperties properties) throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException;
 
 
 

@@ -1,15 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.assetmanager.rest;
+package org.odpi.openmetadata.accessservices.assetmanager.properties;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ClassificationProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermActivityType;
 
-import java.io.Serial;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -24,9 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ActivityDescriptionProperties extends ClassificationProperties
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private GlossaryTermActivityType activityType = null;
 
 

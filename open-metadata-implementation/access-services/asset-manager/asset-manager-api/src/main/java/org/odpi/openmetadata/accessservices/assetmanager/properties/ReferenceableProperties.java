@@ -4,8 +4,6 @@ package org.odpi.openmetadata.accessservices.assetmanager.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -36,11 +34,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SupplementaryProperties.class, name = "SupplementaryProperties"),
                 @JsonSubTypes.Type(value = ValidValueProperties.class, name = "ValidValueProperties"),
         })
-public class ReferenceableProperties implements Serializable
+public class ReferenceableProperties
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private String               qualifiedName        = null;
     private Map<String, String>  additionalProperties = null;
 
@@ -62,7 +57,7 @@ public class ReferenceableProperties implements Serializable
 
 
     /**
-     * Copy/clone constructor.  Retrieves values from the supplied template
+     * Copy/clone constructor.  Retrieve values from the supplied template
      *
      * @param template element to copy
      */

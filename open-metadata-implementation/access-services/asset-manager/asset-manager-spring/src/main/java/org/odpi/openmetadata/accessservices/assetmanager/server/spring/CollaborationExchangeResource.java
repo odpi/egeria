@@ -163,7 +163,8 @@ public class CollaborationExchangeResource
                                          @PathVariable String         userId,
                                          @PathVariable String         elementGUID,
                                          @RequestParam boolean        isPublic,
-                                         @RequestBody  LikeProperties requestBody)
+                                         @RequestBody (required = false)
+                                                       NullRequestBody requestBody)
     {
         return restAPI.addLikeToElement(serverName, userId, elementGUID, isPublic, requestBody);
     }
@@ -245,16 +246,16 @@ public class CollaborationExchangeResource
      */
     @PostMapping(path = "/tags")
 
-    @Operation(summary="createTag",
+    @Operation(summary="createInformalTag",
                description="Creates a new informal tag and returns the unique identifier for it.",
                externalDocs=@ExternalDocumentation(description="Informal Tag",
                                                    url="https://egeria-project.org/concepts/informal-tag/"))
 
-    public GUIDResponse createTag(@PathVariable String        serverName,
-                                  @PathVariable String        userId,
-                                  @RequestBody  TagProperties requestBody)
+    public GUIDResponse createInformalTag(@PathVariable String        serverName,
+                                          @PathVariable String        userId,
+                                          @RequestBody  TagProperties requestBody)
     {
-        return restAPI.createTag(serverName, userId, requestBody);
+        return restAPI.createInformalTag(serverName, userId, requestBody);
     }
 
 

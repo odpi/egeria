@@ -47,6 +47,7 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
     private final ProcessExchangeHandler                                              processExchangeHandler;
     private final SchemaExchangeHandler                                               schemaExchangeHandler;
     private final GovernanceActionHandler<GovernanceActionElement>                    governanceActionHandler;
+    private final GovernanceDefinitionHandler<GovernanceDefinitionElement>            governanceDefinitionHandler;
     private final AssetHandler<GovernanceActionProcessElement>                        governanceActionProcessHandler;
     private final GovernanceActionTypeHandler<GovernanceActionTypeElement>            governanceActionTypeHandler;
     private final InformalTagHandler<InformalTagElement>                              informalTagHandler;
@@ -286,6 +287,20 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
                                                                              publishZones,
                                                                              auditLog);
 
+        this.governanceDefinitionHandler = new GovernanceDefinitionHandler<>(new GovernanceDefinitionConverter<>(repositoryHelper, serviceName, serverName),
+                                                                             GovernanceDefinitionElement.class,
+                                                                             serviceName,
+                                                                             serverName,
+                                                                             invalidParameterHandler,
+                                                                             repositoryHandler,
+                                                                             repositoryHelper,
+                                                                             localServerUserId,
+                                                                             securityVerifier,
+                                                                             supportedZones,
+                                                                             defaultZones,
+                                                                             publishZones,
+                                                                             auditLog);
+
         this.informalTagHandler = new InformalTagHandler<>(new InformalTagConverter<>(repositoryHelper, serviceName, serverName),
                                                            InformalTagElement.class,
                                                            serviceName,
@@ -299,6 +314,7 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
                                                            defaultZones,
                                                            publishZones,
                                                            auditLog);
+
         this.likeHandler = new LikeHandler<>(new LikeConverter<>(repositoryHelper, serviceName, serverName),
                                              LikeElement.class,
                                              serviceName,
@@ -576,6 +592,23 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
 
         return governanceActionHandler;
     }
+
+
+    /**
+     * Return the handler for governance definition requests.
+     *
+     * @return handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    GovernanceDefinitionHandler<GovernanceDefinitionElement> getGovernanceDefinitionHandler() throws PropertyServerException
+    {
+        final String methodName = "getGovernanceDefinitionHandler";
+
+        validateActiveRepository(methodName);
+
+        return governanceDefinitionHandler;
+    }
+
 
 
     /**

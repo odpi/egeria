@@ -8515,7 +8515,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param omittedClassificationName   String the name of a classification that must not be on the attached entity.
      * @param limitResultsByEnumValues  The list of ordinals for the enum value.
      * @param enumPropertyName   String the name of a property in the relationship that is an enum.
-     * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
+     * @param attachmentEntityEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
      * @param forDuplicateProcessing this request os for duplicate processing so do not deduplicate
      * @param forLineage this request is for lineage so ignore Memento classifications
      * @param startingFrom start position for results
@@ -8540,7 +8540,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          String         omittedClassificationName,
                                          List<Integer>  limitResultsByEnumValues,
                                          String         enumPropertyName,
-                                         int            selectionEnd,
+                                         int            attachmentEntityEnd,
                                          boolean        forLineage,
                                          boolean        forDuplicateProcessing,
                                          int            startingFrom,
@@ -8576,7 +8576,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                     attachmentRelationshipTypeName,
                                                                     null,
                                                                     attachmentEntityTypeName,
-                                                                    selectionEnd,
+                                                                    attachmentEntityEnd,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
                                                                     supportedZones,
@@ -8613,7 +8613,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                          attachmentEntityTypeName,
                                                          requiredClassificationName,
                                                          omittedClassificationName,
-                                                         selectionEnd,
+                                                         attachmentEntityEnd,
                                                          forLineage,
                                                          forDuplicateProcessing,
                                                          supportedZones,

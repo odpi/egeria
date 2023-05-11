@@ -3,7 +3,9 @@
 package org.odpi.openmetadata.viewservices.glossarybrowser.server;
 
 
+import org.odpi.openmetadata.accessservices.assetmanager.client.management.CollaborationManagementClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.management.GlossaryManagementClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.management.StewardshipManagementClient;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandler;
@@ -139,7 +141,36 @@ public class GlossaryBrowserInstanceHandler extends OMVSServiceInstanceHandler
 
     /**
      * This method returns the object for the tenant to use to work with the
-     * subject area nodes API
+     * asset manager API
+     *
+     * @param serverName           name of the server that the request is for
+     * @param userId               local server userid
+     * @param serviceOperationName service operation - usually the top level rest call
+     * @return SubjectAreaNodeClients subject area nodes API objects
+     * @throws InvalidParameterException unknown server/service
+     * @throws UserNotAuthorizedException User not authorized to call this service
+     * @throws PropertyServerException internal error
+     */
+    public CollaborationManagementClient getCollaborationManagementClient(String userId,
+                                                                          String serverName,
+                                                                          String serviceOperationName) throws InvalidParameterException,
+                                                                                                              PropertyServerException,
+                                                                                                              UserNotAuthorizedException
+    {
+        GlossaryBrowserInstance instance = (GlossaryBrowserInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getCollaborationManagementClient();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * This method returns the object for the tenant to use to work with the
+     * asset manager API
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
@@ -160,6 +191,35 @@ public class GlossaryBrowserInstanceHandler extends OMVSServiceInstanceHandler
         if (instance != null)
         {
             return instance.getGlossaryManagementClient();
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * This method returns the object for the tenant to use to work with the asset manager API
+     *
+     * @param serverName           name of the server that the request is for
+     * @param userId               local server userid
+     * @param serviceOperationName service operation - usually the top level rest call
+     * @return SubjectAreaNodeClients subject area nodes API objects
+     * @throws InvalidParameterException unknown server/service
+     * @throws UserNotAuthorizedException User not authorized to call this service
+     * @throws PropertyServerException internal error
+     */
+    public StewardshipManagementClient getStewardshipManagementClient(String userId,
+                                                                      String serverName,
+                                                                      String serviceOperationName) throws InvalidParameterException,
+                                                                                                          PropertyServerException,
+                                                                                                          UserNotAuthorizedException
+    {
+        GlossaryBrowserInstance instance = (GlossaryBrowserInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getStewardshipManagementClient();
         }
 
         return null;

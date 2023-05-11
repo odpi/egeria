@@ -26,36 +26,54 @@ import org.slf4j.LoggerFactory;
 
 public enum GlossaryWorkflowAuditCode implements AuditLogMessageSet
 {
+    /**
+     * OMVS-GLOSSARY-WORKFLOW-0001 The Glossary Workflow Open Metadata View Service (OMVS) is initializing
+     */
     SERVICE_INITIALIZING("OMVS-GLOSSARY-WORKFLOW-0001",
                          OMRSAuditLogRecordSeverity.STARTUP,
                          "The Glossary Workflow Open Metadata View Service (OMVS) is initializing",
                          "The local server is initializing the Glossary Workflow Open Metadata View Service. If the initialization is successful then audit message OMVS-GLOSSARY-WORKFLOW-0002 will be issued, if there were errors then they should be shown in the audit log. ",
                          "No action is required. This is part of the normal operation of the Glossary Workflow Open Metadata View Service."),
 
+    /**
+     * OMVS-GLOSSARY-WORKFLOW-0002 The Glossary Workflow Open Metadata View Service (OMVS) is initialized
+     */
     SERVICE_INITIALIZED("OMVS-GLOSSARY-WORKFLOW-0002",
                          OMRSAuditLogRecordSeverity.STARTUP,
                          "The Glossary Workflow Open Metadata View Service (OMVS) is initialized",
                          "The Glossary Workflow OMVS has completed initialization. Calls will be accepted by this service, if OMRS is also configured and the view server has been started. ",
                          "No action is required.  This is part of the normal operation of the Glossary Workflow Open Metadata View Service. Once the OMRS is configured and the server is started, Glossary Workflowview service requests can be accepted."),
 
+    /**
+     * OMVS-GLOSSARY-WORKFLOW-0003 The Glossary Workflow Open Metadata View Service (OMVS) is shutting down
+     */
     SERVICE_SHUTDOWN("OMVS-GLOSSARY-WORKFLOW-0003",
                          OMRSAuditLogRecordSeverity.SHUTDOWN,
                          "The Glossary Workflow Open Metadata View Service (OMVS) is shutting down",
                          "The local server has requested shutdown of the Glossary Workflow OMVS.",
                          "No action is required. The operator should verify that shutdown was intended. This is part of the normal operation of the Glossary Workflow OMVS."),
 
+    /**
+     * OMVS-GLOSSARY-WORKFLOW-0004 The Glossary Workflow Open Metadata View Service (OMVS) is unable to initialize a new instance; error message is {0}
+     */
     SERVICE_INSTANCE_FAILURE("OMVS-GLOSSARY-WORKFLOW-0004",
                          OMRSAuditLogRecordSeverity.EXCEPTION,
                          "The Glossary Workflow Open Metadata View Service (OMVS) is unable to initialize a new instance; error message is {0}",
                          "The view service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
                          "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 
+    /**
+     * OMVS-GLOSSARY-WORKFLOW-0005 The Glossary Workflow Open Metadata View Service (OMVS) is shutting down server instance {0}
+     */
     SERVICE_TERMINATING("OMVS-GLOSSARY-WORKFLOW-0005",
                          OMRSAuditLogRecordSeverity.SHUTDOWN,
                          "The Glossary Workflow Open Metadata View Service (OMVS) is shutting down server instance {0}",
                          "The local handler has requested shut down of the Glossary Workflow OMVS.",
                          "No action is required. This is part of the normal operation of the service."),
 
+    /**
+     * OMVS-GLOSSARY-WORKFLOW-0006 The Open Metadata Service has generated an unexpected {0} exception during method {1}.  The message was: {2}
+     */
     UNEXPECTED_EXCEPTION("OMVS-GLOSSARY-WORKFLOW-0006",
                          OMRSAuditLogRecordSeverity.EXCEPTION,
                          "The Open Metadata Service has generated an unexpected {0} exception during method {1}.  The message was: {2}",
