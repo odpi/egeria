@@ -754,8 +754,6 @@ public class OpenMetadataTypesArchive2_11
 
         this.archiveBuilder.addEntityDef(addAPIParameterListEntity());
         this.archiveBuilder.addEntityDef(addAPIParameterEntity());
-
-        this.archiveBuilder.addTypeDefPatch(updateAPIOperation());
     }
 
 
@@ -843,32 +841,6 @@ public class OpenMetadataTypesArchive2_11
 
         return entityDef;
     }
-
-
-    /**
-     * This change means that APIOperation inherits from ComplexSchemaType rather than SchemaType.
-     *
-     * @return patched type
-     */
-    private TypeDefPatch updateAPIOperation()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "APIOperation";
-
-        final String superTypeName = "ComplexSchemaType";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
-
-        return typeDefPatch;
-    }
-
 
     /*
      * -------------------------------------------------------------------------------------------------------

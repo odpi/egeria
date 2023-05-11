@@ -2,7 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossarybrowser.server;
 
+import org.odpi.openmetadata.accessservices.assetmanager.client.management.CollaborationManagementClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.management.GlossaryManagementClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.management.StewardshipManagementClient;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -17,7 +19,9 @@ public class GlossaryBrowserInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.GLOSSARY_BROWSER;
 
-    private final GlossaryManagementClient glossaryManagementClient;
+    private final CollaborationManagementClient collaborationManagementClient;
+    private final GlossaryManagementClient      glossaryManagementClient;
+    private final StewardshipManagementClient   stewardshipManagementClient;
 
     /**
      * Set up the Glossary Browser OMVS instance*
@@ -44,17 +48,42 @@ public class GlossaryBrowserInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
+        collaborationManagementClient = new CollaborationManagementClient(remoteServerName, remoteServerURL, auditLog);
         glossaryManagementClient = new GlossaryManagementClient(remoteServerName, remoteServerURL, auditLog);
+        stewardshipManagementClient = new StewardshipManagementClient(remoteServerName, remoteServerURL, auditLog);
     }
 
 
     /**
-     * Return the glossary management client.  This client is from Asset Manager OMAS.
+     * Return the collaboration management client.  This client is from Asset Manager OMAS and is for maintaining notelogs.
+     *
+     * @return client
+     */
+    public CollaborationManagementClient getCollaborationManagementClient()
+    {
+        return collaborationManagementClient;
+    }
+
+
+    /**
+     * Return the glossary management client.  This client is from Asset Manager OMAS and is for maintaining glossaries and their content.
      *
      * @return client
      */
     public GlossaryManagementClient getGlossaryManagementClient()
     {
         return glossaryManagementClient;
+    }
+
+
+    /**
+     * Return the stewardship management client.  This client is from Asset Manager OMAS and is for setting up classifications and relationships for
+     * a glossary term.
+     *
+     * @return client
+     */
+    public StewardshipManagementClient getStewardshipManagementClient()
+    {
+        return stewardshipManagementClient;
     }
 }

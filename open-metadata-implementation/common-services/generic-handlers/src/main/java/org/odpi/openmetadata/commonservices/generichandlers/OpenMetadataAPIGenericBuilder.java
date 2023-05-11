@@ -238,6 +238,38 @@ public class OpenMetadataAPIGenericBuilder
         }
     }
 
+    /**
+     * Set up the "TemplateSubstitute" classification for this entity.  This is used when a new entity is being created, and it is known to be
+     * created as a template substitute.
+     *
+     * @param userId calling user
+     * @param methodName calling method
+     * @throws PropertyServerException a null anchors GUID has been supplied
+     */
+    public void setTemplateSubstitute(String userId,
+                                      String methodName) throws PropertyServerException
+    {
+        try
+        {
+            Classification classification = repositoryHelper.getNewClassification(serviceName,
+                                                                                  null,
+                                                                                  null,
+                                                                                  InstanceProvenanceType.LOCAL_COHORT,
+                                                                                  userId,
+                                                                                  OpenMetadataAPIMapper.TEMPLATE_SUBSTITUTE_CLASSIFICATION_TYPE_NAME,
+                                                                                  typeName,
+                                                                                  ClassificationOrigin.ASSIGNED,
+                                                                                  null,
+                                                                                  null);
+            newClassifications.put(classification.getName(), classification);
+        }
+        catch (Exception error)
+        {
+            errorHandler.handleUnsupportedAnchorsType(error, methodName, OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME);
+        }
+    }
+
+
 
     /**
      * Set up the "Anchors" classification for this entity.  This is used when a new entity is being created, and it is known to be

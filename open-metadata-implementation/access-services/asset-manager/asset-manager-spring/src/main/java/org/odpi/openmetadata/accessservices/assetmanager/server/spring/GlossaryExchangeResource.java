@@ -8,7 +8,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
 import org.odpi.openmetadata.accessservices.assetmanager.server.GlossaryExchangeRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -174,7 +176,7 @@ public class GlossaryExchangeResource
 
     /**
      * Classify the glossary to indicate that it is an editing glossary - this means it is
-     * a temporary collection of glossary updates that will be merged into another glossary.
+     * a collection of glossary updates that will be merged into its source glossary.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
@@ -231,6 +233,68 @@ public class GlossaryExchangeResource
                                                                      ClassificationRequestBody requestBody)
     {
         return restAPI.clearGlossaryAsEditingGlossary(serverName, userId, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Classify the glossary to indicate that it is an editing glossary - this means it is
+     * a collection of glossary updates that will be merged into another glossary.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/{glossaryGUID}/is-staging-glossary")
+
+    public VoidResponse setGlossaryAsStagingGlossary(@PathVariable String                    serverName,
+                                                     @PathVariable String                    userId,
+                                                     @PathVariable String                    glossaryGUID,
+                                                     @RequestParam (required = false, defaultValue = "false")
+                                                                   boolean                   forLineage,
+                                                     @RequestParam (required = false, defaultValue = "false")
+                                                                   boolean                   forDuplicateProcessing,
+                                                     @RequestBody  ClassificationRequestBody requestBody)
+    {
+        return restAPI.setGlossaryAsStagingGlossary(serverName, userId, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Remove the staging glossary designation from the glossary.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody correlation properties for the external asset manager
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/{glossaryGUID}/is-staging-glossary/remove")
+
+    public VoidResponse clearGlossaryAsStagingGlossary(@PathVariable String                    serverName,
+                                                       @PathVariable String                    userId,
+                                                       @PathVariable String                    glossaryGUID,
+                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                   forLineage,
+                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                   forDuplicateProcessing,
+                                                       @RequestBody(required = false)
+                                                                     ClassificationRequestBody requestBody)
+    {
+        return restAPI.clearGlossaryAsStagingGlossary(serverName, userId, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -505,6 +569,7 @@ public class GlossaryExchangeResource
      * @param userId calling user
      * @param glossaryGUID unique identifier of the glossary where the category is located
      * @param assetManagerIsHome  ensure that only the asset manager can update this element
+     * @param isRootCategory is this category a root category?
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties about the glossary category to store
@@ -522,12 +587,14 @@ public class GlossaryExchangeResource
                                                @RequestParam (required = false, defaultValue = "false")
                                                              boolean                        assetManagerIsHome,
                                                @RequestParam (required = false, defaultValue = "false")
+                                                             boolean                        isRootCategory,
+                                               @RequestParam (required = false, defaultValue = "false")
                                                              boolean                        forLineage,
                                                @RequestParam (required = false, defaultValue = "false")
                                                              boolean                        forDuplicateProcessing,
                                                @RequestBody  ReferenceableUpdateRequestBody requestBody)
     {
-        return restAPI.createGlossaryCategory(serverName, userId, glossaryGUID, assetManagerIsHome, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.createGlossaryCategory(serverName, userId, glossaryGUID, assetManagerIsHome, isRootCategory, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -972,6 +1039,7 @@ public class GlossaryExchangeResource
      * @param templateGUID unique identifier of the metadata element to copy
      * @param assetManagerIsHome  ensure that only the asset manager can update this element
      * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
+     * @param templateSubstitute is this element a template substitute (used as the "other end" of a new/updated relationship)
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element for the glossary term or
@@ -989,9 +1057,11 @@ public class GlossaryExchangeResource
                                                                      boolean                     assetManagerIsHome,
                                                        @RequestParam (required = false, defaultValue = "true")
                                                                      boolean                     deepCopy,
+                                                       @RequestParam (required = false, defaultValue = "true")
+                                                                     boolean                     templateSubstitute,
                                                        @RequestBody  GlossaryTemplateRequestBody requestBody)
     {
-        return restAPI.createGlossaryTermFromTemplate(serverName, userId, glossaryGUID, templateGUID, assetManagerIsHome, deepCopy, requestBody);
+        return restAPI.createGlossaryTermFromTemplate(serverName, userId, glossaryGUID, templateGUID, assetManagerIsHome, deepCopy, templateSubstitute, requestBody);
     }
 
 
@@ -1060,6 +1130,72 @@ public class GlossaryExchangeResource
 
 
     /**
+     * Update the glossary term using the properties and classifications from the parentGUID stored in the request body.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the glossary term to update
+     * @param isMergeClassifications should the classification be merged or replace the target entity?
+     * @param isMergeProperties should the properties be merged with the existing ones or replace them
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody status and correlation properties
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/update/from-template")
+
+    public VoidResponse updateGlossaryTermFromTemplate(@PathVariable String                         serverName,
+                                                       @PathVariable String                         userId,
+                                                       @PathVariable String                         glossaryTermGUID,
+                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                        isMergeClassifications,
+                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                        isMergeProperties,
+                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                        forLineage,
+                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                        forDuplicateProcessing,
+                                                       @RequestBody  ReferenceableUpdateRequestBody requestBody)
+    {
+        return restAPI.updateGlossaryTermFromTemplate(serverName, userId, glossaryTermGUID, isMergeClassifications, isMergeProperties, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Move a glossary term from one glossary to another.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the glossary term to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody status and correlation properties
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/move")
+
+    public VoidResponse moveGlossaryTerm(@PathVariable String                         serverName,
+                                         @PathVariable String                         userId,
+                                         @PathVariable String                         glossaryTermGUID,
+                                         @RequestParam (required = false, defaultValue = "false")
+                                                       boolean                        forLineage,
+                                         @RequestParam (required = false, defaultValue = "false")
+                                                       boolean                        forDuplicateProcessing,
+                                         @RequestBody  ReferenceableUpdateRequestBody requestBody)
+    {
+        return restAPI.moveGlossaryTerm(serverName, userId, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
      * Link a term to a category.
      *
      * @param serverName name of the server to route the request to
@@ -1122,6 +1258,25 @@ public class GlossaryExchangeResource
                                                         EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.clearTermCategory(serverName, userId, glossaryCategoryGUID, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Return the list of term-to-term relationship names.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @return list of type names that are subtypes of asset or
+     * throws InvalidParameterException full path or userId is null or
+     * throws PropertyServerException problem accessing property server or
+     * throws UserNotAuthorizedException security access problem.
+     */
+    @GetMapping(path = "/glossaries/terms/relationships/type-names")
+
+    public NameListResponse getTermRelationshipTypeNames(@PathVariable String serverName,
+                                                         @PathVariable String userId)
+    {
+        return restAPI.getTermRelationshipTypeNames(serverName, userId);
     }
 
 

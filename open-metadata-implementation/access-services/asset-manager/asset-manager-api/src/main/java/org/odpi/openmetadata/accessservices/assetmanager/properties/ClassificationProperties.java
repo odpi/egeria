@@ -7,10 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.ActivityDescriptionProperties;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,14 +37,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = GovernanceClassificationBase.class, name = "GovernanceClassificationBase"),
                 @JsonSubTypes.Type(value = OwnerProperties.class, name = "OwnerProperties"),
                 @JsonSubTypes.Type(value = SecurityTagsProperties.class, name = "SecurityTagsProperties"),
+                @JsonSubTypes.Type(value = StagingGlossaryProperties.class, name = "StagingGlossaryProperties"),
                 @JsonSubTypes.Type(value = SubjectAreaMemberProperties.class, name = "SubjectAreaMemberProperties"),
                 @JsonSubTypes.Type(value = TaxonomyProperties.class, name = "TaxonomyProperties"),
         })
-public class ClassificationProperties implements Serializable
+public class ClassificationProperties
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private Date effectiveFrom = null;
     private Date effectiveTo   = null;
 

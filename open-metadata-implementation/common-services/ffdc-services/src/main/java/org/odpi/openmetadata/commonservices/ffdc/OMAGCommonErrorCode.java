@@ -186,6 +186,10 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
                           "The system is unable to proceed because it can not interpret the properties needed to execute the request.",
                           "Correct the code in the caller to provide a valid properties object."),
 
+    NO_REQUEST_BODY_FOR_CLASS(400, "OMAG-COMMON-400-030",
+                    "An request by user {0} to method {1} on server {2} had no request body.  Add a request body of type {3}",
+                    "The system is unable to process the request without the request body since it contains key information.  It returns with an exception.",
+                    "Update the caller to provide the request body of the recommended type."),
     INSTANCE_WRONG_TYPE_FOR_GUID(404, "OMAG-COMMON-404-001",
                                  "The {0} method has retrieved an instance for unique identifier (guid) {1} which is of type {2} rather than type {3}",
                                  "The request fails because the requested object is not of the right type.",

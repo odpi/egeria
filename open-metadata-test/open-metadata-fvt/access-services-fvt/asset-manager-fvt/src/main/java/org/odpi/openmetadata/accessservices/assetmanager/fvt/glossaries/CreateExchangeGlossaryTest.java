@@ -361,6 +361,7 @@ public class CreateExchangeGlossaryTest extends AssetManagerTestBase
                                                                         glossaryGUID,
                                                                         externalIdentifierProperties,
                                                                         properties,
+                                                                        true,
                                                                         null,
                                                                         false,
                                                                         false);

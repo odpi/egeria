@@ -28,9 +28,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class AssetProperties extends SupplementaryProperties
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private String              technicalName                = null;
     private String              versionIdentifier            = null;
     private String              technicalDescription         = null;

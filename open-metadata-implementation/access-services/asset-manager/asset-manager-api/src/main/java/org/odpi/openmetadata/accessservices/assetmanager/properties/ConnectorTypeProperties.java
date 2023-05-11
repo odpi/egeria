@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serial;
 import java.util.List;
 import java.util.Objects;
 
@@ -83,7 +82,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     </li>
  * </ul>
  *
- * The connectorTypeProperties class is simply used to cache the properties for an connector type.
+ * The connectorTypeProperties class is simply used to cache the properties for a connector type.
  * It is used by other classes to exchange this information between a metadata repository and a consumer.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -91,12 +90,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ConnectorTypeProperties extends ReferenceableProperties
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    /*
-     * Attributes of a connector type
-     */
     private String       displayName                       = null;
     private String       description                       = null;
     private String       supportedAssetTypeName            = null;

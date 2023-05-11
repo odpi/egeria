@@ -19,6 +19,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper.OMRSRepositoryEventMapperConnector;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventExchangeRule;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventManager;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager;
 
@@ -43,35 +44,6 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
     private final ConnectorType                connectorType                   = null;
     private AuditLog                           auditLog                        = null;
 
-
-    /**
-     * Constructor used by OMRSOperationalServices during server start-up. It
-     * provides the configuration information about the local server that is used to set up the
-     * local repository connector.
-     *
-     * @param localMetadataCollectionId metadata collection id for the local repository
-     * @param localRepositoryRemoteConnection connection object for creating a remote connector to this repository.
-     * @param realEventMapper optional event mapper for local repository
-     * @param outboundRepositoryEventManager event manager to call for outbound events.
-     * @param repositoryContentManager repositoryContentManager for supporting OMRS in managing TypeDefs.
-     * @param saveExchangeRule rule to determine what events to save to the local repository.
-     */
-    public LocalOMRSConnectorProvider(String                             localMetadataCollectionId,
-                                      Connection                         localRepositoryRemoteConnection,
-                                      OMRSRepositoryEventMapperConnector realEventMapper,
-                                      OMRSRepositoryEventManager         outboundRepositoryEventManager,
-                                      OMRSRepositoryContentManager       repositoryContentManager,
-                                      OMRSRepositoryEventExchangeRule    saveExchangeRule)
-    {
-        this(localMetadataCollectionId,
-             LocalRepositoryMode.PLUGIN_REPOSITORY,
-             localRepositoryRemoteConnection,
-             realEventMapper,
-             outboundRepositoryEventManager,
-             repositoryContentManager,
-             saveExchangeRule,
-             null);
-    }
 
 
     /**
@@ -198,6 +170,32 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
          */
         if (localRepositoryConnector == null)
         {
+            if (auditLog != null)
+            {
+                String connectorProviderName = "null";
+                String configurationProperties = "null";
+                String localRepositoryModeName = "null";
+
+                if (localRepositoryMode != null)
+                {
+                    localRepositoryModeName = localRepositoryMode.getName();
+                }
+
+                if (realLocalConnection.getConnectorType() != null)
+                {
+                    connectorProviderName = realLocalConnection.getConnectorType().getConnectorProviderClassName();
+                }
+
+                if (realLocalConnection.getConfigurationProperties() != null)
+                {
+                    configurationProperties = realLocalConnection.getConfigurationProperties().toString();
+                }
+
+                auditLog.logMessage(methodName, OMRSAuditCode.CREATING_REAL_CONNECTOR.getMessageDefinition(localRepositoryModeName,
+                                                                                                           connectorProviderName,
+                                                                                                           configurationProperties));
+            }
+
             OMRSRepositoryConnector realLocalConnector;
 
             /*
@@ -222,6 +220,11 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
                                                      error);
 
 
+            }
+
+            if (auditLog != null)
+            {
+                auditLog.logMessage(methodName, OMRSAuditCode.NEW_REAL_CONNECTOR.getMessageDefinition());
             }
 
             /*

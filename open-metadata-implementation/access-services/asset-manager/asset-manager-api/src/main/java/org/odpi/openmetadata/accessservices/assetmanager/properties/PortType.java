@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -24,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public enum PortType implements Serializable
+public enum PortType
 {
     /**
      * Input Port - Data is passed into the process.
@@ -51,7 +49,6 @@ public enum PortType implements Serializable
      */
     OTHER       (99, 99, "Other",             "None of the above.");
 
-    private static final long serialVersionUID = 1L;
 
     private static final String ENUM_TYPE_GUID  = "b57Fbce7-42ac-71D1-D6a6-9f62Cb7C6dc3";
     private static final String ENUM_TYPE_NAME  = "PortType";

@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -17,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum GovernanceActionStatus implements Serializable
+public enum GovernanceActionStatus
 {
     /**
      * Requested - The governance action has been created and is pending.
@@ -68,8 +66,6 @@ public enum GovernanceActionStatus implements Serializable
      * Other - Undefined or unknown governance action status.
      */
     OTHER           (99, 99, "Other",      "Undefined or unknown governance action status");
-
-    private static final long     serialVersionUID = 1L;
 
     private static final String ENUM_TYPE_GUID  = "a6e698b0-a4f7-4a39-8c80-db0bb0f972e";
     private static final String ENUM_TYPE_NAME  = "GovernanceActionStatus";

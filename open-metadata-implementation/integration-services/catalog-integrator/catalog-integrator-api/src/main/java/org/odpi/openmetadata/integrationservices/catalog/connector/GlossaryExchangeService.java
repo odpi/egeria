@@ -9,7 +9,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Glossa
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.ActivityDescriptionProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.ActivityDescriptionProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -570,6 +570,7 @@ public class GlossaryExchangeService
      * @param assetManagerIsHome      ensure that only the asset manager can update this element
      * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param glossaryCategoryProperties properties about the glossary category to store
+     * @param isRootCategory is this category a root category?
      * @param effectiveTime           the time that the retrieved elements must be effective for
      *
      * @return unique identifier of the new glossary category
@@ -582,6 +583,7 @@ public class GlossaryExchangeService
                                          boolean                      assetManagerIsHome,
                                          ExternalIdentifierProperties externalIdentifierProperties,
                                          GlossaryCategoryProperties   glossaryCategoryProperties,
+                                         boolean                      isRootCategory,
                                          Date                         effectiveTime) throws InvalidParameterException,
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
@@ -597,6 +599,7 @@ public class GlossaryExchangeService
                                                                 glossaryGUID,
                                                                 externalIdentifierProperties,
                                                                 glossaryCategoryProperties,
+                                                                isRootCategory,
                                                                 effectiveTime,
                                                                 forLineage,
                                                                 forDuplicateProcessing);
@@ -1218,6 +1221,7 @@ public class GlossaryExchangeService
      * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param templateProperties properties that override the template
      * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
+     * @param initialStatus what status should the copy be set to
      *
      * @return unique identifier of the new metadata element for the glossary term
      *
@@ -1230,9 +1234,10 @@ public class GlossaryExchangeService
                                                  String                       templateGUID,
                                                  ExternalIdentifierProperties externalIdentifierProperties,
                                                  TemplateProperties           templateProperties,
-                                                 boolean                      deepCopy) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
+                                                 boolean                      deepCopy,
+                                                 GlossaryTermStatus           initialStatus) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
     {
         final String methodName = "createGlossaryTermFromTemplate";
 
@@ -1246,6 +1251,7 @@ public class GlossaryExchangeService
                                                                         templateGUID,
                                                                         externalIdentifierProperties,
                                                                         deepCopy,
+                                                                        initialStatus,
                                                                         templateProperties);
         }
         else

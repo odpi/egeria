@@ -12,9 +12,6 @@ import java.util.Objects;
  */
 public class SubjectAreaMemberProperties extends ClassificationProperties
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private String subjectAreaName  = null;
 
 

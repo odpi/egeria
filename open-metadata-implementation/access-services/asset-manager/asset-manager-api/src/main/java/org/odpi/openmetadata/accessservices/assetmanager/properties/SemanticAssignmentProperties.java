@@ -7,23 +7,19 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serial;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * GlossaryTermRelationship describes a type of relationship between two glossary terms in a glossary.
+ * SemanticAssignmentProperties links an element to a glossary term to indicate that the glossary term describes its meaning.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SemanticAssignmentProperties extends RelationshipProperties
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private String               expression  = null;
     private String               description = null;
     private TermAssignmentStatus status      = null;

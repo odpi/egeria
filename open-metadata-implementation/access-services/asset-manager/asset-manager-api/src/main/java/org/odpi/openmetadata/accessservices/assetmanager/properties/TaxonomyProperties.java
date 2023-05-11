@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -18,19 +16,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * TaxonomyProperties is used to classify a glossary that has the terms organized in a taxonomy.
  * This means each term is attached to one, and only one category and the categories are organized as a hierarchy
  * with a single root category.
- *
+ * <br><br>
  * Taxonomies are used as a way of organizing assets and other related metadata.  The terms in the taxonomy
- * are linked to the assets etc and as such they are logically categorized by the linked category.
+ * are linked to the assets and as such they are logically categorized by the linked category.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TaxonomyProperties extends ClassificationProperties
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    private String                        organizingPrinciple = null;
+    private String organizingPrinciple = null;
 
 
     /**

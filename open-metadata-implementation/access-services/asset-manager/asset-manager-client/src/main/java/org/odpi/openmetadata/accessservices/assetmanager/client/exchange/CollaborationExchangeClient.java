@@ -13,11 +13,10 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.NoteLo
 import org.odpi.openmetadata.accessservices.assetmanager.properties.CommentProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.FeedbackProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.InformalTagProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.LikeProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteLogProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.RatingProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.TagProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.CommentElementResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.CommentElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
@@ -223,7 +222,6 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
      * @param userId      userId of user making request
      * @param elementGUID   unique identifier for the element
      * @param isPublic is this visible to other people
-     * @param properties   indicates whether the feedback should be shared or only be visible to the originating user
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem adding the element properties to the property server.
@@ -232,10 +230,9 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
     @Override
     public void addLikeToElement(String         userId,
                                  String         elementGUID,
-                                 boolean        isPublic,
-                                 LikeProperties properties) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
+                                 boolean        isPublic) throws InvalidParameterException,
+                                                                 PropertyServerException,
+                                                                 UserNotAuthorizedException
     {
         final String   methodName  = "addLikeToElement";
         final String   guidParameter = "elementGUID";
@@ -247,7 +244,7 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        properties,
+                                        nullRequestBody,
                                         serverName,
                                         userId,
                                         elementGUID,
@@ -787,10 +784,10 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override
-    public String createInformalTag(String                userId,
-                                    InformalTagProperties properties) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException
+    public String createInformalTag(String        userId,
+                                    TagProperties properties) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
     {
         final String methodName = "createInformalTag";
         final String propertiesParameterName  = "properties";

@@ -344,6 +344,7 @@ include(':open-metadata-resources:open-metadata-samples:access-services-samples:
 include(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples:subject-area-definition-sample')
 include(':open-metadata-resources:open-metadata-samples:admin-services-samples:admin-services-config-metadata-server-sample')
 include(':open-metadata-resources:open-metadata-samples:sample-metadata:simple-catalogs')
+include(':open-metadata-resources:open-metadata-samples:sample-metadata:big-glossaries')
 include(':open-metadata-resources:open-metadata-samples:open-metadata-security-samples')
 include(':open-metadata-resources:open-metadata-samples:governance-services-sample')
 include(':open-metadata-resources:open-metadata-deployment')

@@ -61,6 +61,10 @@ public class CreateDatabaseTest
     private final static String databaseColumnTwoDescription = "DatabaseColumn2 description";
     private final static String databaseColumnTwoType = "date";
 
+    private final static String copyDatabaseName        = "TestDatabaseByCopy";
+    private final static String copyDatabaseDisplayName = "Database displayName for copy";
+    private final static String copyDatabaseDescription = "Database description for copy";
+
 
     /**
      * Run all the defined tests and capture the results.
@@ -121,6 +125,7 @@ public class CreateDatabaseTest
         String databaseSchemaGUID = thisTest.getDatabaseSchema(client, databaseManagerGUID, databaseGUID, userId);
         String databaseTableGUID = thisTest.createDatabaseTable(client, databaseManagerGUID, databaseSchemaGUID, userId);
         String databaseColumnGUID = thisTest.createDatabaseColumn(client, databaseManagerGUID, databaseTableGUID, userId);
+        String copyDatabaseGUID = thisTest.getDatabaseFromTemplate(client, databaseManagerGUID, databaseGUID, userId);
 
         /*
          * Check that all elements are deleted when the database is deleted.
@@ -134,6 +139,9 @@ public class CreateDatabaseTest
             thisTest.checkDatabaseSchemaGone(client, databaseSchemaGUID, null, activityName, userId);
             thisTest.checkDatabaseTableGone(client, databaseTableGUID, null, activityName, userId);
             thisTest.checkDatabaseColumnGone(client, databaseColumnGUID, null, activityName, userId);
+
+            activityName = "cascadedDelete - check template ok";
+            thisTest.checkDatabaseOK(client, copyDatabaseGUID, copyDatabaseName, copyDatabaseDisplayName, copyDatabaseDescription, activityName, userId);
         }
         catch (Exception unexpectedError)
         {
@@ -160,7 +168,7 @@ public class CreateDatabaseTest
             thisTest.checkDatabaseColumnOK(client, databaseColumnGUID, databaseTableGUID, activityName, userId);
             thisTest.checkDatabaseTableOK(client, databaseTableGUID, databaseSchemaGUID, activityName, userId);
             thisTest.checkDatabaseSchemaOK(client, databaseSchemaGUID, databaseGUID, activityName, userId);
-            thisTest.checkDatabaseOK(client, databaseGUID, activityName, userId);
+            thisTest.checkDatabaseOK(client, databaseGUID, databaseName, databaseDisplayName, databaseDescription, activityName, userId);
 
             client.removeDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID);
 
@@ -168,7 +176,7 @@ public class CreateDatabaseTest
             thisTest.checkDatabaseColumnGone(client, databaseColumnGUID, databaseTableGUID, activityName, userId);
             thisTest.checkDatabaseTableOK(client, databaseTableGUID, databaseSchemaGUID, activityName, userId);
             thisTest.checkDatabaseSchemaOK(client, databaseSchemaGUID, databaseGUID, activityName, userId);
-            thisTest.checkDatabaseOK(client, databaseGUID, activityName, userId);
+            thisTest.checkDatabaseOK(client, databaseGUID, databaseName, databaseDisplayName, databaseDescription, activityName, userId);
 
             client.removeDatabaseTable(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID);
 
@@ -176,7 +184,7 @@ public class CreateDatabaseTest
             thisTest.checkDatabaseColumnGone(client, databaseColumnGUID, null, activityName, userId);
             thisTest.checkDatabaseTableGone(client, databaseTableGUID, databaseSchemaGUID, activityName, userId);
             thisTest.checkDatabaseSchemaOK(client, databaseSchemaGUID, databaseGUID, activityName, userId);
-            thisTest.checkDatabaseOK(client, databaseGUID, activityName, userId);
+            thisTest.checkDatabaseOK(client, databaseGUID, databaseName, databaseDisplayName, databaseDescription, activityName, userId);
 
             client.removeDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID);
 
@@ -184,7 +192,7 @@ public class CreateDatabaseTest
             thisTest.checkDatabaseColumnGone(client, databaseColumnGUID, null, activityName, userId);
             thisTest.checkDatabaseTableGone(client, databaseTableGUID, null, activityName, userId);
             thisTest.checkDatabaseSchemaGone(client, databaseSchemaGUID, databaseGUID, activityName, userId);
-            thisTest.checkDatabaseOK(client, databaseGUID, activityName, userId);
+            thisTest.checkDatabaseOK(client, databaseGUID, databaseName, databaseDisplayName, databaseDescription, activityName, userId);
 
             client.removeDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID);
 
@@ -490,12 +498,18 @@ public class CreateDatabaseTest
      *
      * @param client interface to Data Manager OMAS
      * @param databaseGUID unique id of the database
+     * @param qualifiedName expected qualified name
+     * @param name expected name
+     * @param description expected description
      * @param activityName name of calling activity
      * @param userId calling user
      * @throws FVTUnexpectedCondition the test case failed
      */
     private void checkDatabaseOK(DatabaseManagerClient client,
                                  String                databaseGUID,
+                                 String                qualifiedName,
+                                 String                name,
+                                 String                description,
                                  String                activityName,
                                  String                userId) throws FVTUnexpectedCondition
     {
@@ -515,15 +529,15 @@ public class CreateDatabaseTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseProperties from Retrieve)");
             }
 
-            if (! databaseName.equals(retrievedDatabase.getQualifiedName()))
+            if (! qualifiedName.equals(retrievedDatabase.getQualifiedName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from Retrieve)");
             }
-            if (! databaseDisplayName.equals(retrievedDatabase.getName()))
+            if (! name.equals(retrievedDatabase.getName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve)");
             }
-            if (! databaseDescription.equals(retrievedDatabase.getDescription()))
+            if (! description.equals(retrievedDatabase.getDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
@@ -536,7 +550,7 @@ public class CreateDatabaseTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad databaseVersion from Retrieve)");
             }
 
-            List<DatabaseElement> databaseList = client.getDatabasesByName(userId, databaseName, 0, maxPageSize);
+            List<DatabaseElement> databaseList = client.getDatabasesByName(userId, qualifiedName, 0, maxPageSize);
 
             if (databaseList == null)
             {
@@ -556,15 +570,15 @@ public class CreateDatabaseTest
             retrievedElement = databaseList.get(0);
             retrievedDatabase = retrievedElement.getDatabaseProperties();
 
-            if (! databaseName.equals(retrievedDatabase.getQualifiedName()))
+            if (! qualifiedName.equals(retrievedDatabase.getQualifiedName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from RetrieveByName)");
             }
-            if (! databaseDisplayName.equals(retrievedDatabase.getName()))
+            if (! name.equals(retrievedDatabase.getName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName)");
             }
-            if (! databaseDescription.equals(retrievedDatabase.getDescription()))
+            if (! description.equals(retrievedDatabase.getDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
@@ -577,11 +591,11 @@ public class CreateDatabaseTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad databaseVersion from RetrieveByName)");
             }
 
-            databaseList = client.getDatabasesByName(userId, databaseName, 1, maxPageSize);
+            databaseList = client.getDatabasesByName(userId, qualifiedName, 1, maxPageSize);
 
             if (databaseList != null)
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no Database for RetrieveByName)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(too many Databases for RetrieveByName(1))");
             }
         }
         catch (FVTUnexpectedCondition testCaseError)
@@ -629,10 +643,76 @@ public class CreateDatabaseTest
             }
             else
             {
-                checkDatabaseOK(client, databaseGUID, activityName, userId);
+                checkDatabaseOK(client, databaseGUID, databaseName, databaseDisplayName, databaseDescription, activityName, userId);
             }
 
             return databaseGUID;
+        }
+        catch (FVTUnexpectedCondition testCaseError)
+        {
+            throw testCaseError;
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+    }
+
+
+    /**
+     * Create a database and return its GUID.
+     *
+     * @param client interface to Data Manager OMAS
+     * @param databaseManagerGUID unique id of the database manager
+     * @param databaseGUID unique id of the database to copy
+     * @param userId calling user
+     * @return GUID of database
+     * @throws FVTUnexpectedCondition the test case failed
+     */
+    private String getDatabaseFromTemplate(DatabaseManagerClient client,
+                                           String                databaseManagerGUID,
+                                           String                databaseGUID,
+                                           String                userId) throws FVTUnexpectedCondition
+    {
+        final String activityName = "getDatabaseFromTemplate";
+
+        try
+        {
+            TemplateProperties properties = new TemplateProperties();
+
+            properties.setQualifiedName(copyDatabaseName);
+            properties.setDisplayName(copyDatabaseDisplayName);
+            properties.setDescription(copyDatabaseDescription);
+
+            String copyDatabaseGUID = client.createDatabaseFromTemplate(userId, databaseManagerGUID, databaseManagerName, databaseGUID, properties);
+
+            if (copyDatabaseGUID == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for CreateByTemplate)");
+            }
+            else
+            {
+                checkDatabaseOK(client, copyDatabaseGUID, copyDatabaseName, copyDatabaseDisplayName, copyDatabaseDescription, activityName, userId);
+
+                List<DatabaseSchemaElement> databaseSchemaList = client.getSchemasForDatabase(userId, databaseGUID, 0, 0);
+
+                if (databaseSchemaList == null)
+                {
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseSchema for CreateByTemplate)");
+                }
+                else if (databaseSchemaList.isEmpty())
+                {
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(Empty DatabaseSchema list for CreateByTemplate)");
+                }
+                else if (databaseSchemaList.size() != 1)
+                {
+                    throw new FVTUnexpectedCondition(testCaseName,
+                                                     activityName + "(DatabaseSchema list for CreateByTemplate contains" + databaseSchemaList.size() +
+                                                             " elements)");
+                }
+            }
+
+            return copyDatabaseGUID;
         }
         catch (FVTUnexpectedCondition testCaseError)
         {

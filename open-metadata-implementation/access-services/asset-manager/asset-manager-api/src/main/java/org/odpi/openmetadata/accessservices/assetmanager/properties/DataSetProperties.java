@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.assetmanager.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serial;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -19,10 +18,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DataSetProperties extends DataAssetProperties
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private String formula = null;
+    private String formulaType = null;
 
 
     /**
@@ -42,6 +39,12 @@ public class DataSetProperties extends DataAssetProperties
     public DataSetProperties(DataSetProperties template)
     {
         super(template);
+
+        if (template != null)
+        {
+            this.formula = template.getFormula();
+            this.formulaType = template.getFormulaType();
+        }
     }
 
 
@@ -70,6 +73,28 @@ public class DataSetProperties extends DataAssetProperties
 
 
     /**
+     * Return the format of the expression provided in the formula attribute.
+     *
+     * @return string name
+     */
+    public String getFormulaType()
+    {
+        return formulaType;
+    }
+
+
+    /**
+     * Set up the format of the expression provided in the formula attribute.
+     *
+     * @param formulaType string name
+     */
+    public void setFormulaType(String formulaType)
+    {
+        this.formulaType = formulaType;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -83,6 +108,7 @@ public class DataSetProperties extends DataAssetProperties
                        ", technicalDescription='" + getTechnicalDescription() + '\'' +
                        ", isReferenceAsset=" + getIsReferenceAsset() +
                        ", formula='" + formula + '\'' +
+                       ", formulaType='" + formulaType + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", effectiveFrom=" + getEffectiveFrom() +
@@ -121,7 +147,7 @@ public class DataSetProperties extends DataAssetProperties
             return false;
         }
         DataSetProperties that = (DataSetProperties) objectToCompare;
-        return Objects.equals(formula, that.formula);
+        return Objects.equals(formula, that.formula) && Objects.equals(formulaType, that.formulaType);
     }
 
 
@@ -133,6 +159,6 @@ public class DataSetProperties extends DataAssetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), formula);
+        return Objects.hash(super.hashCode(), formula, formulaType);
     }
 }
