@@ -90,11 +90,11 @@ ext {
     snakeyamlVersion = '2.0'
     slf4jVersion = '2.0.6'
     snappyVersion = '1.1.9.1'
-    springbootVersion = '3.0.5'
+    springbootVersion = '3.0.6'
     spotbugsVersion = '4.7.3'
     springdataVersion = '3.0.3'
     springldapVersion = '3.0.1'
-    springsecurityVersion = '6.0.2'
+    springsecurityVersion = '6.0.3'
     springsecurityJwtVersion = '1.1.1.RELEASE'
     swaggerVersion = '2.2.9'
     testngVersion = '7.7.1'
@@ -112,7 +112,7 @@ ext {
     log4jVersion = '2.20.0'
     jacksonjdk8Version = '2.14.2'
     reactivestreamsVersion = '1.0.4'
-    springdocStarterVersion = '2.0.4'
+    springdocStarterVersion = '2.1.0'
     jacocoVersion = '0.8.8'
 }
 
