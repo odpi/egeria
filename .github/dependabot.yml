@@ -16,6 +16,7 @@ updates:
     spring:
       patterns:
         - "*spring*"
+        - "*tomcat*"
     janusgraph:
       patterns:
         - "*janus*"
