@@ -38,7 +38,7 @@ ext {
     findbugsVersion = '3.0.2'
     glassfishVersion = '1.1.4'
     // TODO: Held back for compatability
-    gremlinVersion = '3.5.5'
+    gremlinVersion = '3.5.6'
     // TODO: Version 4 under new package name. 3.0.13 is held to be compat with gradle tests (fvt)
     groovyVersion = '3.0.13'
     guavaVersion = '31.1-jre'
