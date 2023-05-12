@@ -26,39 +26,62 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  */
 public enum AssetManagerErrorCode implements ExceptionMessageSet
 {
+    /**
+     * OMAS-ASSET-MANAGER-400-001 An external identifier {0} has been passed on method {1} without a corresponding assetManagerGUID
+     */
     NO_SCOPE_FOR_EXTERNAL_ID(400, "OMAS-ASSET-MANAGER-400-001",
             "An external identifier {0} has been passed on method {1} without a corresponding assetManagerGUID",
             "The system is unable to process the request because the unique identifier for the third party asset manager is needed to " +
                     "provide a scope for the external identifier.",
             "Ensure that the asset manager's unique identifier is passed on the request and then retry it."),
 
+    /**
+     * OMAS-ASSET-MANAGER-400-002 At least one of the properties supplied for a new relationship of type {0} are invalid.  The {1} exception was returned with error message: {2}
+     */
     BAD_PARAMETER(400, "OMAS-ASSET-MANAGER-400-002",
                   "At least one of the properties supplied for a new relationship of type {0} are invalid.  The {1} exception was returned with error message: {2}",
                   "The system is unable to create the requested relationship because it can not parse the properties.",
                   "Correct the caller's logic so that the properties passed are correctly formatted and retry the request."),
 
+    /**
+     * OMAS-ASSET-MANAGER-404-001 The open metadata repository services are not initialized for the {0} operation
+     */
     OMRS_NOT_INITIALIZED(404, "OMAS-ASSET-MANAGER-404-001",
             "The open metadata repository services are not initialized for the {0} operation",
             "The system is unable to connect to an open metadata repository.",
             "Check that the server where the Asset Manager OMAS is running initialized correctly.  " +
                     "Correct any errors discovered and retry the request when the open metadata services are available."),
-    
+
+    /**
+     * OMAS-ASSET-MANAGER-500-001 A null topic listener has been passed by user {0} on method {1}
+     */
     NULL_LISTENER(500, "OMAS-ASSET-MANAGER-500-001",
                   "A null topic listener has been passed by user {0} on method {1}",
                   "There is a coding error in the caller to the Asset Manager OMAS.",
                   "Correct the caller logic and retry the request."),
 
+    /**
+     * OMAS-ASSET-MANAGER-500-004 An unexpected exception occurred when sending an event through connector {0} to the Asset Manager OMAS out topic.
+     * The failing event was {1}, the exception was {2} with message {2}
+     */
     UNABLE_TO_SEND_EVENT(500, "OMAS-ASSET-MANAGER-500-004",
                          "An unexpected exception occurred when sending an event through connector {0} to the Asset Manager OMAS out topic.  The failing " +
                                  "event was {1}, the exception was {2} with message {2}",
                          "The system has issued a call to an open metadata access service REST API in a remote server and has received a null response.",
                          "Look for errors in the remote server's audit log and console to understand and correct the source of the error."),
 
+    /**
+     * OMAS-ASSET-MANAGER-503-005 A {0} exception was caught during start up of service {1} for server {2}. The error message was: {3}
+     */
     UNEXPECTED_INITIALIZATION_EXCEPTION(503, "OMAS-ASSET-MANAGER-503-005",
                                         "A {0} exception was caught during start up of service {1} for server {2}. The error message was: {3}",
                                         "The system detected an unexpected error during start up and is now in an unknown start.",
                                         "The error message should indicate the cause of the error.  Otherwise look for errors in the remote server's audit log and console to understand and correct the source of the error."),
 
+    /**
+     * OMAS-ASSET-MANAGER-500-006 The requested connector for connection named {0} has not been created.
+     * The connection was provided by the {1} service running in OMAG Server {2} at {3}
+     */
     NULL_CONNECTOR_RETURNED(500, "OMAS-ASSET-MANAGER-500-006",
                                     "The requested connector for connection named {0} has not been created.  The connection was provided by the {1} service" +
                                     " running in OMAG Server {2} at {3}",
@@ -66,6 +89,10 @@ public enum AssetManagerErrorCode implements ExceptionMessageSet
                                     "This problem is likely to be caused by an incorrect connection object.  Check the settings on the Connection" +
                                     "and correct if necessary.  If the connection is correct, contact the Egeria community for help."),
 
+    /**
+     * OMAS-ASSET-MANAGER-500-007 The connector generated from the connection named {0} return by the {1} service running in OMAG Server {2}
+     * at {3} is not of the required type. It should be an instance of {4}
+     */
     WRONG_TYPE_OF_CONNECTOR(500, "OMAS-ASSET-MANAGER-500-007",
                                     "The connector generated from the connection named {0} return by the {1} service running in OMAG Server {2} at {3} is " +
                                     "not of the required type. It should be an instance of {4}",
@@ -90,7 +117,7 @@ public enum AssetManagerErrorCode implements ExceptionMessageSet
      * This will expand out to the 5 parameters shown below.
      *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique Id for the message
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error

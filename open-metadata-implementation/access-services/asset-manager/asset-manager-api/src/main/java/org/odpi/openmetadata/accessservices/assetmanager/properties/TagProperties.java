@@ -6,9 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -17,23 +14,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * InformalTagProperties stores information about a tag connected to an asset.
  * InformalTags provide informal classifications to assets
  * and can be added at any time.
- *
+ * <br><br>
  * InformalTags have the userId of the person who added the tag, the name of the tag and its description.
- *
+ * <br><br>
  * The content of the tag is a personal judgement (which is why the user's id is in the tag)
  * and there is no formal review of the tags.  However, they can be used as a basis for crowd-sourcing
  * Glossary terms.
- *
+ * <br><br>
  * Private InformalTags are only returned to the user that created them.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TagProperties implements Serializable
+public class TagProperties
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private boolean isPrivateTag = false;
     private String  name         = null;
     private String  description  = null;

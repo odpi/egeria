@@ -10,14 +10,15 @@ dependencies {
     implementation 'org.slf4j:slf4j-api'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'com.fasterxml.jackson.core:jackson-core'
-    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
-    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
-    implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
+    compileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation 'org.apache.tinkerpop:gremlin-core'
     implementation 'org.apache.commons:commons-collections4'
     runtimeOnly 'org.janusgraph:janusgraph-berkeleyje'
     runtimeOnly 'org.janusgraph:janusgraph-lucene'
     runtimeOnly 'org.janusgraph:janusgraph-es'
+    runtimeOnly 'org.janusgraph:janusgraph-hbase'
     runtimeOnly 'org.janusgraph:janusgraph-cql'
     runtimeOnly 'joda-time:joda-time'
     runtimeOnly 'org.antlr:antlr-runtime'

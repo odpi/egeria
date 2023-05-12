@@ -109,6 +109,7 @@ egeria-lineage-repositories/**
 /SimpleEventCatalog.json
 /SimpleGovernanceCatalog.json
 /*Archive.json
+/BigGlossary*.json
 
 # Ignore any json files generated during junit
 open-metadata-resources/open-metadata-archives/design-model-archives/*.json

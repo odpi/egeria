@@ -29,6 +29,8 @@ import java.util.List;
  */
 class ExchangeHandlerBase
 {
+    final protected static String elementGUIDParameterName = "elementGUID";
+
     final InvalidParameterHandler                                             invalidParameterHandler;
     final ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> externalIdentifierHandler;
     private final NoteLogHandler<NoteLogElement>                   noteLogHandler;
@@ -703,5 +705,128 @@ class ExchangeHandlerBase
                                       null,
                                       methodName);
         }
+    }
+
+
+    /**
+     * Classify the element to indicate that it describes a data field and supply
+     * properties that describe the characteristics of the data values found within.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param properties characterizations of the data values stored in the data field
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setElementAsDataField(String                        userId,
+                                      MetadataCorrelationProperties correlationProperties,
+                                      String                        elementGUID,
+                                      DataFieldValuesProperties     properties,
+                                      boolean                       forLineage,
+                                      boolean                       forDuplicateProcessing,
+                                      Date                          effectiveTime,
+                                      String                        methodName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        elementGUID,
+                                        elementGUIDParameterName,
+                                        OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                        correlationProperties,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        effectiveTime,
+                                        methodName);
+
+        if (properties != null)
+        {
+            externalIdentifierHandler.addDataFieldValuesClassification(userId,
+                                                                       elementGUID,
+                                                                       elementGUIDParameterName,
+                                                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                       properties.getDefaultValue(),
+                                                                       properties.getSampleValues(),
+                                                                       properties.getDataPattern(),
+                                                                       properties.getNamePattern(),
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
+                                                                       effectiveTime,
+                                                                       methodName);
+        }
+        else
+        {
+            externalIdentifierHandler.addDataFieldValuesClassification(userId,
+                                                                       elementGUID,
+                                                                       elementGUIDParameterName,
+                                                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                       null,
+                                                                       null,
+                                                                       null,
+                                                                       null,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
+                                                                       effectiveTime,
+                                                                       methodName);
+        }
+    }
+
+
+    /**
+     * Remove the data field designation from the element.
+     *
+     * @param userId calling user
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearElementAsDataField(String                        userId,
+                                        MetadataCorrelationProperties correlationProperties,
+                                        String                        elementGUID,
+                                        boolean                       forLineage,
+                                        boolean                       forDuplicateProcessing,
+                                        Date                          effectiveTime,
+                                        String                        methodName) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
+
+        this.validateExternalIdentifier(userId,
+                                        elementGUID,
+                                        elementGUIDParameterName,
+                                        OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                        correlationProperties,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        effectiveTime,
+                                        methodName);
+
+        externalIdentifierHandler.removeDataFieldValuesClassification(userId,
+                                                                      elementGUID,
+                                                                      elementGUIDParameterName,
+                                                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                      forLineage,
+                                                                      forDuplicateProcessing,
+                                                                      effectiveTime,
+                                                                      methodName);
     }
 }

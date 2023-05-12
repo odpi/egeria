@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.assetmanager.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -15,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * The connection is an object that contains the properties needed to create and initialise a connector to access a
  * specific data assets.
- *
+ * <br><br>
  * The properties for a connection are defined in model 0201.  They include the following options for connector name:
  * <ul>
  *     <li>
@@ -38,7 +37,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * </ul>
  *
  *  Either the guid, qualifiedName or displayName can be used to specify the name for a connection.
- *
+ * <br><br>
  *  Other properties for the connection include:
  *  <ul>
  *      <li>
@@ -78,7 +77,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *      </li>
  *  </ul>
  *
- * The connection class is simply used to cache the properties for an connection.
+ * The connection class is simply used to cache the properties for a connection.
  * It is used by other classes to exchange this information between a metadata repository and a consumer.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -86,12 +85,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ConnectionProperties extends ReferenceableProperties
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    /*
-     * Attributes of a connector
-     */
     private String              displayName             = null;
     private String              description             = null;
     private String              userId                  = null;

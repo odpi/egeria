@@ -3,30 +3,32 @@
 /* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.glossaryworkflow.server;
 
-
+import org.odpi.openmetadata.accessservices.assetmanager.client.management.CollaborationManagementClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.management.GlossaryManagementClient;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.CanonicalVocabularyProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.DataFieldValuesProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.EditingGlossaryProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryCategoryProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermActivityType;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermCategorization;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermContextDefinition;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermRelationship;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermRelationshipStatus;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermStatus;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.TaxonomyProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
+import org.odpi.openmetadata.accessservices.assetmanager.client.management.StewardshipManagementClient;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermElementResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.ArchiveRequestBody;
+import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.ClassificationRequestBody;
+import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.ControlledGlossaryTermRequestBody;
+import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.EffectiveTimeQueryRequestBody;
+import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.GlossaryTemplateRequestBody;
+import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.GlossaryTermActivityTypeListResponse;
+import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.GlossaryTermRelationshipStatusListResponse;
+import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.GlossaryTermStatusListResponse;
+import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.GlossaryTermStatusRequestBody;
+import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.ReferenceableRequestBody;
+import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.ReferenceableUpdateRequestBody;
+import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.RelationshipRequestBody;
+import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.TemplateRequestBody;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
@@ -310,7 +312,7 @@ public class GlossaryWorkflowRESTServices
 
     /**
      * Classify the glossary to indicate that it is an editing glossary - this means it is
-     * a temporary collection of glossary updates that will be merged into another glossary.
+     * a collection of glossary updates that will be merged into its source glossary.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
@@ -422,6 +424,137 @@ public class GlossaryWorkflowRESTServices
             else
             {
                 handler.clearGlossaryAsEditingGlossary(userId,
+                                                       glossaryGUID,
+                                                       null,
+                                                       forLineage,
+                                                       forDuplicateProcessing);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Classify the glossary to indicate that it is a staging glossary - this means it is
+     * a collection of glossary updates that will be transferred into another glossary.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setGlossaryAsStagingGlossary(String                    serverName,
+                                                     String                    userId,
+                                                     String                    glossaryGUID,
+                                                     boolean                   forLineage,
+                                                     boolean                   forDuplicateProcessing,
+                                                     ClassificationRequestBody requestBody)
+    {
+        final String methodName = "setGlossaryAsStagingGlossary";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof StagingGlossaryProperties properties)
+                {
+                    GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+
+                    handler.setGlossaryAsStagingGlossary(userId,
+                                                         glossaryGUID,
+                                                         properties,
+                                                         requestBody.getEffectiveTime(),
+                                                         forLineage,
+                                                         forDuplicateProcessing);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(StagingGlossaryProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove the staging glossary designation from the glossary.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody correlation properties for the external asset manager
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearGlossaryAsStagingGlossary(String                    serverName,
+                                                       String                    userId,
+                                                       String                    glossaryGUID,
+                                                       boolean                   forLineage,
+                                                       boolean                   forDuplicateProcessing,
+                                                       ClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearGlossaryAsStagingGlossary";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.clearGlossaryAsStagingGlossary(userId,
+                                                       glossaryGUID,
+                                                       requestBody.getEffectiveTime(),
+                                                       forLineage,
+                                                       forDuplicateProcessing);
+            }
+            else
+            {
+                handler.clearGlossaryAsStagingGlossary(userId,
                                                        glossaryGUID,
                                                        null,
                                                        forLineage,
@@ -718,6 +851,7 @@ public class GlossaryWorkflowRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param glossaryGUID unique identifier of the glossary where the category is located
+     * @param isRootCategory is this category a root category?
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties about the glossary category to store
@@ -730,6 +864,7 @@ public class GlossaryWorkflowRESTServices
     public GUIDResponse createGlossaryCategory(String                         serverName,
                                                String                         userId,
                                                String                         glossaryGUID,
+                                               boolean                        isRootCategory,
                                                boolean                        forLineage,
                                                boolean                        forDuplicateProcessing,
                                                ReferenceableUpdateRequestBody requestBody)
@@ -754,6 +889,7 @@ public class GlossaryWorkflowRESTServices
                     response.setGUID(handler.createGlossaryCategory(userId,
                                                                     glossaryGUID,
                                                                     properties,
+                                                                    isRootCategory,
                                                                     requestBody.getEffectiveTime(),
                                                                     forLineage,
                                                                     forDuplicateProcessing));
@@ -1167,7 +1303,7 @@ public class GlossaryWorkflowRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GlossaryTermRelationshipStatusListResponse response = new GlossaryTermRelationshipStatusListResponse();
-        AuditLog                       auditLog = null;
+        AuditLog                                   auditLog = null;
 
         try
         {
@@ -1288,6 +1424,8 @@ public class GlossaryWorkflowRESTServices
      * @param userId calling user
      * @param glossaryGUID unique identifier of the glossary where the term is to be located
      * @param templateGUID unique identifier of the metadata element to copy
+     * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
+     * @param templateSubstitute is this element a template substitute (used as the "other end" of a new/updated relationship)
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element for the glossary term or
@@ -1299,6 +1437,8 @@ public class GlossaryWorkflowRESTServices
                                                        String                      userId,
                                                        String                      glossaryGUID,
                                                        String                      templateGUID,
+                                                       boolean                     deepCopy,
+                                                       boolean                     templateSubstitute,
                                                        GlossaryTemplateRequestBody requestBody)
     {
         final String methodName = "createGlossaryTermFromTemplate";
@@ -1320,79 +1460,9 @@ public class GlossaryWorkflowRESTServices
                                                                         glossaryGUID,
                                                                         templateGUID,
                                                                         requestBody.getElementProperties(),
-                                                                        true));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Create a new metadata element to represent a glossary term in an editing glossary.
-     *
-     * @param serverName name of the server to route the request to
-     * @param userId calling user
-     * @param editingGlossaryGUID unique identifier of the glossary where the term is located
-     * @param glossaryTermGUID unique identifier of the metadata element to copy
-     * @param requestBody properties that override the template
-     *
-     * @return unique identifier of the new metadata element for the glossary term or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public GUIDResponse addGlossaryTermToEditingGlossary(String                        serverName,
-                                                         String                        userId,
-                                                         String                        editingGlossaryGUID,
-                                                         String                        glossaryTermGUID,
-                                                         EffectiveTimeQueryRequestBody requestBody)
-    {
-        final String methodName = "addGlossaryTermToEditingGlossary";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        GUIDResponse response = new GUIDResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
-
-                GlossaryTermElement glossaryTermElement = handler.getGlossaryTermByGUID(userId,
-                                                                                        glossaryTermGUID,
-                                                                                        null,
-                                                                                        false,
-                                                                                        false);
-
-                if (glossaryTermElement != null)
-                {
-                    TemplateProperties templateProperties = new TemplateProperties();
-
-                    templateProperties.setQualifiedName(glossaryTermElement.getGlossaryTermProperties().getQualifiedName() + ":" + editingGlossaryGUID);
-                    templateProperties.setDisplayName(glossaryTermElement.getGlossaryTermProperties().getDisplayName());
-                    templateProperties.setDescription(glossaryTermElement.getGlossaryTermProperties().getDescription());
-
-                    response.setGUID(handler.createGlossaryTermFromTemplate(userId,
-                                                                            editingGlossaryGUID,
-                                                                            glossaryTermGUID,
-                                                                            templateProperties,
-                                                                            false));
-                }
+                                                                        deepCopy,
+                                                                        templateSubstitute,
+                                                                        requestBody.getGlossaryTermStatus()));
             }
             else
             {
@@ -1525,6 +1595,134 @@ public class GlossaryWorkflowRESTServices
                                                  requestBody.getEffectiveTime(),
                                                  forLineage,
                                                  forDuplicateProcessing);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+
+    /**
+     * Update the glossary term using the properties and classifications from the parentGUID stored in the request body.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the glossary term to update
+     * @param isMergeClassifications should the classification be merged or replace the target entity?
+     * @param isMergeProperties should the properties be merged with the existing ones or replace them
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody status and correlation properties
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse updateGlossaryTermFromTemplate(String                         serverName,
+                                                       String                         userId,
+                                                       String                         glossaryTermGUID,
+                                                       boolean                        isMergeClassifications,
+                                                       boolean                        isMergeProperties,
+                                                       boolean                        forLineage,
+                                                       boolean                        forDuplicateProcessing,
+                                                       ReferenceableUpdateRequestBody requestBody)
+    {
+        final String methodName = "updateGlossaryTermFromTemplate";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+
+                handler.updateGlossaryTermFromTemplate(userId,
+                                                       glossaryTermGUID,
+                                                       requestBody.getParentGUID(),
+                                                       isMergeClassifications,
+                                                       isMergeProperties,
+                                                       requestBody.getEffectiveTime(),
+                                                       forLineage,
+                                                       forDuplicateProcessing);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+
+    /**
+     * Move a glossary term from one glossary to another.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the glossary term to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody status and correlation properties
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse moveGlossaryTerm(String                         serverName,
+                                         String                         userId,
+                                         String                         glossaryTermGUID,
+                                         boolean                        forLineage,
+                                         boolean                        forDuplicateProcessing,
+                                         ReferenceableUpdateRequestBody requestBody)
+    {
+        final String methodName = "moveGlossaryTerm";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+
+                handler.moveGlossaryTerm(userId,
+                                         glossaryTermGUID,
+                                         requestBody.getParentGUID(),
+                                         requestBody.getEffectiveTime(),
+                                         forLineage,
+                                         forDuplicateProcessing);
             }
             else
             {
@@ -1675,6 +1873,43 @@ public class GlossaryWorkflowRESTServices
 
         restCallLogger.logRESTCallReturn(token, response.toString());
 
+        return response;
+    }
+
+
+    /**
+     * Return the list of term-to-term relationship names.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @return list of type names that are subtypes of asset or
+     * throws InvalidParameterException full path or userId is null or
+     * throws PropertyServerException problem accessing property server or
+     * throws UserNotAuthorizedException security access problem.
+     */
+    public NameListResponse getTermRelationshipTypeNames(String serverName,
+                                                         String userId)
+    {
+        final String   methodName = "getTermRelationshipTypeNames";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        NameListResponse response = new NameListResponse();
+        AuditLog         auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GlossaryManagementClient handler = instanceHandler.getGlossaryManagementClient(userId, serverName, methodName);
+
+            response.setNames(handler.getTermRelationshipTypeNames(userId));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -2947,12 +3182,12 @@ public class GlossaryWorkflowRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GlossaryTermElementResponse undoGlossaryTermUpdate(String            serverName,
-                                                              String            userId,
-                                                              String            glossaryTermGUID,
-                                                              boolean           forLineage,
-                                                              boolean           forDuplicateProcessing,
-                                                              UpdateRequestBody requestBody)
+    public GlossaryTermElementResponse undoGlossaryTermUpdate(String                        serverName,
+                                                              String                        userId,
+                                                              String                        glossaryTermGUID,
+                                                              boolean                       forLineage,
+                                                              boolean                       forDuplicateProcessing,
+                                                              EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "undoGlossaryTermUpdate";
 
@@ -3111,6 +3346,1584 @@ public class GlossaryWorkflowRESTServices
 
         restCallLogger.logRESTCallReturn(token, response.toString());
 
+        return response;
+    }
+
+
+    /* =====================================================================================================================
+     * A note log maintains an ordered list of notes.  It can be used to support release note, blogs and similar
+     * broadcast information.  Notelogs are typically maintained by the owners/stewards of an element.
+     */
+
+    /**
+     * Create a new metadata element to represent a note log and attach it to an element (if supplied).
+     * Any supplied element becomes the note log's anchor, causing the note log to be deleted if/when the element is deleted.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element where the note log is located
+     * @param isPublic                 is this element visible to other people.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to control the type of the request
+     *
+     * @return unique identifier of the new note log or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public  GUIDResponse createNoteLog(String                         serverName,
+                                       String                         userId,
+                                       String                         elementGUID,
+                                       boolean                        isPublic,
+                                       boolean                        forLineage,
+                                       boolean                        forDuplicateProcessing,
+                                       ReferenceableUpdateRequestBody requestBody)
+    {
+        final String methodName = "createNoteLog";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getElementProperties() instanceof NoteLogProperties properties)
+                {
+                    CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
+
+                    response.setGUID(handler.createNoteLog(userId,
+                                                           elementGUID,
+                                                           properties,
+                                                           isPublic,
+                                                           requestBody.getEffectiveTime(),
+                                                           forLineage,
+                                                           forDuplicateProcessing));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(NoteLogProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Update the metadata element representing a note log.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param noteLogGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param isPublic                 is this element visible to other people.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody new properties for the metadata element
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse updateNoteLog(String                         serverName,
+                                      String                         userId,
+                                      String                         noteLogGUID,
+                                      boolean                        isMergeUpdate,
+                                      boolean                        isPublic,
+                                      boolean                        forLineage,
+                                      boolean                        forDuplicateProcessing,
+                                      ReferenceableUpdateRequestBody requestBody)
+    {
+        final String methodName                 = "updateNoteLog";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getElementProperties() instanceof NoteLogProperties properties)
+                {
+                    CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
+
+                    handler.updateNoteLog(userId,
+                                          noteLogGUID,
+                                          isMergeUpdate,
+                                          isPublic,
+                                          properties,
+                                          requestBody.getEffectiveTime(),
+                                          forLineage,
+                                          forDuplicateProcessing);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(NoteLogProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove the metadata element representing a note log.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param noteLogGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse removeNoteLog(String                         serverName,
+                                      String                         userId,
+                                      String                         noteLogGUID,
+                                      boolean                        forLineage,
+                                      boolean                        forDuplicateProcessing,
+                                      ReferenceableUpdateRequestBody requestBody)
+    {
+        final String methodName = "removeNoteLog";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.removeNoteLog(userId,
+                                      noteLogGUID,
+                                      requestBody.getEffectiveTime(),
+                                      forLineage,
+                                      forDuplicateProcessing);
+            }
+            else
+            {
+                handler.removeNoteLog(userId,
+                                      noteLogGUID,
+                                      null,
+                                      forLineage,
+                                      forDuplicateProcessing);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /* ===============================================================================
+     * A element typically contains many notes, linked with relationships.
+     */
+
+    /**
+     * Create a new metadata element to represent a note.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param noteLogGUID unique identifier of the element where the note is located
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return unique identifier of the new metadata element for the note or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GUIDResponse createNote(String                         serverName,
+                                   String                         userId,
+                                   String                         noteLogGUID,
+                                   boolean                        forLineage,
+                                   boolean                        forDuplicateProcessing,
+                                   ReferenceableUpdateRequestBody requestBody)
+    {
+        final String methodName  = "createNote";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getElementProperties() instanceof NoteProperties properties)
+                {
+                    CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
+
+                    response.setGUID(handler.createNote(userId,
+                                                        noteLogGUID,
+                                                        properties,
+                                                        requestBody.getEffectiveTime(),
+                                                        forLineage,
+                                                        forDuplicateProcessing));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(NoteProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Update the properties of the metadata element representing a note.
+     *
+     * @param userId calling user
+     * @param serverName   name of the server instances for this request
+     * @param noteGUID unique identifier of the note to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse updateNote(String                         serverName,
+                                   String                         userId,
+                                   String                         noteGUID,
+                                   boolean                        isMergeUpdate,
+                                   boolean                        forLineage,
+                                   boolean                        forDuplicateProcessing,
+                                   ReferenceableUpdateRequestBody requestBody)
+    {
+        final String methodName = "updateNote";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getElementProperties() instanceof NoteProperties properties)
+                {
+                    CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
+
+                    handler.updateNote(userId,
+                                       noteGUID,
+                                       isMergeUpdate,
+                                       properties,
+                                       requestBody.getEffectiveTime(),
+                                       forLineage,
+                                       forDuplicateProcessing);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(NoteProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove the metadata element representing a note.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param userId calling user
+     * @param noteGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse removeNote(String                         serverName,
+                                   String                         userId,
+                                   String                         noteGUID,
+                                   boolean                        forLineage,
+                                   boolean                        forDuplicateProcessing,
+                                   ReferenceableUpdateRequestBody requestBody)
+    {
+        final String methodName = "removeNote";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.removeNote(userId,
+                                   noteGUID,
+                                   requestBody.getEffectiveTime(),
+                                   forLineage,
+                                   forDuplicateProcessing);
+            }
+            else
+            {
+                handler.removeNote(userId,
+                                   noteGUID,
+                                   null,
+                                   forLineage,
+                                   forDuplicateProcessing);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Classify/reclassify the element (typically an asset) to indicate the level of confidence that the organization
+     * has that the data is complete, accurate and up-to-date.  The level of confidence is expressed by the
+     * levelIdentifier property.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to classify
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    public VoidResponse setConfidenceClassification(String                    serverName,
+                                                    String                    userId,
+                                                    String                    elementGUID,
+                                                    boolean                   forLineage,
+                                                    boolean                   forDuplicateProcessing,
+                                                    ClassificationRequestBody requestBody)
+    {
+        final String methodName = "setConfidenceClassification";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof GovernanceClassificationProperties properties)
+                {
+                    StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+                    handler.setConfidenceClassification(userId,
+                                                        elementGUID,
+                                                        properties,
+                                                        requestBody.getEffectiveTime(),
+                                                        forLineage,
+                                                        forDuplicateProcessing);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(GovernanceClassificationProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove the confidence classification from the element.  This normally occurs when the organization has lost track of the level of
+     * confidence to assign to the element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *       InvalidParameterException full path or userId is null or
+     *       PropertyServerException problem accessing property server or
+     *       UserNotAuthorizedException security access problem
+     */
+    public VoidResponse clearConfidenceClassification(String                    serverName,
+                                                      String                    userId,
+                                                      String                    elementGUID,
+                                                      boolean                   forLineage,
+                                                      boolean                   forDuplicateProcessing,
+                                                      EffectiveTimeRequestBody  requestBody)
+    {
+        final String   methodName = "clearConfidenceClassification";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.clearConfidenceClassification(userId,
+                                                      elementGUID,
+                                                      requestBody.getEffectiveTime(),
+                                                      forLineage,
+                                                      forDuplicateProcessing);
+            }
+            else
+            {
+                handler.clearConfidenceClassification(userId,
+                                                      elementGUID,
+                                                      null,
+                                                      forLineage,
+                                                      forDuplicateProcessing);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Classify/reclassify the element (typically an asset) to indicate how critical the element (or associated resource)
+     * is to the organization.  The level of criticality is expressed by the levelIdentifier property.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to classify
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *       InvalidParameterException full path or userId is null or
+     *       PropertyServerException problem accessing property server or
+     *       UserNotAuthorizedException security access problem
+     */
+    public VoidResponse setCriticalityClassification(String                    serverName,
+                                                     String                    userId,
+                                                     String                    elementGUID,
+                                                     boolean                   forLineage,
+                                                     boolean                   forDuplicateProcessing,
+                                                     ClassificationRequestBody requestBody)
+    {
+        final String methodName = "setCriticalityClassification";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof GovernanceClassificationProperties properties)
+                {
+                    StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+                    handler.setCriticalityClassification(userId,
+                                                         elementGUID,
+                                                         properties,
+                                                         requestBody.getEffectiveTime(),
+                                                         forLineage,
+                                                         forDuplicateProcessing);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(GovernanceClassificationProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove the criticality classification from the element.  This normally occurs when the organization has lost track of the level of
+     * criticality to assign to the element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *       InvalidParameterException full path or userId is null or
+     *       PropertyServerException problem accessing property server or
+     *       UserNotAuthorizedException security access problem
+     */
+    public VoidResponse clearCriticalityClassification(String                    serverName,
+                                                       String                    userId,
+                                                       String                    elementGUID,
+                                                       boolean                   forLineage,
+                                                       boolean                   forDuplicateProcessing,
+                                                       EffectiveTimeRequestBody  requestBody)
+    {
+        final String   methodName = "clearCriticalityClassification";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+                handler.clearCriticalityClassification(userId,
+                                                       elementGUID,
+                                                       requestBody.getEffectiveTime(),
+                                                       forLineage,
+                                                       forDuplicateProcessing);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Classify/reclassify the element (typically a data field, schema attribute or glossary term) to indicate the level of confidentiality
+     * that any data associated with the element should be given.  If the classification is attached to a glossary term, the level
+     * of confidentiality is a suggestion for any element linked to the glossary term via the SemanticAssignment classification.
+     * The level of confidence is expressed by the levelIdentifier property.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to classify
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *       InvalidParameterException full path or userId is null or
+     *       PropertyServerException problem accessing property server or
+     *       UserNotAuthorizedException security access problem
+     */
+    public VoidResponse setConfidentialityClassification(String                    serverName,
+                                                         String                    userId,
+                                                         String                    elementGUID,
+                                                         boolean                   forLineage,
+                                                         boolean                   forDuplicateProcessing,
+                                                         ClassificationRequestBody requestBody)
+    {
+        final String methodName = "setConfidentialityClassification";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof GovernanceClassificationProperties properties)
+                {
+                    StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+                    handler.setConfidentialityClassification(userId,
+                                                             elementGUID,
+                                                             properties,
+                                                             requestBody.getEffectiveTime(),
+                                                             forLineage,
+                                                             forDuplicateProcessing);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(GovernanceClassificationProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove the confidence classification from the element.  This normally occurs when the organization has lost track of the level of
+     * confidentiality to assign to the element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException full path or userId is null or
+     *      PropertyServerException problem accessing property server or
+     *      UserNotAuthorizedException security access problem
+     */
+    public VoidResponse clearConfidentialityClassification(String                   serverName,
+                                                           String                   userId,
+                                                           String                   elementGUID,
+                                                           boolean                  forLineage,
+                                                           boolean                  forDuplicateProcessing,
+                                                           EffectiveTimeRequestBody requestBody)
+    {
+        final String   methodName = "clearConfidentialityClassification";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.clearConfidentialityClassification(userId,
+                                                           elementGUID,
+                                                           requestBody.getEffectiveTime(),
+                                                           forLineage,
+                                                           forDuplicateProcessing);
+            }
+            else
+            {
+                handler.clearConfidentialityClassification(userId,
+                                                           elementGUID,
+                                                           null,
+                                                           forLineage,
+                                                           forDuplicateProcessing);            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Classify/reclassify the element (typically an asset) to indicate how long the element (or associated resource)
+     * is to be retained by the organization.  The policy to apply to the element/resource is captured by the retentionBasis
+     * property.  The dates after which the element/resource is archived and then deleted are specified in the archiveAfter and deleteAfter
+     * properties respectively.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to classify
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *       InvalidParameterException full path or userId is null or
+     *       PropertyServerException problem accessing property server or
+     *       UserNotAuthorizedException security access problem
+     */
+    public VoidResponse setRetentionClassification(String                    serverName,
+                                                   String                    userId,
+                                                   String                    elementGUID,
+                                                   boolean                   forLineage,
+                                                   boolean                   forDuplicateProcessing,
+                                                   ClassificationRequestBody requestBody)
+    {
+        final String methodName = "setRetentionClassification";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof RetentionClassificationProperties properties)
+                {
+                    StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+                    handler.setRetentionClassification(userId,
+                                                       elementGUID,
+                                                       properties,
+                                                       requestBody.getEffectiveTime(),
+                                                       forLineage,
+                                                       forDuplicateProcessing);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(RetentionClassificationProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove the retention classification from the element.  This normally occurs when the organization has lost track of, or no longer needs to
+     * track the retention period to assign to the element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *       InvalidParameterException full path or userId is null or
+     *       PropertyServerException problem accessing property server or
+     *       UserNotAuthorizedException security access problem
+     */
+    public VoidResponse clearRetentionClassification(String                   serverName,
+                                                     String                   userId,
+                                                     String                   elementGUID,
+                                                     boolean                  forLineage,
+                                                     boolean                  forDuplicateProcessing,
+                                                     EffectiveTimeRequestBody requestBody)
+    {
+        final String   methodName = "clearRetentionClassification";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.clearRetentionClassification(userId,
+                                                     elementGUID,
+                                                     requestBody.getEffectiveTime(),
+                                                     forLineage,
+                                                     forDuplicateProcessing);
+            }
+            else
+            {
+                handler.clearRetentionClassification(userId,
+                                                     elementGUID,
+                                                     null,
+                                                     forLineage,
+                                                     forDuplicateProcessing);            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Add or replace the security tags for an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId      calling user
+     * @param elementGUID unique identifier of element to attach to
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody list of security labels and properties
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse addSecurityTags(String                    serverName,
+                                        String                    userId,
+                                        String                    elementGUID,
+                                        boolean                   forLineage,
+                                        boolean                   forDuplicateProcessing,
+                                        ClassificationRequestBody requestBody)
+    {
+        final String methodName = "addSecurityTags";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof SecurityTagsProperties properties)
+                {
+                    StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+                    handler.addSecurityTags(userId,
+                                            elementGUID,
+                                            properties,
+                                            requestBody.getEffectiveTime(),
+                                            forLineage,
+                                            forDuplicateProcessing);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SecurityTagsProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove the security tags classification from an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId      calling user
+     * @param elementGUID   unique identifier of element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse clearSecurityTags(String                    serverName,
+                                          String                    userId,
+                                          String                    elementGUID,
+                                          boolean                   forLineage,
+                                          boolean                   forDuplicateProcessing,
+                                          ClassificationRequestBody requestBody)
+    {
+        final String methodName             = "clearSecurityTags";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.clearSecurityTags(userId,
+                                          elementGUID,
+                                          requestBody.getEffectiveTime(),
+                                          forLineage,
+                                          forDuplicateProcessing);
+            }
+            else
+            {
+                handler.clearSecurityTags(userId,
+                                          elementGUID,
+                                          null,
+                                          forLineage,
+                                          forDuplicateProcessing);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Add or replace the ownership classification for an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID element to link it to - its type must inherit from Referenceable.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for classification request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse addOwnership(String                    serverName,
+                                     String                    userId,
+                                     String                    elementGUID,
+                                     boolean                   forLineage,
+                                     boolean                   forDuplicateProcessing,
+                                     ClassificationRequestBody requestBody)
+    {
+        final String   methodName = "addOwnership";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof OwnerProperties properties)
+                {
+                    StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+                    handler.addOwnership(userId,
+                                         elementGUID,
+                                         properties,
+                                         requestBody.getEffectiveTime(),
+                                         forLineage,
+                                         forDuplicateProcessing);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(OwnerProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove the ownership classification from an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID element where the classification needs to be cleared from.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for classification request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse clearOwnership(String                    serverName,
+                                       String                    userId,
+                                       String                    elementGUID,
+                                       boolean                   forLineage,
+                                       boolean                   forDuplicateProcessing,
+                                       ClassificationRequestBody requestBody)
+    {
+        final String   methodName = "clearOwnership";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.clearOwnership(userId,
+                                       elementGUID,
+                                       requestBody.getEffectiveTime(),
+                                       forLineage,
+                                       forDuplicateProcessing);
+            }
+            else
+            {
+                handler.clearOwnership(userId,
+                                       elementGUID,
+                                       null,
+                                       forLineage,
+                                       forDuplicateProcessing);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Classify the element to assert that the definitions it represents are part of a subject area definition.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for classification request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse addElementToSubjectArea(String                    serverName,
+                                                String                    userId,
+                                                String                    elementGUID,
+                                                boolean                   forLineage,
+                                                boolean                   forDuplicateProcessing,
+                                                ClassificationRequestBody requestBody)
+    {
+        final String methodName = "addElementToSubjectArea";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof SubjectAreaMemberProperties properties)
+                {
+                    StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+                    handler.addElementToSubjectArea(userId,
+                                                    elementGUID,
+                                                    properties,
+                                                    requestBody.getEffectiveTime(),
+                                                    forLineage,
+                                                    forDuplicateProcessing);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SubjectAreaMemberProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove the subject area designation from the identified element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for classification request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse removeElementFromSubjectArea(String                    serverName,
+                                                     String                    userId,
+                                                     String                    elementGUID,
+                                                     boolean                   forLineage,
+                                                     boolean                   forDuplicateProcessing,
+                                                     ClassificationRequestBody requestBody)
+    {
+        final String   methodName = "removeElementFromSubjectArea";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.removeElementFromSubjectArea(userId,
+                                                     elementGUID,
+                                                     null,
+                                                     forLineage,
+                                                     forDuplicateProcessing);
+            }
+            else
+            {
+                handler.removeElementFromSubjectArea(userId,
+                                                     elementGUID,
+                                                     requestBody.getEffectiveTime(),
+                                                     forLineage,
+                                                     forDuplicateProcessing);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Create a semantic assignment relationship between a glossary term and an element (normally a schema attribute, data field or asset).
+     * This relationship indicates that the data associated with the element meaning matches the description in the glossary term.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element that is being assigned to the glossary term
+     * @param glossaryTermGUID unique identifier of the glossary term that provides the meaning
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse setupSemanticAssignment(String                  serverName,
+                                                String                  userId,
+                                                String                  elementGUID,
+                                                String                  glossaryTermGUID,
+                                                boolean                 forLineage,
+                                                boolean                 forDuplicateProcessing,
+                                                RelationshipRequestBody requestBody)
+    {
+        final String methodName = "setupSemanticAssignment";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof SemanticAssignmentProperties properties)
+                {
+                    StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+                    handler.setupSemanticAssignment(userId,
+                                                    elementGUID,
+                                                    glossaryTermGUID,
+                                                    properties,
+                                                    requestBody.getEffectiveTime(),
+                                                    forLineage,
+                                                    forDuplicateProcessing);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SemanticAssignmentProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove a semantic assignment relationship between an element and its glossary term.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element that is being assigned to the glossary term
+     * @param glossaryTermGUID unique identifier of the glossary term that provides the meaning
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse clearSemanticAssignment(String                        serverName,
+                                                String                        userId,
+                                                String                        elementGUID,
+                                                String                        glossaryTermGUID,
+                                                boolean                       forLineage,
+                                                boolean                       forDuplicateProcessing,
+                                                EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName = "clearSemanticAssignment";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.clearSemanticAssignment(userId,
+                                                elementGUID,
+                                                glossaryTermGUID,
+                                                null,
+                                                forLineage,
+                                                forDuplicateProcessing);
+            }
+            else
+            {
+                handler.clearSemanticAssignment(userId,
+                                                elementGUID,
+                                                glossaryTermGUID,
+                                                requestBody.getEffectiveTime(),
+                                                forLineage,
+                                                forDuplicateProcessing);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Link a governance definition to an element using the GovernedBy relationship.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param definitionGUID identifier of the governance definition to link
+     * @param elementGUID unique identifier of the metadata element to link
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse addGovernanceDefinitionToElement(String                  serverName,
+                                                         String                  userId,
+                                                         String                  definitionGUID,
+                                                         String                  elementGUID,
+                                                         boolean                 forLineage,
+                                                         boolean                 forDuplicateProcessing,
+                                                         RelationshipRequestBody requestBody)
+    {
+        final String methodName = "addGovernanceDefinitionToElement";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+                handler.addGovernanceDefinitionToElement(userId,
+                                                         definitionGUID,
+                                                         elementGUID,
+                                                         requestBody.getEffectiveTime(),
+                                                         forLineage,
+                                                         forDuplicateProcessing);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove the GovernedBy relationship between a governance definition and an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param userId calling user
+     * @param definitionGUID identifier of the governance definition to link
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse removeGovernanceDefinitionFromElement(String                        serverName,
+                                                              String                        userId,
+                                                              String                        definitionGUID,
+                                                              String                        elementGUID,
+                                                              boolean                       forLineage,
+                                                              boolean                       forDuplicateProcessing,
+                                                              EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName = "removeGovernanceDefinitionFromElement";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.removeGovernanceDefinitionFromElement(userId,
+                                                              elementGUID,
+                                                              definitionGUID,
+                                                              null,
+                                                              forLineage,
+                                                              forDuplicateProcessing);
+            }
+            else
+            {
+                handler.removeGovernanceDefinitionFromElement(userId,
+                                                              elementGUID,
+                                                              definitionGUID,
+                                                              requestBody.getEffectiveTime(),
+                                                              forLineage,
+                                                              forDuplicateProcessing);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 }

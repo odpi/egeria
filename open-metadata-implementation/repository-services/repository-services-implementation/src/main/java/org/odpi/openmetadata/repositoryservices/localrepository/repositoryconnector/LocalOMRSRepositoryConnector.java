@@ -13,6 +13,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper.OMRSRepositoryEventMapperConnector;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.*;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
@@ -27,7 +28,7 @@ import java.util.Map;
 /**
  * LocalOMRSRepositoryConnector provides access the local metadata repository plus manages outbound
  * repository events.
- *
+ * <br><br>
  * It passes each request to both the real OMRS connector for the local metadata repository and an
  * OMRSEventPublisher.  The OMRSEventPublisher will use its configuration to decide if it needs to
  * pass on the request to the rest of the metadata repository cohort.
@@ -126,7 +127,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
     /**
      * Set up a new security verifier (the cohort manager runs with a default verifier until this
      * method is called).
-     *
+     * <br><br>
      * The security verifier provides authorization checks for access and maintenance
      * changes to open metadata.  Authorization checks are enabled through the
      * OpenMetadataServerSecurityConnector.
@@ -155,11 +156,23 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
     @Override
     public void start() throws ConnectorCheckedException
     {
+        final String methodName = "start";
+
         super.start();
+
+        if (auditLog != null)
+        {
+            auditLog.logMessage(methodName, OMRSAuditCode.STARTING_REAL_CONNECTOR.getMessageDefinition());
+        }
 
         if (realLocalConnector != null)
         {
             realLocalConnector.start();
+        }
+
+        if (auditLog != null)
+        {
+            auditLog.logMessage(methodName, OMRSAuditCode.STARTED_REAL_CONNECTOR.getMessageDefinition());
         }
 
         if (realEventMapper != null)
@@ -394,6 +407,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
         }
     }
 
+
     /**
      * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it
      * with the correct component description and log destinations.
@@ -423,18 +437,20 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
 
         super.setMetadataCollectionId(metadataCollectionId);
 
-        if (realLocalConnector != null)
-        {
-            realLocalConnector.setMetadataCollectionId(metadataCollectionId);
-        }
-
-        if (realEventMapper != null)
-        {
-            realEventMapper.setMetadataCollectionId(metadataCollectionId);
-        }
-
         try
         {
+            /*
+             * This is typically where the metadata collection for the real repository is created.  This object issues the requests to the
+             * storage (or remote metadata system) and this may be the first point of contact for the real connector.
+             * Configuration errors are likely to emerge at this point.
+             */
+            realLocalConnector.setMetadataCollectionId(metadataCollectionId);
+
+            if (realEventMapper != null)
+            {
+                realEventMapper.setMetadataCollectionId(metadataCollectionId);
+            }
+
             /*
              * Initialize the metadata collection only once the connector is properly set up.
              */
@@ -465,7 +481,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
             this.incomingInstanceEventProcessor = localOMRSInstanceEventProcessor;
             this.instanceRetrievalEventProcessor = localOMRSInstanceEventProcessor;
         }
-        catch (Exception   error)
+        catch (Throwable error) // Typically we catch Exception, but this is a key error point for real repositories.
         {
             throw new OMRSLogicErrorException(OMRSErrorCode.NULL_METADATA_COLLECTION.getMessageDefinition(repositoryName),
                                               this.getClass().getName(),

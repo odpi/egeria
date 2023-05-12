@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,9 +25,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SecurityTagsProperties extends ClassificationProperties
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private List<String>              securityLabels     = null;
     private Map<String, Object>       securityProperties = null;
     private Map<String, List<String>> accessGroups = null;

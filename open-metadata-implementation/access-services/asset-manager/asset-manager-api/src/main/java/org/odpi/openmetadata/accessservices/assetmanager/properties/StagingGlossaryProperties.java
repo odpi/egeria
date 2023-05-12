@@ -1,79 +1,72 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.assetmanager.rest;
+package org.odpi.openmetadata.accessservices.assetmanager.properties;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ClassificationProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermActivityType;
 
-import java.io.Serial;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ActivityDescriptionProperties is used to classify a glossary that describes an activity.  This request body includes
- * an enum that describes the type of activity.
+ * StagingGlossaryProperties is used to provide the properties for an EditingGlossary classification.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ActivityDescriptionProperties extends ClassificationProperties
+public class StagingGlossaryProperties extends ClassificationProperties
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    private GlossaryTermActivityType activityType = null;
+    private String description = null;
 
 
     /**
      * Default constructor
      */
-    public ActivityDescriptionProperties()
+    public StagingGlossaryProperties()
     {
         super();
     }
 
 
     /**
-     * Copy/clone constructor for a primary key.
+     * Copy/clone constructor for an editing glossary classification.
      *
      * @param template template object to copy.
      */
-    public ActivityDescriptionProperties(ActivityDescriptionProperties template)
+    public StagingGlossaryProperties(StagingGlossaryProperties template)
     {
         super(template);
 
         if (template != null)
         {
-            activityType = template.getActivityType();
+            description = template.getDescription();
         }
     }
 
 
     /**
-     * Return the activity type for the classification.
+     * Return the description (typically and overview of the revision) of the glossary.
      *
-     * @return enum
+     * @return string description
      */
-    public GlossaryTermActivityType getActivityType()
+    public String getDescription()
     {
-        return activityType;
+        return description;
     }
 
 
     /**
-     * Set up the activity type for the classification.
+     * Set up the description (typically and overview of the revision) of the glossary.
      *
-     * @param activityType enum
+     * @param description string description
      */
-    public void setActivityType(GlossaryTermActivityType activityType)
+    public void setDescription(String description)
     {
-        this.activityType = activityType;
+        this.description = description;
     }
 
 
@@ -85,8 +78,8 @@ public class ActivityDescriptionProperties extends ClassificationProperties
     @Override
     public String toString()
     {
-        return "ActivityDescriptionProperties{" +
-                       "activityType=" + activityType +
+        return "StagingGlossaryProperties{" +
+                       "description='" + description + '\'' +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +
                        ", extendedProperties=" + getExtendedProperties() +
@@ -107,7 +100,7 @@ public class ActivityDescriptionProperties extends ClassificationProperties
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof StagingGlossaryProperties that))
         {
             return false;
         }
@@ -115,8 +108,7 @@ public class ActivityDescriptionProperties extends ClassificationProperties
         {
             return false;
         }
-        ActivityDescriptionProperties that = (ActivityDescriptionProperties) objectToCompare;
-        return activityType == that.activityType;
+        return Objects.equals(description, that.description);
     }
 
 
@@ -128,6 +120,6 @@ public class ActivityDescriptionProperties extends ClassificationProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), activityType);
+        return Objects.hash(super.hashCode(), description);
     }
 }

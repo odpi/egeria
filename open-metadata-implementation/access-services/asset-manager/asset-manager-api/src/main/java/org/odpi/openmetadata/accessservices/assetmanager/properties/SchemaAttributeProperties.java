@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.assetmanager.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -21,9 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SchemaAttributeProperties extends SchemaProperties
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private int               elementPosition       = 0;
     private int               minCardinality        = 0;
     private int               maxCardinality        = 0;

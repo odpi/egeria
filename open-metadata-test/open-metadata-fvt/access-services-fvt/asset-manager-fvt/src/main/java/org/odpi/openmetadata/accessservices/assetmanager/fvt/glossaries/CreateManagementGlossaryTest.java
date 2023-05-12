@@ -268,6 +268,7 @@ public class CreateManagementGlossaryTest extends AssetManagerTestBase
             String glossaryCategoryGUID = client.createGlossaryCategory(userId,
                                                                         glossaryGUID,
                                                                         properties,
+                                                                        true,
                                                                         null,
                                                                         false,
                                                                         false);

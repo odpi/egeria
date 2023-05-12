@@ -216,7 +216,7 @@ public class IntegrationDaemonOperationalServices
                                                                                                   restClient,
                                                                                                   maxPageSize,
                                                                                                   auditLog,
-                                                                                                  localServerId);
+                                                                                                  localServerId+groupName);
                         IntegrationGroupConfigurationClient configurationClient = new IntegrationGroupConfigurationClient(partnerOMASServerName,
                                                                                                                           partnerOMASRootURL,
                                                                                                                           restClient,

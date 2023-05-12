@@ -87,6 +87,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @param displayName short display name for the category
      * @param description description of the category
      * @param additionalProperties additional properties for a category
+     * @param rootCategory is this category a top-level (root) category
      * @param suppliedTypeName type name from the caller (enables creation of subtypes)
      * @param extendedProperties  properties for a category subtype
      * @param effectiveFrom  the time that the element must be effective from (null for any time, new Date() for now)
@@ -108,6 +109,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                          String              displayName,
                                          String              description,
                                          Map<String, String> additionalProperties,
+                                         boolean             rootCategory,
                                          String              suppliedTypeName,
                                          Map<String, Object> extendedProperties,
                                          Date                effectiveFrom,
@@ -144,6 +146,11 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
         
         builder.setAnchors(userId, glossaryGUID, methodName);
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
+        if (rootCategory)
+        {
+            builder.setRootCategory(userId, methodName);
+        }
 
         String glossaryCategoryGUID = this.createBeanInRepository(userId,
                                                                   externalSourceGUID,
@@ -247,6 +254,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                                   builder,
                                                                   supportedZones,
                                                                   deepCopy,
+                                                                  false,
                                                                   methodName);
 
         if (glossaryCategoryGUID != null)

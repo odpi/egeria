@@ -39,7 +39,7 @@ public class GraphOMRSGraphFactory {
     private String       thisRepositoryName;
     private String       thisMetadataCollectionId;
     private AuditLog     thisAuditLog                 = null;
-    private String       controlVertexIdPropertyName  = "ControlVertexIdentifier";
+    private final String controlVertexIdPropertyName  = "ControlVertexIdentifier";
 
 
     /*
@@ -248,8 +248,6 @@ public class GraphOMRSGraphFactory {
     private Map<String, Object> getBerkleyStorageProperties() {
 
         // In current usage, the repository name is the server name, so ok to use for storage path
-        final String serverRepositoryPath = thisRepositoryName + "-graph-repository";
-
         Map<String, Object> berkleyStorageProperties = new HashMap<>();
         berkleyStorageProperties.put("storage.backend", "berkeleyje");
         berkleyStorageProperties.put("storage.directory", "./data/servers/" + thisRepositoryName + "/repository/graph/berkeley");

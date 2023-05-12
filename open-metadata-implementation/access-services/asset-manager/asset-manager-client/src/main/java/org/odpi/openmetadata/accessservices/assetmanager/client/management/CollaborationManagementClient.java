@@ -12,11 +12,10 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.NoteEl
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.NoteLogElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.CommentProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.FeedbackProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.InformalTagProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.LikeProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteLogProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.RatingProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.TagProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -181,7 +180,6 @@ public class CollaborationManagementClient implements CollaborationManagementInt
      * @param userId      userId of user making request
      * @param elementGUID   unique identifier for the element
      * @param isPublic is this visible to other people
-     * @param properties   indicates whether the feedback should be shared or only be visible to the originating user
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem adding the element properties to the property server.
@@ -190,12 +188,11 @@ public class CollaborationManagementClient implements CollaborationManagementInt
     @Override
     public void addLikeToElement(String         userId,
                                  String         elementGUID,
-                                 boolean        isPublic,
-                                 LikeProperties properties) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
+                                 boolean        isPublic) throws InvalidParameterException,
+                                                                 PropertyServerException,
+                                                                 UserNotAuthorizedException
     {
-        client.addLikeToElement(userId, elementGUID, isPublic, properties);
+        client.addLikeToElement(userId, elementGUID, isPublic);
     }
 
 
@@ -516,10 +513,10 @@ public class CollaborationManagementClient implements CollaborationManagementInt
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override
-    public String createInformalTag(String                userId,
-                                    InformalTagProperties properties) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException
+    public String createInformalTag(String        userId,
+                                    TagProperties properties) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
     {
         return client.createInformalTag(userId, properties);
     }
@@ -777,6 +774,7 @@ public class CollaborationManagementClient implements CollaborationManagementInt
      * @param userId calling user
      * @param elementGUID unique identifier of the element where the note log is located
      * @param noteLogProperties properties about the note log to store
+     * @param isPublic                 is this element visible to other people.
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -791,6 +789,7 @@ public class CollaborationManagementClient implements CollaborationManagementInt
     public  String createNoteLog(String                       userId,
                                  String                       elementGUID,
                                  NoteLogProperties            noteLogProperties,
+                                 boolean                      isPublic,
                                  Date                         effectiveTime,
                                  boolean                      forLineage,
                                  boolean                      forDuplicateProcessing) throws InvalidParameterException,
@@ -807,6 +806,7 @@ public class CollaborationManagementClient implements CollaborationManagementInt
      * @param userId calling user
      * @param noteLogGUID unique identifier of the metadata element to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param isPublic                 is this element visible to other people.
      * @param noteLogProperties new properties for the metadata element
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
@@ -820,6 +820,7 @@ public class CollaborationManagementClient implements CollaborationManagementInt
     public void updateNoteLog(String            userId,
                               String            noteLogGUID,
                               boolean           isMergeUpdate,
+                              boolean           isPublic,
                               NoteLogProperties noteLogProperties,
                               Date              effectiveTime,
                               boolean           forLineage,
@@ -827,7 +828,7 @@ public class CollaborationManagementClient implements CollaborationManagementInt
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        client.updateNoteLog(userId, null, null, noteLogGUID, null, isMergeUpdate, true, noteLogProperties, effectiveTime, forLineage, forDuplicateProcessing);
+        client.updateNoteLog(userId, null, null, noteLogGUID, null, isMergeUpdate, isPublic, noteLogProperties, effectiveTime, forLineage, forDuplicateProcessing);
     }
 
 

@@ -22,9 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SearchStringRequestBody extends EffectiveTimeQueryRequestBody
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private String searchString = null;
     private String searchStringParameterName = null;
 
