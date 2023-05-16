@@ -1560,17 +1560,17 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void setupLineageMapping(String                   userId,
-                             String                   assetManagerGUID,
-                             String                   assetManagerName,
-                             String                   sourceElementGUID,
-                             String                   destinationElementGUID,
-                             LineageMappingProperties properties,
-                             Date                     effectiveTime,
-                             boolean                  forLineage,
-                             boolean                  forDuplicateProcessing) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException;
+    String setupLineageMapping(String                   userId,
+                               String                   assetManagerGUID,
+                               String                   assetManagerName,
+                               String                   sourceElementGUID,
+                               String                   destinationElementGUID,
+                               LineageMappingProperties properties,
+                               Date                     effectiveTime,
+                               boolean                  forLineage,
+                               boolean                  forDuplicateProcessing) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException;
 
 
     /**
