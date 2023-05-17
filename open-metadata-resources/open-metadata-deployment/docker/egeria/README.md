@@ -17,15 +17,38 @@ value from data whilst ensuring it is properly governed.
 * [Github](https://github.com/odpi/egeria)
 * [Slack discussions](https://slack.lfai.foundation)
 
-## Image: egeria
+## About the egeria image
 
 This *nix based image contains all the required runtime artifacts for egeria - for example the main server chassis, the user interface, required dependencies etc.
 
 Specifically it contains the full [egeria assembly](https://github.com/odpi/egeria/blob/main/open-metadata-distribution/open-metadata-assemblies/src/main/assemblies/egeria-omag.xml)
 
-## Usage
+## Building the egeria image
 
-It's recommended you use the Egeria tutorials to get started. Below are some examples of using the image standalone. Refer to the main Egeria docs for further information
+This step is optional - and only required if you want to build your own image.
+
+There are two options
+
+### Standard dockerfile
+
+This is the Dockerfile we use to publish the official images. It works by utilizing an existing unpacked egeria assembly, which is an output of a full egeria build.
+
+To use this
+ * Run a full egeria build with `./gradlew build` from the project root
+ * Run `mkdir -p open-metadata-resources/open-metadata-deployment/docker/egeria/build/assembly && cp -r open-metadata-distribution/open-metadata-assemblies/build/unpacked/egeria-4.1-SNAPSHOT-distribution.tar.gz/. open-metadata-resources/open-metadata-deployment/docker/egeria/build/assembly` - replacing the version label as appropriate
+ * Run `docker build -t egeria:myversion -f Dockerfile .` in this directory to create the image
+
+### Self-build dockerfile
+
+This dockerfile will also build egeria itself - so no seperate steps are needed. Simply run the dockerfile directly and it will extract egeria source & build it within the container.
+
+Run `docker build -t egeria:myversion -f Dockerfile.selfbuild .`
+
+## Running the egeria image
+
+It's recommended you use the Egeria tutorials to get started. Below are some examples of using the image standalone. Refer to the main Egeria docs for further information.
+
+These instructions should work whether you built your own image, or used the image directly from quay.io or docker.io - _though you will need to use the correct tag in the commands below_ (odpi/egeria:latest will default to the latest egeria release on Docker Hub)
 
 ### Launch a container running the latest version of egeria in the background (version 2.0 and above)
 
