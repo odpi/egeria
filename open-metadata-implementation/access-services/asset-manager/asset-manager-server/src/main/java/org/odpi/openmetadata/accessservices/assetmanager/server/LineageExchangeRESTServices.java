@@ -3594,7 +3594,7 @@ public class LineageExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setupLineageMapping(String                  serverName,
+    public GUIDResponse setupLineageMapping(String                  serverName,
                                             String                  userId,
                                             String                  sourceElementGUID,
                                             String                  destinationElementGUID,
@@ -3606,7 +3606,7 @@ public class LineageExchangeRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        VoidResponse response = new VoidResponse();
+        GUIDResponse response = new GUIDResponse();
         AuditLog     auditLog = null;
 
         try
@@ -3615,58 +3615,61 @@ public class LineageExchangeRESTServices
 
             ProcessExchangeHandler handler = instanceHandler.getProcessExchangeHandler(userId, serverName, methodName);
 
+            String guid = null;
             if (requestBody != null)
             {
                 if (requestBody.getProperties() instanceof DataFlowProperties)
                 {
                     DataFlowProperties properties = (DataFlowProperties)requestBody.getProperties();
-                    handler.setupLineageMapping(userId,
-                                                requestBody.getAssetManagerGUID(),
-                                                requestBody.getAssetManagerName(),
-                                                sourceElementGUID,
-                                                destinationElementGUID,
-                                                properties.getQualifiedName(),
-                                                properties.getDescription(),
-                                                properties.getEffectiveFrom(),
-                                                properties.getEffectiveTo(),
-                                                forLineage,
-                                                forDuplicateProcessing,
-                                                requestBody.getEffectiveTime(),
-                                                methodName);
+                    guid = handler.setupLineageMapping(userId,
+                                                       requestBody.getAssetManagerGUID(),
+                                                       requestBody.getAssetManagerName(),
+                                                       sourceElementGUID,
+                                                       destinationElementGUID,
+                                                       properties.getQualifiedName(),
+                                                       properties.getDescription(),
+                                                       properties.getEffectiveFrom(),
+                                                       properties.getEffectiveTo(),
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       requestBody.getEffectiveTime(),
+                                                       methodName);
                 }
                 else
                 {
-                    handler.setupLineageMapping(userId,
-                                                null,
-                                                null,
-                                                sourceElementGUID,
-                                                destinationElementGUID,
-                                                null,
-                                                null,
-                                                null,
-                                                null,
-                                                forLineage,
-                                                forDuplicateProcessing,
-                                                requestBody.getEffectiveTime(),
-                                                methodName);
+                    guid = handler.setupLineageMapping(userId,
+                                                       null,
+                                                       null,
+                                                       sourceElementGUID,
+                                                       destinationElementGUID,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       requestBody.getEffectiveTime(),
+                                                       methodName);
                 }
             }
             else
             {
-                handler.setupLineageMapping(userId,
-                                            null,
-                                            null,
-                                            sourceElementGUID,
-                                            destinationElementGUID,
-                                            null,
-                                            null,
-                                            null,
-                                            null,
-                                            forLineage,
-                                            forDuplicateProcessing,
-                                            new Date(),
-                                            methodName);
+                guid = handler.setupLineageMapping(userId,
+                                                   null,
+                                                   null,
+                                                   sourceElementGUID,
+                                                   destinationElementGUID,
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   new Date(),
+                                                   methodName);
             }
+
+            response.setGUID(guid);
         }
         catch (Exception error)
         {
