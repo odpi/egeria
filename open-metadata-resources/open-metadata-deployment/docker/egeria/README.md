@@ -17,15 +17,55 @@ value from data whilst ensuring it is properly governed.
 * [Github](https://github.com/odpi/egeria)
 * [Slack discussions](https://slack.lfai.foundation)
 
-## Image: egeria
+## About the egeria image
 
 This *nix based image contains all the required runtime artifacts for egeria - for example the main server chassis, the user interface, required dependencies etc.
 
 Specifically it contains the full [egeria assembly](https://github.com/odpi/egeria/blob/main/open-metadata-distribution/open-metadata-assemblies/src/main/assemblies/egeria-omag.xml)
 
-## Usage
+## Building the egeria image
 
-It's recommended you use the Egeria tutorials to get started. Below are some examples of using the image standalone. Refer to the main Egeria docs for further information
+This step is optional - and only required if you want to build your own image.
+
+There are two options
+
+### Standard dockerfile
+
+This is the Dockerfile we use to publish the official images. It works by utilizing an existing unpacked egeria assembly, which is an output of a full egeria build.
+
+To use this
+ * Run a full egeria build with `./gradlew build` from the project root
+ * Run `mkdir -p open-metadata-resources/open-metadata-deployment/docker/egeria/build/assembly && cp -r open-metadata-distribution/open-metadata-assemblies/build/unpacked/egeria-4.1-SNAPSHOT-distribution.tar.gz/. open-metadata-resources/open-metadata-deployment/docker/egeria/build/assembly` - replacing the version label as appropriate
+ * Run `docker build -t egeria:myversion -f Dockerfile .` in this directory to create the image
+
+
+### Self-build dockerfile
+
+This dockerfile will also build egeria itself - so no seperate steps are needed. Simply run the dockerfile directly and it will extract egeria source & build it within the container.
+
+Run `docker build -t egeria:myversion -f Dockerfile.selfbuild .`
+
+### Build arguments
+
+The following additional arguments are allowed
+
+
+|parameter| regular | selfbuild | default | description |
+|--|---------|--|--|--|
+| runimg   | No     | Yes | registry.access.redhat.com/ubi9/openjdk-17 | Container image used for building egeria |
+| buildimg | No     |Yes | registry.access.redhat.com/ubi9/openjdk-17 | Container image used for runtime ie launching egeria |
+| version  | Yes      | Yes | 4.1-SNAPSHOT | Version string - must be correct so that the right jar file gets launched. Do not rely on default |
+| srcurl | No | Yes | https://github.com/odpi/egeria | Specifies url of github repo to clone |
+| srcref | No | Yes | main | Specifies branch, or tag of code within the repo
+| buildparms | No | Yes | build -x test -x javadoc | Gradle invocation to build egeria |
+| now | No | Yes | <undefined> | timestamp - purely used as additional metadata to describe the image |
+
+
+## Running the egeria image
+
+It's recommended you use the Egeria tutorials to get started. Below are some examples of using the image standalone. Refer to the main Egeria docs for further information.
+
+These instructions should work whether you built your own image, or used the image directly from quay.io or docker.io - _though you will need to use the correct tag in the commands below_ (odpi/egeria:latest will default to the latest egeria release on Docker Hub)
 
 ### Launch a container running the latest version of egeria in the background (version 2.0 and above)
 
@@ -146,6 +186,16 @@ $ docker inspect --format='{{range $k, $v := .ContainerConfig.Labels}} {{- print
 org.opencontainers.image.vendor = "= ODPi       org.opencontainers.image.title = Egeria       org.opencontainers.image.description = Common image for core ODPi Egeria runtime.       org.opencontainers.image.url = https://egeria.odpi.org/       org.opencontainers.image.source = https://github.com/odpi/egeria       org.opencontainers.image.authors = ODPi Egeria       org.opencontainers.image.revision = 2e8b97d       org.opencontainers.image.licenses = Apache-2.0       org.opencontainers.image.created = 2020-03-25T12:03:52+0000       org.opencontainers.image.version = 1.6-SNAPSHOT       org.opencontainers.image.documentation = https://egeria.odpi.org/open-metadata-resources/open-metadata-deployment/docker/egeria/       org.opencontainers.image.ext.vcs-date = 2020-03-25T11:46:50+0000       org.opencontainers.image.ext.docker.cmd = docker run -d -p 8080:8080 odpi/egeria       org.opencontainers.image.ext.docker.cmd.devel = docker run -d -p 8080:8080 -p 5005:5005 -e JAVA_DEBUG=true odpi/egeria       org.opencontainers.image.ext.docker.debug = docker exec -it  /bin/sh       org.opencontainers.image.ext.docker.params = JAVA_DEBUG=set to true to enable JVM debugging"
 
 ```
+### Runtime parameters
+
+Additional parameters can be specified at runtime by setting in the environment ie `-e VAR=VALUE`
+
+| Variable | Default                                                                                                                                                     | Description                                                                                                                         |
+| -- |-------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| JAVA_OPTS |                                                                                                                                                             | Passes only these options to the java command used to launch egeria                                                                 |
+| JAVA_OPTS_APPEND | -XX:MaxMetaspaceSize=1g                                                                                                                                     | Similar to JAVA_OPTS but appends to any options already set in image                                                                |
+| JAVA_APP_JAR | server/server-chassis-spring-${version}.jar                                                                                                                 | Launches a different jar file -- use with caution as this must exist in the egeria assembly                                         |
+| LOADER_PATH | /deployments/server/lib | Specifies a comma seperated list of directories to load additional libraries from ie adding to CLASSPATH used by spring classloader |
 
 ### Extending the image to include additional libraries, such as connectors
 
