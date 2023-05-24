@@ -3,10 +3,10 @@
 
 # Create a process
 
-Create a Process, with port implementations and port aliases.
+Create a Process, with port implementations.
 For each port, it creates the associated schema type and columns.
 
-Check [create-port-implementation](create-port-implementation.md), [create-port-alias](create-port-alias.md) 
+Check [create-port-implementation](create-port-implementation.md) 
 and [create-schema-types](create-schema-type.md) for examples of the more granular payloads.
 
 More examples can be found in the

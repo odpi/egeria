@@ -74,17 +74,6 @@ public class Process extends Asset {
     private List<PortImplementation> portImplementations;
 
     /**
-     * The port aliases
-     * -- GETTER --
-     * Gets port aliases.
-     * @return the port aliases
-     * -- SETTER --
-     * Sets port aliases.
-     * @param portAliases the port aliases
-     */
-    private List<PortAlias> portAliases;
-
-    /**
      * The data flows
      * -- GETTER --
      * Gets data flows

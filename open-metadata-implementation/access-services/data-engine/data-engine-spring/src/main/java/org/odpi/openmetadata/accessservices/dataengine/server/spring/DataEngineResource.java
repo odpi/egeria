@@ -12,7 +12,6 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.DeleteRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.EventTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataFlowsRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
@@ -35,7 +34,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME;
 
 /**
@@ -170,38 +168,6 @@ public class DataEngineResource {
                                                  @PathVariable("serverName") String serverName,
                                                  @RequestBody DeleteRequestBody requestBody) {
         return restAPI.deletePort(userId, serverName, requestBody, PORT_IMPLEMENTATION_TYPE_NAME);
-    }
-
-    /**
-     * Create the PortAlias entity
-     *
-     * @param serverName           name of server instance to call
-     * @param userId               the name of the calling user
-     * @param portAliasRequestBody properties of the port alias
-     *
-     * @return unique identifier of the created port alias
-     */
-    @PostMapping(path = "/port-aliases")
-    public GUIDResponse createOrUpdatePortAlias(@PathVariable("userId") String userId,
-                                                @PathVariable("serverName") String serverName,
-                                                @RequestBody PortAliasRequestBody portAliasRequestBody) {
-        return restAPI.upsertPortAlias(userId, serverName, portAliasRequestBody);
-    }
-
-    /**
-     * Delete the PortAlias entity
-     *
-     * @param serverName  name of server instance to call
-     * @param userId      the name of the calling user
-     * @param requestBody properties of the port implementation
-     *
-     * @return void response
-     */
-    @DeleteMapping(path = "/port-aliases")
-    public VoidResponse deletePortAliases(@PathVariable("userId") String userId,
-                                          @PathVariable("serverName") String serverName,
-                                          @RequestBody DeleteRequestBody requestBody) {
-        return restAPI.deletePort(userId, serverName, requestBody, PORT_ALIAS_TYPE_NAME);
     }
 
     /**

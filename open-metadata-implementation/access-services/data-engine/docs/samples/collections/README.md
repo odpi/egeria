@@ -9,10 +9,12 @@ This sample Postman collection illustrates DataEngine OMAS endpoints for creatin
 ### [DataEngine-process-endpoints.postman_collection.json](DataEngine-process_endpoints.postman_collection.json)
 This sample Postman collection illustrates DataEngine OMAS endpoints for creating/updating/deleting processes
 
-### [DataEngineOMAS-local-graph-integration.postman_collection.json](DataEngineOMAS-local-graph-integration.postman_collection.json)
-This sample Postman collection illustrate configuring and using the DataEngine OMAS with the Egeria graph repository.
-This script can be used to configure Egeria with Data Engine OMAS and the local graph repository.  
-It can be used to run through a number of different tests of the REST endpoints that Data Engine OMAS exposes. 
+### [DataEngine-topics.postman_collection.json](DataEngine-topics-lineage_examples.postman_collection.json)
+This sample Postman collection illustrates DataEngine OMAS endpoints for creating/updating/deleting topics
+
+
+### [DataEngineOMAS-minimal-flows.postman_collection.json](Data%20Engine-minimal_flows_granular_level.postman_collection.json)
+This sample Postman collection illustrates DataEngine OMAS endpoints used for creating column level lineage. It showcases the minimal flows example, composed of three lineage flows tht are connected.
 
 Prerequisites:
 

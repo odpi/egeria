@@ -3,10 +3,10 @@
 
 # Delete processes
 
-Delete a Process, with the associated port implementations, port aliases and data flows.
+Delete a Process, with the associated port implementations and data flows.
 For each port, it will delete the associated schema type and columns.
 
-Check [delete-port-implementation](delete-port-implementation.md), [delete-port-alias](create-port-alias.md) 
+Check [delete-port-implementation](delete-port-implementation.md)
 and [delete-schema-types](create-schema-type.md) for examples of the more granular payloads.
 
 More examples can be found in the
