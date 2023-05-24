@@ -39,10 +39,10 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -61,7 +61,6 @@ import static org.mockito.Mockito.when;
 import static org.odpi.openmetadata.accessservices.dataengine.server.util.MockedExceptionUtil.mockException;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESS_HIERARCHY_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESS_PORT_TYPE_GUID;
@@ -82,7 +81,6 @@ class DataEngineProcessHandlerTest {
     private static final String OWNER = "OWNER";
     private static final String PROCESS_GUID = "processGuid";
     private static final String PORT_IMPL_GUID = "portImplGUID";
-    private static final String PORT_ALIAS_GUID = "portAliasGUID";
     private static final String EXTERNAL_SOURCE_DE_GUID = "externalSourceDataEngineGuid";
     private static final String EXTERNAL_SOURCE_DE_QUALIFIED_NAME = "externalSourceDataEngineQualifiedName";
     private static final String PARENT_PROCESS_QUALIFIED_NAME = "parentQualifiedName";
@@ -311,19 +309,12 @@ class DataEngineProcessHandlerTest {
         when(portImplementation.getType()).thenReturn(mockedTypeImpl);
         when(portImplementation.getGUID()).thenReturn(PORT_IMPL_GUID);
 
-        EntityDetail portAlias = mock(EntityDetail.class);
-        InstanceType mockedTypeAlias = mock(InstanceType.class);
-        when(mockedTypeAlias.getTypeDefName()).thenReturn(PORT_ALIAS_TYPE_NAME);
-        when(portAlias.getType()).thenReturn(mockedTypeImpl);
-        when(portAlias.getGUID()).thenReturn(PORT_ALIAS_GUID);
-
-        Set<EntityDetail> portEntityGUIDs = new HashSet<>(Arrays.asList(portAlias, portImplementation));
+        Set<EntityDetail> portEntityGUIDs = new HashSet<>(List.of(portImplementation));
         when(dataEngineCommonHandler.getEntitiesForRelationship(USER, PROCESS_GUID, PROCESS_PORT_TYPE_NAME,
                 PORT_IMPLEMENTATION_TYPE_NAME, PROCESS_TYPE_NAME)).thenReturn(portEntityGUIDs);
         Set<EntityDetail> result = processHandler.getPortsForProcess(USER, PROCESS_GUID, PORT_IMPLEMENTATION_TYPE_NAME);
         assertEquals(2, result.size());
         assertTrue(result.contains(portImplementation));
-        assertTrue(result.contains(portAlias));
     }
 
     @Test

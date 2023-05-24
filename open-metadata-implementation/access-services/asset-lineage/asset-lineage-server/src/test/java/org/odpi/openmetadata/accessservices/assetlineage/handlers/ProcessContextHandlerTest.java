@@ -31,8 +31,6 @@ import static org.mockito.Mockito.when;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ATTRIBUTE_FOR_SCHEMA;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.COLLECTION_MEMBERSHIP;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_FLOW;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_ALIAS;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_DELEGATION;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_IMPLEMENTATION;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_SCHEMA;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
@@ -66,27 +64,6 @@ class ProcessContextHandlerTest {
         processContextHandler.buildProcessContext(USER, process);
         verify(handlerHelper, times(1)).addContextForRelationships(USER, collectionEntity, COLLECTION_MEMBERSHIP, context);
     }
-
-    @Test
-    void buildProcessContext_withPortAlias() throws OCFCheckedExceptionBase {
-        List<Relationship> collection = mockGetRelationships(COLLECTION_MEMBERSHIP, PROCESS);
-        EntityDetail collectionEntity = mockEntityAtTheEnd(collection.get(0));
-        Set<GraphContext> collectionContext = mockGraphContext(collection, COLLECTION_MEMBERSHIP);
-
-        EntityDetail process = mockProcess();
-
-        List<Relationship> port = mockGetRelationships(PROCESS_PORT, PROCESS);
-        EntityDetail portEntity = mockEntityAtTheEnd(port.get(0));
-        InstanceType instanceType = mock(InstanceType.class);
-        when(instanceType.getTypeDefName()).thenReturn(PORT_ALIAS);
-        when(portEntity.getType()).thenReturn(instanceType);
-        Set<GraphContext> portContext = mockGraphContext(port, PORT_DELEGATION);
-
-        processContextHandler.buildProcessContext(USER, process);
-        verify(handlerHelper, times(1)).addContextForRelationships(USER, collectionEntity, COLLECTION_MEMBERSHIP, collectionContext);
-        verify(handlerHelper, times(1)).addContextForRelationships(USER, portEntity, PORT_DELEGATION, portContext);
-    }
-
 
     @Test
     void buildProcessContext_withPortImplementation() throws OCFCheckedExceptionBase {
