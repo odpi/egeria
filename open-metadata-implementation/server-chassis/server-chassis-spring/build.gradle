@@ -112,12 +112,9 @@ test {
 }
 
 // See https://stackoverflow.com/questions/61197984/bootjar-mavenjar-artifact-wasnt-produced-by-this-build
-// Remove the regular (plain) jar & replace with the SpringBoot version
+// Ensure the SpringBoot jar is included -- we leave the 'plain' jar in-situ too, for composing alternate chassis
 configurations {
     [apiElements, runtimeElements].each {
-        it.outgoing.artifacts.removeIf {
-            it.buildDependencies.getDependencies(null).contains(jar)
-        }
         it.outgoing.artifact(bootJar)
     }
 }
