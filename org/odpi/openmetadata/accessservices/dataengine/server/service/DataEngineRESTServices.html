@@ -360,7 +360,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../rest/DeleteRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DeleteRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Delete a process, with the associated port implementations, port aliases and data flows</div>
+<div class="block">Delete a process, with the associated port implementations and data flows</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteRelationalTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic)" class="member-name-link">deleteRelationalTable</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -530,22 +530,6 @@ loadScripts(document, 'script');</script>
  <a href="../../rest/EventTypeRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">EventTypeRequestBody</a>&nbsp;eventTypeRequestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create or update the EventType with corresponding associated event schema attributes</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#upsertPortAlias(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody)" class="member-name-link">upsertPortAlias</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../../rest/PortAliasRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">PortAliasRequestBody</a>&nbsp;portAliasRequestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create or update the Port Alias with a PortDelegation relationship</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#upsertPortAliasWithDelegation(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.PortAlias,java.lang.String,java.lang.String)" class="member-name-link">upsertPortAliasWithDelegation</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../../model/PortAlias.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">PortAlias</a>&nbsp;portAlias,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create or update a Port Alias with a PortDelegation relationship</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#upsertPortImplementation(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation,java.lang.String,java.lang.String)" class="member-name-link">upsertPortImplementation</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -1022,23 +1006,6 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="upsertPortAlias(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody)">
-<h3>upsertPortAlias</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">upsertPortAlias</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../../rest/PortAliasRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">PortAliasRequestBody</a>&nbsp;portAliasRequestBody)</span></div>
-<div class="block">Create or update the Port Alias with a PortDelegation relationship</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of server instance to call</dd>
-<dd><code>userId</code> - the name of the calling user</dd>
-<dd><code>portAliasRequestBody</code> - properties of the port</dd>
-<dt>Returns:</dt>
-<dd>the unique identifier (guid) of the created port</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="deletePort(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.rest.DeleteRequestBody,java.lang.String)">
 <h3>deletePort</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">deletePort</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -1131,7 +1098,7 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">deleteProcess</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../rest/DeleteRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DeleteRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Delete a process, with the associated port implementations, port aliases and data flows</div>
+<div class="block">Delete a process, with the associated port implementations and data flows</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - the name of the calling user</dd>
@@ -1163,34 +1130,6 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code></dd>
 <dd><code><a href="../../../../repositoryservices/ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code></dd>
 <dd><code><a href="../../../../repositoryservices/ffdc/exception/EntityNotDeletedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityNotDeletedException</a></code></dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="upsertPortAliasWithDelegation(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.PortAlias,java.lang.String,java.lang.String)">
-<h3>upsertPortAliasWithDelegation</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">upsertPortAliasWithDelegation</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../../model/PortAlias.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">PortAlias</a>&nbsp;portAlias,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName)</span>
-                                     throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-<a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
-<a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Create or update a Port Alias with a PortDelegation relationship</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - the name of the calling user</dd>
-<dd><code>serverName</code> - name of server instance to call</dd>
-<dd><code>portAlias</code> - the port alias values</dd>
-<dd><code>processGUID</code> - the unique identifier of the process</dd>
-<dd><code>externalSourceName</code> - the unique name of the external source</dd>
-<dt>Returns:</dt>
-<dd>the unique identifier (guid) of the created port alias</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing the property server</dd>
 </dl>
 </section>
 </li>
@@ -1241,7 +1180,7 @@ loadScripts(document, 'script');</script>
 <dd><code>processGUID</code> - the unique identifier of the process</dd>
 <dd><code>externalSourceName</code> - the unique name of the external source</dd>
 <dt>Returns:</dt>
-<dd>the unique identifier (guid) of the created port alias</dd>
+<dd>the unique identifier (guid) of the created port implementation</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>

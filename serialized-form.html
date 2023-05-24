@@ -12068,35 +12068,6 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/dataengine/event/PortAliasEvent.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent</a></h3>
-<div class="type-signature">class PortAliasEvent extends <a href="org/odpi/openmetadata/accessservices/dataengine/event/DataEngineEventHeader.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">DataEngineEventHeader</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<dl class="name-value">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
-<ul class="block-list">
-<li>
-<section class="detail">
-<h4>Serialized Fields</h4>
-<ul class="block-list">
-<li class="block-list">
-<h5>portAlias</h5>
-<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/PortAlias.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">PortAlias</a> portAlias</pre>
-<div class="block">The port alias</div>
-</li>
-<li class="block-list">
-<h5>processQualifiedName</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> processQualifiedName</pre>
-<div class="block">The process qualified name</div>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<li>
 <section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent">
 <h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/dataengine/event/PortImplementationEvent.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent</a></h3>
 <div class="type-signature">class PortImplementationEvent extends <a href="org/odpi/openmetadata/accessservices/dataengine/event/DataEngineEventHeader.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">DataEngineEventHeader</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
@@ -13115,26 +13086,6 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.dataengine.model.PortAlias">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/dataengine/model/PortAlias.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.PortAlias</a></h3>
-<div class="type-signature">class PortAlias extends <a href="org/odpi/openmetadata/accessservices/dataengine/model/Port.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Port</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<ul class="block-list">
-<li>
-<section class="detail">
-<h4>Serialized Fields</h4>
-<ul class="block-list">
-<li class="block-list">
-<h5>delegatesTo</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> delegatesTo</pre>
-<div class="block">Delegates to</div>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<li>
 <section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation">
 <h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/dataengine/model/PortImplementation.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation</a></h3>
 <div class="type-signature">class PortImplementation extends <a href="org/odpi/openmetadata/accessservices/dataengine/model/Port.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Port</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
@@ -13196,11 +13147,6 @@ loadScripts(document, 'script');</script>
 <h5>parentProcesses</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="org/odpi/openmetadata/accessservices/dataengine/model/ParentProcess.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">ParentProcess</a>&gt; parentProcesses</pre>
 <div class="block">The parent processes</div>
-</li>
-<li class="block-list">
-<h5>portAliases</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="org/odpi/openmetadata/accessservices/dataengine/model/PortAlias.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">PortAlias</a>&gt; portAliases</pre>
-<div class="block">The port aliases</div>
 </li>
 <li class="block-list">
 <h5>portImplementations</h5>
@@ -13687,31 +13633,6 @@ loadScripts(document, 'script');</script>
 <h5>type</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> type</pre>
 <div class="block">The type of the entity</div>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/dataengine/rest/PortAliasRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody</a></h3>
-<div class="type-signature">class PortAliasRequestBody extends <a href="org/odpi/openmetadata/accessservices/dataengine/rest/DataEngineOMASAPIRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataEngineOMASAPIRequestBody</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<ul class="block-list">
-<li>
-<section class="detail">
-<h4>Serialized Fields</h4>
-<ul class="block-list">
-<li class="block-list">
-<h5>portAlias</h5>
-<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/PortAlias.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">PortAlias</a> portAlias</pre>
-<div class="block">The port alias</div>
-</li>
-<li class="block-list">
-<h5>processQualifiedName</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> processQualifiedName</pre>
-<div class="block">The process qualified name</div>
 </li>
 </ul>
 </section>
