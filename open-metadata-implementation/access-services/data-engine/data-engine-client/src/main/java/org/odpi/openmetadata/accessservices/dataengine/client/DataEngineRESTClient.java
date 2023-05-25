@@ -9,7 +9,6 @@ import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.EventType;
-import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
@@ -27,7 +26,6 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.DeleteRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.EventTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataFlowsRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
@@ -61,7 +59,6 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
     private static final String DATA_ENGINE_REGISTRATION_URL_TEMPLATE = DATA_ENGINE_PATH + "registration";
     private static final String SCHEMA_TYPE_URL_TEMPLATE = DATA_ENGINE_PATH + "schema-types";
     private static final String PORT_IMPLEMENTATION_URL_TEMPLATE = DATA_ENGINE_PATH + "port-implementations";
-    private static final String PORT_ALIAS_URL_TEMPLATE = DATA_ENGINE_PATH + "port-aliases";
     private static final String PROCESS_HIERARCHY_URL_TEMPLATE = DATA_ENGINE_PATH + "process-hierarchies";
     private static final String DATA_FLOWS_URL_TEMPLATE = DATA_ENGINE_PATH + "data-flows";
     private static final String DATABASE_URL_TEMPLATE = DATA_ENGINE_PATH + "databases";
@@ -84,8 +81,6 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
     private static final String SCHEMA_TYPE_DELETE_METHOD_NAME = "deleteSchemaType";
     private static final String PORT_IMPLEMENTATION_METHOD_NAME = "createOrUpdatePortImplementation";
     private static final String PORT_IMPLEMENTATION_DELETE_METHOD_NAME = "deletePortImplementation";
-    private static final String PORT_ALIAS_METHOD_NAME = "createOrUpdatePortAlias";
-    private static final String PORT_ALIAS_DELETE_METHOD_NAME = "deletePortAlias";
     private static final String PROCESS_HIERARCHY_METHOD_NAME = "createOrUpdateProcessHierarchy";
     private static final String DATA_FLOWS_METHOD_NAME = "addDataFlows";
     private static final String DATABASE_METHOD_NAME = "upsertDatabase";
@@ -271,37 +266,6 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         DeleteRequestBody requestBody = getDeleteRequestBody(qualifiedName, guid);
 
         callVoidDeleteRESTCall(userId, PORT_IMPLEMENTATION_DELETE_METHOD_NAME, PORT_IMPLEMENTATION_URL_TEMPLATE, requestBody);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String createOrUpdatePortAlias(String userId, PortAlias portAlias, String processQualifiedName) throws InvalidParameterException,
-                                                                                                                  UserNotAuthorizedException,
-                                                                                                                  PropertyServerException {
-        final String methodName = PORT_ALIAS_METHOD_NAME;
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-
-        PortAliasRequestBody requestBody = new PortAliasRequestBody();
-        requestBody.setPortAlias(portAlias);
-        requestBody.setProcessQualifiedName(processQualifiedName);
-        requestBody.setExternalSourceName(externalSourceName);
-
-        return callGUIDPostRESTCall(userId, methodName, PORT_ALIAS_URL_TEMPLATE, requestBody);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void deletePortAlias(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException {
-        invalidParameterHandler.validateUserId(userId, PORT_ALIAS_DELETE_METHOD_NAME);
-
-        DeleteRequestBody requestBody = getDeleteRequestBody(qualifiedName, guid);
-
-        callVoidDeleteRESTCall(userId, PORT_ALIAS_DELETE_METHOD_NAME, PORT_ALIAS_URL_TEMPLATE, requestBody);
     }
 
     /**

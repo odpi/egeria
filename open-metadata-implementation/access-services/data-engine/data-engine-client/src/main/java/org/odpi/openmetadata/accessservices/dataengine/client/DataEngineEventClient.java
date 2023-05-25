@@ -6,12 +6,11 @@ import org.odpi.openmetadata.accessservices.dataengine.connectors.intopic.DataEn
 import org.odpi.openmetadata.accessservices.dataengine.event.DataEngineEventType;
 import org.odpi.openmetadata.accessservices.dataengine.event.DataEngineRegistrationEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DataFileEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.DataFlowsEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DatabaseEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DatabaseSchemaEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DeleteEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.EventTypeEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.DataFlowsEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessHierarchyEvent;
@@ -25,15 +24,14 @@ import org.odpi.openmetadata.accessservices.dataengine.model.DataFlow;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
+import org.odpi.openmetadata.accessservices.dataengine.model.Engine;
 import org.odpi.openmetadata.accessservices.dataengine.model.EventType;
-import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
 import org.odpi.openmetadata.accessservices.dataengine.model.ProcessingState;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
-import org.odpi.openmetadata.accessservices.dataengine.model.Engine;
 import org.odpi.openmetadata.accessservices.dataengine.model.Topic;
 import org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
@@ -194,40 +192,6 @@ public class DataEngineEventClient implements DataEngineClient {
                                                                                                   ConnectorCheckedException {
         DeleteEvent event = getDeleteEvent(userId, qualifiedName, guid);
         event.setDataEngineEventType(DataEngineEventType.DELETE_PORT_IMPLEMENTATION_EVENT);
-
-        topicConnector.sendEvent(event);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @throws InvalidParameterException the bean properties are invalid
-     * @throws ConnectorCheckedException problem with the underlying connector (if used)
-     */
-    @Override
-    public String createOrUpdatePortAlias(String userId, PortAlias portAlias, String processQualifiedName) throws InvalidParameterException,
-                                                                                                                  ConnectorCheckedException {
-
-        PortAliasEvent event = new PortAliasEvent();
-        event.setUserId(userId);
-        event.setExternalSourceName(externalSource);
-        event.setDataEngineEventType(DataEngineEventType.PORT_ALIAS_EVENT);
-        event.setPortAlias(portAlias);
-        event.setProcessQualifiedName(processQualifiedName);
-
-        topicConnector.sendEvent(event);
-
-        //async interaction
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void deletePortAlias(String userId, String qualifiedName, String guid) throws InvalidParameterException, ConnectorCheckedException {
-        DeleteEvent event = getDeleteEvent(userId, qualifiedName, guid);
-        event.setDataEngineEventType(DataEngineEventType.DELETE_PORT_ALIAS_EVENT);
 
         topicConnector.sendEvent(event);
     }

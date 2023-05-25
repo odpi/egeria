@@ -3141,38 +3141,38 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupLineageMapping(String  userId,
-                                    String  assetManagerGUID,
-                                    String  assetManagerName,
-                                    String  sourceElementGUID,
-                                    String  destinationElementGUID,
-                                    String  qualifiedName,
-                                    String  description,
-                                    Date    effectiveFrom,
-                                    Date    effectiveTo,
-                                    boolean forLineage,
-                                    boolean forDuplicateProcessing,
-                                    Date    effectiveTime,
-                                    String  methodName) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
+    public String setupLineageMapping(String  userId,
+                                      String  assetManagerGUID,
+                                      String  assetManagerName,
+                                      String  sourceElementGUID,
+                                      String  destinationElementGUID,
+                                      String  qualifiedName,
+                                      String  description,
+                                      Date    effectiveFrom,
+                                      Date    effectiveTo,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime,
+                                      String  methodName) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
         final String sourceElementGUIDParameterName      = "sourceElementGUID";
         final String destinationElementGUIDParameterName = "destinationElementGUID";
 
-        processHandler.setupLineageMapping(userId,
-                                           sourceElementGUID,
-                                           sourceElementGUIDParameterName,
-                                           destinationElementGUID,
-                                           destinationElementGUIDParameterName,
-                                           qualifiedName,
-                                           description,
-                                           effectiveFrom,
-                                           effectiveTo,
-                                           forLineage,
-                                           forDuplicateProcessing,
-                                           effectiveTime,
-                                           methodName);
+        String guid = processHandler.setupLineageMapping(userId,
+                                                         sourceElementGUID,
+                                                         sourceElementGUIDParameterName,
+                                                         destinationElementGUID,
+                                                         destinationElementGUIDParameterName,
+                                                         qualifiedName,
+                                                         description,
+                                                         effectiveFrom,
+                                                         effectiveTo,
+                                                         forLineage,
+                                                         forDuplicateProcessing,
+                                                         effectiveTime,
+                                                         methodName);
 
         externalIdentifierHandler.logRelationshipCreation(assetManagerGUID,
                                                           assetManagerName,
@@ -3182,6 +3182,8 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                                           destinationElementGUID,
                                                           OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                           methodName);
+
+        return guid;
     }
 
 

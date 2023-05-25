@@ -11,6 +11,24 @@ updates:
   open-pull-requests-limit: 100
   reviewers:
   - planetf1
+  # Grouping of dependencies - useful to retain consistency & prevent build breaks
+  groups:
+    spring:
+      patterns:
+        - "*spring*"
+        - "*tomcat*"
+    janusgraph:
+      patterns:
+        - "*janus*"
+        - "*gremlin*"
+        - "*elasticsearch*"
+        - "*lucene*"
+    slf4j:
+      patterns:
+        - "*slf4j*"
+    jackson:
+      patterns:
+        - "com.fasterxml.*"
 - package-ecosystem: docker
   directory: "/open-metadata-resources/open-metadata-deployment/docker/egeria"
   schedule:

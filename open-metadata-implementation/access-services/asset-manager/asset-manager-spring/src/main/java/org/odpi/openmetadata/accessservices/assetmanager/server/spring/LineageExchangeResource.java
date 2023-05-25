@@ -1647,7 +1647,7 @@ public class LineageExchangeResource
 
 
     /**
-     * Link to elements together to show that they are part of the lineage of the data that is moving
+     * Link two elements together to show that they are part of the lineage of the data that is moving
      * between the processes.  Typically, the lineage relationships stitch together processes and data assets
      * supported by different technologies.
      *
@@ -1659,21 +1659,21 @@ public class LineageExchangeResource
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
-     * @return void or
+     * @return the guid of the relationship or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/lineage-mappings/sources/{sourceElementGUID}/destinations/{destinationElementGUID}")
 
-    public VoidResponse setupLineageMapping(@PathVariable String                             serverName,
+    public GUIDResponse setupLineageMapping(@PathVariable String                             serverName,
                                             @PathVariable String                             userId,
                                             @PathVariable String                             sourceElementGUID,
                                             @PathVariable String                             destinationElementGUID,
                                             @RequestParam (required = false, defaultValue = "false")
-                                                    boolean                      forLineage,
+                                                          boolean                            forLineage,
                                             @RequestParam (required = false, defaultValue = "false")
-                                                    boolean                      forDuplicateProcessing,
+                                                          boolean                            forDuplicateProcessing,
                                             @RequestBody  RelationshipRequestBody requestBody)
     {
         return restAPI.setupLineageMapping(serverName, userId, sourceElementGUID, destinationElementGUID, forLineage, forDuplicateProcessing, requestBody);

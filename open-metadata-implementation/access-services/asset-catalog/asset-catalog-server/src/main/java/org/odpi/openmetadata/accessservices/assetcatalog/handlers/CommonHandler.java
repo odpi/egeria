@@ -18,6 +18,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttributeStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
@@ -155,7 +156,8 @@ public class CommonHandler {
         if (allPropertiesForTypeDef == null) {
             return false;
         } else {
-            return allPropertiesForTypeDef.stream().anyMatch(property -> property.getAttributeName().equals(DISPLAY_NAME));
+            return allPropertiesForTypeDef.stream().anyMatch(property -> property.getAttributeName().equals(DISPLAY_NAME)
+                    && property.getAttributeStatus().equals(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE));
         }
 
     }

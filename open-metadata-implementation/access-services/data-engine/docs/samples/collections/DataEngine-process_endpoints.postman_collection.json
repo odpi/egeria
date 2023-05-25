@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "b933b34b-4399-4e56-bee8-dfba79db72cd",
+		"_postman_id": "32b3ebd2-9e9b-4fd7-b5f1-aeafa574972b",
 		"name": "DataEngine - process endpoints",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -498,107 +498,7 @@
 			"response": []
 		},
 		{
-			"name": "3.6. Create PortAlias ReadInputFilePortAlias",
-			"request": {
-				"auth": {
-					"type": "basic",
-					"basic": [
-						{
-							"key": "password",
-							"value": "demo",
-							"type": "string"
-						},
-						{
-							"key": "username",
-							"value": "demo",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"processQualifiedName\": \"(process)=CopyColumnsFlow\",\n    \"portAlias\": {\n        \"displayName\": \"ReadInputFilePortAlias\",\n        \"qualifiedName\": \"(process)=CopyColumnsFlow::(port)=ReadInputFilePortAlias\",\n        \"updateSemantic\": \"REPLACE\",\n        \"delegatesTo\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=NamesFileInputPort\",\n        \"type\": \"INPUT_PORT\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
-				},
-				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/port-aliases",
-					"host": [
-						"{{base-url}}"
-					],
-					"path": [
-						"servers",
-						"{{server-id}}",
-						"open-metadata",
-						"access-services",
-						"data-engine",
-						"users",
-						"{{user-id}}",
-						"port-aliases"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "3.7. Create PortAlias WriteOutputFilePortAlias",
-			"request": {
-				"auth": {
-					"type": "basic",
-					"basic": [
-						{
-							"key": "password",
-							"value": "demo",
-							"type": "string"
-						},
-						{
-							"key": "username",
-							"value": "demo",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"processQualifiedName\": \"(process)=CopyColumnsFlow\",\n    \"portAlias\": {\n        \"displayName\": \"WriteOutputFilePortAlias\",\n        \"qualifiedName\": \"(process)=CopyColumnsFlow::(port)=WriteOutputFilePortAlias\",\n        \"updateSemantic\": \"REPLACE\",\n        \"delegatesTo\": \"(process)=CopyColumnsFlow::(process)=CopyColumns::(port)=EmplnameFileOutputPort\",\n        \"type\": \"OUTPUT_PORT\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
-				},
-				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/port-aliases",
-					"host": [
-						"{{base-url}}"
-					],
-					"path": [
-						"servers",
-						"{{server-id}}",
-						"open-metadata",
-						"access-services",
-						"data-engine",
-						"users",
-						"{{user-id}}",
-						"port-aliases"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "3.8. Add process hierarchy relationship",
+			"name": "3.6. Add process hierarchy relationship",
 			"request": {
 				"auth": {
 					"type": "basic",
@@ -648,57 +548,7 @@
 			"response": []
 		},
 		{
-			"name": "3.9. Delete PortAlias ReadInputFilePortAlias",
-			"request": {
-				"auth": {
-					"type": "basic",
-					"basic": [
-						{
-							"key": "password",
-							"value": "demo",
-							"type": "string"
-						},
-						{
-							"key": "username",
-							"value": "demo",
-							"type": "string"
-						}
-					]
-				},
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"qualifiedName\": \"(process)=CopyColumnsFlow::(port)=ReadInputFilePortAlias\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
-				},
-				"url": {
-					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/port-aliases",
-					"host": [
-						"{{base-url}}"
-					],
-					"path": [
-						"servers",
-						"{{server-id}}",
-						"open-metadata",
-						"access-services",
-						"data-engine",
-						"users",
-						"{{user-id}}",
-						"port-aliases"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "3.10. Delete Process CopyColumnsFlow",
+			"name": "3.7. Delete Process CopyColumnsFlow",
 			"request": {
 				"auth": {
 					"type": "basic",
@@ -748,7 +598,7 @@
 			"response": []
 		},
 		{
-			"name": "3.11. Delete PortImplementation NamesFileInputPort",
+			"name": "3.8. Delete PortImplementation NamesFileInputPort",
 			"request": {
 				"auth": {
 					"type": "basic",
@@ -798,7 +648,7 @@
 			"response": []
 		},
 		{
-			"name": "3.12. Delete Process CopyColumns",
+			"name": "3.9. Delete Process CopyColumns",
 			"request": {
 				"auth": {
 					"type": "basic",
@@ -998,7 +848,57 @@
 			"response": []
 		},
 		{
-			"name": "4.4. Delete Process CopyColumns",
+			"name": "4.4. Add prcess hierarchy relationship",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"processHierarchy\": {\n        \"parentProcess\": \"(process)=CopyColumnsFlow\",\n        \"childProcess\": \"(process)=CopyColumnsFlow::(process)=CopyColumns\",\n        \"containmentType\": \"OWNED\"\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/process-hierarchies",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"process-hierarchies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4.5. Delete Process CopyColumns",
 			"request": {
 				"auth": {
 					"type": "basic",
@@ -1048,7 +948,7 @@
 			"response": []
 		},
 		{
-			"name": "4.5. Delete Process CopyColumnsFlow",
+			"name": "4.6. Delete Process CopyColumnsFlow",
 			"request": {
 				"auth": {
 					"type": "basic",

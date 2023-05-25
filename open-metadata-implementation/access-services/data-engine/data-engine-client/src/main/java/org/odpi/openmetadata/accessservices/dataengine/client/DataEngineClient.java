@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataengine.model.EventType;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFlow;
-import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
@@ -175,43 +174,6 @@ public interface DataEngineClient {
                                                                                            PropertyServerException,
                                                                                            UserNotAuthorizedException,
                                                                                            ConnectorCheckedException;
-
-    /**
-     * Create or update the port alias entity with a PortDelegation relationship. It attaches the port alias to the provided process
-     *
-     * @param userId               the name of the calling user
-     * @param portAlias            the port alias bean
-     * @param processQualifiedName the process qualified name
-     *
-     * @return unique identifier of the port alias in the repository
-     *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     * @throws ConnectorCheckedException  internal problem with the connector
-     */
-    String createOrUpdatePortAlias(String userId, PortAlias portAlias, String processQualifiedName) throws InvalidParameterException,
-                                                                                                           UserNotAuthorizedException,
-                                                                                                           PropertyServerException,
-                                                                                                           ConnectorCheckedException;
-
-    /**
-     * Delete the port alias
-     *
-     * @param userId        the name of the calling user
-     * @param qualifiedName the qualified name of the port alias
-     * @param guid          the unique identifier of the port alias
-     *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     * @throws ConnectorCheckedException  problem with the underlying connector (if used)
-     */
-    void deletePortAlias(String userId, String qualifiedName, String guid) throws InvalidParameterException,
-                                                                                  PropertyServerException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  ConnectorCheckedException;
-
     /**
      * Add a ProcessHierarchy relationship to a process
      *

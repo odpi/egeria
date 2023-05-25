@@ -2,12 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
-import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.Port;
-import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
-import org.odpi.openmetadata.accessservices.dataengine.model.PortType;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.PortBuilder;
@@ -17,8 +14,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetailDifferences;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
@@ -26,14 +21,12 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import java.util.Optional;
 
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_DELEGATION_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_TYPE_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME;
+
 
 /**
  * PortHandler manages Port objects from the property server. It runs server-side in the DataEngine OMAS
@@ -79,41 +72,24 @@ public class DataEnginePortHandler {
      * Create the port implementation attached to a process.
      *
      * @param userId             the name of the calling user
-     * @param portImplementation the port implementation values
+     * @param port               the port implementation values
      * @param processGUID        the unique identifier of the process
      * @param externalSourceName the unique name of the external source
-     *
      * @return unique identifier of the port implementation in the repository
-     *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public String createPortImplementation(String userId, PortImplementation portImplementation, String processGUID, String externalSourceName) throws
-                                                                                                                                                InvalidParameterException,
-                                                                                                                                                UserNotAuthorizedException,
-                                                                                                                                                PropertyServerException {
-        return createPort(userId, portImplementation, PORT_IMPLEMENTATION_TYPE_NAME, processGUID, externalSourceName);
-    }
+    public String createPortImplementation(String userId, PortImplementation port, String processGUID, String externalSourceName)
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        final String methodName = "createPortImplementation";
+        validatePortParameters(userId, port.getQualifiedName(), port.getDisplayName(), methodName);
+        invalidParameterHandler.validateGUID(processGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
 
-    /**
-     * Create the port alias and attach it to the process.
-     *
-     * @param userId             the name of the calling user
-     * @param portAlias          the port alias values
-     * @param processGUID        the unique identifier of the process
-     * @param externalSourceName the unique name of the external source
-     *
-     * @return unique identifier of the port alias in the repository
-     *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public String createPortAlias(String userId, PortAlias portAlias, String processGUID, String externalSourceName) throws InvalidParameterException,
-                                                                                                                            UserNotAuthorizedException,
-                                                                                                                            PropertyServerException {
-        return createPort(userId, portAlias, PORT_ALIAS_TYPE_NAME, processGUID, externalSourceName);
+        String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
+        return portHandler.createPort(userId, externalSourceGUID, externalSourceName, processGUID, PROCESS_GUID_PARAMETER_NAME, port.getQualifiedName(),
+                port.getDisplayName(), port.getPortType().getOrdinal(), port.getAdditionalProperties(), PORT_IMPLEMENTATION_TYPE_NAME,
+                null, false, false, dataEngineCommonHandler.getNow(), methodName);
     }
 
     /**
@@ -121,84 +97,15 @@ public class DataEnginePortHandler {
      *
      * @param userId             the name of the calling user
      * @param originalPortEntity the created port entity
-     * @param portImplementation the port implementation new values
+     * @param port               the port implementation new values
      * @param externalSourceName the external data engine
-     *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void updatePortImplementation(String userId, EntityDetail originalPortEntity, PortImplementation portImplementation,
-                                         String externalSourceName) throws InvalidParameterException, UserNotAuthorizedException,
-                                                                           PropertyServerException {
-        updatePort(userId, originalPortEntity, portImplementation, PORT_IMPLEMENTATION_TYPE_NAME, externalSourceName);
-    }
-
-    /**
-     * Update the port alias
-     *
-     * @param userId             the name of the calling user
-     * @param originalPortEntity the created port entity
-     * @param portAlias          the port alias new values
-     * @param externalSourceName the external data engine
-     *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public void updatePortAlias(String userId, EntityDetail originalPortEntity, PortAlias portAlias, String externalSourceName) throws
-                                                                                                                                InvalidParameterException,
-                                                                                                                                UserNotAuthorizedException,
-                                                                                                                                PropertyServerException {
-        updatePort(userId, originalPortEntity, portAlias, PORT_ALIAS_TYPE_NAME, externalSourceName);
-    }
-
-    /**
-     * Create the port and attach it to the process.
-     *
-     * @param userId             the name of the calling user
-     * @param port               the port values
-     * @param entityTpeName      the type name
-     * @param externalSourceName the unique name of the external source
-     * @param processGUID        the unique identifier of the process containing the port
-     *
-     * @return unique identifier of the port in the repository
-     *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    private String createPort(String userId, Port port, String entityTpeName, String processGUID, String externalSourceName) throws
-                                                                                                                             InvalidParameterException,
-                                                                                                                             UserNotAuthorizedException,
-                                                                                                                             PropertyServerException {
-        final String methodName = "createPort";
-        validatePortParameters(userId, port.getQualifiedName(), port.getDisplayName(), methodName);
-        invalidParameterHandler.validateGUID(processGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
-
-        String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
-        return portHandler.createPort(userId, externalSourceGUID, externalSourceName, processGUID, PROCESS_GUID_PARAMETER_NAME, port.getQualifiedName(),
-               port.getDisplayName(), port.getPortType().getOrdinal(), port.getAdditionalProperties(), entityTpeName,
-              null, false, false, dataEngineCommonHandler.getNow(), methodName);
-    }
-
-    /**
-     * Update the port
-     *
-     * @param userId             the name of the calling user
-     * @param originalPortEntity the created port entity
-     * @param port               the port values
-     * @param entityTypeName     the type name
-     *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    private void updatePort(String userId, EntityDetail originalPortEntity, Port port, String entityTypeName, String externalSourceName) throws
-                                                                                                                                         InvalidParameterException,
-                                                                                                                                         UserNotAuthorizedException,
-                                                                                                                                         PropertyServerException {
-        final String methodName = "updatePort";
+    public void updatePortImplementation(String userId, EntityDetail originalPortEntity, PortImplementation port,
+                                         String externalSourceName) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        final String methodName = "updatePortImplementation";
         validatePortParameters(userId, port.getQualifiedName(), port.getDisplayName(), methodName);
         String portGUID = originalPortEntity.getGUID();
 
@@ -212,7 +119,7 @@ public class DataEnginePortHandler {
         }
 
         portHandler.updatePort(userId, externalSourceGUID, externalSourceName, portGUID, PORT_GUID_PARAMETER_NAME, port.getQualifiedName(),
-                port.getDisplayName(), port.getPortType().getOrdinal(), port.getAdditionalProperties(), entityTypeName, null,
+                port.getDisplayName(), port.getPortType().getOrdinal(), port.getAdditionalProperties(), PORT_IMPLEMENTATION_TYPE_NAME, null,
                 null, null, false, false, dataEngineCommonHandler.getNow(), methodName);
     }
 
@@ -224,15 +131,14 @@ public class DataEnginePortHandler {
      * @param portGUID           the unique identifier of the port
      * @param schemaTypeGUID     the unique identifier of the schema type
      * @param externalSourceName the unique name of the external source
-     *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
     public void addPortSchemaRelationship(String userId, String portGUID, String schemaTypeGUID, String externalSourceName) throws
-                                                                                                                            InvalidParameterException,
-                                                                                                                            UserNotAuthorizedException,
-                                                                                                                            PropertyServerException {
+            InvalidParameterException,
+            UserNotAuthorizedException,
+            PropertyServerException {
         final String methodName = "addPortSchemaRelationship";
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(portGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
@@ -253,62 +159,16 @@ public class DataEnginePortHandler {
      *
      * @param userId   the name of the calling user
      * @param portGUID the unique identifier of the port
-     *
      * @return retrieved entity or an empty optional
-     *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
     public Optional<EntityDetail> findSchemaTypeForPort(String userId, String portGUID) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException {
+            UserNotAuthorizedException,
+            PropertyServerException {
         return dataEngineCommonHandler.getEntityForRelationship(userId, portGUID, PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
                 PORT_TYPE_NAME);
-    }
-
-    /**
-     * Create a PortDelegation relationship between two ports. Verifies that the relationship is not present
-     * before creating it
-     *
-     * @param userId                   the name of the calling user
-     * @param portGUID                 the unique identifier of the source port
-     * @param portType                 the type of the source port
-     * @param delegatesToQualifiedName the unique identifier of the target port
-     * @param externalSourceName       the unique name of the external source
-     *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public void addPortDelegationRelationship(String userId, String portGUID, PortType portType, String delegatesToQualifiedName,
-                                              String externalSourceName) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException {
-        final String methodName = "addPortDelegationRelationship";
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(delegatesToQualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
-
-        Optional<EntityDetail> delegatedPortEntity = findPortEntity(userId, delegatesToQualifiedName);
-        if (delegatedPortEntity.isEmpty()) {
-            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.PORT_NOT_FOUND, methodName, delegatesToQualifiedName);
-        }
-
-        String delegatedPortType = getPortType(delegatedPortEntity.get());
-        if (!portType.getName().equalsIgnoreCase(delegatedPortType)) {
-            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.INVALID_PORT_TYPE, methodName,
-                    delegatesToQualifiedName, delegatedPortType);
-        }
-
-        String delegatedPortGUID = delegatedPortEntity.get().getGUID();
-        Optional<Relationship> relationship = dataEngineCommonHandler.findRelationship(userId, portGUID, delegatedPortGUID,
-                PORT_TYPE_NAME, PORT_TYPE_NAME, PORT_DELEGATION_TYPE_NAME);
-        if (relationship.isEmpty()) {
-            String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
-            portHandler.setupPortDelegation(userId, externalSourceGUID, externalSourceName, portGUID, PORT_GUID_PARAMETER_NAME, delegatedPortGUID,
-                    PORT_GUID_PARAMETER_NAME, null, null, false, false,
-                    dataEngineCommonHandler.getNow(), methodName);
-        }
     }
 
     /**
@@ -318,22 +178,21 @@ public class DataEnginePortHandler {
      * @param portGUID           unique identifier of the port to be removed
      * @param externalSourceName the external data engine
      * @param deleteSemantic     the delete semantic
-     *
      * @throws InvalidParameterException     the bean properties are invalid
      * @throws UserNotAuthorizedException    user not authorized to issue this request
      * @throws PropertyServerException       problem accessing the property server
      * @throws FunctionNotSupportedException the repository does not support this call.
      */
     public void removePort(String userId, String portGUID, String externalSourceName, DeleteSemantic deleteSemantic) throws InvalidParameterException,
-                                                                                                                            PropertyServerException,
-                                                                                                                            UserNotAuthorizedException,
-                                                                                                                            FunctionNotSupportedException {
+            PropertyServerException,
+            UserNotAuthorizedException,
+            FunctionNotSupportedException {
         final String methodName = "removePort";
         dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         portHandler.removePort(userId, externalSourceGUID, externalSourceName, portGUID, PORT_GUID_PARAMETER_NAME,
-                 false, false, dataEngineCommonHandler.getNow(), methodName);
+                false, false, dataEngineCommonHandler.getNow(), methodName);
     }
 
     /**
@@ -341,76 +200,15 @@ public class DataEnginePortHandler {
      *
      * @param userId        the name of the calling user
      * @param qualifiedName the qualifiedName name of the process to be searched
-     *
      * @return optional with entity details if found, empty optional if not found
-     *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
     public Optional<EntityDetail> findPortImplementationEntity(String userId, String qualifiedName) throws InvalidParameterException,
-                                                                                                           UserNotAuthorizedException,
-                                                                                                           PropertyServerException {
+            UserNotAuthorizedException,
+            PropertyServerException {
         return dataEngineCommonHandler.findEntity(userId, qualifiedName, PORT_IMPLEMENTATION_TYPE_NAME);
-    }
-
-    /**
-     * Find out if the PortAlias object is already stored in the repository. It uses the fully qualified name to retrieve the entity
-     *
-     * @param userId        the name of the calling user
-     * @param qualifiedName the qualifiedName name of the process to be searched
-     *
-     * @return optional with entity details if found, empty optional if not found
-     *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public Optional<EntityDetail> findPortAliasEntity(String userId, String qualifiedName) throws InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException {
-        return dataEngineCommonHandler.findEntity(userId, qualifiedName, PORT_ALIAS_TYPE_NAME);
-    }
-
-    /**
-     * Find out if the Port object is already stored in the repository. It uses the fully qualified name to retrieve the entity.
-     *
-     * @param userId        the name of the calling user
-     * @param qualifiedName the qualifiedName name of the process to be searched
-     *
-     * @return optional with entity details if found, empty optional if not found
-     *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public Optional<EntityDetail> findPortEntity(String userId, String qualifiedName) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException {
-        Optional<EntityDetail> portEntity = findPortAliasEntity(userId, qualifiedName);
-        if (portEntity.isEmpty()) {
-            portEntity = findPortImplementationEntity(userId, qualifiedName);
-        }
-        return portEntity;
-    }
-
-    private String getPortType(EntityDetail delegatedPort) {
-        if (delegatedPort == null) {
-            return null;
-        }
-
-        InstanceProperties instanceProperties = delegatedPort.getProperties();
-        if (instanceProperties == null) {
-            return null;
-        }
-
-        EnumPropertyValue portTypeValue =
-                (EnumPropertyValue) delegatedPort.getProperties().getPropertyValue(PORT_TYPE_PROPERTY_NAME);
-        if (portTypeValue == null) {
-            return null;
-        }
-
-        return portTypeValue.getSymbolicName();
     }
 
     private void validatePortParameters(String userId, String qualifiedName, String displayName, String methodName) throws InvalidParameterException {

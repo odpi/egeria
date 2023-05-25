@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
- * Holds FVTs related to types PortImplementation and PortAlias
+ * Holds FVTs related to types Connection and Endpoint
  */
 public class ConnectionAndEndpointFVT extends DataEngineFVT {
 
