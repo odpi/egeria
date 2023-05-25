@@ -24,9 +24,8 @@ This file recognizes the people who have make an important contribution to Egeri
 | Liz McIntosh | liz.mcintosh@sas.com |
 | Dan Wolfson | dan.wolfson@pdr-associates.com |
 | Juergen Hemelt | juergenhemelt |
-| Cristian-Mihai Iliescu |  cristianmihaiiliescu@gmail.com  |
 | Krishna Sheth | krishna.sheth@ibm.com |
-
+| Liviu Enache | liviu.enache@ing.com  |
 
 
 To understand how to become an Egeria contributor see the [Egeria Operations Guide](https://egeria-project.org/guides/project-operations/).

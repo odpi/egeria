@@ -8,7 +8,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.odpi.openmetadata.accessservices.dataengine.RepositoryService;
 import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineClient;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
-import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortType;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
@@ -30,7 +29,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
- * Holds FVTs related to types PortImplementation and PortAlias
+ * Holds FVTs related to PortImplementation type
  */
 public class PortFVT extends DataEngineFVT{
 
@@ -99,50 +98,4 @@ public class PortFVT extends DataEngineFVT{
 
         return attributes;
     }
-
-    @ParameterizedTest
-    @MethodSource("org.odpi.openmetadata.accessservices.dataengine.PlatformConnectionProvider#getConnectionDetails")
-    public void upsertAndDeletePortAlias(String userId, DataEngineClient dataEngineClient, RepositoryService repositoryService)
-            throws UserNotAuthorizedException, ConnectorCheckedException, PropertyServerException, InvalidParameterException,
-            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
-            org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
-            PropertyErrorException, TypeErrorException, PagingErrorException {
-
-        Process process = processSetupService.createOrUpdateSimpleProcess(userId, dataEngineClient, null);
-        PortAlias portAlias = portSetupService
-                .createOrUpdatePortAlias(userId, dataEngineClient, getPortAliasToUpsertAndDelete(), process.getQualifiedName());
-
-        // assert Port Alias
-        List<EntityDetail> portAliases = repositoryService.
-                findEntityByPropertyValue(PORT_ALIAS_TYPE_GUID, portAlias.getQualifiedName());
-        assertPort(portAlias, portAliases);
-
-        //update Port Alias
-        String newSuffix = "-new";
-        portAlias.setDisplayName(process.getDisplayName() + newSuffix);
-        portAlias.setPortType(PortType.OUTPUT_PORT);
-
-        PortAlias updatedPortAlias = portSetupService
-                .createOrUpdatePortAlias(userId, dataEngineClient, portAlias, process.getQualifiedName());
-        List<EntityDetail> updatedPortAliases = repositoryService.
-                findEntityByPropertyValue(PORT_ALIAS_TYPE_GUID, updatedPortAlias.getQualifiedName());
-        EntityDetail updatedPortAliasAsEntityDetail = assertPort(updatedPortAlias, updatedPortAliases);
-
-        // delete Port Alias
-        portSetupService.deletePortAlias(userId, dataEngineClient,
-                updatedPortAliasAsEntityDetail.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString(),
-                updatedPortAliasAsEntityDetail.getGUID());
-        List<EntityDetail> deletedPortAliases = repositoryService.
-                findEntityByPropertyValue(PORT_ALIAS_TYPE_GUID, updatedPortAlias.getQualifiedName());
-        assertNull(deletedPortAliases);
-    }
-
-    private PortAlias getPortAliasToUpsertAndDelete() {
-        PortAlias portAlias = new PortAlias();
-        portAlias.setQualifiedName("to-upsert-and-delete-port-alias-qualified-name");
-        portAlias.setDisplayName("to-upsert-and-delete-port-alias-display-name");
-        portAlias.setPortType(PortType.INPUT_PORT);
-        return portAlias;
-    }
-
 }

@@ -15,6 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttributeStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefStatus;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
@@ -172,6 +173,7 @@ public class OpenMetadataTypesArchive
         update0423SecurityAccessControl();
         update504ImplementationSnippets();
         update0710DigitalServices();
+        update0010BaseModel();
     }
 
 
@@ -771,6 +773,44 @@ public class OpenMetadataTypesArchive
     private void update0710DigitalServices()
     {
         this.archiveBuilder.addTypeDefPatch(updateDigitalProductClassification());
+    }
+
+    private void update0010BaseModel()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateProcess());
+    }
+
+    private TypeDefPatch updateProcess()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "Process";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attributeName            = "displayName";
+        final String attributeDescription     = "Display name of the process";
+        final String attributeDescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attributeName,
+                                                           attributeDescription,
+                                                           attributeDescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
     }
 
 

@@ -205,11 +205,10 @@ class HandlerHelperTest {
         when(findEntitiesParameters.getEntitySubtypeGUIDs()).thenReturn(guids);
         when(invalidParameterHandler.getMaxPagingSize()).thenReturn(500);
 
-        mockTypeDef(ENTITY_TYPE_NAME, ENTITY_TYPE_GUID);
         List<EntityDetail> entities = new ArrayList<>();
         EntityDetail entityDetail = mock(EntityDetail.class);
         entities.add(entityDetail);
-        when(genericHandler.findEntities(USER, ENTITY_TYPE_GUID, guids, searchProperties, Collections.emptyList(),
+        when(genericHandler.findEntities(USER, ENTITY_TYPE_NAME, guids, searchProperties, Collections.emptyList(),
                 null, null, null, null, true, false, 0, 500,
                  null, "addPagedEntities")).thenReturn(entities);
 
@@ -226,8 +225,7 @@ class HandlerHelperTest {
         when(findEntitiesParameters.getEntitySubtypeGUIDs()).thenReturn(guids);
         when(invalidParameterHandler.getMaxPagingSize()).thenReturn(500);
 
-        mockTypeDef(ENTITY_TYPE_NAME, ENTITY_TYPE_GUID);
-        when(genericHandler.findEntities(USER, ENTITY_TYPE_GUID, guids, searchProperties, Collections.emptyList(),
+        when(genericHandler.findEntities(USER, ENTITY_TYPE_NAME, guids, searchProperties, Collections.emptyList(),
                 null, null, null, null, true,
                 false, 0, 500, null, "addPagedEntities")).thenReturn(null);
 

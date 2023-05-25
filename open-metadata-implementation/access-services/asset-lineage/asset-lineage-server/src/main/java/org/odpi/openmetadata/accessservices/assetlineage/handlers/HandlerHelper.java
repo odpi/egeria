@@ -251,8 +251,7 @@ public class HandlerHelper {
                                      FindEntitiesParameters findEntitiesParameters, List<EntityDetail> allEntities, int startingFrom, int pageSize)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         final String methodName = "addPagedEntities";
-        String typeDefGUID = getTypeGUID(userId, entityTypeName);
-        List<EntityDetail> pagedEntities = genericHandler.findEntities(userId, typeDefGUID, findEntitiesParameters.getEntitySubtypeGUIDs(),
+        List<EntityDetail> pagedEntities = genericHandler.findEntities(userId, entityTypeName, findEntitiesParameters.getEntitySubtypeGUIDs(),
                 searchProperties, findEntitiesParameters.getLimitResultsByStatus(), findEntitiesParameters.getSearchClassifications(), null,
                 findEntitiesParameters.getSequencingProperty(), findEntitiesParameters.getSequencingOrder(),
                 true, false, startingFrom, pageSize, clockService.getNow(), methodName);

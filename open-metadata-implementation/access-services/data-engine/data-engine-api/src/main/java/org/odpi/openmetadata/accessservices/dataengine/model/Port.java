@@ -23,8 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = PortImplementation.class, name = "PortImplementation"),
-        @JsonSubTypes.Type(value = PortAlias.class, name = "PortAlias")
+        @JsonSubTypes.Type(value = PortImplementation.class, name = "PortImplementation")
 })
 @Getter
 @Setter
