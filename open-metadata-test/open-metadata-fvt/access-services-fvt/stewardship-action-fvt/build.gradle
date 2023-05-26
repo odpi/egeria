@@ -62,9 +62,7 @@ task startServer(dependsOn: ['cleanData',':open-metadata-distribution:open-metad
 
     args = [ "-Dserver.port=10455",
              "-Dloader.path=${distdir}/server/lib",
-             "-Dspringdoc.api-docs.enabled=false",
-             "-Djavax.net.ssl.trustStore=${distdir}/truststore.p12",
-             "-Dserver.ssl.trust-store=${distdir}/truststore.p12",
+             "-Dspring.config.location=../../../../../../test.application.properties",
              "-jar",
              "${distdir}/server/server-chassis-spring-${project.version}.jar" ]
     // Setting the output directories to be the same for ALL FVTs acts as a synchronization mechanism
