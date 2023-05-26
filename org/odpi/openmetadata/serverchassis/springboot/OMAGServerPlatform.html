@@ -76,9 +76,10 @@ loadScripts(document, 'script');</script>
 </div>
 <section class="class-description" id="class-description">
 <hr>
-<div class="type-signature"><span class="annotations">@SpringBootApplication(scanBasePackages="${scan.packages}")
+<div class="type-signature"><span class="annotations">@SpringBootApplication(scanBasePackages="${scan.packages:org.odpi.openmetadata.*}")
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">OMAGServerPlatform</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<div class="block">OMAGServerPlatform provides the main program for the OMAG Server Platform.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -93,10 +94,14 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>class&nbsp;</code></div>
 <div class="col-second even-row-color"><code><a href="OMAGServerPlatform.ApplicationContextListener.html" class="type-name-link" title="class in org.odpi.openmetadata.serverchassis.springboot">OMAGServerPlatform.ApplicationContextListener</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">ApplicationContextListener detects various events during the lifetime of the OMAGServerPlatform run.</div>
+</div>
 <div class="col-first odd-row-color"><code>class&nbsp;</code></div>
 <div class="col-second odd-row-color"><code><a href="OMAGServerPlatform.CustomSpringEventListener.html" class="type-name-link" title="class in org.odpi.openmetadata.serverchassis.springboot">OMAGServerPlatform.CustomSpringEventListener</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Detect failures</div>
+</div>
 </div>
 </section>
 </li>
@@ -126,7 +131,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>org.springframework.beans.factory.InitializingBean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getInitialize()" class="member-name-link">getInitialize</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Make adjustments to the local environment.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>org.springframework.boot.web.servlet.FilterRegistrationBean&lt;<a href="../../http/HttpRequestHeadersFilter.html" title="class in org.odpi.openmetadata.http">HttpRequestHeadersFilter</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRequestHeadersFilter()" class="member-name-link">getRequestHeadersFilter</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -134,7 +141,9 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#main(java.lang.String%5B%5D)" class="member-name-link">main</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]&nbsp;args)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Java main</div>
+</div>
 </div>
 </div>
 </div>
@@ -170,6 +179,11 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="main(java.lang.String[])">
 <h3>main</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">main</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]&nbsp;args)</span></div>
+<div class="block">Java main</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>args</code> - program arguments used to override environment variables</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -177,6 +191,11 @@ loadScripts(document, 'script');</script>
 <h3>getInitialize</h3>
 <div class="member-signature"><span class="annotations">@Bean
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type">org.springframework.beans.factory.InitializingBean</span>&nbsp;<span class="element-name">getInitialize</span>()</div>
+<div class="block">Make adjustments to the local environment.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>bean</dd>
+</dl>
 </section>
 </li>
 <li>

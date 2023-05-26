@@ -83,6 +83,7 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="annotations">@Component
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">OMAGServerPlatform.ApplicationContextListener</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<div class="block">ApplicationContextListener detects various events during the lifetime of the OMAGServerPlatform run.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -112,10 +113,14 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#applicationReady()" class="member-name-link">applicationReady</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Print out message to say that the platform is ready.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onApplicationEvent(org.springframework.context.event.ContextClosedEvent)" class="member-name-link">onApplicationEvent</a><wbr>(org.springframework.context.event.ContextClosedEvent&nbsp;event)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Detect platform shutdown.</div>
+</div>
 </div>
 </div>
 </div>
@@ -152,6 +157,7 @@ loadScripts(document, 'script');</script>
 <h3>applicationReady</h3>
 <div class="member-signature"><span class="annotations">@EventListener(org.springframework.boot.context.event.ApplicationReadyEvent.class)
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">applicationReady</span>()</div>
+<div class="block">Print out message to say that the platform is ready.</div>
 </section>
 </li>
 <li>
@@ -159,6 +165,11 @@ loadScripts(document, 'script');</script>
 <h3>onApplicationEvent</h3>
 <div class="member-signature"><span class="annotations">@EventListener
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onApplicationEvent</span><wbr><span class="parameters">(org.springframework.context.event.ContextClosedEvent&nbsp;event)</span></div>
+<div class="block">Detect platform shutdown.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>event</code> - unused event information</dd>
+</dl>
 </section>
 </li>
 </ul>
