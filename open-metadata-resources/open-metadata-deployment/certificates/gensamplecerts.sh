@@ -85,7 +85,7 @@ if [ ! -z $CA_CLEAN ]; then
   # Intermediate Certificate Authority
   #
   # This is an intermediate Certificate Authority which actually does the work of signing user/server certs
-  # Good practice as a comprimised intermediate CA can be invalidated
+  # Good practice as a compromised intermediate CA can be invalidated
   # ---
   export CA=${iCA}
   export CA_POLICY=policy_loose
@@ -163,11 +163,10 @@ done
 echo "\n\n---- Deploying certs to current build"
 BASE=../../..
 cp ${rootCA}.p12 ${BASE}/truststore.p12
+cp EgeriaServerChassis.p12 ${BASE}/keystore.p12
 cp EgeriaClient.p12 ${BASE}/EgeriaClient.p12
 cp EgeriaUIChassis.p12 ${BASE}/open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/src/main/resources/keystore.p12
 cp ${rootCA}.p12 ${BASE}/open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/src/main/resources/truststore.p12
-cp EgeriaServerChassis.p12 ${BASE}/open-metadata-implementation/server-chassis/server-chassis-spring/src/main/resources/keystore.p12
-cp ${rootCA}.p12 ${BASE}/open-metadata-implementation/server-chassis/server-chassis-spring/src/main/resources/truststore.p12
 
 # ---
 # output message

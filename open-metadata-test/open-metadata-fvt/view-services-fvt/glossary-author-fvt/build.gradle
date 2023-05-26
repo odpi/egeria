@@ -48,8 +48,6 @@ java {
 ext
         {
             distdir="../../../../../../open-metadata-distribution/open-metadata-assemblies/build/unpacked/egeria-${project.version}-distribution.tar.gz"
-           // distdir= "../../../../open-metadata-distribution/open-metadata-assemblies/build/unpacked/egeria-${project.version}-distribution.tar.gz"
-            keydir="../../../../../open-metadata-implementation/server-chassis/server-chassis-spring/src/main/resources"
             gaport="10454"
         }
 
@@ -64,18 +62,12 @@ task startServer(dependsOn: ['cleanData',':open-metadata-distribution:open-metad
     executable = System.properties.'java.home' + '/bin/java'
     workingDir = layout.buildDirectory.dir('run')
 
-    // the keystore is needed as for the FVT the flossary author view is a client for the subject ares service
+    // the keystore is needed as for the FVT the glossary author view is a client for the subject ares service
     //remove the two -Dlogging args if you dont want debug level of logging
     args = [ "-Dserver.port=${gaport}",
              "-Dloader.path=${distdir}/server/lib",
-             "-Dspringdoc.api-docs.enabled=false",
-             "-Djavax.net.ssl.trustStore=${distdir}/truststore.p12",
-             "-Djavax.net.ssl.trustStorePassword=egeria",
-             "-Djavax.net.ssl.keyStore=${distdir}/keystore.p12",
-             "-Djavax.net.ssl.keyStorePassword=egeria",
-             "-Dserver.ssl.trust-store=${distdir}/truststore.p12",
-             "-Dserver.ssl.trust-store-password=egeria",
-//             "-Dserver.ssl.key-store=${keydir}/keystore.p12",
+             "-Dspring.config.location=../../../../../../test.application.properties",
+//             "-Dserver.ssl.key-store=${distDir}/keystore.p12",
 //             "-Dserver.ssl.key-store-password=egeria",
 //             "-Djavax.net.debug=ssl:handshake:verbose:keymanager:trustmanager", //Troubleshooting removeLater
 //            "-Dlogging.level.org.apache.tomcat=DEBUG" ,
