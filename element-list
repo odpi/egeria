@@ -73,6 +73,7 @@ org.odpi.openmetadata.accessservices.assetmanager.metadataelements
 org.odpi.openmetadata.accessservices.assetmanager.outtopic
 org.odpi.openmetadata.accessservices.assetmanager.properties
 org.odpi.openmetadata.accessservices.assetmanager.rest
+org.odpi.openmetadata.accessservices.assetmanager.samples.glossaryworkflow
 org.odpi.openmetadata.accessservices.assetmanager.server
 org.odpi.openmetadata.accessservices.assetmanager.server.spring
 org.odpi.openmetadata.accessservices.assetowner.admin
