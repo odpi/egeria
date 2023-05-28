@@ -1804,6 +1804,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                                                                    externalIdentifierProperties,
                                                                                    methodName));
         requestBody.setParentGUID(glossaryGUID);
+        requestBody.setElementProperties(templateProperties);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate + requestParamsURLTemplate,
