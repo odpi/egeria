@@ -5759,7 +5759,7 @@ public class OpenMetadataAPIGenericHandler<B>
                 templateProgress.templateAnchorGUIDs.add(templateAnchorEntity.getGUID());
             }
 
-            if (templateProgress.beanAnchorGUID != null)
+            if ((templateProgress.beanAnchorGUID != null) && (! propertyBuilder.isClassificationSet(OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME)))
             {
                 /*
                  * A bean anchor has been set up on a previous iteration.  This value is typically set when the top-level bean is created
