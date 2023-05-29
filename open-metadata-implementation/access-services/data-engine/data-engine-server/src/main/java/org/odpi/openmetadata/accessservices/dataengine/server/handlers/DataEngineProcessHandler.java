@@ -50,7 +50,7 @@ public class DataEngineProcessHandler {
     private final DataEngineCommonHandler dataEngineCommonHandler;
     private final DataEngineRegistrationHandler registrationHandler;
 
-    public static final String PROCESS_GUID_PARAMETER_NAME = "processGUID";
+    protected static final String PROCESS_GUID_PARAMETER_NAME = "processGUID";
 
     /**
      * Construct the handler information needed to interact with the repository services
@@ -226,6 +226,16 @@ public class DataEngineProcessHandler {
                 repositoryHelper, serverName, serviceName);
     }
 
+    /**
+     * Creates a process hierarchy relationship
+     * @param userId             the name of the calling user
+     * @param parentProcess the parent process
+     * @param processGUID the process GUID
+     * @param externalSourceName the external data engine
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
     public void upsertProcessHierarchyRelationship(String userId, ParentProcess parentProcess, String processGUID,
                                                    String externalSourceName) throws InvalidParameterException,
                                                                                      PropertyServerException,

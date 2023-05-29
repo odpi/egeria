@@ -12,7 +12,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.Map;
 
-
+/**
+ * ExternalDataEnginePropertiesBuilder is able to build the properties for an Engine entity.
+ */
 public class ExternalDataEnginePropertiesBuilder extends ReferenceableBuilder {
 
     private final String name;

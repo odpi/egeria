@@ -27,9 +27,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 @Getter
 public enum ProcessContainmentType {
+    /**
+     * The parent process owns the child process in the relationship, such that if the parent is removed the child should also be removed.
+     * A child can have at most one such parent
+     */
     OWNED(0, "OWNED", "The parent process owns the child process in the relationship, such that if the parent is removed the child should also be " +
             "removed. A child can have at most one such parent."),
+    /**
+     * The child process is simply used by the parent. A child process can have many such relationships to parents
+     */
     APPEND(1, "APPEND", "The child process is simply used by the parent. A child process can have many such relationships to parents."),
+    /**
+     * None of the above
+     */
     OTHER(99, "OTHER", "None of the above.");
 
     @Getter(AccessLevel.NONE)
@@ -40,6 +50,7 @@ public enum ProcessContainmentType {
      * The numeric representation of the instance provenance type
      * -- GETTER --
      * Return the numeric representation of the instance provenance type.
+     *
      * @return int ordinal
      */
     private final int ordinal;
@@ -48,6 +59,7 @@ public enum ProcessContainmentType {
      * The default name of the instance provenance type
      * -- GETTER --
      * Return the default name of the instance provenance type.
+     *
      * @return String name
      */
     private final String name;
@@ -56,6 +68,7 @@ public enum ProcessContainmentType {
      * The default description of the instance provenance type
      * -- GETTER --
      * Return the default description of the instance provenance type.
+     *
      * @return String description
      */
     private final String description;

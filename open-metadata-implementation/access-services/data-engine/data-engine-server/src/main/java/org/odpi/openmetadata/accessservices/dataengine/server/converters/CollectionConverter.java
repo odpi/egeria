@@ -5,7 +5,11 @@ package org.odpi.openmetadata.accessservices.dataengine.server.converters;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-public class CollectionCoverter<B> extends OpenMetadataAPIGenericConverter<B> {
+/**
+ * CollectionConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
+ * EntityDetail object into a Collection bean.
+ */
+public class CollectionConverter<B> extends OpenMetadataAPIGenericConverter<B> {
     /**
      * Constructor captures the initial content
      *
@@ -13,7 +17,7 @@ public class CollectionCoverter<B> extends OpenMetadataAPIGenericConverter<B> {
      * @param serviceName      name of this component
      * @param serverName       name of this server
      */
-    public CollectionCoverter(OMRSRepositoryHelper repositoryHelper, String serviceName, String serverName) {
+    public CollectionConverter(OMRSRepositoryHelper repositoryHelper, String serviceName, String serverName) {
         super(repositoryHelper, serviceName, serverName);
     }
 }

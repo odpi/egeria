@@ -331,12 +331,28 @@ public class DataEngineCommonHandler {
         return sortOrder;
     }
 
+    /**
+     * Thrown an {@link org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException}
+     * @param errorCode error code
+     * @param methodName calling method
+     * @param params additional params for error message
+     * @throws InvalidParameterException Thrown an {@link org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException}
+     * with specific error code and message
+     */
     public void throwInvalidParameterException(DataEngineErrorCode errorCode, String methodName, String... params) throws
                                                                                                                       InvalidParameterException {
 
         throw new InvalidParameterException(errorCode.getMessageDefinition(params), this.getClass().getName(), methodName, "qualifiedName");
     }
 
+    /**
+     * Thrown an {@link org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotDeletedException}
+     * @param errorCode error code
+     * @param methodName calling method
+     * @param params additional params for error message
+     * @throws EntityNotDeletedException Thrown an {@link org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotDeletedException}
+     * with specific error code and message
+     */
     public void throwEntityNotDeletedException(DataEngineErrorCode errorCode, String methodName, String... params) throws EntityNotDeletedException {
 
         throw new EntityNotDeletedException(errorCode.getMessageDefinition(params), this.getClass().getName(), methodName);
@@ -415,6 +431,9 @@ public class DataEngineCommonHandler {
         }
     }
 
+    /**
+     * @return current date and time
+     */
     protected Date getNow() {
         return clockService.getNow();
     }
