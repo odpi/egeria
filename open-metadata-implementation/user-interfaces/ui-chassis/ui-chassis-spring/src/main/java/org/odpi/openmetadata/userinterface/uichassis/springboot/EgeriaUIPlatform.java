@@ -28,7 +28,7 @@ import org.springframework.core.env.Environment;
 @OpenAPIDefinition(
         info = @Info(
                 title = "Egeria's Spring Boot based UI RESTful web services API",
-                version = "4.1-SNAPSHOT",
+                version = "4.1",
                 description = "",
                 license = @License(name = "Apache-2.0 License", url = "https://www.apache.org/licenses/LICENSE-2.0"),
                 contact = @Contact(url = "https://egeria-project.org", name = "Egeria Project",
