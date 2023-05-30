@@ -276,7 +276,7 @@ public class OMAGServerPlatform
         FilterRegistrationBean<HttpRequestHeadersFilter> registrationBean = new FilterRegistrationBean<>();
 
         registrationBean.setFilter(new HttpRequestHeadersFilter(headerNames));
-        registrationBean.addUrlPatterns("/open-metadata/*");
+        registrationBean.addUrlPatterns("/servers/*");
         registrationBean.setOrder(1);
 
         return registrationBean;
