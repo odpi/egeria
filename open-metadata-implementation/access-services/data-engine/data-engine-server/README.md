@@ -3,8 +3,6 @@
 
 # Data Engine Open Metadata Access Service (OMAS) server-side implementation
 
-    <!-- TODO add design info for server -->
-
 Data Engine OMAS server supports the server side implementation of the access service.This includes the
   * interaction with the [administration services](../../../admin-services) for
     registration, configuration, initialization and termination of the access service.
