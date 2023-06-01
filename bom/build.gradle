@@ -30,7 +30,7 @@ ext {
     commonscodecVersion = '1.15'
     commonsconfiguration2Version = '2.9.0'
     commonsconfigurationVersion = '1.10'
-    commonsioVersion = '2.11.0'
+    commonsioVersion = '2.12.0'
     commonsloggingVersion = '1.2'
     commonstextVersion = '1.10.0'
     commonscliVersion = '1.5.0'
