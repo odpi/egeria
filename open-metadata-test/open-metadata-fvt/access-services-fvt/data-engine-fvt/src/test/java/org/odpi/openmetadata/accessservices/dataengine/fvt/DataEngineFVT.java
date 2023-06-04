@@ -39,15 +39,13 @@ public class DataEngineFVT {
     protected static final String RELATIONAL_TABLE_TYPE_GUID = "ce7e72b8-396a-4013-8688-f9d973067425";
     protected static final String PROCESS_TYPE_GUID = "d8f33bd7-afa9-4a11-a8c7-07dcec83c050";
     protected static final String PORT_IMPLEMENTATION_TYPE_GUID = "ADbbdF06-a6A3-4D5F-7fA3-DB4Cb0eDeC0E";
-    protected static final String PORT_ALIAS_TYPE_GUID = "DFa5aEb1-bAb4-c25B-bDBD-B95Ce6fAB7F5";
     protected static final String OWNERSHIP_CLASSIFICATION_GUID = "8139a911-a4bd-432b-a9f4-f6d11c511abe";
     protected static final String PROCESS_PORT_RELATIONSHIP_GUID = "fB4E00CF-37e4-88CE-4a94-233BAdB84DA2";
-    protected static final String PORT_DELEGATION_RELATIONSHIP_GUID = "98bB8BA1-dc6A-eb9D-32Cf-F837bEbCbb8E";
+    protected static final String PROCESS_HIERARCHY_RELATIONSHIP_GUID = "70dbbda3-903f-49f7-9782-32b503c43e0e";
     protected static final String PORT_SCHEMA_RELATIONSHIP_GUID = "B216fA00-8281-F9CC-9911-Ae6377f2b457";
     protected static final String ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP_GUID = "86b176a2-015c-44a6-8106-54d5d69ba661";
     protected static final String DATA_FLOW_RELATIONSHIP_GUID = "d2490c0c-06cc-458a-add2-33cf2f5dd724";
     protected static final String ASSET_SCHEMA_TYPE_RELATIONSHIP_GUID = "815b004d-73c6-4728-9dd9-536f4fe803cd";
-    protected static final String DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP_GUID = "b827683c-2924-4df3-a92d-7be1888e23c0";
     protected static final String NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP_GUID = "0ffb9d87-7074-45da-a9b0-ae0859611133";
     protected static final String CONNECTION_TYPE_GUID = "114e9f8f-5ff3-4c32-bd37-a7eb42712253";
     protected static final String ENDPOINT_TYPE_GUID = "dbc20663-d705-4ff0-8424-80c262c6b8e7";

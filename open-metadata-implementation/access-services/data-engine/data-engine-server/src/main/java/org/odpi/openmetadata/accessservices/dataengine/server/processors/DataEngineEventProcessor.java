@@ -8,12 +8,11 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.odpi.openmetadata.accessservices.dataengine.event.DataEngineRegistrationEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DataFileEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.DataFlowsEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DatabaseEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DatabaseSchemaEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DeleteEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.EventTypeEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.DataFlowsEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessHierarchyEvent;
@@ -39,7 +38,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESS_TYPE_NAME;
@@ -88,34 +86,6 @@ public class DataEngineEventProcessor {
                     dataEngineRegistrationEvent.getEngine());
 
         } catch (IOException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
-            logException(dataEngineEvent, methodName, e);
-        }
-    }
-
-    /**
-     * Process a {@link PortAliasEvent}
-     *
-     * @param dataEngineEvent the event to be processed
-     */
-    public void processPortAliasEvent(String dataEngineEvent) {
-        final String methodName = "processPortAliasEvent";
-
-        log.trace(DEBUG_MESSAGE_METHOD, methodName);
-        try {
-            PortAliasEvent portAliasEvent = OBJECT_READER.readValue(dataEngineEvent, PortAliasEvent.class);
-
-            String userId = portAliasEvent.getUserId();
-            String externalSourceName = portAliasEvent.getExternalSourceName();
-
-            String processGUID = dataEngineRESTServices.getEntityGUID(serverName, userId, portAliasEvent.getProcessQualifiedName(), PROCESS_TYPE_NAME)
-                    .orElse(null);
-
-            dataEngineRESTServices.updateProcessStatus(userId, serverName, processGUID, InstanceStatus.DRAFT, externalSourceName);
-            dataEngineRESTServices.upsertPortAliasWithDelegation(userId, serverName, portAliasEvent.getPortAlias(),
-                    processGUID, externalSourceName);
-            dataEngineRESTServices.updateProcessStatus(userId, serverName, processGUID, InstanceStatus.ACTIVE, externalSourceName);
-
-        } catch (IOException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
         }
     }
@@ -302,12 +272,15 @@ public class DataEngineEventProcessor {
      */
     public void processDeletePortImplementationEvent(String dataEngineEvent) {
         final String methodName = "processDeletePortImplementationEvent";
-        deletePort(dataEngineEvent, methodName, PORT_IMPLEMENTATION_TYPE_NAME);
-    }
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
+        try {
+            DeleteEvent deleteEvent = OBJECT_READER.readValue(dataEngineEvent, DeleteEvent.class);
 
-    public void processDeletePortAliasEvent(String dataEngineEvent) {
-        final String methodName = "processDeletePortAliasEvent";
-        deletePort(dataEngineEvent, methodName, PORT_ALIAS_TYPE_NAME);
+            dataEngineRESTServices.deletePort(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
+                    deleteEvent.getGuid(), deleteEvent.getQualifiedName(), PORT_IMPLEMENTATION_TYPE_NAME, deleteEvent.getDeleteSemantic());
+        } catch (IOException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
+            logException(dataEngineEvent, methodName, e);
+        }
     }
 
     /**
@@ -602,20 +575,8 @@ public class DataEngineEventProcessor {
         }
     }
 
-    private void deletePort(String dataEngineEvent, String methodName, String portType) {
-        log.trace(DEBUG_MESSAGE_METHOD, methodName);
-        try {
-            DeleteEvent deleteEvent = OBJECT_READER.readValue(dataEngineEvent, DeleteEvent.class);
-
-            dataEngineRESTServices.deletePort(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
-                    deleteEvent.getGuid(), deleteEvent.getQualifiedName(), portType, deleteEvent.getDeleteSemantic());
-        } catch (IOException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
-            logException(dataEngineEvent, methodName, e);
-        }
-    }
-
     private void logException(String dataEngineEvent, String methodName, Exception e) {
-        log.debug("Exception in processing {} from in Data Engine In Topic: {}", dataEngineEvent, e);
+        log.debug("Exception in processing {} from in Data Engine In Topic:", dataEngineEvent, e);
 
         auditLog.logException(methodName, DataEngineAuditCode.PARSE_EVENT_EXCEPTION.getMessageDefinition(dataEngineEvent, e.toString()), e);
     }

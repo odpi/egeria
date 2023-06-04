@@ -58,6 +58,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.FROM;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.KV;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PROPERTIES;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PROCESS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.S;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.V;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.VERTEX_GUID_NOT_FOUND_WHEN_UPDATE;
@@ -235,7 +236,11 @@ public class LineageGraphStorageService implements LineageGraph {
     private void updateEntityInGraph(GraphTraversalSource g, LineageEntity entity) {
         Iterator<Vertex> vertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, entity.getGuid());
         if (!vertex.hasNext()) {
-            log.debug(VERTEX_GUID_NOT_FOUND_WHEN_UPDATE, entity.getGuid());
+            if (entity.getTypeDefName().equalsIgnoreCase(PROCESS)) {
+                addVertex(g, entity);
+            } else {
+                log.debug(VERTEX_GUID_NOT_FOUND_WHEN_UPDATE, entity.getGuid());
+            }
             return;
         }
         addOrUpdatePropertiesVertex(g, vertex.next(), entity);

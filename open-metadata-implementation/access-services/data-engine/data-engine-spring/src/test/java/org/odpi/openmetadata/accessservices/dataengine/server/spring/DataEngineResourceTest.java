@@ -13,7 +13,6 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrati
 import org.odpi.openmetadata.accessservices.dataengine.rest.DeleteRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.EventTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataFlowsRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
@@ -69,14 +68,6 @@ class DataEngineResourceTest {
         dataEngineResource.createOrUpdatePortImplementation(SERVER_NAME, USER, requestBody);
 
         verify(dataEngineRestServices, times(1)).upsertPortImplementation(SERVER_NAME, USER, requestBody);
-    }
-
-    @Test
-    void testCreatePortAlias() {
-        PortAliasRequestBody requestBody = new PortAliasRequestBody();
-        dataEngineResource.createOrUpdatePortAlias(SERVER_NAME, USER, requestBody);
-
-        verify(dataEngineRestServices, times(1)).upsertPortAlias(SERVER_NAME, USER, requestBody);
     }
 
     @Test

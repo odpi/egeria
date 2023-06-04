@@ -2821,22 +2821,24 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
+     * @return unique identifier of the relationship
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void setupLineageMapping(String                   userId,
-                                    String                   assetManagerGUID,
-                                    String                   assetManagerName,
-                                    String                   sourceElementGUID,
-                                    String                   destinationElementGUID,
-                                    LineageMappingProperties properties,
-                                    Date                     effectiveTime,
-                                    boolean                  forLineage,
-                                    boolean                  forDuplicateProcessing) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+    public String setupLineageMapping(String                   userId,
+                                      String                   assetManagerGUID,
+                                      String                   assetManagerName,
+                                      String                   sourceElementGUID,
+                                      String                   destinationElementGUID,
+                                      LineageMappingProperties properties,
+                                      Date                     effectiveTime,
+                                      boolean                  forLineage,
+                                      boolean                  forDuplicateProcessing) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
     {
         final String methodName                          = "setupLineageMapping";
         final String sourceElementGUIDParameterName      = "sourceElementGUID";
@@ -2848,15 +2850,17 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/lineage-mappings/sources/{2}/destinations/{3}?forLineage={4}&forDuplicateProcessing={5}";
 
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        getRelationshipRequestBody(assetManagerGUID, assetManagerName, effectiveTime, properties),
-                                        serverName,
-                                        userId,
-                                        sourceElementGUID,
-                                        destinationElementGUID,
-                                        forLineage,
-                                        forDuplicateProcessing);
+        GUIDResponse guidResponse = restClient.callGUIDPostRESTCall(methodName,
+                                                                    urlTemplate,
+                                                                    getRelationshipRequestBody(assetManagerGUID, assetManagerName, effectiveTime, properties),
+                                                                    serverName,
+                                                                    userId,
+                                                                    sourceElementGUID,
+                                                                    destinationElementGUID,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing);
+
+        return guidResponse.getGUID();
     }
 
 

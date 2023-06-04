@@ -825,6 +825,7 @@ public class AssetManagerBaseClient
                                                                                    externalIdentifierProperties,
                                                                                    methodName));
         requestBody.setParentGUID(parentGUID);
+        requestBody.setElementProperties(templateProperties);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate + requestParamsURLTemplate,
@@ -895,6 +896,7 @@ public class AssetManagerBaseClient
                                                                                    externalIdentifierProperties,
                                                                                    methodName));
         requestBody.setParentGUID(parentGUID);
+        requestBody.setElementProperties(templateProperties);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate + requestParamsURLTemplate,
@@ -967,6 +969,7 @@ public class AssetManagerBaseClient
                                                                                    externalIdentifierProperties,
                                                                                    methodName));
         requestBody.setParentGUID(parentGUID);
+        requestBody.setElementProperties(templateProperties);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate + requestParamsURLTemplate,

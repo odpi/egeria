@@ -10,6 +10,7 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +26,16 @@ public class HttpRequestHeadersFilter implements Filter {
     /**
      * @param headerNames list of http header names
      */
-    public HttpRequestHeadersFilter(List<String> headerNames) {
-        this.headerNames = headerNames;
+    public HttpRequestHeadersFilter(List<String> headerNames)
+    {
+        if (headerNames == null)
+        {
+            this.headerNames = new ArrayList<>();
+        }
+        else
+        {
+            this.headerNames = headerNames;
+        }
     }
 
     @Override

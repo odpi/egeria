@@ -18,14 +18,14 @@ pluginManagement {
         id "io.freefair.aggregate-javadoc" version "6.6.3"
         id "io.freefair.lombok" version "8.0.1"
         // Checks for unnecessary dependencies
-        id("com.autonomousapps.dependency-analysis") version "1.19.0"
+        id("com.autonomousapps.dependency-analysis") version "1.20.0"
         // helps resolve log implementation clashes
-        id 'dev.jacomet.logging-capabilities' version "0.11.0"
+        id 'dev.jacomet.logging-capabilities' version "0.11.1"
         // This plugin helps resolve jakarta/javax dev.jacomet.logging-capabilities
         id 'org.gradlex.java-ecosystem-capabilities' version "1.1"
         // Docs don't recommend specifying a version for checkstyle
         id 'checkstyle'
-        id 'org.springframework.boot' version '2.7.10'
+        id 'org.springframework.boot' version '2.7.11'
         id 'com.github.johnrengelman.shadow' version '8.1.1'
         id 'com.github.psxpaul.execfork' version '0.2.2'
     }
@@ -338,6 +338,7 @@ include(':open-metadata-resources:open-metadata-samples:access-services-samples:
 include(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-avro-sample')
 include(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-csv-sample')
 include(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-csv-sample')
+include(':open-metadata-resources:open-metadata-samples:access-services-samples:glossary-workflow-samples')
 include(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-zone-create-sample')
 include(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-leadership-sample')
 include(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-subject-area-sample')

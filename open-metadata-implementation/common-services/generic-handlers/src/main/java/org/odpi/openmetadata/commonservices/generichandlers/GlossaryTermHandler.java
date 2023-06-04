@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
@@ -22,6 +23,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -593,6 +595,33 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
 
         if (templateEntity != null)
         {
+            InstanceProperties templateProperties = null;
+            if (templateEntity.getProperties() != null)
+            {
+                templateProperties = new InstanceProperties();
+
+                templateProperties.setEffectiveFromTime(templateEntity.getProperties().getEffectiveFromTime());
+                templateProperties.setEffectiveToTime(templateEntity.getProperties().getEffectiveToTime());
+
+                if (templateEntity.getProperties().getPropertyCount() > 0)
+                {
+                    Iterator<String> propertyNames = templateEntity.getProperties().getPropertyNames();
+
+                    while (propertyNames.hasNext())
+                    {
+                        String propertyName = propertyNames.next();
+
+                        /*
+                         * Ignore qualified name.
+                         */
+                        if (! OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME.equals(propertyName))
+                        {
+                            templateProperties.setProperty(propertyName, templateEntity.getProperties().getPropertyValue(propertyName));
+                        }
+                    }
+                }
+            }
+
             this.updateBeanInRepository(userId,
                                         externalSourceGUID,
                                         externalSourceName,
@@ -603,33 +632,37 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
-                                        templateEntity.getProperties(),
+                                        templateProperties,
                                         isMergeProperties,
                                         effectiveTime,
                                         methodName);
 
-            List<String>         updatedClassifications = new ArrayList<>();
+            List<String> updatedClassifications = new ArrayList<>();
 
             if (templateEntity.getClassifications() != null)
             {
                 for (Classification classification : templateEntity.getClassifications())
                 {
-                    this.setClassificationInRepository(userId,
-                                                       externalSourceGUID,
-                                                       externalSourceName,
-                                                       termEntity,
-                                                       glossaryTermGUIDParameterName,
-                                                       OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                                       classification.getType().getTypeDefGUID(),
-                                                       classification.getType().getTypeDefName(),
-                                                       classification.getProperties(),
-                                                       isMergeProperties,
-                                                       forLineage,
-                                                       forDuplicateProcessing,
-                                                       supportedZones,
-                                                       effectiveTime,
-                                                       methodName);
-                    updatedClassifications.add(classification.getName());
+                    if (! OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME.equals(classification.getName()))
+                    {
+                        this.setClassificationInRepository(userId,
+                                                           externalSourceGUID,
+                                                           externalSourceName,
+                                                           termEntity,
+                                                           glossaryTermGUIDParameterName,
+                                                           OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                           classification.getType().getTypeDefGUID(),
+                                                           classification.getType().getTypeDefName(),
+                                                           classification.getProperties(),
+                                                           isMergeProperties,
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           supportedZones,
+                                                           effectiveTime,
+                                                           methodName);
+
+                        updatedClassifications.add(classification.getName());
+                    }
                 }
             }
 
@@ -637,7 +670,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
             {
                 for (Classification classification : termEntity.getClassifications())
                 {
-                    if (! updatedClassifications.contains(classification.getName()))
+                    if ((! OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME.equals(classification.getName())) &&
+                                (! updatedClassifications.contains(classification.getName())))
                     {
                         this.removeClassificationFromRepository(userId,
                                                                 externalSourceGUID,
