@@ -163,6 +163,22 @@ public class OpenMetadataAPIGenericBuilder
     }
 
 
+    /**
+     * Return whether a particular classification has been set up by the caller.
+     *
+     * @param classificationName name of the classification to test for
+     * @return boolean
+     */
+    public boolean isClassificationSet(String classificationName)
+    {
+        if (newClassifications.get(classificationName) != null)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
 
     /**
      * Set up the list of classifications from a template entity.
@@ -195,7 +211,7 @@ public class OpenMetadataAPIGenericBuilder
 
             for (Classification templateClassification : templateClassifications)
             {
-                if (templateClassification != null)
+                if ((templateClassification != null) && (! OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME.equals(templateClassification.getName())))
                 {
                     try
                     {
@@ -227,6 +243,7 @@ public class OpenMetadataAPIGenericBuilder
                                                                                    null,
                                                                                    templateClassification.getProperties());
                         }
+
                         this.newClassifications.put(classification.getName(), classification);
                     }
                     catch (TypeErrorException error)
@@ -237,6 +254,7 @@ public class OpenMetadataAPIGenericBuilder
             }
         }
     }
+
 
     /**
      * Set up the "TemplateSubstitute" classification for this entity.  This is used when a new entity is being created, and it is known to be
@@ -268,7 +286,6 @@ public class OpenMetadataAPIGenericBuilder
             errorHandler.handleUnsupportedAnchorsType(error, methodName, OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME);
         }
     }
-
 
 
     /**

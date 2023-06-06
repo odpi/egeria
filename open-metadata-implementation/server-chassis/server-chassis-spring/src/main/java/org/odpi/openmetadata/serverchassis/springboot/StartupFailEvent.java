@@ -4,27 +4,54 @@ package org.odpi.openmetadata.serverchassis.springboot;
 
 import org.springframework.context.ApplicationEvent;
 
+import java.io.Serial;
+
 /**
  *   Application event used for the case of startup list fails
  */
-public class StartupFailEvent extends ApplicationEvent {
+public class StartupFailEvent extends ApplicationEvent
+{
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
-    private Object source;
-    private String message;
+    private final Object source;
+    private final String message;
 
-    public StartupFailEvent(Object source, String message) {
+
+    /**
+     * Constructor
+     *
+     * @param source source
+     * @param message message
+     */
+    public StartupFailEvent(Object source, String message)
+    {
         super(source);
         this.source = source;
         this.message = message;
     }
 
-    public Object getSource() {
+
+    /**
+     * Return the source.
+     *
+     * @return object
+     */
+    @Override
+    public Object getSource()
+    {
         return source;
     }
 
-    public String getMessage() {
+
+    /**
+     * Return the message.
+     *
+     * @return string
+     */
+    public String getMessage()
+    {
         return message;
     }
 }

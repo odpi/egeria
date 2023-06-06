@@ -31,13 +31,17 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 
+/**
+ * OMAGServerPlatform provides the main program for the OMAG Server Platform.
+ */
 @SpringBootApplication(
-        scanBasePackages = {"${scan.packages}"}
+        scanBasePackages = {"${scan.packages:org.odpi.openmetadata.*}"}
 )
+
 @OpenAPIDefinition(
         info = @Info(
                 title = "Egeria's Open Metadata and Governance (OMAG) Server Platform",
-                version = "4.1-SNAPSHOT",
+                version = "4.2-SNAPSHOT",
                 description = "The OMAG Server Platform provides a runtime process and platform for Open Metadata and Governance (OMAG) Services.\n" +
                         "\n" +
                         "The OMAG services are configured and activated in OMAG Servers using the Administration Services.\n" +
@@ -65,19 +69,18 @@ import java.util.*;
         externalDocs = @ExternalDocumentation(description = "OMAG Server Platform documentation",
                 url="https://egeria-project.org/concepts/omag-server-platform/")
         )
-
 public class OMAGServerPlatform
 {
-    @Value("${strict.ssl}")
+    @Value("${strict.ssl:true}") // Default value is true
     Boolean strictSSL;
 
-    @Value("${startup.user}")
+    @Value("${startup.user:system}") // Default value is "system"
     String sysUser;
 
-    @Value("${startup.server.list}")
+    @Value("${startup.server.list:}") // Default value is zero length string
     String startupServers;
 
-    @Value("${header.name.list}")
+    @Value("${header.name.list:}") // Default value is zero length string
     List<String> headerNames;
 
     @Autowired
@@ -88,27 +91,56 @@ public class OMAGServerPlatform
 
     private boolean triggeredRuntimeHalt = false;
     private String startupMessage = "";
-    private OMAGServerOperationalServices operationalServices = new OMAGServerOperationalServices();
+    private final OMAGServerOperationalServices operationalServices = new OMAGServerOperationalServices();
 
     private static final Logger log = LoggerFactory.getLogger(OMAGServerPlatform.class);
 
-    public static void main(String[] args) {
+
+    /**
+     * Java main
+     * @param args program arguments used to override environment variables
+     */
+    public static void main(String[] args)
+    {
         SpringApplication.run(OMAGServerPlatform.class, args);
     }
 
+
+    /**
+     * Make adjustments to the local environment.
+     *
+     * @return bean
+     */
     @Bean
     public InitializingBean getInitialize()
     {
-        return () -> {
+        return () ->
+        {
+            log.info("Working directory is: " + System.getProperty("user.dir"));
+
             if (!strictSSL)
             {
-                log.warn("strict.ssl is set to false! Invalid certificates will be accepted for connection!");
+                log.warn("Option strict.ssl is set to false! Invalid certificates will be accepted for connection!");
                 HttpHelper.noStrictSSL();
-            } else if( System.getProperty("javax.net.ssl.trustStore")==null ) {
-                //load the 'javax.net.ssl.trustStore' and
-                //'javax.net.ssl.trustStorePassword' from application.properties
-                System.setProperty("javax.net.ssl.trustStore", env.getProperty("server.ssl.trust-store"));
-                System.setProperty("javax.net.ssl.trustStorePassword", env.getProperty("server.ssl.trust-store-password"));
+            }
+
+            if (System.getProperty("javax.net.ssl.trustStore") == null)
+            {
+                log.warn("Java trust store 'javax.net.ssl.trustStore' is null - this is needed by Tomcat - using 'server.ssl.trust-store'");
+
+                /*
+                 * load the 'javax.net.ssl.trustStore' and 'javax.net.ssl.trustStorePassword' from application.properties.
+                 * Note, these variables should only used for mutual SSL.  This function is provided for backward compatibility.
+                 * Also note that there is an NPE if the java variables are set to null.
+                 */
+                if (env.getProperty("server.ssl.trust-store") != null)
+                {
+                    System.setProperty("javax.net.ssl.trustStore", env.getProperty("server.ssl.trust-store"));
+                }
+                if (env.getProperty("server.ssl.trust-store-password") != null)
+                {
+                    System.setProperty("javax.net.ssl.trustStorePassword", env.getProperty("server.ssl.trust-store-password"));
+                }
             }
         };
     }
@@ -167,7 +199,7 @@ public class OMAGServerPlatform
 
 
     /**
-     *  Deactivate all servers that were started automatically
+     * Deactivate all servers that were started automatically
      */
     private void temporaryDeactivateServers()
     {
@@ -183,21 +215,36 @@ public class OMAGServerPlatform
         }
     }
 
+
+    /**
+     * ApplicationContextListener detects various events during the lifetime of the OMAGServerPlatform run.
+     */
     @Component
     public class ApplicationContextListener
     {
 
+        /**
+         * Print out message to say that the platform is ready.
+         */
         @EventListener(ApplicationReadyEvent.class)
-        public void applicationReady() {
+        public void applicationReady()
+        {
             autoStartConfig();
             System.out.println(OMAGServerPlatform.this.startupMessage);
 
-            if(triggeredRuntimeHalt){
+            if (triggeredRuntimeHalt)
+            {
                 Runtime.getRuntime().halt(43);
             }
             System.out.println(new Date() + " OMAG server platform ready for more configuration");
         }
 
+
+        /**
+         * Detect platform shutdown.
+         *
+         * @param event unused event information
+         */
         @EventListener
         public void onApplicationEvent(ContextClosedEvent event)
         {
@@ -205,15 +252,18 @@ public class OMAGServerPlatform
         }
     }
 
+    /**
+     * Detect failures
+     */
     @Component
     public class CustomSpringEventListener implements ApplicationListener<StartupFailEvent>
     {
         @Override
-        public void onApplicationEvent(StartupFailEvent event) {
+        public void onApplicationEvent(StartupFailEvent event)
+        {
             log.info("Received startup fail event with message: {} " + event.getMessage());
             temporaryDeactivateServers();
         }
-
     }
 
     /**
@@ -221,14 +271,14 @@ public class OMAGServerPlatform
      * @return bean of an initialized FilterRegistrationBean
      */
     @Bean
-    public FilterRegistrationBean<HttpRequestHeadersFilter> getRequestHeadersFilter() {
+    public FilterRegistrationBean<HttpRequestHeadersFilter> getRequestHeadersFilter()
+    {
         FilterRegistrationBean<HttpRequestHeadersFilter> registrationBean = new FilterRegistrationBean<>();
 
         registrationBean.setFilter(new HttpRequestHeadersFilter(headerNames));
-        registrationBean.addUrlPatterns("/open-metadata/*");
+        registrationBean.addUrlPatterns("/servers/*");
         registrationBean.setOrder(1);
 
         return registrationBean;
     }
-
 }

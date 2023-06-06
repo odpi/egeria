@@ -371,6 +371,18 @@ public class GlossaryExchangeRESTServices
                                                          requestBody.getEffectiveTime(),
                                                          methodName);
                 }
+                else if (requestBody.getProperties() == null)
+                {
+                    GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
+
+                    handler.setGlossaryAsEditingGlossary(userId,
+                                                         requestBody.getMetadataCorrelationProperties(),
+                                                         glossaryGUID,
+                                                         null,
+                                                         forLineage,
+                                                         forDuplicateProcessing,
+                                                         requestBody.getEffectiveTime(),
+                                                         methodName);                }
                 else
                 {
                     restExceptionHandler.handleInvalidPropertiesObject(EditingGlossaryProperties.class.getName(), methodName);
@@ -503,6 +515,19 @@ public class GlossaryExchangeRESTServices
                                                          requestBody.getMetadataCorrelationProperties(),
                                                          glossaryGUID,
                                                          properties,
+                                                         forLineage,
+                                                         forDuplicateProcessing,
+                                                         requestBody.getEffectiveTime(),
+                                                         methodName);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
+
+                    handler.setGlossaryAsStagingGlossary(userId,
+                                                         requestBody.getMetadataCorrelationProperties(),
+                                                         glossaryGUID,
+                                                         null,
                                                          forLineage,
                                                          forDuplicateProcessing,
                                                          requestBody.getEffectiveTime(),
