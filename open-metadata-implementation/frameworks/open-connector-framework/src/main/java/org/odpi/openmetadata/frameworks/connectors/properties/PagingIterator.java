@@ -170,7 +170,41 @@ public class PagingIterator extends PropertyBase implements Iterator<ElementBase
     @Override
     public boolean hasNext()
     {
-        return (cachedElementStart < totalElementCount);
+        if (cachedElementList == null)
+        {
+            return false;
+        }
+
+        if (cachedElementPointer == cachedElementList.size())
+        {
+            try
+            {
+                cachedElementList = iterator.getCachedList(cachedElementStart, maxCacheSize);
+                if (cachedElementList == null || cachedElementList.isEmpty())
+                {
+                    /*
+                     * Prevents the pointer from being equal to the size of the list, signifying that the list is empty.
+                     */
+                    cachedElementPointer = -1;
+                    return false;
+                }
+
+                cachedElementPointer = 0;
+            }
+            catch (PropertyServerException error)
+            {
+                /*
+                 * Problem retrieving next cache.  The exception includes a detailed error message,
+                 */
+                throw new OCFRuntimeException(OCFErrorCode.PROPERTIES_NOT_AVAILABLE.getMessageDefinition(error.getReportedErrorMessage(),
+                                                                                                         this.toString()),
+                                                                                                         this.getClass().getName(),
+                                                                                                         "next",
+                                                                                                         error);
+            }
+        }
+
+        return true;
     }
 
 
@@ -184,38 +218,9 @@ public class PagingIterator extends PropertyBase implements Iterator<ElementBase
     @Override
     public ElementBase next()
     {
-        /*
-         * Check more elements available
-         */
         if (this.hasNext())
         {
-            ElementBase retrievedElement;
-
-            /*
-             * If the pointer is at the end of the cache then retrieve more content from the property (metadata)
-             * server.
-             */
-            if (cachedElementPointer == cachedElementList.size())
-            {
-                try
-                {
-                    cachedElementList = iterator.getCachedList(cachedElementStart, maxCacheSize);
-                    cachedElementPointer = 0;
-                }
-                catch (PropertyServerException error)
-                {
-                    /*
-                     * Problem retrieving next cache.  The exception includes a detailed error message,
-                     */
-                    throw new OCFRuntimeException(OCFErrorCode.PROPERTIES_NOT_AVAILABLE.getMessageDefinition(error.getReportedErrorMessage(),
-                                                                                                             this.toString()),
-                                                  this.getClass().getName(),
-                                                  "next",
-                                                  error);
-                }
-            }
-
-            retrievedElement = iterator.cloneElement(cachedElementList.get(cachedElementPointer));
+            ElementBase retrievedElement = iterator.cloneElement(cachedElementList.get(cachedElementPointer));
             cachedElementPointer++;
             cachedElementStart++;
 
@@ -232,9 +237,9 @@ public class PagingIterator extends PropertyBase implements Iterator<ElementBase
             /*
              * Throw runtime exception to show the caller they are not using the list correctly.
              */
-            throw new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition(this.getClass().getSimpleName()),
-                                          this.getClass().getName(),
-                                          "next");
+            throw new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition(this.getClass().getName()),
+                                                                                             this.getClass().getName(),
+                                                                                             "next");
         }
     }
 
