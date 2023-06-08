@@ -29,6 +29,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class AssetCatalogEvent implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * The asset
+     * -- GETTER --
+     * Returns the structure of an asset
+     * @return the asset
+     * -- SETTER --
+     * Setup the structure of an asset
+     * @param asset the asset
+     */
     private Asset asset;
 
 }

@@ -41,14 +41,14 @@ import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.G
 import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.REFERENCEABLE;
 
 /**
- * Common  Handler supports the lookup types and metadata collection.
+ * Common Handler supports the lookup types and metadata collection.
  * These methods are used in the multiple handlers.
  * It runs on the server-side of the Asset Catalog OMAS, fetches the types, metadata collection using the RepositoryHandler.
  */
 public class CommonHandler {
 
-    public static final String ZONE_MEMBERSHIP = "zoneMembership";
-    public static final String NONE = "none";
+    private static final String ZONE_MEMBERSHIP = "zoneMembership";
+    private static final String NONE = "none";
     private final String sourceName;
     private final RepositoryHandler repositoryHandler;
     private final OMRSRepositoryHelper repositoryHelper;
@@ -112,6 +112,7 @@ public class CommonHandler {
     }
 
     /**
+     * Returns the type by using the type definition name
      *
      * @param userId      user identifier that issues the call
      * @param typeDefName the type definition name
@@ -144,6 +145,14 @@ public class CommonHandler {
         return Optional.ofNullable(typeDefByName).map(TypeDefLink::getGUID).orElse(null);
     }
 
+    /**
+     * Checks against the type's list of properties if it has a display name property
+     *
+     * @param userId      the user id
+     * @param typeDefGUID the type definition unique identifier
+     * @return if the given type has a display name property
+     * @throws InvalidParameterException the invalid parameter exception
+     */
     public boolean hasDisplayName(String userId, String typeDefGUID) throws InvalidParameterException {
         String methodName = "hasDisplayName";
         TypeDef typeDefByName = null;

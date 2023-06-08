@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.service.AssetCatalogRelationshipRESTService;
@@ -25,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class AssetCatalogRelationshipResource {
 
-    private AssetCatalogRelationshipRESTService relationshipService = new AssetCatalogRelationshipRESTService();
+    private final AssetCatalogRelationshipRESTService relationshipService = new AssetCatalogRelationshipRESTService();
 
     /**
      * Fetch relationship between entities details based on its unique identifier of the ends
@@ -39,6 +40,9 @@ public class AssetCatalogRelationshipResource {
      */
     @GetMapping(path = "/relationship-between-entities/{entity1GUID}/{entity2GUID}",
             produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "getRelationshipBetweenEntities", description = "Returns the relationships between the 2 given entities",
+            externalDocs = @ExternalDocumentation(description = "Metadata Relationships",
+            url = "https://egeria-project.org/patterns/metadata-manager/categories-of-metadata/?h=relationships#metadata-relationships-and-classifications"))
     public RelationshipResponse getRelationshipBetweenEntities(@PathVariable("serverName") String serverName,
                                                                @PathVariable("userId") String userId,
                                                                @PathVariable("entity1GUID") String entity1GUID,

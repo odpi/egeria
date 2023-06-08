@@ -6,7 +6,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworkservices.gaf.client.OpenMetadataClientBase;
 
 /**
- * OpenMetadataStoreClient provides an interface to the open metadata store.  This is part of the Governance Action Framework (GAF)
+ * OpenMetadataStoreClient provides an interface to the open metadata store. This is part of the Governance Action Framework (GAF)
  * and provides a comprehensive interface for working with all types of metadata, subject to the user's (and this OMAS's) security permissions.
  * The interface supports search, maintenance of metadata elements, classifications and relationships plus the ability to raise incident reports
  * and todos along with the ability to work with metadata valid values and translations.
@@ -30,8 +30,8 @@ public class OpenMetadataStoreClient extends OpenMetadataClientBase
 
 
     /**
-     * Create a new client that passes userId and password in each HTTP request.  This is the
-     * userId/password of the calling server.  The end user's userId is sent on each request.
+     * Create a new client that passes userId and password in each HTTP request. This is the
+     * userId/password of the calling server. The end user's userId is sent on each request.
      *
      * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services

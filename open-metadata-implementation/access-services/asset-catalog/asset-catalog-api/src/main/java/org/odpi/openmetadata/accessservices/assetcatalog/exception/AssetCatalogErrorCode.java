@@ -26,27 +26,42 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  */
 public enum AssetCatalogErrorCode implements ExceptionMessageSet {
 
+    /**
+     * The error indicates that the open metadata repository services are not initialized for the mentioned server.
+     */
     OMRS_NOT_INITIALIZED(404, "OMAS-ASSET-CATALOG-404-001 ",
             "The open metadata repository services are not initialized for server {0}",
             "The system is unable to connect to the open metadata property server.",
             "Check that the server initialized correctly.  " +
                     "Correct any errors discovered and retry the request when the open metadata services are available."),
 
+    /**
+     * The error indicates that the system is unable to retrieve the neighbourhood for the given asset.
+     */
     ASSET_NEIGHBORHOOD_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-011 ",
-            "There is no assets or relationships available in the neighbourhood of asset {0} in OMAS Server {1}",
+            "There are no assets or relationships available in the neighbourhood of asset {0} in OMAS Server {1}",
             "The system is unable to retrieve the neighbourhood for the given asset.",
             "Check that the unique identifier for the asset is correct."),
 
+    /**
+     * The error indicates that the system is unable to retrieve the assets neighborhood from the specified asset identifier.
+     */
     NO_ASSET_FROM_NEIGHBORHOOD_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-012 ",
             "There is no assets available in the neighbourhood of asset {0} in OMAS Server {1}",
             "The system is unable to retrieve the assets neighborhood from the specified asset identifier.",
             "Check that the unique identifier for the asset is correct."),
-
+    /**
+     * The error indicates that the system is unable to retrieve assets of an unknown type/s.
+     */
     TYPE_DEF_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-017 ",
             "The provided entity type {0} is non known to the OMAS Server",
             "The system is unable to retrieve assets of an unknown type/s.",
             "Check that the entity type/s provided is/are correct."),
 
+    /**
+     * The error indicates that the server has received a call to one of its open metadata access services but is
+     * unable to process it because the access service is not active for the requested server.
+     */
     SERVICE_NOT_INITIALIZED(503, "OMAS-ASSET-CATALOG-503-001 ",
             "The access service has not been initialized for server {0} and can not support REST API calls",
             "The server has received a call to one of its open metadata access services but is unable to " +

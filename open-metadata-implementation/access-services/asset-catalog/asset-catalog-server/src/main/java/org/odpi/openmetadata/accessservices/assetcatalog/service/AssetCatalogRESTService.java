@@ -152,6 +152,18 @@ public class AssetCatalogRESTService {
         return response;
     }
 
+    /**
+     * Returns the asset relationships.
+     *
+     * @param serverName           unique identifier for requested server
+     * @param userId               the unique identifier for the user
+     * @param assetGUID            the asset GUID
+     * @param assetTypeName        the asset type name
+     * @param relationshipTypeName the relationship type name
+     * @param startFrom            the offset
+     * @param limit                page size to limit the number of the assets returned
+     * @return the asset relationships
+     */
     public RelationshipListResponse getAssetRelationships(String serverName,
                                                           String userId,
                                                           String assetGUID,

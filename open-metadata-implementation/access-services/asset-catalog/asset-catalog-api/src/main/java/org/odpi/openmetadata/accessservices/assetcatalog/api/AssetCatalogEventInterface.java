@@ -9,6 +9,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
+/**
+ * AssetCatalogEventInterface is the interface that a client implements to
+ * register a listener to receive the events from the Asset Catalog OMAS's out topic.
+ */
 public interface AssetCatalogEventInterface {
 
     /**

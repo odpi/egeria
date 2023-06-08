@@ -26,8 +26,8 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
- * AssetCatalogOMRSTopicListener received details of each OMRS event from the cohorts that the local server
- * is connected to.  It passes indexing events to the publisher.
+ * AssetCatalogOMRSTopicListener receives details of each OMRS event from the cohorts that the local server
+ * is connected to. It passes indexing events to the publisher.
  */
 public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
 {
@@ -42,6 +42,18 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
     private final AssetCatalogSearchPublisher                     publisher;
     private final AssetCatalogConverter<AssetCatalogBean>         converter;
 
+    /**
+     * Instantiates a new Asset catalog OMRS topic listener.
+     *
+     * @param serviceName             the service name
+     * @param auditLog                the audit log
+     * @param outTopicConnector       the out topic connector
+     * @param repositoryHelper        the repository helper
+     * @param repositoryValidator     the repository validator
+     * @param serverName              the server name
+     * @param supportedZones          the supported zones
+     * @param supportedTypesForSearch the supported types for search
+     */
     public AssetCatalogOMRSTopicListener(String serviceName,
                                          AuditLog auditLog,
                                          OpenMetadataTopicConnector outTopicConnector,
@@ -119,7 +131,7 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
     }
 
     /**
-     *
+     * Publishes the relationship event.
      * @param relationship the relationship to be processed
      */
     private void processRelationshipEvent(Relationship relationship){
@@ -127,7 +139,7 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
     }
 
     /**
-     *
+     * Publishes the entity event.
      * @param entityDetail the entityDetail to be processed
      */
     private void processEntityDetail(EntityDetail entityDetail){
@@ -162,7 +174,7 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
      * @param entity  entity to test
      * @return String containing Asset type name, or null if not an Asset.
      */
-    private String getAssetType(EntityDetail  entity)
+    private String getAssetType(EntityDetail entity)
     {
         final   String   methodName = "getAssetType";
 
