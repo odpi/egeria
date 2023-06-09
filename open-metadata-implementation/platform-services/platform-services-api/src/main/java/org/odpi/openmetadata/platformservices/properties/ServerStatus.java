@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,16 +15,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * OMAGServerInstanceHistory documents the start and end of a server instance.
+ * ServerStatus documents the start and end of a server instance.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ServerStatus implements Serializable
+public class ServerStatus
 {
-    private static final long    serialVersionUID = 1L;
-
     private String                          serverName      = null;
+    private String                          serverType      = null;
     private boolean                         isActive        = true;
     private Date                            serverStartTime = null;
     private Date                            serverEndTime   = null;
@@ -38,6 +36,7 @@ public class ServerStatus implements Serializable
     {
     }
 
+
     /**
      * Copy/clone constructor
      *
@@ -49,6 +48,7 @@ public class ServerStatus implements Serializable
         if (template != null)
         {
             serverName      = template.getServerName();
+            serverType      = template.getServerType();
             isActive        = template.isActive;
             serverStartTime = template.getServerStartTime();
             serverEndTime   = template.getServerEndTime();
@@ -77,6 +77,29 @@ public class ServerStatus implements Serializable
     {
         this.serverName = serverName;
     }
+
+
+    /**
+     * Return the type of server that is hosting these services.
+     *
+     * @return string name
+     */
+    public String getServerType()
+    {
+        return serverType;
+    }
+
+
+    /**
+     * Set up the type of server that is hosting these services.
+     *
+     * @param serverType string name
+     */
+    public void setServerType(String serverType)
+    {
+        this.serverType = serverType;
+    }
+
 
     /**
      * Return an indication of whether the server is active
@@ -186,12 +209,13 @@ public class ServerStatus implements Serializable
     public String toString()
     {
         return "ServerStatus{" +
-                "serverName=" + serverName +
-                ", isActive=" + isActive +
-                ", serverStartTime=" + serverStartTime +
-                ", serverEndTime=" + serverEndTime +
-                ", serverHistory=" + serverHistory +
-                '}';
+                       "serverName='" + serverName + '\'' +
+                       ", serverType='" + serverType + '\'' +
+                       ", isActive=" + isActive +
+                       ", serverStartTime=" + serverStartTime +
+                       ", serverEndTime=" + serverEndTime +
+                       ", serverHistory=" + serverHistory +
+                       '}';
     }
 
 
@@ -214,10 +238,11 @@ public class ServerStatus implements Serializable
         }
         ServerStatus that = (ServerStatus) objectToCompare;
         return getIsActive() == that.getIsActive() &&
-                Objects.equals(getServerName(), that.getServerName()) &&
-                Objects.equals(getServerStartTime(), that.getServerStartTime()) &&
-                Objects.equals(getServerEndTime(), that.getServerEndTime()) &&
-                Objects.equals(getServerHistory(), that.getServerHistory());
+                       Objects.equals(getServerName(), that.getServerName()) &&
+                       Objects.equals(getServerType(), that.getServerType()) &&
+                       Objects.equals(getServerStartTime(), that.getServerStartTime()) &&
+                       Objects.equals(getServerEndTime(), that.getServerEndTime()) &&
+                       Objects.equals(getServerHistory(), that.getServerHistory());
     }
 
 
@@ -229,6 +254,6 @@ public class ServerStatus implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getServerName(), getIsActive(), getServerStartTime(), getServerEndTime(), getServerHistory());
+        return Objects.hash(super.hashCode(), getServerName(), getServerType(), getIsActive(), getServerStartTime(), getServerEndTime(), getServerHistory());
     }
 }
