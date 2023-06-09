@@ -24,8 +24,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CommentResponse extends OCFOMASAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     private Comment comment    = null;
     private int     replyCount = 0;
 

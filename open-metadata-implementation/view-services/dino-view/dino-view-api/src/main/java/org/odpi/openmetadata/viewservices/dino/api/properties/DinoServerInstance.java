@@ -17,8 +17,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DinoServerInstance {
 
-    private static final long    serialVersionUID = 1L;
-
     /*
      * A DinoServerInstance is used to include a brief summary of a server to be included into the serverList in response to a request
      * to the platform to list its servers [active or known]. A DinoServerInstance conveys just enough information for the UI to be able

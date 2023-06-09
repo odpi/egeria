@@ -51,7 +51,6 @@ public enum RESTClientConnectorErrorCode
     private final String userAction;
 
     private static final Logger log = LoggerFactory.getLogger(RESTClientConnectorErrorCode.class);
-    private static final long    serialVersionUID = 1L;
 
 
     /**

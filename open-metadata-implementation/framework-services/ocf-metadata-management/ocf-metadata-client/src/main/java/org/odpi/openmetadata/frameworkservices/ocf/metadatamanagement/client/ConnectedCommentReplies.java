@@ -22,8 +22,6 @@ import java.util.List;
  */
 public class ConnectedCommentReplies extends CommentReplies
 {
-    private static final long    serialVersionUID = 1L;
-
     private String                 serviceName;
     private String                 serverName;
     private String                 userId;

@@ -48,9 +48,7 @@ public enum GlossaryAuthorErrorCode implements ExceptionMessageSet {
                                                "Supply a root category that is in the requested glossary when requesting BreadCrumbs."),
     ;
 
-    private static final long serialVersionUID = 1L;
-
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
 
     /**

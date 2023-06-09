@@ -26,8 +26,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ExternalReferencesResponse extends PagedResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     private List<ExternalReference> responseObjects = null;
 
 

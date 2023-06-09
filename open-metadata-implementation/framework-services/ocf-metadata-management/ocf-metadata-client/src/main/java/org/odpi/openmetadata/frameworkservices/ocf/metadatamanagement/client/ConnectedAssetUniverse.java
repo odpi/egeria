@@ -25,8 +25,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
  */
 public class ConnectedAssetUniverse extends AssetUniverse
 {
-    private static final long    serialVersionUID = 1L;
-
     private final int MAX_CACHE_SIZE = 100;
 
     private static final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();

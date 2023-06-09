@@ -21,8 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateRequestBody extends MetadataSourceRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
     private boolean forLineage             = false;
     private boolean forDuplicateProcessing = false;
     private Date    effectiveTime          = null;

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+
+<!-- This logback file will be read every 60 seconds in case the configuration has changed. -->
+<!-- Add scanPeriod option to change the refresh time.                                      -->
+<configuration scan="true">
+
+    <!-- This logback file sets up two logging destinations for the server identified by ${EGERIA_SERVER_1}. -->
+    <!-- It should be installed for each platform where this server is running.                              -->
+    <!-- If more servers are added to the platform then duplicate the appenders and loggers for each server. -->
+    <property name="LOG_DIR_PLATFORM" value="./data/platform/logs" />
+    <property name="EGERIA_SERVER_1" value="cocoMDS1" />
+    <property name="LOG_DIR_SERVER_1" value="./data/servers/${EGERIA_SERVER_1}/logs" />
+
+    <!-- This appender defines the destination of developer (debug) logging. -->
+    <appender name="PLATFORM_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR_PLATFORM}/debug.log</file>
+        <!-- This filter only allows ERROR level log messages to  be stored. -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${LOG_DIR_PLATFORM}/debug.log.%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+            <maxFileSize>1000KB</maxFileSize>
+            <maxHistory>1000</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- This appender defines the destination of Egeria's audit log records.                    -->
+    <!-- It requires the SLF4J audit log destination to be set up in the server's configuration. -->
+    <appender name="AUDIT_LOG_${EGERIA_SERVER_1}" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR_SERVER_1}/audit.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${LOG_DIR_SERVER_1}/audit.log.%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+            <maxFileSize>1000KB</maxFileSize>
+            <maxHistory>1000</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- This appender defines the console (standard out) destination.                    -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}.%M:%L - %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- This logger defines the level of entries from Egeria's audit log records.  Can be INFO or ERROR -->
+    <logger name="org.odpi.openmetadata.frameworks.auditlog.${EGERIA_SERVER_1}" level="INFO">
+        <appender-ref ref="AUDIT_LOG_${EGERIA_SERVER_1}" />
+    </logger>
+
+    <!-- This logger defines the level of entries for logging from the springboot chassis for the OMAG Server Platform. Can be TRACE, DEBUG, INFO, WARN and ERROR -->
+    <logger name="org.odpi.openmetadata.serverchassis.springboot" level="INFO">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <!-- This logger defines the level of entries for logging from Tomcat for the OMAG Server Platform. Can be TRACE, DEBUG, INFO, WARN and ERROR -->
+    <logger name="org.springframework.boot.web.embedded.tomcat" level="INFO">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <!-- This logger defines the level of entries for debug logging.  Can be TRACE, DEBUG, INFO, WARN and ERROR -->
+    <root level="ERROR">
+        <appender-ref ref="PLATFORM_LOG" />
+    </root>
+
+</configuration>
+
+

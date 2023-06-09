@@ -23,8 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  */
 public class Platform {
 
-    private static final long serialVersionUID = 1L;
-
 
     private String platformName;
     private String platformDescription;

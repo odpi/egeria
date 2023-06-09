@@ -33,8 +33,6 @@ import org.slf4j.LoggerFactory;
  */
 public class ConnectedAssetRelatedAssetProperties extends org.odpi.openmetadata.frameworks.connectors.properties.RelatedAssetProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String        serviceName;
     private String        serverName;
     private String        userId = null;

@@ -2,9 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.metadatasecurity.properties;
 
-import java.io.Serializable;
-
-
 /**
  * The ReferenceableStatus enum defines the status of an instance (classification, relationship or an entity) in the metadata collection.  It
  * effectively
@@ -32,7 +29,7 @@ import java.io.Serializable;
  * </ul>
  */
 
-public enum ReferenceableStatus implements Serializable
+public enum ReferenceableStatus
 {
     UNKNOWN                 (0,  0,  "<Unknown>",               "Unknown instance status."),
     DRAFT                   (1,  1,  "Draft",                   "The content is incomplete."),
@@ -53,7 +50,6 @@ public enum ReferenceableStatus implements Serializable
     OTHER                   (50, 50, "Other",                   "The instance is in a locally defined state."),
     DELETED                 (99, 99, "Deleted",                 "The instance has been deleted and is no longer available.");
 
-    private static final long serialVersionUID = 1L;
 
     private  final int    ordinal;
     private  final int    omrsOrdinal;

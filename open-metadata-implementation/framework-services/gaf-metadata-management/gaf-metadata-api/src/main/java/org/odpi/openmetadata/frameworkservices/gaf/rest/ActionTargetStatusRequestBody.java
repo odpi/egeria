@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -21,10 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ActionTargetStatusRequestBody implements Serializable
+public class ActionTargetStatusRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
     private String                 actionTargetGUID = null;
     private GovernanceActionStatus status = null;
     private Date                   startDate = null;
