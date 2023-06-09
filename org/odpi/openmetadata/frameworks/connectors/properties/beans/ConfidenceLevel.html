@@ -83,8 +83,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">ConfidenceLevel</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="ConfidenceLevel.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfidenceLevel</a>&gt;
-implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="ConfidenceLevel.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfidenceLevel</a>&gt;</span></div>
 <div class="block">ConfidenceLevel identifies the level of confidence to place in the accuracy of a data item.</div>
 </section>
 <section class="summary">
@@ -107,19 +106,33 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#AD_HOC" class="member-name-link">AD_HOC</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">The data comes from an ad hoc process.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#AUTHORITATIVE" class="member-name-link">AUTHORITATIVE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">The data comes from an authoritative source.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#DERIVED" class="member-name-link">DERIVED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">The data is derived from other data through an analytical process.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#OBSOLETE" class="member-name-link">OBSOLETE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">The data comes from an obsolete source and must no longer be used.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#OTHER" class="member-name-link">OTHER</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Another classification assignment status.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#TRANSACTIONAL" class="member-name-link">TRANSACTIONAL</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">The data comes from a transactional system so it may have a narrow scope.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNCLASSIFIED" class="member-name-link">UNCLASSIFIED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">There is no assessment of the confidence level for this data.</div>
+</div>
 </div>
 </section>
 </li>
@@ -204,42 +217,49 @@ the order they are declared.</div>
 <section class="detail" id="UNCLASSIFIED">
 <h3>UNCLASSIFIED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConfidenceLevel.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfidenceLevel</a></span>&nbsp;<span class="element-name">UNCLASSIFIED</span></div>
+<div class="block">There is no assessment of the confidence level for this data.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="AD_HOC">
 <h3>AD_HOC</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConfidenceLevel.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfidenceLevel</a></span>&nbsp;<span class="element-name">AD_HOC</span></div>
+<div class="block">The data comes from an ad hoc process.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="TRANSACTIONAL">
 <h3>TRANSACTIONAL</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConfidenceLevel.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfidenceLevel</a></span>&nbsp;<span class="element-name">TRANSACTIONAL</span></div>
+<div class="block">The data comes from a transactional system so it may have a narrow scope.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="AUTHORITATIVE">
 <h3>AUTHORITATIVE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConfidenceLevel.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfidenceLevel</a></span>&nbsp;<span class="element-name">AUTHORITATIVE</span></div>
+<div class="block">The data comes from an authoritative source. This is the best set of values.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DERIVED">
 <h3>DERIVED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConfidenceLevel.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfidenceLevel</a></span>&nbsp;<span class="element-name">DERIVED</span></div>
+<div class="block">The data is derived from other data through an analytical process.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OBSOLETE">
 <h3>OBSOLETE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConfidenceLevel.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfidenceLevel</a></span>&nbsp;<span class="element-name">OBSOLETE</span></div>
+<div class="block">The data comes from an obsolete source and must no longer be used.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OTHER">
 <h3>OTHER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConfidenceLevel.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfidenceLevel</a></span>&nbsp;<span class="element-name">OTHER</span></div>
+<div class="block">Another classification assignment status.</div>
 </section>
 </li>
 </ul>

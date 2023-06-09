@@ -83,8 +83,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">MatchCriteria</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="MatchCriteria.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">MatchCriteria</a>&gt;
-implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="MatchCriteria.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">MatchCriteria</a>&gt;</span></div>
 <div class="block">The MatchCriteria enum defines how the metadata instances in the metadata store should be matched
  against the properties supplied on the search request.
  <ul>
@@ -113,11 +112,17 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#ALL" class="member-name-link">ALL</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">All properties must match.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#ANY" class="member-name-link">ANY</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">A match on any of the properties in the instance is good enough.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NONE" class="member-name-link">NONE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Return instances where none of the supplied properties match.</div>
+</div>
 </div>
 </section>
 </li>
@@ -187,18 +192,21 @@ the order they are declared.</div>
 <section class="detail" id="ALL">
 <h3>ALL</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MatchCriteria.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">MatchCriteria</a></span>&nbsp;<span class="element-name">ALL</span></div>
+<div class="block">All properties must match.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ANY">
 <h3>ANY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MatchCriteria.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">MatchCriteria</a></span>&nbsp;<span class="element-name">ANY</span></div>
+<div class="block">A match on any of the properties in the instance is good enough.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NONE">
 <h3>NONE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MatchCriteria.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">MatchCriteria</a></span>&nbsp;<span class="element-name">NONE</span></div>
+<div class="block">Return instances where none of the supplied properties match.</div>
 </section>
 </li>
 </ul>

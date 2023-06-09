@@ -83,8 +83,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">DataItemSortOrder</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="DataItemSortOrder.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">DataItemSortOrder</a>&gt;
-implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="DataItemSortOrder.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">DataItemSortOrder</a>&gt;</span></div>
 <div class="block">DataItemSortOrder is used for schema attributes that may have multiple instances.</div>
 </section>
 <section class="summary">
@@ -107,13 +106,23 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#ASCENDING" class="member-name-link">ASCENDING</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">The attribute instances are organized so that the smallest/lowest value is first and the rest of the instances
+ follow in ascending order.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#DESCENDING" class="member-name-link">DESCENDING</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">The attribute instances are organized so that the largest/highest value is first and the rest of the instances
+ follow in descending order.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNKNOWN" class="member-name-link">UNKNOWN</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">The sort order is not specified.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNSORTED" class="member-name-link">UNSORTED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">The instances of the schema attribute may appear in any order.</div>
+</div>
 </div>
 </section>
 </li>
@@ -198,24 +207,30 @@ the order they are declared.</div>
 <section class="detail" id="UNKNOWN">
 <h3>UNKNOWN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataItemSortOrder.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">DataItemSortOrder</a></span>&nbsp;<span class="element-name">UNKNOWN</span></div>
+<div class="block">The sort order is not specified.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ASCENDING">
 <h3>ASCENDING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataItemSortOrder.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">DataItemSortOrder</a></span>&nbsp;<span class="element-name">ASCENDING</span></div>
+<div class="block">The attribute instances are organized so that the smallest/lowest value is first and the rest of the instances
+ follow in ascending order.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DESCENDING">
 <h3>DESCENDING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataItemSortOrder.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">DataItemSortOrder</a></span>&nbsp;<span class="element-name">DESCENDING</span></div>
+<div class="block">The attribute instances are organized so that the largest/highest value is first and the rest of the instances
+ follow in descending order.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNSORTED">
 <h3>UNSORTED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataItemSortOrder.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">DataItemSortOrder</a></span>&nbsp;<span class="element-name">UNSORTED</span></div>
+<div class="block">The instances of the schema attribute may appear in any order.</div>
 </section>
 </li>
 </ul>

@@ -83,8 +83,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">CriticalityLevel</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="CriticalityLevel.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">CriticalityLevel</a>&gt;
-implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="CriticalityLevel.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">CriticalityLevel</a>&gt;</span></div>
 <div class="block">CriticalityLevel defines how important a data item is to the organization.</div>
 </section>
 <section class="summary">
@@ -107,17 +106,29 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#CATASTROPHIC" class="member-name-link">CATASTROPHIC</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">The data is so important that its loss is catastrophic, putting the future of the organization in doubt.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#CRITICAL" class="member-name-link">CRITICAL</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">The data is critical to the operation of the organization.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#IMPORTANT" class="member-name-link">IMPORTANT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">The data is important to the running of the organization.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#MARGINAL" class="member-name-link">MARGINAL</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">The data is of minor importance to the organization.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#OTHER" class="member-name-link">OTHER</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Another criticality level.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNCLASSIFIED" class="member-name-link">UNCLASSIFIED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">There is no assessment of the criticality for this data.</div>
+</div>
 </div>
 </section>
 </li>
@@ -202,36 +213,42 @@ the order they are declared.</div>
 <section class="detail" id="UNCLASSIFIED">
 <h3>UNCLASSIFIED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CriticalityLevel.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">CriticalityLevel</a></span>&nbsp;<span class="element-name">UNCLASSIFIED</span></div>
+<div class="block">There is no assessment of the criticality for this data.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="MARGINAL">
 <h3>MARGINAL</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CriticalityLevel.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">CriticalityLevel</a></span>&nbsp;<span class="element-name">MARGINAL</span></div>
+<div class="block">The data is of minor importance to the organization.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="IMPORTANT">
 <h3>IMPORTANT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CriticalityLevel.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">CriticalityLevel</a></span>&nbsp;<span class="element-name">IMPORTANT</span></div>
+<div class="block">The data is important to the running of the organization.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CRITICAL">
 <h3>CRITICAL</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CriticalityLevel.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">CriticalityLevel</a></span>&nbsp;<span class="element-name">CRITICAL</span></div>
+<div class="block">The data is critical to the operation of the organization.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CATASTROPHIC">
 <h3>CATASTROPHIC</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CriticalityLevel.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">CriticalityLevel</a></span>&nbsp;<span class="element-name">CATASTROPHIC</span></div>
+<div class="block">The data is so important that its loss is catastrophic, putting the future of the organization in doubt.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OTHER">
 <h3>OTHER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CriticalityLevel.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">CriticalityLevel</a></span>&nbsp;<span class="element-name">OTHER</span></div>
+<div class="block">Another criticality level.</div>
 </section>
 </li>
 </ul>

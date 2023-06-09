@@ -82,10 +82,6 @@ loadScripts(document, 'script');</script>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
-<dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code></dd>
-</dl>
-<dl class="notes">
 <dt>Direct Known Subclasses:</dt>
 <dd><code><a href="../ConnectorBase.ProtectedConnection.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase.ProtectedConnection</a></code>, <code><a href="../../../repositoryservices/enterprise/repositoryconnector/EnterpriseOMRSConnection.html" title="class in org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector">EnterpriseOMRSConnection</a></code>, <code><a href="VirtualConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">VirtualConnectionProperties</a></code></dd>
 </dl>
@@ -94,7 +90,7 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="AssetReferenceable.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetReferenceable</a></span></div>
 <div class="block">ConnectionProperties is an object that contains the properties needed to create and initialise a connector to access a
  specific data assets.
-
+ <br><br>
  The properties for ConnectionProperties are defined in model 0201.  They include the following options for connector name:
  <ul>
      <li>
@@ -116,7 +112,6 @@ loadScripts(document, 'script');</script>
      </li>
  </ul>
   Either the guid, qualifiedName or displayName can be used to specify the name for a connection.
-
   Other properties for the connection include:
 
   <ul>
@@ -144,14 +139,6 @@ loadScripts(document, 'script');</script>
           endpoint - Properties that describe the server endpoint where the connector will retrieve the assets.
       </li>
   </ul></div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../serialized-form.html#org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties">Serialized Form</a></li>
-</ul>
-</dd>
-</dl>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -370,12 +357,12 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns a formatted string with the connection name.  It is used in formatting error messages for the
  exceptions thrown by consuming components.  It is extremely cautious because most of the exceptions
  are reporting a malformed connection object so who knows what else is wrong with it.
-
+ <br><br>
  Within the connection are 2 possible properties that could
  contain the connection name:
    ** qualifiedName - this is a uniqueName and should be there
    ** displayName - shorter simpler name but may not be unique - so may not identify the connection in error
-
+ <br><br>
  This method inspects these properties and builds up a string to represent the connection name</div>
 <dl class="notes">
 <dt>Returns:</dt>

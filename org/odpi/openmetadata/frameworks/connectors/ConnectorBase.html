@@ -90,19 +90,19 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>
 implements <a href="SecureConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">SecureConnectorExtension</a></span></div>
 <div class="block">The ConnectorBase is an implementation of the Connector interface.
-
+ <br><br>
  Connectors are client-side interfaces to assets such as data stores, data sets, APIs, analytical functions.
  They handle the communication with the server that hosts the assets, along with the communication with the
  metadata server to serve up metadata about the assets, and support for an audit log for the caller to log its
  activity.
-
+ <br><br>
  Each connector implementation is paired with a connector provider.  The connector provider is the factory for
  connector instances.
-
+ <br><br>
  The Connector interface defines that a connector instance should be able to return a unique
  identifier, a connection object and a metadata properties object for its connected asset.
  These are supplied to the connector during its initialization.
-
+ <br><br>
  The ConnectorBase base class implements all the methods required by the Connector interface.
  Each specific implementation of a connector then extends this interface to add the methods to work with the
  particular type of asset it supports.  For example, a JDBC connector would add the standard JDBC SQL interface, the

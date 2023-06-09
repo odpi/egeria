@@ -81,7 +81,7 @@ loadScripts(document, 'script');</script>
 <div class="block">OMAGServerPlatformInstanceMap provides part of the mapping for inbound REST requests to the appropriate
  service instances for the requested server.  It manages the server name to server instance mapping.
  The map is maintained in a static, so it is scoped to the class loader.
-
+ <br><br>
  Instances of this class call the synchronized static methods to work with the map.</div>
 </section>
 <section class="summary">
@@ -188,43 +188,50 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the time this server instance last started.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerType(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getServerType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../platformservices/properties/ServerStatus.html" title="class in org.odpi.openmetadata.platformservices.properties">ServerStatus</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerStatus(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getServerStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceOperationName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the type of server.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isServerActive(java.lang.String,java.lang.String)" class="member-name-link">isServerActive</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerType(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getServerType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceOperationName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return whether a particular server is active (running) in the platform.</div>
+<div class="block">Return the type of server.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isServerKnown(java.lang.String,java.lang.String)" class="member-name-link">isServerKnown</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isServerActive(java.lang.String,java.lang.String)" class="member-name-link">isServerActive</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return whether a particular server is active (running) in the platform.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isServerKnown(java.lang.String,java.lang.String)" class="member-name-link">isServerKnown</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return whether a particular server is registered with the platform.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shutdownServerInstance(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">shutdownServerInstance</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shutdownServerInstance(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">shutdownServerInstance</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Shutdown the server instance.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../metadatasecurity/server/OpenMetadataServerSecurityVerifier.html" title="class in org.odpi.openmetadata.metadatasecurity.server">OpenMetadataServerSecurityVerifier</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startUpServerInstance(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">startUpServerInstance</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../metadatasecurity/server/OpenMetadataServerSecurityVerifier.html" title="class in org.odpi.openmetadata.metadatasecurity.server">OpenMetadataServerSecurityVerifier</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startUpServerInstance(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">startUpServerInstance</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Start up the server with the requested security.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#validateUserAsInvestigatorForPlatform(java.lang.String)" class="member-name-link">validateUserAsInvestigatorForPlatform</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#validateUserAsInvestigatorForPlatform(java.lang.String)" class="member-name-link">validateUserAsInvestigatorForPlatform</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Verify that the calling user is allowed to query the platform services.</div>
 </div>
 </div>
@@ -408,6 +415,28 @@ loadScripts(document, 'script');</script>
 <dd><code>serviceOperationName</code> - name of the calling method/request</dd>
 <dt>Returns:</dt>
 <dd>string name</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></code> - the serverName is not known.</dd>
+<dd><code><a href="../ffdc/exceptions/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">UserNotAuthorizedException</a></code> - the user is not authorized to issue the request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getServerStatus(java.lang.String,java.lang.String,java.lang.String)">
+<h3>getServerStatus</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../platformservices/properties/ServerStatus.html" title="class in org.odpi.openmetadata.platformservices.properties">ServerStatus</a></span>&nbsp;<span class="element-name">getServerStatus</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceOperationName)</span>
+                             throws <span class="exceptions"><a href="../ffdc/exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a>,
+<a href="../ffdc/exceptions/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">UserNotAuthorizedException</a></span></div>
+<div class="block">Return the type of server.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - calling user or null if it is an anonymous request</dd>
+<dd><code>serverName</code> - name of the server</dd>
+<dd><code>serviceOperationName</code> - name of the calling method/request</dd>
+<dt>Returns:</dt>
+<dd>server status</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></code> - the serverName is not known.</dd>
 <dd><code><a href="../ffdc/exceptions/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">UserNotAuthorizedException</a></code> - the user is not authorized to issue the request.</dd>

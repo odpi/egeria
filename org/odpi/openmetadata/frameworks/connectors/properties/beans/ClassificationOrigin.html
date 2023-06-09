@@ -83,8 +83,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">ClassificationOrigin</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="ClassificationOrigin.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ClassificationOrigin</a>&gt;
-implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="ClassificationOrigin.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ClassificationOrigin</a>&gt;</span></div>
 <div class="block">ClassificationOrigin describes the provenance of a classification attached to an entity.  Most classifications
  are explicitly assigned to an entity.  However, it is possible for some classifications to flow along
  relationships to other entities.  These are the propagated classifications.  Each entity can only have one
@@ -93,7 +92,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
  flow through an entity that does not support the particular type of classification and then on to other
  relationships attached to the entity.  The ClassificationPropagateRule in the relationship's RelationshipDef
  defines where the classification can flow to.
-
+ <br><br>
  Note: the repository services have no mechanism to automatically propagate classifications.  This is set up by higher
  level services working with knowledge of the specific instance types of metadata and their significance.</div>
 </section>
@@ -117,9 +116,13 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#ASSIGNED" class="member-name-link">ASSIGNED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">The classification is explicitly assigned to the entity.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#PROPAGATED" class="member-name-link">PROPAGATED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">The classification has propagated along a relationship to this entity.</div>
+</div>
 </div>
 </section>
 </li>
@@ -189,12 +192,14 @@ the order they are declared.</div>
 <section class="detail" id="ASSIGNED">
 <h3>ASSIGNED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ClassificationOrigin.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ClassificationOrigin</a></span>&nbsp;<span class="element-name">ASSIGNED</span></div>
+<div class="block">The classification is explicitly assigned to the entity.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="PROPAGATED">
 <h3>PROPAGATED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ClassificationOrigin.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ClassificationOrigin</a></span>&nbsp;<span class="element-name">PROPAGATED</span></div>
+<div class="block">The classification has propagated along a relationship to this entity.</div>
 </section>
 </li>
 </ul>
