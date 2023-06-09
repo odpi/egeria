@@ -13,8 +13,6 @@ import java.util.Map;
  */
 public class OMAGRuntimeException extends org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException
 {
-    private static final long    serialVersionUID = 1L;
-
     /**
      * This is the typical constructor used for creating an OMAGRuntimeException.
      *

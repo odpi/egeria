@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -23,10 +21,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum MatchCriteria implements Serializable
+public enum MatchCriteria
 {
+    /**
+     * All properties must match.
+     */
     ALL  (0, "All",  "All properties must match."),
+
+    /**
+     * A match on any of the properties in the instance is good enough.
+     */
     ANY  (1, "Any",  "A match on any of the properties in the instance is good enough."),
+
+    /**
+     * Return instances where none of the supplied properties match.
+     */
     NONE (2, "None", "Return instances where none of the supplied properties match.");
 
     private static final long serialVersionUID = 1L;

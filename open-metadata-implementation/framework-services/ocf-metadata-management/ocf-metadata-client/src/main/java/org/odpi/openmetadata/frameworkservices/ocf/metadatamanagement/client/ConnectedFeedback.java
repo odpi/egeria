@@ -11,8 +11,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.AssetFeedback;
  */
 public class ConnectedFeedback extends AssetFeedback
 {
-    private static final long    serialVersionUID = 1L;
-
     /**
      * Typical constructor creates an AssetFeedback object primed with the iterators for the asset's comments,
      * tags, likes and ratings.

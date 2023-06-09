@@ -19,8 +19,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ServerCohortDetails {
 
-    private static final long    serialVersionUID = 1L;
-
     /*
      * A ServerCohortDetails object is constructed when a server overview is retrieved.
      * The server overview contains a map (by cohort name) with an entry for each of the cohorts the server is a membber of.

@@ -29,8 +29,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AssetResponse extends OCFOMASAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     private Asset          asset                      = null;
     private int            certificationCount         = 0;
     private int            commentCount               = 0;
