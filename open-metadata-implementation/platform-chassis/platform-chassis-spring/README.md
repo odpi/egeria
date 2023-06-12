@@ -1,15 +1,15 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Spring-based Server Chassis
+# Spring-based Platform Chassis
 
-The [Server Chassis](..)
+The [Platform Chassis](..)
 provides the base server framework to host the Open Metadata
 and Governance (OMAG) Servers in the
 [OMAG Server Platform](https://egeria-project.org/concepts/omag-server).  
 
-The **server-chassis-spring** module is an implementation of the
-server chassis written using [Spring Boot](../../../developer-resources/Spring.md).
+The **platform-chassis-spring** module is an implementation of the
+platform chassis written using [Spring Boot](../../../developer-resources/Spring.md).
 Its **main()** method is located in a Java class called **OMAGServerPlatform**.
 
 When the OMAGServerPlatform is first started, all of its REST APIs
@@ -44,7 +44,7 @@ By running
 ```
 mvn clean install -DadminChassisOnly
 ```
- the server-chassis-spring will contain only the following services:
+ the platform-chassis-spring will contain only the following services:
  * Administration Services - Operational
  * Administration Services - Platform Configuration
  * Administration Services - Server Configuration
@@ -91,7 +91,7 @@ services that are in Java packages stemming from `org.odpi.openmetadata.*`
 and that are visible to this module.
 
 To make a new Java package visible to **OMAGServerPlatform**, add its **spring** package
-to the **pom.xml** file for **server-chassis-spring** and it will be picked up in the component scan.
+to the **pom.xml** file for **platform-chassis-spring** and it will be picked up in the component scan.
 
 For example, this is the snippet of XML in the pom.xml file that adds the
 [Asset Owner OMAS](https://egeria-project.org/services/omas/asset-owner/overview/) services

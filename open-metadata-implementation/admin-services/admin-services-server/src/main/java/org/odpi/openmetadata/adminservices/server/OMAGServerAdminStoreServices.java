@@ -48,11 +48,11 @@ public class OMAGServerAdminStoreServices
 {
     private static Connection  configurationStoreConnection = null;
 
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminStoreServices.class),
-                                                                      CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminStoreServices.class),
+                                                                            CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName());
 
-    private OMAGServerExceptionHandler   exceptionHandler = new OMAGServerExceptionHandler();
-    private OMAGServerErrorHandler       errorHandler = new OMAGServerErrorHandler();
+    private final OMAGServerExceptionHandler exceptionHandler = new OMAGServerExceptionHandler();
+    private final OMAGServerErrorHandler     errorHandler     = new OMAGServerErrorHandler();
 
     /**
      * Override the default location of the configuration documents.
@@ -341,10 +341,10 @@ public class OMAGServerAdminStoreServices
      * @throws OMAGInvalidParameterException problem with the configuration file
      * @throws OMAGNotAuthorizedException user not authorized to make these changes
      */
-    OMAGServerConfig getServerConfig(String   userId,
-                                     String   serverName,
-                                     boolean  adminCall,
-                                     String   methodName) throws OMAGInvalidParameterException,
+    public OMAGServerConfig getServerConfig(String userId,
+                                            String serverName,
+                                            boolean adminCall,
+                                            String methodName) throws OMAGInvalidParameterException,
                                                                  OMAGNotAuthorizedException
     {
         OMAGServerConfigStore   serverConfigStore = getServerConfigStore(serverName, methodName);
@@ -543,9 +543,9 @@ public class OMAGServerAdminStoreServices
      * @param serverConfig  properties to save
      * @throws OMAGInvalidParameterException problem with the config file
      */
-    void saveServerConfig(String            serverName,
-                          String            methodName,
-                          OMAGServerConfig  serverConfig) throws OMAGInvalidParameterException
+    public void saveServerConfig(String serverName,
+                                 String methodName,
+                                 OMAGServerConfig serverConfig) throws OMAGInvalidParameterException
     {
         OMAGServerConfigStore   serverConfigStore = getServerConfigStore(serverName, methodName);
 

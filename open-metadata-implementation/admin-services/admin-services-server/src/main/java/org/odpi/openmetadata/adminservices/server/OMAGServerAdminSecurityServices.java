@@ -38,12 +38,12 @@ import java.util.List;
  */
 public class OMAGServerAdminSecurityServices
 {
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminSecurityServices.class),
-                                                                      CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminSecurityServices.class),
+                                                                            CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName());
 
-    private OMAGServerExceptionHandler   exceptionHandler = new OMAGServerExceptionHandler();
-    private OMAGServerErrorHandler       errorHandler     = new OMAGServerErrorHandler();
-    private OMAGServerAdminStoreServices configStore      = new OMAGServerAdminStoreServices();
+    private final OMAGServerExceptionHandler   exceptionHandler = new OMAGServerExceptionHandler();
+    private final OMAGServerErrorHandler       errorHandler = new OMAGServerErrorHandler();
+    private final OMAGServerAdminStoreServices configStore  = new OMAGServerAdminStoreServices();
 
     /**
      * Override the default platform security connector.

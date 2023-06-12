@@ -22,9 +22,12 @@ dependencies {
     implementation 'org.springframework:spring-beans'
     implementation 'org.springframework:spring-core'
     implementation 'org.springframework:spring-context'
+    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    implementation project(':open-metadata-implementation:platform-services:platform-services-api')
+    implementation project(':open-metadata-implementation:platform-services:platform-services-server')
     implementation project(':open-metadata-implementation:admin-services:admin-services-server')
+    implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-server')
     compileOnly project(':open-metadata-implementation:common-services:ffdc-services')
-    implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     runtimeOnly 'ch.qos.logback:logback-classic'
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     implementation 'org.slf4j:slf4j-api'

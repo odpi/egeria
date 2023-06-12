@@ -40,9 +40,9 @@ public class OMAGServerErrorHandler
      * @param methodName  method receiving the call
      * @throws OMAGNotAuthorizedException no userId provided
      */
-    void validateUserId(String userId,
-                        String serverName,
-                        String methodName) throws OMAGNotAuthorizedException
+    public void validateUserId(String userId,
+                               String serverName,
+                               String methodName) throws OMAGNotAuthorizedException
     {
         if ((userId == null) || (userId.length() == 0))
         {
@@ -60,8 +60,8 @@ public class OMAGServerErrorHandler
      * @param methodName  method being called
      * @throws OMAGInvalidParameterException null server name
      */
-    void validateServerName(String serverName,
-                            String methodName) throws OMAGInvalidParameterException
+    public void validateServerName(String serverName,
+                                   String methodName) throws OMAGInvalidParameterException
     {
         /*
          * If the local server name is still null then save the server name in the configuration.
@@ -412,9 +412,9 @@ public class OMAGServerErrorHandler
      * @param methodName  method called
      * @throws OMAGInvalidParameterException the cohort name is null
      */
-    void validateFileName(String  fileName,
-                          String  serverName,
-                          String  methodName) throws OMAGInvalidParameterException
+    public void validateFileName(String fileName,
+                                 String serverName,
+                                 String methodName) throws OMAGInvalidParameterException
     {
         if ((fileName == null) || (fileName.length() == 0))
         {
@@ -454,9 +454,9 @@ public class OMAGServerErrorHandler
      * @param methodName  method called
      * @throws OMAGInvalidParameterException the connection is null
      */
-    void validateServerConnection(Connection connection,
-                                  String     serverName,
-                                  String     methodName) throws OMAGInvalidParameterException
+    public void validateServerConnection(Connection connection,
+                                         String serverName,
+                                         String methodName) throws OMAGInvalidParameterException
     {
         if (connection == null)
         {
@@ -476,8 +476,8 @@ public class OMAGServerErrorHandler
      * @param methodName  method called
      * @throws OMAGInvalidParameterException the connection is null
      */
-    void validatePlatformConnection(Connection connection,
-                                    String     methodName) throws OMAGInvalidParameterException
+    public void validatePlatformConnection(Connection connection,
+                                           String methodName) throws OMAGInvalidParameterException
     {
         if (connection == null)
         {

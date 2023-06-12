@@ -66,7 +66,7 @@ You can customize the endpoints/paths that are to be described by following the
 
 ## Endpoints produced
 
-The following endpoints are produced in the server chassis. 
+The following endpoints are produced in the OMAG Server Platform. 
 
 | Endpoint                                  | Module Dependency    | Description                                                                |
 |-------------------------------------------|----------------------|----------------------------------------------------------------------------|

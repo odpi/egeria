@@ -4,8 +4,11 @@
 package org.odpi.openmetadata.platformservices.client;
 
 
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
+import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
+import org.odpi.openmetadata.adminservices.rest.PlatformSecurityRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeListResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
@@ -13,11 +16,16 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.platformservices.properties.ServerServicesStatus;
 import org.odpi.openmetadata.platformservices.properties.ServerStatus;
+import org.odpi.openmetadata.platformservices.rest.OMAGServerStatusResponse;
 import org.odpi.openmetadata.platformservices.rest.ServerListResponse;
 import org.odpi.openmetadata.platformservices.rest.ServerServicesListResponse;
 import org.odpi.openmetadata.platformservices.rest.ServerStatusResponse;
+import org.odpi.openmetadata.platformservices.rest.SuccessMessageResponse;
+
 
 import java.util.List;
 
@@ -31,9 +39,9 @@ public class PlatformServicesClient
     private final String                     platformRootURL;            /* Initialized in constructor */
     protected     AuditLog                   auditLog;                   /* Initialized in constructor */
 
-    private final String                retrieveURLTemplatePrefix   = "/open-metadata/platform-services/users/{1}/server-platform";
+    private final String                     retrieveURLTemplatePrefix   = "/open-metadata/platform-services/users/{1}/server-platform";
 
-    private final InvalidParameterHandler   invalidParameterHandler     = new InvalidParameterHandler();
+    private final InvalidParameterHandler    invalidParameterHandler     = new InvalidParameterHandler();
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -135,11 +143,86 @@ public class PlatformServicesClient
 
         final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/origin";
 
-        String restResult = restClient.callStringGetRESTCall(methodName, urlTemplate, userId);
-
-        return restResult; // .getResultString();
+        return restClient.callStringGetRESTCall(methodName, urlTemplate, userId);
     }
 
+    
+    /**
+     * Set up a platform security connector.  This connector provides additional authorization
+     * checks on API requests to the platform.
+     *
+     * @param userId calling user
+     * @param connection connection object that defines the platform security connector
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws PropertyServerException unusual state in the platform.
+     */
+    public void setPlatformSecurityConnection(String     userId,
+                                              Connection connection) throws UserNotAuthorizedException,
+                                                                            InvalidParameterException,
+                                                                            PropertyServerException
+    {
+        final String methodName    = "setPlatformSecurityConnection";
+        final String parameterName = "connection";
+        final String urlTemplate   = platformRootURL + retrieveURLTemplatePrefix + "/security/connection";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateConnection(connection, parameterName, methodName);
+        
+        PlatformSecurityRequestBody requestBody = new PlatformSecurityRequestBody();
+
+        requestBody.setPlatformSecurityConnection(connection);
+
+        restClient.callVoidPostRESTCall(methodName, urlTemplate, requestBody, userId);
+    }
+
+
+    /**
+     * Clear the connection object for platform security.  This means there is no platform security set up
+     * and there will be no authorization checks within the platform.  All security will have to
+     * come from the surrounding deployment environment.
+     * This is the default state.
+     *
+     * @param userId calling user
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws PropertyServerException unusual state in the platform.
+     */
+    public void clearPlatformSecurityConnection(String userId) throws UserNotAuthorizedException, 
+                                                                      InvalidParameterException, 
+                                                                      PropertyServerException
+    {
+        final String methodName  = "clearPlatformSecurityConnection";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/security/connection";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        restClient.callVoidDeleteRESTCall(methodName, urlTemplate, userId);
+    }
+
+
+    /**
+     * Return the connection object for platform security connector.  Null is returned if no platform security
+     * has been set up.
+     *
+     * @param userId calling user
+     * @return Platform security connection
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws PropertyServerException unusual state in the platform.
+     */
+    public Connection getPlatformSecurityConnection(String userId) throws UserNotAuthorizedException, 
+                                                                          InvalidParameterException, 
+                                                                          PropertyServerException
+    {
+        final String methodName  = "getPlatformSecurityConnection";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/security/connection";
+
+        ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName, urlTemplate, userId);
+
+        return restResult.getConnection();
+    }
+    
 
     /**
      * Return the connector type for the requested connector provider after validating that the
@@ -165,7 +248,7 @@ public class PlatformServicesClient
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(connectorProviderClassName, connectorProviderParameterName, methodName);
 
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/connector-types/{1}" + connectorProviderClassName;
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/connector-types/{1}";
 
         ConnectorTypeResponse restResult = restClient.callConnectorTypeGetRESTCall(methodName, urlTemplate, userId, connectorProviderClassName);
 
@@ -227,8 +310,10 @@ public class PlatformServicesClient
                                                                       PropertyServerException
     {
         final String methodName = "getActiveServices";
+        final String serverNameParameter = "serverName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(serverName, serverNameParameter, methodName);
 
         final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/"+serverName+"/services";
 
@@ -450,5 +535,310 @@ public class PlatformServicesClient
         RegisteredOMAGServicesResponse restResult = restClient.callRegisteredOMAGServicesGetRESTCall(methodName, urlTemplate, userId);
 
         return restResult.getServices();
+    }
+
+
+
+
+    /*
+     * ========================================================================================
+     * Activate and deactivate the open metadata and governance capabilities in the OMAG Server
+     */
+
+    /**
+     * Activate the Open Metadata and Governance (OMAG) server using the configuration document stored for this server.
+     *
+     * @param userId calling user
+     * @param serverName server to start
+     * @return success message
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws PropertyServerException unusual state in the server.
+     */
+    public String activateWithStoredConfig(String userId,
+                                           String serverName) throws UserNotAuthorizedException, 
+                                                                     InvalidParameterException, 
+                                                                     PropertyServerException
+    {
+        final String methodName  = "activateWithStoredConfig";
+        final String serverNameParameter  = "serverName";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{1}/instance";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(serverName, serverNameParameter, methodName);
+
+        SuccessMessageResponse restResult = restClient.callSuccessMessagePostRESTCall(methodName, urlTemplate, null, userId, serverName);
+
+        return restResult.getSuccessMessage();
+    }
+
+
+    /**
+     * Activate the open metadata and governance services using the supplied configuration
+     * document.
+     *
+     * @param userId calling user
+     * @param configuration  properties used to initialize the services
+     * @return success message
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws PropertyServerException unusual state in the server.
+     */
+    public String activateWithSuppliedConfig(String           userId,
+                                             OMAGServerConfig configuration) throws UserNotAuthorizedException,
+                                                                                    InvalidParameterException,
+                                                                                    PropertyServerException
+    {
+        final String methodName  = "activateWithSuppliedConfig";
+        final String parameterName = "configuration";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{1}/instance/configuration";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(configuration, parameterName, methodName);
+
+        SuccessMessageResponse restResult = restClient.callSuccessMessagePostRESTCall(methodName,
+                                                                                      urlTemplate,
+                                                                                      configuration,
+                                                                                      userId,
+                                                                                      configuration.getLocalServerName());
+
+        return restResult.getSuccessMessage();
+    }
+
+
+    /**
+     * Temporarily deactivate any open metadata and governance services.
+     *
+     * @param userId calling user
+     * @param serverName server to start
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws PropertyServerException unusual state in the platform.
+     */
+    public void shutdownServer(String userId,
+                               String serverName) throws UserNotAuthorizedException,
+                                                         InvalidParameterException,
+                                                         PropertyServerException
+    {
+        final String methodName  = "shutdownServer";
+        final String serverNameParameter  = "serverName";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{1}/instance";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(serverName, serverNameParameter, methodName);
+
+        restClient.callVoidDeleteRESTCall(methodName, urlTemplate, userId, serverName);
+    }
+
+
+    /**
+     * Temporarily shutdown all running servers.
+     *
+     * @param userId  user that is issuing the request
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws PropertyServerException unusual state in the platform.
+     */
+    public void shutdownAllServers(String  userId) throws UserNotAuthorizedException,
+                                                          InvalidParameterException,
+                                                          PropertyServerException
+    {
+        final String methodName  = "shutdownAllServers";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/instance";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        restClient.callVoidDeleteRESTCall(methodName, urlTemplate, userId);
+    }
+
+
+    /**
+     * Permanently deactivate any open metadata and governance services and unregister from
+     * any cohorts.
+     *
+     * @param userId calling user
+     * @param serverName server to start
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws PropertyServerException unusual state in the platform.
+     */
+
+    public void shutdownAndUnregisterServer(String userId,
+                                            String serverName) throws UserNotAuthorizedException,
+                                                                      InvalidParameterException,
+                                                                      PropertyServerException
+    {
+        final String methodName  = "shutdownAndUnregisterServer";
+        final String serverNameParameter  = "serverName";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{1}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(serverName, serverNameParameter, methodName);
+
+        restClient.callVoidDeleteRESTCall(methodName, urlTemplate, userId, serverName);
+    }
+
+
+    /**
+     * Shutdown any active servers and unregister them from
+     * any cohorts.
+     *
+     * @param userId  user that is issuing the request
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws PropertyServerException unusual state in the platform.
+     */
+    public void shutdownAndUnregisterAllServers(String  userId) throws UserNotAuthorizedException,
+                                                                       InvalidParameterException,
+                                                                       PropertyServerException
+    {
+        final String methodName  = "shutdownAndUnregisterAllServers";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        restClient.callVoidDeleteRESTCall(methodName, urlTemplate, userId);
+    }
+
+
+    /**
+     * Shutdown any active servers and unregister them from
+     * any cohorts.
+     *
+     * @param userId  user that is issuing the request
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws PropertyServerException unusual state in the platform.
+     */
+     public void shutdownPlatform(String  userId) throws UserNotAuthorizedException,
+                                                         InvalidParameterException,
+                                                         PropertyServerException
+     {
+         final String methodName  = "shutdownPlatform";
+         final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/instance";
+
+         invalidParameterHandler.validateUserId(userId, methodName);
+
+         restClient.callVoidDeleteRESTCall(methodName, urlTemplate, userId);
+     }
+
+
+    /*
+     * =============================================================
+     * Operational status and control
+     */
+
+    /**
+     * Return the configuration used for the current active instance of the server.  Null is returned if
+     * the server instance is not running.
+     *
+     * @param userId calling user
+     * @param serverName server to start
+     * @return configuration properties used to initialize the server or null if not running
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws PropertyServerException unusual state in the platform.
+     */
+    public OMAGServerConfig getActiveConfiguration(String userId,
+                                                   String serverName) throws UserNotAuthorizedException,
+                                                                             InvalidParameterException,
+                                                                             PropertyServerException
+    {
+        final String methodName  = "getActiveConfiguration";
+        final String serverNameParameter  = "serverName";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{1}/instance/configuration";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(serverName, serverNameParameter, methodName);
+
+        OMAGServerConfigResponse restResult = restClient.callOMAGServerConfigGetRESTCall(methodName, urlTemplate, userId, serverName);
+
+        return restResult.getOMAGServerConfig();
+    }
+
+
+    /**
+     * Return the status of a running server (use platform services to find out if the server is running).
+     *
+     * @param userId calling user
+     * @param serverName server to start
+     * @return status of the server
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws PropertyServerException unusual state in the platform.
+     */
+    public ServerServicesStatus getServerServicesStatus(String userId, 
+                                                        String serverName) throws UserNotAuthorizedException, 
+                                                                                  InvalidParameterException, 
+                                                                                  PropertyServerException
+    {
+        final String methodName  = "getServerStatus";
+        final String serverNameParameter  = "serverName";
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{1}/instance/status";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(serverName, serverNameParameter, methodName);
+
+        OMAGServerStatusResponse restResult = restClient.callOMAGServerStatusGetRESTCall(methodName, urlTemplate, userId, serverName);
+
+        return restResult.getServerStatus();
+    }
+
+
+    /**
+     * Add a new open metadata archive to running repository.
+     *
+     * @param userId calling user
+     * @param serverName server to start
+     * @param fileName name of the open metadata archive file.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws PropertyServerException unusual state in the platform.
+     */
+    public void addOpenMetadataArchiveFile(String userId,
+                                           String serverName,
+                                           String fileName) throws UserNotAuthorizedException,
+                                                                   InvalidParameterException,
+                                                                   PropertyServerException
+    {
+        final String methodName    = "addOpenMetadataArchiveFile";
+        final String parameterName = "fileName";
+        final String serverNameParameter  = "serverName";
+        final String urlTemplate   = platformRootURL + retrieveURLTemplatePrefix + "/servers/{1}/instance/open-metadata-archives/file";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(serverName, serverNameParameter, methodName);
+        invalidParameterHandler.validateName(fileName, parameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName, urlTemplate, fileName, userId, serverName);
+    }
+
+
+    /**
+     * Add a new open metadata archive to running repository.
+     *
+     * @param userId calling user
+     * @param serverName server to start
+     * @param connection connection for the open metadata archive.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws PropertyServerException unusual state in the platform.
+     */
+    public void addOpenMetadataArchive(String     userId,
+                                       String     serverName,
+                                       Connection connection) throws UserNotAuthorizedException,
+                                                                     InvalidParameterException,
+                                                                     PropertyServerException
+    {
+        final String methodName    = "addOpenMetadataArchiveFile";
+        final String parameterName = "connection";
+        final String serverNameParameter  = "serverName";
+        final String urlTemplate   = platformRootURL + retrieveURLTemplatePrefix + "/servers/{1}/instance/open-metadata-archives/connection";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(serverName, serverNameParameter, methodName);
+        invalidParameterHandler.validateConnection(connection, parameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName, urlTemplate, connection, userId, serverName);
     }
 }

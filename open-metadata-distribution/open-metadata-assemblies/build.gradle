@@ -18,7 +18,7 @@ dependencies {
 
     // Dependencies for the main server assembly - this is modeled on the pom.xml
     // In future we may be able to select by type or label
-    implementation project(':open-metadata-implementation:server-chassis:server-chassis-spring')
+    implementation project(':open-metadata-implementation:platform-chassis:platform-chassis-spring')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-event-topic-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-file-connector')
@@ -111,7 +111,10 @@ distributions {
         contents {
             into('server') {
                 // Just the chassis - for backward compatibility
-                from { project(':open-metadata-implementation:server-chassis:server-chassis-spring').bootJar }
+                from { project(':open-metadata-implementation:platform-chassis:platform-chassis-spring').bootJar }
+                rename { String fileName ->
+                    fileName.replace("platform-chassis-spring", "server-chassis-spring")
+                }
                 fileMode = 0755
             }
             into('server/lib') {
@@ -150,9 +153,9 @@ distributions {
             }
             into('platform') {
                 // OMAG Server Platform - new name consistent with documentation
-                from { project(':open-metadata-implementation:server-chassis:server-chassis-spring').bootJar }
+                from { project(':open-metadata-implementation:platform-chassis:platform-chassis-spring').bootJar }
                 rename { String fileName ->
-                    fileName.replace("server-chassis-spring", "omag-server-platform")
+                    fileName.replace("platform-chassis-spring", "omag-server-platform")
                 }
                 fileMode = 0755
             }

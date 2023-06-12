@@ -3,17 +3,17 @@
  
 ![Released](../../images/egeria-content-status-released.png#pagewidth)
 
-# OMAG Server Chassis
+# OMAG Server Platform Chassis
 
-The **Server Chassis** provides the base server framework, such as the web server and
+The **Platform Chassis** provides the base runtime framework, such as the web server and
 the REST API endpoint support for the
 [Open Metadata and Governance (OMAG) Server Platform](https://egeria-project.org/concepts/omag-server-platform).
-Calls to the server chassis are then routed to the appropriate Egeria subsystem.
+Calls to the platform chassis are then routed to the appropriate Egeria subsystem.
 
-* [Documentation](https://egeria-project.org/services/server-chassis)
+* [Documentation](https://egeria-project.org/services/platform-chassis)
 
-Today, Egeria has one server chassis implementation:
-* **[server-chassis-spring](server-chassis-spring)** - using [Spring Boot](https://spring.io/projects/spring-boot).
+Today, Egeria has one platform chassis implementation:
+* **[platform-chassis-spring](platform-chassis-spring)** - using [Spring Boot](https://spring.io/projects/spring-boot).
 
 ----
 Return to [open-metadata-implementation](..).

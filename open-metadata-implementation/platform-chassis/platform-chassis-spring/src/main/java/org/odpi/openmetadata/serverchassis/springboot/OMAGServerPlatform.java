@@ -7,10 +7,14 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
-import org.odpi.openmetadata.adminservices.server.OMAGServerOperationalServices;
-import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
+import org.odpi.openmetadata.adminservices.server.OMAGServerAdminStoreServices;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurityVerifier;
+import org.odpi.openmetadata.platformservices.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.http.HttpRequestHeadersFilter;
+import org.odpi.openmetadata.platformservices.server.OMAGServerOperationalServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -23,11 +27,11 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import java.util.*;
 
 
@@ -83,6 +87,17 @@ public class OMAGServerPlatform
     @Value("${header.name.list:}") // Default value is zero length string
     List<String> headerNames;
 
+    @Value("${platform.configstore.provider:}") // Default value is zero length string
+    String configStoreProvider;
+
+    @Value("${platform.configstore.endpoint:}") // Default value is zero length string
+    String configStoreEndpoint;
+
+    @Value("${platform.security.provider:}") // Default value is zero length string
+    String platformSecurityProvider;
+    @Value("${platform.security.name:}") // Default value is zero length string
+    String platformSecurityName;
+
     @Autowired
     private Environment env;
 
@@ -92,6 +107,7 @@ public class OMAGServerPlatform
     private boolean triggeredRuntimeHalt = false;
     private String startupMessage = "";
     private final OMAGServerOperationalServices operationalServices = new OMAGServerOperationalServices();
+    private final OMAGServerAdminStoreServices  configStoreServices = new OMAGServerAdminStoreServices();
 
     private static final Logger log = LoggerFactory.getLogger(OMAGServerPlatform.class);
 
@@ -229,6 +245,45 @@ public class OMAGServerPlatform
         @EventListener(ApplicationReadyEvent.class)
         public void applicationReady()
         {
+            try
+            {
+                if ((configStoreProvider != null) && (! "".equals(configStoreProvider)))
+                {
+                    Connection    configStoreConnection = new Connection();
+                    ConnectorType connectorType         = new ConnectorType();
+                    connectorType.setConnectorProviderClassName(configStoreProvider);
+
+                    if (configStoreEndpoint != null)
+                    {
+                        Endpoint endpoint = new Endpoint();
+                        endpoint.setAddress(configStoreEndpoint);
+                    }
+
+                    configStoreServices.setConfigurationStoreConnection(sysUser, configStoreConnection);
+                }
+
+                if ((platformSecurityProvider != null) && (! "".equals(platformSecurityProvider)))
+                {
+                    Connection    securityConnection = new Connection();
+                    ConnectorType connectorType      = new ConnectorType();
+                    connectorType.setConnectorProviderClassName(platformSecurityProvider);
+
+                    String platformName = platformSecurityName;
+                    if ((platformName == null) || ("".equals(platformName)))
+                    {
+                        platformName = Long.valueOf(ProcessHandle.current().pid()).toString();
+                    }
+
+                    OpenMetadataPlatformSecurityVerifier.setPlatformSecurityConnection(sysUser,
+                                                                                       platformName,
+                                                                                       securityConnection);
+                }
+            }
+            catch (Exception error)
+            {
+                log.error("Unable to set up platform connectors", error);
+            }
+
             autoStartConfig();
             System.out.println(OMAGServerPlatform.this.startupMessage);
 
