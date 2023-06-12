@@ -25,9 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ValidMetadataValueListResponse extends OMAGGAFAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
-    private List<ValidMetadataValueDetail> elementList = null;
+   private List<ValidMetadataValueDetail> elementList = null;
 
 
     /**

@@ -8,7 +8,7 @@ dependencies {
     compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
-    implementation 'org.slf4j:slf4j-api'
+    compileOnly 'org.slf4j:slf4j-api'
     testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     testImplementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')

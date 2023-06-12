@@ -21,11 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = LogRecordRequestBody.class, name = "LogRecordRequestBody")
         })
-public abstract class AssetConsumerOMASAPIRequestBody implements java.io.Serializable
+public abstract class AssetConsumerOMASAPIRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
-
     /**
      * Default constructor
      */

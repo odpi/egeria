@@ -14,7 +14,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 
-import java.io.Serial;
 import java.util.*;
 
 /**
@@ -539,9 +538,6 @@ public class ConnectorBroker
      */
     private static class AccessibleConnection extends ConnectionProperties
     {
-        @Serial
-        private static final long serialVersionUID = 1L;
-
         AccessibleConnection(ConnectionProperties templateConnection)
         {
             super(templateConnection);

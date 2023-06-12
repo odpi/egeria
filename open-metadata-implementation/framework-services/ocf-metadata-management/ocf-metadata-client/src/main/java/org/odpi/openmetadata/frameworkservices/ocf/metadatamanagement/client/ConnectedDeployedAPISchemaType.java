@@ -7,8 +7,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.APISchemaTyp
 
 class ConnectedDeployedAPISchemaType extends DeployedAPISchemaType
 {
-    private static final long    serialVersionUID = 1L;
-
     /**
      * Typical constructor creates an DeployedAPISchemaType object primed with information to retrieve an asset's API operations.
      *

@@ -6,15 +6,13 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 
-import java.io.Serial;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 /**
  * ConnectionProperties is an object that contains the properties needed to create and initialise a connector to access a
  * specific data assets.
- *
+ * <br><br>
  * The properties for ConnectionProperties are defined in model 0201.  They include the following options for connector name:
  * <ul>
  *     <li>
@@ -36,7 +34,6 @@ import java.util.Objects;
  *     </li>
  * </ul>
  *  Either the guid, qualifiedName or displayName can be used to specify the name for a connection.
- *
  *  Other properties for the connection include:
  *
  *  <ul>
@@ -67,9 +64,6 @@ import java.util.Objects;
  */
 public class ConnectionProperties extends AssetReferenceable
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     protected Connection    connectionBean;
 
 
@@ -138,12 +132,12 @@ public class ConnectionProperties extends AssetReferenceable
      * Returns a formatted string with the connection name.  It is used in formatting error messages for the
      * exceptions thrown by consuming components.  It is extremely cautious because most of the exceptions
      * are reporting a malformed connection object so who knows what else is wrong with it.
-     *
+     * <br><br>
      * Within the connection are 2 possible properties that could
      * contain the connection name:
      *   ** qualifiedName - this is a uniqueName and should be there
      *   ** displayName - shorter simpler name but may not be unique - so may not identify the connection in error
-     *
+     * <br><br>
      * This method inspects these properties and builds up a string to represent the connection name
      *
      * @return connection name

@@ -12,9 +12,6 @@ import java.util.Map;
  */
 public class UserNotAuthorizedException extends org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException
 {
-    private static final long    serialVersionUID = 1L;
-
-
     /**
      * This is the typical constructor used for creating an UserNotAuthorizedException.
      *

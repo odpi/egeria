@@ -31,8 +31,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 public abstract class TexViewOMVSAPIResponse extends FFDCResponseBase
 {
-    private static final long    serialVersionUID = 1L;
-
     /**
      * Default constructor
      */

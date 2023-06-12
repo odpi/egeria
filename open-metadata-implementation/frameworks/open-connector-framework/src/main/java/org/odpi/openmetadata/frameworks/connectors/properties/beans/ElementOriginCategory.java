@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -17,15 +15,29 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum ElementOriginCategory implements Serializable
+public enum ElementOriginCategory
 {
+    /**
+     * Unknown provenance.
+     */
     UNKNOWN                 (0, "<Unknown>",               "Unknown provenance"),
+
+    /**
+     * The element is being maintained within one of the local cohort members. The metadata collection id is for one of the
+     * repositories in the cohort. This metadata collection id identifies the home repository for this element.
+     */
     LOCAL_COHORT            (1, "Local to cohort",         "The element is being maintained within one of the local cohort members. " +
                                                                   "The metadata collection id is for one of the repositories in the cohort. " +
                                                                   "This metadata collection id identifies the home repository for this element. "),
+
+    /**
+     * The element was created from an export archive. The metadata collection id for the element is the metadata
+     * collection id of the originating server. If the originating server later joins the cohort with the same
+     * metadata collection id then these elements will be refreshed from the originating server's current repository.
+     */
     EXPORT_ARCHIVE          (2, "Export Archive",          "The element was created from an export archive. " +
                                                                   "The metadata collection id for the element is the metadata collection id of the originating server. " +
-                                                                  "If the originating server later joins the cohort with the same metadata collection Id " +
+                                                                  "If the originating server later joins the cohort with the same metadata collection id " +
                                                                   "then these elements will be refreshed from the originating server's current repository."),
     CONTENT_PACK            (3, "Content Pack",            "The element comes from an open metadata content pack. " +
                                                                   "The metadata collection id of the elements is set to the GUID of the pack."),

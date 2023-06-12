@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermRelationshipStatus;
 
-import java.io.Serial;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,9 +24,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GlossaryTermRelationshipRequestBody extends EffectiveTimeQueryRequestBody
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private String                               glossaryGUID         = null;
     private List<GlossaryTermRelationshipStatus> limitResultsByStatus = null;
 

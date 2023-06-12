@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -20,16 +18,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * flow through an entity that does not support the particular type of classification and then on to other
  * relationships attached to the entity.  The ClassificationPropagateRule in the relationship's RelationshipDef
  * defines where the classification can flow to.
- *
+ * <br><br>
  * Note: the repository services have no mechanism to automatically propagate classifications.  This is set up by higher
  * level services working with knowledge of the specific instance types of metadata and their significance.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum ClassificationOrigin implements Serializable
+public enum ClassificationOrigin
 {
+    /**
+     * The classification is explicitly assigned to the entity.
+     */
     ASSIGNED       (0, "Assigned",   "The classification is explicitly assigned to the entity"),
+
+    /**
+     * The classification has propagated along a relationship to this entity.
+     */
     PROPAGATED     (1, "Propagated", "The classification has propagated along a relationship to this entity");
 
     private static final long serialVersionUID = 1L;

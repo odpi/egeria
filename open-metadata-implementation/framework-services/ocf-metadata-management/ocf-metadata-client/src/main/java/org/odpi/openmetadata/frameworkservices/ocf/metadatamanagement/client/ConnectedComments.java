@@ -23,8 +23,6 @@ import java.util.List;
  */
 public class ConnectedComments extends Comments
 {
-    private static final long    serialVersionUID = 1L;
-
     private String                 serviceName;
     private String                 serverName;
     private String                 userId;

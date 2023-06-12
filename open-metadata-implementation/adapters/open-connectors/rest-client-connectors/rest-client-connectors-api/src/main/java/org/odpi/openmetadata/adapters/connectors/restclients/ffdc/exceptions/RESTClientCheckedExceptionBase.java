@@ -15,8 +15,6 @@ import java.util.Objects;
  */
 public abstract class RESTClientCheckedExceptionBase extends Exception
 {
-    private static final long    serialVersionUID = 1L;
-
     private final int       reportedHTTPCode;
     private final String    reportingClassName;
     private final String    reportingActionDescription;

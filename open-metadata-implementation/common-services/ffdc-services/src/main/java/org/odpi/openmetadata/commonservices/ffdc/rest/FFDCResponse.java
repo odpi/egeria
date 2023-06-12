@@ -4,9 +4,11 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 
 import java.util.Map;
 
+/**
+ * FFDCResponse is the top-level class for a response object used to return results on REST APIs.
+ */
 public interface FFDCResponse
 {
-
     /**
      * Return the HTTP Code to use if forwarding response to HTTP client.
      *

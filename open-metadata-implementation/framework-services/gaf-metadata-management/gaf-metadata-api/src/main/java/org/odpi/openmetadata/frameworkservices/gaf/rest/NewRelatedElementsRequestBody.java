@@ -22,8 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class NewRelatedElementsRequestBody extends UpdateRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
     private String            typeName             = null;
     private String            metadataElement1GUID = null;
     private String            metadataElement2GUID = null;

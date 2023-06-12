@@ -65,7 +65,7 @@ task startServer(dependsOn: ['cleanData',':open-metadata-distribution:open-metad
              "-Dloader.path=${distdir}/server/lib",
              "-Dspring.config.location=../../../../../../test.application.properties",
              "-jar",
-             "${distdir}/server/server-chassis-spring-${project.version}.jar" ]
+             "${distdir}/platform/omag-server-platform-${project.version}.jar" ]
     // Setting the output directories to be the same for ALL FVTs acts as a synchronization mechanism
     // - alternatively we need to ensure the server port is unique per test
     standardOutput = layout.buildDirectory.file("chassis.log")

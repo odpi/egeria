@@ -110,12 +110,54 @@ distributions {
         //distributionBaseName = "${rootProject.name}-distribution"
         contents {
             into('server') {
-                // Just the chassis
+                // Just the chassis - for backward compatibility
                 from { project(':open-metadata-implementation:server-chassis:server-chassis-spring').bootJar }
                 fileMode = 0755
             }
             into('server/lib') {
                 // All our connectors, plus discovery sample & the security plugin
+                from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-event-topic-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-file-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-slf4j-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:cohort-registry-store-connectors:cohort-registry-file-store-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-file-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-directory-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:inmemory-repository-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:graph-repository-connector').fatJar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:omrs-rest-repository-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:avro-file-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:data-folder-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-encrypted-file-store-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:discovery-service-connectors').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:dynamic-archiver-connectors').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-integration-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openapi-integration-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openlineage-integration-connectors').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:elasticsearch-integration-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:inmemory-open-metadata-topic-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:open-lineage-connectors:open-lineage-janus-connector').jar }
+                from { project(':open-metadata-resources:open-metadata-samples:open-metadata-security-samples').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector').jar }
+                from { project(':open-metadata-resources:open-metadata-samples:governance-services-sample').jar }
+                fileMode = 0755
+            }
+            into('platform') {
+                // OMAG Server Platform - new name consistent with documentation
+                from { project(':open-metadata-implementation:server-chassis:server-chassis-spring').bootJar }
+                rename { String fileName ->
+                    fileName.replace("server-chassis-spring", "omag-server-platform")
+                }
+                fileMode = 0755
+            }
+            into('platform/lib') {
+                // All our connectors, plus discovery sample & the sample Coco security connectors
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-event-topic-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-file-connector').jar }

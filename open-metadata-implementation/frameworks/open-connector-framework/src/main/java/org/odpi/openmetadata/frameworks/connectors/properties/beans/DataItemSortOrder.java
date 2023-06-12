@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -17,15 +15,30 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum DataItemSortOrder implements Serializable
+public enum DataItemSortOrder
 {
+    /**
+     * The sort order is not specified.
+     */
     UNKNOWN    (0, 99, "<Unknown>",  "The sort order is not specified."),
+
+    /**
+     * The attribute instances are organized so that the smallest/lowest value is first and the rest of the instances
+     * follow in ascending order.
+     */
     ASCENDING  (1, 0, "Ascending",  "The attribute instances are organized so that the " +
-                                                                 "smallest/lowest value is first and the rest of the instances follow in " +
-                                                                 "ascending order."),
+                                                                 "smallest/lowest value is first and the rest of the instances follow in ascending order."),
+
+    /**
+     * The attribute instances are organized so that the largest/highest value is first and the rest of the instances
+     * follow in descending order.
+     */
     DESCENDING (2, 1, "Descending", "The attribute instances are organized so that the " +
-                                                                 "largest/highest value is first and the rest of the instances follow in " +
-                                                                 "descending order."),
+                                                                 "largest/highest value is first and the rest of the instances follow in descending order."),
+
+    /**
+     * The instances of the schema attribute may appear in any order.
+     */
     UNSORTED   (3, 99, "Unsorted",   "The instances of the schema attribute may appear in any order.");
 
 
