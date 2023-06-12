@@ -34300,10 +34300,12 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>serviceName</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> serviceName</pre>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 </li>
 <li class="block-list">
 <h5>serviceStatus</h5>
 <pre><a href="org/odpi/openmetadata/adminservices/properties/ServerActiveStatus.html" title="enum class in org.odpi.openmetadata.adminservices.properties">ServerActiveStatus</a> serviceStatus</pre>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 </li>
 </ul>
 </section>
@@ -34327,18 +34329,22 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>serverActiveStatus</h5>
 <pre><a href="org/odpi/openmetadata/adminservices/properties/ServerActiveStatus.html" title="enum class in org.odpi.openmetadata.adminservices.properties">ServerActiveStatus</a> serverActiveStatus</pre>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 </li>
 <li class="block-list">
 <h5>serverName</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> serverName</pre>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 </li>
 <li class="block-list">
 <h5>serverType</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> serverType</pre>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 </li>
 <li class="block-list">
 <h5>services</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="org/odpi/openmetadata/adminservices/properties/OMAGServerServiceStatus.html" title="class in org.odpi.openmetadata.adminservices.properties">OMAGServerServiceStatus</a>&gt; services</pre>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 </li>
 </ul>
 </section>
@@ -41350,128 +41356,6 @@ loadScripts(document, 'script');</script>
 </li>
 <li>
 <section class="serialized-package-container">
-<h2 title="Package">Package&nbsp;<a href="org/odpi/openmetadata/governanceservers/integrationdaemonservices/handlers/package-summary.html">org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers</a></h2>
-<ul class="block-list">
-<li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationConnectorHandler">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/governanceservers/integrationdaemonservices/handlers/IntegrationConnectorHandler.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers">org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationConnectorHandler</a></h3>
-<div class="type-signature">class IntegrationConnectorHandler extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<dl class="name-value">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
-<ul class="block-list">
-<li>
-<section class="detail">
-<h4>Serialized Fields</h4>
-<ul class="block-list">
-<li class="block-list">
-<h5>auditLog</h5>
-<pre><a href="org/odpi/openmetadata/frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a> auditLog</pre>
-</li>
-<li class="block-list">
-<h5>connection</h5>
-<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a> connection</pre>
-</li>
-<li class="block-list">
-<h5>contextManager</h5>
-<pre><a href="org/odpi/openmetadata/frameworks/integration/contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.frameworks.integration.contextmanager">IntegrationContextManager</a> contextManager</pre>
-</li>
-<li class="block-list">
-<h5>failingExceptionMessage</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> failingExceptionMessage</pre>
-</li>
-<li class="block-list">
-<h5>generateIntegrationReport</h5>
-<pre>boolean generateIntegrationReport</pre>
-</li>
-<li class="block-list">
-<h5>genericConnector</h5>
-<pre><a href="org/odpi/openmetadata/frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a> genericConnector</pre>
-</li>
-<li class="block-list">
-<h5>integrationConnector</h5>
-<pre><a href="org/odpi/openmetadata/frameworks/integration/connectors/IntegrationConnector.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnector</a> integrationConnector</pre>
-</li>
-<li class="block-list">
-<h5>integrationConnectorDedicatedThread</h5>
-<pre><a href="org/odpi/openmetadata/governanceservers/integrationdaemonservices/threads/IntegrationConnectorDedicatedThread.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads">IntegrationConnectorDedicatedThread</a> integrationConnectorDedicatedThread</pre>
-</li>
-<li class="block-list">
-<h5>integrationConnectorGUID</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> integrationConnectorGUID</pre>
-</li>
-<li class="block-list">
-<h5>integrationConnectorId</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> integrationConnectorId</pre>
-</li>
-<li class="block-list">
-<h5>integrationConnectorName</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> integrationConnectorName</pre>
-</li>
-<li class="block-list">
-<h5>integrationConnectorStatus</h5>
-<pre><a href="org/odpi/openmetadata/governanceservers/integrationdaemonservices/properties/IntegrationConnectorStatus.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties">IntegrationConnectorStatus</a> integrationConnectorStatus</pre>
-</li>
-<li class="block-list">
-<h5>integrationConnectorUserId</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> integrationConnectorUserId</pre>
-</li>
-<li class="block-list">
-<h5>integrationContext</h5>
-<pre><a href="org/odpi/openmetadata/frameworks/integration/context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a> integrationContext</pre>
-</li>
-<li class="block-list">
-<h5>integrationDaemonName</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> integrationDaemonName</pre>
-</li>
-<li class="block-list">
-<h5>integrationServiceFullName</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> integrationServiceFullName</pre>
-</li>
-<li class="block-list">
-<h5>lastRefreshTime</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a> lastRefreshTime</pre>
-</li>
-<li class="block-list">
-<h5>lastStatusChange</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a> lastStatusChange</pre>
-</li>
-<li class="block-list">
-<h5>metadataSourceQualifiedName</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> metadataSourceQualifiedName</pre>
-</li>
-<li class="block-list">
-<h5>minMinutesBetweenRefresh</h5>
-<pre>long minMinutesBetweenRefresh</pre>
-</li>
-<li class="block-list">
-<h5>needDedicatedThread</h5>
-<pre>boolean needDedicatedThread</pre>
-</li>
-<li class="block-list">
-<h5>permittedSynchronization</h5>
-<pre><a href="org/odpi/openmetadata/frameworks/integration/contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a> permittedSynchronization</pre>
-</li>
-<li class="block-list">
-<h5>startDate</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a> startDate</pre>
-</li>
-<li class="block-list">
-<h5>stopDate</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a> stopDate</pre>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<li>
-<section class="serialized-package-container">
 <h2 title="Package">Package&nbsp;<a href="org/odpi/openmetadata/governanceservers/integrationdaemonservices/properties/package-summary.html">org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties</a></h2>
 <ul class="block-list">
 <li>
@@ -42045,6 +41929,75 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>reportingClassName</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> reportingClassName</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-package-container">
+<h2 title="Package">Package&nbsp;<a href="org/odpi/openmetadata/platformservices/properties/package-summary.html">org.odpi.openmetadata.platformservices.properties</a></h2>
+<ul class="block-list">
+<li>
+<section class="serialized-class-details" id="org.odpi.openmetadata.platformservices.properties.OMAGServerServiceStatus">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/platformservices/properties/OMAGServerServiceStatus.html" title="class in org.odpi.openmetadata.platformservices.properties">org.odpi.openmetadata.platformservices.properties.OMAGServerServiceStatus</a></h3>
+<div class="type-signature">class OMAGServerServiceStatus extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>serviceName</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> serviceName</pre>
+</li>
+<li class="block-list">
+<h5>serviceStatus</h5>
+<pre><a href="org/odpi/openmetadata/platformservices/properties/ServerActiveStatus.html" title="enum class in org.odpi.openmetadata.platformservices.properties">ServerActiveStatus</a> serviceStatus</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="org.odpi.openmetadata.platformservices.properties.ServerServicesStatus">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/platformservices/properties/ServerServicesStatus.html" title="class in org.odpi.openmetadata.platformservices.properties">org.odpi.openmetadata.platformservices.properties.ServerServicesStatus</a></h3>
+<div class="type-signature">class ServerServicesStatus extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>serverActiveStatus</h5>
+<pre><a href="org/odpi/openmetadata/platformservices/properties/ServerActiveStatus.html" title="enum class in org.odpi.openmetadata.platformservices.properties">ServerActiveStatus</a> serverActiveStatus</pre>
+</li>
+<li class="block-list">
+<h5>serverName</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> serverName</pre>
+</li>
+<li class="block-list">
+<h5>serverType</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> serverType</pre>
+</li>
+<li class="block-list">
+<h5>services</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="org/odpi/openmetadata/platformservices/properties/OMAGServerServiceStatus.html" title="class in org.odpi.openmetadata.platformservices.properties">OMAGServerServiceStatus</a>&gt; services</pre>
 </li>
 </ul>
 </section>
