@@ -100,9 +100,9 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                          "Each engine service registers itself using a static method call with the engine host as" +
                                  "their classes are loaded into " +
                                  "the platform.  This is driven by the component scan for REST APIs implemented by the spring modules by " +
-                                 "the Server Chassis module.  " +
-                                 "Ensure the engine service registers itself and " +
-                                 "the server chassis module has access to the engine service's spring module."),
+                                 "the platform-chassis-spring module.  " +
+                                 "Ensure the engine service registers itself with the engine-host-services module and " +
+                                 "the platform-chassis-spring module has access to the engine service's spring module."),
 
     BAD_ENGINE_SERVICE_ADMIN_CLASS("ENGINE-HOST-SERVICES-0011",
                             OMRSAuditLogRecordSeverity.EXCEPTION,

@@ -1,10 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.adminservices.spring;
+package org.odpi.openmetadata.platformservices.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.adminservices.server.OMAGServerOriginServices;
+import org.odpi.openmetadata.platformservices.server.OMAGServerPlatformOriginServices;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,21 +12,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 /**
- * ServerOriginResource provides the Spring wrapper for the origin service that helps the client
+ * OldServerOriginResource provides the Spring wrapper for the origin service that helps the client
  * discover the type of the server.
  */
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}")
 
-@Tag(name="Administration Services - Operational",
-        description="The operational administration services support the management " +
-                "of OMAG Server instances.  This includes starting and stopping the servers as well as querying and changing their operational state.",
-        externalDocs=@ExternalDocumentation(description="Further information",
-                url="https://egeria-project.org/guides/operations/overview/"))
-
-public class ServerOriginResource
+@Tag(name="Administration Services - Operational - Deprecated",
+     description="The operational administration services support the management " +
+                         "of OMAG Server instances.  This includes starting and stopping the servers as well as querying and changing their operational state.",
+     externalDocs=@ExternalDocumentation(description="Further information",
+                                         url="https://egeria-project.org/guides/operations/overview/"))
+@Deprecated
+public class OldServerOriginResource
 {
-    private final OMAGServerOriginServices originAPI = new OMAGServerOriginServices();
+    OMAGServerPlatformOriginServices originAPI = new OMAGServerPlatformOriginServices();
 
     /**
      * Return the origin of this server implementation.
@@ -41,7 +41,7 @@ public class ServerOriginResource
     public String getServerOrigin(@PathVariable String   userId,
                                   @PathVariable String   serverName)
     {
-        return originAPI.getServerOrigin(userId);
+        return originAPI.getServerPlatformOrigin(userId);
     }
 
     /**
@@ -54,6 +54,6 @@ public class ServerOriginResource
     @Deprecated
     public String getServerOrigin(@PathVariable String   userId)
     {
-        return originAPI.getServerOrigin(userId);
+        return originAPI.getServerPlatformOrigin(userId);
     }
 }

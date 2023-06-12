@@ -1,32 +1,32 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.adminservices.spring;
+package org.odpi.openmetadata.platformservices.server.spring;
 
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.adminservices.server.OMAGServerAdminSecurityServices;
 import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
 import org.odpi.openmetadata.adminservices.rest.PlatformSecurityRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.platformservices.server.OMAGServerPlatformSecurityServices;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * ConfigOpenMetadataPlatformSecurityResource provides the API to configure the security connector that validates
+ * OldPlatformSecurityResource provides the API to configure the security connector that validates
  * platform requests that do not reference an OMAG server.  These requests are used by the
  * team that run the platform as a service.
  */
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/platform/security")
 
-@Tag(name="Administration Services - Platform Configuration", description="The platform configuration administration services support the " +
+@Tag(name="Administration Services - Platform Configuration - Deprecated", description="The platform configuration administration services support the " +
         "configuration of the security and configuration store connectors for an OMAG Server Platform.",
         externalDocs=@ExternalDocumentation(description="Further information",
                 url="https://egeria-project.org/guides/admin/configuring-the-omag-server-platform/"))
-
-public class ConfigOpenMetadataPlatformSecurityResource
+@Deprecated
+public class OldPlatformSecurityResource
 {
-    private final OMAGServerAdminSecurityServices adminSecurityAPI = new OMAGServerAdminSecurityServices();
+    private final OMAGServerPlatformSecurityServices adminSecurityAPI = new OMAGServerPlatformSecurityServices();
 
 
     /**

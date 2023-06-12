@@ -182,6 +182,7 @@ public class OMAGServerPlatformConfigurationClient
      * @throws OMAGInvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
+    @Deprecated
     public void setPlatformSecurityConnection(Connection connection) throws OMAGNotAuthorizedException,
                                                                             OMAGInvalidParameterException,
                                                                             OMAGConfigurationErrorException
@@ -214,13 +215,13 @@ public class OMAGServerPlatformConfigurationClient
      * Clear the connection object for platform security.  This means there is no platform security set up
      * and there will be no authorization checks within the platform.  All security will have to
      * come from the surrounding deployment environment.
-     *
      * This is the default state.
      *
      * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
      * @throws OMAGInvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
+    @Deprecated
     public void clearPlatformSecurityConnection() throws OMAGNotAuthorizedException,
                                                          OMAGInvalidParameterException,
                                                          OMAGConfigurationErrorException
@@ -243,6 +244,7 @@ public class OMAGServerPlatformConfigurationClient
      * @throws OMAGInvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
+    @Deprecated
     public Connection getPlatformSecurityConnection() throws OMAGNotAuthorizedException,
                                                                           OMAGInvalidParameterException,
                                                                           OMAGConfigurationErrorException

@@ -1,34 +1,34 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.adminservices.spring;
+package org.odpi.openmetadata.platformservices.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.adminservices.server.OMAGServerOperationalServices;
+import org.odpi.openmetadata.platformservices.rest.OMAGServerStatusResponse;
+import org.odpi.openmetadata.platformservices.rest.SuccessMessageResponse;
+import org.odpi.openmetadata.platformservices.server.OMAGServerOperationalServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
-import org.odpi.openmetadata.adminservices.rest.OMAGServerStatusResponse;
-import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * OperationalServicesResource provides the REST API for controlling the start up, management and
+ * OldOperationalServicesResource provides the REST API for controlling the start up, management and
  * shutdown of services in the OMAG Server.
  */
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
 
-@Tag(name="Administration Services - Operational",
+@Tag(name="Administration Services - Operational - Deprecated",
         description="The operational administration services support the management " +
                 "of OMAG Server instances.  This includes starting and stopping the servers as well as querying and changing their operational state.",
         externalDocs=@ExternalDocumentation(description="Further information",
                 url="https://egeria-project.org/guides/operations/overview/"))
 
-
-public class OperationalServicesResource
+@Deprecated
+public class OldOperationalServicesResource
 {
     private final OMAGServerOperationalServices operationalServices = new OMAGServerOperationalServices();
 
@@ -106,7 +106,7 @@ public class OperationalServicesResource
     public VoidResponse deactivateTemporarily(@PathVariable String  userId,
                                               @PathVariable String  serverName)
     {
-        return operationalServices.deactivateTemporarily(userId, serverName);
+        return operationalServices.shutdownServer(userId, serverName);
     }
 
 
@@ -129,7 +129,7 @@ public class OperationalServicesResource
     public VoidResponse deactivatePermanently(@PathVariable String  userId,
                                               @PathVariable String  serverName)
     {
-        return operationalServices.deactivatePermanently(userId, serverName);
+        return operationalServices.shutdownAndUnregisterServer(userId, serverName);
     }
 
 

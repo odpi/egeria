@@ -8,7 +8,7 @@ import java.security.cert.CertificateException
 
 // Function to convert array to String
 
-// Will configure a server chassis - which should already be running - for FVT testing
+// Will configure an OMAG Server Platform - which should already be running - for FVT testing
 
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager

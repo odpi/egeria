@@ -57,7 +57,7 @@ public enum DocStoreErrorCode implements ExceptionMessageSet
     INVALID_DIRECTORY(400, "ENCRYPTED-DOC-STORE-400-008 ",
             "Unable to create secure location for storing encryption key.",
             "The system was unable to generate a secure, random directory in which to store the encryption keys.",
-            "Check the path where the OMAG platform is started to ensure there are sufficient permissions to create files and directories. Review the logs for other potential I/O issues."),
+            "Check the path where the OMAG Server Platform is started to ensure there are sufficient permissions to create files and directories. Review the logs for other potential I/O issues."),
     INVALID_FILE(400, "ENCRYPTED-DOC-STORE-400-009 ",
             "Unable to create secure file for storing encryption key.",
             "The system was unable to generate a secure, random file in which to store the encryption keys.",

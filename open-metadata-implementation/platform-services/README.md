@@ -7,7 +7,7 @@
 
 The platform services provides the APIs for querying the
 [Open Metadata and Governance (OMAG) Server Platform](https://egeria-project.org/concepts/omag-server-platform/)
-and discovering information about the OMAG Servers that it is hosting.
+and discovering information about the OMAG Servers that it is hosting, starting and stopping them.
 
 * [Documentation](https://egeria-project.org/services/platform-services/overview)
 

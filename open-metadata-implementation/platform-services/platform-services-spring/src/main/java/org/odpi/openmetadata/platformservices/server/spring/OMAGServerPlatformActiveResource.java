@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.platformservices.rest.ServerListResponse;
@@ -21,7 +20,6 @@ import org.odpi.openmetadata.platformservices.server.OMAGServerPlatformActiveSer
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -30,8 +28,9 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @Tag(name="Platform Services", description="The platform services provides the APIs for querying the Open Metadata and Governance (OMAG) " +
-        "Server Platform and discovering information about the OMAG Servers that it is hosting.",
-        externalDocs=@ExternalDocumentation(description="Platform Services",url="https://egeria-project.org/services/platform-services/overview"))
+                                                   "Server Platform. It is able to start an stop OMAG Servers and discovering information " +
+                                                   "about the OMAG Servers that it is hosting.",
+     externalDocs=@ExternalDocumentation(description="Platform Services",url="https://egeria-project.org/services/platform-services/overview"))
 
 @RestController
 @RequestMapping("/open-metadata/platform-services/users/{userId}/server-platform")
@@ -49,7 +48,7 @@ public class OMAGServerPlatformActiveResource
      * @return list of service descriptions
      */
     @GetMapping(path = "/registered-services/access-services")
-    @Operation( summary = "Get registered access services",
+    @Operation( summary = "getRegisteredAccessServices",
                 description="Retrieve a list of access services registered on this platform",
                 responses = {
                     @ApiResponse(responseCode = "200", description="list of service descriptions",
@@ -75,7 +74,7 @@ public class OMAGServerPlatformActiveResource
      * @return list of service descriptions
      */
     @GetMapping(path = "/registered-services/engine-services")
-    @Operation( summary = "Get registered engine services",
+    @Operation( summary = "getRegisteredEngineServices",
             description="Retrieve a list of engine services implemented in this platform",
             responses = {
                     @ApiResponse(responseCode = "200", description="list of service descriptions",
@@ -102,7 +101,7 @@ public class OMAGServerPlatformActiveResource
      * @return list of service descriptions
      */
     @GetMapping(path = "/registered-services/integration-services")
-    @Operation( summary = "Get registered integration services",
+    @Operation( summary = "getRegisteredIntegrationServices",
                 description="Retrieve a list of integration services implemented in this platform",
                 responses = {
                         @ApiResponse(responseCode = "200", description="list of service descriptions",
@@ -129,7 +128,7 @@ public class OMAGServerPlatformActiveResource
      */
     @GetMapping(path = "/registered-services/view-services")
 
-    @Operation( summary = "Get registered view services",
+    @Operation( summary = "getRegisteredViewServices",
             description="Retrieve a list of view services registered on this platform",
             responses = {
                     @ApiResponse(responseCode = "200", description="list of service descriptions",
@@ -154,7 +153,7 @@ public class OMAGServerPlatformActiveResource
      * @return list of service descriptions
      */
     @GetMapping(path = "/registered-services/governance-services")
-    @Operation( summary = "Get registered governance services",
+    @Operation( summary = "getRegisteredGovernanceServices",
             description="Retrieve a list of governance services registered on this platform",
             responses = {
                     @ApiResponse(responseCode = "200", description="list of service descriptions",
@@ -179,7 +178,7 @@ public class OMAGServerPlatformActiveResource
      * @return list of service descriptions
      */
     @GetMapping(path = "/registered-services/common-services")
-    @Operation( summary = "Get registered common services",
+    @Operation( summary = "getRegisteredCommonServices",
             description="Retrieve a list of common services registered on this platform",
             responses = {
                     @ApiResponse(responseCode = "200",description="list of service descriptions",
@@ -203,7 +202,7 @@ public class OMAGServerPlatformActiveResource
      * @return list of service descriptions
      */
     @GetMapping(path = "/registered-services")
-    @Operation( summary = "Get all registered services",
+    @Operation( summary = "getAllRegisteredServices",
             description="Retrieve a list of all services registered on this platform",
             responses = {
                     @ApiResponse(responseCode = "200",description="list of service descriptions",
@@ -230,7 +229,7 @@ public class OMAGServerPlatformActiveResource
      * @return ConnectorType bean or exceptions that occur when trying to create the connector
      */
     @GetMapping(path = "/connector-types/{connectorProviderClassName}")
-    @Operation( summary = "Return the connector type for the requested connector provider",
+    @Operation( summary = "getConnectorType",
                 description="Return the connector type for the requested connector provider after validating that the" +
                                     " connector provider is available on the OMAGServerPlatform's class path.  This method is for tools that are configuring" +
                                     " connectors into an Egeria server.  It does not validate that the connector will load and initialize.",
@@ -258,7 +257,7 @@ public class OMAGServerPlatformActiveResource
      * @return flag
      */
     @GetMapping(path = "/servers/{serverName}/is-known")
-    @Operation( summary = "Is server known",
+    @Operation( summary = "isServerKnown",
             description="Return a boolean indication if this server has ever run on this platform",
             responses = {
                     @ApiResponse(responseCode = "200",description="boolean flag",
@@ -283,7 +282,7 @@ public class OMAGServerPlatformActiveResource
      * @return list of OMAG server names
      */
     @GetMapping(path = "/servers")
-    @Operation( summary = "Get list of known servers",
+    @Operation( summary = "getKnownServerList",
             description="Return the list of servers that have run or are running on this platform",
             responses = {
                     @ApiResponse(responseCode = "200",description="list of servers",
@@ -307,7 +306,7 @@ public class OMAGServerPlatformActiveResource
      * @return list of server names
      */
     @GetMapping(path = "/servers/active")
-    @Operation( summary = "Get list of active servers",
+    @Operation( summary = "getActiveServerList",
             description="Return the list of servers that are active on this platform",
             responses = {
                     @ApiResponse(responseCode = "200",description="list of servers",
@@ -333,7 +332,7 @@ public class OMAGServerPlatformActiveResource
      */
     @GetMapping(path = "/servers/{serverName}/status")
 
-    @Operation( summary = "Get server status",
+    @Operation( summary = "getServerStatus",
             description="Return information about when the server has been active",
             responses = {
                     @ApiResponse(responseCode = "200",description="details of server status",
@@ -358,7 +357,7 @@ public class OMAGServerPlatformActiveResource
      * @return server name and list od services running within
      */
     @GetMapping(path = "/servers/{serverName}/services")
-    @Operation( summary = "Get active services for server",
+    @Operation( summary = "getActiveServiceListForServer",
             description="Return the list of services that are active on the server on this platform",
             responses = {
                     @ApiResponse(responseCode = "200",description="details of server status",

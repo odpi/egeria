@@ -38,7 +38,7 @@ import java.util.Map;
 public class OMAGServerAdminServices
 {
     private final static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminServices.class),
-                                                                            CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
+                                                                            CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName());
 
 
     private final OMAGServerAdminStoreServices configStore = new OMAGServerAdminStoreServices();

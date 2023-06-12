@@ -1,14 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.adminservices.server;
+package org.odpi.openmetadata.platformservices.server;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
 import org.odpi.openmetadata.adminservices.registration.ViewServiceAdmin;
-import org.odpi.openmetadata.adminservices.properties.OMAGServerServiceStatus;
-import org.odpi.openmetadata.adminservices.properties.ServerActiveStatus;
-import org.odpi.openmetadata.adminservices.properties.ServerServicesStatus;
 import org.odpi.openmetadata.frameworkservices.gaf.admin.GAFMetadataOperationalServices;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstance;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
@@ -18,6 +15,9 @@ import org.odpi.openmetadata.governanceservers.dataengineproxy.admin.DataEngineP
 import org.odpi.openmetadata.governanceservers.enginehostservices.server.EngineHostOperationalServices;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonOperationalServices;
 import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageServerOperationalServices;
+import org.odpi.openmetadata.platformservices.properties.OMAGServerServiceStatus;
+import org.odpi.openmetadata.platformservices.properties.ServerActiveStatus;
+import org.odpi.openmetadata.platformservices.properties.ServerServicesStatus;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
@@ -32,8 +32,8 @@ import java.util.Map;
 
 class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
 {
-    private       ServerActiveStatus              serverActiveStatus                  = ServerActiveStatus.INACTIVE;
-    private final Map<String, ServerActiveStatus> serviceStatusMap                   = new HashMap<>();
+    private       ServerActiveStatus              serverActiveStatus = ServerActiveStatus.INACTIVE;
+    private final Map<String, ServerActiveStatus> serviceStatusMap   = new HashMap<>();
     private final ServerTypeClassification        serverTypeClassification;
 
     private OMAGServerConfig                     operationalConfiguration            = null;
@@ -105,7 +105,7 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
         serverServicesStatus.setServerType(serverTypeClassification.getServerTypeName());
         serverServicesStatus.setServerActiveStatus(serverActiveStatus);
 
-        List<OMAGServerServiceStatus>   serviceStatuses = new ArrayList<>();
+        List<OMAGServerServiceStatus> serviceStatuses = new ArrayList<>();
 
         for (String serviceName : serviceStatusMap.keySet())
         {

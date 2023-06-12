@@ -1,18 +1,18 @@
 {
 	"info": {
-		"_postman_id": "4d5c0ea0-1d23-43cb-8435-d943c1fc411f",
+		"_postman_id": "333e3bb2-c089-47eb-8b30-153de05189ba",
 		"name": "Egeria-platform-services",
 		"description": "This collection supports the REST API operations from the platform services.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Get Server Origin",
+			"name": "Get OMAG Server Platform Origin",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/origin",
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/origin",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -20,7 +20,7 @@
 						"open-metadata",
 						"platform-services",
 						"users",
-						"{{user}}",
+						"{{adminUserId}}",
 						"server-platform",
 						"origin"
 					]
@@ -30,12 +30,12 @@
 			"response": []
 		},
 		{
-			"name": "Get registered access services",
+			"name": "Get Platform Security Connection",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/registered-services/access-services",
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/platform/security/connection",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -43,7 +43,92 @@
 						"open-metadata",
 						"platform-services",
 						"users",
-						"{{user}}",
+						"{{adminUserId}}",
+						"platform",
+						"security",
+						"connection"
+					]
+				},
+				"description": "Retrieve the Connection object used to create the connector that verifies the authorization of users calling the platform and admin services."
+			},
+			"response": []
+		},
+		{
+			"name": "Set Platform Security Connection",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"class\": \"PlatformSecurityRequestBody\",\n    \"urlRoot\": \"{{baseURL}}\",\n    \"platformSecurityConnection\" : {\n\t    \"class\": \"Connection\",\n\t    \"connectorType\": {\n\t        \"class\": \"ConnectorType\",\n\t        \"connectorProviderClassName\": \"org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaPlatformSecurityProvider\"\n\t    }\n    }\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/platform/security/connection",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{adminUserId}}",
+						"platform",
+						"security",
+						"connection"
+					]
+				},
+				"description": "Set up the connection for the platform security connector.  This connector verifies the authorization of any user calling the platform or admin services.  This call is preconfigured to set up the sample platform security connector.  This allows only the Coco Pharmaceuticals IT administrator, `garygeeke`, to issue platform calls.\n\n\nOnce you have set up this security connector in your OMAG Server Platform, the default user `me` in the `Egeria` environment will no longer be authorized to issue REST calls to the server (try some of the requests that were \"working\" earlier to verify this).  To switch the user to one that the OMAG Server Platform will accept, click on the eye symbol (top right), then click on `edit` and change the current value of `user` to `garygeeke`."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Platform Security Connection",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/platform/security/connection",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{adminUserId}}",
+						"platform",
+						"security",
+						"connection"
+					]
+				},
+				"description": "Remove the currently configured Platform Security Connection.  This means that no security checks will be performed by the OMAG Server Platform."
+			},
+			"response": []
+		},
+		{
+			"name": "Get registered access services",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/registered-services/access-services",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{adminUserId}}",
 						"server-platform",
 						"registered-services",
 						"access-services"
@@ -59,7 +144,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/registered-services/view-services",
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/registered-services/view-services",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -67,10 +152,58 @@
 						"open-metadata",
 						"platform-services",
 						"users",
-						"{{user}}",
+						"{{adminUserId}}",
 						"server-platform",
 						"registered-services",
 						"view-services"
+					]
+				},
+				"description": "Retrieve the list of Open Metadata View Services (OMVSs) that are supported by this OMAG Server Platform."
+			},
+			"response": []
+		},
+		{
+			"name": "Get registered integration services",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/registered-services/integration-services",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{adminUserId}}",
+						"server-platform",
+						"registered-services",
+						"integration-services"
+					]
+				},
+				"description": "Retrieve the list of Open Metadata View Services (OMVSs) that are supported by this OMAG Server Platform."
+			},
+			"response": []
+		},
+		{
+			"name": "Get registered engine services",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/registered-services/engine-services",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{adminUserId}}",
+						"server-platform",
+						"registered-services",
+						"engine-services"
 					]
 				},
 				"description": "Retrieve the list of Open Metadata View Services (OMVSs) that are supported by this OMAG Server Platform."
@@ -83,7 +216,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/registered-services/governance-services",
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/registered-services/governance-services",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -91,7 +224,7 @@
 						"open-metadata",
 						"platform-services",
 						"users",
-						"{{user}}",
+						"{{adminUserId}}",
 						"server-platform",
 						"registered-services",
 						"governance-services"
@@ -107,7 +240,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/registered-services/common-services",
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/registered-services/common-services",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -115,7 +248,7 @@
 						"open-metadata",
 						"platform-services",
 						"users",
-						"{{user}}",
+						"{{adminUserId}}",
 						"server-platform",
 						"registered-services",
 						"common-services"
@@ -131,7 +264,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/registered-services",
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/registered-services",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -139,7 +272,7 @@
 						"open-metadata",
 						"platform-services",
 						"users",
-						"{{user}}",
+						"{{adminUserId}}",
 						"server-platform",
 						"registered-services"
 					]
@@ -154,7 +287,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/servers",
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -162,7 +295,7 @@
 						"open-metadata",
 						"platform-services",
 						"users",
-						"{{user}}",
+						"{{adminUserId}}",
 						"server-platform",
 						"servers"
 					]
@@ -172,36 +305,12 @@
 			"response": []
 		},
 		{
-			"name": "Get all active servers",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/servers/active",
-					"host": [
-						"{{baseURL}}"
-					],
-					"path": [
-						"open-metadata",
-						"platform-services",
-						"users",
-						"{{user}}",
-						"server-platform",
-						"servers",
-						"active"
-					]
-				},
-				"description": "Retrieve the list of servers that are are running on this OMAG Server Platform."
-			},
-			"response": []
-		},
-		{
 			"name": "Query if a specific server is known",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/servers/{{server}}/is-known",
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{server}}/is-known",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -209,7 +318,7 @@
 						"open-metadata",
 						"platform-services",
 						"users",
-						"{{user}}",
+						"{{adminUserId}}",
 						"server-platform",
 						"servers",
 						"{{server}}",
@@ -221,12 +330,12 @@
 			"response": []
 		},
 		{
-			"name": "Query the status of a specific server",
+			"name": "Get all active servers",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/servers/{{server}}/status",
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/active",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -234,7 +343,31 @@
 						"open-metadata",
 						"platform-services",
 						"users",
-						"{{user}}",
+						"{{adminUserId}}",
+						"server-platform",
+						"servers",
+						"active"
+					]
+				},
+				"description": "Retrieve the list of servers that are are running on this OMAG Server Platform."
+			},
+			"response": []
+		},
+		{
+			"name": "Query the status of a specific server",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{server}}/status",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{adminUserId}}",
 						"server-platform",
 						"servers",
 						"{{server}}",
@@ -246,12 +379,16 @@
 			"response": []
 		},
 		{
-			"name": "Query the active services of a specific server",
+			"name": "Start server - using stored configuration",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
-					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/servers/{{server}}/services",
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{server}}/instance",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -259,7 +396,99 @@
 						"open-metadata",
 						"platform-services",
 						"users",
-						"{{user}}",
+						"{{adminUserId}}",
+						"server-platform",
+						"servers",
+						"{{server}}",
+						"instance"
+					]
+				},
+				"description": "Activate a server on the OMAG Server Platform.  Use the configuration document found in the configuration document store."
+			},
+			"response": []
+		},
+		{
+			"name": "Start server - using supplied configuration",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"class\": \"OMAGServerConfigResponse\",\n    \"relatedHTTPCode\": 200,\n    \"omagserverConfig\": {\n        \"class\": \"OMAGServerConfig\",\n        \"versionId\": \"V2.0\",\n        \"localServerId\": \"863ae16f-46eb-4f9a-a619-76917e8fa950\",\n        \"localServerName\": \"myserver\",\n        \"localServerType\": \"Open Metadata and Governance Server\",\n        \"localServerURL\": \"https://localhost:9443\",\n        \"localServerUserId\": \"OMAGServer\",\n        \"maxPageSize\": 1000\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{server}}/instance",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{adminUserId}}",
+						"server-platform",
+						"servers",
+						"{{server}}",
+						"instance"
+					]
+				},
+				"description": "Activate a server on the OMAG Server Platform.  Use the configuration document passed on the request. This configuration document is saved to the configuration document store and then the server is started."
+			},
+			"response": []
+		},
+		{
+			"name": "Get active server instance status",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{server}}/instance/status",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{adminUserId}}",
+						"server-platform",
+						"servers",
+						"{{server}}",
+						"instance",
+						"status"
+					]
+				},
+				"description": "Retrieve the configuration document used to start the named server."
+			},
+			"response": []
+		},
+		{
+			"name": "Query the active services of a specific server",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{server}}/services",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{adminUserId}}",
 						"server-platform",
 						"servers",
 						"{{server}}",
@@ -269,7 +498,288 @@
 				"description": "Retrieve the list of services that have been requested inside of a specific server running on this OMAG Server Platform."
 			},
 			"response": []
+		},
+		{
+			"name": "Get active server configuration",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{server}}/instance/configuration",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{adminUserId}}",
+						"server-platform",
+						"servers",
+						"{{server}}",
+						"instance",
+						"configuration"
+					]
+				},
+				"description": "Retrieve the configuration document used to start the named server."
+			},
+			"response": []
+		},
+		{
+			"name": "Load open metadata archive file",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "text/plain"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "content-packs/CocoComboArchive.json",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{server}}/instance/open-metadata-archives/file",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{adminUserId}}",
+						"server-platform",
+						"servers",
+						"{{server}}",
+						"instance",
+						"open-metadata-archives",
+						"file"
+					]
+				},
+				"description": "Load a file that contains open metadata types and instances."
+			},
+			"response": []
+		},
+		{
+			"name": "Load open metadata archive connection",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "text/plain"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"class\": \"Connection\",\n    \"connectorType\": {\n        \"class\": \"ConnectorType\",\n        \"connectorProviderClassName\": \"class name of connector provider here\"\n    },\n    \"endpoint\" : {\n        \"class\" : \"Endpoint\",\n        \"address\" : \"Add location of the archive here\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/server-platform/servers/{{server}}/instance/open-metadata-archives/connection",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"{{adminUserId}}",
+						"server-platform",
+						"servers",
+						"{{server}}",
+						"instance",
+						"open-metadata-archives",
+						"connection"
+					]
+				},
+				"description": "Load a file that contains open metadata types and instances."
+			},
+			"response": []
+		},
+		{
+			"name": "Query a connector",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/connector-types/org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{user}}",
+						"server-platform",
+						"connector-types",
+						"org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider"
+					]
+				},
+				"description": "Retrieve the list of services that have been requested inside of a specific server running on this OMAG Server Platform."
+			},
+			"response": []
+		},
+		{
+			"name": "Shutdown server",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{server}}/instance",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{adminUserId}}",
+						"server-platform",
+						"servers",
+						"{{server}}",
+						"instance"
+					]
+				},
+				"description": "Stop the server running on the OMAG Server Platform."
+			},
+			"response": []
+		},
+		{
+			"name": "Shutdown and unregister server from cohorts",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{server}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{adminUserId}}",
+						"server-platform",
+						"servers",
+						"{{server}}"
+					]
+				},
+				"description": "Unregister server and remove its configuration"
+			},
+			"response": []
+		},
+		{
+			"name": "Shutdown all active servers",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/instance",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{adminUserId}}",
+						"server-platform",
+						"servers",
+						"instance"
+					]
+				},
+				"description": "Stop the server running on the OMAG Server Platform."
+			},
+			"response": []
+		},
+		{
+			"name": "Shutdown and unregister all active servers",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{adminUserId}}",
+						"server-platform",
+						"servers"
+					]
+				},
+				"description": "Stop the server running on the OMAG Server Platform."
+			},
+			"response": []
+		},
+		{
+			"name": "Shutdown server platform",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/instance",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{adminUserId}}",
+						"server-platform",
+						"instance"
+					]
+				},
+				"description": "Stop the server running on the OMAG Server Platform."
+			},
+			"response": []
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
