@@ -247,7 +247,7 @@ public class OMAGServerPlatform
         {
             try
             {
-                if ((configStoreProvider != null) && (! "".equals(configStoreProvider)))
+                if ((configStoreProvider != null) && (! configStoreProvider.isEmpty()))
                 {
                     Connection    configStoreConnection = new Connection();
                     ConnectorType connectorType         = new ConnectorType();
@@ -262,14 +262,14 @@ public class OMAGServerPlatform
                     configStoreServices.setConfigurationStoreConnection(sysUser, configStoreConnection);
                 }
 
-                if ((platformSecurityProvider != null) && (! "".equals(platformSecurityProvider)))
+                if ((platformSecurityProvider != null) && (! platformSecurityProvider.isEmpty()))
                 {
                     Connection    securityConnection = new Connection();
                     ConnectorType connectorType      = new ConnectorType();
                     connectorType.setConnectorProviderClassName(platformSecurityProvider);
 
                     String platformName = platformSecurityName;
-                    if ((platformName == null) || ("".equals(platformName)))
+                    if ((platformName == null) || (platformName.isEmpty()))
                     {
                         platformName = Long.valueOf(ProcessHandle.current().pid()).toString();
                     }
