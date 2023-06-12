@@ -214,7 +214,7 @@ public class OMAGServerOperationResource
      * OMAGInvalidParameterException the server name is invalid or
      * OMAGConfigurationErrorException there is a problem using the supplied configuration.
      */
-    @GetMapping(path = "/instance/configuration")
+    @GetMapping(path = "/servers/{serverName}/instance/configuration")
 
     @Operation(summary="getActiveConfiguration",
             description="Retrieve the configuration document used to start a running instance of a server. The stored configuration " +
@@ -244,7 +244,7 @@ public class OMAGServerOperationResource
      * OMAGInvalidParameterException the server name is invalid or not running or
      * OMAGConfigurationErrorException there is a problem using the supplied configuration.
      */
-    @GetMapping(path = "/instance/status")
+    @GetMapping(path = "/servers/{serverName}/instance/status")
 
     @Operation(summary="getActiveServerStatus",
                description="Retrieve the status for a running instance of a server. The stored configuration " +
@@ -272,7 +272,7 @@ public class OMAGServerOperationResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or fileName parameter.
      */
-    @PostMapping(path = "/instance/open-metadata-archives/file")
+    @PostMapping(path = "/servers/{serverName}/instance/open-metadata-archives/file")
 
     @Operation(summary="addOpenMetadataArchiveFile",
                description="An open metadata archive contains metadata types and instances.  This operation loads an open metadata " +
@@ -299,7 +299,7 @@ public class OMAGServerOperationResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or connection parameter.
      */
-    @PostMapping(path = "/instance/open-metadata-archives/connection")
+    @PostMapping(path = "/servers/{serverName}/instance/open-metadata-archives/connection")
 
     @Operation(summary="addOpenMetadataArchive",
                description="An open metadata archive contains metadata types and instances.  This operation loads an open metadata " +
