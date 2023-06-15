@@ -19,10 +19,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/platform/security")
 
-@Tag(name="Administration Services - Platform Configuration - Deprecated", description="The platform configuration administration services support the " +
-        "configuration of the security and configuration store connectors for an OMAG Server Platform.",
+@Tag(name="Administration Services - Platform Security Configuration - Deprecated", description="Use the platform services.",
         externalDocs=@ExternalDocumentation(description="Further information",
-                url="https://egeria-project.org/guides/admin/configuring-the-omag-server-platform/"))
+                url="https://egeria-project.org/services/platform-services/overview/#dynamically-configuring-the-platform-metadata-security-connector"))
 @Deprecated
 public class OldPlatformSecurityResource
 {
