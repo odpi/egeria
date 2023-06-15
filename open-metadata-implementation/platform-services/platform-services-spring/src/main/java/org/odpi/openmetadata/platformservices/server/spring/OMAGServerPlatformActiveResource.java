@@ -27,13 +27,15 @@ import org.springframework.web.bind.annotation.RestController;
  * platform and the services that are active within them.
  */
 
-@Tag(name="Platform Services", description="The platform services provides the APIs for querying the Open Metadata and Governance (OMAG) " +
-                                                   "Server Platform. It is able to start an stop OMAG Servers and discovering information " +
-                                                   "about the OMAG Servers that it is hosting.",
-     externalDocs=@ExternalDocumentation(description="Platform Services",url="https://egeria-project.org/services/platform-services/overview"))
 
 @RestController
 @RequestMapping("/open-metadata/platform-services/users/{userId}/server-platform")
+
+@Tag(name="Platform Services", description="The platform services provides the APIs for querying the Open Metadata and Governance (OMAG) " +
+                                                   "Server Platform. It is able to start an stop OMAG Servers and discovering information " +
+                                                   "about the OMAG Servers that the OMAG Server Platform is hosting.  " +
+                                                   "It is also able to dynamically change the platform metadata security connector.",
+     externalDocs=@ExternalDocumentation(description="Further Information", url="https://egeria-project.org/services/platform-services/overview"))
 
 public class OMAGServerPlatformActiveResource
 {
@@ -153,7 +155,7 @@ public class OMAGServerPlatformActiveResource
      * @return list of service descriptions
      */
     @GetMapping(path = "/registered-services/governance-services")
-    @Operation( summary = "getRegisteredGovernanceServices",
+    @Operation( summary = "getGovernanceServices",
             description="Retrieve a list of governance services registered on this platform",
             responses = {
                     @ApiResponse(responseCode = "200", description="list of service descriptions",
@@ -178,7 +180,7 @@ public class OMAGServerPlatformActiveResource
      * @return list of service descriptions
      */
     @GetMapping(path = "/registered-services/common-services")
-    @Operation( summary = "getRegisteredCommonServices",
+    @Operation( summary = "getCommonServices",
             description="Retrieve a list of common services registered on this platform",
             responses = {
                     @ApiResponse(responseCode = "200",description="list of service descriptions",
@@ -196,14 +198,14 @@ public class OMAGServerPlatformActiveResource
 
 
     /**
-     * Return the list of all services that are registered (supported) in this OMAG Server Platform.
+     * Return the list of all services that are supported in this OMAG Server Platform.
      *
      * @param userId calling user
      * @return list of service descriptions
      */
     @GetMapping(path = "/registered-services")
-    @Operation( summary = "getAllRegisteredServices",
-            description="Retrieve a list of all services registered on this platform",
+    @Operation( summary = "getAllServices",
+            description="Retrieve a list of all services available on this platform",
             responses = {
                     @ApiResponse(responseCode = "200",description="list of service descriptions",
                             content = @Content(

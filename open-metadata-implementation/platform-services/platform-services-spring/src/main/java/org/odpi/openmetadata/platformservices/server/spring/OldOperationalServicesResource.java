@@ -22,10 +22,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
 
 @Tag(name="Administration Services - Operational - Deprecated",
-        description="The operational administration services support the management " +
-                "of OMAG Server instances.  This includes starting and stopping the servers as well as querying and changing their operational state.",
+        description="Use the Platform Services.",
         externalDocs=@ExternalDocumentation(description="Further information",
-                url="https://egeria-project.org/guides/operations/overview/"))
+                url="https://egeria-project.org/services/platform-services/overview/"))
 
 @Deprecated
 public class OldOperationalServicesResource

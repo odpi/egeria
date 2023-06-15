@@ -28,8 +28,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name="Platform Services", description="The platform services provides the APIs for querying the Open Metadata and Governance (OMAG) " +
                                                    "Server Platform. It is able to start an stop OMAG Servers and discovering information " +
-                                                   "about the OMAG Servers that it is hosting.",
-     externalDocs=@ExternalDocumentation(description="Platform Services",url="https://egeria-project.org/services/platform-services/overview"))
+                                                   "about the OMAG Servers that the OMAG Server Platform is hosting.  " +
+                                                   "It is also able to dynamically change the platform metadata security connector.",
+     externalDocs=@ExternalDocumentation(description="Further Information", url="https://egeria-project.org/services/platform-services/overview"))
 
 public class OMAGServerPlatformSecurityResource
 {
@@ -37,7 +38,7 @@ public class OMAGServerPlatformSecurityResource
 
 
     /**
-     * Set up a platform security connector
+     * Set up a platform metadata security connector
      *
      * @param userId calling user.
      * @param requestBody requestBody used to create and configure the connector that performs platform security
@@ -46,9 +47,9 @@ public class OMAGServerPlatformSecurityResource
     @PostMapping(path = "/connection")
 
     @Operation(summary="setPlatformSecurityConnection",
-               description="Set up a platform security connector to control access to the platform and admin services.",
-               externalDocs=@ExternalDocumentation(description="Metadata Security",
-                                                   url="https://egeria-project.org/features/metadata-security/overview/"))
+               description="Set up a platform metadata security connector to control access to the platform and admin services.  This overrides the ",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/services/platform-services/overview/#dynamically-configuring-the-platform-metadata-security-connector"))
 
     public VoidResponse setPlatformSecurityConnection(@PathVariable String                      userId,
                                                       @RequestBody  PlatformSecurityRequestBody requestBody)
@@ -58,7 +59,7 @@ public class OMAGServerPlatformSecurityResource
 
 
     /**
-     * Return the connection object for platform security connector.  Null is returned if no platform security
+     * Return the connection object for platform metadata security connector.  Null is returned if no platform security
      * has been set up.
      *
      * @param userId calling user
@@ -67,7 +68,7 @@ public class OMAGServerPlatformSecurityResource
     @GetMapping(path = "/connection")
 
     @Operation(summary="getPlatformSecurityConnection",
-               description="Return the connection object for platform security connector.  Null is returned if no platform security has been set up.",
+               description="Return the connection object for platform metadata security connector.  Null is returned if no connector has been set up.",
                externalDocs=@ExternalDocumentation(description="Metadata Security",
                                                    url="https://egeria-project.org/features/metadata-security/overview/"))
 
@@ -88,8 +89,8 @@ public class OMAGServerPlatformSecurityResource
 
     @Operation(summary="clearPlatformSecurityConnection",
                description="Clear the connection object for platform security.  This means there is no platform security set up. Note that this command must be issued by a user that has permission to operate the OMAG Server Platform.",
-               externalDocs=@ExternalDocumentation(description="Metadata Security",
-                                                   url="https://egeria-project.org/features/metadata-security/overview/"))
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/services/platform-services/overview/#dynamically-configuring-the-platform-metadata-security-connector"))
 
     public  VoidResponse clearPlatformSecurityConnection(@PathVariable String   userId)
     {
