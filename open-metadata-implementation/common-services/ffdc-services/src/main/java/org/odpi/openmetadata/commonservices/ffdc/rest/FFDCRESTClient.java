@@ -281,6 +281,35 @@ public class FFDCRESTClient extends FFDCRESTClientBase
 
 
     /**
+     * Issue a POST REST call that returns a BooleanResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate  template of the URL for the REST API with place-holders for the parameters.
+     * @param params  a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public BooleanResponse callBooleanGetRESTCall(String    methodName,
+                                                  String    urlTemplate,
+                                                  Object... params) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        BooleanResponse restResult =  this.callGetRESTCall(methodName,
+                                                           BooleanResponse.class,
+                                                           urlTemplate,
+                                                           params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
      * Issue a POST REST call that returns a VoidResponse object.  This is typically a create
      *
      * @param methodName  name of the method being called.
