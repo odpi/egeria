@@ -46,12 +46,12 @@ public class SchemaExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param assetManagerIsHome ensure that only the asset manager can update this schema element
+     * @param anchorGUID unique identifier of the intended anchor of the schema type
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties about the schema type to store
      *
      * @return unique identifier of the new schema type
-     *
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -61,13 +61,15 @@ public class SchemaExchangeResource
     public GUIDResponse createSchemaType(@PathVariable String                serverName,
                                          @PathVariable String                userId,
                                          @RequestParam boolean               assetManagerIsHome,
+                                         @RequestParam (required = false, defaultValue = "null")
+                                                       String                anchorGUID,
                                          @RequestParam (required = false, defaultValue = "false")
-                                                 boolean                      forLineage,
+                                                       boolean               forLineage,
                                          @RequestParam (required = false, defaultValue = "false")
-                                                 boolean                      forDuplicateProcessing,
+                                                        boolean              forDuplicateProcessing,
                                          @RequestBody  SchemaTypeRequestBody requestBody)
     {
-        return restAPI.createSchemaType(serverName, userId, assetManagerIsHome, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.createSchemaType(serverName, userId, assetManagerIsHome, anchorGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -81,7 +83,6 @@ public class SchemaExchangeResource
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new schema type
-     *
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)

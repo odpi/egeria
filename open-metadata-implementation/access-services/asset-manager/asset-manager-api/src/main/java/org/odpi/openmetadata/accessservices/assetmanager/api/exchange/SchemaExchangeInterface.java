@@ -55,6 +55,38 @@ public interface SchemaExchangeInterface
 
 
     /**
+     * Create a new metadata element to represent a schema type.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param assetManagerIsHome ensure that only the asset manager can update this schema element
+     * @param anchorGUID unique identifier of the intended anchor of the schema type
+     * @param externalIdentifierProperties optional properties used to define an external identifier
+     * @param schemaTypeProperties properties about the schema type to store
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return unique identifier of the new schema type
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    String createAnchoredSchemaType(String                       userId,
+                                    String                       assetManagerGUID,
+                                    String                       assetManagerName,
+                                    boolean                      assetManagerIsHome,
+                                    String                       anchorGUID,
+                                    ExternalIdentifierProperties externalIdentifierProperties,
+                                    boolean                      forLineage,
+                                    boolean                      forDuplicateProcessing,
+                                    SchemaTypeProperties         schemaTypeProperties) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException;
+
+
+    /**
      * Create a new metadata element to represent a schema type using an existing metadata element as a template.
      *
      * @param userId calling user

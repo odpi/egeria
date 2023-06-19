@@ -252,7 +252,7 @@ public class OMAGServerPlatformActiveResource
 
 
     /**
-     * Return a flag to indicate if this server has ever run on this OMAG Server Platform.
+     * Return a flag to indicate if this server has ever run on this OMAG Server Platform instance.
      *
      * @param userId calling user
      * @param serverName server of interest
@@ -260,7 +260,7 @@ public class OMAGServerPlatformActiveResource
      */
     @GetMapping(path = "/servers/{serverName}/is-known")
     @Operation( summary = "isServerKnown",
-            description="Return a boolean indication if this server has ever run on this platform",
+            description="Return a boolean indication if this server has ever run on this platform instance",
             responses = {
                     @ApiResponse(responseCode = "200",description="boolean flag",
                             content = @Content(

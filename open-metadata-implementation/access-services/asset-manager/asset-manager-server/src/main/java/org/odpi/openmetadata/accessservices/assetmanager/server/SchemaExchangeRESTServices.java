@@ -46,12 +46,12 @@ public class SchemaExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param assetManagerIsHome ensure that only the asset manager can update this schema element
+     * @param anchorGUID unique identifier of the intended anchor of the schema type
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties about the schema type to store
      *
-     * @return unique identifier of the new schema type
-     *
+     * @return unique identifier of the new schema type or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -59,6 +59,7 @@ public class SchemaExchangeRESTServices
     public GUIDResponse createSchemaType(String                serverName,
                                          String                userId,
                                          boolean               assetManagerIsHome,
+                                         String                anchorGUID,
                                          boolean               forLineage,
                                          boolean               forDuplicateProcessing,
                                          SchemaTypeRequestBody requestBody)
@@ -81,6 +82,7 @@ public class SchemaExchangeRESTServices
                 response.setGUID(handler.createSchemaType(userId,
                                                           requestBody.getMetadataCorrelationProperties(),
                                                           assetManagerIsHome,
+                                                          anchorGUID,
                                                           requestBody.getElementProperties(),
                                                           forLineage,
                                                           forDuplicateProcessing,
@@ -437,8 +439,8 @@ public class SchemaExchangeRESTServices
                                                            requestBody.getAssetManagerGUID(),
                                                            requestBody.getAssetManagerName(),
                                                            assetManagerIsHome,
-                                                           endTwoGUID,
                                                            endOneGUID,
+                                                           endTwoGUID,
                                                            relationshipTypeName,
                                                            requestBody.getProperties(),
                                                            requestBody.getProperties().getEffectiveFrom(),
@@ -454,8 +456,8 @@ public class SchemaExchangeRESTServices
                                                            requestBody.getAssetManagerGUID(),
                                                            requestBody.getAssetManagerName(),
                                                            assetManagerIsHome,
-                                                           endTwoGUID,
                                                            endOneGUID,
+                                                           endTwoGUID,
                                                            relationshipTypeName,
                                                            null,
                                                            null,

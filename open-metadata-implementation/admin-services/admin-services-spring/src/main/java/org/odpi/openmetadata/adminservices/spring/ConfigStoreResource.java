@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/stores")
 
-@Tag(name="Administration Services - Platform Configuration", description="The platform configuration administration services support the " +
-        "configuration of the security and configuration store connectors for an OMAG Server Platform.",
+@Tag(name="Administration Services - Configuration Document Store Configuration",
+     description="Dynamically change the connector that accesses the configuration document store.  This overrides the value set in the application.properties (which overrides the default Encrypted File Configuration Document Store).",
         externalDocs=@ExternalDocumentation(description="Further information",
-        url="https://egeria-project.org/guides/admin/servers/"))
+        url="https://egeria-project.org/services/admin-services/overview/#dynamically-configuring-the-configuration-document-store-connector"))
 
 public class ConfigStoreResource
 {

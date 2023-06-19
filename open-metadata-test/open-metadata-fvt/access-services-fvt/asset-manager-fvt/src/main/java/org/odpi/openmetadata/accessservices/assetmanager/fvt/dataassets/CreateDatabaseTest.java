@@ -7,14 +7,17 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.DataAss
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ExternalAssetManagerClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.DataAssetElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RelationshipElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SchemaAttributeElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.DataAssetProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
@@ -33,11 +36,6 @@ public class CreateDatabaseTest
 
     private final static int    maxPageSize        = 100;
 
-    private final static String              externalIdName       = "ExternalId Name";
-    private final static String              externalIdUsage      = "ExternalId Usage";
-    private final static KeyPattern          externalIdKeyPattern = KeyPattern.STABLE_KEY;
-    private final static Map<String, String> externalIdMappingProperties = new HashMap<>();
-
     /*
      * The asset manager name is constant - the guid is created as part of the test.
      */
@@ -52,7 +50,6 @@ public class CreateDatabaseTest
     private final static String databaseDescription = "Database description";
     private final static String databaseType        = "Database type";
     private final static String databaseVersion     = "Database version";
-    private final static String databaseExternalId  = "Database ExternalId";
 
     private final static String databaseSchemaName        = "TestDatabaseSchema";
     private final static String databaseSchemaDisplayName = "DatabaseSchema displayName";
@@ -134,17 +131,32 @@ public class CreateDatabaseTest
         String databaseTableGUID = thisTest.createDatabaseTable(client, assetManagerGUID, databaseSchemaGUID, userId);
         String databaseColumnGUID = thisTest.createDatabaseColumn(client, assetManagerGUID, databaseTableGUID, userId);
 
+        String activityName = "cascadedDelete - remove Database";
+
+        System.out.println("activityName = " + activityName);
+        System.out.println("databaseGUID = " + databaseGUID);
+        System.out.println("databaseSchemaGUID = " + databaseSchemaGUID);
+        System.out.println("databaseTableGUID = " + databaseTableGUID);
+        System.out.println("databaseColumnGUID = " + databaseColumnGUID);
+
         /*
          * Check that all elements are deleted when the database is deleted.
          */
-        String activityName = "cascadedDelete";
         try
         {
-            client.removeDataAsset(userId, assetManagerGUID, assetManagerName, databaseGUID, databaseName);
+            client.removeDataAsset(userId, assetManagerGUID, assetManagerName, databaseGUID, null, null, false, false);
 
             thisTest.checkDatabaseGone(client, assetManagerGUID, databaseGUID, activityName, userId);
+            thisTest.checkDatabaseColumnOK(client, assetManagerGUID, databaseColumnGUID, databaseTableGUID, activityName, userId);
+            thisTest.checkDatabaseTableOK(client, assetManagerGUID, databaseTableGUID, activityName, userId);
+            thisTest.checkDatabaseSchemaOK(client, assetManagerGUID, databaseSchemaGUID, null, activityName, userId);
+
+            activityName = "cascadedDelete - remove DatabaseSchema";
+
+            client.removeDataAsset(userId, assetManagerGUID, assetManagerName, databaseSchemaGUID, null, null, false, false);
+
             thisTest.checkDatabaseSchemaGone(client, assetManagerGUID, databaseSchemaGUID, null, activityName, userId);
-            thisTest.checkDatabaseTableGone(client, assetManagerGUID, databaseTableGUID, null, activityName, userId);
+            thisTest.checkDatabaseTableGone(client, assetManagerGUID, databaseTableGUID,  activityName, userId);
             thisTest.checkDatabaseColumnGone(client, assetManagerGUID, databaseColumnGUID, null, activityName, userId);
         }
         catch (Exception unexpectedError)
@@ -158,10 +170,16 @@ public class CreateDatabaseTest
          */
         activityName= "deleteOneByOne";
 
+        System.out.println("activityName = " + activityName);
         databaseGUID = thisTest.getDatabase(client, assetManagerGUID, userId);
         databaseSchemaGUID = thisTest.getDatabaseSchema(client, assetManagerGUID, databaseGUID, userId);
         databaseTableGUID = thisTest.createDatabaseTable(client, assetManagerGUID, databaseSchemaGUID, userId);
         databaseColumnGUID = thisTest.createDatabaseColumn(client, assetManagerGUID, databaseTableGUID, userId);
+
+        System.out.println("databaseGUID = " + databaseGUID);
+        System.out.println("databaseSchemaGUID = " + databaseSchemaGUID);
+        System.out.println("databaseTableGUID = " + databaseTableGUID);
+        System.out.println("databaseColumnGUID = " + databaseColumnGUID);
 
 
         /*
@@ -172,42 +190,46 @@ public class CreateDatabaseTest
         {
             activityName = "deleteOneByOne - prevalidate";
             thisTest.checkDatabaseColumnOK(client, assetManagerGUID, databaseColumnGUID, databaseTableGUID, activityName, userId);
-            thisTest.checkDatabaseTableOK(client, assetManagerGUID, databaseTableGUID, databaseSchemaGUID, activityName, userId);
+            thisTest.checkDatabaseTableOK(client, assetManagerGUID, databaseTableGUID, activityName, userId);
             thisTest.checkDatabaseSchemaOK(client, assetManagerGUID, databaseSchemaGUID, databaseGUID, activityName, userId);
             thisTest.checkDatabaseOK(client, assetManagerGUID, databaseGUID, activityName, userId);
 
-            client.removeSchemaAttribute(userId, assetManagerGUID, assetManagerName, databaseColumnGUID, databaseColumnName);
+            client.removeSchemaAttribute(userId, assetManagerGUID, assetManagerName, databaseColumnGUID, null, null, false, false);
 
             activityName = "deleteOneByOne - column gone";
             thisTest.checkDatabaseColumnGone(client, assetManagerGUID, databaseColumnGUID, databaseTableGUID, activityName, userId);
-            thisTest.checkDatabaseTableOK(client, assetManagerGUID, databaseTableGUID, databaseSchemaGUID, activityName, userId);
+
+            activityName = "deleteOneByOne - column gone - check table: " + databaseTableGUID;
+
+            thisTest.checkDatabaseTableOK(client, assetManagerGUID, databaseTableGUID, activityName, userId);
+
+            activityName = "deleteOneByOne - column gone - check schema";
+
             thisTest.checkDatabaseSchemaOK(client, assetManagerGUID, databaseSchemaGUID, databaseGUID, activityName, userId);
+
+            activityName = "deleteOneByOne - column gone - check DB";
+
             thisTest.checkDatabaseOK(client, assetManagerGUID, databaseGUID, activityName, userId);
 
-            client.removeDataAsset(userId, assetManagerGUID, assetManagerName, databaseTableGUID, databaseTableName);
+            activityName = "deleteOneByOne - remove table";
+
+            client.removeSchemaAttribute(userId, assetManagerGUID, assetManagerName, databaseTableGUID, null, null, false, false);
 
             activityName = "deleteOneByOne - table gone";
-            thisTest.checkDatabaseColumnGone(client, assetManagerGUID, databaseColumnGUID, null, activityName, userId);
-            thisTest.checkDatabaseTableGone(client, assetManagerGUID, databaseTableGUID, databaseSchemaGUID, activityName, userId);
+            thisTest.checkDatabaseTableGone(client, assetManagerGUID, databaseTableGUID, activityName, userId);
             thisTest.checkDatabaseSchemaOK(client, assetManagerGUID, databaseSchemaGUID, databaseGUID, activityName, userId);
             thisTest.checkDatabaseOK(client, assetManagerGUID, databaseGUID, activityName, userId);
 
-            client.removeDataAsset(userId, assetManagerGUID, assetManagerName, databaseSchemaGUID, databaseSchemaName);
+            client.removeDataAsset(userId, assetManagerGUID, assetManagerName, databaseSchemaGUID, null, null, false, false);
 
             activityName = "deleteOneByOne - schema gone";
-            thisTest.checkDatabaseColumnGone(client, assetManagerGUID, databaseColumnGUID, null, activityName, userId);
-            thisTest.checkDatabaseTableGone(client, assetManagerGUID, databaseTableGUID, null, activityName, userId);
             thisTest.checkDatabaseSchemaGone(client, assetManagerGUID, databaseSchemaGUID, databaseGUID, activityName, userId);
             thisTest.checkDatabaseOK(client, assetManagerGUID, databaseGUID, activityName, userId);
 
-            client.removeDataAsset(userId, assetManagerGUID, assetManagerName, databaseGUID, databaseName);
+            client.removeDataAsset(userId, assetManagerGUID, assetManagerName, databaseGUID, null, null, false, false);
 
             activityName = "deleteOneByOne - database gone";
-            thisTest.checkDatabaseColumnGone(client, assetManagerGUID, databaseColumnGUID, null, activityName, userId);
-            thisTest.checkDatabaseTableGone(client, assetManagerGUID, databaseTableGUID, null, activityName, userId);
-            thisTest.checkDatabaseSchemaGone(client, assetManagerGUID, databaseSchemaGUID, null, activityName, userId);
             thisTest.checkDatabaseGone(client, assetManagerGUID, databaseGUID, activityName, userId);
-
 
             /*
              * Recreate database
@@ -219,6 +241,11 @@ public class CreateDatabaseTest
             databaseTableGUID = thisTest.createDatabaseTable(client, assetManagerGUID, databaseSchemaGUID, userId);
             databaseColumnGUID = thisTest.createDatabaseColumn(client, assetManagerGUID, databaseTableGUID, userId);
 
+            System.out.println("databaseGUID = " + databaseGUID);
+            System.out.println("databaseSchemaGUID = " + databaseSchemaGUID);
+            System.out.println("databaseTableGUID = " + databaseTableGUID);
+            System.out.println("databaseColumnGUID = " + databaseColumnGUID);
+
             /*
              * Update tests
              */
@@ -229,12 +256,11 @@ public class CreateDatabaseTest
             databaseColumnTwoProperties.setQualifiedName(databaseColumnTwoName);
             databaseColumnTwoProperties.setDisplayName(databaseColumnDisplayName); // Note wrong value
             databaseColumnTwoProperties.setDescription(databaseColumnTwoDescription);
-            databaseColumnTwoProperties.setDataType(databaseColumnType); // Note wrong value
 
             try
             {
 
-                client.updateSchemaAttribute(userId, assetManagerGUID, assetManagerName, databaseColumnTwoGUID, databaseColumnTwoProperties);
+                client.updateSchemaAttribute(userId, assetManagerGUID, assetManagerName, databaseColumnTwoGUID, null, true, databaseColumnTwoProperties, null, false ,false);
                 throw new FVTUnexpectedCondition(testCaseName, activityName);
             }
             catch (InvalidParameterException expectedError)
@@ -244,13 +270,13 @@ public class CreateDatabaseTest
 
             activityName = "updateColumnWithSameProperties";
 
-            databaseColumnTwoGUID = client.createDatabaseColumn(userId, assetManagerGUID, assetManagerName, databaseTableGUID, databaseColumnTwoProperties);
+            databaseColumnTwoGUID = client.createSchemaAttribute(userId, assetManagerGUID, assetManagerName, true, databaseTableGUID, null, databaseColumnTwoProperties, null, false, false);
 
-            SchemaAttributeElement beforeElement = client.getSchemaAttributeByGUID(userId, assetManagerGUID, assetManagerName, databaseColumnTwoGUID);
+            SchemaAttributeElement beforeElement = client.getSchemaAttributeByGUID(userId, assetManagerGUID, assetManagerName, databaseColumnTwoGUID, null, false, false);
 
-            client.updateSchemaAttribute(userId, assetManagerGUID, assetManagerName, databaseColumnTwoGUID, databaseColumnTwoProperties);
+            client.updateSchemaAttribute(userId, assetManagerGUID, assetManagerName, databaseColumnTwoGUID, null, true, databaseColumnTwoProperties,null, false, false);
 
-            SchemaAttributeElement afterElement = client.getSchemaAttributeByGUID(userId, assetManagerGUID, assetManagerName, databaseColumnTwoGUID);
+            SchemaAttributeElement afterElement = client.getSchemaAttributeByGUID(userId, assetManagerGUID, assetManagerName, databaseColumnTwoGUID, null, false, false);
 
             /*
              * No change should occur in the version number because the properties are not different.
@@ -265,11 +291,17 @@ public class CreateDatabaseTest
             /*
              * This change effects the classification of the column
              */
-            databaseColumnTwoProperties.setDataType(databaseColumnTwoType);
+            SchemaTypeProperties schemaType = new SchemaTypeProperties();
 
-            client.updateDatabaseColumn(userId, assetManagerGUID, assetManagerName, databaseColumnTwoGUID, databaseColumnTwoProperties);
+            Map<String,Object> extendedProperties = new HashMap<>();
 
-            afterElement = client.getDatabaseColumnByGUID(userId, databaseColumnTwoGUID);
+            extendedProperties.put("dataType", databaseColumnTwoType);
+
+            schemaType.setExtendedProperties(extendedProperties);
+            databaseColumnTwoProperties.setSchemaType(schemaType);
+            client.updateSchemaAttribute(userId, assetManagerGUID, assetManagerName, databaseColumnTwoGUID, null, true, databaseColumnTwoProperties, null, false, false);
+
+            afterElement = client.getSchemaAttributeByGUID(userId, null, null, databaseColumnTwoGUID, null, false, false);
 
             /*
              * No change should occur in the version number because the entity properties are not different.
@@ -279,9 +311,10 @@ public class CreateDatabaseTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(version changed from " + beforeElement.getElementHeader().getVersions() + " to " + afterElement.getElementHeader().getVersions() + ")");
             }
 
-            if (! databaseColumnTwoType.equals(afterElement.getDatabaseColumnProperties().getDataType()))
+            Object dataType = afterElement.getSchemaAttributeProperties().getSchemaType().getExtendedProperties().get("dataType");
+            if (! databaseColumnTwoType.equals(dataType))
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(data type should be " + databaseColumnTwoType + " rather than " + afterElement.getDatabaseColumnProperties().getDataType() + ")");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(data type should be " + databaseColumnTwoType + " rather than " + dataType + "). Returned element: " + afterElement);
             }
 
             /*
@@ -291,9 +324,9 @@ public class CreateDatabaseTest
 
             databaseColumnTwoProperties.setDisplayName(databaseColumnTwoDisplayName);
 
-            client.updateDatabaseColumn(userId, assetManagerGUID, assetManagerName, databaseColumnTwoGUID, databaseColumnTwoProperties);
+            client.updateSchemaAttribute(userId, assetManagerGUID, assetManagerName, databaseColumnTwoGUID, null, true,  databaseColumnTwoProperties, null, false, false);
 
-            afterElement = client.getDatabaseColumnByGUID(userId, databaseColumnTwoGUID);
+            afterElement = client.getSchemaAttributeByGUID(userId, null, null, databaseColumnTwoGUID, null, false, false);
 
             /*
              * The change should have taken effect.
@@ -303,9 +336,9 @@ public class CreateDatabaseTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(version did not change from " + beforeElement.getElementHeader().getVersions() + ")");
             }
 
-            if (! databaseColumnTwoDisplayName.equals(afterElement.getDatabaseColumnProperties().getDisplayName()))
+            if (! databaseColumnTwoDisplayName.equals(afterElement.getSchemaAttributeProperties().getDisplayName()))
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(display name should be " + databaseColumnTwoDisplayName + " rather than " + afterElement.getDatabaseColumnProperties().getDisplayName() + ")");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(display name should be " + databaseColumnTwoDisplayName + " rather than " + afterElement.getSchemaAttributeProperties().getDisplayName() + ")");
             }
 
             /*
@@ -314,49 +347,16 @@ public class CreateDatabaseTest
             activityName = "cascadedDelete";
             try
             {
-                client.removeDataAsset(userId, assetManagerGUID, assetManagerName, databaseGUID, databaseExternalId);
+                client.removeDataAsset(userId, assetManagerGUID, assetManagerName, databaseGUID, null, null, false, false);
 
                 thisTest.checkDatabaseGone(client, assetManagerGUID, databaseGUID, activityName, userId);
+
+                client.removeDataAsset(userId, assetManagerGUID, assetManagerName, databaseSchemaGUID, null, null, false, false);
+
                 thisTest.checkDatabaseSchemaGone(client, assetManagerGUID, databaseSchemaGUID, null, activityName, userId);
-                thisTest.checkDatabaseTableGone(client, assetManagerGUID, databaseTableGUID, null, activityName, userId);
+                thisTest.checkDatabaseTableGone(client, assetManagerGUID, databaseTableGUID, activityName, userId);
                 thisTest.checkDatabaseColumnGone(client, assetManagerGUID, databaseColumnGUID, null, activityName, userId);
                 thisTest.checkDatabaseColumnGone(client, assetManagerGUID, databaseColumnTwoGUID, null, activityName, userId);
-            }
-            catch (Exception unexpectedError)
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
-            }
-
-
-            /*
-             * Working with database schema types
-
-             * Recreate database
-             */
-            activityName= "schemaType test";
-
-            databaseGUID = thisTest.getDatabase(client, assetManagerGUID, userId);
-            databaseSchemaGUID = thisTest.getDatabaseSchema(client, assetManagerGUID, databaseGUID, userId);
-
-            String databaseSchemaTypeGUID = client.createDatabaseSchemaType(userId, assetManagerGUID, assetManagerName, "SchemaOf:" + databaseSchemaName);
-
-            databaseTableGUID = thisTest.createDatabaseTableForSchemaType(client, assetManagerGUID, databaseSchemaTypeGUID, userId);
-            databaseColumnGUID = thisTest.createDatabaseColumn(client, assetManagerGUID, databaseTableGUID, userId);
-
-            client.attachSchemaTypeToDatabaseAsset(userId, assetManagerGUID, assetManagerName, databaseSchemaGUID, databaseSchemaTypeGUID);
-
-            /*
-             * Check that all elements are deleted when the database is deleted.
-             */
-            activityName = "cascadedDelete for SchemaType";
-            try
-            {
-                client.removeDataAsset(userId, assetManagerGUID, assetManagerName, databaseGUID, databaseName);
-
-                thisTest.checkDatabaseGone(client, assetManagerGUID, databaseGUID, activityName, userId);
-                thisTest.checkDatabaseSchemaGone(client, assetManagerGUID, databaseSchemaGUID, null, activityName, userId);
-                thisTest.checkDatabaseTableGone(client, assetManagerGUID, databaseTableGUID, null, activityName, userId);
-                thisTest.checkDatabaseColumnGone(client, assetManagerGUID, databaseColumnGUID, null, activityName, userId);
             }
             catch (Exception unexpectedError)
             {
@@ -367,7 +367,6 @@ public class CreateDatabaseTest
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
-
     }
 
 
@@ -463,7 +462,7 @@ public class CreateDatabaseTest
     /**
      * Check a database is gone.
      *
-     * @param client interface to Data Manager OMAS
+     * @param client interface to Asset Manager OMAS
      * @param databaseGUID unique id of the database to test
      * @param activityName name of calling activity
      * @param userId calling user
@@ -477,7 +476,7 @@ public class CreateDatabaseTest
     {
         try
         {
-            DataAssetElement retrievedElement = client.getDataAssetByGUID(userId, assetManagerGUID, assetManagerName, databaseGUID);
+            DataAssetElement retrievedElement = client.getDataAssetByGUID(userId, assetManagerGUID, assetManagerName, databaseGUID, null, false, false);
 
             if (retrievedElement != null)
             {
@@ -505,7 +504,7 @@ public class CreateDatabaseTest
     /**
      * Check database is ok.
      *
-     * @param client interface to Data Manager OMAS
+     * @param client interface to Asset Manager OMAS
      * @param databaseGUID unique id of the database
      * @param activityName name of calling activity
      * @param userId calling user
@@ -519,7 +518,7 @@ public class CreateDatabaseTest
     {
         try
         {
-            DataAssetElement retrievedElement = client.getDataAssetByGUID(userId, assetManagerGUID, assetManagerName, databaseGUID);
+            DataAssetElement retrievedElement = client.getDataAssetByGUID(userId, assetManagerGUID, assetManagerName, databaseGUID, null, false, false);
 
             if (retrievedElement == null)
             {
@@ -545,16 +544,19 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
-            if (! databaseType.equals(retrievedDatabase.getDatabaseType()))
+
+            Map<String, Object> databaseExtendedProperties = retrievedDatabase.getExtendedProperties();
+
+            if (! databaseType.equals(databaseExtendedProperties.get("deployedImplementationType")))
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad databaseType from Retrieve " + retrievedDatabase.getDatabaseType() + ")");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad databaseType from Retrieve).  Retrieve Element: " + retrievedDatabase);
             }
-            if (! databaseVersion.equals(retrievedDatabase.getDatabaseVersion()))
+            if (! databaseVersion.equals(databaseExtendedProperties.get("databaseVersion")))
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad databaseVersion from Retrieve)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad databaseVersion from Retrieve).  Retrieve Element: " + retrievedDatabase);
             }
 
-            List<DataAssetElement> databaseList = client.getDataAssetsByName(userId, assetManagerGUID, assetManagerName, databaseName, 0, maxPageSize);
+            List<DataAssetElement> databaseList = client.getDataAssetsByName(userId, assetManagerGUID, assetManagerName, databaseName, 0, maxPageSize, null, false, false);
 
             if (databaseList == null)
             {
@@ -586,16 +588,19 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
-            if (! databaseType.equals(retrievedDatabase.getDatabaseType()))
+
+            databaseExtendedProperties = retrievedDatabase.getExtendedProperties();
+
+            if (! databaseType.equals(databaseExtendedProperties.get("deployedImplementationType")))
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad databaseType from RetrieveByName)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad databaseType from RetrieveByName).  Retrieve Element: " + retrievedDatabase);
             }
-            if (! databaseVersion.equals(retrievedDatabase.getDatabaseVersion()))
+            if (! databaseVersion.equals(databaseExtendedProperties.get("databaseVersion")))
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad databaseVersion from RetrieveByName)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad databaseVersion from RetrieveByName).  Retrieve Element: " + retrievedDatabase);
             }
 
-            databaseList = client.getDataAssetsByName(userId, assetManagerGUID, assetManagerName, databaseName, 1, maxPageSize);
+            databaseList = client.getDataAssetsByName(userId, assetManagerGUID, assetManagerName, databaseName, 1, maxPageSize, null, false, false);
 
             if (databaseList != null)
             {
@@ -616,7 +621,7 @@ public class CreateDatabaseTest
     /**
      * Create a database and return its GUID.
      *
-     * @param client interface to Data Manager OMAS
+     * @param client interface to Asset Manager OMAS
      * @param assetManagerGUID unique id of the database manager
      * @param userId calling user
      * @return GUID of database
@@ -635,10 +640,15 @@ public class CreateDatabaseTest
             properties.setQualifiedName(databaseName);
             properties.setDisplayName(databaseDisplayName);
             properties.setDescription(databaseDescription);
-            properties.setDatabaseType(databaseType);
-            properties.setDatabaseVersion(databaseVersion);
 
-            String databaseGUID = client.createDataAsset(userId, assetManagerGUID, assetManagerName, true, null, null, null, null, null, null, properties);
+            properties.setTypeName("Database");
+
+            Map<String, Object> extendedProperties = new HashMap<>();
+            extendedProperties.put("deployedImplementationType", databaseType);
+            extendedProperties.put("databaseVersion" , databaseVersion);
+            properties.setExtendedProperties(extendedProperties);
+
+            String databaseGUID = client.createDataAsset(userId, assetManagerGUID, assetManagerName, true, null, properties);
 
             if (databaseGUID == null)
             {
@@ -646,7 +656,7 @@ public class CreateDatabaseTest
             }
             else
             {
-                checkDatabaseOK(client, databaseGUID, activityName, userId);
+                checkDatabaseOK(client, assetManagerGUID, databaseGUID, activityName, userId);
             }
 
             return databaseGUID;
@@ -665,7 +675,7 @@ public class CreateDatabaseTest
     /**
      * Check a database column is gone.
      *
-     * @param client interface to Data Manager OMAS
+     * @param client interface to Asset Manager OMAS
      * @param databaseSchemaGUID unique id of the database schema to test
      * @param databaseGUID unique id of the database to test
      * @param activityName name of calling activity
@@ -681,7 +691,7 @@ public class CreateDatabaseTest
     {
         try
         {
-            DataAssetElement retrievedElement = client.getDataAssetByGUID(userId, assetManagerGUID, assetManagerName, databaseSchemaGUID);
+            DataAssetElement retrievedElement = client.getDataAssetByGUID(userId, assetManagerGUID, assetManagerName, databaseSchemaGUID, null, false, false);
 
             if (retrievedElement != null)
             {
@@ -710,11 +720,11 @@ public class CreateDatabaseTest
                 /*
                  * Only one schema created so nothing should be tied to the database.
                  */
-                List<DataAssetElement> databaseSchemaList = client.getSchemasForDatabase(userId, databaseGUID, 0, maxPageSize);
+                List<RelationshipElement> relationshipList = client.getRelatedAssetsAtEnd2(userId, assetManagerGUID, assetManagerName, "DataContentForDataSet", databaseGUID, 0, maxPageSize, null, false, false);
 
-                if (databaseSchemaList != null)
+                if (relationshipList != null)
                 {
-                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(DatabaseSchema returned for getSchemasForDatabase)");
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(No DatabaseSchema returned for getSchemasForDatabase)");
                 }
             }
             catch(FVTUnexpectedCondition testCaseError)
@@ -732,7 +742,7 @@ public class CreateDatabaseTest
     /**
      * Check a database schema is correctly stored.
      *
-     * @param client interface to Data Manager OMAS
+     * @param client interface to Asset Manager OMAS
      * @param databaseSchemaGUID unique id of the database schema
      * @param databaseGUID unique id of the database
      * @param activityName name of calling activity
@@ -748,12 +758,15 @@ public class CreateDatabaseTest
     {
         try
         {
-            DataAssetElement    retrievedElement  = client.getDataAssetByGUID(userId, assetManagerGUID, assetManagerName, databaseSchemaGUID);
+            DataAssetElement retrievedElement = client.getDataAssetByGUID(userId, assetManagerGUID, assetManagerName, databaseSchemaGUID, null, false,
+                                                                          false);
 
             if (retrievedElement == null)
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseSchemaElement from Retrieve)");
             }
+
+            validateAnchorGUID(activityName, retrievedElement);
 
             DataAssetProperties retrievedSchema = retrievedElement.getDataAssetProperties();
 
@@ -776,7 +789,8 @@ public class CreateDatabaseTest
             }
 
 
-            List<DataAssetElement> databaseSchemaList = client.getDataAssetsByName(userId, assetManagerGUID, assetManagerName, databaseSchemaName, 0, maxPageSize);
+            List<DataAssetElement> databaseSchemaList = client.getDataAssetsByName(userId, assetManagerGUID, assetManagerName, databaseSchemaName, 0,
+                                                                                   maxPageSize, null, false, false);
 
             if (databaseSchemaList == null)
             {
@@ -809,21 +823,26 @@ public class CreateDatabaseTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
 
-            databaseSchemaList = client.getSchemasForDatabase(userId, databaseGUID, 0, maxPageSize);
+            if (databaseGUID != null)
+            {
+                List<RelationshipElement> relationshipElements = client.getRelatedAssetsAtEnd2(userId, assetManagerGUID, assetManagerName,
+                                                                                               "DataContentForDataSet", databaseGUID, 0, maxPageSize,
+                                                                                               null, false, false);
 
-            if (databaseSchemaList == null)
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseSchema for getSchemasForDatabase)");
-            }
-            else if (databaseSchemaList.isEmpty())
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Empty DatabaseSchema list for getSchemasForDatabase)");
-            }
-            else if (databaseSchemaList.size() != 1)
-            {
-                throw new FVTUnexpectedCondition(testCaseName,
-                                                 activityName + "(DatabaseSchema list for getSchemasForDatabase contains" + databaseSchemaList.size() +
-                                                         " elements)");
+                if (relationshipElements == null)
+                {
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseSchema for getSchemasForDatabase)");
+                }
+                else if (databaseSchemaList.isEmpty())
+                {
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(Empty DatabaseSchema list for getSchemasForDatabase)");
+                }
+                else if (databaseSchemaList.size() != 1)
+                {
+                    throw new FVTUnexpectedCondition(testCaseName,
+                                                     activityName + "(DatabaseSchema list for getSchemasForDatabase contains" + databaseSchemaList.size() +
+                                                             " elements)");
+                }
             }
         }
         catch (FVTUnexpectedCondition testCaseError)
@@ -840,7 +859,7 @@ public class CreateDatabaseTest
     /**
      * Create a database schema and return its GUID.
      *
-     * @param client interface to Data Manager OMAS
+     * @param client interface to Asset Manager OMAS
      * @param assetManagerGUID unique id of the database manager
      * @param databaseGUID unique id of the database
      * @param userId calling user
@@ -861,8 +880,11 @@ public class CreateDatabaseTest
             properties.setQualifiedName(databaseSchemaName);
             properties.setDisplayName(databaseSchemaDisplayName);
             properties.setDescription(databaseSchemaDescription);
+            properties.setTypeName("DeployedDatabaseSchema");
 
-            String databaseSchemaGUID = client.createDataAsset(userId, assetManagerGUID, assetManagerName, databaseGUID, properties);
+            String databaseSchemaGUID = client.createDataAsset(userId, assetManagerGUID, assetManagerName, true, null, properties);
+
+            client.setupRelatedDataAsset(userId, assetManagerGUID, assetManagerName, true, "DataContentForDataSet", databaseGUID, databaseSchemaGUID, null, null, false, false);
 
             if (databaseSchemaGUID == null)
             {
@@ -889,9 +911,8 @@ public class CreateDatabaseTest
     /**
      * Check a database table is gone.
      *
-     * @param client interface to Data Manager OMAS
+     * @param client interface to Asset Manager OMAS
      * @param databaseTableGUID unique id of the database table to test
-     * @param databaseSchemaGUID unique id of the database schema to test
      * @param activityName name of calling activity
      * @param userId calling user
      * @throws FVTUnexpectedCondition the test case failed
@@ -899,13 +920,12 @@ public class CreateDatabaseTest
     private void checkDatabaseTableGone(DataAssetExchangeClient client,
                                         String                  assetManagerGUID,
                                         String                  databaseTableGUID,
-                                        String                  databaseSchemaGUID,
                                         String                  activityName,
                                         String                  userId) throws FVTUnexpectedCondition
     {
         try
         {
-            DatabaseTableElement retrievedElement = client.getDatabaseTableByGUID(userId, databaseTableGUID);
+            SchemaAttributeElement retrievedElement = client.getSchemaAttributeByGUID(userId, assetManagerGUID, assetManagerName, databaseTableGUID, null, false,false);
 
             if (retrievedElement != null)
             {
@@ -926,41 +946,14 @@ public class CreateDatabaseTest
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
-
-        if (databaseSchemaGUID != null)
-        {
-            try
-            {
-                /*
-                 * Only one table created so nothing should be tied to the schema.
-                 */
-                List<DatabaseTableElement> databaseTableList = client.getTablesForDatabaseSchema(userId, databaseSchemaGUID, 0, maxPageSize);
-
-                if (databaseTableList != null)
-                {
-                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(DatabaseTable returned for getTablesForDatabaseAsset)");
-                }
-            }
-            catch(FVTUnexpectedCondition testCaseError)
-            {
-                throw testCaseError;
-            }
-            catch(Exception unexpectedError)
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
-            }
-        }
     }
-
-
 
 
     /**
      * Check a database table is stored OK.
      *
-     * @param client interface to Data Manager OMAS
+     * @param client interface to Asset Manager OMAS
      * @param databaseTableGUID unique id of the databaseSchema
-     * @param databaseSchemaGUID unique id of the databaseSchema
      * @param activityName name of calling activity
      * @param userId calling user
      * @throws FVTUnexpectedCondition the test case failed
@@ -968,92 +961,19 @@ public class CreateDatabaseTest
     private void checkDatabaseTableOK(DataAssetExchangeClient client,
                                       String                  assetManagerGUID,
                                       String                  databaseTableGUID,
-                                      String                  databaseSchemaGUID,
                                       String                  activityName,
                                       String                  userId) throws FVTUnexpectedCondition
     {
 
         try
         {
-            DatabaseTableElement    retrievedElement = client.getDatabaseTableByGUID(userId, databaseTableGUID);
+            SchemaAttributeElement    retrievedElement = client.getSchemaAttributeByGUID(userId, assetManagerGUID, assetManagerName, databaseTableGUID, null, false, false);
 
-            if (retrievedElement == null)
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseTableElement from Retrieve)");
-            }
+            validateDatabaseTable(activityName + "(getSchemaAttributeByGUID)", retrievedElement);
 
-            DatabaseTableProperties retrievedTable  = retrievedElement.getDatabaseTableProperties();
+            List<SchemaAttributeElement> databaseTableList = client.getSchemaAttributesByName(userId, assetManagerGUID, assetManagerName, databaseTableName, 0, maxPageSize, null, false, false);
 
-            if (retrievedTable == null)
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseTableProperties from Retrieve)");
-            }
-
-            if (! databaseTableName.equals(retrievedTable.getQualifiedName()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from Retrieve)");
-            }
-            if (! databaseTableDisplayName.equals(retrievedTable.getDisplayName()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve)");
-            }
-            if (! databaseTableDescription.equals(retrievedTable.getDescription()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
-            }
-
-            List<DatabaseTableElement> databaseTableList = client.getDatabaseTablesByName(userId, databaseTableName, 0, maxPageSize);
-
-            if (databaseTableList == null)
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseTable for RetrieveByName)");
-            }
-            else if (databaseTableList.isEmpty())
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Empty DatabaseTable list for RetrieveByName)");
-            }
-            else if (databaseTableList.size() != 1)
-            {
-                throw new FVTUnexpectedCondition(testCaseName,
-                                                 activityName + "(DatabaseTable list for RetrieveByName contains" + databaseTableList.size() +
-                                                         " elements)");
-            }
-
-            retrievedElement = databaseTableList.get(0);
-            retrievedTable = retrievedElement.getDatabaseTableProperties();
-
-            if (! databaseTableName.equals(retrievedTable.getQualifiedName()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from RetrieveByName)");
-            }
-            if (! databaseTableDisplayName.equals(retrievedTable.getDisplayName()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName)");
-            }
-            if (! databaseTableDescription.equals(retrievedTable.getDescription()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
-            }
-
-            if (databaseSchemaGUID != null)
-            {
-                databaseTableList = client.getTablesForDatabaseAsset(userId, databaseSchemaGUID, 0, maxPageSize);
-
-                if (databaseTableList == null)
-                {
-                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseTable for getTablesForDatabaseAsset)");
-                }
-                else if (databaseTableList.isEmpty())
-                {
-                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(Empty DatabaseTable list for getTablesForDatabaseAsset)");
-                }
-                else if (databaseTableList.size() != 1)
-                {
-                    throw new FVTUnexpectedCondition(testCaseName,
-                                                     activityName + "(DatabaseColumn list for getTablesForDatabaseAsset contains" + databaseTableList.size() +
-                                                             " elements)");
-                }
-            }
+            validateDatabaseTableList(activityName + "(getSchemaAttributesByName)", databaseTableList);
         }
         catch (FVTUnexpectedCondition testCaseError)
         {
@@ -1066,10 +986,66 @@ public class CreateDatabaseTest
     }
 
 
+    private void validateDatabaseTableList(String                       activityName,
+                                           List<SchemaAttributeElement> databaseTableList) throws FVTUnexpectedCondition
+    {
+
+        if (databaseTableList == null)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + " - no DatabaseTable");
+        }
+        else if (databaseTableList.isEmpty())
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + " - Empty DatabaseTable list");
+        }
+        else if (databaseTableList.size() != 1)
+        {
+            throw new FVTUnexpectedCondition(testCaseName,
+                                             activityName + " - DatabaseTable list contains " + databaseTableList.size() + " elements)");
+        }
+
+        validateDatabaseTable(activityName, databaseTableList.get(0));
+    }
+
+
+    private void validateDatabaseTable(String                 activityName,
+                                       SchemaAttributeElement retrievedElement) throws FVTUnexpectedCondition
+    {
+        if (retrievedElement == null)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + " - no DatabaseTableElement");
+        }
+
+        System.out.println("Database Table: " + retrievedElement);
+
+        SchemaAttributeProperties retrievedTable  = retrievedElement.getSchemaAttributeProperties();
+
+        if (retrievedTable == null)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + " - no DatabaseTableProperties");
+        }
+
+        if (! databaseTableName.equals(retrievedTable.getQualifiedName()))
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + " - Bad qualifiedName: " + retrievedTable.getQualifiedName() + " rather than " + databaseTableName);
+        }
+        if (! databaseTableDisplayName.equals(retrievedTable.getDisplayName()))
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + " - Bad displayName: " + retrievedTable.getDisplayName() + " rather than " + databaseTableDisplayName);
+        }
+        if (! databaseTableDescription.equals(retrievedTable.getDescription()))
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + " - Bad description: " + retrievedTable.getDescription() + " rather than " + databaseTableDescription);
+        }
+
+        validateAnchorGUID(activityName, retrievedElement);
+    }
+
+
     /**
      * Create a database table and return its GUID.
      *
-     * @param client interface to Data Manager OMAS
+     * @param client interface to Asset Manager OMAS
      * @param assetManagerGUID unique id of the database manager
      * @param databaseSchemaGUID unique id of the databaseSchema
      * @param userId calling user
@@ -1085,14 +1061,22 @@ public class CreateDatabaseTest
 
         try
         {
-            DatabaseTableProperties properties = new DatabaseTableProperties();
+            SchemaTypeProperties schemaTypeProperties = new SchemaTypeProperties();
+            schemaTypeProperties.setTypeName("RelationalDBSchemaType");
+            schemaTypeProperties.setQualifiedName("SchemaOf:" + databaseSchemaName);
+
+            String databaseSchemaTypeGUID = client.createAnchoredSchemaType(userId, assetManagerGUID, assetManagerName, true, databaseSchemaGUID, null,false, false, schemaTypeProperties);
+
+            client.setupSchemaTypeParent(userId, assetManagerGUID, assetManagerName, true, databaseSchemaTypeGUID, databaseSchemaGUID, "Asset", null, false, false, null);
+
+            SchemaAttributeProperties properties = new SchemaAttributeProperties();
 
             properties.setQualifiedName(databaseTableName);
             properties.setDisplayName(databaseTableDisplayName);
             properties.setDescription(databaseTableDescription);
+            properties.setTypeName("RelationalTable");
 
-
-            String databaseTableGUID = client.createDatabaseTable(userId, assetManagerGUID, assetManagerName, databaseSchemaGUID, properties);
+            String databaseTableGUID = client.createSchemaAttribute(userId, assetManagerGUID, assetManagerName, true, databaseSchemaTypeGUID, null, properties, null, false, false);
 
             if (databaseTableGUID == null)
             {
@@ -1100,7 +1084,7 @@ public class CreateDatabaseTest
             }
             else
             {
-                checkDatabaseTableOK(client, databaseTableGUID, databaseSchemaGUID, activityName, userId);
+                checkDatabaseTableOK(client, assetManagerGUID, databaseTableGUID, activityName, userId);
             }
 
             return databaseTableGUID;
@@ -1119,7 +1103,7 @@ public class CreateDatabaseTest
     /**
      * Create a database table and attach it to the supplied schema type and return its GUID.
      *
-     * @param client interface to Data Manager OMAS
+     * @param client interface to Asset Manager OMAS
      * @param assetManagerGUID unique id of the database manager
      * @param databaseSchemaTypeGUID unique id of the databaseSchemaType
      * @param userId calling user
@@ -1135,14 +1119,14 @@ public class CreateDatabaseTest
 
         try
         {
-            DatabaseTableProperties properties = new DatabaseTableProperties();
+            SchemaAttributeProperties properties = new SchemaAttributeProperties();
 
             properties.setQualifiedName(databaseTableName);
             properties.setDisplayName(databaseTableDisplayName);
             properties.setDescription(databaseTableDescription);
+            properties.setTypeName("RelationalTable");
 
-
-            String databaseTableGUID = client.createDatabaseTableForSchemaType(userId, assetManagerGUID, assetManagerName, databaseSchemaTypeGUID, properties);
+            String databaseTableGUID = client.createSchemaAttribute(userId, assetManagerGUID, assetManagerName, true, databaseSchemaTypeGUID, null, properties, null, false, false);
 
             if (databaseTableGUID == null)
             {
@@ -1150,7 +1134,7 @@ public class CreateDatabaseTest
             }
             else
             {
-                checkDatabaseTableOK(client, databaseTableGUID, null, activityName, userId);
+                checkDatabaseTableOK(client, assetManagerGUID, databaseTableGUID, activityName, userId);
             }
 
             return databaseTableGUID;
@@ -1169,7 +1153,7 @@ public class CreateDatabaseTest
     /**
      * Check a database column is gone.
      *
-     * @param client interface to Data Manager OMAS
+     * @param client interface to Asset Manager OMAS
      * @param databaseColumnGUID unique id of the database column to test
      * @param databaseTableGUID unique id of the database table to test
      * @param activityName name of calling activity
@@ -1185,7 +1169,7 @@ public class CreateDatabaseTest
     {
         try
         {
-            DatabaseColumnElement retrievedElement = client.getDatabaseColumnByGUID(userId, databaseColumnGUID);
+            SchemaAttributeElement retrievedElement = client.getSchemaAttributeByGUID(userId, assetManagerGUID, assetManagerName, databaseColumnGUID, null, false, false);
 
             if (retrievedElement != null)
             {
@@ -1214,18 +1198,18 @@ public class CreateDatabaseTest
                 /*
                  * Only one column created so nothing should be tied to the table.
                  */
-                List<DatabaseColumnElement> databaseColumnList = client.getColumnsForDatabaseTable(userId, databaseTableGUID, 0, maxPageSize);
+                List<SchemaAttributeElement> databaseColumnList = client.getNestedSchemaAttributes(userId, assetManagerGUID, assetManagerName, databaseTableGUID, 0, maxPageSize, null, false,false);
 
                 if (databaseColumnList != null)
                 {
                     throw new FVTUnexpectedCondition(testCaseName, activityName + "(DatabaseColumn returned for getColumnsForDatabaseTable)");
                 }
             }
-            catch(FVTUnexpectedCondition testCaseError)
+            catch (FVTUnexpectedCondition testCaseError)
             {
                 throw testCaseError;
             }
-            catch(Exception unexpectedError)
+            catch (Exception unexpectedError)
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
             }
@@ -1234,9 +1218,9 @@ public class CreateDatabaseTest
 
 
     /**
-     * Create a database column and return its GUID.
+     * Check that the database column is ok.
      *
-     * @param client interface to Data Manager OMAS
+     * @param client interface to Asset Manager OMAS
      * @param databaseColumnGUID unique id of the database column to test
      * @param databaseTableGUID unique id of the database table to test
      * @param activityName name of calling activity
@@ -1252,98 +1236,17 @@ public class CreateDatabaseTest
     {
         try
         {
-            DatabaseColumnElement  retrievedElement = client.getDatabaseColumnByGUID(userId, databaseColumnGUID);
-            
-            if (retrievedElement == null)
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseColumnElement from Retrieve)");
-            }
-            
-            DatabaseColumnProperties retrievedColumn  = retrievedElement.getDatabaseColumnProperties();
+            SchemaAttributeElement  retrievedElement = client.getSchemaAttributeByGUID(userId, assetManagerGUID, assetManagerName, databaseColumnGUID, null, false, false);
 
-            if (retrievedColumn == null)
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseColumnProperties from Retrieve)");
-            }
+            validateColumn(activityName + "(getSchemaAttributeByGUID)", retrievedElement);
 
-            if (! databaseColumnName.equals(retrievedColumn.getQualifiedName()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from Retrieve)");
-            }
-            if (! databaseColumnDisplayName.equals(retrievedColumn.getDisplayName()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve)");
-            }
-            if (! databaseColumnDescription.equals(retrievedColumn.getDescription()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
-            }
+            List<SchemaAttributeElement> databaseColumnList = client.getSchemaAttributesByName(userId, null, null, databaseColumnName, 0, maxPageSize, null, false, false);
 
-            List<DatabaseColumnElement> databaseColumnList = client.getDatabaseColumnsByName(userId, databaseColumnName, 0, maxPageSize);
+            validateColumnList(activityName + "(getSchemaAttributesByName)", databaseColumnList);
 
-            if (databaseColumnList == null)
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseColumn for RetrieveByName)");
-            }
-            else if (databaseColumnList.isEmpty())
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Empty DatabaseColumn list for RetrieveByName)");
-            }
-            else if (databaseColumnList.size() != 1)
-            {
-                throw new FVTUnexpectedCondition(testCaseName,
-                                                 activityName + "(DatabaseColumn list for RetrieveByName contains" + databaseColumnList.size() +
-                                                         " elements)");
-            }
+            databaseColumnList = client.getNestedSchemaAttributes(userId, null, null, databaseTableGUID, 0, maxPageSize, null, false, false);
 
-            retrievedElement = databaseColumnList.get(0);
-            retrievedColumn = retrievedElement.getDatabaseColumnProperties();
-
-            if (! databaseColumnName.equals(retrievedColumn.getQualifiedName()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from RetrieveByName)");
-            }
-            if (! databaseColumnDisplayName.equals(retrievedColumn.getDisplayName()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName)");
-            }
-            if (! databaseColumnDescription.equals(retrievedColumn.getDescription()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
-            }
-
-            databaseColumnList = client.getColumnsForDatabaseTable(userId, databaseTableGUID, 0, maxPageSize);
-
-            if (databaseColumnList == null)
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseColumn for getColumnsForDatabaseTable)");
-            }
-            else if (databaseColumnList.isEmpty())
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Empty DatabaseColumn list for getColumnsForDatabaseTable)");
-            }
-            else if (databaseColumnList.size() != 1)
-            {
-                throw new FVTUnexpectedCondition(testCaseName,
-                                                 activityName + "(DatabaseColumn list for getColumnsForDatabaseTable contains" + databaseColumnList.size() +
-                                                         " elements)");
-            }
-
-            retrievedElement = databaseColumnList.get(0);
-            retrievedColumn = retrievedElement.getDatabaseColumnProperties();
-
-            if (! databaseColumnName.equals(retrievedColumn.getQualifiedName()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from getColumnsForDatabaseTable)");
-            }
-            if (! databaseColumnDisplayName.equals(retrievedColumn.getDisplayName()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from getColumnsForDatabaseTable)");
-            }
-            if (! databaseColumnDescription.equals(retrievedColumn.getDescription()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from getColumnsForDatabaseTable)");
-            }
+            validateColumnList(activityName + "(getColumnsForDatabaseTable)", databaseColumnList);
         }
         catch (FVTUnexpectedCondition testCaseError)
         {
@@ -1355,11 +1258,65 @@ public class CreateDatabaseTest
         }
     }
 
-    
+
+    private void validateColumnList(String                       activityName,
+                                    List<SchemaAttributeElement> databaseColumnList) throws FVTUnexpectedCondition
+    {
+        if (databaseColumnList == null)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "- no DatabaseColumn List");
+        }
+        else if (databaseColumnList.isEmpty())
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + " - Empty DatabaseColumn list");
+        }
+        else if (databaseColumnList.size() != 1)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "(DatabaseColumn list contains" + databaseColumnList.size() + " elements)");
+        }
+
+        this.validateColumn(activityName, databaseColumnList.get(0));
+    }
+
+
+    private void validateColumn(String                 activityName,
+                                SchemaAttributeElement retrievedElement) throws FVTUnexpectedCondition
+    {
+        if (retrievedElement == null)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "- no DatabaseColumnElement");
+        }
+
+        System.out.println("Database Column: " + retrievedElement);
+
+        SchemaAttributeProperties retrievedColumn  = retrievedElement.getSchemaAttributeProperties();
+
+        if (retrievedColumn == null)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "- no DatabaseColumnProperties");
+        }
+
+        if (! databaseColumnName.equals(retrievedColumn.getQualifiedName()))
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + " - Bad qualifiedName: " + retrievedColumn.getQualifiedName() + " rather than " + databaseColumnName);
+        }
+        if (! databaseColumnDisplayName.equals(retrievedColumn.getDisplayName()))
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + " - Bad displayName: " + retrievedColumn.getDisplayName() + " rather than " + databaseColumnDisplayName);
+        }
+        if (! databaseColumnDescription.equals(retrievedColumn.getDescription()))
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + " - Bad description: " + retrievedColumn.getDescription() + " rather than " + databaseColumnDescription);
+        }
+
+        validateAnchorGUID(activityName, retrievedElement);
+    }
+
+
     /**
      * Create a database column and return its GUID.
      *
-     * @param client interface to Data Manager OMAS
+     * @param client interface to Asset Manager OMAS
      * @param assetManagerGUID unique id of the database manager
      * @param databaseTableGUID unique id of the database table to connect the column to
      * @param userId calling user
@@ -1375,14 +1332,25 @@ public class CreateDatabaseTest
 
         try
         {
-            DatabaseColumnProperties  properties = new DatabaseColumnProperties();
+            SchemaAttributeProperties  properties = new SchemaAttributeProperties();
 
             properties.setQualifiedName(databaseColumnName);
             properties.setDisplayName(databaseColumnDisplayName);
             properties.setDescription(databaseColumnDescription);
-            properties.setDataType(databaseColumnType);
+            properties.setTypeName("RelationalColumn");
 
-            String databaseColumnGUID = client.createDatabaseColumn(userId, assetManagerGUID, databaseTableGUID, properties);
+            SchemaTypeProperties schemaTypeProperties = new SchemaTypeProperties();
+
+            Map<String, Object> extendedProperties = new HashMap<>();
+
+            extendedProperties.put("dataType", databaseColumnType);
+
+            schemaTypeProperties.setTypeName("PrimitiveSchemaType");
+            schemaTypeProperties.setQualifiedName("SchemaType:" + databaseColumnName);
+            schemaTypeProperties.setExtendedProperties(extendedProperties);
+
+            properties.setSchemaType(schemaTypeProperties);
+            String databaseColumnGUID = client.createSchemaAttribute(userId, assetManagerGUID, assetManagerName, true, databaseTableGUID, null, properties, null, false, false);
 
             if (databaseColumnGUID == null)
             {
@@ -1402,6 +1370,25 @@ public class CreateDatabaseTest
         catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+    }
+
+
+    private void validateAnchorGUID(String          activityName,
+                                    MetadataElement metadataElement)
+    {
+        if (metadataElement.getElementHeader() != null)
+        {
+            if (metadataElement.getElementHeader().getClassifications() != null)
+            {
+                for (ElementClassification classification : metadataElement.getElementHeader().getClassifications())
+                {
+                    if ("Anchors".equals(classification.getClassificationName()))
+                    {
+                        System.out.println(metadataElement.getElementHeader().getType().getTypeName() + " element " + metadataElement.getElementHeader().getGUID() + " has anchor of " + classification.getClassificationProperties() + " in activity " + activityName);
+                    }
+                }
+            }
         }
     }
 }

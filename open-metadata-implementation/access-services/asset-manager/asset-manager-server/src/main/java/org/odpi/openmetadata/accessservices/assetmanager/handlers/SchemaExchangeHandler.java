@@ -19,14 +19,12 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -228,6 +226,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param userId calling user
      * @param correlationProperties  properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param assetManagerIsHome ensure that only the asset manager can update this schema element
+     * @param anchorGUID unique identifier of the intended anchor of the schema type
      * @param schemaTypeProperties properties about the schema type to store
      * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
@@ -243,6 +242,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
     public String createSchemaType(String                        userId,
                                    MetadataCorrelationProperties correlationProperties,
                                    boolean                       assetManagerIsHome,
+                                   String                        anchorGUID,
                                    SchemaTypeProperties          schemaTypeProperties,
                                    boolean                       forLineage,
                                    boolean                       forDuplicateProcessing,
@@ -265,6 +265,11 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                               methodName);
 
         builder.setEffectivityDates(schemaTypeProperties.getEffectiveFrom(), schemaTypeProperties.getEffectiveTo());
+
+        if (anchorGUID != null)
+        {
+            builder.setAnchors(userId, anchorGUID, methodName);
+        }
 
         String schemaTypeGUID = schemaTypeHandler.addSchemaType(userId,
                                                                 this.getExternalSourceGUID(correlationProperties, assetManagerIsHome),
@@ -326,108 +331,24 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                    methodName,
                                                                    repositoryHelper);
 
-        SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(schemaType.getQualifiedName(),
-                                                                    schemaType.getDisplayName(),
-                                                                    schemaType.getDescription(),
-                                                                    schemaType.getVersionNumber(),
-                                                                    schemaType.getIsDeprecated(),
-                                                                    schemaType.getAuthor(),
-                                                                    schemaType.getUsage(),
-                                                                    schemaType.getEncodingStandard(),
-                                                                    schemaType.getNamespace(),
-                                                                    schemaType.getFormula(),
-                                                                    schemaType.getAdditionalProperties(),
-                                                                    typeGUID,
-                                                                    typeName,
-                                                                    schemaType.getExtendedProperties(),
-                                                                    repositoryHelper,
-                                                                    serviceName,
-                                                                    serverName);
-
-        if (schemaType instanceof LiteralSchemaTypeProperties)
-        {
-            LiteralSchemaTypeProperties literalSchemaTypeProperties = (LiteralSchemaTypeProperties)schemaType;
-
-            schemaTypeBuilder.setDataType(literalSchemaTypeProperties.getDataType());
-            schemaTypeBuilder.setFixedValue(literalSchemaTypeProperties.getFixedValue());
-        }
-        else if (schemaType instanceof SimpleSchemaTypeProperties)
-        {
-            SimpleSchemaTypeProperties simpleSchemaTypeProperties = (SimpleSchemaTypeProperties)schemaType;
-
-            schemaTypeBuilder.setDataType(simpleSchemaTypeProperties.getDataType());
-            schemaTypeBuilder.setDefaultValue(simpleSchemaTypeProperties.getDefaultValue());
-
-            if (schemaType instanceof EnumSchemaTypeProperties)
-            {
-                EnumSchemaTypeProperties enumSchemaTypeProperties = (EnumSchemaTypeProperties)schemaType;
-
-                schemaTypeBuilder.setValidValuesSetGUID(enumSchemaTypeProperties.getValidValueSetGUID());
-            }
-            else if (schemaType instanceof ExternalSchemaTypeProperties)
-            {
-                ExternalSchemaTypeProperties externalSchemaTypeProperties = (ExternalSchemaTypeProperties)schemaType;
-
-                schemaTypeBuilder.setExternalSchemaTypeGUID(externalSchemaTypeProperties.getExternalSchemaTypeGUID());
-            }
-        }
-        else if (schemaType instanceof SchemaTypeChoiceProperties)
-        {
-            SchemaTypeChoiceProperties schemaTypeChoiceProperties = (SchemaTypeChoiceProperties)schemaType;
-
-            if (schemaTypeChoiceProperties.getSchemaOptions() != null)
-            {
-                List<SchemaTypeBuilder> schemaOptionBuilders = new ArrayList<>();
-
-                for (SchemaTypeProperties schemaOption : schemaTypeChoiceProperties.getSchemaOptions())
-                {
-                    if (schemaOption != null)
-                    {
-                        schemaOptionBuilders.add(this.getSchemaTypeBuilder(schemaOption,
-                                                                           repositoryHelper,
-                                                                           serviceName,
-                                                                           serverName,
-                                                                           methodName));
-                    }
-                }
-
-                if (! schemaOptionBuilders.isEmpty())
-                {
-                    schemaTypeBuilder.setSchemaOptions(schemaOptionBuilders);
-                }
-            }
-        }
-        else if (schemaType instanceof MapSchemaTypeProperties)
-        {
-            MapSchemaTypeProperties mapSchemaTypeProperties = (MapSchemaTypeProperties)schemaType;
-
-            SchemaTypeBuilder mapFromBuilder = null;
-            SchemaTypeBuilder mapToBuilder = null;
-
-            if (mapSchemaTypeProperties.getMapFromElement() != null)
-            {
-                mapFromBuilder = this.getSchemaTypeBuilder(mapSchemaTypeProperties.getMapFromElement(),
-                                                           repositoryHelper,
-                                                           serviceName,
-                                                           serverName,
-                                                           methodName);
-            }
-
-            if (mapSchemaTypeProperties.getMapToElement() != null)
-            {
-                mapToBuilder = this.getSchemaTypeBuilder(mapSchemaTypeProperties.getMapToElement(),
-                                                         repositoryHelper,
-                                                         serviceName,
-                                                         serverName,
-                                                         methodName);
-            }
-
-            schemaTypeBuilder.setMapTypes(mapFromBuilder, mapToBuilder);
-        }
-
-        return schemaTypeBuilder;
+        return new SchemaTypeBuilder(schemaType.getQualifiedName(),
+                                     schemaType.getDisplayName(),
+                                     schemaType.getDescription(),
+                                     schemaType.getVersionNumber(),
+                                     schemaType.getIsDeprecated(),
+                                     schemaType.getAuthor(),
+                                     schemaType.getUsage(),
+                                     schemaType.getEncodingStandard(),
+                                     schemaType.getNamespace(),
+                                     schemaType.getFormula(),
+                                     schemaType.getAdditionalProperties(),
+                                     typeGUID,
+                                     typeName,
+                                     schemaType.getExtendedProperties(),
+                                     repositoryHelper,
+                                     serviceName,
+                                     serverName);
     }
-
 
 
     /**
@@ -578,7 +499,6 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @SuppressWarnings(value = "unused")
     public void setupSchemaTypeParent(String  userId,
                                       String  assetManagerGUID,
                                       String  assetManagerName,
@@ -1528,9 +1448,11 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaAttributeGUID, schemaAttributeGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(schemaAttributeProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(schemaAttributeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
-        SchemaTypeProperties schemaType = schemaAttributeProperties.getSchemaType();
-        invalidParameterHandler.validateObject(schemaType,"displayName", methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(schemaAttributeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
+
         this.validateExternalIdentifier(userId,
                                         schemaAttributeGUID,
                                         schemaAttributeGUIDParameterName,
@@ -2267,14 +2189,16 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
     {
         final String guidParameterName = "schemaAttributeGUID";
 
-        SchemaAttributeElement schemaAttributeElement = schemaAttributeHandler.getBeanFromRepository(userId,
-                                                                                                     schemaAttributeGUID,
-                                                                                                     guidParameterName,
-                                                                                                     OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
-                                                                                                     false,
-                                                                                                     false,
-                                                                                                     effectiveTime,
-                                                                                                     methodName);
+        SchemaAttributeElement schemaAttributeElement = schemaAttributeHandler.getSchemaAttribute(userId,
+                                                                                                  schemaAttributeGUID,
+                                                                                                  guidParameterName,
+                                                                                                  OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                                                  null,
+                                                                                                  null,
+                                                                                                  false,
+                                                                                                  false,
+                                                                                                  effectiveTime,
+                                                                                                  methodName);
 
         if (schemaAttributeElement != null)
         {
