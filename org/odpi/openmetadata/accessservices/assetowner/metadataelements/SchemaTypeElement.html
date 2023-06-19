@@ -77,21 +77,13 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.metadataelements">MetadataElement</a></code></dd>
+<dd><code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.metadataelements">MetadataElement</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">SchemaTypeElement</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements <a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.metadataelements">MetadataElement</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
+implements <a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.metadataelements">MetadataElement</a></span></div>
 <div class="block">SchemaTypeElement contains the properties and header for a reference data asset retrieved from the metadata repository.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../serialized-form.html#org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaTypeElement">Serialized Form</a></li>
-</ul>
-</dd>
-</dl>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -130,10 +122,50 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return comparison result based on the content of the properties.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementHeader()" class="member-name-link">getElementHeader</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAttributeCount()" class="member-name-link">getAttributeCount</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the count of attributes in this schema type.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementHeader()" class="member-name-link">getElementHeader</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the element header associated with the properties.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetowner.metadataelements">SchemaTypeElement</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalSchemaType()" class="member-name-link">getExternalSchemaType</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the schema type that is reusable amongst assets.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFormula()" class="member-name-link">getFormula</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the formula used to combine the values of the queries.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFormulaType()" class="member-name-link">getFormulaType</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the specification language for the formula.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetowner.metadataelements">SchemaTypeElement</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMapFromElement()" class="member-name-link">getMapFromElement</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the type of schema element that represents the key or property name for the map.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetowner.metadataelements">SchemaTypeElement</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMapToElement()" class="member-name-link">getMapToElement</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the type of schema element that represents the property value for the map.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/DerivedSchemaTypeQueryTargetProperties.html" title="class in org.odpi.openmetadata.accessservices.assetowner.properties">DerivedSchemaTypeQueryTargetProperties</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getQueries()" class="member-name-link">getQueries</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of individual query targets for a derived column.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetowner.metadataelements">SchemaTypeElement</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSchemaOptions()" class="member-name-link">getSchemaOptions</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of alternative schema types that this attribute or asset may use.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetowner.properties">SchemaTypeProperties</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSchemaTypeProperties()" class="member-name-link">getSchemaTypeProperties</a>()</code></div>
@@ -146,9 +178,49 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <div class="block">Return hash code for this object</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setElementHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)" class="member-name-link">setElementHeader</a><wbr>(<a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a>&nbsp;elementHeader)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAttributeCount(int)" class="member-name-link">setAttributeCount</a><wbr>(int&nbsp;attributeCount)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the count of attributes in this schema type</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setElementHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)" class="member-name-link">setElementHeader</a><wbr>(<a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a>&nbsp;elementHeader)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the element header associated with the properties.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setExternalSchemaType(org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaTypeElement)" class="member-name-link">setExternalSchemaType</a><wbr>(<a href="SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetowner.metadataelements">SchemaTypeElement</a>&nbsp;externalSchemaType)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the schema type that is reusable amongst assets.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setFormula(java.lang.String)" class="member-name-link">setFormula</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;formula)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the formula used to combine the values of the queries.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setFormulaType(java.lang.String)" class="member-name-link">setFormulaType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;formulaType)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up  the specification language for the formula.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMapFromElement(org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaTypeElement)" class="member-name-link">setMapFromElement</a><wbr>(<a href="SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetowner.metadataelements">SchemaTypeElement</a>&nbsp;mapFromElement)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the type of schema element that represents the key or property name for the map.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMapToElement(org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaTypeElement)" class="member-name-link">setMapToElement</a><wbr>(<a href="SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetowner.metadataelements">SchemaTypeElement</a>&nbsp;mapToElement)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the type of schema element that represents the property value for the map.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setQueries(java.util.List)" class="member-name-link">setQueries</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/DerivedSchemaTypeQueryTargetProperties.html" title="class in org.odpi.openmetadata.accessservices.assetowner.properties">DerivedSchemaTypeQueryTargetProperties</a>&gt;&nbsp;queries)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the list of individual query targets for a derived column.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSchemaOptions(java.util.List)" class="member-name-link">setSchemaOptions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetowner.metadataelements">SchemaTypeElement</a>&gt;&nbsp;schemaOptions)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the list of alternative schema types that this attribute or asset may use.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSchemaTypeProperties(org.odpi.openmetadata.accessservices.assetowner.properties.SchemaTypeProperties)" class="member-name-link">setSchemaTypeProperties</a><wbr>(<a href="../properties/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetowner.properties">SchemaTypeProperties</a>&nbsp;schemaTypeProperties)</code></div>
@@ -248,6 +320,188 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>schemaTypeProperties</code> - schema properties</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getAttributeCount()">
+<h3>getAttributeCount</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getAttributeCount</span>()</div>
+<div class="block">Return the count of attributes in this schema type.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>String data type name</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setAttributeCount(int)">
+<h3>setAttributeCount</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAttributeCount</span><wbr><span class="parameters">(int&nbsp;attributeCount)</span></div>
+<div class="block">Set up the count of attributes in this schema type</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>attributeCount</code> - data type name</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getMapFromElement()">
+<h3>getMapFromElement</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetowner.metadataelements">SchemaTypeElement</a></span>&nbsp;<span class="element-name">getMapFromElement</span>()</div>
+<div class="block">Return the type of schema element that represents the key or property name for the map.
+ This is also called the domain of the map.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>SchemaElement</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setMapFromElement(org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaTypeElement)">
+<h3>setMapFromElement</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMapFromElement</span><wbr><span class="parameters">(<a href="SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetowner.metadataelements">SchemaTypeElement</a>&nbsp;mapFromElement)</span></div>
+<div class="block">Set up the type of schema element that represents the key or property name for the map.
+ This is also called the domain of the map.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>mapFromElement</code> - SchemaElement</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getMapToElement()">
+<h3>getMapToElement</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetowner.metadataelements">SchemaTypeElement</a></span>&nbsp;<span class="element-name">getMapToElement</span>()</div>
+<div class="block">Return the type of schema element that represents the property value for the map.
+ This is also called the range of the map.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>SchemaElement</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setMapToElement(org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaTypeElement)">
+<h3>setMapToElement</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMapToElement</span><wbr><span class="parameters">(<a href="SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetowner.metadataelements">SchemaTypeElement</a>&nbsp;mapToElement)</span></div>
+<div class="block">Set up the type of schema element that represents the property value for the map.
+ This is also called the range of the map.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>mapToElement</code> - SchemaType</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getExternalSchemaType()">
+<h3>getExternalSchemaType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetowner.metadataelements">SchemaTypeElement</a></span>&nbsp;<span class="element-name">getExternalSchemaType</span>()</div>
+<div class="block">Return the schema type that is reusable amongst assets.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>bean describing external schema</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setExternalSchemaType(org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaTypeElement)">
+<h3>setExternalSchemaType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setExternalSchemaType</span><wbr><span class="parameters">(<a href="SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetowner.metadataelements">SchemaTypeElement</a>&nbsp;externalSchemaType)</span></div>
+<div class="block">Set up the schema type that is reusable amongst assets.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>externalSchemaType</code> - bean describing external schema</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSchemaOptions()">
+<h3>getSchemaOptions</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetowner.metadataelements">SchemaTypeElement</a>&gt;</span>&nbsp;<span class="element-name">getSchemaOptions</span>()</div>
+<div class="block">Return the list of alternative schema types that this attribute or asset may use.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of schema types</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setSchemaOptions(java.util.List)">
+<h3>setSchemaOptions</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSchemaOptions</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetowner.metadataelements">SchemaTypeElement</a>&gt;&nbsp;schemaOptions)</span></div>
+<div class="block">Set up the list of alternative schema types that this attribute or asset may use.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>schemaOptions</code> - list of schema types</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getFormula()">
+<h3>getFormula</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getFormula</span>()</div>
+<div class="block">Return the formula used to combine the values of the queries.  Each query is has a identifier and the
+ formula has placeholders for these identifiers in it to show how the query results are combined.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>String formula</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setFormula(java.lang.String)">
+<h3>setFormula</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setFormula</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;formula)</span></div>
+<div class="block">Set up the formula used to combine the values of the queries.  Each query is has a identifier and the
+ formula has placeholders for these identifiers in it to show how the query results are combined.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>formula</code> - String formula</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getFormulaType()">
+<h3>getFormulaType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getFormulaType</span>()</div>
+<div class="block">Return the specification language for the formula.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string description</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setFormulaType(java.lang.String)">
+<h3>setFormulaType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setFormulaType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;formulaType)</span></div>
+<div class="block">Set up  the specification language for the formula.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>formulaType</code> - string description</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getQueries()">
+<h3>getQueries</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/DerivedSchemaTypeQueryTargetProperties.html" title="class in org.odpi.openmetadata.accessservices.assetowner.properties">DerivedSchemaTypeQueryTargetProperties</a>&gt;</span>&nbsp;<span class="element-name">getQueries</span>()</div>
+<div class="block">Return the list of individual query targets for a derived column.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of queries and their target element</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setQueries(java.util.List)">
+<h3>setQueries</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setQueries</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/DerivedSchemaTypeQueryTargetProperties.html" title="class in org.odpi.openmetadata.accessservices.assetowner.properties">DerivedSchemaTypeQueryTargetProperties</a>&gt;&nbsp;queries)</span></div>
+<div class="block">Set up the list of individual query targets for a derived column.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>queries</code> - list of queries and their target element</dd>
 </dl>
 </section>
 </li>

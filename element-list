@@ -64,6 +64,7 @@ org.odpi.openmetadata.accessservices.assetmanager.fvt
 org.odpi.openmetadata.accessservices.assetmanager.fvt.clientconstructors
 org.odpi.openmetadata.accessservices.assetmanager.fvt.common
 org.odpi.openmetadata.accessservices.assetmanager.fvt.connections
+org.odpi.openmetadata.accessservices.assetmanager.fvt.dataassets
 org.odpi.openmetadata.accessservices.assetmanager.fvt.errorhandling
 org.odpi.openmetadata.accessservices.assetmanager.fvt.externalidentifiers
 org.odpi.openmetadata.accessservices.assetmanager.fvt.glossaries

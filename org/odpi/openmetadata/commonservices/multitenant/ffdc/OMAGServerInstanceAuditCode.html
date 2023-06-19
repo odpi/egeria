@@ -117,9 +117,13 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#BAD_TOPIC_CONNECTOR_PROVIDER" class="member-name-link">BAD_TOPIC_CONNECTOR_PROVIDER</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-MULTI-TENANT-0001 - Method {0} called on behalf of the {1} service detected a {2} exception when creating an open metadata topic connection because the connector provider is incorrect.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NO_TOPIC_INFORMATION" class="member-name-link">NO_TOPIC_INFORMATION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-MULTI-TENANT-0002 - Method {0} called on behalf of the {1} service is unable to create a client-side open metadata topic connection because the topic name is not configured in the configuration for this service.</div>
+</div>
 </div>
 </section>
 </li>
@@ -179,12 +183,14 @@ the order they are declared.</div>
 <section class="detail" id="BAD_TOPIC_CONNECTOR_PROVIDER">
 <h3>BAD_TOPIC_CONNECTOR_PROVIDER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGServerInstanceAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.multitenant.ffdc">OMAGServerInstanceAuditCode</a></span>&nbsp;<span class="element-name">BAD_TOPIC_CONNECTOR_PROVIDER</span></div>
+<div class="block">OMAG-MULTI-TENANT-0001 - Method {0} called on behalf of the {1} service detected a {2} exception when creating an open metadata topic connection because the connector provider is incorrect.  The error message was {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_TOPIC_INFORMATION">
 <h3>NO_TOPIC_INFORMATION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGServerInstanceAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.multitenant.ffdc">OMAGServerInstanceAuditCode</a></span>&nbsp;<span class="element-name">NO_TOPIC_INFORMATION</span></div>
+<div class="block">OMAG-MULTI-TENANT-0002 - Method {0} called on behalf of the {1} service is unable to create a client-side open metadata topic connection because the topic name is not configured in the configuration for this service.</div>
 </section>
 </li>
 </ul>

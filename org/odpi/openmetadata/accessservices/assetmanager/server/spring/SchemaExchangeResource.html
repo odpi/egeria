@@ -190,9 +190,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new metadata element to represent a schema attribute using an existing metadata element as a template.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSchemaType(java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.SchemaTypeRequestBody)" class="member-name-link">createSchemaType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSchemaType(java.lang.String,java.lang.String,boolean,java.lang.String,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.SchemaTypeRequestBody)" class="member-name-link">createSchemaType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  boolean&nbsp;assetManagerIsHome,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="../../rest/SchemaTypeRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">SchemaTypeRequestBody</a>&nbsp;requestBody)</code></div>
@@ -451,7 +452,7 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="createSchemaType(java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.SchemaTypeRequestBody)">
+<section class="detail" id="createSchemaType(java.lang.String,java.lang.String,boolean,java.lang.String,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.SchemaTypeRequestBody)">
 <h3>createSchemaType</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/schema-types")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createSchemaType</span><wbr><span class="parameters">(@PathVariable
@@ -460,6 +461,8 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @RequestParam
  boolean&nbsp;assetManagerIsHome,
+ @RequestParam(required=false,defaultValue="null")
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forLineage,
  @RequestParam(required=false,defaultValue="false")
@@ -472,12 +475,12 @@ loadScripts(document, 'script');</script>
 <dd><code>serverName</code> - name of the server to route the request to</dd>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerIsHome</code> - ensure that only the asset manager can update this schema element</dd>
+<dd><code>anchorGUID</code> - unique identifier of the intended anchor of the schema type</dd>
 <dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
 <dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dd><code>requestBody</code> - properties about the schema type to store</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of the new schema type
-
   InvalidParameterException  one of the parameters is invalid
   UserNotAuthorizedException the user is not authorized to issue this request
   PropertyServerException    there is a problem reported in the open metadata server(s)</dd>
@@ -508,7 +511,6 @@ loadScripts(document, 'script');</script>
 <dd><code>requestBody</code> - properties that override the template</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of the new schema type
-
   InvalidParameterException  one of the parameters is invalid
   UserNotAuthorizedException the user is not authorized to issue this request
   PropertyServerException    there is a problem reported in the open metadata server(s)</dd>
