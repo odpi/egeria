@@ -426,7 +426,7 @@ public class DataAssetExchangeResource
      * @param userId calling user
      * @param relationshipTypeName type name of relationship to delete
      * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
-     * @param startingFrom start position for results
+     * @param startFrom start position for results
      * @param pageSize     maximum number of results
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -443,15 +443,15 @@ public class DataAssetExchangeResource
                                                                @PathVariable String                        userId,
                                                                @PathVariable String                        relationshipTypeName,
                                                                @PathVariable String                        fromAssetGUID,
-                                                               @RequestParam int                           startingFrom,
+                                                               @RequestParam int                           startFrom,
                                                                @RequestParam int                           pageSize,
                                                                @RequestParam (required = false, defaultValue = "false")
-                                                                       boolean                      forLineage,
+                                                                             boolean                      forLineage,
                                                                @RequestParam (required = false, defaultValue = "false")
-                                                                       boolean                      forDuplicateProcessing,
+                                                                             boolean                      forDuplicateProcessing,
                                                                @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getRelatedAssetsAtEnd2(serverName, userId, relationshipTypeName, fromAssetGUID, startingFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getRelatedAssetsAtEnd2(serverName, userId, relationshipTypeName, fromAssetGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -462,7 +462,7 @@ public class DataAssetExchangeResource
      * @param userId calling user
      * @param relationshipTypeName type name of relationship to delete
      * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
-     * @param startingFrom start position for results
+     * @param startFrom start position for results
      * @param pageSize     maximum number of results
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -479,7 +479,7 @@ public class DataAssetExchangeResource
                                                                @PathVariable String                        userId,
                                                                @PathVariable String                        relationshipTypeName,
                                                                @PathVariable String                        toAssetGUID,
-                                                               @RequestParam int                           startingFrom,
+                                                               @RequestParam int                           startFrom,
                                                                @RequestParam int                           pageSize,
                                                                @RequestParam (required = false, defaultValue = "false")
                                                                        boolean                      forLineage,
@@ -487,7 +487,7 @@ public class DataAssetExchangeResource
                                                                        boolean                      forDuplicateProcessing,
                                                                @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getRelatedAssetsAtEnd1(serverName, userId, relationshipTypeName, toAssetGUID, startingFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getRelatedAssetsAtEnd1(serverName, userId, relationshipTypeName, toAssetGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 

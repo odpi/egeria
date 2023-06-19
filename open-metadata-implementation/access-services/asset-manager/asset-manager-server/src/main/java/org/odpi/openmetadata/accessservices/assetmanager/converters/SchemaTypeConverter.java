@@ -3,7 +3,8 @@
 package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SchemaTypeElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.DerivedSchemaTypeQueryTargetProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
@@ -47,7 +48,7 @@ public class SchemaTypeConverter<B> extends AssetManagerOMASConverter<B>
      * @param beanClass name of the class to create
      * @param schemaRootHeader header of the schema element that holds the root information
      * @param schemaTypeTypeName name of type of the schema type to create
-     * @param instanceProperties properties describing the schema type
+     * @param schemaRootProperties properties describing the schema type
      * @param schemaRootClassifications classifications from the schema root entity
      * @param attributeCount number of attributes (for a complex schema type)
      * @param validValueSetGUID unique identifier of the set of valid values (for an enum schema type)
@@ -59,7 +60,7 @@ public class SchemaTypeConverter<B> extends AssetManagerOMASConverter<B>
      * @param mapToSchemaType bean containing the properties of the schema type that is part of a map definition
      * @param schemaTypeOptionGUIDs list of unique identifiers for schema types that could be the type for this attribute
      * @param schemaTypeOptions list of schema types that could be the type for this attribute
-     * @param queryTargets list of relationships to schema types that contain data values used to derive the schema type value(s)
+     * @param queryTargetRelationships list of relationships to schema types that contain data values used to derive the schema type value(s)
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
@@ -68,7 +69,7 @@ public class SchemaTypeConverter<B> extends AssetManagerOMASConverter<B>
     public B getNewSchemaTypeBean(Class<B>             beanClass,
                                   InstanceHeader       schemaRootHeader,
                                   String               schemaTypeTypeName,
-                                  InstanceProperties   instanceProperties,
+                                  InstanceProperties   schemaRootProperties,
                                   List<Classification> schemaRootClassifications,
                                   int                  attributeCount,
                                   String               validValueSetGUID,
@@ -80,7 +81,7 @@ public class SchemaTypeConverter<B> extends AssetManagerOMASConverter<B>
                                   B                    mapToSchemaType,
                                   List<String>         schemaTypeOptionGUIDs,
                                   List<B>              schemaTypeOptions,
-                                  List<Relationship>   queryTargets,
+                                  List<Relationship>   queryTargetRelationships,
                                   String               methodName) throws PropertyServerException
     {
         try
@@ -92,27 +93,94 @@ public class SchemaTypeConverter<B> extends AssetManagerOMASConverter<B>
 
             if (returnBean instanceof SchemaTypeElement)
             {
-                if ((schemaRootHeader != null) && (instanceProperties != null))
+                if ((schemaRootHeader != null) && (schemaRootProperties != null))
                 {
-                    /*
-                     * The schema type has different subtypes.
-                     * This next piece of logic sorts out which type of schema bean to create.
-                     */
                     SchemaTypeElement bean = (SchemaTypeElement)returnBean;
 
                     bean.setElementHeader(this.getMetadataElementHeader(beanClass, schemaRootHeader, schemaRootClassifications, methodName));
-                    bean.setSchemaTypeProperties(this.getSchemaTypeProperties(beanClass,
-                                                                              schemaTypeTypeName,
-                                                                              instanceProperties,
-                                                                              schemaRootClassifications,
-                                                                              attributeCount,
-                                                                              validValueSetGUID,
-                                                                              externalSchemaTypeGUID,
-                                                                              externalSchemaType,
-                                                                              mapFromSchemaType,
-                                                                              mapToSchemaType,
-                                                                              schemaTypeOptions,
-                                                                              methodName));
+
+                    /*
+                     * Set up schema properties to create.
+                     */
+                    InstanceProperties   instanceProperties   = new InstanceProperties(schemaRootProperties);
+                    SchemaTypeProperties schemaTypeProperties = new SchemaTypeProperties();
+
+                    schemaTypeProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    schemaTypeProperties.setDisplayName(this.removeDisplayName(instanceProperties));
+                    schemaTypeProperties.setDescription(this.removeDescription(instanceProperties));
+                    schemaTypeProperties.setIsDeprecated(this.removeIsDeprecated(instanceProperties));
+                    schemaTypeProperties.setVersionNumber(this.removeVersionNumber(instanceProperties));
+                    schemaTypeProperties.setAuthor(this.removeAuthor(instanceProperties));
+                    schemaTypeProperties.setUsage(this.removeUsage(instanceProperties));
+                    schemaTypeProperties.setEncodingStandard(this.removeEncodingStandard(instanceProperties));
+                    schemaTypeProperties.setNamespace(this.removeNamespace(instanceProperties));
+                    schemaTypeProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+
+                    /*
+                     * Any remaining properties are returned in the extended properties.  They are
+                     * assumed to be defined in a subtype.
+                     */
+                    schemaTypeProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    schemaTypeProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+
+                    bean.setSchemaTypeProperties(schemaTypeProperties);
+
+                    bean.setAttributeCount(attributeCount);
+                    bean.setMapFromElement((SchemaTypeElement)mapFromSchemaType);
+                    bean.setMapToElement((SchemaTypeElement)mapToSchemaType);
+                    bean.setExternalSchemaType((SchemaTypeElement)externalSchemaType);
+
+                    if ((schemaTypeOptions != null) && (! schemaTypeOptions.isEmpty()))
+                    {
+                        List<SchemaTypeElement> schemaTypeOptionBeans = new ArrayList<>();
+
+                        for (B optionBean : schemaTypeOptions)
+                        {
+                            if (optionBean != null)
+                            {
+                                schemaTypeOptionBeans.add((SchemaTypeElement) optionBean);
+                            }
+                        }
+
+                        if (! schemaTypeOptionBeans.isEmpty())
+                        {
+                            bean.setSchemaOptions(schemaTypeOptionBeans);
+                        }
+                    }
+
+                    InstanceProperties classificationProperties =
+                            super.getClassificationProperties(OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                              schemaRootClassifications);
+
+                    bean.setFormula(this.getFormula(classificationProperties));
+                    bean.setFormulaType(this.getFormulaType(classificationProperties));
+
+                    if (queryTargetRelationships != null)
+                    {
+                        List<DerivedSchemaTypeQueryTargetProperties> queryTargets = new ArrayList<>();
+
+                        for (Relationship relationship : queryTargetRelationships)
+                        {
+                            if ((relationship != null) && (relationship.getEntityTwoProxy() != null))
+                            {
+                                DerivedSchemaTypeQueryTargetProperties queryTargetProperties = new DerivedSchemaTypeQueryTargetProperties();
+
+                                queryTargetProperties.setQueryId(this.getQueryId(relationship.getProperties()));
+                                queryTargetProperties.setQuery(this.getQuery(relationship.getProperties()));
+                                queryTargetProperties.setQueryTargetGUID(relationship.getEntityTwoProxy().getGUID());
+
+                                queryTargets.add(queryTargetProperties);
+                            }
+                            else
+                            {
+                                handleBadRelationship(beanClass.getName(), relationship, methodName);
+                            }
+                        }
+                        if (! queryTargets.isEmpty())
+                        {
+                            bean.setQueries(queryTargets);
+                        }
+                    }
 
                     return returnBean;
                 }
@@ -128,349 +196,5 @@ public class SchemaTypeConverter<B> extends AssetManagerOMASConverter<B>
         }
 
         return null;
-    }
-
-
-    /**
-     * Return the converted bean.  This is a special method used for schema types since they are stored
-     * as a collection of instances.
-     *
-     * @param beanClass name of the class to create
-     * @param schemaTypeTypeName name of type of the schema type to create
-     * @param instanceProperties properties describing the schema type
-     * @param attributeCount number of attributes (for a complex schema type)
-     * @param validValueSetGUID unique identifier of the set of valid values (for an enum schema type)
-     * @param externalSchemaTypeGUID unique identifier of the external schema type
-     * @param externalSchemaType bean containing the properties of the schema type that is shared by multiple attributes/assets
-     * @param mapFromSchemaType bean containing the properties of the schema type that is part of a map definition
-     * @param mapToSchemaType bean containing the properties of the schema type that is part of a map definition
-     * @param schemaTypeOptions list of schema types that could be the type for this attribute
-     * @param methodName calling method
-     * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
-     */
-    private SchemaTypeProperties getSchemaTypeProperties(Class<B>             beanClass,
-                                                         String               schemaTypeTypeName,
-                                                         InstanceProperties   instanceProperties,
-                                                         List<Classification> schemaRootClassifications,
-                                                         int                  attributeCount,
-                                                         String               validValueSetGUID,
-                                                         String               externalSchemaTypeGUID,
-                                                         B                    externalSchemaType,
-                                                         B                    mapFromSchemaType,
-                                                         B                    mapToSchemaType,
-                                                         List<B>              schemaTypeOptions,
-                                                         String               methodName) throws PropertyServerException
-    {
-        SchemaTypeProperties returnBean = null;
-
-        /*
-         * The schema type has different subtypes.
-         * This next piece of logic sorts out which type of schema bean to create.
-         */
-
-        if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataAPIMapper.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME))
-        {
-            returnBean = this.getPrimitiveSchemaType(instanceProperties);
-        }
-        else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataAPIMapper.LITERAL_SCHEMA_TYPE_TYPE_NAME))
-        {
-            returnBean = this.getLiteralSchemaType(instanceProperties);
-        }
-        else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataAPIMapper.COMPLEX_SCHEMA_TYPE_TYPE_NAME))
-        {
-            returnBean = this.getComplexSchemaType(instanceProperties, attributeCount);
-        }
-        else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataAPIMapper.LITERAL_SCHEMA_TYPE_TYPE_NAME))
-        {
-            returnBean = this.getEnumSchemaType(instanceProperties, validValueSetGUID);
-        }
-        else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataAPIMapper.MAP_SCHEMA_TYPE_TYPE_NAME))
-        {
-            returnBean = this.getMapSchemaType(instanceProperties, mapFromSchemaType, mapToSchemaType);
-        }
-        else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataAPIMapper.SCHEMA_TYPE_CHOICE_TYPE_NAME))
-        {
-            returnBean = this.getSchemaTypeChoice(instanceProperties, schemaTypeOptions);
-        }
-        else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataAPIMapper.EXTERNAL_SCHEMA_TYPE_TYPE_NAME))
-        {
-            returnBean = this.getExternalSchemaType(instanceProperties, externalSchemaTypeGUID, externalSchemaType);
-        }
-        else
-        {
-            /*
-             * This will throw an exception
-             */
-            super.validateInstanceType(OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                       beanClass.getName(),
-                                       schemaTypeTypeName,
-                                       methodName);
-        }
-
-        if (returnBean != null)
-        {
-            InstanceProperties classificationProperties =
-                    super.getClassificationProperties(OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
-                                                      schemaRootClassifications);
-
-            returnBean.setFormula(this.getFormula(classificationProperties));
-            returnBean.setFormulaType(this.getFormulaType(classificationProperties));
-        }
-
-        return returnBean;
-    }
-
-
-
-    /**
-     * Return the converted bean.
-     *
-     * @param instanceProperties properties describing the schema type
-     * @return bean populated with properties from the instance properties supplied
-     */
-    private SchemaTypeProperties getLiteralSchemaType(InstanceProperties   instanceProperties)
-    {
-        LiteralSchemaTypeProperties schemaType = new LiteralSchemaTypeProperties();
-
-        InstanceProperties propertiesCopy = new InstanceProperties(instanceProperties);
-
-        updateBasicSchemaTypeProperties(schemaType, propertiesCopy);
-
-        schemaType.setDataType(this.removeDataType(propertiesCopy));
-        schemaType.setFixedValue(this.removeFixedValue(propertiesCopy));
-
-        /*
-         * Any remaining properties are returned in the extended properties.  They are
-         * assumed to be defined in a subtype.
-         */
-        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(propertiesCopy));
-
-        return schemaType;
-    }
-
-
-
-    /**
-     * Return the converted bean.
-     *
-     * @param instanceProperties properties describing the schema type
-     * @return bean populated with properties from the instance properties supplied
-     */
-    private SchemaTypeProperties getPrimitiveSchemaType(InstanceProperties   instanceProperties)
-    {
-        PrimitiveSchemaTypeProperties schemaType = new PrimitiveSchemaTypeProperties();
-
-        InstanceProperties propertiesCopy = new InstanceProperties(instanceProperties);
-
-        updateBasicSchemaTypeProperties(schemaType, propertiesCopy);
-
-        schemaType.setDataType(this.removeDataType(propertiesCopy));
-        schemaType.setDefaultValue(this.removeDefaultValue(propertiesCopy));
-
-        /*
-         * Any remaining properties are returned in the extended properties.  They are
-         * assumed to be defined in a subtype.
-         */
-        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(propertiesCopy));
-
-        return schemaType;
-    }
-
-
-    /**
-     * Return the converted bean.
-     *
-     * @param instanceProperties properties describing the schema type
-     * @param attributeCount number of attributes (for a complex schema type)
-     * @return bean populated with properties from the instance properties supplied
-     */
-    private SchemaTypeProperties getComplexSchemaType(InstanceProperties instanceProperties,
-                                                      int                attributeCount)
-    {
-        ComplexSchemaTypeProperties schemaType = new ComplexSchemaTypeProperties();
-
-        InstanceProperties propertiesCopy = new InstanceProperties(instanceProperties);
-
-        updateBasicSchemaTypeProperties(schemaType, propertiesCopy);
-
-        schemaType.setAttributeCount(attributeCount);
-
-        /*
-         * Any remaining properties are returned in the extended properties.  They are
-         * assumed to be defined in a subtype.
-         */
-        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(propertiesCopy));
-
-        return schemaType;
-    }
-
-
-    /**
-     * Return the converted bean.
-     *
-     * @param instanceProperties properties describing the schema type
-     * @param validValueSetGUID unique identifier of the set of valid values (for an enum schema type)
-     * @return bean populated with properties from the instance properties supplied
-     */
-    private SchemaTypeProperties getEnumSchemaType(InstanceProperties   instanceProperties,
-                                                   String               validValueSetGUID)
-    {
-        EnumSchemaTypeProperties schemaType = new EnumSchemaTypeProperties();
-
-        InstanceProperties propertiesCopy = new InstanceProperties(instanceProperties);
-
-        updateBasicSchemaTypeProperties(schemaType, propertiesCopy);
-
-        schemaType.setDataType(this.removeDataType(propertiesCopy));
-        schemaType.setDefaultValue(this.removeDefaultValue(propertiesCopy));
-        schemaType.setValidValueSetGUID(validValueSetGUID);
-
-        /*
-         * Any remaining properties are returned in the extended properties.  They are
-         * assumed to be defined in a subtype.
-         */
-        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(propertiesCopy));
-
-        return schemaType;
-    }
-
-
-    /**
-     * Return the converted bean.
-     *
-     * @param instanceProperties properties describing the schema type
-     * @param schemaTypeOptions list of schema types that could be the type for this attribute
-     * @return bean populated with properties from the instance properties supplied
-     */
-    private SchemaTypeProperties getSchemaTypeChoice(InstanceProperties   instanceProperties,
-                                                     List<B>              schemaTypeOptions)
-    {
-        SchemaTypeChoiceProperties schemaType = new SchemaTypeChoiceProperties();
-
-        InstanceProperties propertiesCopy = new InstanceProperties(instanceProperties);
-
-        updateBasicSchemaTypeProperties(schemaType, propertiesCopy);
-
-        if ((schemaTypeOptions != null) && (! schemaTypeOptions.isEmpty()))
-        {
-            List<SchemaTypeProperties> schemaTypeOptionBeans = new ArrayList<>();
-
-            for (B optionBean : schemaTypeOptions)
-            {
-                if (optionBean != null)
-                {
-                    schemaTypeOptionBeans.add((SchemaTypeProperties) optionBean);
-                }
-            }
-
-            if (! schemaTypeOptionBeans.isEmpty())
-            {
-                schemaType.setSchemaOptions(schemaTypeOptionBeans);
-            }
-
-        }
-
-        /*
-         * Any remaining properties are returned in the extended properties.  They are
-         * assumed to be defined in a subtype.
-         */
-        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(propertiesCopy));
-
-        return schemaType;
-    }
-
-
-    /**
-     * Return the converted bean.
-     *
-     * @param instanceProperties properties describing the schema type
-     * @param externalSchemaTypeGUID unique identifier of the external schema type
-     * @param externalSchemaType bean containing the properties of the schema type that is shared by multiple attributes/assets
-     * @return bean populated with properties from the instance properties supplied
-     */
-    private SchemaTypeProperties getExternalSchemaType(InstanceProperties   instanceProperties,
-                                                       String               externalSchemaTypeGUID,
-                                                       B                    externalSchemaType)
-    {
-        ExternalSchemaTypeProperties schemaType = new ExternalSchemaTypeProperties();
-
-        InstanceProperties propertiesCopy = new InstanceProperties(instanceProperties);
-
-        updateBasicSchemaTypeProperties(schemaType, propertiesCopy);
-
-        if (externalSchemaType != null)
-        {
-            schemaType.setExternalSchemaTypeGUID(externalSchemaTypeGUID);
-            schemaType.setExternalSchemaType((SchemaTypeProperties)externalSchemaType);
-        }
-
-        /*
-         * Any remaining properties are returned in the extended properties.  They are
-         * assumed to be defined in a subtype.
-         */
-        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(propertiesCopy));
-
-        return schemaType;
-    }
-
-
-    /**
-     * Return the converted bean.
-     *
-     * @param instanceProperties properties describing the schema type
-     * @param mapFromSchemaType bean containing the properties of the schema type that is part of a map definition
-     * @param mapToSchemaType bean containing the properties of the schema type that is part of a map definition
-     * @return bean populated with properties from the instance properties supplied
-     */
-    private SchemaTypeProperties getMapSchemaType(InstanceProperties   instanceProperties,
-                                                  B                    mapFromSchemaType,
-                                                  B                    mapToSchemaType)
-    {
-        MapSchemaTypeProperties schemaType = new MapSchemaTypeProperties();
-
-        InstanceProperties propertiesCopy = new InstanceProperties(instanceProperties);
-
-        updateBasicSchemaTypeProperties(schemaType, propertiesCopy);
-
-        if (mapFromSchemaType != null)
-        {
-            schemaType.setMapFromElement((SchemaTypeProperties) mapFromSchemaType);
-        }
-
-        if (mapToSchemaType != null)
-        {
-            schemaType.setMapFromElement((SchemaTypeProperties) mapFromSchemaType);
-        }
-
-        /*
-         * Any remaining properties are returned in the extended properties.  They are
-         * assumed to be defined in a subtype.
-         */
-        schemaType.setExtendedProperties(this.getRemainingExtendedProperties(propertiesCopy));
-
-        return schemaType;
-    }
-
-
-    /**
-     * Set up the properties found in every schema type.
-     *
-     * @param bean bean to fill
-     * @param instanceProperties properties from the entity
-     */
-    private void updateBasicSchemaTypeProperties(SchemaTypeProperties bean,
-                                                 InstanceProperties  instanceProperties)
-    {
-        bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
-        bean.setDisplayName(this.removeDisplayName(instanceProperties));
-        bean.setDescription(this.removeDescription(instanceProperties));
-        bean.setIsDeprecated(this.removeIsDeprecated(instanceProperties));
-        bean.setVersionNumber(this.removeVersionNumber(instanceProperties));
-        bean.setAuthor(this.removeAuthor(instanceProperties));
-        bean.setUsage(this.removeUsage(instanceProperties));
-        bean.setEncodingStandard(this.removeEncodingStandard(instanceProperties));
-        bean.setNamespace(this.removeNamespace(instanceProperties));
-        bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
     }
 }

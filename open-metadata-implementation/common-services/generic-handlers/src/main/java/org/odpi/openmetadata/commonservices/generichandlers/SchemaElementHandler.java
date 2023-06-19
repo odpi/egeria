@@ -255,162 +255,165 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
         final String externalParameterName = "externalSchemaType";
         final String optionParameterName = "optionSchemaType";
 
-        if (repositoryHelper.isTypeOf(serviceName, schemaTypeBuilder.getTypeName(), OpenMetadataAPIMapper.EXTERNAL_SCHEMA_TYPE_TYPE_NAME))
+        if (schemaTypeBuilder != null)
         {
-            String externalSchemaGUID = schemaTypeBuilder.getExternalSchemaTypeGUID();
-
-            if (externalSchemaGUID != null)
+            if (repositoryHelper.isTypeOf(serviceName, schemaTypeBuilder.getTypeName(), OpenMetadataAPIMapper.EXTERNAL_SCHEMA_TYPE_TYPE_NAME))
             {
-                this.linkElementToElement(userId,
-                                          externalSourceGUID,
-                                          externalSourceName,
-                                          schemaTypeGUID,
-                                          schemaTypeGUIDParameterName,
-                                          schemaTypeTypeName,
-                                          externalSchemaGUID,
-                                          externalParameterName,
-                                          OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                          forLineage,
-                                          forDuplicateProcessing,
-                                          supportedZones,
-                                          OpenMetadataAPIMapper.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_GUID,
-                                          OpenMetadataAPIMapper.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_NAME,
-                                          null,
-                                          effectiveFrom,
-                                          effectiveTo,
-                                          effectiveTime,
-                                          methodName);
-            }
-        }
-        else if (repositoryHelper.isTypeOf(serviceName, schemaTypeBuilder.getTypeName(), OpenMetadataAPIMapper.MAP_SCHEMA_TYPE_TYPE_NAME))
-        {
-            /*
-             * The caller may have set up the maps as builders (requiring the schema type to be created first) or as GUIDs.
-             */
-            SchemaTypeBuilder mapFromBuilder = schemaTypeBuilder.getMapFrom();
-            SchemaTypeBuilder mapToBuilder   = schemaTypeBuilder.getMapTo();
-            String mapFromGUID = schemaTypeBuilder.getMapFromGUID();
-            String mapToGUID = schemaTypeBuilder.getMapToGUID();
+                String externalSchemaGUID = schemaTypeBuilder.getExternalSchemaTypeGUID();
 
-            if (mapFromBuilder != null)
-            {
-                mapFromGUID = addSchemaType(userId,
-                                            externalSourceGUID,
-                                            externalSourceName,
-                                            mapFromBuilder.qualifiedName,
-                                            mapFromBuilder,
-                                            effectiveFrom,
-                                            effectiveTo,
-                                            forLineage,
-                                            forDuplicateProcessing,
-                                            effectiveTime,
-                                            methodName);
-            }
-
-            if (mapFromGUID != null)
-            {
-                this.linkElementToElement(userId,
-                                          externalSourceGUID,
-                                          externalSourceName,
-                                          schemaTypeGUID,
-                                          schemaTypeGUIDParameterName,
-                                          schemaTypeTypeName,
-                                          mapFromGUID,
-                                          mapFromParameterName,
-                                          OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                          forLineage,
-                                          forDuplicateProcessing,
-                                          supportedZones,
-                                          OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_GUID,
-                                          OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_NAME,
-                                          null,
-                                          effectiveFrom,
-                                          effectiveTo,
-                                          effectiveTime,
-                                          methodName);
-            }
-
-            if (mapToBuilder != null)
-            {
-                mapToGUID = addSchemaType(userId,
-                                          externalSourceGUID,
-                                          externalSourceName,
-                                          mapToBuilder.qualifiedName,
-                                          mapToBuilder,
-                                          effectiveFrom,
-                                          effectiveTo,
-                                          forLineage,
-                                          forDuplicateProcessing,
-                                          effectiveTime,
-                                          methodName);
-            }
-
-            if (mapToGUID != null)
-            {
-                this.linkElementToElement(userId,
-                                          externalSourceGUID,
-                                          externalSourceName,
-                                          schemaTypeGUID,
-                                          schemaTypeGUIDParameterName,
-                                          schemaTypeTypeName,
-                                          mapToGUID,
-                                          mapToParameterName,
-                                          OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                          forLineage,
-                                          forDuplicateProcessing,
-                                          supportedZones,
-                                          OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_GUID,
-                                          OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_NAME,
-                                          null,
-                                          effectiveFrom,
-                                          effectiveTo,
-                                          effectiveTime,
-                                          methodName);
-            }
-        }
-        else if (repositoryHelper.isTypeOf(serviceName, schemaTypeBuilder.getTypeName(), OpenMetadataAPIMapper.SCHEMA_TYPE_CHOICE_TYPE_NAME))
-        {
-            List<SchemaTypeBuilder>  schemaOptionBuilders = schemaTypeBuilder.getSchemaOptions();
-
-            if (schemaOptionBuilders != null)
-            {
-                for (SchemaTypeBuilder schemaOptionBuilder : schemaOptionBuilders)
+                if (externalSchemaGUID != null)
                 {
-                    if (schemaOptionBuilder != null)
+                    this.linkElementToElement(userId,
+                                              externalSourceGUID,
+                                              externalSourceName,
+                                              schemaTypeGUID,
+                                              schemaTypeGUIDParameterName,
+                                              schemaTypeTypeName,
+                                              externalSchemaGUID,
+                                              externalParameterName,
+                                              OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              supportedZones,
+                                              OpenMetadataAPIMapper.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_GUID,
+                                              OpenMetadataAPIMapper.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_NAME,
+                                              null,
+                                              effectiveFrom,
+                                              effectiveTo,
+                                              effectiveTime,
+                                              methodName);
+                }
+            }
+            else if (repositoryHelper.isTypeOf(serviceName, schemaTypeBuilder.getTypeName(), OpenMetadataAPIMapper.MAP_SCHEMA_TYPE_TYPE_NAME))
+            {
+                /*
+                 * The caller may have set up the maps as builders (requiring the schema type to be created first) or as GUIDs.
+                 */
+                SchemaTypeBuilder mapFromBuilder = schemaTypeBuilder.getMapFrom();
+                SchemaTypeBuilder mapToBuilder   = schemaTypeBuilder.getMapTo();
+                String            mapFromGUID    = schemaTypeBuilder.getMapFromGUID();
+                String            mapToGUID      = schemaTypeBuilder.getMapToGUID();
+
+                if (mapFromBuilder != null)
+                {
+                    mapFromGUID = addSchemaType(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                mapFromBuilder.qualifiedName,
+                                                mapFromBuilder,
+                                                effectiveFrom,
+                                                effectiveTo,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
+                                                methodName);
+                }
+
+                if (mapFromGUID != null)
+                {
+                    this.linkElementToElement(userId,
+                                              externalSourceGUID,
+                                              externalSourceName,
+                                              schemaTypeGUID,
+                                              schemaTypeGUIDParameterName,
+                                              schemaTypeTypeName,
+                                              mapFromGUID,
+                                              mapFromParameterName,
+                                              OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              supportedZones,
+                                              OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_GUID,
+                                              OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_NAME,
+                                              null,
+                                              effectiveFrom,
+                                              effectiveTo,
+                                              effectiveTime,
+                                              methodName);
+                }
+
+                if (mapToBuilder != null)
+                {
+                    mapToGUID = addSchemaType(userId,
+                                              externalSourceGUID,
+                                              externalSourceName,
+                                              mapToBuilder.qualifiedName,
+                                              mapToBuilder,
+                                              effectiveFrom,
+                                              effectiveTo,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              effectiveTime,
+                                              methodName);
+                }
+
+                if (mapToGUID != null)
+                {
+                    this.linkElementToElement(userId,
+                                              externalSourceGUID,
+                                              externalSourceName,
+                                              schemaTypeGUID,
+                                              schemaTypeGUIDParameterName,
+                                              schemaTypeTypeName,
+                                              mapToGUID,
+                                              mapToParameterName,
+                                              OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              supportedZones,
+                                              OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_GUID,
+                                              OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_NAME,
+                                              null,
+                                              effectiveFrom,
+                                              effectiveTo,
+                                              effectiveTime,
+                                              methodName);
+                }
+            }
+            else if (repositoryHelper.isTypeOf(serviceName, schemaTypeBuilder.getTypeName(), OpenMetadataAPIMapper.SCHEMA_TYPE_CHOICE_TYPE_NAME))
+            {
+                List<SchemaTypeBuilder> schemaOptionBuilders = schemaTypeBuilder.getSchemaOptions();
+
+                if (schemaOptionBuilders != null)
+                {
+                    for (SchemaTypeBuilder schemaOptionBuilder : schemaOptionBuilders)
                     {
-                        String optionGUID = addSchemaType(userId,
+                        if (schemaOptionBuilder != null)
+                        {
+                            String optionGUID = addSchemaType(userId,
+                                                              externalSourceGUID,
+                                                              externalSourceName,
+                                                              schemaOptionBuilder.qualifiedName,
+                                                              schemaOptionBuilder,
+                                                              effectiveFrom,
+                                                              effectiveTo,
+                                                              forLineage,
+                                                              forDuplicateProcessing,
+                                                              effectiveTime,
+                                                              methodName);
+
+                            if (optionGUID != null)
+                            {
+                                this.linkElementToElement(userId,
                                                           externalSourceGUID,
                                                           externalSourceName,
-                                                          schemaOptionBuilder.qualifiedName,
-                                                          schemaOptionBuilder,
-                                                          effectiveFrom,
-                                                          effectiveTo,
+                                                          schemaTypeGUID,
+                                                          schemaTypeGUIDParameterName,
+                                                          schemaTypeTypeName,
+                                                          optionGUID,
+                                                          optionParameterName,
+                                                          OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                           forLineage,
                                                           forDuplicateProcessing,
+                                                          supportedZones,
+                                                          OpenMetadataAPIMapper.SCHEMA_TYPE_CHOICE_TYPE_GUID,
+                                                          OpenMetadataAPIMapper.SCHEMA_TYPE_CHOICE_TYPE_NAME,
+                                                          null,
+                                                          effectiveFrom,
+                                                          effectiveTo,
                                                           effectiveTime,
                                                           methodName);
-
-                        if (optionGUID != null)
-                        {
-                            this.linkElementToElement(userId,
-                                                      externalSourceGUID,
-                                                      externalSourceName,
-                                                      schemaTypeGUID,
-                                                      schemaTypeGUIDParameterName,
-                                                      schemaTypeTypeName,
-                                                      optionGUID,
-                                                      optionParameterName,
-                                                      OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                                      forLineage,
-                                                      forDuplicateProcessing,
-                                                      supportedZones,
-                                                      OpenMetadataAPIMapper.SCHEMA_TYPE_CHOICE_TYPE_GUID,
-                                                      OpenMetadataAPIMapper.SCHEMA_TYPE_CHOICE_TYPE_NAME,
-                                                      null,
-                                                      effectiveFrom,
-                                                      effectiveTo,
-                                                      effectiveTime,
-                                                      methodName);
+                            }
                         }
                     }
                 }

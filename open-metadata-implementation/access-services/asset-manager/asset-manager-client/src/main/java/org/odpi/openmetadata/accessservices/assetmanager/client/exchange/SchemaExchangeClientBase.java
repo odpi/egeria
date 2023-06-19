@@ -155,7 +155,101 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        final String methodName                  = "createSchemaType";
+        final String methodName = "createSchemaType";
+
+        return this.createSchemaType(userId,
+                                     assetManagerGUID,
+                                     assetManagerName,
+                                     assetManagerIsHome,
+                                     null,
+                                     externalIdentifierProperties,
+                                     forLineage,
+                                     forDuplicateProcessing,
+                                     schemaTypeProperties,
+                                     methodName);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a schema type.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerIsHome ensure that only the asset manager can update this schema element
+     * @param anchorGUID unique identifier of the intended anchor of the schema type
+     * @param externalIdentifierProperties optional properties used to define an external identifier
+     * @param schemaTypeProperties properties about the schema type to store
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return unique identifier of the new schema type
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public String createAnchoredSchemaType(String                       userId,
+                                           String                       assetManagerGUID,
+                                           String                       assetManagerName,
+                                           boolean                      assetManagerIsHome,
+                                           String                       anchorGUID,
+                                           ExternalIdentifierProperties externalIdentifierProperties,
+                                           boolean                      forLineage,
+                                           boolean                      forDuplicateProcessing,
+                                           SchemaTypeProperties         schemaTypeProperties) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
+    {
+        final String methodName = "createAnchoredSchemaType";
+
+        return this.createSchemaType(userId,
+                                     assetManagerGUID,
+                                     assetManagerName,
+                                     assetManagerIsHome,
+                                     anchorGUID,
+                                     externalIdentifierProperties,
+                                     forLineage,
+                                     forDuplicateProcessing,
+                                     schemaTypeProperties,
+                                     methodName);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a schema type.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerIsHome ensure that only the asset manager can update this schema element
+     * @param anchorGUID unique identifier of the intended anchor of the schema type
+     * @param externalIdentifierProperties optional properties used to define an external identifier
+     * @param schemaTypeProperties properties about the schema type to store
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new schema type
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    private String createSchemaType(String                       userId,
+                                    String                       assetManagerGUID,
+                                    String                       assetManagerName,
+                                    boolean                      assetManagerIsHome,
+                                    String                       anchorGUID,
+                                    ExternalIdentifierProperties externalIdentifierProperties,
+                                    boolean                      forLineage,
+                                    boolean                      forDuplicateProcessing,
+                                    SchemaTypeProperties         schemaTypeProperties,
+                                    String                       methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
         final String propertiesParameterName     = "schemaTypeProperties";
         final String qualifiedNameParameterName  = "schemaTypeProperties.qualifiedName";
 
@@ -170,7 +264,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                    externalIdentifierProperties,
                                                                                    methodName));
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-types?assetManagerIsHome={2}&forLineage={3}&forDuplicateProcessing={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-types?assetManagerIsHome={2}&forLineage={3}&forDuplicateProcessing={4}&anchorGUID={5}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -179,7 +273,8 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                   userId,
                                                                   assetManagerIsHome,
                                                                   forLineage,
-                                                                  forDuplicateProcessing);
+                                                                  forDuplicateProcessing,
+                                                                  anchorGUID);
 
         return restResult.getGUID();
     }
