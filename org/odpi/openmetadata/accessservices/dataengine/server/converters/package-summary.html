@@ -40,7 +40,7 @@ loadScripts(document, 'script');</script>
 <div>
 <ul class="sub-nav-list">
 <li>Package:&nbsp;</li>
-<li>Description&nbsp;|&nbsp;</li>
+<li><a href="#package-description">Description</a>&nbsp;|&nbsp;</li>
 <li>Related Packages&nbsp;|&nbsp;</li>
 <li><a href="#class-summary">Classes and Interfaces</a></li>
 </ul>
@@ -60,6 +60,10 @@ loadScripts(document, 'script');</script>
 </div>
 <hr>
 <div class="package-signature">package <span class="element-name">org.odpi.openmetadata.accessservices.dataengine.server.converters</span></div>
+<section class="package-description" id="package-description">
+<div class="block">Provides the converters that take beans from the repository services (eg entities and relationships)
+ and converts them into DAta Engine OMAS beans to return to the caller.</div>
+</section>
 <section class="summary">
 <ul class="summary-list">
 <li>
@@ -68,8 +72,11 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="CollectionCoverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">CollectionCoverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="CollectionConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">CollectionConverter</a>&lt;B&gt;</div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">CollectionConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
+ EntityDetail object into a Collection bean.</div>
+</div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ConnectionConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">ConnectionConverter</a>&lt;B&gt;</div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">ConnectionConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
@@ -81,59 +88,72 @@ loadScripts(document, 'script');</script>
  EntityDetail object into a ConnectorTypeElement bean.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DatabaseColumnConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">DatabaseColumnConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">DatabaseColumnConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
+ EntityDetail object into a DatabaseColumn bean.</div>
+</div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="DatabaseConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">DatabaseConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DatabaseSchemaConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">DatabaseSchemaConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DatabaseTableConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">DatabaseTableConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DataEngineConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">DataEngineConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DataFileConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">DataFileConverter</a>&lt;B&gt;</div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">DatabaseConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
+ EntityDetail object into a Database bean.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DatabaseSchemaConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">DatabaseSchemaConverter</a>&lt;B&gt;</div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">DatabaseSchemaConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
+ EntityDetail object into a DatabaseSchema bean.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DatabaseTableConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">DatabaseTableConverter</a>&lt;B&gt;</div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">DatabaseTableConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
+ EntityDetail object into a RelationalTable bean.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DataFileConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">DataFileConverter</a>&lt;B&gt;</div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">DataFileConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
  EntityDetail object into a DataFile bean.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="EndpointConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">EndpointConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="EndpointConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">EndpointConverter</a>&lt;B&gt;</div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">EndpointConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
  EntityDetail object into a Endpoint bean.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="EventTypeConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">EventTypeConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="EventTypeConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">EventTypeConverter</a>&lt;B&gt;</div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">EventTypeConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
  EntityDetail object into a EventType bean.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="FileFolderConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">FileFolderConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="FileFolderConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">FileFolderConverter</a>&lt;B&gt;</div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">FileFolderConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
  EntityDetail object into a FileFolderElement bean.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="PortConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">PortConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ProcessConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">ProcessConverter</a>&lt;B&gt;</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="PortConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">PortConverter</a>&lt;B&gt;</div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">PortConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
+ EntityDetail object into a Port bean.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ProcessConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">ProcessConverter</a>&lt;B&gt;</div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">ProcessConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
  EntityDetail object into a Process bean.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ReferenceableConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">ReferenceableConverter</a>&lt;B&gt;</div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">FileFolderConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- EntityDetail object into a FileFolderElement bean.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SchemaAttributeConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">SchemaAttributeConverter</a>&lt;B&gt;</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ReferenceableConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">ReferenceableConverter</a>&lt;B&gt;</div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">LicenseConverter transfers the relevant properties from some Open Metadata Repository Services (OMRS)
- EntityDetail object into an License bean.</div>
+<div class="block">ReferenceableConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
+ EntityDetail object into a Referenceable bean.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SchemaTypeConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">SchemaTypeConverter</a>&lt;B&gt;</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SchemaAttributeConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">SchemaAttributeConverter</a>&lt;B&gt;</div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">SchemaAttributeConverter transfers the relevant properties from some Open Metadata Repository Services (OMRS)
+ EntityDetail object into a SchemaAttribute bean.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SchemaTypeConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">SchemaTypeConverter</a>&lt;B&gt;</div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">SchemaTypeConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
  EntityDetail object into an SchemaType bean.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="TopicConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">TopicConverter</a>&lt;B&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="TopicConverter.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.converters">TopicConverter</a>&lt;B&gt;</div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">TopicConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
  EntityDetail object into a Topic bean.</div>
 </div>

@@ -40,7 +40,7 @@ loadScripts(document, 'script');</script>
 <div>
 <ul class="sub-nav-list">
 <li>Package:&nbsp;</li>
-<li>Description&nbsp;|&nbsp;</li>
+<li><a href="#package-description">Description</a>&nbsp;|&nbsp;</li>
 <li>Related Packages&nbsp;|&nbsp;</li>
 <li><a href="#class-summary">Classes and Interfaces</a></li>
 </ul>
@@ -60,6 +60,14 @@ loadScripts(document, 'script');</script>
 </div>
 <hr>
 <div class="package-signature">package <span class="element-name">org.odpi.openmetadata.accessservices.dataengine.rest</span></div>
+<section class="package-description" id="package-description">
+<div class="block">This package defines the beans used to build the REST request and response payloads.
+ <p>
+ REST APIs can pass parameters in their URLs (called path variables) as well has having a RequestBody bean
+ for additional, more complex, or optional parameters.  Responses are returned in response beans.
+ <p>
+ The response beans encode the return type of the method as well as any exceptions and associated messages.</div>
+</section>
 <section class="summary">
 <ul class="summary-list">
 <li>
@@ -69,43 +77,69 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="DatabaseRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DatabaseRequestBody</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">DatabaseRequestBody describes the request body used to create/update databases.</div>
+</div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DatabaseSchemaRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DatabaseSchemaRequestBody</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">DatabaseSchemaRequestBody describes the request body used to create/update database schemas.</div>
+</div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="DataEngineOMASAPIRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataEngineOMASAPIRequestBody</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">DataEngineOMASAPIRequestBody provides a common header for Data Engine OMAS request bodies for its REST API.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DataEngineRegistrationRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataEngineRegistrationRequestBody</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">DataEngineRegistrationRequestBody describes the request body used to create/update engines.</div>
+</div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="DataFileRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataFileRequestBody</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">DataFileRequestBody describes the request body used to create/update data files.</div>
+</div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DataFlowsRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataFlowsRequestBody</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">DataFlowsRequestBody describes the request body used to create data flow relationships</div>
+</div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="DeleteRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DeleteRequestBody</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">DeleteRequestBody describes the request body used to delete an entity.</div>
+</div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="EventTypeRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">EventTypeRequestBody</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">EventTypeRequestBody describes the request body used to create/update event types.</div>
+</div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="FindRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">FindRequestBody</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="Identifiers.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">Identifiers</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="PortImplementationRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">PortImplementationRequestBody</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="PortListRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">PortListRequestBody</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">FindRequestBody describes the request body used to search for an entity</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="PortImplementationRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">PortImplementationRequestBody</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">PortImplementationRequestBody describes the request body used to create/update port implementations</div>
+</div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="ProcessHierarchyRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">ProcessHierarchyRequestBody</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">ProcessHierarchyRequestBody describes the request body used to create process hierarchy relationships</div>
+</div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ProcessingStateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">ProcessingStateRequestBody</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">ProcessingStateRequestBody describes the request body used to create processing state classifications</div>
+</div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="ProcessRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">ProcessRequestBody</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">ProcessRequestBody describes the request body used to create/update processes</div>
+</div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="RelationalTableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">RelationalTableRequestBody</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">RelationalTableRequestBody describes the request body used to create/update relational tables</div>
+</div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="SchemaTypeRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">SchemaTypeRequestBody</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">SchemaTypeRequestBody describes the request body used to create/update schema types</div>
+</div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="TopicRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">TopicRequestBody</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">TopicRequestBody describes the request body used to create/update topics</div>
+</div>
 </div>
 </div>
 </li>

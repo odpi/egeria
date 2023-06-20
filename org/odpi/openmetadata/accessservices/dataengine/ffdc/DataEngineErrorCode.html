@@ -122,34 +122,46 @@ implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#DATA_ENGINE_EXCEPTION" class="member-name-link">DATA_ENGINE_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#DATABASE_SCHEMA_NOT_FOUND" class="member-name-link">DATABASE_SCHEMA_NOT_FOUND</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#ENGINE_NOT_FOUND" class="member-name-link">ENGINE_NOT_FOUND</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#ENTITY_NOT_DELETED" class="member-name-link">ENTITY_NOT_DELETED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#INVALID_PORT_TYPE" class="member-name-link">INVALID_PORT_TYPE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#DATABASE_SCHEMA_NOT_FOUND" class="member-name-link">DATABASE_SCHEMA_NOT_FOUND</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-DATA-ENGINE-400-004 Database Schema with qualifiedName {0} was not found</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#ENGINE_NOT_FOUND" class="member-name-link">ENGINE_NOT_FOUND</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-DATA-ENGINE-400-007 Engine with qualifiedName {0} was not found</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#ENTITY_NOT_DELETED" class="member-name-link">ENTITY_NOT_DELETED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-DATA-ENGINE-400-005 Entity with qualifiedName {0} was not deleted</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#METHOD_NOT_IMPLEMENTED" class="member-name-link">METHOD_NOT_IMPLEMENTED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-DATA-ENGINE-500-002 Method {0} is not implemented</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_TOPIC_CONNECTOR" class="member-name-link">NULL_TOPIC_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-DATA-ENGINE-400-002 Unable to send or receive events for source {0} because the connector to the OMRS Topic failed to initialize</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#OMRS_NOT_INITIALIZED" class="member-name-link">OMRS_NOT_INITIALIZED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#PORT_NOT_FOUND" class="member-name-link">PORT_NOT_FOUND</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#PROCESS_EVENT_EXCEPTION" class="member-name-link">PROCESS_EVENT_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-DATA-ENGINE-404-001 The open metadata repository services are not initialized for server {0}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#PROCESS_NOT_FOUND" class="member-name-link">PROCESS_NOT_FOUND</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-DATA-ENGINE-400-003 Process with qualifiedName {0} was not found</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#REFERENCEABLE_NOT_FOUND" class="member-name-link">REFERENCEABLE_NOT_FOUND</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-DATA-ENGINE-400-001 Referenceable with qualifiedName {0} was not found</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#TOPIC_NOT_FOUND" class="member-name-link">TOPIC_NOT_FOUND</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-DATA-ENGINE-400-006 Topic with qualifiedName {0} was not found</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNABLE_TO_SEND_EVENT" class="member-name-link">UNABLE_TO_SEND_EVENT</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAS-DATA-ENGINE-500-001 An unexpected exception occurred when sending an event through connector {0} to the Data Engine OMAS out topic</div>
+</div>
 </div>
 </section>
 </li>
@@ -209,84 +221,70 @@ the order they are declared.</div>
 <section class="detail" id="OMRS_NOT_INITIALIZED">
 <h3>OMRS_NOT_INITIALIZED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataEngineErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.dataengine.ffdc">DataEngineErrorCode</a></span>&nbsp;<span class="element-name">OMRS_NOT_INITIALIZED</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="INVALID_PORT_TYPE">
-<h3>INVALID_PORT_TYPE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataEngineErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.dataengine.ffdc">DataEngineErrorCode</a></span>&nbsp;<span class="element-name">INVALID_PORT_TYPE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="PROCESS_EVENT_EXCEPTION">
-<h3>PROCESS_EVENT_EXCEPTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataEngineErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.dataengine.ffdc">DataEngineErrorCode</a></span>&nbsp;<span class="element-name">PROCESS_EVENT_EXCEPTION</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="DATA_ENGINE_EXCEPTION">
-<h3>DATA_ENGINE_EXCEPTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataEngineErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.dataengine.ffdc">DataEngineErrorCode</a></span>&nbsp;<span class="element-name">DATA_ENGINE_EXCEPTION</span></div>
+<div class="block">OMAS-DATA-ENGINE-404-001 The open metadata repository services are not initialized for server {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="REFERENCEABLE_NOT_FOUND">
 <h3>REFERENCEABLE_NOT_FOUND</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataEngineErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.dataengine.ffdc">DataEngineErrorCode</a></span>&nbsp;<span class="element-name">REFERENCEABLE_NOT_FOUND</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="PORT_NOT_FOUND">
-<h3>PORT_NOT_FOUND</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataEngineErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.dataengine.ffdc">DataEngineErrorCode</a></span>&nbsp;<span class="element-name">PORT_NOT_FOUND</span></div>
+<div class="block">OMAS-DATA-ENGINE-400-001 Referenceable with qualifiedName {0} was not found</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_TOPIC_CONNECTOR">
 <h3>NULL_TOPIC_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataEngineErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.dataengine.ffdc">DataEngineErrorCode</a></span>&nbsp;<span class="element-name">NULL_TOPIC_CONNECTOR</span></div>
+<div class="block">OMAS-DATA-ENGINE-400-002 Unable to send or receive events for source {0} because the connector to the OMRS Topic failed to initialize</div>
 </section>
 </li>
 <li>
 <section class="detail" id="PROCESS_NOT_FOUND">
 <h3>PROCESS_NOT_FOUND</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataEngineErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.dataengine.ffdc">DataEngineErrorCode</a></span>&nbsp;<span class="element-name">PROCESS_NOT_FOUND</span></div>
+<div class="block">OMAS-DATA-ENGINE-400-003 Process with qualifiedName {0} was not found</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DATABASE_SCHEMA_NOT_FOUND">
 <h3>DATABASE_SCHEMA_NOT_FOUND</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataEngineErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.dataengine.ffdc">DataEngineErrorCode</a></span>&nbsp;<span class="element-name">DATABASE_SCHEMA_NOT_FOUND</span></div>
+<div class="block">OMAS-DATA-ENGINE-400-004 Database Schema with qualifiedName {0} was not found</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNABLE_TO_SEND_EVENT">
 <h3>UNABLE_TO_SEND_EVENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataEngineErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.dataengine.ffdc">DataEngineErrorCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_SEND_EVENT</span></div>
+<div class="block">OMAS-DATA-ENGINE-500-001 An unexpected exception occurred when sending an event through connector {0} to the Data Engine OMAS out topic</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ENTITY_NOT_DELETED">
 <h3>ENTITY_NOT_DELETED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataEngineErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.dataengine.ffdc">DataEngineErrorCode</a></span>&nbsp;<span class="element-name">ENTITY_NOT_DELETED</span></div>
+<div class="block">OMAS-DATA-ENGINE-400-005 Entity with qualifiedName {0} was not deleted</div>
 </section>
 </li>
 <li>
 <section class="detail" id="METHOD_NOT_IMPLEMENTED">
 <h3>METHOD_NOT_IMPLEMENTED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataEngineErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.dataengine.ffdc">DataEngineErrorCode</a></span>&nbsp;<span class="element-name">METHOD_NOT_IMPLEMENTED</span></div>
+<div class="block">OMAS-DATA-ENGINE-500-002 Method {0} is not implemented</div>
 </section>
 </li>
 <li>
 <section class="detail" id="TOPIC_NOT_FOUND">
 <h3>TOPIC_NOT_FOUND</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataEngineErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.dataengine.ffdc">DataEngineErrorCode</a></span>&nbsp;<span class="element-name">TOPIC_NOT_FOUND</span></div>
+<div class="block">OMAS-DATA-ENGINE-400-006 Topic with qualifiedName {0} was not found</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ENGINE_NOT_FOUND">
 <h3>ENGINE_NOT_FOUND</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataEngineErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.dataengine.ffdc">DataEngineErrorCode</a></span>&nbsp;<span class="element-name">ENGINE_NOT_FOUND</span></div>
+<div class="block">OMAS-DATA-ENGINE-400-007 Engine with qualifiedName {0} was not found</div>
 </section>
 </li>
 </ul>

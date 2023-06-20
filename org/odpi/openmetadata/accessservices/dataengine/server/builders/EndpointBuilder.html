@@ -82,7 +82,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">EndpointBuilder</span>
 <span class="extends-implements">extends <a href="../../../../commonservices/generichandlers/ReferenceableBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ReferenceableBuilder</a></span></div>
-<div class="block">Builder for an Endpoint properties</div>
+<div class="block">EndpointBuilder is able to build the properties for an Endpoint entity.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -114,7 +114,9 @@ loadScripts(document, 'script');</script>
  <a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Constructor for endpoint creates.</div>
+</div>
 </div>
 </section>
 </li>
@@ -168,6 +170,17 @@ loadScripts(document, 'script');</script>
  <a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
+<div class="block">Constructor for endpoint creates.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>protocol</code> - the protocol</dd>
+<dd><code>networkAddress</code> - the network address</dd>
+<dd><code>qualifiedName</code> - unique name</dd>
+<dd><code>typeId</code> - type GUID to use for the entity</dd>
+<dd><code>repositoryHelper</code> - helper methods</dd>
+<dd><code>serviceName</code> - name of this OMAS</dd>
+<dd><code>serverName</code> - name of local server</dd>
+</dl>
 </section>
 </li>
 </ul>
