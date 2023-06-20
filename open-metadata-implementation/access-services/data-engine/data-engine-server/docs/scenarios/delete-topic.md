@@ -6,7 +6,7 @@
 Delete a Topic with event types
 
 More examples can be found in the
-[sample collection](../../../docs/samples/collections/DataEngine-asset_endpoints.postman_collection.json)
+[sample collection](../../../docs/samples/collections/DataEngine-topics-lineage_examples.postman_collection.json)
 
 ```
 DELETE {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}/topics/

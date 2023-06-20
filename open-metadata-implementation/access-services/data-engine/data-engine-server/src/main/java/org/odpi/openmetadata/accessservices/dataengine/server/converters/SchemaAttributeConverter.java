@@ -7,8 +7,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 
 /**
- * LicenseConverter transfers the relevant properties from some Open Metadata Repository Services (OMRS)
- * EntityDetail object into an License bean.
+ * SchemaAttributeConverter transfers the relevant properties from some Open Metadata Repository Services (OMRS)
+ * EntityDetail object into a SchemaAttribute bean.
  */
 public class SchemaAttributeConverter<B> extends OpenMetadataAPIGenericConverter<B> {
 

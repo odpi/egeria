@@ -32,10 +32,25 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 @Getter
 public enum PortType implements Serializable {
+    /**
+     * Input Port
+     */
     INPUT_PORT(0, "INPUT_PORT", "Input Port."),
+    /**
+     * Output Port
+     */
     OUTPUT_PORT(1, "OUTPUT_PORT", "Output Port."),
+    /**
+     * IInput Output Port
+     */
     INOUT_PORT(2, "INOUT_PORT", "Input Output Port."),
+    /**
+     * Output Input Port
+     */
     OUTIN_PORT(3, "OUTIN_PORT", "Output Input Port."),
+    /**
+     * None of the above
+     */
     OTHER(99, "OTHER", "None of the above.");
 
     @Getter(AccessLevel.NONE)

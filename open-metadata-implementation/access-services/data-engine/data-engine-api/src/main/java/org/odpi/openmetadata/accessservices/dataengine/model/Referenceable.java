@@ -11,6 +11,9 @@ import lombok.ToString;
 import java.io.Serializable;
 import java.util.Map;
 
+/**
+ * Process is a base java bean used to create Referenceables associated with the external data engine.
+ */
 @EqualsAndHashCode
 @ToString
 @Getter

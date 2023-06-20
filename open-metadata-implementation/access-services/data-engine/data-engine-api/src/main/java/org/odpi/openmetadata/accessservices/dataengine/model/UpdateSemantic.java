@@ -30,7 +30,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 @Getter
 public enum UpdateSemantic implements Serializable {
+    /**
+     * Replace with new entities
+     */
     REPLACE(0, "REPLACE", "Replace with new entities"),
+    /**
+     * Append new entities
+     */
     APPEND(1, "APPEND", "Append new entities");
 
     @Getter(AccessLevel.NONE)
@@ -41,6 +47,7 @@ public enum UpdateSemantic implements Serializable {
      * The numeric representation of the instance provenance type
      * -- GETTER --
      * Return the numeric representation of the instance provenance type.
+     *
      * @return int ordinal
      */
     private final int ordinal;
@@ -49,6 +56,7 @@ public enum UpdateSemantic implements Serializable {
      * The default name of the instance provenance type
      * -- GETTER --
      * Return the default name of the instance provenance type.
+     *
      * @return String name
      */
     private final String name;
@@ -57,6 +65,7 @@ public enum UpdateSemantic implements Serializable {
      * The default description of the instance provenance type
      * -- GETTER --
      * Return the default description of the instance provenance type.
+     *
      * @return String description
      */
     private final String description;

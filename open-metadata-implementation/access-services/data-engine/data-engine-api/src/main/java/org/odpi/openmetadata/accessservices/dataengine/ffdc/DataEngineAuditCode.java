@@ -22,24 +22,35 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  */
 @ToString
 public enum DataEngineAuditCode {
+    /**
+     * OMAS-DATA-ENGINE-0001 The Data Engine Open Metadata Access Service (OMAS) is initializing a new server instance
+     */
     SERVICE_INITIALIZING("OMAS-DATA-ENGINE-0001",
             OMRSAuditLogRecordSeverity.STARTUP,
             "The Data Engine Open Metadata Access Service (OMAS) is initializing a new server instance",
             "The local server has started up a new instance of the Data Engine OMAS.",
             Constants.NO_ACTION_IS_REQUIRED),
 
+    /**
+     * OMAS-DATA-ENGINE-0002 The Data Engine Open Metadata Access Service (OMAS) has initialized a new instance for server
+     */
     SERVICE_INITIALIZED("OMAS-DATA-ENGINE-0002",
             OMRSAuditLogRecordSeverity.STARTUP,
             "The Data Engine Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
             "The Data Engine OMAS has completed initialization of a new instance.",
             Constants.NO_ACTION_IS_REQUIRED),
 
+    /**
+     * OMAS-DATA-ENGINE-0003 The Data Engine Open Metadata Access Service (OMAS) is shutting down its instance for server
+     */
     SERVICE_SHUTDOWN("OMAS-DATA-ENGINE-0003",
             OMRSAuditLogRecordSeverity.SHUTDOWN,
             "The Data Engine Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
             "The local server has requested shut down of an Data Engine OMAS instance.",
             Constants.NO_ACTION_IS_REQUIRED),
-
+    /**
+     * OMAS-DATA-ENGINE-0004 The Data Engine Open Metadata Access Service (OMAS) is unable to initialize a new instance
+     */
     SERVICE_INSTANCE_FAILURE("OMAS-DATA-ENGINE-0004",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "The Data Engine Open Metadata Access Service (OMAS) is unable to initialize a new instance; error " +
@@ -48,6 +59,9 @@ public enum DataEngineAuditCode {
                     "Its services are not available for the server.",
             "Review the error message and any other reported failures to determine the cause of the problem. " +
                     " Once this is resolved, restart the server."),
+    /**
+     * OMAS-DATA-ENGINE-0005 The Data Engine Open Metadata Access Service (OMAS) is unable to initialize a new instance
+     */
     ERROR_INITIALIZING_TOPIC_CONNECTION("OMAS-DATA-ENGINE-0005",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "The Data Engine Open Metadata Access Service (OMAS) is unable to initialize a new instance; error " +
@@ -56,6 +70,9 @@ public enum DataEngineAuditCode {
                     "Its services are not available for the server.",
             "Review the error message and any other reported failures to determine the cause of the problem. " +
                     " Once this is resolved, restart the server."),
+    /**
+     * OMAS-DATA-ENGINE-0006 The Data Engine Open Metadata Access Service (OMAS) is unable to process an event on its in topic
+     */
     PROCESS_EVENT_EXCEPTION("OMAS- DATA-ENGINE-0006",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "The Data Engine Open Metadata Access Service (OMAS) is unable to process an event on its in topic {0}; exception {1} returned " +
@@ -63,11 +80,17 @@ public enum DataEngineAuditCode {
             "The access service detected an error during the start up of the out topic.  Its services are not available for the server.",
             "Review the error message and any other reported failures to determine the cause of the problem.  Check the status of the event " +
                     "bus.  Once this is resolved, restart the server."),
+    /**
+     * OMAS-DATA-ENGINE-0007 The Data Engine Open Metadata Access Service (OMAS) is unable to parse an event
+     */
     PARSE_EVENT_EXCEPTION("OMAS- DATA-ENGINE-0007",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "The data engine event {0} could not be parsed. Error: {1}",
             "The system is unable to process the event.",
             "Verify the topic configuration or the event schema."),
+    /**
+     * OMAS-DATA-ENGINE-0008 The Data Engine Open Metadata Access Service (OMAS) client has sent an event
+     */
     IN_TOPIC_EVENT_SENT("OMAS-DATA-ENGINE-0008",
             OMRSAuditLogRecordSeverity.EVENT,
             "The Data Engine Open Metadata Access Service (OMAS) client has sent event of type: {0}",
@@ -78,6 +101,7 @@ public enum DataEngineAuditCode {
      * A message definition object for logging
      * -- GETTER --
      * Retrieves a message definition object for logging. This method is used when there are no message inserts.
+     *
      * @return message definition object
      */
     @Getter
@@ -106,7 +130,6 @@ public enum DataEngineAuditCode {
      * Retrieve a message definition object for logging.  This method is used when there are values to be inserted into the message.
      *
      * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
-     *
      * @return message definition object.
      */
     public AuditLogMessageDefinition getMessageDefinition(String... params) {

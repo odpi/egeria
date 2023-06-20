@@ -6,8 +6,8 @@ import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGener
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 /**
- * FileFolderConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a FileFolderElement bean.
+ * ReferenceableConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
+ * EntityDetail object into a Referenceable bean.
  */
 public class ReferenceableConverter<B> extends OpenMetadataAPIGenericConverter<B> {
 
