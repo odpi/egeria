@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -18,16 +16,37 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum CommentType implements Serializable
+public enum CommentType
 {
+    /**
+     * General comment about the asset.
+     */
     STANDARD_COMMENT (0,  0, "Comment", "General comment about the asset."),
-    QUESTION         (1,  1, "Question", "Asks a question to the people owning, managing or using the asset."),
-    ANSWER           (2,  2, "Answer", "Answers a question (posted as a reply to the question)."),
-    SUGGESTION       (3,  3, "Suggestion", "Provides a suggestion on how to improve the asset or its properties and description."),
-    USAGE_EXPERIENCE (4,  4, "Experience", "Describes situations where this asset has been used and related hints and tips."),
-    OTHER            (99, 99, "Other", "Unknown comment type.");
 
-    private static final long     serialVersionUID = 1L;
+    /**
+     * Asks a question to the people owning, managing or using the asset.
+     */
+    QUESTION         (1,  1, "Question", "Asks a question to the people owning, managing or using the asset."),
+
+    /**
+     * Answers a question (posted as a reply to the question).
+     */
+    ANSWER           (2,  2, "Answer", "Answers a question (posted as a reply to the question)."),
+
+    /**
+     * Provides a suggestion on how to improve the asset or its properties and description.
+     */
+    SUGGESTION       (3,  3, "Suggestion", "Provides a suggestion on how to improve the asset or its properties and description."),
+
+    /**
+     * Describes situations where this asset has been used and related hints and tips.
+     */
+    USAGE_EXPERIENCE (4,  4, "Experience", "Describes situations where this asset has been used and related hints and tips."),
+
+    /**
+     * Unknown comment type.
+     */
+    OTHER            (99, 99, "Other", "Unknown comment type.");
 
     private static final String ENUM_TYPE_GUID  = "06d5032e-192a-4f77-ade1-a4b97926e867";
     private static final String ENUM_TYPE_NAME  = "CommentType";

@@ -6,7 +6,6 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -25,8 +24,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PropertiesResponse extends FFDCResponseBase
 {
-    private static final long    serialVersionUID = 1L;
-
     private Map<String, Object> properties = null;
 
     /**

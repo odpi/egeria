@@ -7,8 +7,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.APIOperation
 
 class ConnectedDeployedAPIOperation extends DeployedAPIOperation
 {
-    private static final long    serialVersionUID = 1L;
-
     /**
      * Typical constructor creates an DeployedAPIOperation object primed with information to retrieve an asset's API operations.
      *

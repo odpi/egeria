@@ -22,8 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OwnerRequestBody extends OCFOMASAPIRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
     private OwnerType ownerType = null;
     private String    ownerId   = null;
 

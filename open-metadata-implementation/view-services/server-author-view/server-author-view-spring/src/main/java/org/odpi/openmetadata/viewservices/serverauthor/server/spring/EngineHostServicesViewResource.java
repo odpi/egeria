@@ -8,24 +8,19 @@ import org.odpi.openmetadata.viewservices.serverauthor.api.rest.ServerAuthorConf
 import org.odpi.openmetadata.viewservices.serverauthor.services.ServerAuthorViewRESTServices;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
 /**
- * ConfigengineServicesResource provides the configuration for setting up the Open Metadata View
- * Services (OMVSs).
+ * EngineHostServicesViewResource provides the configuration for setting up an Engine Host.
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/view-services/server-author/users/{userId}/servers/{serverToBeConfiguredName}")
 
-@Tag(name="Administration Services - Server Configuration", description="The server configuration administration services support the configuration" +
-        " of the open metadata and governance services within an OMAG Server. This configuration determines which of the Open Metadata and " +
-        "Governance (OMAG) services are active.",
-        externalDocs=@ExternalDocumentation(description="Further information",
-                url="https://egeria-project.org/guides/admin/servers/"))
+@Tag(name="Server Author OMVS", description="The Server Author OMVS is for user interfaces supporting the creating and editing of OMAG Server Configuration Documents.",
+     externalDocs=@ExternalDocumentation(description="Further information",
+                                         url="https://egeria-project.org/services/omvs/server-author/overview"))
 
 public class EngineHostServicesViewResource
 {
-    private ServerAuthorViewRESTServices adminAPI = new ServerAuthorViewRESTServices();
+    private final ServerAuthorViewRESTServices adminAPI = new ServerAuthorViewRESTServices();
 
 
 

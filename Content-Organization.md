@@ -114,7 +114,7 @@ The Egeria core repository contains the core Egeria functionality, and is organi
 
   * **[repository-services](open-metadata-implementation/repository-services)** - metadata exchange and federation - aka the Open Metadata Repository Services (OMRS).
  
-  * **[server-chassis](open-metadata-implementation/server-chassis)** - the server chassis provides the server framework for the OMAG Server Platform.
+  * **[platform-chassis](open-metadata-implementation/platform-chassis)** - the platform chassis provides the runtime framework for the OMAG Server Platform.
  
   * **[user-interfaces](open-metadata-implementation/user-interfaces)** - browser based user interfaces.
  

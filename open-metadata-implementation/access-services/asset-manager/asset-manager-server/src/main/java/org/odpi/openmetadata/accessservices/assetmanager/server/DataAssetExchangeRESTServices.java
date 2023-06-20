@@ -800,7 +800,7 @@ public class DataAssetExchangeRESTServices
      * @param userId calling user
      * @param relationshipTypeName type name of relationship to delete
      * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
-     * @param startingFrom start position for results
+     * @param startFrom start position for results
      * @param pageSize     maximum number of results
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -815,7 +815,7 @@ public class DataAssetExchangeRESTServices
                                                                String                        userId,
                                                                String                        relationshipTypeName,
                                                                String                        fromAssetGUID,
-                                                               int                           startingFrom,
+                                                               int                           startFrom,
                                                                int                           pageSize,
                                                                boolean                       forLineage,
                                                                boolean                       forDuplicateProcessing,
@@ -841,7 +841,7 @@ public class DataAssetExchangeRESTServices
                                                                        requestBody.getAssetManagerName(),
                                                                        relationshipTypeName,
                                                                        fromAssetGUID,
-                                                                       startingFrom,
+                                                                       startFrom,
                                                                        pageSize,
                                                                        forLineage,
                                                                        forDuplicateProcessing,
@@ -871,7 +871,7 @@ public class DataAssetExchangeRESTServices
      * @param userId calling user
      * @param relationshipTypeName type name of relationship to delete
      * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
-     * @param startingFrom start position for results
+     * @param startFrom start position for results
      * @param pageSize     maximum number of results
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -886,7 +886,7 @@ public class DataAssetExchangeRESTServices
                                                                String                        userId,
                                                                String                        relationshipTypeName,
                                                                String                        toAssetGUID,
-                                                               int                           startingFrom,
+                                                               int                           startFrom,
                                                                int                           pageSize,
                                                                boolean                       forLineage,
                                                                boolean                       forDuplicateProcessing,
@@ -912,7 +912,7 @@ public class DataAssetExchangeRESTServices
                                                                        requestBody.getAssetManagerName(),
                                                                        relationshipTypeName,
                                                                        toAssetGUID,
-                                                                       startingFrom,
+                                                                       startFrom,
                                                                        pageSize,
                                                                        forLineage,
                                                                        forDuplicateProcessing,

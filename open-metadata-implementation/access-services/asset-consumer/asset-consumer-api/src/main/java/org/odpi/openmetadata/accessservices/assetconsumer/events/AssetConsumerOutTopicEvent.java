@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.assetconsumer.events;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
@@ -20,10 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class AssetConsumerOutTopicEvent implements Serializable
+public class AssetConsumerOutTopicEvent
 {
-    private static final long      serialVersionUID = 1L;
-
     private long                   eventVersionId    = 1L;
     private AssetConsumerEventType eventType         = null;
     private Date                   eventTime         = null;

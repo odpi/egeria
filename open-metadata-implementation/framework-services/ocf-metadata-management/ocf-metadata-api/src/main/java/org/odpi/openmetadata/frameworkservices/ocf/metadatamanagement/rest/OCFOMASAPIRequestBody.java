@@ -25,11 +25,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SchemaRequestBody.class, name = "SchemaRequestBody"),
                 @JsonSubTypes.Type(value = FeedbackRequestBody.class, name = "FeedbackRequestBody")
         })
-public abstract class OCFOMASAPIRequestBody implements java.io.Serializable
+public abstract class OCFOMASAPIRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
-
     /**
      * Default constructor
      */

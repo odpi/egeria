@@ -118,23 +118,23 @@ public class TestSchemaAttributes
     }
 
 
-    /**
-     * Validate that element count is set.
+    /*
+     * This test is no longer relevant for SchemaAttributes as in real scenarios the count is no longer calculated.
      */
-    @Test public void testElementCount()
-    {
-        SchemaAttributes propertyIterator = getPropertyIterator(30, 10);
-
-        assertTrue(propertyIterator.getElementCount() == 30);
-
-        SchemaAttributes clonedPropertyIterator = new MockSchemaAttributes( propertyIterator);
-
-        assertTrue(clonedPropertyIterator.getElementCount() == 30);
-
-        clonedPropertyIterator = new MockSchemaAttributes( null);
-
-        assertTrue(clonedPropertyIterator.getElementCount() == 0);
-    }
+//    @Test public void testElementCount()
+//    {
+//        SchemaAttributes propertyIterator = getPropertyIterator(30, 10);
+//
+//        assertTrue(propertyIterator.getElementCount() == 30);
+//
+//        SchemaAttributes clonedPropertyIterator = new MockSchemaAttributes( propertyIterator);
+//
+//        assertTrue(clonedPropertyIterator.getElementCount() == 30);
+//
+//        clonedPropertyIterator = new MockSchemaAttributes( null);
+//
+//        assertTrue(clonedPropertyIterator.getElementCount() == 0);
+//    }
 
 
     /**

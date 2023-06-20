@@ -25,7 +25,7 @@ import java.util.List;
 public class OMAGServerAdminForIntegrationGroups
 {
     private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminForIntegrationGroups.class),
-                                                                            CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
+                                                                            CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName());
     
 
     private final OMAGServerAdminStoreServices configStore      = new OMAGServerAdminStoreServices();

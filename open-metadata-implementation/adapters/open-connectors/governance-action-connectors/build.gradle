@@ -5,16 +5,20 @@
 
 
 dependencies {
-    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
-    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
-    implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
-    implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:governance-action-framework')
+    compileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation 'commons-io:commons-io'
-    testImplementation project(':open-metadata-test:open-metadata-ut')
-    implementation 'org.slf4j:slf4j-api'
+    compileOnly 'org.slf4j:slf4j-api'
     testImplementation 'org.testng:testng'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
-    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    compileOnly 'com.fasterxml.jackson.core:jackson-databind'
+    testImplementation project(':open-metadata-test:open-metadata-ut')
+    testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    testImplementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    testCompileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'Governance Action Connectors'

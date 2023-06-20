@@ -19,8 +19,6 @@ import java.util.List;
  */
 public class ConnectedAPIOperations extends APIOperations
 {
-    private static final long    serialVersionUID = 1L;
-
     private String                 serviceName;
     private String                 serverName;
     private String                 userId;

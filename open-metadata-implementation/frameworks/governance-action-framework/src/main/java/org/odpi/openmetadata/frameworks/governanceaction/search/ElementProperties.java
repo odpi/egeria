@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFRuntimeException;
 
-import java.io.Serializable;
 import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -18,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * The ElementProperties class provides support for properties to be added to a metadata element,
  * classification or relationship instances.
- *
+ * <br><br>
  * There are variable properties that are defined in the TypeDefs. They are managed in
  * a java.util.Map map object built around HashMap.  The property name (or domain) of the map is the name
  * of the property.  The property value (or range) of the map is a subclass of PropertyValue depending on
@@ -49,10 +48,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ElementProperties implements Serializable
+public class ElementProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private Map<String, PropertyValue> propertyValueMap = new HashMap<>();
 
 

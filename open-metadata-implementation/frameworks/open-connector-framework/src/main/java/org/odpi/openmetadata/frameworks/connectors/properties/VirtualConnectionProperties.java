@@ -7,7 +7,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConn
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 
-import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,15 +16,12 @@ import java.util.Objects;
  * The VirtualConnectionProperties is an object that contains the properties needed to create and initialise a
  * virtual connector to access a virtual asset that is constructed from access to one of more other assets.
  * Connectors are uses to access the underlying assets.
- *
+ * <br><br>
  * The properties for VirtualConnectionProperties are those for ConnectionProperties plus a list of
  * connections for the
  */
 public class VirtualConnectionProperties extends ConnectionProperties
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     protected VirtualConnection connectionBean;
 
 

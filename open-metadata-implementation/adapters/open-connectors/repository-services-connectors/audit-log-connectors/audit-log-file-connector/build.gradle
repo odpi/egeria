@@ -5,12 +5,12 @@
 
 
 dependencies {
-    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
-    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
-    implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
-    implementation 'commons-io:commons-io'
-    implementation 'org.slf4j:slf4j-api'
-    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
+    compileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
+    compileOnly 'commons-io:commons-io'
+    compileOnly 'org.slf4j:slf4j-api'
+    compileOnly 'com.fasterxml.jackson.core:jackson-databind'
 }
 
 description = 'Audit Log File Connector'

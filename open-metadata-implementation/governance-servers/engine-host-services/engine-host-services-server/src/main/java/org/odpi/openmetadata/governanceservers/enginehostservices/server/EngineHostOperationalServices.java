@@ -13,8 +13,8 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.adminservices.properties.OMAGServerServiceStatus;
-import org.odpi.openmetadata.adminservices.properties.ServerActiveStatus;
+import org.odpi.openmetadata.platformservices.properties.OMAGServerServiceStatus;
+import org.odpi.openmetadata.platformservices.properties.ServerActiveStatus;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -45,7 +45,7 @@ public class EngineHostOperationalServices
     private final int                            maxPageSize;                   /* Initialized in constructor */
 
     private AuditLog                        auditLog           = null;
-    private EngineHostInstance              engineHostInstance = null;
+    private EngineHostInstance                    engineHostInstance = null;
     private final Map<String, ServerActiveStatus> serviceStatusMap   = new HashMap<>();
 
     private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();

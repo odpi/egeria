@@ -15,8 +15,6 @@ import java.util.Objects;
  */
 public class NoConnectedAssetException extends OCFCheckedExceptionBase
 {
-    private static final long     serialVersionUID = 1L;
-
     private String connectionGUID;
 
 

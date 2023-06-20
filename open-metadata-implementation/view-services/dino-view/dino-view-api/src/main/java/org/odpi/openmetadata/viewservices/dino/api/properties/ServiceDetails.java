@@ -26,8 +26,6 @@ public class ServiceDetails {
         ViewService
     }
 
-    private static final long    serialVersionUID = 1L;
-
 
     private ServiceCat               serviceCat;
     private IntegrationServiceConfig integrationServiceConfig;

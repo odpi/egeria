@@ -87,7 +87,7 @@ Within this `adapter` module, in a package like `...repositoryconnector`, implem
 	1. then implement be the `getEntityDetail()` method that retrieves an entity by its GUID.
 
 Once these minimal starting points are implemented, you should be able to configure the
-[OMAG server chassis](../../../../../server-chassis/server-chassis-spring)
+[OMAG Server Platform](../../../../../platform-chassis/platform-chassis-spring)
 as a proxy to your repository connector by following the instructions in
 [using the admin services](https://egeria-project.org/guides/admin).
 **Important**: this will *not* necessarily be the

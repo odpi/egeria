@@ -23,8 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OriginRequestBody extends OCFOMASAPIRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
     private String              organizationGUID       = null;
     private String              businessCapabilityGUID = null;
     private Map<String, String> otherOriginValues      = null;

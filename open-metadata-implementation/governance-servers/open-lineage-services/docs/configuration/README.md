@@ -18,7 +18,7 @@ For example payloads and endpoints, see the [Postman samples](../samples/OLS.pos
     /open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/open-lineage-connectors/open-lineage-janus-connector/target/
     ```
 
-    Add the jar to the classpath of the server-chassis-spring module.
+    Add the jar to the classpath of the platform-chassis-spring module.
 
 2. Start the [OMAG Server Platform](https://egeria-project.org/education/tutorials/omag-server-tutorial/overview/) and run the default calls for
  setting the server URL, eventbus and the cohort.

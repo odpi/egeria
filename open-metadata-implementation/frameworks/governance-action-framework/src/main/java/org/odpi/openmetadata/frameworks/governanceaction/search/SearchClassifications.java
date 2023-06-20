@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -21,11 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SearchClassifications implements Serializable
+public class SearchClassifications
 {
-
-    private static final long    serialVersionUID = 1L;
-
     private List<ClassificationCondition> conditions;
     private MatchCriteria matchCriteria;
 
@@ -38,6 +34,7 @@ public class SearchClassifications implements Serializable
         // Setup defaults
         matchCriteria = MatchCriteria.ALL;
     }
+
 
     /**
      * Copy/clone constructor.
@@ -56,6 +53,7 @@ public class SearchClassifications implements Serializable
             this.conditions.addAll(templateProperties.getConditions());
         }
     }
+
 
     /**
      * Retrieve the classification conditions against which to match.
