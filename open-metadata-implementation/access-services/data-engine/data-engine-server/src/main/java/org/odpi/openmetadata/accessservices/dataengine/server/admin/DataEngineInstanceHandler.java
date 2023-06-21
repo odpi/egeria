@@ -61,6 +61,19 @@ public class DataEngineInstanceHandler extends OMASServiceInstanceHandler {
     }
 
 
+    /**
+     * Retrieve the collection handler for the access service
+     *
+     * @param userId               calling user
+     * @param serverName           name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     *
+     * @return handler for use by the requested instance
+     *
+     * @throws InvalidParameterException  no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException    the service name is not known - indicating a logic error
+     */
     public DataEngineCollectionHandler getCollectionHandler(String userId, String serverName, String serviceOperationName) throws
                                                                                                                            InvalidParameterException,
                                                                                                                            UserNotAuthorizedException,

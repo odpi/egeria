@@ -6,14 +6,11 @@
 
 Below is the list of tasks supported by Data Engine OMAS.
 
-#### External Tool registration
+#### [External Tool registration](register-external-tool.md)
+Typically, the first action to take for an external tool is to register as an
+[engine](https://egeria-project.org/concepts/software-capability/#engine).
 
-Typically, the first action to take for an external tool is to [register](register-external-tool.md) as an
-[engine](../../../docs/concepts/server-capabilities).
-
-#### External Tool lookup
-
-An external tool can [lookup](lookup-registration-tool.md) for the registered external tool.
+#### [External Tool lookup](lookup-registration-tool.md)
 
 #### [Create Schema Type](create-schema-types.md)
 
@@ -23,13 +20,23 @@ An external tool can [lookup](lookup-registration-tool.md) for the registered ex
 
 #### [Add data flows to processes](add-data-flows.md)
 
+#### [Delete Schema Type](delete-schema-types.md)
+
+#### [Delete Port Implementation](delete-port-implementations.md)
+
+#### [Delete Process](delete-processes.md)
+
 #### [Create Database](create-databases.md) 
+
+#### [Create Database Schema](create-database-schemas.md)
 
 #### [Create Relational Tables](create-relational-tables.md) 
 
 #### [Create Data Files](create-data-files.md)
 
 #### [Delete Database](delete-databases.md)
+
+#### [Delete Database Schema](delete-database-schemas.md)
 
 #### [Delete Relational Tables](delete-relational-tables.md)
 
@@ -46,6 +53,8 @@ An external tool can [lookup](lookup-registration-tool.md) for the registered ex
 #### [Delete Topic](delete-topics.md)
 
 #### [Delete EventType](delete-event-types.md)
+
+#### [Find Entities](find-entities.md)
 
 # Sample use case
 

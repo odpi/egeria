@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogEvent
 
 /**
  * AssetCatalogEventListener is the interface that a client implements to
- * register to receive the events from the Asset Catalog OMAS's out topic.
+ * process the received events from the Asset Catalog OMAS's out topic.
  */
 public interface AssetCatalogEventListener {
     /**

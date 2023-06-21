@@ -1,11 +1,14 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
+/**
+ * This package provides the first failure data capture support for the Data Engine OMAS module.
+ * This includes an error code enum and an audit code enum.
+ */
 package org.odpi.openmetadata.accessservices.dataengine.ffdc;
 
 /*
   This package provides the first failure data capture support for the Data Engine OMAS module.
-  This includes an error code enum, a base class for runtime exceptions, a base class for checked exceptions plus
-  implementation of each specific exception.
+  This includes an error code enum and an audit code enum.
 
   The error code enum (DataEngineErrorCode) has an entry for each unique situation
   where an exception is returned.  Each entry defines:

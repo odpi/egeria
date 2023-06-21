@@ -27,8 +27,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class MoreInformationResponse extends PagedResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     private List<Referenceable> list                = null;
     private int                 startingFromElement = 0;
 

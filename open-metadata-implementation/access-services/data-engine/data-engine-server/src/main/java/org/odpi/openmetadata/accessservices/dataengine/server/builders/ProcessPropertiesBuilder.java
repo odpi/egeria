@@ -11,13 +11,29 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import java.util.Map;
 
 /**
- * ProcessPropertiesBuilder is able to build the properties for an Process entity.
+ * ProcessPropertiesBuilder is able to build the properties for a Process entity.
  */
 public class ProcessPropertiesBuilder extends AssetBuilder {
     private final String processDisplayName;
     private final String formula;
     private final String implementationLanguage;
 
+    /**
+     * Constructor for process with all properties
+     *
+     * @param qualifiedName          unique name
+     * @param processDisplayName     process display name
+     * @param technicalName          technical name
+     * @param technicalDescription   description
+     * @param typeName               type name to use for the entity
+     * @param typeGUID               type GUID to use for the entity
+     * @param formula                the process formula
+     * @param implementationLanguage the implementation language
+     * @param additionalProperties   additional process properties
+     * @param repositoryHelper       helper methods
+     * @param serviceName            name of this OMAS
+     * @param serverName             name of local server
+     */
     public ProcessPropertiesBuilder(String qualifiedName, String processDisplayName, String technicalName, String technicalDescription,
                                     String typeGUID, String typeName, String formula, String implementationLanguage,
                                     Map<String, String> additionalProperties, OMRSRepositoryHelper repositoryHelper, String serviceName,
@@ -34,9 +50,7 @@ public class ProcessPropertiesBuilder extends AssetBuilder {
      * Return the supplied bean properties in an InstanceProperties object.
      *
      * @param methodName name of the calling method
-     *
      * @return InstanceProperties object
-     *
      * @throws InvalidParameterException there is a problem with the properties
      */
     @Override

@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -17,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public enum ServerInstanceStatus implements Serializable
+public enum ServerInstanceStatus
 {
     UNKNOWN     (0,   "Unknown",  "The state of the server is unknown.  This is equivalent to a null value"),
     STARTING    (1,   "Starting", "The server is starting."),
@@ -25,11 +23,9 @@ public enum ServerInstanceStatus implements Serializable
     STOPPING    (3,   "Stopping", "The server has received a request to shutdown."),
     INACTIVE    (99,  "Inactive", "The server is not running.");
 
-    private static final long serialVersionUID = 1L;
-
-    private int    ordinal;
-    private String name;
-    private String description;
+    private final int    ordinal;
+    private final String name;
+    private final String description;
 
 
     /**

@@ -55,16 +55,16 @@ sourceSets.test.java.srcDirs = []
 sourceSets.test.groovy.srcDirs = ["src/test/java", "src/test/script"]
 
 // Initially we launch as an app -- though there may be a better way of running this in the existing jvm
-task startServer(dependsOn: ['cleanData',':open-metadata-distribution:open-metadata-assemblies:unzip','prepareDirs'], type: com.github.psxpaul.task.ExecFork) {
+task startPlatform(dependsOn: ['cleanData',':open-metadata-distribution:open-metadata-assemblies:unzip','prepareDirs'], type: com.github.psxpaul.task.ExecFork) {
     // Start some external service
     executable = System.properties.'java.home' + '/bin/java'
     workingDir = layout.buildDirectory.dir('run')
 
     args = [ "-Dserver.port=10445",
-             "-Dloader.path=${distdir}/server/lib",
+             "-Dloader.path=${distdir}/platform/lib",
              "-Dspring.config.location=../../../../../../test.application.properties",
              "-jar",
-             "${distdir}/server/server-chassis-spring-${project.version}.jar" ]
+             "${distdir}/platform/omag-server-platform-${project.version}.jar" ]
     // Setting the output directories to be the same for ALL FVTs acts as a synchronization mechanism
     // - alternatively we need to ensure the server port is unique per test
     standardOutput = layout.buildDirectory.file("chassis.log")
@@ -76,7 +76,7 @@ task startServer(dependsOn: ['cleanData',':open-metadata-distribution:open-metad
 }
 
 // Configuration of the platform
-task configServer(dependsOn: ['startServer','classes'], type: JavaExec) {
+task configServer(dependsOn: ['startPlatform','classes'], type: JavaExec) {
     mainClass = 'configureStartServer'
     classpath = sourceSets.test.runtimeClasspath
     //TODO: These parms aren't currently correctly passed. We rely on defaults in the script

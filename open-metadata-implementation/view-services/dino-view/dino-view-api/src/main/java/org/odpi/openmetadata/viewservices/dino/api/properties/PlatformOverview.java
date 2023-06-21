@@ -19,8 +19,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PlatformOverview {
 
-    private static final long    serialVersionUID = 1L;
-
     private String platformName;
     private String platformRootURL;    // e.g. "https://localhost:9443"
     private String description;

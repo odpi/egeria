@@ -29,5 +29,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 public class RelationshipListResponse extends AssetCatalogOMASAPIResponse {
 
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * The list of relationships
+     * -- GETTER --
+     * Returns the list of relationships
+     * @return the list of relationships
+     * -- SETTER --
+     * Set up the list of relationships
+     * @param relationships the list of relationships
+     */
     private List<Relationship> relationships;
 }

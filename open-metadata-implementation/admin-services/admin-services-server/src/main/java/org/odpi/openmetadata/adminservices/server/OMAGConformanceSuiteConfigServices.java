@@ -28,7 +28,7 @@ public class OMAGConformanceSuiteConfigServices
     static private final int    maxPageSize    = 50;
 
     private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGConformanceSuiteConfigServices.class),
-                                                                            CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
+                                                                            CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName());
 
     private final OMAGServerAdminStoreServices configStore  = new OMAGServerAdminStoreServices();
     private final OMAGServerErrorHandler       errorHandler = new OMAGServerErrorHandler();

@@ -22,6 +22,9 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  */
 public enum OMAGServerInstanceAuditCode implements AuditLogMessageSet
 {
+    /**
+     * OMAG-MULTI-TENANT-0001 - Method {0} called on behalf of the {1} service detected a {2} exception when creating an open metadata topic connection because the connector provider is incorrect.  The error message was {3}
+     */
     BAD_TOPIC_CONNECTOR_PROVIDER("OMAG-MULTI-TENANT-0001",
                                  OMRSAuditLogRecordSeverity.EXCEPTION,
                                  "Method {0} called on behalf of the {1} service detected a {2} exception when creating an open " +
@@ -29,6 +32,9 @@ public enum OMAGServerInstanceAuditCode implements AuditLogMessageSet
                                  "This is an internal error.  The access service is not using a valid connector provider.",
                                  "Raise an issue on Egeria's GitHub and work with the Egeria community to resolve."),
 
+    /**
+     * OMAG-MULTI-TENANT-0002 - Method {0} called on behalf of the {1} service is unable to create a client-side open metadata topic connection because the topic name is not configured in the configuration for this service.
+     */
     NO_TOPIC_INFORMATION("OMAG-MULTI-TENANT-0002",
                                  OMRSAuditLogRecordSeverity.ERROR,
                          "Method {0} called on behalf of the {1} service is unable to create a client-side open " +

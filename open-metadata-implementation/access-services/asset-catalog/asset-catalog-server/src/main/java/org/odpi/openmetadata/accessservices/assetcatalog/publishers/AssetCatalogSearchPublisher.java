@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 
 /**
- * AssetCatalogSearchPublisher is publishing asset indexing events
+ * AssetCatalogSearchPublisher is publishing asset indexing events.
  */
 public class AssetCatalogSearchPublisher {
 
@@ -21,13 +21,18 @@ public class AssetCatalogSearchPublisher {
 
     private final OpenMetadataTopicConnector topicConnector;
 
+    /**
+     * Instantiates a new AssetCatalogSearchPublisher object.
+     *
+     * @param outTopicConnector the out topic connector
+     */
     public AssetCatalogSearchPublisher(OpenMetadataTopicConnector outTopicConnector)
     {
         this.topicConnector = outTopicConnector;
     }
 
     /**
-     * Publish an  event.
+     * Publish an asset indexing event.
      *
      * @param event event to send
      */

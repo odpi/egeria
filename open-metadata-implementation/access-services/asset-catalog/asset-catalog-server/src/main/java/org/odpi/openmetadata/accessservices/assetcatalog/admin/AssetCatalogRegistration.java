@@ -11,9 +11,9 @@ import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOpe
 
 /**
  * AssetCatalogRegistration registers the access service with the OMAG Server administration services.
- * This registration must be driven once at server start up.  The OMAG Server administration services
+ * This registration must be driven once at server start up. The OMAG Server administration services
  * then use this registration information as confirmation that there is an implementation of this
- * access service in the server and it can be configured and used.
+ * access service in the server and that it can be configured and used.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 class AssetCatalogRegistration {

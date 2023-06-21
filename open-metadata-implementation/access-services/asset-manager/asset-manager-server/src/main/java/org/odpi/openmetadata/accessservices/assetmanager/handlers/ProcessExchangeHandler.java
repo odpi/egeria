@@ -3136,6 +3136,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
+     * @return unique identifier of the new relationship
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request

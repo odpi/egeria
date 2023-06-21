@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -53,20 +51,57 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum PropertyComparisonOperator implements Serializable
+public enum PropertyComparisonOperator
 {
+    /**
+     * Equal to.
+     */
     EQ        (0, "Equal to",              "Equal to."),
-    NEQ       (1, "Not equal to",          "Not equal to."),
-    LT        (2, "Less than",             "Less than."),
-    LTE       (3, "Less than or equal",    "Less than or equal to."),
-    GT        (4, "Greater than",          "Greater than."),
-    GTE       (5, "Greater than or equal", "Greater than or equal to."),
-    IN        (6, "In list",               "Has a value of at least one in the provided list of values."),
-    IS_NULL   (7, "Is null",               "Has no value."),
-    NOT_NULL  (8, "Is not null",           "Has any non-null value."),
-    LIKE      (9, "Like",                  "Has a value that matches the provided regular expression (strings only).");
 
-    private static final long serialVersionUID = 1L;
+    /**
+     * Not equal to.
+     */
+    NEQ       (1, "Not equal to",          "Not equal to."),
+
+    /**
+     * Less than.
+     */
+    LT        (2, "Less than",             "Less than."),
+
+    /**
+     * Less than or equal to.
+     */
+    LTE       (3, "Less than or equal",    "Less than or equal to."),
+
+    /**
+     * Greater than.
+     */
+    GT        (4, "Greater than",          "Greater than."),
+
+    /**
+     * Greater than or equal to.
+     */
+    GTE       (5, "Greater than or equal", "Greater than or equal to."),
+
+    /**
+     * Has a value of at least one in the provided list of values.
+     */
+    IN        (6, "In list",               "Has a value of at least one in the provided list of values."),
+
+    /**
+     * Has no value.
+     */
+    IS_NULL   (7, "Is null",               "Has no value."),
+
+    /**
+     * Has any non-null value.
+     */
+    NOT_NULL  (8, "Is not null",           "Has any non-null value."),
+
+    /**
+     * Has a value that matches the provided regular expression (strings only).
+     */
+    LIKE      (9, "Like",                  "Has a value that matches the provided regular expression (strings only).");
 
     private final int     ordinal;
     private final String  name;

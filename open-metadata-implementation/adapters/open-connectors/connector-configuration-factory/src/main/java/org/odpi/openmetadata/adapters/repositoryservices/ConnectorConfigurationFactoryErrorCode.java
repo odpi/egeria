@@ -10,7 +10,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 /**
  * The ConnectorConfigurationFactoryErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  * the ConnectorConfigurationFactory.  It is used in conjunction with all Exceptions, both Checked and Runtime (unchecked).
- *
+ * <br><br>
  * The 5 fields in the enum are:
  * <ul>
  *     <li>HTTP Error Code for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -42,9 +42,9 @@ public enum ConnectorConfigurationFactoryErrorCode implements ExceptionMessageSe
     /**
      * The constructor for ConnectorConfigurationFactoryErrorCode expects to be passed one of the enumeration rows defined in
      * ConnectorConfigurationFactoryErrorCode above.   For example:
-     *
+     * <br><br>
      *     ConnectorConfigurationFactoryErrorCode   errorCode = ConnectorConfigurationFactoryErrorCode.ERROR_SENDING_EVENT;
-     *
+     * <br><br>
      * This will expand out to the 5 parameters shown below.
      *
      * @param httpErrorCode   error code to use over REST calls

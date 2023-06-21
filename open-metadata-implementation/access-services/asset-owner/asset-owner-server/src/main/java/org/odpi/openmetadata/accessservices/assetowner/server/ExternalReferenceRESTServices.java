@@ -77,12 +77,10 @@ public class ExternalReferenceRESTServices
         {
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ExternalReferenceProperties)
+                if (requestBody.getProperties() instanceof ExternalReferenceProperties properties)
                 {
                     auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                     ExternalReferenceHandler<ExternalReferenceElement> handler = instanceHandler.getExternalReferencesHandler(userId, serverName, methodName);
-
-                    ExternalReferenceProperties properties = (ExternalReferenceProperties) requestBody.getProperties();
 
                     response.setGUID(handler.createExternalReference(userId,
                                                                      null,
@@ -154,12 +152,10 @@ public class ExternalReferenceRESTServices
         {
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ExternalReferenceProperties)
+                if (requestBody.getProperties() instanceof ExternalReferenceProperties properties)
                 {
                     auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                     ExternalReferenceHandler<ExternalReferenceElement> handler = instanceHandler.getExternalReferencesHandler(userId, serverName, methodName);
-
-                    ExternalReferenceProperties properties = (ExternalReferenceProperties) requestBody.getProperties();
 
                     handler.updateExternalReference(userId,
                                                     null,
@@ -306,11 +302,10 @@ public class ExternalReferenceRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ExternalReferenceLinkProperties)
+                if (requestBody.getProperties() instanceof ExternalReferenceLinkProperties properties)
                 {
                     OMRSRepositoryHelper repositoryHelper = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
                     String serviceName = instanceHandler.getServiceName();
-                    ExternalReferenceLinkProperties properties = (ExternalReferenceLinkProperties)requestBody.getProperties();
 
                     InstanceProperties relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                                              null,
@@ -331,8 +326,8 @@ public class ExternalReferenceRESTServices
                                                                                           methodName);
 
                     handler.linkElementToElement(userId,
-                                                 requestBody.getExternalSourceGUID(),
-                                                 requestBody.getExternalSourceName(),
+                                                 null,
+                                                 null,
                                                  attachedToGUID,
                                                  elementGUIDParameterName,
                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
@@ -352,8 +347,8 @@ public class ExternalReferenceRESTServices
                 else if (requestBody.getProperties() == null)
                 {
                     handler.linkElementToElement(userId,
-                                                 requestBody.getExternalSourceGUID(),
-                                                 requestBody.getExternalSourceName(),
+                                                 null,
+                                                 null,
                                                  attachedToGUID,
                                                  elementGUIDParameterName,
                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
@@ -425,8 +420,8 @@ public class ExternalReferenceRESTServices
             {
                 handler.unlinkElementFromElement(userId,
                                                  false,
-                                                 requestBody.getExternalSourceGUID(),
-                                                 requestBody.getExternalSourceName(),
+                                                 null,
+                                                 null,
                                                  attachedToGUID,
                                                  elementGUIDParameterName,
                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,

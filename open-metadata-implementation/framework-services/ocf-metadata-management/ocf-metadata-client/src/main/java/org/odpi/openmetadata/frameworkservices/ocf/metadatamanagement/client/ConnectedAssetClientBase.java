@@ -60,7 +60,6 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
         this.auditLog = auditLog;
 
         this.ocfrestClient = new OCFRESTClient(serverName, serverPlatformURLRoot, auditLog);
-
     }
 
 

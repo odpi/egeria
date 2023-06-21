@@ -147,9 +147,8 @@ public interface AssetCatalogInterface {
      * @param userId the unique identifier for the user
      * @param type   the type
      * @return list of types and sub-types supported for search
-     * @throws PropertyServerException   if a problem occurs while serving the request
      * @throws InvalidParameterException if parameter validation fails
+     * @throws PropertyServerException   if a problem occurs while serving the request
      */
-
     AssetCatalogSupportedTypes getSupportedTypes(String userId, String type) throws InvalidParameterException, PropertyServerException;
 }

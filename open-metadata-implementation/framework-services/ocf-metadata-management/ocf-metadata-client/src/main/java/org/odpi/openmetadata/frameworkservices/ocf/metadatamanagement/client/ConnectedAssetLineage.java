@@ -10,8 +10,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.AssetLineage;
  */
 public class ConnectedAssetLineage extends AssetLineage
 {
-    private static final long    serialVersionUID = 1L;
-
     private String                 serviceName;
     private String                 serverName;
     private String                 userId;

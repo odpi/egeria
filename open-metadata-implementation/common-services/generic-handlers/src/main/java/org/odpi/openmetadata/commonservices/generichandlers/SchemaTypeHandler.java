@@ -1338,6 +1338,172 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                        methodName);
     }
 
+    /**
+     * Connect a schema type to a data asset, process or port.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param schemaTypeGUID unique identifier of the schema type to connect
+     * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
+     * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
+     * @param effectiveFrom             the date when this element is active - null for active now
+     * @param effectiveTo               the date when this element becomes inactive - null for active until deleted
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
+     * @param methodName     calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupSchemaTypeParent(String  userId,
+                                      String  externalSourceGUID,
+                                      String  externalSourceName,
+                                      String  schemaTypeGUID,
+                                      String  parentElementGUID,
+                                      String  parentElementTypeName,
+                                      Date    effectiveFrom,
+                                      Date    effectiveTo,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime,
+                                      String  methodName) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
+    {
+        final String schemaTypeGUIDParameterName    = "schemaTypeGUID";
+        final String parentElementGUIDParameterName = "parentElementGUID";
+        final String parentElementTypeParameterName = "parentElementTypeName";
+
+        invalidParameterHandler.validateName(parentElementTypeName, parentElementTypeParameterName, methodName);
+
+        if (repositoryHelper.isTypeOf(serviceName, parentElementTypeName, OpenMetadataAPIMapper.PORT_TYPE_NAME))
+        {
+            this.linkElementToElement(userId,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      parentElementGUID,
+                                      parentElementGUIDParameterName,
+                                      parentElementTypeName,
+                                      schemaTypeGUID,
+                                      schemaTypeGUIDParameterName,
+                                      OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
+                                      OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
+                                      null,
+                                      effectiveFrom,
+                                      effectiveTo,
+                                      effectiveTime,
+                                      methodName);
+        }
+        else
+        {
+            this.linkElementToElement(userId,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      parentElementGUID,
+                                      parentElementGUIDParameterName,
+                                      parentElementTypeName,
+                                      schemaTypeGUID,
+                                      schemaTypeGUIDParameterName,
+                                      OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
+                                      OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                      null,
+                                      effectiveFrom,
+                                      effectiveTo,
+                                      effectiveTime,
+                                      methodName);
+        }
+    }
+
+
+    /**
+     * Remove the relationship between a schema type and its parent data asset, process or port.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param schemaTypeGUID unique identifier of the schema type to connect
+     * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
+     * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearSchemaTypeParent(String  userId,
+                                      String  externalSourceGUID,
+                                      String  externalSourceName,
+                                      String  schemaTypeGUID,
+                                      String  parentElementGUID,
+                                      String  parentElementTypeName,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime,
+                                      String  methodName) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
+    {
+        final String schemaTypeGUIDParameterName    = "schemaTypeGUID";
+        final String parentElementGUIDParameterName = "parentElementGUID";
+        final String parentElementTypeParameterName = "parentElementTypeName";
+
+        invalidParameterHandler.validateName(parentElementTypeName, parentElementTypeParameterName, methodName);
+
+        if ((parentElementTypeName != null) && repositoryHelper.isTypeOf(serviceName,
+                                                                         parentElementTypeName,
+                                                                         OpenMetadataAPIMapper.PORT_TYPE_NAME))
+        {
+            this.unlinkElementFromElement(userId,
+                                          false,
+                                          externalSourceGUID,
+                                          externalSourceName,
+                                          parentElementGUID,
+                                          parentElementGUIDParameterName,
+                                          parentElementTypeName,
+                                          schemaTypeGUID,
+                                          schemaTypeGUIDParameterName,
+                                          OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_GUID,
+                                          OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
+                                          OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
+                                          effectiveTime,
+                                          methodName);
+        }
+        else
+        {
+            this.unlinkElementFromElement(userId,
+                                          false,
+                                          externalSourceGUID,
+                                          externalSourceName,
+                                          parentElementGUID,
+                                          parentElementGUIDParameterName,
+                                          parentElementTypeName,
+                                          schemaTypeGUID,
+                                          schemaTypeGUIDParameterName,
+                                          OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_GUID,
+                                          OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
+                                          OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                          effectiveTime,
+                                          methodName);
+        }
+    }
 
     /**
      * Return the list of schema types nested in the parent schema type - this is typically schema type options or APIOperations in a APISchemaType.

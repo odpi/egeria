@@ -307,17 +307,15 @@ public class LicenseRESTServices
         {
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof LicenseProperties)
+                if (requestBody.getProperties() instanceof LicenseProperties properties)
                 {
                     auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
                     LicenseHandler<LicenseTypeElement> handler = instanceHandler.getLicenseTypeHandler(userId, serverName, methodName);
 
-                    LicenseProperties properties = (LicenseProperties) requestBody.getProperties();
-
                     response.setGUID(handler.licenseElement(userId,
-                                                            requestBody.getExternalSourceGUID(),
-                                                            requestBody.getExternalSourceName(),
+                                                            null,
+                                                            null,
                                                             elementGUID,
                                                             elementGUIDParameterName,
                                                             OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
@@ -398,40 +396,38 @@ public class LicenseRESTServices
         {
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof LicenseProperties)
+                if (requestBody.getProperties() instanceof LicenseProperties properties)
                 {
                     auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
                     LicenseHandler<LicenseTypeElement> handler = instanceHandler.getLicenseTypeHandler(userId, serverName, methodName);
 
-                    LicenseProperties properties = (LicenseProperties) requestBody.getProperties();
-
                     handler.updateLicense(userId,
-                                                requestBody.getExternalSourceGUID(),
-                                                requestBody.getExternalSourceName(),
-                                                licenseGUID,
-                                                licenseGUIDParameterName,
-                                                properties.getLicenseId(),
-                                                properties.getStartDate(),
-                                                properties.getEndDate(),
-                                                properties.getConditions(),
-                                                properties.getLicensedBy(),
-                                                properties.getLicensedByTypeName(),
-                                                properties.getLicensedByPropertyName(),
-                                                properties.getCustodian(),
-                                                properties.getCustodianTypeName(),
-                                                properties.getCustodianPropertyName(),
-                                                properties.getLicensee(),
-                                                properties.getLicenseeTypeName(),
-                                                properties.getLicenseePropertyName(),
-                                                properties.getNotes(),
-                                                isMergeUpdate,
-                                                null,
-                                                null,
-                                                false,
-                                                false,
-                                                new Date(),
-                                                methodName);
+                                          null,
+                                          null,
+                                          licenseGUID,
+                                          licenseGUIDParameterName,
+                                          properties.getLicenseId(),
+                                          properties.getStartDate(),
+                                          properties.getEndDate(),
+                                          properties.getConditions(),
+                                          properties.getLicensedBy(),
+                                          properties.getLicensedByTypeName(),
+                                          properties.getLicensedByPropertyName(),
+                                          properties.getCustodian(),
+                                          properties.getCustodianTypeName(),
+                                          properties.getCustodianPropertyName(),
+                                          properties.getLicensee(),
+                                          properties.getLicenseeTypeName(),
+                                          properties.getLicenseePropertyName(),
+                                          properties.getNotes(),
+                                          isMergeUpdate,
+                                          null,
+                                          null,
+                                          false,
+                                          false,
+                                          new Date(),
+                                          methodName);
                 }
                 else
                 {
@@ -485,30 +481,15 @@ public class LicenseRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             LicenseHandler<LicenseTypeElement> handler = instanceHandler.getLicenseTypeHandler(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                handler.unlicenseElement(userId,
-                                         requestBody.getExternalSourceGUID(),
-                                         requestBody.getExternalSourceName(),
-                                         licenseGUID,
-                                         licenseGUIDParameterName,
-                                         false,
-                                         false,
-                                         new Date(),
-                                         methodName);
-            }
-            else
-            {
-                handler.unlicenseElement(userId,
-                                         null,
-                                         null,
-                                         licenseGUID,
-                                         licenseGUIDParameterName,
-                                         false,
-                                         false,
-                                         new Date(),
-                                         methodName);
-            }
+            handler.unlicenseElement(userId,
+                                     null,
+                                     null,
+                                     licenseGUID,
+                                     licenseGUIDParameterName,
+                                     false,
+                                     false,
+                                     new Date(),
+                                     methodName);
         }
         catch (Exception error)
         {

@@ -22,9 +22,9 @@ This page covers the way dependencies are managed in Egeria.
 
 ### Logging dependencies for slf4j
 
-* Any utility, sample, tool - or our server chassis, are 'applications' in that they have an entry point - typically main(). These should include a binding for slf4j. See http://www.slf4j.org/faq.html
+* Any utility, sample, tool - or our OMAG Server Platform, are 'Java applications' in that they have an entry point - typically main(). These should include a binding for slf4j. See http://www.slf4j.org/faq.html
   * We generally use logback (ch.qos.logback:logback-classic for example)
-  * Generally A configuration file should not be provided - default formatting will be used & can be overriden by logback configuration at deployment time.
+  * Generally A configuration file should not be provided - default formatting will be used & can be overridden by logback configuration at deployment time.
 * Test code automatically includes slf4j-simple - a simple logging implementations
 * Other code that forms libraries (most of our code) MUST NOT include a slf4j logging implementation. Otherwise the application loses control of the logging implementation, hidden config files can change behaviour, and a multiple_bindings issue will be raised by slf4j
 

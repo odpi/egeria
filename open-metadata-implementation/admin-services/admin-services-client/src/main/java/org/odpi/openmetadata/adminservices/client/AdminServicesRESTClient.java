@@ -18,10 +18,10 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
  */
 class AdminServicesRESTClient
 {
-    private String                          serverPlatformURLRoot;  /* Initialized in constructor */
-    private AdminClientRESTExceptionHandler exceptionHandler = new AdminClientRESTExceptionHandler();
+    private final String                          serverPlatformURLRoot;  /* Initialized in constructor */
+    private final AdminClientRESTExceptionHandler exceptionHandler = new AdminClientRESTExceptionHandler();
 
-    private RESTClientConnector clientConnector;        /* Initialized in constructor */
+    private final RESTClientConnector clientConnector;        /* Initialized in constructor */
 
 
     /**

@@ -451,6 +451,18 @@ public class DataEngineRelationalDataHandler {
                 tableQualifiedName, false, false, dataEngineCommonHandler.getNow(), methodName);
     }
 
+    /**
+     * Removes the database schema
+     *
+     * @param userId             the name of the calling user
+     * @param databaseSchemaGUID unique identifier of the database schema to be removed
+     * @param externalSourceName the external data engine name
+     * @param deleteSemantic     the delete semantic
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     */
     public void removeDatabaseSchema(String userId, String databaseSchemaGUID, String externalSourceName, DeleteSemantic deleteSemantic)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, FunctionNotSupportedException {
         final String methodName = "removeDatabaseSchema";

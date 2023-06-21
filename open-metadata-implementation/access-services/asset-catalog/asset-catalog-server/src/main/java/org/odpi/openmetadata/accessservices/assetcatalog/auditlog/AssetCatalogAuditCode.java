@@ -22,44 +22,63 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  */
 @ToString
 public enum AssetCatalogAuditCode implements AuditLogMessageSet {
-    
+
+    /**
+     * OMAS-ASSET-CATALOG-0001 The Asset Catalog OMAS has completed initialization of a new instance.
+     */
     SERVICE_INITIALIZED("OMAS-ASSET-CATALOG-0001",
             OMRSAuditLogRecordSeverity.STARTUP,
             "The Asset Catalog Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
             "The Asset Catalog OMAS has completed initialization of a new instance.",
             "No action is required.  This is part of the normal operation of the service."),
-
+    /**
+     * OMAS-ASSET-CATALOG-0002 The local server has started up a new instance of the Asset Catalog OMAS.
+     */
     SERVICE_INITIALIZING("OMAS-ASSET-CATALOG-0002",
             OMRSAuditLogRecordSeverity.STARTUP,
             "The Asset Catalog Open Metadata Access Service (OMAS) is initializing a new server instance",
             "The local server has started up a new instance of the Asset Catalog OMAS.",
             "No action is required.  This is part of the normal operation of the service."),
 
+    /**
+     * OMAS-ASSET-CATALOG-0003 The access service detected an error during the start up of a specific server instance.
+     * Its services are not available for the specified server.
+     */
     SERVICE_INSTANCE_FAILURE("OMAS-ASSET-CATALOG-0003",
             OMRSAuditLogRecordSeverity.ERROR,
             "The Asset Catalog Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
-            "The access service detected an error during the start up of a specific server instance.  Its services are not available for server {1}.",
+            "The access service detected an error during the start up of a specific server instance. Its services are not available for server {1}.",
             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 
+    /**
+     * OMAS-ASSET-CATALOG-0004 The local server has requested shut down of an Asset Catalog OMAS instance.
+     */
     SERVICE_SHUTDOWN("OMAS-ASSET-CATALOG-0004",
             OMRSAuditLogRecordSeverity.SHUTDOWN,
             "The Asset Catalog Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
             "The local server has requested shut down of an Asset Catalog OMAS instance.",
             "No action is required. This is part of the normal operation of the service."),
 
+    /**
+     * OMAS-ASSET-CATALOG-0005 The event could not be processed.
+     */
     EVENT_PROCESSING_EXCEPTION("OMAS-ASSET-CATALOG-0005",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "An exception with message {0} occurred while processing incoming event {1}",
-            "The event could not be processed",
+            "The event could not be processed.",
             "Review the exception to determine the source of the error and correct it."),
+
+    /**
+     * OMAS-ASSET-CATALOG-0006 The event will not be processed.
+     */
     EVENT_NOT_PROCESSING("OMAS-ASSET-CATALOG-0006",
             OMRSAuditLogRecordSeverity.TRACE,
             "An event is ignored {0}",
-            "The event will not be processed",
+            "The event will not be processed.",
             "No action is required. This is part of the normal operation of the service."),;
 
 
-    private AuditLogMessageDefinition messageDefinition;
+    private final AuditLogMessageDefinition messageDefinition;
 
     /**
      * The constructor for AssetCatalogAuditCode expects to be passed one of the enumeration rows defined in
@@ -69,7 +88,7 @@ public enum AssetCatalogAuditCode implements AuditLogMessageSet {
      * <p>
      * This will expand out to the 4 parameters shown below.
      *
-     * @param messageId    - unique Id for the message
+     * @param messageId    - unique ID for the message
      * @param severity     - severity of the message
      * @param message      - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened

@@ -3,7 +3,6 @@ package org.odpi.openmetadata.viewservices.serverauthor.server.spring;/* SPDX-Li
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.adminservices.configuration.properties.CohortTopicStructure;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -24,13 +23,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/view-services/server-author/users/{userId}/servers/{serverToBeConfiguredName}")
 
-@Tag(name = "Administration Services - Server Configuration", description = "The server configuration administration services support the configuration" +
-        " of the open metadata and governance services within an OMAG Server. This configuration determines which of the Open Metadata and " +
-        "Governance (OMAG) services are active.",
-     externalDocs = @ExternalDocumentation(description = "Further information",
-                                           url = "https://egeria-project.org/guides/admin/servers/"))
+@Tag(name="Server Author OMVS", description="The Server Author OMVS is for user interfaces supporting the creating and editing of OMAG Server Configuration Documents.",
+     externalDocs=@ExternalDocumentation(description="Further information",
+                                         url="https://egeria-project.org/services/omvs/server-author/overview"))
+
 class ConfigRepositoryServicesViewResource {
-    private ServerAuthorViewRESTServices serverAPI = new ServerAuthorViewRESTServices();
+    private final ServerAuthorViewRESTServices serverAPI = new ServerAuthorViewRESTServices();
 
     /**
      * Set up an in memory local repository.  This repository uses hashmaps to store content.  It is useful
@@ -44,6 +42,7 @@ class ConfigRepositoryServicesViewResource {
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
      */
+    @SuppressWarnings(value = "unused")
     @PostMapping(path = "/local-repository/mode/in-memory-repository")
     public FFDCResponseBase setInMemLocalRepository(@PathVariable String userId,
                                                     @PathVariable String serverName,
@@ -313,7 +312,7 @@ class ConfigRepositoryServicesViewResource {
 
     /**
      * Enable registration of server to an open metadata repository cohort using the default topic structure (DEDICATED_TOPICS).
-     *
+     * <br><br>
      * A cohort is a group of open metadata
      * repositories that are sharing metadata.  An OMAG server can connect to zero, one or more cohorts.
      * Each cohort needs a unique name.  The members of the cohort use a shared topic to exchange registration

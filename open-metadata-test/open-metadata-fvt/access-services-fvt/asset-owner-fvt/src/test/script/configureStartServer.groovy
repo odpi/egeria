@@ -6,7 +6,7 @@ import javax.net.ssl.HttpsURLConnection
 
 // Function to convert array to String
 
-// Will configure a server chassis - which should already be running - for FVT testing
+// Will configure an OMAG Server Platform - which should already be running - for FVT testing
 
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
@@ -120,7 +120,7 @@ if(addConnectorTypeArchiveToInMemoryServerResponse.equals(200)) {
 
 // --- Launch the server - any errors here and we exit
 System.out.println("=== Starting server: " + serverMem + " ===");
-post3 = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverMem + "/instance" ).openConnection()
+post3 = new URL(baseURL + "/open-metadata/platform-services/users/" + user + "/server-platform/servers/" + serverMem + "/instance" ).openConnection()
 post3.setRequestMethod("POST")
 post3.setRequestProperty("Content-Type", "application/json")
 postRC3 = post3.getResponseCode();

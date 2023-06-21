@@ -18,6 +18,7 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registr
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurityVerifier;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.platformservices.properties.OMAGServerInstanceHistory;
+import org.odpi.openmetadata.platformservices.properties.ServerStatus;
 
 import java.util.*;
 
@@ -25,7 +26,7 @@ import java.util.*;
  * OMAGServerPlatformInstanceMap provides part of the mapping for inbound REST requests to the appropriate
  * service instances for the requested server.  It manages the server name to server instance mapping.
  * The map is maintained in a static, so it is scoped to the class loader.
- *
+ * <br><br>
  * Instances of this class call the synchronized static methods to work with the map.
  */
 public class OMAGServerPlatformInstanceMap
@@ -542,6 +543,58 @@ public class OMAGServerPlatformInstanceMap
 
 
     /**
+     * Return the type of server.
+     *
+     * @param userId calling user or null if it is an anonymous request
+     * @param serverName name of the server
+     * @param serviceOperationName calling method
+     *
+     * @return boolean
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     * @throws InvalidParameterException the server name is not known
+     */
+    private static synchronized ServerStatus getServerInstanceStatus(String  userId,
+                                                                     String  serverName,
+                                                                     String  serviceOperationName) throws InvalidParameterException,
+                                                                                                          UserNotAuthorizedException
+    {
+        validateUserAsInvestigatorForPlatform(userId);
+
+        OMAGServerInstance serverInstance = activeServerInstanceMap.get(serverName);
+        boolean            isActive = true;
+
+        if (serverInstance == null)
+        {
+            serverInstance = inActiveServerInstanceMap.get(serverName);
+            isActive = false;
+        }
+
+        if (serverInstance != null)
+        {
+            ServerStatus serverStatus = new ServerStatus();
+
+            serverStatus.setServerName(serverName);
+            serverStatus.setServerType(serverInstance.getServerType());
+            serverStatus.setIsActive(isActive);
+            serverStatus.setServerStartTime(serverInstance.getServerStartTime());
+            serverStatus.setServerEndTime(serverInstance.getServerEndTime());
+            serverStatus.setServerHistory(serverInstance.getServerHistory());
+
+            return serverStatus;
+        }
+        else
+        {
+            handleBadServerName(userId, serverName, serviceOperationName);
+
+            /*
+             * Note, this return is unreachable because handleBadServerName always throws an exception.
+             */
+            return null;
+        }
+    }
+
+
+    /**
      * Return whether a particular service is registered with this platform.
      * This is used by the admin services when no instance is not an error.
      *
@@ -1011,6 +1064,26 @@ public class OMAGServerPlatformInstanceMap
                                                                      UserNotAuthorizedException
     {
         return OMAGServerPlatformInstanceMap.getServerInstanceType(userId, serverName, serviceOperationName);
+    }
+
+
+    /**
+     * Return the type of server.
+     *
+     * @param userId calling user or null if it is an anonymous request
+     * @param serverName name of the server
+     * @param serviceOperationName name of the calling method/request
+     *
+     * @return server status
+     * @throws InvalidParameterException the serverName is not known.
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     */
+    public ServerStatus getServerStatus(String  userId,
+                                        String  serverName,
+                                        String  serviceOperationName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException
+    {
+        return OMAGServerPlatformInstanceMap.getServerInstanceStatus(userId, serverName, serviceOperationName);
     }
 
 

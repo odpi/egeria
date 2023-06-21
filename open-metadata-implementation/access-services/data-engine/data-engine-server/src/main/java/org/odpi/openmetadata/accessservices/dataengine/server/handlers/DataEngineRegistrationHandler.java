@@ -43,7 +43,7 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 public class DataEngineRegistrationHandler {
 
     private static final String EXTERNAL_ENGINE_PARAMETER_NAME = "externalSourceGUID";
-    public static final String SYNC_DATES_BY_KEY = "syncDatesByKey";
+    protected static final String SYNC_DATES_BY_KEY = "syncDatesByKey";
     private final String serviceName;
     private final String serverName;
     private final OMRSRepositoryHelper repositoryHelper;
@@ -144,6 +144,15 @@ public class DataEngineRegistrationHandler {
         return retrievedEntity.getGUID();
     }
 
+    /**
+     * Removes the data engine. Currently not implemented, it will throw a {@link org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException}
+     *
+     * @param userId             identifier of calling user
+     * @param qualifiedName      qualified name of the external data engine
+     * @param externalSourceName the external data engine
+     * @param deleteSemantic     the delete semantic
+     * @throws FunctionNotSupportedException no implemented, it will throw an exception
+     */
     public void removeExternalDataEngine(String userId, String qualifiedName, String externalSourceName, DeleteSemantic deleteSemantic) throws
             FunctionNotSupportedException {
         final String methodName = "removeExternalDataEngine";
@@ -159,6 +168,16 @@ public class DataEngineRegistrationHandler {
                 engine.getAdditionalProperties(), repositoryHelper, serviceName, serverName);
     }
 
+    /**
+     * Sets the ProcessingState Classification for the data engine
+     *
+     * @param userId             identifier of calling user
+     * @param processingState    the processing state
+     * @param externalSourceName the external data engine
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem retrieving the discovery engine definition
+     */
     public void upsertProcessingStateClassification(String userId, ProcessingState processingState, String externalSourceName)
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         final String methodName = "upsertProcessingStateClassification";
@@ -187,6 +206,16 @@ public class DataEngineRegistrationHandler {
                 false, clockService.getNow(), methodName);
     }
 
+    /**
+     * Retrieves the ProcessingState Classification for the data engine
+     *
+     * @param userId             identifier of calling user
+     * @param externalSourceName the external data engine
+     * @return the ProcessingState Classification for the data engine
+     * @throws InvalidParameterException  one of the parameters is null or invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem retrieving the discovery engine definition
+     */
     public ProcessingState getProcessingStateClassification(String userId, String externalSourceName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         final String methodName = "getProcessingStateClassification";

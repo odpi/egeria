@@ -47,7 +47,7 @@ public class CocoPharmaPlatformSecurityConnector extends OpenMetadataPlatformSec
 
 
     /**
-     * Check that the calling user is authorized to issue operator requests to the OMAG Server Platform.
+     * Check that the calling user is authorized to issue diagnostic requests to the OMAG Server Platform.
      *
      * @param userId calling user
      *

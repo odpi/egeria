@@ -5,10 +5,10 @@
 
 
 dependencies {
-    implementation 'org.slf4j:slf4j-api'
-    implementation project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-connectors-api')
-    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
-    implementation project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
+    compileOnly 'org.slf4j:slf4j-api'
+    compileOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-connectors-api')
+    compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
+    compileOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 
 }

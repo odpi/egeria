@@ -11,6 +11,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerPlatformInstanceMap;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.platformservices.properties.ServerStatus;
 import org.odpi.openmetadata.platformservices.rest.ServerListResponse;
 import org.odpi.openmetadata.platformservices.rest.ServerServicesListResponse;
 import org.odpi.openmetadata.platformservices.rest.ServerStatusResponse;
@@ -399,11 +400,14 @@ public class OMAGServerPlatformActiveServices
         try
         {
             response.setServerName(serverName);
-            response.setServerType(serverInstanceMap.getServerType(userId, serverName, methodName));
-            response.setActive(serverInstanceMap.isServerActive(userId, serverName));
-            response.setServerStartTime(serverInstanceMap.getServerStartTime(userId, serverName));
-            response.setServerEndTime(serverInstanceMap.getServerEndTime(userId, serverName));
-            response.setServerHistory(serverInstanceMap.getServerHistory(userId, serverName));
+
+            ServerStatus serverStatus = serverInstanceMap.getServerStatus(userId, serverName, methodName);
+
+            response.setServerType(serverStatus.getServerType());
+            response.setActive(serverStatus.getIsActive());
+            response.setServerStartTime(serverStatus.getServerStartTime());
+            response.setServerEndTime(serverStatus.getServerEndTime());
+            response.setServerHistory(serverStatus.getServerHistory());
         }
         catch (Exception error)
         {

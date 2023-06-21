@@ -27,8 +27,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CommentRequestBody extends FeedbackRequestBody
 {
-    private static final long     serialVersionUID = 1L;
-
     private CommentType commentType = null;
     private String      commentText = null;
     private String      user        = null;

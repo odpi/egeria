@@ -22,8 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class APIOperationResponse extends OCFOMASAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     private APIOperation apiOperation           = null;
     private int          headerAttributeCount   = 0;
     private int          requestAttributeCount  = 0;

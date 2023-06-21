@@ -7,21 +7,27 @@ plugins {
 }
 
 dependencies {
-    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
-    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
-    implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
-    implementation project(':open-metadata-implementation:common-services:ffdc-services')
+    compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
+    compileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
+    compileOnly project(':open-metadata-implementation:common-services:ffdc-services')
     implementation 'org.janusgraph:janusgraph-core'
     implementation 'org.janusgraph:janusgraph-driver'
     implementation 'org.apache.tinkerpop:gremlin-core'
-    implementation 'org.slf4j:slf4j-api'
-    implementation project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-api')
-    implementation project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-api')
+    compileOnly 'org.slf4j:slf4j-api'
+    compileOnly project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-api')
+    compileOnly project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-api')
     implementation 'com.google.guava:guava'
     runtimeOnly 'org.janusgraph:janusgraph-cql'
     runtimeOnly 'org.janusgraph:janusgraph-es'
     runtimeOnly 'org.janusgraph:janusgraph-berkeleyje'
     runtimeOnly 'org.janusgraph:janusgraph-lucene'
+    testImplementation project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-api')
+    testImplementation project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-api')
+    testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    testImplementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    testImplementation project(':open-metadata-implementation:common-services:ffdc-services')
     testImplementation 'org.mockito:mockito-core'
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testImplementation 'org.junit.jupiter:junit-jupiter-params'

@@ -70,13 +70,15 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
     private static final ObjectReader OBJECT_READER = OBJECT_MAPPER.reader();
     private static final ObjectWriter OBJECT_WRITER = OBJECT_MAPPER.writer();
 
+    private static final String unknownTopicName = "<Unknown>";
+
     private List<Connector> embeddedConnectors = null;
 
     private final List<OMRSTopicListener>          internalTopicListeners = new ArrayList<>();
     private final List<OpenMetadataTopicConnector> eventBusConnectors     = new ArrayList<>();
 
     private String                    connectionName       = OMRSAuditingComponent.OMRS_TOPIC_CONNECTOR.getComponentName();
-    private String                    topicName = "<Unknown>";
+    private String                    topicName = unknownTopicName;
     private OMRSEventProtocolVersion  eventProtocolVersion = OMRSEventProtocolVersion.V1;
 
     protected AuditLog auditLog = null;
@@ -593,7 +595,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
                     {
                         auditLog.logMessage(actionDescription,
                                             OMRSAuditCode.PROCESS_UNKNOWN_EVENT.getMessageDefinition(),
-                                           "event {" + event.toString() + "}");
+                                           "event {" + event + "}");
                     }
 
                     log.debug("Unknown event received :|");
@@ -630,7 +632,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
             eventBusConnector.disconnect();
         }
 
-        if (auditLog != null)
+        if ((auditLog != null) && (! unknownTopicName.equals(topicName)))
         {
             auditLog.logMessage(actionDescription,
                                 OMRSAuditCode.OMRS_TOPIC_LISTENER_DISCONNECTED.getMessageDefinition(topicName),

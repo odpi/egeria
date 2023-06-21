@@ -73,8 +73,8 @@ public class RelatedElementRESTServices
                 if (requestBody.getProperties() != null)
                 {
                     handler.addMoreInformation(userId,
-                                               requestBody.getExternalSourceGUID(),
-                                               requestBody.getExternalSourceName(),
+                                               null,
+                                               null,
                                                elementGUID,
                                                elementGUIDParameterName,
                                                detailGUID,
@@ -89,8 +89,8 @@ public class RelatedElementRESTServices
                 else
                 {
                     handler.addMoreInformation(userId,
-                                               requestBody.getExternalSourceGUID(),
-                                               requestBody.getExternalSourceName(),
+                                               null,
+                                               null,
                                                elementGUID,
                                                elementGUIDParameterName,
                                                detailGUID,
@@ -345,13 +345,11 @@ public class RelatedElementRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof StakeholderProperties)
+                if (requestBody.getProperties() instanceof StakeholderProperties properties)
                 {
-                    StakeholderProperties properties = (StakeholderProperties) requestBody.getProperties();
-
                     handler.addStakeholder(userId,
-                                           requestBody.getExternalSourceGUID(),
-                                           requestBody.getExternalSourceName(),
+                                           null,
+                                           null,
                                            elementGUID,
                                            elementGUIDParameterName,
                                            stakeholderGUID,
@@ -367,8 +365,8 @@ public class RelatedElementRESTServices
                 else if (requestBody.getProperties() == null)
                 {
                     handler.addStakeholder(userId,
-                                           requestBody.getExternalSourceGUID(),
-                                           requestBody.getExternalSourceName(),
+                                           null,
+                                           null,
                                            elementGUID,
                                            elementGUIDParameterName,
                                            stakeholderGUID,
@@ -628,13 +626,12 @@ public class RelatedElementRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ResourceListProperties)
+                if (requestBody.getProperties() instanceof ResourceListProperties properties)
                 {
-                    ResourceListProperties properties = (ResourceListProperties) requestBody.getProperties();
 
                     handler.saveResourceListMember(userId,
-                                                   requestBody.getExternalSourceGUID(),
-                                                   requestBody.getExternalSourceName(),
+                                                   null,
+                                                   null,
                                                    elementGUID,
                                                    elementGUIDParameterName,
                                                    resourceGUID,
@@ -651,8 +648,8 @@ public class RelatedElementRESTServices
                 else if (requestBody.getProperties() == null)
                 {
                     handler.saveResourceListMember(userId,
-                                                   requestBody.getExternalSourceGUID(),
-                                                   requestBody.getExternalSourceName(),
+                                                   null,
+                                                   null,
                                                    elementGUID,
                                                    elementGUIDParameterName,
                                                    resourceGUID,

@@ -6,14 +6,22 @@ import java.time.Clock;
 import java.time.Instant;
 import java.util.Date;
 
+/**
+ * ClockService manages a Clock instance and provides an utility method for getting the current dte and time
+ */
 public class ClockService {
 
-    private Clock clock;
+    private final Clock clock;
 
     public ClockService(Clock clock) {
         this.clock = clock;
     }
 
+    /**
+     * Retrieves the current date
+     *
+     * @return current date and time
+     */
     public Date getNow() {
         return Date.from(Instant.now(clock));
     }

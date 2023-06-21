@@ -21,9 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdatePropertiesRequestBody extends UpdateRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
-
     private boolean           replaceProperties = false;
     private ElementProperties properties        = null;
 
