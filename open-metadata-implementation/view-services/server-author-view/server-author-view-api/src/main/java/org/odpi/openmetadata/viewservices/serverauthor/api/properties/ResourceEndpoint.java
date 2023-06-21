@@ -21,9 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  */
 public class ResourceEndpoint {
 
-    private static final long    serialVersionUID = 1L;
-
-
     private String resourceCategory;
     private String resourceDescription;
     private String resourceRootURL;    // e.g. "https://localhost:9443"

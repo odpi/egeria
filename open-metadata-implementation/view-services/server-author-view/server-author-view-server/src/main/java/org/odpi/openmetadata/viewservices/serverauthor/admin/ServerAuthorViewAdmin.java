@@ -123,7 +123,7 @@ public class ServerAuthorViewAdmin extends ViewServiceAdmin {
             this.serverName        = serverName;
 
             auditLog.logMessage(actionDescription,
-                                ServerAuthorViewAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),
+                                ServerAuthorViewAuditCode.SERVICE_INITIALIZED.getMessageDefinition(),
                                 viewServiceConfig.toString());
 
             if (log.isDebugEnabled()) {
@@ -165,7 +165,7 @@ public class ServerAuthorViewAdmin extends ViewServiceAdmin {
             this.instance.shutdown();
         }
 
-        auditLog.logMessage(actionDescription, ServerAuthorViewAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));
+        auditLog.logMessage(actionDescription, ServerAuthorViewAuditCode.SERVICE_SHUTDOWN.getMessageDefinition());
 
         log.debug("<== Method: " + actionDescription);
 

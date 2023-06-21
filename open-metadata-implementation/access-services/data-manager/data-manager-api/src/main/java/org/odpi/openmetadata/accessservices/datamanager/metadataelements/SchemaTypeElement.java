@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.datamanager.properties.DerivedSchemaTypeQueryTargetProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeProperties;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,10 +22,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeade
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SchemaTypeElement implements MetadataElement, Serializable
+public class SchemaTypeElement implements MetadataElement
 {
-    private static final long serialVersionUID = 1L;
-
     private SchemaTypeProperties                         schemaTypeProperties = null;
     private ElementHeader                                elementHeader        = null;
 

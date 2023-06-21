@@ -4,7 +4,6 @@ package org.odpi.openmetadata.frameworks.governanceaction.events;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -23,10 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = WatchdogMetadataElementEvent.class, name = "WatchdogMetadataElementEvent"),
                 @JsonSubTypes.Type(value = WatchdogRelatedElementsEvent.class, name = "WatchdogRelatedElementsEvent"),
         })
-public abstract class WatchdogGovernanceEvent implements Serializable
+public abstract class WatchdogGovernanceEvent
 {
-    private static final long      serialVersionUID = 1L;
-
     private WatchdogEventType eventType = null;
 
 

@@ -2202,6 +2202,8 @@ public class RepositoryHandler
                                           null,
                                           methodName);
 
+        auditLog.logMessage(methodName, RepositoryHandlerAuditCode.ENTITY_DELETED.getMessageDefinition(obsoleteEntityGUID, entityTypeName, entityTypeGUID, methodName));
+
         try
         {
             metadataCollection.deleteEntity(userId, entityTypeGUID, entityTypeName, obsoleteEntityGUID);
@@ -2237,6 +2239,8 @@ public class RepositoryHandler
                                                                PropertyServerException
     {
         final String localMethodName = "simpleDeleteEntity";
+
+        auditLog.logMessage(methodName, RepositoryHandlerAuditCode.ENTITY_DELETED.getMessageDefinition(obsoleteEntityGUID, entityTypeName, entityTypeGUID, methodName));
 
         try
         {
@@ -5532,6 +5536,17 @@ public class RepositoryHandler
                                                                     PropertyServerException
     {
         final String localMethodName = "removeRelationship";
+
+        auditLog.logMessage(methodName, RepositoryHandlerAuditCode.RELATIONSHIP_DELETED.getMessageDefinition(relationship.getGUID(),
+                                                                                                             relationship.getType().getTypeDefName(),
+                                                                                                             relationship.getType().getTypeDefGUID(),
+                                                                                                             relationship.getEntityOneProxy().getGUID(),
+                                                                                                             relationship.getEntityOneProxy().getType().getTypeDefName(),
+                                                                                                             relationship.getEntityOneProxy().getType().getTypeDefGUID(),
+                                                                                                             relationship.getEntityTwoProxy().getGUID(),
+                                                                                                             relationship.getEntityTwoProxy().getType().getTypeDefName(),
+                                                                                                             relationship.getEntityTwoProxy().getType().getTypeDefGUID(),
+                                                                                                             methodName));
 
         try
         {

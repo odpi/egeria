@@ -35,7 +35,7 @@ public class DataEngineTopicHandler {
     private final DataEngineCommonHandler dataEngineCommonHandler;
     private final DataEngineRegistrationHandler registrationHandler;
 
-    public static final String TOPIC_GUID_PARAMETER_NAME = "topicGUID";
+    protected static final String TOPIC_GUID_PARAMETER_NAME = "topicGUID";
 
     /**
      * Construct the handler information needed to interact with the repository services

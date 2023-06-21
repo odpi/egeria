@@ -19,12 +19,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * OM type DataFile
+ * DataFile is a java bean used to create DataFiles associated with the external data engine.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "fileType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "fileType")
 @JsonSubTypes({ @JsonSubTypes.Type(value = DataFile.class, name = "DataFile"),
                 @JsonSubTypes.Type(value = CSVFile.class, name = "CSVFile")})
 @Getter

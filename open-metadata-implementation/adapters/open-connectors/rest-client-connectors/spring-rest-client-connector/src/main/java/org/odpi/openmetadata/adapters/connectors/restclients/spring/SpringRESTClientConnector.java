@@ -932,14 +932,13 @@ public class SpringRESTClientConnector extends RESTClientConnector
     {
         try
         {
-            if(log.isDebugEnabled())
+            if (log.isDebugEnabled())
             {
                 //avoid calling Arrays.toString if not debug level
                 log.debug("Calling {} with URL template {} and parameters {}.",
                           methodName,
                           urlTemplate,
-                          Arrays.toString(params)
-                );
+                          Arrays.toString(params));
             }
 
             // requestBody may be null

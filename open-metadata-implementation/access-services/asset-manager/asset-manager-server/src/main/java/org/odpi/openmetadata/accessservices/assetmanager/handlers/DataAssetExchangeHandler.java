@@ -1023,7 +1023,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerName unique name of software server capability representing the caller
      * @param relationshipTypeName type name of relationship to delete
      * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
-     * @param startingFrom start position for results
+     * @param startFrom start position for results
      * @param pageSize     maximum number of results
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1042,7 +1042,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                             String  assetManagerName,
                                                             String  relationshipTypeName,
                                                             String  fromAssetGUID,
-                                                            int     startingFrom,
+                                                            int     startFrom,
                                                             int     pageSize,
                                                             boolean forLineage,
                                                             boolean forDuplicateProcessing,
@@ -1071,7 +1071,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                            2,
                                                                            forLineage,
                                                                            forDuplicateProcessing,
-                                                                           startingFrom,
+                                                                           startFrom,
                                                                            pageSize,
                                                                            effectiveTime,
                                                                            methodName);
@@ -1100,7 +1100,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerName unique name of software server capability representing the caller
      * @param relationshipTypeName type name of relationship to delete
      * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
-     * @param startingFrom start position for results
+     * @param startFrom start position for results
      * @param pageSize     maximum number of results
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1119,7 +1119,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                             String  assetManagerName,
                                                             String  relationshipTypeName,
                                                             String  toAssetGUID,
-                                                            int     startingFrom,
+                                                            int     startFrom,
                                                             int     pageSize,
                                                             boolean forLineage,
                                                             boolean forDuplicateProcessing,
@@ -1148,7 +1148,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                            1,
                                                                            forLineage,
                                                                            forDuplicateProcessing,
-                                                                           startingFrom,
+                                                                           startFrom,
                                                                            pageSize,
                                                                            effectiveTime,
                                                                            methodName);

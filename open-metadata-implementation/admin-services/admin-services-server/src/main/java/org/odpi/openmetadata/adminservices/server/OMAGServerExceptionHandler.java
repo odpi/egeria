@@ -88,7 +88,7 @@ public class OMAGServerExceptionHandler extends RESTExceptionHandler
      * @param response  REST Response
      * @param error returned response.
      */
-    void captureConfigurationErrorException(FFDCResponseBase response, OMAGConfigurationErrorException error)
+    public void captureConfigurationErrorException(FFDCResponseBase response, OMAGConfigurationErrorException error)
     {
         log.error("Configuration error returned", error);
 
@@ -102,7 +102,7 @@ public class OMAGServerExceptionHandler extends RESTExceptionHandler
      * @param response  REST Response
      * @param error returned response.
      */
-    void captureInvalidParameterException(FFDCResponseBase response, OMAGInvalidParameterException error)
+    public void captureInvalidParameterException(FFDCResponseBase response, OMAGInvalidParameterException error)
     {
         log.error("Invalid parameter error returned", error);
 
@@ -130,7 +130,7 @@ public class OMAGServerExceptionHandler extends RESTExceptionHandler
      * @param response  REST Response
      * @param error returned response.
      */
-    void captureNotAuthorizedException(FFDCResponseBase response, UserNotAuthorizedException error)
+    public void captureNotAuthorizedException(FFDCResponseBase response, UserNotAuthorizedException error)
     {
         log.error("User not authorized error returned", error);
 

@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.IncidentDependency;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.IncidentImpactedElement;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -23,10 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class IncidentReportRequestBody implements Serializable
+public class IncidentReportRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
     private String                        qualifiedName = null;
     private int                           domainIdentifier = 0;
     private String                        background = null;

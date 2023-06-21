@@ -328,7 +328,7 @@ public class CreateConnectionTest
     /**
      * Check a connection is gone.
      *
-     * @param client interface to Data Manager OMAS
+     * @param client interface to Asset Manager OMAS
      * @param connectionGUID unique id of the connection to test
      * @param activityName name of calling activity
      * @param userId calling user
@@ -370,7 +370,7 @@ public class CreateConnectionTest
     /**
      * Check connection is ok.
      *
-     * @param client interface to Data Manager OMAS
+     * @param client interface to Asset Manager OMAS
      * @param connectionGUID unique id of the connection
      * @param activityName name of calling activity
      * @param userId calling user
@@ -472,7 +472,7 @@ public class CreateConnectionTest
     /**
      * Create a connection and return its GUID.
      *
-     * @param client interface to Data Manager OMAS
+     * @param client interface to Asset Manager OMAS
      * @param assetManagerGUID unique id of the connection manager
      * @param userId calling user
      * @return GUID of connection
@@ -521,7 +521,7 @@ public class CreateConnectionTest
     /**
      * Check a connection endpoint is gone.
      *
-     * @param client interface to Data Manager OMAS
+     * @param client interface to Asset Manager OMAS
      * @param endpointGUID unique id of the connection endpoint to test
      * @param connectionGUID unique id of the connection to test
      * @param activityName name of calling activity
@@ -591,7 +591,7 @@ public class CreateConnectionTest
     /**
      * Check a connection endpoint is stored OK.
      *
-     * @param client interface to Data Manager OMAS
+     * @param client interface to Asset Manager OMAS
      * @param endpointGUID unique id of the connection
      * @param connectionGUID unique id of the connection
      * @param activityName name of calling activity
@@ -742,7 +742,7 @@ public class CreateConnectionTest
     /**
      * Create a connection endpoint and return its GUID.
      *
-     * @param client interface to Data Manager OMAS
+     * @param client interface to Asset Manager OMAS
      * @param assetManagerGUID unique id of the connection manager
      * @param connectionGUID unique id of the connection
      * @param userId calling user
@@ -796,7 +796,7 @@ public class CreateConnectionTest
     /**
      * Check a connection connectorType is gone.
      *
-     * @param client interface to Data Manager OMAS
+     * @param client interface to Asset Manager OMAS
      * @param connectorTypeGUID unique id of the connection connectorType to test
      * @param connectionGUID unique id of the connection endpoint to test
      * @param activityName name of calling activity
@@ -864,7 +864,7 @@ public class CreateConnectionTest
     /**
      * Create a connection connectorType and return its GUID.
      *
-     * @param client interface to Data Manager OMAS
+     * @param client interface to Asset Manager OMAS
      * @param connectorTypeGUID unique id of the connection connectorType to test
      * @param connectionGUID unique id of the connection endpoint to test
      * @param activityName name of calling activity

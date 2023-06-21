@@ -44,7 +44,7 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
  * DataEngine OMAS and creates and retrieves schema type entities through the OMRSRepositoryConnector.
  */
 public class DataEngineSchemaTypeHandler {
-    public static final String SCHEMA_TYPE_GUID_PARAMETER_NAME = "schemaTypeGUID";
+    protected static final String SCHEMA_TYPE_GUID_PARAMETER_NAME = "schemaTypeGUID";
     private final String serviceName;
     private final String serverName;
     private final OMRSRepositoryHelper repositoryHelper;

@@ -70,7 +70,7 @@ OMAG Servers that it is hosting.
 implementation of the metadata exchange and federation capabilities for a metadata
 repository that supports the open metadata standards.
 
-* **[server-chassis](server-chassis)** - the server chassis is the base component for the OMAG Server Platform.
+* **[platform-chassis](platform-chassis)** - the platform chassis is the base component for the OMAG Server Platform.
 It includes the web server that receives the REST API requests for both the OMAG Server Platform
 and the servers that run on it.
 

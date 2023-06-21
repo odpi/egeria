@@ -7,8 +7,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ComplexSchem
 
 class ConnectedNestedSchemaType extends NestedSchemaType
 {
-    private static final long    serialVersionUID = 1L;
-
     /**
      * Typical constructor creates an NestedSchemaType object primed with information to retrieve an asset's schema
      * information.

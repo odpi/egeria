@@ -27,8 +27,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class NoteLogResponse extends OCFOMASAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     private NoteLogHeader noteLog = null;
     private List<Note>    notes   = null;
     private int           noteCount = 0;

@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,10 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ConnectorReport implements Serializable
+public class ConnectorReport
 {
-    private static final long    serialVersionUID = 1L;
-
     private ComponentDescription componentDescription        = null;
     private ConnectorType        connectorType               = null;
     private long                 refreshTimeInterval         = 0L;

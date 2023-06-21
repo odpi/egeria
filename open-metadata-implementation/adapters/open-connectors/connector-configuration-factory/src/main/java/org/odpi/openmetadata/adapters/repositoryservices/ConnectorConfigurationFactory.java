@@ -86,6 +86,7 @@ public class ConnectorConfigurationFactory
         endpoint.setAddress("data/servers/" + serverName + "/config/" + serverName + ".config");
 
         Connection connection = new Connection();
+        connection.setDisplayName("Encrypted File Config Store Connection");
         connection.setEndpoint(endpoint);
         connection.setConnectorType(getConnectorType(ENCRYPTED_FILE_BASED_SERVER_CONFIG_STORE_PROVIDER));
         connection.setQualifiedName(endpoint.getAddress());
@@ -101,9 +102,11 @@ public class ConnectorConfigurationFactory
    public Connection getServerConfigConnectionForRetrieveAll()
     {
         Connection connection = new Connection();
+        connection.setDisplayName("Encrypted File Config Store Connection");
         connection.setConnectorType(getConnectorType(ENCRYPTED_FILE_BASED_SERVER_CONFIG_STORE_PROVIDER));
         return connection;
     }
+
 
     /**
      * Return the connection for the default audit log.
@@ -272,7 +275,7 @@ public class ConnectorConfigurationFactory
 
 
     /**
-     * Return the connection for a open metadata archive file.
+     * Return the connection for an open metadata archive file.
      *
      * @param fileName name of the archive file
      * @return OCF Connection used to create the file-based open metadata archive
@@ -286,6 +289,7 @@ public class ConnectorConfigurationFactory
 
         Connection connection = new Connection();
 
+        connection.setDisplayName("Open Metadata Archive File " + fileName + " Connection");
         connection.setConnectorType(getConnectorType(FILE_BASED_OPEN_METADATA_ARCHIVE_STORE_PROVIDER));
         connection.setEndpoint(endpoint);
 
@@ -310,6 +314,7 @@ public class ConnectorConfigurationFactory
 
         Connection connection = new Connection();
 
+        connection.setDisplayName("Cohort Registry Connection");
         connection.setEndpoint(endpoint);
         connection.setConnectorType(getConnectorType(FILE_BASED_REGISTRY_STORE_PROVIDER));
 
@@ -347,6 +352,7 @@ public class ConnectorConfigurationFactory
 
         Connection connection = new Connection();
 
+        connection.setDisplayName("Local Repository Remote Connection");
         connection.setEndpoint(endpoint);
         connection.setConnectorType(getConnectorType(OMRSREST_REPOSITORY_CONNECTOR_PROVIDER));
 
@@ -367,6 +373,7 @@ public class ConnectorConfigurationFactory
     {
         Connection connection = new Connection();
 
+        connection.setDisplayName("Local Graph Repository");
         connection.setConnectorType(getConnectorType(GRAPH_OMRS_REPOSITORY_CONNECTOR_PROVIDER));
         connection.setConfigurationProperties(storageProperties);
 
@@ -383,6 +390,7 @@ public class ConnectorConfigurationFactory
     {
         Connection connection = new Connection();
 
+        connection.setDisplayName("In Memory Local Repository Connection");
         connection.setConnectorType(getConnectorType(IN_MEMORY_OMRS_REPOSITORY_CONNECTOR_PROVIDER));
 
         return connection;
@@ -398,6 +406,7 @@ public class ConnectorConfigurationFactory
     {
         Connection connection = new Connection();
 
+        connection.setDisplayName("Read-only Local Repository Connection");
         connection.setConnectorType(getConnectorType(READ_ONLY_OMRS_REPOSITORY_CONNECTOR_PROVIDER));
 
         return connection;
@@ -431,6 +440,7 @@ public class ConnectorConfigurationFactory
 
         Connection connection = new Connection();
 
+        connection.setDisplayName("Plugin Local Repository Connection");
         connection.setEndpoint(endpoint);
         connection.setConnectorType(getDynamicConnectorType(connectorProviderClassName));
         connection.setConfigurationProperties(configurationProperties);
@@ -542,6 +552,7 @@ public class ConnectorConfigurationFactory
 
         Connection connection = new Connection();
 
+        connection.setDisplayName("Kafka Event Bus Connection");
         connection.setEndpoint(endpoint);
         connection.setConnectorType(getConnectorType(connectorTypeJavaClassName));
         connection.setConfigurationProperties(configurationProperties);
@@ -564,6 +575,7 @@ public class ConnectorConfigurationFactory
 
         VirtualConnection connection = new VirtualConnection();
 
+        connection.setDisplayName("Enterprise OMRS Topic Connection");
         connection.setConnectorType(getConnectorType(OMRS_TOPIC_PROVIDER));
         connection.setEmbeddedConnections(getEmbeddedEventBusConnection("Enterprise OMRS Events",
                                                                         null,
@@ -600,6 +612,7 @@ public class ConnectorConfigurationFactory
 
         VirtualConnection connection = new VirtualConnection();
 
+        connection.setDisplayName("Remote Enterprise OMRS Topic Connection");
         connection.setConnectorType(getConnectorType(OMRS_TOPIC_PROVIDER));
         connection.setConfigurationProperties(configurationProperties);
         connection.setEmbeddedConnections(getEmbeddedEventBusConnection("Remote Enterprise OMRS Events",
@@ -756,6 +769,7 @@ public class ConnectorConfigurationFactory
     {
         VirtualConnection connection = new VirtualConnection();
 
+        connection.setDisplayName("Cohort OMRS Topic Connection for " + eventSourceName);
         connection.setConnectorType(getConnectorType(OMRS_TOPIC_PROVIDER));
         connection.setConfigurationProperties(configurationProperties);
         connection.setEmbeddedConnections(getEmbeddedEventBusConnection(eventSourceName,
@@ -798,6 +812,7 @@ public class ConnectorConfigurationFactory
 
         Connection connection = new Connection();
 
+        connection.setDisplayName("Repository Event Mapper Connection");
         connection.setEndpoint(endpoint);
         connection.setConnectorType(getDynamicConnectorType(connectorProviderClassName));
         connection.setConfigurationProperties(configurationProperties);
@@ -808,7 +823,7 @@ public class ConnectorConfigurationFactory
 
     /**
      * Return the connector type for the requested connector provider.  This is best used for connector providers that
-     * can return their own connector type.  Otherwise it makes one up.  This method should only be used for connector
+     * can return their own connector type.  Otherwise, it makes one up.  This method should only be used for connector
      * providers that are known at compile-time, not those that are only determined at runtime.
      *
      * @param connectorProviderClassName name of the connector provider class
@@ -837,7 +852,7 @@ public class ConnectorConfigurationFactory
 
     /**
      * Return the connector type for the requested connector provider.  This is best used for connector providers that
-     * can return their own connector type.  Otherwise it makes one up.  This method is useful for connector providers
+     * can return their own connector type.  Otherwise, it makes one up.  This method is useful for connector providers
      * that are defined at runtime rather than compile-time.
      *
      * @param connectorProviderClassName name of the connector provider class

@@ -7835,6 +7835,23 @@ public class OpenMetadataAPIGenericHandler<B>
                                                         serviceName,
                                                         methodName);
         }
+        else if (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME))
+        {
+            securityVerifier.validateUserForGlossaryDelete(userId,
+                                                           startingEntity,
+                                                           repositoryHelper,
+                                                           serviceName,
+                                                           methodName);
+        }
+        else if ((repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME)) ||
+                 (repositoryHelper.isTypeOf(serviceName, startingEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME)))
+        {
+            securityVerifier.validateUserForGlossaryMemberUpdate(userId,
+                                                                 startingEntity,
+                                                                 repositoryHelper,
+                                                                 serviceName,
+                                                                 methodName);
+        }
 
         /*
          * Retrieve the entities attached to this element.  Any entity that is anchored, directly or indirectly, to the anchor entity is deleted.

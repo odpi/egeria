@@ -19,7 +19,6 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.In
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorStatus;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads.IntegrationConnectorDedicatedThread;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
@@ -28,10 +27,8 @@ import java.util.Map;
  * IntegrationConnectorReport provides information on the operation of a single connector within an integration
  * service.
  */
-public class IntegrationConnectorHandler implements Serializable
+public class IntegrationConnectorHandler
 {
-    private static final long    serialVersionUID = 1L;
-
     /*
      * These values are set in the constructor and do not change.
      */

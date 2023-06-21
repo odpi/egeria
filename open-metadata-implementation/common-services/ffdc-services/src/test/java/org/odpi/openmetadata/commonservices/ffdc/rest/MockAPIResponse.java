@@ -10,8 +10,6 @@ import java.util.Arrays;
 
 public class MockAPIResponse extends FFDCResponseBase
 {
-    private static final long    serialVersionUID = 1L;
-
     /**
      * Default constructor
      */

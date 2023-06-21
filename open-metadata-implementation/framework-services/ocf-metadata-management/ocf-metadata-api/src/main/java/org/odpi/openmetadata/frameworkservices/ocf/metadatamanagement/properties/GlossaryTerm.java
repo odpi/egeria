@@ -20,8 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GlossaryTerm extends Referenceable
 {
-    private static final long    serialVersionUID = 1L;
-
     private String displayName  = null;
     private String summary      = null;
     private String description  = null;

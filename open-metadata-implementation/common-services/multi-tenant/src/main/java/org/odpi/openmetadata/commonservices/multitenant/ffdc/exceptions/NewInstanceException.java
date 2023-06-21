@@ -14,8 +14,6 @@ import java.util.Map;
  */
 public class NewInstanceException extends OMAGCheckedExceptionBase
 {
-    private static final long    serialVersionUID = 1L;
-
     /**
      * This is the typical constructor used for creating an NewInstanceException.
      *

@@ -146,10 +146,18 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         this.externalSourceName = externalSourceName;
     }
 
+    /**
+     * Gets the {@link org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic}
+     *
+     * @return deleteSemantic used by the client for deletes
+     */
     public DeleteSemantic getDeleteSemantic() {
         return deleteSemantic;
     }
 
+    /**
+     * Sets the {@link org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic} for the client
+     */
     public void setDeleteSemantic(DeleteSemantic deleteSemantic) {
         this.deleteSemantic = deleteSemantic;
     }

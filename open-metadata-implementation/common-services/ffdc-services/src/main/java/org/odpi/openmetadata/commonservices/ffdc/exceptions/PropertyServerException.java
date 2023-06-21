@@ -12,8 +12,6 @@ import java.util.Map;
  */
 public class PropertyServerException extends org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException
 {
-    private static final long    serialVersionUID = 1L;
-
     /**
      * This is the typical constructor used for creating an exception.
      *

@@ -10,8 +10,8 @@ import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationG
 import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.adminservices.properties.OMAGServerServiceStatus;
-import org.odpi.openmetadata.adminservices.properties.ServerActiveStatus;
+import org.odpi.openmetadata.platformservices.properties.OMAGServerServiceStatus;
+import org.odpi.openmetadata.platformservices.properties.ServerActiveStatus;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;

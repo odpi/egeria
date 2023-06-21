@@ -3,7 +3,6 @@
 
 package org.odpi.openmetadata.metadatasecurity.properties;
 
-import java.io.Serial;
 import java.util.*;
 
 /**
@@ -12,9 +11,6 @@ import java.util.*;
  */
 public class Asset extends Referenceable
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private String              displayName      = null;
     private String              description      = null;
     private List<String>        zoneMembership   = null;

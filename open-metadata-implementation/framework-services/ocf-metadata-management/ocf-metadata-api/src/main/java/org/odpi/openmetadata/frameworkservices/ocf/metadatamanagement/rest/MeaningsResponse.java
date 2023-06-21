@@ -25,8 +25,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class MeaningsResponse extends PagedResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     private List<Meaning> meanings            = null;
     private int           startingFromElement = 0;
 

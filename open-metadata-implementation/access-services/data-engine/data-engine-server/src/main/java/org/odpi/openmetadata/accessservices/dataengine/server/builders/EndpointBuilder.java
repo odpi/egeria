@@ -11,13 +11,24 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROTOCOL_PROPERTY_NAME;
 
 /**
- * Builder for an Endpoint properties
+ * EndpointBuilder is able to build the properties for an Endpoint entity.
  */
 public class EndpointBuilder extends ReferenceableBuilder {
 
     private final String protocol;
     private final String networkAddress;
 
+    /**
+     * Constructor for endpoint creates.
+     *
+     * @param protocol         the protocol
+     * @param networkAddress   the network address
+     * @param qualifiedName    unique name
+     * @param typeId           type GUID to use for the entity
+     * @param repositoryHelper helper methods
+     * @param serviceName      name of this OMAS
+     * @param serverName       name of local server
+     */
     public EndpointBuilder(String protocol, String networkAddress, String qualifiedName, String typeId, String typeName,
                            OMRSRepositoryHelper repositoryHelper, String serviceName, String serverName) {
         super(qualifiedName, typeId, typeName, repositoryHelper, serviceName, serverName);
@@ -33,7 +44,7 @@ public class EndpointBuilder extends ReferenceableBuilder {
      * @throws InvalidParameterException there is a problem with the properties
      */
     @Override
-    public InstanceProperties getInstanceProperties(String  methodName) throws InvalidParameterException {
+    public InstanceProperties getInstanceProperties(String methodName) throws InvalidParameterException {
 
         InstanceProperties properties = super.getInstanceProperties(methodName);
 

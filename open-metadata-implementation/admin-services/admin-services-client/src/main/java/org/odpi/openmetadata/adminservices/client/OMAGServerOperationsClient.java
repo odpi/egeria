@@ -18,7 +18,10 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 /**
  * OMAGServerOperationsClient provides services to start and stop an OMAG Server.
+ * This client is deprecated and will be removed soon.  Use the Platform Services Client to control OMAG Servers
+ * in the OMAG Server Platform.  It supports the same methods.
  */
+@Deprecated
 public class OMAGServerOperationsClient
 {
     protected String adminUserId;              /* Initialized in constructor */

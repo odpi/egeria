@@ -34,7 +34,7 @@ import java.util.Map;
 public class OMAGServerAdminForViewServices
 {
     private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminForViewServices.class),
-                                                                      CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
+                                                                      CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName());
 
     private OMAGServerAdminStoreServices configStore = new OMAGServerAdminStoreServices();
     private OMAGServerErrorHandler errorHandler = new OMAGServerErrorHandler();

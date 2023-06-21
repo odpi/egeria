@@ -5,13 +5,19 @@
 
 
 dependencies {
-    implementation 'org.slf4j:slf4j-api'
-    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
-    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
-    implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
-    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    compileOnly 'org.slf4j:slf4j-api'
+    compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
+    compileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
+    compileOnly 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'commons-io:commons-io'
     testImplementation 'org.testng:testng'
+    testImplementation project(':open-metadata-test:open-metadata-ut')
+    testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    testImplementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    compileOnly 'commons-io:commons-io'
+    testCompileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'Cohort Registry File Store'
