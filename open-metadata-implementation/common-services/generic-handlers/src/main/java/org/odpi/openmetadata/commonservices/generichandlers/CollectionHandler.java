@@ -10,9 +10,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -401,7 +402,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Mark the collection as a taxonomy.
+     * Mark the collection as a folder.
      *
      * @param userId calling user
      * @param collectionGUID unique identifier of asset
@@ -539,6 +540,180 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                                                                      OpenMetadataAPIMapper.MEMBERSHIP_RATIONALE_PROPERTY_NAME,
                                                                                      membershipRationale,
                                                                                      methodName);
+        this.linkElementToElement(userId,
+                                  externalSourceGUID,
+                                  externalSourceName,
+                                  collectionGUID,
+                                  collectionGUIDParameterName,
+                                  OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
+                                  memberGUID,
+                                  memberGUIDParameterName,
+                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  forLineage,
+                                  forDuplicateProcessing,
+                                  supportedZones,
+                                  OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_GUID,
+                                  OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_NAME,
+                                  properties,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
+                                  methodName);
+    }
+
+
+    /**
+     * Add a member (Referenceable) to collection.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of the software capability that owns this collection
+     * @param externalSourceName unique name of the software capability that owns this collection
+     * @param collectionGUID unique identifier of the collection
+     * @param collectionGUIDParameterName parameter supplying the collectionGUID
+     * @param memberGUID unique identifier of the element that is being added to the collection
+     * @param memberGUIDParameterName parameter supplying the memberGUID
+     * @param membershipRationale why is the element a member? (optional)
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateCollectionMembership(String  userId,
+                                           String  externalSourceGUID,
+                                           String  externalSourceName,
+                                           String  collectionGUID,
+                                           String  collectionGUIDParameterName,
+                                           String  memberGUID,
+                                           String  memberGUIDParameterName,
+                                           String  membershipRationale,
+                                           String  expression,
+                                           int     membershipStatus,
+                                           String  userDefinedStatus,
+                                           int     confidence,
+                                           String  createdBy,
+                                           String  steward,
+                                           String  stewardTypeName,
+                                           String  stewardPropertyName,
+                                           String  source,
+                                           String  notes,
+                                           Date    effectiveFrom,
+                                           Date    effectiveTo,
+                                           boolean isMergeUpdate,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           Date    effectiveTime,
+                                           String  methodName) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
+        InstanceProperties properties = null;
+
+        if (isMergeUpdate)
+        {
+            Relationship relationship = getUniqueAttachmentLink(userId,
+                                                                collectionGUID,
+                                                                collectionGUIDParameterName,
+                                                                OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
+                                                                OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_GUID,
+                                                                OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_NAME,
+                                                                memberGUID,
+                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                2,
+                                                                forLineage,
+                                                                forDuplicateProcessing,
+                                                                supportedZones,
+                                                                effectiveTime,
+                                                                methodName);
+
+            if (relationship != null)
+            {
+                properties = relationship.getProperties();
+            }
+        }
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.MEMBERSHIP_RATIONALE_PROPERTY_NAME,
+                                                                  membershipRationale,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.EXPRESSION_PROPERTY_NAME,
+                                                                  expression,
+                                                                  methodName);
+
+        try
+        {
+            properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                    properties,
+                                                                    OpenMetadataAPIMapper.STATUS_PROPERTY_NAME,
+                                                                    OpenMetadataAPIMapper.MEMBERSHIP_STATUS_ENUM_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.MEMBERSHIP_STATUS_ENUM_TYPE_NAME,
+                                                                    membershipStatus,
+                                                                    methodName);
+        }
+        catch (TypeErrorException classificationNotSupported)
+        {
+            throw new InvalidParameterException(classificationNotSupported, OpenMetadataAPIMapper.STATUS_PROPERTY_NAME);
+        }
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.USER_DEFINED_STATUS_PROPERTY_NAME,
+                                                                  userDefinedStatus,
+                                                                  methodName);
+
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName,
+                                                               properties,
+                                                               OpenMetadataAPIMapper.CONFIDENCE_PROPERTY_NAME,
+                                                               confidence,
+                                                               methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.CREATED_BY_PROPERTY_NAME,
+                                                                  createdBy,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME,
+                                                                  steward,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                  stewardTypeName,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                  stewardPropertyName,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME,
+                                                                  source,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.NOTES_PROPERTY_NAME,
+                                                                  notes,
+                                                                  methodName);
+
+
         this.linkElementToElement(userId,
                                   externalSourceGUID,
                                   externalSourceName,

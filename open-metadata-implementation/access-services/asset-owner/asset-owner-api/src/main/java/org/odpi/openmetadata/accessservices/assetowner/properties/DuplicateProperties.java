@@ -21,8 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DuplicateProperties extends AssetOwnerOMASAPIRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
     private String duplicateGUID       = null;
     private int    statusIdentifier    = 0;
     private String steward             = null;

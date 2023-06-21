@@ -20,8 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 public class EnumSchemaTypeProperties extends SimpleSchemaTypeProperties
 {
-    private static final long     serialVersionUID = 1L;
-
     private String validValueSetGUID = null;
 
     /**

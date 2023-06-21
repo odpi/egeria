@@ -175,6 +175,7 @@ public class OpenMetadataTypesArchive4_1
     private void update0010BasicModel()
     {
         this.archiveBuilder.addRelationshipDef(getSampleDataRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateProcess());
     }
 
     private RelationshipDef getSampleDataRelationship()
@@ -246,6 +247,40 @@ public class OpenMetadataTypesArchive4_1
         relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
+    }
+
+
+    private TypeDefPatch updateProcess()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "Process";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attributeName            = "displayName";
+        final String attributeDescription     = "Display name of the process";
+        final String attributeDescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attributeName,
+                                                           attributeDescription,
+                                                           attributeDescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
     }
 
 

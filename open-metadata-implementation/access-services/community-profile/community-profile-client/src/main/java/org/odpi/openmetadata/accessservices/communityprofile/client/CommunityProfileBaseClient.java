@@ -38,7 +38,8 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
     final InvalidParameterHandler    invalidParameterHandler = new InvalidParameterHandler();
     final CommunityProfileRESTClient restClient;               /* Initialized in constructor */
 
-    private static final String elementsURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/related-elements";
+    protected static final String baseURLTemplatePrefix     = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}";
+    private   static final String elementsURLTemplatePrefix = baseURLTemplatePrefix + "/related-elements";
 
 
     /**
@@ -536,6 +537,59 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
     }
 
 
+    /**
+     * Create a relationship between a primary element and a secondary element.
+     *
+     * @param userId                            calling user
+     * @param externalSourceGUID                unique identifier of software capability representing the caller
+     * @param externalSourceName                unique name of software capability representing the caller
+     * @param primaryElementGUID                unique identifier of the primary element
+     * @param primaryElementGUIDParameterName   name of parameter passing the primaryElementGUID
+     * @param isMergeUpdate                     should the new properties be merged with existing properties (true) or completely replace them
+     *                                          (false)?
+     * @param properties                        describes the properties for the relationship
+     * @param secondaryElementGUID              unique identifier of the element to connect it to
+     * @param secondaryElementGUIDParameterName name of parameter passing the secondaryElementGUID
+     * @param urlTemplate                       URL to call (no expected placeholders)
+     * @param methodName                        calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void setupRelationship(String                 userId,
+                           String                 externalSourceGUID,
+                           String                 externalSourceName,
+                           String                 primaryElementGUID,
+                           String                 primaryElementGUIDParameterName,
+                           boolean                isMergeUpdate,
+                           RelationshipProperties properties,
+                           String                 secondaryElementGUID,
+                           String                 secondaryElementGUIDParameterName,
+                           String                 urlTemplate,
+                           String                 methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(primaryElementGUID, primaryElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(secondaryElementGUID, secondaryElementGUIDParameterName, methodName);
+
+        RelationshipRequestBody requestBody = new RelationshipRequestBody();
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+        requestBody.setProperties(properties);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        primaryElementGUID,
+                                        secondaryElementGUID,
+                                        isMergeUpdate);
+    }
 
     /**
      * Update the properties of the relationship between two elements.

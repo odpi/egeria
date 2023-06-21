@@ -25,8 +25,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CombinedSchemaRequestBody extends AssetOwnerOMASAPIRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
     protected SchemaTypeProperties            schemaType       = null;
     protected List<SchemaAttributeProperties> schemaAttributes = null;
 

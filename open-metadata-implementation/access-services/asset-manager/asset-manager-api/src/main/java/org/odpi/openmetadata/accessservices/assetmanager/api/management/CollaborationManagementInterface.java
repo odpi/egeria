@@ -548,7 +548,7 @@ public interface CollaborationManagementInterface
 
     /* =====================================================================================================================
      * A note log maintains an ordered list of notes.  It can be used to support release note, blogs and similar
-     * broadcast information.  Notelogs are typically maintained by the owners/stewards of an element.
+     * broadcast information.  Note logs are typically maintained by the owners/stewards of an element.
      */
 
     /**
@@ -896,5 +896,4 @@ public interface CollaborationManagementInterface
                               boolean forDuplicateProcessing) throws InvalidParameterException,
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException;
-
 }

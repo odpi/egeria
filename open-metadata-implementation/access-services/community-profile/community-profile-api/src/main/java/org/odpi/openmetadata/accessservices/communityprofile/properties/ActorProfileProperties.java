@@ -22,7 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = TeamProfileProperties.class, name = "TeamProfileProperties"),
-                @JsonSubTypes.Type(value = PersonalProfileProperties.class, name = "PersonalProfileProperties")
         })
 
 public class ActorProfileProperties extends ReferenceableProperties

@@ -9,7 +9,6 @@ import org.odpi.openmetadata.accessservices.communityprofile.client.rest.Communi
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.MetadataSourceElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.MetadataSourceProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.MetadataSourceResponse;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -30,16 +29,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
  *     aggregated and managed from many systems.</li>
  * </ul>
  */
-public class MetadataSourceClient implements MetadataSourceInterface
+public class MetadataSourceClient extends CommunityProfileBaseClient implements MetadataSourceInterface
 {
-    private final String                     serverName;               /* Initialized in constructor */
-    private final String                     serverPlatformURLRoot;    /* Initialized in constructor */
-    private final CommunityProfileRESTClient restClient;               /* Initialized in constructor */
-
-    private final InvalidParameterHandler    invalidParameterHandler = new InvalidParameterHandler();
     private final NullRequestBody            nullRequestBody         = new NullRequestBody();
 
-    private final String urlTemplatePrefix = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/metadata-sources";
+    private final String urlTemplatePrefix = baseURLTemplatePrefix + "/metadata-sources";
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -52,13 +46,7 @@ public class MetadataSourceClient implements MetadataSourceInterface
     public MetadataSourceClient(String serverName,
                                 String serverPlatformURLRoot) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot);
     }
 
 
@@ -75,13 +63,7 @@ public class MetadataSourceClient implements MetadataSourceInterface
                                 String   serverPlatformURLRoot,
                                 AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog);
     }
 
 
@@ -101,13 +83,7 @@ public class MetadataSourceClient implements MetadataSourceInterface
                                 String userId,
                                 String password) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -129,13 +105,7 @@ public class MetadataSourceClient implements MetadataSourceInterface
                                 String   password,
                                 AuditLog auditLog) throws  InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
 
 
@@ -154,14 +124,7 @@ public class MetadataSourceClient implements MetadataSourceInterface
                                 CommunityProfileRESTClient restClient,
                                 int                        maxPageSize) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient = restClient;
+        super(serverName, serverPlatformURLRoot, restClient, maxPageSize);
     }
 
 
@@ -316,7 +279,7 @@ public class MetadataSourceClient implements MetadataSourceInterface
 
     /**
      * Update classification of the metadata source that is providing a user access directory information
-     * such as the groups and access rights of a user Id.
+     * such as the groups and access rights of a userId.
      *
      * @param userId calling user
      * @param metadataSourceGUID unique identifier of the metadata source

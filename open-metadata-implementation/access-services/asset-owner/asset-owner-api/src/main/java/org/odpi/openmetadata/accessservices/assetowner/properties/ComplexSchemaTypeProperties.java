@@ -29,8 +29,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public class ComplexSchemaTypeProperties extends SchemaTypeProperties
 {
-    private static final long     serialVersionUID = 1L;
-
     private int    attributeCount = 0;
 
 

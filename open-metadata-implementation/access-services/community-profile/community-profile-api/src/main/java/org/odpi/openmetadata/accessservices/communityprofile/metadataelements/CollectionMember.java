@@ -5,7 +5,10 @@ package org.odpi.openmetadata.accessservices.communityprofile.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionMembershipProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ReferenceableProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 import java.util.Objects;
 
@@ -18,11 +21,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CollectionMember extends CollectionMemberHeader
+public class CollectionMember implements MetadataElement
 {
-    private static final long    serialVersionUID = 1L;
+    private ElementHeader                  relationshipHeader     = null;
+    private CollectionMembershipProperties relationshipProperties = null;
 
-    private ReferenceableProperties properties = null;
+    private ElementHeader                  elementHeader    = null;
+
+    private ReferenceableProperties        properties = null;
 
 
     /**
@@ -41,12 +47,81 @@ public class CollectionMember extends CollectionMemberHeader
      */
     public CollectionMember(CollectionMember template)
     {
-        super(template);
 
         if (template != null)
         {
+            relationshipHeader = template.getRelationshipHeader();
+            relationshipProperties = template.getRelationshipProperties();
+            elementHeader = template.getElementHeader();
             properties = template.getProperties();
         }
+    }
+
+    /**
+     * Return the element header associated with the relationship.
+     *
+     * @return element header object
+     */
+    public ElementHeader getRelationshipHeader()
+    {
+        return relationshipHeader;
+    }
+
+
+    /**
+     * Set up the element header associated with the relationship.
+     *
+     * @param relationshipHeader element header object
+     */
+    public void setRelationshipHeader(ElementHeader relationshipHeader)
+    {
+        this.relationshipHeader = relationshipHeader;
+    }
+
+
+    /**
+     * Return details of the relationship
+     *
+     * @return relationship properties
+     */
+    public CollectionMembershipProperties getRelationshipProperties()
+    {
+        return relationshipProperties;
+    }
+
+
+    /**
+     * Set up relationship properties
+     *
+     * @param relationshipProperties relationship properties
+     */
+    public void setRelationshipProperties(CollectionMembershipProperties relationshipProperties)
+    {
+        this.relationshipProperties = relationshipProperties;
+    }
+
+
+    /**
+     * Return the element header associated with the properties.
+     *
+     * @return element header object
+     */
+    @Override
+    public ElementHeader getElementHeader()
+    {
+        return elementHeader;
+    }
+
+
+    /**
+     * Set up the element header associated with the properties.
+     *
+     * @param elementHeader element header object
+     */
+    @Override
+    public void setElementHeader(ElementHeader elementHeader)
+    {
+        this.elementHeader = elementHeader;
     }
 
 
@@ -82,11 +157,11 @@ public class CollectionMember extends CollectionMemberHeader
     public String toString()
     {
         return "CollectionMember{" +
-                       "properties=" + properties +
-                       ", elementHeader=" + getElementHeader() +
-                       ", dateAddedToCollection=" + getDateAddedToCollection() +
-                       ", membershipRationale='" + getMembershipRationale() + '\'' +
-                       '}';
+                "relationshipHeader=" + relationshipHeader +
+                ", relationshipProperties=" + relationshipProperties +
+                ", elementHeader=" + elementHeader +
+                ", properties=" + properties +
+                '}';
     }
 
 
@@ -107,14 +182,12 @@ public class CollectionMember extends CollectionMemberHeader
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
         CollectionMember that = (CollectionMember) objectToCompare;
-        return Objects.equals(properties, that.properties);
+        return Objects.equals(relationshipHeader, that.relationshipHeader) &&
+                Objects.equals(relationshipProperties, that.relationshipProperties) &&
+                Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(properties, that.properties);
     }
-
 
     /**
      * Return hash code for this object
@@ -124,6 +197,6 @@ public class CollectionMember extends CollectionMemberHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties);
+        return Objects.hash(relationshipHeader, relationshipProperties, elementHeader, properties);
     }
 }

@@ -529,69 +529,6 @@ public class AssetOwnerRESTServices
 
 
     /**
-     * Stores the supplied schema type in the catalog and attaches it to the asset.  If another schema is currently
-     * attached to the asset, it is unlinked and deleted.
-     *
-     * @param serverName name of the server instance to connect to
-     * @param userId calling user
-     * @param assetGUID unique identifier of the asset that the schema is to be attached to
-     * @param requestBody schema type to create and attach directly to the asset.
-     *
-     * @return guid of the new schema type or
-     * InvalidParameterException full path or userId is null, or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    @Deprecated
-    public GUIDResponse   addSchemaTypeToAsset(String                serverName,
-                                               String                userId,
-                                               String                assetGUID,
-                                               SchemaTypeRequestBody requestBody)
-    {
-        final String   methodName = "addSchemaTypeToAsset";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        GUIDResponse response = new GUIDResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                if (requestBody.getSchemaTypeProperties() != null)
-                {
-                    response.setGUID(this.addAssociatedSchemaType(userId,
-                                                                  serverName,
-                                                                  assetGUID,
-                                                                  requestBody.getSchemaTypeProperties(),
-                                                                  methodName));
-                }
-                else
-                {
-                    final String parameterName = "requestBody.getSchemaTypeProperties()";
-
-                    restExceptionHandler.handleMissingValue(parameterName, methodName);
-                }
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
      * Request that the asset handler creates a schema type and links it to the asset.
      *
      * @param userId calling user
@@ -1109,68 +1046,6 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse addSchemaAttributes(String                      serverName,
-                                            String                      userId,
-                                            String                      assetGUID,
-                                            String                      parentGUID,
-                                            SchemaAttributesRequestBody requestBody)
-    {
-        final String   methodName = "addSchemaAttributes";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            if ((requestBody != null)
-                    && (requestBody.getSchemaAttributeProperties() != null)
-                    && (! requestBody.getSchemaAttributeProperties().isEmpty()))
-            {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-                for (SchemaAttributeProperties schemaAttributeProperties : requestBody.getSchemaAttributeProperties())
-                {
-                    this.addAssociatedSchemaAttribute(userId,
-                                                      serverName,
-                                                      assetGUID,
-                                                      parentGUID,
-                                                      schemaAttributeProperties,
-                                                      methodName);
-                }
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Adds attributes to a complex schema type like a relational table, avro schema or a structured document.
-     * This method can be called repeatedly to add many attributes to a schema.
-     * The schema type may be attached both directly or indirectly via nested schema elements to the asset.
-     *
-     * @param serverName name of the server instance to connect to
-     * @param userId calling user
-     * @param assetGUID unique identifier of the asset that the schema is to be attached to
-     * @param parentGUID unique identifier of the schema element to anchor these attributes to.
-     * @param requestBody list of schema attribute objects.
-     *
-     * @return list of unique identifiers for the new schema attributes returned in the same order as the supplied attribute or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
     public VoidResponse addSchemaAttributes(String                          serverName,
                                             String                          userId,
                                             String                          assetGUID,
@@ -1372,12 +1247,11 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse  addSemanticAssignment(String          serverName,
-                                               String          userId,
-                                               String          assetGUID,
-                                               String          glossaryTermGUID,
-                                               NullRequestBody requestBody)
+    public VoidResponse  addSemanticAssignment(String                       serverName,
+                                               String                       userId,
+                                               String                       assetGUID,
+                                               String                       glossaryTermGUID,
+                                               SemanticAssignmentProperties requestBody)
     {
         final String   assetGUIDParameterName = "assetGUID";
         final String   glossaryTermGUIDParameterName = "glossaryTermGUID";
@@ -1393,19 +1267,68 @@ public class AssetOwnerRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-            handler.saveSemanticAssignment(userId,
-                                           null,
-                                           null,
-                                           assetGUID,
-                                           assetGUIDParameterName,
-                                           glossaryTermGUID,
-                                           glossaryTermGUIDParameterName,
-                                           null,
-                                           null,
-                                           false,
-                                           false,
-                                           new Date(),
-                                           methodName);
+            if (requestBody == null)
+            {
+                handler.saveSemanticAssignment(userId,
+                                               null,
+                                               null,
+                                               assetGUID,
+                                               assetGUIDParameterName,
+                                               glossaryTermGUID,
+                                               glossaryTermGUIDParameterName,
+                                               null,
+                                               null,
+                                               false,
+                                               false,
+                                               new Date(),
+                                               methodName);
+            }
+            else if (requestBody.getStatus() == null)
+            {
+                handler.saveSemanticAssignment(userId,
+                                               null,
+                                               null,
+                                               assetGUID,
+                                               assetGUIDParameterName,
+                                               glossaryTermGUID,
+                                               glossaryTermGUIDParameterName,
+                                               requestBody.getDescription(),
+                                               requestBody.getExpression(),
+                                               3,
+                                               requestBody.getConfidence(),
+                                               requestBody.getCreatedBy(),
+                                               requestBody.getSteward(),
+                                               requestBody.getSource(),
+                                               null,
+                                               null,
+                                               false,
+                                               false,
+                                               new Date(),
+                                               methodName);
+            }
+            else
+            {
+                handler.saveSemanticAssignment(userId,
+                                               null,
+                                               null,
+                                               assetGUID,
+                                               assetGUIDParameterName,
+                                               glossaryTermGUID,
+                                               glossaryTermGUIDParameterName,
+                                               requestBody.getDescription(),
+                                               requestBody.getExpression(),
+                                               requestBody.getStatus().getOpenTypeOrdinal(),
+                                               requestBody.getConfidence(),
+                                               requestBody.getCreatedBy(),
+                                               requestBody.getSteward(),
+                                               requestBody.getSource(),
+                                               null,
+                                               null,
+                                               false,
+                                               false,
+                                               new Date(),
+                                               methodName);
+            }
         }
         catch (Exception error)
         {

@@ -12,9 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * CollectionStatus specifies which subset of a collection should be returned.  The relationship
- * that links a member into a collection has an start and end date (called the effective dates).  The
- * Community Profile OMAS uses the CollectionStatus and the effective dates to determine which members to return.
+ * CommunityMembershipType specifies the role of a member in the community.
  * <ul>
  *     <li>CONTRIBUTOR - Individual is able to be a contributing member of the community.  This is the default.</li>
  *     <li>ADMINISTER - Individual is able to administer the community.</li>

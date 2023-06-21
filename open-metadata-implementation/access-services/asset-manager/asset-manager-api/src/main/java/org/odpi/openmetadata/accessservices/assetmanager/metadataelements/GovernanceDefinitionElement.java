@@ -6,7 +6,6 @@ package org.odpi.openmetadata.accessservices.assetmanager.metadataelements;
 
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GovernanceDefinitionProperties;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
@@ -15,10 +14,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeade
  * GovernanceDefinitionElement is the superclass used to return the common properties of a governance definition stored in the
  * open metadata repositories.
  */
-public class GovernanceDefinitionElement implements Serializable, MetadataElement
+public class GovernanceDefinitionElement implements MetadataElement
 {
-    private static final long serialVersionUID = 1L;
-
     private ElementHeader                   elementHeader      = null;
     private List<MetadataCorrelationHeader> correlationHeaders = null;
     private GovernanceDefinitionProperties  properties         = null;

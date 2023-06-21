@@ -741,7 +741,7 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        final String methodName                = "findGlossaries";
+        final String methodName                = "findComments";
         final String searchStringParameterName = "searchString";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -1073,7 +1073,7 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
                                                                        PropertyServerException,
                                                                        UserNotAuthorizedException
     {
-        final String   methodName = "findTags";
+        final String   methodName = "findMyTags";
         final String   urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/tags/private/by-search-string?startFrom={2}&pageSize={3}";
         final String   nameParameter = "tag";
 

@@ -34,10 +34,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = VoidResponse.class, name = "VoidResponse")
 
 })
-public class FFDCResponseBase implements java.io.Serializable, FFDCResponse
+public class FFDCResponseBase implements FFDCResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     private int                 relatedHTTPCode                 = 200;
     private String              exceptionClassName              = null;
     private String              exceptionCausedBy               = null;

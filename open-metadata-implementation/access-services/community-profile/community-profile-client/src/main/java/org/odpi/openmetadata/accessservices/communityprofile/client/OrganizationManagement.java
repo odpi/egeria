@@ -26,7 +26,6 @@ import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleList
 import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleRequestBody;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleResponse;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.TeamPlayerRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
@@ -43,16 +42,8 @@ import java.util.List;
  * OrganizationManagement is the client used by the Organization Integrator OMIS that is responsible with synchronizing organizational
  * structures, profiles rules and users with open metadata.
  */
-public class OrganizationManagement implements OrganizationManagementInterface
+public class OrganizationManagement extends CommunityProfileBaseClient implements OrganizationManagementInterface
 {
-    private final String                     serverName;               /* Initialized in constructor */
-    private final String                     serverPlatformURLRoot;    /* Initialized in constructor */
-    private final CommunityProfileRESTClient restClient;               /* Initialized in constructor */
-
-    private final InvalidParameterHandler    invalidParameterHandler = new InvalidParameterHandler();
-
-    private final String urlTemplatePrefix = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}";
-
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
@@ -64,13 +55,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
     public OrganizationManagement(String serverName,
                                   String serverPlatformURLRoot) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot);
     }
 
 
@@ -87,13 +72,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
                                   String   serverPlatformURLRoot,
                                   AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog);
     }
 
 
@@ -113,13 +92,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
                                   String userId,
                                   String password) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -141,13 +114,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
                                   String   password,
                                   AuditLog auditLog) throws  InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
 
 
@@ -166,19 +133,12 @@ public class OrganizationManagement implements OrganizationManagementInterface
                                   CommunityProfileRESTClient restClient,
                                   int                        maxPageSize) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient = restClient;
+        super(serverName, serverPlatformURLRoot, restClient, maxPageSize);
     }
 
 
     /**
-     * Create a definition of a actor profile.  This could be for the whole organization, a team, a person or a system.
+     * Create a definition of an actor profile.  This could be for the whole organization, a team, a person or a system.
      *
      * @param userId calling user
      * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
@@ -209,7 +169,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
         invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/profiles";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/profiles";
 
         ActorProfileRequestBody requestBody = new ActorProfileRequestBody();
 
@@ -263,7 +223,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
             invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
         }
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/profiles/{2}?isMergeUpdate={3}";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/profiles/{2}?isMergeUpdate={3}";
 
         ActorProfileRequestBody requestBody = new ActorProfileRequestBody();
 
@@ -302,7 +262,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(actorProfileGUID, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/profiles/{2}/delete";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/profiles/{2}/delete";
 
         ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
@@ -343,7 +303,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/profiles/{2}/contact-methods";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/profiles/{2}/contact-methods";
 
         ContactMethodRequestBody requestBody = new ContactMethodRequestBody();
 
@@ -388,7 +348,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(contactMethodGUID, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/profiles/contact-methods/{2}/delete";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/profiles/contact-methods/{2}/delete";
 
         ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
@@ -436,7 +396,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
         invalidParameterHandler.validateGUID(superTeamProfileGUID, profileGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(subTeamProfileGUID, subTeamGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/profiles/{2}/sub-team-profiles/{3}/link?delegationEscalationAuthority={4}";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/profiles/{2}/sub-team-profiles/{3}/link?delegationEscalationAuthority={4}";
 
         EffectiveDatesRequestBody requestBody = new EffectiveDatesRequestBody();
 
@@ -479,7 +439,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
         invalidParameterHandler.validateGUID(superTeamProfileGUID, profileGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(subTeamProfileGUID, subTeamGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/profiles/{2}/sub-team-profiles/{3}/unlink";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/profiles/{2}/sub-team-profiles/{3}/unlink";
 
         ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
@@ -514,7 +474,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(actorProfileGUID, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/profiles/{2}";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/profiles/{2}";
 
         ActorProfileResponse restResult = restClient.callActorProfileGetRESTCall(methodName,
                                                                                  urlTemplate,
@@ -550,7 +510,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(actorProfileUserId, nameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/profiles/user-ids/{2}";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/profiles/user-ids/{2}";
 
         ActorProfileResponse restResult = restClient.callActorProfileGetRESTCall(methodName,
                                                                                  urlTemplate,
@@ -591,7 +551,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/profiles/by-name?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/profiles/by-name?startFrom={2}&pageSize={3}";
 
         NameRequestBody requestBody = new NameRequestBody();
 
@@ -635,7 +595,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/profiles?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/profiles?startFrom={2}&pageSize={3}";
 
         ActorProfileListResponse restResult = restClient.callActorProfileListGetRESTCall(methodName,
                                                                                          urlTemplate,
@@ -676,7 +636,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(locationGUID, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/profiles/by-location/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/profiles/by-location/{2}?startFrom={3}&pageSize={4}";
 
 
         ActorProfileListResponse restResult = restClient.callActorProfileListGetRESTCall(methodName,
@@ -719,7 +679,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/profiles/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/profiles/by-search-string?startFrom={2}&pageSize={3}";
 
         SearchStringRequestBody requestBody = new SearchStringRequestBody();
 
@@ -768,7 +728,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
         invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(properties.getRoleId(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/person-roles";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/person-roles";
 
         PersonRoleRequestBody requestBody = new PersonRoleRequestBody();
 
@@ -819,7 +779,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
             invalidParameterHandler.validateName(properties.getRoleId(), qualifiedNameParameterName, methodName);
         }
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/person-roles/{2}?isMergeUpdate={3}";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/person-roles/{2}?isMergeUpdate={3}";
 
         PersonRoleRequestBody requestBody = new PersonRoleRequestBody();
 
@@ -857,7 +817,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(personRoleGUID, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/person-roles/{2}/delete";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/person-roles/{2}/delete";
 
         ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
@@ -900,7 +860,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
         invalidParameterHandler.validateGUID(personProfileGUID, profileGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(personRoleGUID, personRoleGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/person-roles/{2}/profiles/{3}/link";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/person-roles/{2}/profiles/{3}/link";
 
         AppointmentRequestBody requestBody = new AppointmentRequestBody();
 
@@ -944,7 +904,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(personRoleGUID, personRoleGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/person-roles/{2}/appointees?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/person-roles/{2}/appointees?startFrom={3}&pageSize={4}";
 
         EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
 
@@ -995,7 +955,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
         invalidParameterHandler.validateGUID(appointmentGUID, guidParameterName, methodName);
         invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/person-roles/appointees/{2}?isMergeUpdate={3}";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/person-roles/appointees/{2}?isMergeUpdate={3}";
 
         AppointmentRequestBody requestBody = new AppointmentRequestBody();
 
@@ -1034,7 +994,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(appointmentGUID, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/person-roles/appointees/{2}/unlink";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/person-roles/appointees/{2}/unlink";
 
         ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
@@ -1079,7 +1039,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
         invalidParameterHandler.validateGUID(teamProfileGUID, profileGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(teamRoleGUID, personRoleGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/team-profiles/{2}/team-roles/{3}/link";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/team-profiles/{2}/team-roles/{3}/link";
 
         TeamPlayerRequestBody requestBody = new TeamPlayerRequestBody();
 
@@ -1124,7 +1084,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
         invalidParameterHandler.validateGUID(teamProfileGUID, profileGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(teamRoleGUID, personRoleGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/team-profiles/{2}/team-roles/{3}/unlink";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/team-profiles/{2}/team-roles/{3}/unlink";
 
         TeamPlayerRequestBody requestBody = new TeamPlayerRequestBody();
 
@@ -1160,7 +1120,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(personRoleGUID, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/person-roles/{2}";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/person-roles/{2}";
 
         PersonRoleResponse restResult = restClient.callPersonRoleGetRESTCall(methodName,
                                                                              urlTemplate,
@@ -1201,7 +1161,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/person-roles/by-name?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/person-roles/by-name?startFrom={2}&pageSize={3}";
 
         NameRequestBody requestBody = new NameRequestBody();
 
@@ -1249,7 +1209,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(teamGUID, guidPropertyName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/person-roles/by-team/{2}/leadership?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/person-roles/by-team/{2}/leadership?startFrom={3}&pageSize={4}";
 
         PersonRoleListResponse restResult = restClient.callPersonRoleListGetRESTCall(methodName,
                                                                                       urlTemplate,
@@ -1291,7 +1251,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(teamGUID, guidPropertyName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/person-roles/by-team/{2}/membership?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/person-roles/by-team/{2}/membership?startFrom={3}&pageSize={4}";
 
         PersonRoleListResponse restResult = restClient.callPersonRoleListGetRESTCall(methodName,
                                                                                      urlTemplate,
@@ -1334,7 +1294,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/person-roles/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/person-roles/by-search-string?startFrom={2}&pageSize={3}";
 
         SearchStringRequestBody requestBody = new SearchStringRequestBody();
 
