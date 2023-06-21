@@ -72,20 +72,22 @@ loadScripts(document, 'script');</script>
 <h1 title="Class AssetOwnerBaseClient" class="title">Class AssetOwnerBaseClient</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance"><a href="../../../frameworkservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client">org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.ConnectedAssetClientBase</a>
 <div class="inheritance">org.odpi.openmetadata.accessservices.assetowner.client.AssetOwnerBaseClient</div>
+</div>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../api/RelatedElementsManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.api">RelatedElementsManagementInterface</a></code></dd>
+<dd><code><a href="../api/RelatedElementsManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.api">RelatedElementsManagementInterface</a></code>, <code><a href="../../../frameworkservices/ocf/metadatamanagement/api/ConnectorFactoryInterface.html" title="interface in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.api">ConnectorFactoryInterface</a></code></dd>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="AssetCertificationManager.html" title="class in org.odpi.openmetadata.accessservices.assetowner.client">AssetCertificationManager</a></code>, <code><a href="AssetLicenseManager.html" title="class in org.odpi.openmetadata.accessservices.assetowner.client">AssetLicenseManager</a></code>, <code><a href="ExternalReferenceManager.html" title="class in org.odpi.openmetadata.accessservices.assetowner.client">ExternalReferenceManager</a></code></dd>
+<dd><code><a href="AssetCertificationManager.html" title="class in org.odpi.openmetadata.accessservices.assetowner.client">AssetCertificationManager</a></code>, <code><a href="AssetLicenseManager.html" title="class in org.odpi.openmetadata.accessservices.assetowner.client">AssetLicenseManager</a></code>, <code><a href="AssetOwner.html" title="class in org.odpi.openmetadata.accessservices.assetowner.client">AssetOwner</a></code>, <code><a href="ExternalReferenceManager.html" title="class in org.odpi.openmetadata.accessservices.assetowner.client">ExternalReferenceManager</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">AssetOwnerBaseClient</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
+<span class="extends-implements">extends <a href="../../../frameworkservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client">ConnectedAssetClientBase</a>
 implements <a href="../api/RelatedElementsManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.api">RelatedElementsManagementInterface</a></span></div>
 <div class="block">AssetOwnerBaseClient supports the common properties and functions for the Community Profile OMAS.</div>
 </section>
@@ -100,10 +102,25 @@ implements <a href="../api/RelatedElementsManagementInterface.html" title="inter
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>protected <a href="../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a></code></div>
-<div class="col-second even-row-color"><code><a href="#nullRequestBody" class="member-name-link">nullRequestBody</a></code></div>
+<div class="col-first even-row-color"><code>protected static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#defaultAssetType" class="member-name-link">defaultAssetType</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected <a href="../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#nullRequestBody" class="member-name-link">nullRequestBody</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>protected <a href="rest/AssetOwnerRESTClient.html" title="class in org.odpi.openmetadata.accessservices.assetowner.client.rest">AssetOwnerRESTClient</a></code></div>
+<div class="col-second even-row-color"><code><a href="#restClient" class="member-name-link">restClient</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#serviceURLName" class="member-name-link">serviceURLName</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#urlTemplatePrefix" class="member-name-link">urlTemplatePrefix</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
+<div class="inherited-list">
+<h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.ConnectedAssetClientBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.<a href="../../../frameworkservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client">ConnectedAssetClientBase</a></h3>
+<code><a href="../../../frameworkservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#auditLog">auditLog</a>, <a href="../../../frameworkservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#invalidParameterHandler">invalidParameterHandler</a>, <a href="../../../frameworkservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#serverName">serverName</a>, <a href="../../../frameworkservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#serverPlatformURLRoot">serverPlatformURLRoot</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -142,12 +159,34 @@ implements <a href="../api/RelatedElementsManagementInterface.html" title="inter
 <div class="col-last odd-row-color">
 <div class="block">Create a new client that passes userId and password in each HTTP request.</div>
 </div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient,int)" class="member-name-link">AssetOwnerBaseClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">AssetOwnerBaseClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password,
+ <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
+<div class="col-last even-row-color">
+<div class="block">Create a new client that passes userId and password in each HTTP request.</div>
+</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient,int)" class="member-name-link">AssetOwnerBaseClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
  <a href="rest/AssetOwnerRESTClient.html" title="class in org.odpi.openmetadata.accessservices.assetowner.client.rest">AssetOwnerRESTClient</a>&nbsp;restClient,
  int&nbsp;maxPageSize)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Create a new client that is going to be used in an OMAG Server.</div>
+</div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">AssetOwnerBaseClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
+ <a href="rest/AssetOwnerRESTClient.html" title="class in org.odpi.openmetadata.accessservices.assetowner.client.rest">AssetOwnerRESTClient</a>&nbsp;restClient,
+ int&nbsp;maxPageSize,
+ <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Create a new client that is going to be used in an OMAG Server.</div>
+</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">AssetOwnerBaseClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
+ <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 </div>
 </div>
 </section>
@@ -281,6 +320,9 @@ implements <a href="../api/RelatedElementsManagementInterface.html" title="inter
 </div>
 </div>
 <div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.ConnectedAssetClientBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.<a href="../../../frameworkservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client">ConnectedAssetClientBase</a></h3>
+<code><a href="../../../frameworkservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getAnchorAssetFromGUID(java.lang.String,java.lang.String)">getAnchorAssetFromGUID</a>, <a href="../../../frameworkservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getAssetForConnection(org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,java.lang.String)">getAssetForConnection</a>, <a href="../../../frameworkservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getAssetProperties(java.lang.String,java.lang.String,java.lang.String)">getAssetProperties</a>, <a href="../../../frameworkservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getAssetSummary(java.lang.String,java.lang.String,java.lang.String)">getAssetSummary</a>, <a href="../../../frameworkservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getConnectionByGUID(org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,java.lang.String)">getConnectionByGUID</a>, <a href="../../../frameworkservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getConnectionByName(org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,java.lang.String)">getConnectionByName</a>, <a href="../../../frameworkservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getConnectionForAsset(org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,java.lang.String)">getConnectionForAsset</a>, <a href="../../../frameworkservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getConnectorByConnection(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">getConnectorByConnection</a>, <a href="../../../frameworkservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getConnectorByGUID(java.lang.String,java.lang.String)">getConnectorByGUID</a>, <a href="../../../frameworkservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getConnectorByName(java.lang.String,java.lang.String)">getConnectorByName</a>, <a href="../../../frameworkservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getConnectorForAsset(java.lang.String,java.lang.String)">getConnectorForAsset</a>, <a href="../../../frameworkservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getConnectorForConnection(org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,java.lang.String)">getConnectorForConnection</a></code></div>
+<div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
 </section>
@@ -295,6 +337,54 @@ implements <a href="../api/RelatedElementsManagementInterface.html" title="inter
 <h2>Field Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="restClient">
+<h3>restClient</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="rest/AssetOwnerRESTClient.html" title="class in org.odpi.openmetadata.accessservices.assetowner.client.rest">AssetOwnerRESTClient</a></span>&nbsp;<span class="element-name">restClient</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="serviceURLName">
+<h3>serviceURLName</h3>
+<div class="member-signature"><span class="modifiers">protected static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">serviceURLName</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.accessservices.assetowner.client.AssetOwnerBaseClient.serviceURLName">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="defaultAssetType">
+<h3>defaultAssetType</h3>
+<div class="member-signature"><span class="modifiers">protected static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">defaultAssetType</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.accessservices.assetowner.client.AssetOwnerBaseClient.defaultAssetType">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="urlTemplatePrefix">
+<h3>urlTemplatePrefix</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">urlTemplatePrefix</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.accessservices.assetowner.client.AssetOwnerBaseClient.urlTemplatePrefix">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="nullRequestBody">
 <h3>nullRequestBody</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a></span>&nbsp;<span class="element-name">nullRequestBody</span></div>
@@ -308,6 +398,25 @@ implements <a href="../api/RelatedElementsManagementInterface.html" title="inter
 <section class="constructor-details" id="constructor-detail">
 <h2>Constructor Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
+<h3>AssetOwnerBaseClient</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">AssetOwnerBaseClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
+ <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span>
+                     throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
+<div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to connect to</dd>
+<dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST services</dd>
+<dd><code>auditLog</code> - logging destination</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
+                                   REST API calls.</dd>
+</dl>
+</section>
+</li>
 <li>
 <section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
 <h3>AssetOwnerBaseClient</h3>
@@ -395,6 +504,30 @@ implements <a href="../api/RelatedElementsManagementInterface.html" title="inter
 </section>
 </li>
 <li>
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
+<h3>AssetOwnerBaseClient</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">AssetOwnerBaseClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password,
+ <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span>
+                     throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
+<div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
+ userId/password of the calling server.  The end user's userId is sent on each request.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to connect to</dd>
+<dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST services</dd>
+<dd><code>userId</code> - caller's userId embedded in all HTTP requests</dd>
+<dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
+<dd><code>auditLog</code> - logging destination</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
+                                   REST API calls.</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient,int)">
 <h3>AssetOwnerBaseClient</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">AssetOwnerBaseClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
@@ -409,6 +542,29 @@ implements <a href="../api/RelatedElementsManagementInterface.html" title="inter
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST services</dd>
 <dd><code>restClient</code> - client that issues the REST API calls</dd>
 <dd><code>maxPageSize</code> - maximum number of results supported by this server</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
+                                   REST API calls.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
+<h3>AssetOwnerBaseClient</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">AssetOwnerBaseClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
+ <a href="rest/AssetOwnerRESTClient.html" title="class in org.odpi.openmetadata.accessservices.assetowner.client.rest">AssetOwnerRESTClient</a>&nbsp;restClient,
+ int&nbsp;maxPageSize,
+ <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span>
+                     throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
+<div class="block">Create a new client that is going to be used in an OMAG Server.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to connect to</dd>
+<dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST services</dd>
+<dd><code>restClient</code> - client that issues the REST API calls</dd>
+<dd><code>maxPageSize</code> - maximum number of results supported by this server</dd>
+<dd><code>auditLog</code> - logging destination</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
                                    REST API calls.</dd>

@@ -89,6 +89,7 @@ org.odpi.openmetadata.accessservices.assetowner.fvt
 org.odpi.openmetadata.accessservices.assetowner.fvt.assets
 org.odpi.openmetadata.accessservices.assetowner.fvt.clientconstructors
 org.odpi.openmetadata.accessservices.assetowner.fvt.connections
+org.odpi.openmetadata.accessservices.assetowner.fvt.dataassets
 org.odpi.openmetadata.accessservices.assetowner.fvt.duplicateprocessing
 org.odpi.openmetadata.accessservices.assetowner.fvt.errorhandling
 org.odpi.openmetadata.accessservices.assetowner.fvt.validmetadatavalues

@@ -327,13 +327,13 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove the metadata element representing a schema type.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSchemaElementAsCalculatedValue(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.UpdateRequestBody)" class="member-name-link">setSchemaElementAsCalculatedValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSchemaElementAsCalculatedValue(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.CalculatedValueClassificationRequestBody)" class="member-name-link">setSchemaElementAsCalculatedValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaElementGUID,
  boolean&nbsp;assetManagerIsHome,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
- <a href="../../rest/UpdateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">UpdateRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../rest/CalculatedValueClassificationRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">CalculatedValueClassificationRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Classify the schema type (or attribute if type is embedded) to indicate that it is a calculated value.</div>
 </div>
@@ -1037,7 +1037,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setSchemaElementAsCalculatedValue(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.UpdateRequestBody)">
+<section class="detail" id="setSchemaElementAsCalculatedValue(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.rest.CalculatedValueClassificationRequestBody)">
 <h3>setSchemaElementAsCalculatedValue</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/schema-elements/{schemaElementGUID}/is-calculated-value")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setSchemaElementAsCalculatedValue</span><wbr><span class="parameters">(@PathVariable
@@ -1053,7 +1053,7 @@ loadScripts(document, 'script');</script>
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;forDuplicateProcessing,
  @RequestBody
- <a href="../../rest/UpdateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">UpdateRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../rest/CalculatedValueClassificationRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.rest">CalculatedValueClassificationRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Classify the schema type (or attribute if type is embedded) to indicate that it is a calculated value.</div>
 <dl class="notes">
 <dt>Parameters:</dt>

@@ -3077,6 +3077,29 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.assetowner.properties.DataContentForDataSetProperties">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/assetowner/properties/DataContentForDataSetProperties.html" title="class in org.odpi.openmetadata.accessservices.assetowner.properties">org.odpi.openmetadata.accessservices.assetowner.properties.DataContentForDataSetProperties</a></h3>
+<div class="type-signature">class DataContentForDataSetProperties extends <a href="org/odpi/openmetadata/accessservices/assetowner/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.assetowner.properties">RelationshipProperties</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>query</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> query</pre>
+</li>
+<li class="block-list">
+<h5>queryId</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> queryId</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
 <section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.assetowner.properties.DataStoreProperties">
 <h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/assetowner/properties/DataStoreProperties.html" title="class in org.odpi.openmetadata.accessservices.assetowner.properties">org.odpi.openmetadata.accessservices.assetowner.properties.DataStoreProperties</a></h3>
 <div class="type-signature">class DataStoreProperties extends <a href="org/odpi/openmetadata/accessservices/assetowner/properties/AssetProperties.html" title="class in org.odpi.openmetadata.accessservices.assetowner.properties">AssetProperties</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
@@ -3606,6 +3629,14 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>additionalProperties</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; additionalProperties</pre>
+</li>
+<li class="block-list">
+<h5>effectiveFrom</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a> effectiveFrom</pre>
+</li>
+<li class="block-list">
+<h5>effectiveTo</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a> effectiveTo</pre>
 </li>
 <li class="block-list">
 <h5>extendedProperties</h5>
@@ -4219,6 +4250,25 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.assetowner.rest.EffectiveTimeQueryRequestBody">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/assetowner/rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetowner.rest">org.odpi.openmetadata.accessservices.assetowner.rest.EffectiveTimeQueryRequestBody</a></h3>
+<div class="type-signature">class EffectiveTimeQueryRequestBody extends <a href="org/odpi/openmetadata/accessservices/assetowner/rest/AssetOwnerOMASAPIRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetowner.rest">AssetOwnerOMASAPIRequestBody</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>effectiveTime</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a> effectiveTime</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
 <section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.assetowner.rest.EmbeddedConnectionRequestBody">
 <h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/assetowner/rest/EmbeddedConnectionRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetowner.rest">org.odpi.openmetadata.accessservices.assetowner.rest.EmbeddedConnectionRequestBody</a></h3>
 <div class="type-signature">class EmbeddedConnectionRequestBody extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
@@ -4624,11 +4674,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.assetowner.rest.RelationshipRequestBody">
 <h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/assetowner/rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetowner.rest">org.odpi.openmetadata.accessservices.assetowner.rest.RelationshipRequestBody</a></h3>
-<div class="type-signature">class RelationshipRequestBody extends <a href="org/odpi/openmetadata/accessservices/assetowner/rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetowner.rest">ExternalSourceRequestBody</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<dl class="name-value">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
+<div class="type-signature">class RelationshipRequestBody extends <a href="org/odpi/openmetadata/accessservices/assetowner/rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetowner.rest">EffectiveTimeQueryRequestBody</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
 <ul class="block-list">
 <li>
 <section class="detail">
@@ -4687,30 +4733,6 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>schemaAttributeProperties</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="org/odpi/openmetadata/accessservices/assetowner/properties/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetowner.properties">SchemaAttributeProperties</a>&gt; schemaAttributeProperties</pre>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.assetowner.rest.SchemaTypeRequestBody">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/assetowner/rest/SchemaTypeRequestBody.html" title="class in org.odpi.openmetadata.accessservices.assetowner.rest">org.odpi.openmetadata.accessservices.assetowner.rest.SchemaTypeRequestBody</a></h3>
-<div class="type-signature">class SchemaTypeRequestBody extends <a href="org/odpi/openmetadata/accessservices/assetowner/properties/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetowner.properties">SchemaTypeProperties</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<dl class="name-value">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
-<ul class="block-list">
-<li>
-<section class="detail">
-<h4>Serialized Fields</h4>
-<ul class="block-list">
-<li class="block-list">
-<h5>schemaTypeProperties</h5>
-<pre><a href="org/odpi/openmetadata/accessservices/assetowner/properties/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetowner.properties">SchemaTypeProperties</a> schemaTypeProperties</pre>
-<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 </li>
 </ul>
 </section>
