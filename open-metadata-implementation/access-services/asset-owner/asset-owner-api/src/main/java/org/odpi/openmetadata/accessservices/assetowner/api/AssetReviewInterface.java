@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.accessservices.assetowner.api;
 
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.AssetElement;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.RelationshipElement;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -13,6 +14,7 @@ import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -97,6 +99,77 @@ public interface AssetReviewInterface
                                       String  assetGUID) throws InvalidParameterException,
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException;
+
+    /**
+     * Retrieve the relationship between two elements.
+     *
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to create
+     * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
+     * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    RelationshipElement getAssetRelationship(String  userId,
+                                             String  relationshipTypeName,
+                                             String  fromAssetGUID,
+                                             String  toAssetGUID) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException;
+
+
+
+    /**
+     * Retrieve the requested relationships linked from a specific element at end 2.
+     *
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to delete
+     * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
+     * @param startFrom start position for results
+     * @param pageSize     maximum number of results
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<RelationshipElement> getRelatedAssetsAtEnd2(String  userId,
+                                                     String  relationshipTypeName,
+                                                     String  fromAssetGUID,
+                                                     int     startFrom,
+                                                     int     pageSize) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException;
+
+
+    /**
+     * Retrieve the relationships linked from a specific element at end 2 of the relationship.
+     *
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to delete
+     * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
+     * @param startFrom start position for results
+     * @param pageSize     maximum number of results
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<RelationshipElement> getRelatedAssetsAtEnd1(String  userId,
+                                                     String  relationshipTypeName,
+                                                     String  toAssetGUID,
+                                                     int     startFrom,
+                                                     int     pageSize) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException;
+
 
 
     /**

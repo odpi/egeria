@@ -114,8 +114,7 @@ public class SchemaExchangeRESTServices
      * @param templateGUID unique identifier of the metadata element to copy
      * @param requestBody properties that override the template
      *
-     * @return unique identifier of the new schema type
-     *
+     * @return unique identifier of the new schema type or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -1148,13 +1147,13 @@ public class SchemaExchangeRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setSchemaElementAsCalculatedValue(String            serverName,
-                                                          String            userId,
-                                                          String            schemaElementGUID,
-                                                          boolean           assetManagerIsHome,
-                                                          boolean           forLineage,
-                                                          boolean           forDuplicateProcessing,
-                                                          UpdateRequestBody requestBody)
+    public VoidResponse setSchemaElementAsCalculatedValue(String                                   serverName,
+                                                          String                                   userId,
+                                                          String                                   schemaElementGUID,
+                                                          boolean                                  assetManagerIsHome,
+                                                          boolean                                  forLineage,
+                                                          boolean                                  forDuplicateProcessing,
+                                                          CalculatedValueClassificationRequestBody requestBody)
     {
         final String methodName = "setSchemaElementAsCalculatedValue";
 
@@ -1176,7 +1175,7 @@ public class SchemaExchangeRESTServices
                                                           requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
                                                           assetManagerIsHome,
                                                           schemaElementGUID,
-                                                          requestBody.getMetadataCorrelationProperties().getExternalIdentifier(),
+                                                          requestBody.getFormula(),
                                                           forLineage,
                                                           forDuplicateProcessing,
                                                           requestBody.getEffectiveTime(),

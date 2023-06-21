@@ -19,10 +19,10 @@ public interface AssetDecommissioningInterface
      * Deletes an asset and all of its associated elements such as schema, connections (unless they are linked to
      * another asset), discovery reports and associated feedback.
      *
-     * Given the depth of the delete performed by this call, it should be used with care.
+     * Given the depth of the delete operation performed by this call, it should be used with care.
      *
      * @param userId calling user
-     * @param assetGUID unique identifier of the attest to attach the connection to
+     * @param assetGUID unique identifier of the asset to delete
      * @throws InvalidParameterException full path or userId is null
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem

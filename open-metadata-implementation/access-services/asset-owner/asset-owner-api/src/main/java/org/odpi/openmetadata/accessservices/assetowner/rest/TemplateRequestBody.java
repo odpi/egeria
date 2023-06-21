@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.assetowner.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetowner.properties.RelationshipProperties;
+import org.odpi.openmetadata.accessservices.assetowner.properties.TemplateProperties;
 
 import java.util.Objects;
 
@@ -15,21 +15,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * RelationshipRequestBody describes the request body used when linking elements together.
+ * TemplateRequestBody describes the request body used to create/update elements from templates.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RelationshipRequestBody extends EffectiveTimeQueryRequestBody
+public class TemplateRequestBody extends UpdateRequestBody
 {
-    private String                 relationshipName = null;
-    private RelationshipProperties properties = null;
+    private TemplateProperties elementProperties = null;
+    private String             parentGUID        = null;
 
 
     /**
      * Default constructor
      */
-    public RelationshipRequestBody()
+    public TemplateRequestBody()
     {
         super();
     }
@@ -40,59 +40,59 @@ public class RelationshipRequestBody extends EffectiveTimeQueryRequestBody
      *
      * @param template object to copy
      */
-    public RelationshipRequestBody(RelationshipRequestBody template)
+    public TemplateRequestBody(TemplateRequestBody template)
     {
         super(template);
 
         if (template != null)
         {
-            relationshipName = template.getRelationshipName();
-            properties = template.getProperties();
+            elementProperties = template.getElementProperties();
+            parentGUID        = template.getParentGUID();
         }
     }
 
 
     /**
-     * Return the name of the relationship type.
-     *
-     * @return type name
-     */
-    public String getRelationshipName()
-    {
-        return relationshipName;
-    }
-
-
-    /**
-     * Set up the name of the relationship type.
-     *
-     * @param relationshipName type name
-     */
-    public void setRelationshipName(String relationshipName)
-    {
-        this.relationshipName = relationshipName;
-    }
-
-
-    /**
-     * Return the properties for the relationship.
+     * Return the properties for the element.
      *
      * @return properties object
      */
-    public RelationshipProperties getProperties()
+    public TemplateProperties getElementProperties()
     {
-        return properties;
+        return elementProperties;
     }
 
 
     /**
-     * Set up the properties for the relationship.
+     * Set up the properties for the element.
      *
-     * @param properties properties object
+     * @param elementProperties properties object
      */
-    public void setProperties(RelationshipProperties properties)
+    public void setElementProperties(TemplateProperties elementProperties)
     {
-        this.properties = properties;
+        this.elementProperties = elementProperties;
+    }
+
+
+    /**
+     * Return an optional parent GUID to attach the new element to.
+     *
+     * @return guid
+     */
+    public String getParentGUID()
+    {
+        return parentGUID;
+    }
+
+
+    /**
+     * Set up an optional parent GUID to attach the new element to.
+     *
+     * @param parentGUID guid
+     */
+    public void setParentGUID(String parentGUID)
+    {
+        this.parentGUID = parentGUID;
     }
 
 
@@ -104,9 +104,9 @@ public class RelationshipRequestBody extends EffectiveTimeQueryRequestBody
     @Override
     public String toString()
     {
-        return "RelationshipRequestBody{" +
-                       "relationshipName='" + relationshipName + '\'' +
-                       ", properties=" + properties +
+        return "TemplateRequestBody{" +
+                       "elementProperties=" + elementProperties +
+                       ", parentGUID='" + parentGUID + '\'' +
                        ", effectiveTime=" + getEffectiveTime() +
                        '}';
     }
@@ -125,16 +125,15 @@ public class RelationshipRequestBody extends EffectiveTimeQueryRequestBody
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof TemplateRequestBody that))
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
-        RelationshipRequestBody that = (RelationshipRequestBody) objectToCompare;
-        return Objects.equals(getProperties(), that.getProperties());
+        return Objects.equals(elementProperties, that.elementProperties) && Objects.equals(parentGUID, that.parentGUID);
     }
 
 
@@ -146,6 +145,6 @@ public class RelationshipRequestBody extends EffectiveTimeQueryRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), relationshipName, properties);
+        return Objects.hash(super.hashCode(), elementProperties, parentGUID);
     }
 }

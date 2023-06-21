@@ -582,15 +582,15 @@ public class SchemaExchangeResource
      */
     @PostMapping(path = "/schema-elements/{schemaElementGUID}/is-calculated-value")
 
-    public VoidResponse setSchemaElementAsCalculatedValue(@PathVariable String                        serverName,
-                                                          @PathVariable String                        userId,
-                                                          @PathVariable String                        schemaElementGUID,
-                                                          @RequestParam boolean                       assetManagerIsHome,
+    public VoidResponse setSchemaElementAsCalculatedValue(@PathVariable String                                   serverName,
+                                                          @PathVariable String                                   userId,
+                                                          @PathVariable String                                   schemaElementGUID,
+                                                          @RequestParam boolean                                  assetManagerIsHome,
                                                           @RequestParam (required = false, defaultValue = "false")
-                                                                  boolean                      forLineage,
+                                                                        boolean                                  forLineage,
                                                           @RequestParam (required = false, defaultValue = "false")
-                                                                  boolean                      forDuplicateProcessing,
-                                                          @RequestBody  UpdateRequestBody requestBody)
+                                                                        boolean                                  forDuplicateProcessing,
+                                                          @RequestBody  CalculatedValueClassificationRequestBody requestBody)
     {
         return restAPI.setSchemaElementAsCalculatedValue(serverName, userId, schemaElementGUID, assetManagerIsHome, forLineage, forDuplicateProcessing, requestBody);
     }

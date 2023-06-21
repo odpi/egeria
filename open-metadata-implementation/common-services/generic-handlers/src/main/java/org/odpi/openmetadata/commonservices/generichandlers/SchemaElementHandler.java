@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -15,6 +16,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * SchemaElementHandler manages common methods fof SchemaType and Schema Attribute objects.  It runs server-side in
@@ -299,7 +301,6 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                     mapFromGUID = addSchemaType(userId,
                                                 externalSourceGUID,
                                                 externalSourceName,
-                                                mapFromBuilder.qualifiedName,
                                                 mapFromBuilder,
                                                 effectiveFrom,
                                                 effectiveTo,
@@ -337,7 +338,6 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                     mapToGUID = addSchemaType(userId,
                                               externalSourceGUID,
                                               externalSourceName,
-                                              mapToBuilder.qualifiedName,
                                               mapToBuilder,
                                               effectiveFrom,
                                               effectiveTo,
@@ -383,7 +383,6 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                             String optionGUID = addSchemaType(userId,
                                                               externalSourceGUID,
                                                               externalSourceName,
-                                                              schemaOptionBuilder.qualifiedName,
                                                               schemaOptionBuilder,
                                                               effectiveFrom,
                                                               effectiveTo,
@@ -445,7 +444,6 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
     private String  addSchemaType(String            userId,
                                   String            externalSourceGUID,
                                   String            externalSourceName,
-                                  String            qualifiedName,
                                   SchemaTypeBuilder schemaTypeBuilder,
                                   Date              effectiveFrom,
                                   Date              effectiveTo,
@@ -510,18 +508,16 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaElementGUID, guidParameterName, methodName);
 
-        int count = repositoryHandler.countAttachedRelationshipsByType(userId,
-                                                                       schemaElementGUID,
-                                                                       OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
-                                                                       OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                                       OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
-                                                                       2,
-                                                                       false,
-                                                                       false,
-                                                                       effectiveTime,
-                                                                       methodName);
-
-        return count;
+        return repositoryHandler.countAttachedRelationshipsByType(userId,
+                                                                  schemaElementGUID,
+                                                                  OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                                  OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                                  OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                  2,
+                                                                  false,
+                                                                  false,
+                                                                  effectiveTime,
+                                                                  methodName);
     }
 
 
@@ -738,4 +734,158 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
     }
 
 
+    /**
+     * Create a relationship between two schema elements.  The name of the desired relationship, and any properties (including effectivity dates)
+     * are passed on the API.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param relationshipTypeName type of the relationship to create
+     * @param properties properties for the new relationship
+     * @param effectiveFrom             the date when this element is active - null for active now
+     * @param effectiveTo               the date when this element becomes inactive - null for active until deleted
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
+     * @param methodName     calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @SuppressWarnings(value = "unused")
+    public void setupSchemaElementRelationship(String                 userId,
+                                               String                 externalSourceGUID,
+                                               String                 externalSourceName,
+                                               String                 endOneGUID,
+                                               String                 endTwoGUID,
+                                               String                 relationshipTypeName,
+                                               Map<String,Object>     properties,
+                                               Date                   effectiveFrom,
+                                               Date                   effectiveTo,
+                                               boolean                forLineage,
+                                               boolean                forDuplicateProcessing,
+                                               Date                   effectiveTime,
+                                               String                 methodName) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        final String endOneParameterName           = "endOneGUID";
+        final String endTwoParameterName           = "endTwoGUID";
+        final String relationshipTypeParameterName = "relationshipTypeName";
+        final String propertiesParameterName       = "properties";
+
+        invalidParameterHandler.validateName(relationshipTypeName, relationshipTypeParameterName, methodName);
+
+        String relationshipTypeGUID = invalidParameterHandler.validateTypeName(relationshipTypeName,
+                                                                               null,
+                                                                               serviceName,
+                                                                               methodName,
+                                                                               repositoryHelper);
+
+        InstanceProperties instanceProperties = null;
+
+        if ((properties != null) && (! properties.isEmpty()))
+        {
+            try
+            {
+                instanceProperties = repositoryHelper.addPropertyMapToInstance(serviceName, null, properties, methodName);
+            }
+            catch (Exception badPropertyException)
+            {
+                throw new InvalidParameterException(GenericHandlersErrorCode.BAD_PARAMETER.getMessageDefinition(relationshipTypeName,
+                                                                                                                badPropertyException.getClass().getName(),
+                                                                                                                badPropertyException.getMessage()),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    badPropertyException,
+                                                    propertiesParameterName);
+            }
+        }
+
+        this.linkElementToElement(userId,
+                                  externalSourceGUID,
+                                  externalSourceName,
+                                  endOneGUID,
+                                  endOneParameterName,
+                                  OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                  endTwoGUID,
+                                  endTwoParameterName,
+                                  OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                  forLineage,
+                                  forDuplicateProcessing,
+                                  relationshipTypeGUID,
+                                  relationshipTypeName,
+                                  instanceProperties,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
+                                  methodName);
+    }
+
+
+    /**
+     * Remove a relationship between two schema elements.  The name of the desired relationship is passed on the API.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param relationshipTypeName type of the relationship to create
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearSchemaElementRelationship(String  userId,
+                                               String  externalSourceGUID,
+                                               String  externalSourceName,
+                                               String  endOneGUID,
+                                               String  endTwoGUID,
+                                               String  relationshipTypeName,
+                                               boolean forLineage,
+                                               boolean forDuplicateProcessing,
+                                               Date    effectiveTime,
+                                               String  methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        final String endOneParameterName           = "endOneGUID";
+        final String endTwoParameterName           = "endTwoGUID";
+        final String relationshipTypeParameterName = "relationshipTypeName";
+
+        invalidParameterHandler.validateName(relationshipTypeName, relationshipTypeParameterName, methodName);
+
+        String relationshipTypeGUID = invalidParameterHandler.validateTypeName(relationshipTypeName,
+                                                                               null,
+                                                                               serviceName,
+                                                                               methodName,
+                                                                               repositoryHelper);
+
+        this.unlinkElementFromElement(userId,
+                                      false,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      endOneGUID,
+                                      endOneParameterName,
+                                      OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                      endTwoGUID,
+                                      endTwoParameterName,
+                                      OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_GUID,
+                                      OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      relationshipTypeGUID,
+                                      relationshipTypeName,
+                                      effectiveTime,
+                                      methodName);
+    }
 }

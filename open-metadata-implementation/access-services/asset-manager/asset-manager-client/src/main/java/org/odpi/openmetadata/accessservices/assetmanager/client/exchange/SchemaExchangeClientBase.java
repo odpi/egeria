@@ -1084,6 +1084,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                    assetManagerName,
                                                                                    externalIdentifierProperties,
                                                                                    methodName));
+        requestBody.setEffectiveTime(effectiveTime);
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-elements/{2}/schema-attributes/from-template/{3}?assetManagerIsHome={4}&forLineage={5}&forDuplicateProcessing={6}";
 
