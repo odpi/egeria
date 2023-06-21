@@ -27,7 +27,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum AssetCatalogErrorCode implements ExceptionMessageSet {
 
     /**
-     * A null topic listener has been passed by the user.
+     * OMAS-ASSET-CATALOG-500-001 A null topic listener has been passed by the user.
      */
     NULL_LISTENER(500, "OMAS-ASSET-CATALOG-500-001",
             "A null topic listener has been passed by user {0} on method {1}",

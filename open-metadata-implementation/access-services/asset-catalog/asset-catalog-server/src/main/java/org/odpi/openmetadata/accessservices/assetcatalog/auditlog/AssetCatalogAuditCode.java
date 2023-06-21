@@ -24,7 +24,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 public enum AssetCatalogAuditCode implements AuditLogMessageSet {
 
     /**
-     * The Asset Catalog OMAS has completed initialization of a new instance.
+     * OMAS-ASSET-CATALOG-0001 The Asset Catalog OMAS has completed initialization of a new instance.
      */
     SERVICE_INITIALIZED("OMAS-ASSET-CATALOG-0001",
             OMRSAuditLogRecordSeverity.STARTUP,
@@ -32,7 +32,7 @@ public enum AssetCatalogAuditCode implements AuditLogMessageSet {
             "The Asset Catalog OMAS has completed initialization of a new instance.",
             "No action is required.  This is part of the normal operation of the service."),
     /**
-     * The local server has started up a new instance of the Asset Catalog OMAS.
+     * OMAS-ASSET-CATALOG-0002 The local server has started up a new instance of the Asset Catalog OMAS.
      */
     SERVICE_INITIALIZING("OMAS-ASSET-CATALOG-0002",
             OMRSAuditLogRecordSeverity.STARTUP,
@@ -41,8 +41,8 @@ public enum AssetCatalogAuditCode implements AuditLogMessageSet {
             "No action is required.  This is part of the normal operation of the service."),
 
     /**
-     * The access service detected an error during the start up of a specific server instance. Its services are not
-     * available for the specified server.
+     * OMAS-ASSET-CATALOG-0003 The access service detected an error during the start up of a specific server instance.
+     * Its services are not available for the specified server.
      */
     SERVICE_INSTANCE_FAILURE("OMAS-ASSET-CATALOG-0003",
             OMRSAuditLogRecordSeverity.ERROR,
@@ -51,7 +51,7 @@ public enum AssetCatalogAuditCode implements AuditLogMessageSet {
             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 
     /**
-     * The local server has requested shut down of an Asset Catalog OMAS instance.
+     * OMAS-ASSET-CATALOG-0004 The local server has requested shut down of an Asset Catalog OMAS instance.
      */
     SERVICE_SHUTDOWN("OMAS-ASSET-CATALOG-0004",
             OMRSAuditLogRecordSeverity.SHUTDOWN,
@@ -60,7 +60,7 @@ public enum AssetCatalogAuditCode implements AuditLogMessageSet {
             "No action is required. This is part of the normal operation of the service."),
 
     /**
-     * The event could not be processed.
+     * OMAS-ASSET-CATALOG-0005 The event could not be processed.
      */
     EVENT_PROCESSING_EXCEPTION("OMAS-ASSET-CATALOG-0005",
             OMRSAuditLogRecordSeverity.EXCEPTION,
@@ -69,7 +69,7 @@ public enum AssetCatalogAuditCode implements AuditLogMessageSet {
             "Review the exception to determine the source of the error and correct it."),
 
     /**
-     * The event will not be processed.
+     * OMAS-ASSET-CATALOG-0006 The event will not be processed.
      */
     EVENT_NOT_PROCESSING("OMAS-ASSET-CATALOG-0006",
             OMRSAuditLogRecordSeverity.TRACE,
@@ -88,7 +88,7 @@ public enum AssetCatalogAuditCode implements AuditLogMessageSet {
      * <p>
      * This will expand out to the 4 parameters shown below.
      *
-     * @param messageId    - unique Id for the message
+     * @param messageId    - unique ID for the message
      * @param severity     - severity of the message
      * @param message      - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
