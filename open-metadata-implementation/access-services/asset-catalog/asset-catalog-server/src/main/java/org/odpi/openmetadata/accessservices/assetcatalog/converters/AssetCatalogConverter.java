@@ -37,6 +37,13 @@ import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.A
  */
 public class AssetCatalogConverter<B> extends OpenMetadataAPIGenericConverter<B> {
 
+    /**
+     * Instantiates a new Asset Catalog converter.
+     *
+     * @param repositoryHelper the repository helper
+     * @param serviceName      the service name
+     * @param serverName       the server name
+     */
     public AssetCatalogConverter(OMRSRepositoryHelper repositoryHelper, String serviceName, String serverName) {
         super(repositoryHelper, serviceName, serverName);
     }

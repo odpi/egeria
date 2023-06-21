@@ -22,8 +22,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class RelationshipHandler {
 
-    public static final String ENTITY_1_GUID_PARAMETER = "entity1GUID";
-    public static final String ENTITY_2_GUID_PARAMETER = "entity2GUID";
+    private static final String ENTITY_1_GUID_PARAMETER = "entity1GUID";
+    private static final String ENTITY_2_GUID_PARAMETER = "entity2GUID";
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
     private final OpenMetadataAPIGenericHandler<AssetCatalogBean> assetHandler;

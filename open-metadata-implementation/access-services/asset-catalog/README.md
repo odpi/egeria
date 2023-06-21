@@ -1,31 +1,20 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
+![TechPreview](../../../images/egeria-content-status-tech-preview.png#pagewidth)
 
 # Asset Catalog Open Metadata Access Service (OMAS)
 
-The Asset Catalog OMAS provides services to search for data assets including:
+The Asset Catalog OMAS provides services to search for data assets.
 
-* data stores
-* event feeds
-* APIs
-* data sets
-
-The search locates assets
-based on the content of the Asset metadata itself and the metadata that links
-to it. This includes:
-
-* glossary terms
-* schema elements
-* assets
+The search locates assets based on the content of the Asset metadata itself and the metadata that links
+to it.
 
 The Asset Catalog REST API supports:
-
 * the retrieval of assets based on unique identifiers
 * the retrieval of asset's relationships and classifications
-* the retrieval of assets based on known classification or relationship
-* to query for related assets and to retrieve an asset neighborhood
+* to query for related assets
+* the retrieval of assets based on their type
 
 * [Documentation](https://egeria-project.org/services/omas/asset-catalog/overview)
 
@@ -43,12 +32,13 @@ The module structure for the Asset Catalog OMAS is as follows:
     [cohort](https://egeria-project.org/concepts/cohort-member).
   * support for the access service's API and its related event management.
 * [asset-catalog-spring](asset-catalog-spring) supports the REST API using the [Spring](../../../developer-resources/Spring.md) libraries.
-
+* [asset-catalog-topic-connector](asset-catalog-topic-connector) supports asynchronous messaging through a connector
+and connector provider class
 
 ### Search solution
-The search will return Assets, Glossary Terms and Schema Elements that match the search criteria.
+The search will return entities that match the search criteria.
 As the asset search is to be performed against on one or more repositories a search engine will be used. 
-The search will be performed using the existing properties of the asset, glossary terms and/or schema elements.
+The search will be performed using the existing properties of the entity.
 Indexing will be performed by the Asset Catalog OMAS according to supported zones.
 The search result will contain: guid, name (name or displayName), description, qualifiedName, classifications, zoneMembership (the basic properties of the element).
 
@@ -58,10 +48,10 @@ This call is using the asset global identifier and the asset type.
 
 
 ![Figure 1: Search](docs/egeria-asset-search.png)
-> Figure 1:Integration of search engine
+> Figure 1: The integration of the search engine
 
-###Other Services
-Asset Catalog OMAS provides services to fetch the asset 
+### Other Services
+Asset Catalog OMAS provides services to fetch the asset's:
 * classifications
 * relationships
 * specific entities that connect two assets

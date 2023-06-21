@@ -14,6 +14,9 @@ import lombok.ToString;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+/**
+ * Collection is a java bean used to create collections associated with the external data engine.
+ */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -22,15 +25,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString
-/**
- * The collection entity is a group of related items.
- */
 public class Collection extends Referenceable {
 
     /**
      * The name of the collection
      * -- GETTER --
      * Return the name of the collection.
+     *
      * @return name string name
      * -- SETTER --
      * Set up the name of the collection.

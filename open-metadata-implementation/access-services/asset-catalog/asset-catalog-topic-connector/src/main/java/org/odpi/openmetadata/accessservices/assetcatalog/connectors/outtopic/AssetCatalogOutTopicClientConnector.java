@@ -15,13 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * AssetCatalogOutTopicClientConnector is the java base class implementation of the
+ * AssetCatalogOutTopicClientConnector is the java base class implementation of
  * the client side connector that receives events from the Asset Catalog OMAS's OutTopic.
  */
 public class AssetCatalogOutTopicClientConnector extends OpenMetadataTopicListenerConnectorBase implements AssetCatalogEventInterface, AssetCatalogEventListener {
     private static final Logger log = LoggerFactory.getLogger(AssetCatalogOutTopicClientConnector.class);
 
-    private List<AssetCatalogEventListener> internalEventListeners = new ArrayList<>();
+    private final List<AssetCatalogEventListener> internalEventListeners = new ArrayList<>();
 
 
     /**
@@ -63,11 +63,11 @@ public class AssetCatalogOutTopicClientConnector extends OpenMetadataTopicListen
                     try {
                         listener.processEvent(eventObject);
                     } catch (Exception error) {
-                        log.error("Listener: " + listener.getClass().getName() + " is unable to process event: " + event, error);
+                        log.error("Listener: {} is unable to process event: {}", listener.getClass().getName(), event, error);
                     }
                 }
             } catch (Exception error) {
-                log.error("Unable to read event: " + event, error);
+                log.error("Unable to read event: {}", event, error);
             }
         }
     }
@@ -75,7 +75,6 @@ public class AssetCatalogOutTopicClientConnector extends OpenMetadataTopicListen
 
     @Override
     public void processEvent(AssetCatalogEvent event) {
-//
-        log.debug("process event " + this.getClass().getName());
+        log.debug("process event {}", this.getClass().getName());
     }
 }

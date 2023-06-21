@@ -24,8 +24,8 @@ import java.util.List;
  */
 public class AssetCatalogAdmin extends AccessServiceAdmin {
 
-    public static final String SUPPORTED_TYPES_FOR_SEARCH   = "SupportedTypesForSearch";
-    public static final String ENABLE_INDEX_EVENTS          = "EnableIndexingEvents";
+    private static final String SUPPORTED_TYPES_FOR_SEARCH   = "SupportedTypesForSearch";
+    private static final String ENABLE_INDEX_EVENTS          = "EnableIndexingEvents";
     private AuditLog auditLog;
     private String serverName;
     private AssetCatalogServicesInstance instance;

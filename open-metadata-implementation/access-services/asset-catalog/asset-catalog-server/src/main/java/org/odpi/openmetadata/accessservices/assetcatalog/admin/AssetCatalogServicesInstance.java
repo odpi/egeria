@@ -44,6 +44,7 @@ class AssetCatalogServicesInstance extends OMASServiceInstance {
     private final RelationshipHandler relationshipHandler;
 
     /**
+     * Instantiates an AssetCatalogServicesInstance object
      * @param repositoryConnector     link to the repository responsible for servicing the REST calls.
      * @param supportedZones          configurable list of zones that Asset Catalog is allowed to serve Assets from
      * @param auditLog                logging destination

@@ -27,6 +27,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 public class AssetCatalogItemElement extends Element {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * The context for an entity
      * -- GETTER --

@@ -2,9 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 /**
- * Contains classes necessary to an OMAS setup. At the moment, the way to do it, is to copy this package and its contents
- * to a new module/directory structure and perform the necessary renaming operations
+ * Provides the implementation of the admin classes that are called during server start up and shut down.
  */
 package org.odpi.openmetadata.accessservices.dataengine.server.admin;
-
-

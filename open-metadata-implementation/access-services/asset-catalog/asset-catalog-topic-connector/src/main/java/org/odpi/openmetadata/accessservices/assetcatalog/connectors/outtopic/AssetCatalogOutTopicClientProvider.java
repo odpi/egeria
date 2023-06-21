@@ -15,9 +15,9 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
  * Then the connector provider will work.
  */
 public class AssetCatalogOutTopicClientProvider extends ConnectorProviderBase {
-    static final String connectorTypeGUID = "785fdb3d-34b7-47e0-bc73-5969610331d4";
-    static final String connectorTypeName = "Asset Catalog Out Topic Client Connector";
-    static final String connectorTypeDescription = "Connector supports the receipt of events on the Asset Catalog OMAS Out Topic.";
+    static final String CONNECTOR_TYPE_GUID = "785fdb3d-34b7-47e0-bc73-5969610331d4";
+    static final String CONNECTOR_TYPE_NAME = "Asset Catalog Out Topic Client Connector";
+    static final String CONNECTOR_TYPE_DESCRIPTION = "Connector supports the receipt of events on the Asset Catalog OMAS Out Topic.";
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
@@ -30,10 +30,10 @@ public class AssetCatalogOutTopicClientProvider extends ConnectorProviderBase {
 
         ConnectorType connectorType = new ConnectorType();
         connectorType.setType(ConnectorType.getConnectorTypeType());
-        connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorTypeName);
-        connectorType.setDisplayName(connectorTypeName);
-        connectorType.setDescription(connectorTypeDescription);
+        connectorType.setGUID(CONNECTOR_TYPE_GUID);
+        connectorType.setQualifiedName(CONNECTOR_TYPE_NAME);
+        connectorType.setDisplayName(CONNECTOR_TYPE_NAME);
+        connectorType.setDescription(CONNECTOR_TYPE_DESCRIPTION);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
 
         super.connectorTypeBean = connectorType;

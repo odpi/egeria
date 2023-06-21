@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * SearchParameters provides a structure to make the assets's search results more precise.
+ * SearchParameters provides a structure to make the assets' search results more precise.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -138,5 +138,14 @@ public class SearchParameters implements Serializable {
      */
     private boolean caseInsensitive = Boolean.TRUE;
 
+    /**
+     * The exact match for the search criteria
+     * -- GETTER --
+     * Returns whether the search should be performed taking into account and exact match criteria (true).
+     * @return false if it is performed an inexact match search and true otherwise
+     * -- SETTER --
+     * Indicates whether the search should be performed  taking into account and exact match criteria (true)
+     * @param exactMatch boolean to set the exact match parameter for the search criteria
+     */
     private boolean exactMatch = Boolean.FALSE;
 }
