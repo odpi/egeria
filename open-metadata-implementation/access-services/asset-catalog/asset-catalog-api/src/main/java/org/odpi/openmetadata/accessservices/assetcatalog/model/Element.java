@@ -50,10 +50,19 @@ public class Element implements Serializable {
      * @return the type definition of the asset
      * -- SETTER --
      * Set up the type definition of the asset
-     * @param type - the type definition of the asset
+     * @param type the type definition of the asset
      */
     private Type type;
 
+    /**
+     * The name of the asset
+     * -- GETTER --
+     * Returns the name of the asset
+     * @return the name of the asset
+     * -- SETTER --
+     * Set up the name of the asset
+     * @param name - the name of the asset
+     */
     private String name;
 
     /**
@@ -122,10 +131,69 @@ public class Element implements Serializable {
      */
     private String status;
 
+    /**
+     * The URL
+     * -- GETTER --
+     * Returns the URL
+     * @return the URL
+     * -- SETTER --
+     * Setup the URL
+     * @param url the URL
+     */
     private String url;
+
+    /**
+     * The properties of the element
+     * -- GETTER --
+     * Returns the properties of the element
+     * @return the properties of the element
+     * -- SETTER --
+     * Setup the properties of the element
+     * @param properties the properties of the element
+     */
     private Map<String, String> properties;
+
+    /**
+     * The additional properties of the element
+     * -- GETTER --
+     * Returns the additional properties of the element
+     * @return the additional properties of the element
+     * -- SETTER --
+     * Setup the additional properties of the element
+     * @param additionalProperties the additional properties of the element
+     */
     private Map<String, String> additionalProperties;
+
+    /**
+     * The classifications of the element
+     * -- GETTER --
+     * Returns the classifications of the element
+     * @return the classifications of the element
+     * -- SETTER --
+     * Setup the classifications of the element
+     * @param classifications the classifications of the element
+     */
     private List<Classification> classifications;
+
+    /**
+     * The parent of the element
+     * -- GETTER --
+     * Returns the parent of the element
+     * @return the parent of the element
+     * -- SETTER --
+     * Setup the parent of the element
+     * @param parentElement the parent of the element
+     */
     private Element parentElement;
+
+    /**
+     * The origin of the element
+     * -- GETTER --
+     * Returns the origin of the element
+     * @return the origin of the element
+     * -- SETTER --
+     * Setup the origin of the element
+     * @param origin the origin of the element
+     */
     private ElementOrigin origin;
 }

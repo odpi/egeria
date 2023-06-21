@@ -24,14 +24,14 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
  * set up a listener to support the receipt of inbound events from the Asset Catalog OMAS Out Topic.
  */
 public class AssetCatalogEventClient {
-    private static final String serviceName = "Asset Catalog OMAS";
+    private static final String SERVICE_NAME = "Asset Catalog OMAS";
 
-    private String serverName;
-    private String serverPlatformURLRoot;
-    private String callerId;
-    private OCFRESTClient restClient;
+    private final String serverName;
+    private final String serverPlatformURLRoot;
+    private final String callerId;
+    private final OCFRESTClient restClient;
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     private AssetCatalogOutTopicClientConnector configurationEventTopicConnector = null;
     private AuditLog auditLog = null;
@@ -166,7 +166,7 @@ public class AssetCatalogEventClient {
 
         if (connector == null) {
             throw new ConnectorCheckedException(OMAGOCFErrorCode.NULL_CONNECTOR_RETURNED.getMessageDefinition(topicConnection.getQualifiedName(),
-                    serviceName,
+                    SERVICE_NAME,
                     serverName,
                     serverPlatformURLRoot),
                     this.getClass().getName(),
@@ -178,7 +178,7 @@ public class AssetCatalogEventClient {
             configurationEventTopicConnector.start();
         } else {
             throw new ConnectorCheckedException(OMAGOCFErrorCode.WRONG_TYPE_OF_CONNECTOR.getMessageDefinition(topicConnection.getQualifiedName(),
-                    serviceName,
+                    SERVICE_NAME,
                     serverName,
                     serverPlatformURLRoot,
                     AssetCatalogOutTopicClientConnector.class.getName()),

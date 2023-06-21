@@ -10,8 +10,8 @@ import java.util.Map;
 /**
  * AssetCatalogException provides a checked exception for reporting errors found when using
  * the Asset Catalog OMAS services.
- * Typically these errors are either configuration or operational errors that can be fixed by an administrator
- * or power AssetConsumerInterface.  However, there may be the odd bug that surfaces here.
+ * Typically, these errors are either configuration or operational errors that can be fixed by an administrator
+ * or power AssetConsumerInterface. However, there may be the odd bug that surfaces here.
  * The AssetCatalogErrorCode can be used with this exception to populate it with standard messages.
  * The aim is to be able to uniquely identify the cause and remedy for the error.
  */

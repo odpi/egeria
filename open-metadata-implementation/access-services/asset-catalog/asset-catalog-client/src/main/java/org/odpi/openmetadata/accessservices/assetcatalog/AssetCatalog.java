@@ -24,7 +24,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
  * Also, it can return the connection details for the asset metadata.
  * The Asset Catalog OMAS includes:
  * <ul>
- * <li>Client-side  provides language-specific client packages to make it easier for data tools and applications to call the interface.</li>
+ * <li>Client-side  provides language-specific client packages to make it easier for data tools and applications to call
+ * the interface.</li>
  * <li>OMAS Server calls to retrieve assets and information related to the assets.</li>
  * </ul>
  */
@@ -63,6 +64,15 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
         super(serverName, serverPlatformURLRoot);
     }
 
+    /**
+     * Instantiates a new Asset Catalog client.
+     *
+     * @param serverName            the server name
+     * @param serverPlatformURLRoot the server platform url root
+     * @param userId                the user id
+     * @param password              the password
+     * @throws InvalidParameterException the invalid parameter exception
+     */
     public AssetCatalog(String serverName, String serverPlatformURLRoot, String userId, String password)
             throws InvalidParameterException {
         super(serverName, serverPlatformURLRoot, userId, password);
@@ -264,6 +274,9 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
         return relationshipResponse;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AssetCatalogSupportedTypes getSupportedTypes(String userId, String type)
             throws PropertyServerException, InvalidParameterException {

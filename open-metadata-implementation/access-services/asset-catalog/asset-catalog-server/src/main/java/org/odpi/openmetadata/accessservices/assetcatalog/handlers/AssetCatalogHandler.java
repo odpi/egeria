@@ -292,6 +292,8 @@ public class AssetCatalogHandler {
     }
 
     /**
+     * Returns a certain kind of relationships for a specified asset.
+     *
      * @param userId               user identifier that issues the call
      * @param assetGUID            the asset identifier
      * @param assetTypeName        the asset type name
@@ -307,7 +309,8 @@ public class AssetCatalogHandler {
                                                                                                        String assetGUID,
                                                                                                        String assetTypeName,
                                                                                                        String relationshipTypeName,
-                                                                                                       Integer from, Integer pageSize)
+                                                                                                       Integer from,
+                                                                                                       Integer pageSize)
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
 
         String methodName = "getRelationships";
@@ -332,7 +335,7 @@ public class AssetCatalogHandler {
      * @param userId           user identifier that issues the call
      * @param assetGUID        the asset identifier
      * @param searchParameters additional parameters for searching and filtering
-     * @param serverName
+     * @param serverName       the name of the server
      * @return a list of entities from the neighborhood of the given entity
      * @throws AssetCatalogException      is thrown by the Asset Catalog OMAS when the asset passed on a request is not found in the repository
      * @throws InvalidParameterException  is thrown by the OMAG Service when a parameter is null or an invalid value.
@@ -377,6 +380,9 @@ public class AssetCatalogHandler {
      * @throws PagingErrorException                                                               - is thrown by an OMRS Connector when the caller has passed invalid paging attributes on a search call.
      * @throws InvalidParameterException                                                          - is thrown by the OMAG Service when a parameter is null or an invalid value.
      * @throws RepositoryErrorException                                                           - there is a problem communicating with the metadata repository.
+     * @throws EntityNotKnownException                                                            - is thrown when the entity is not found in the repositories
+     * @throws PropertyServerException                                                            - is thrown when there is a server configuration error
+     * @throws UserNotAuthorizedException                                                         - is thrown when the user is not authorized to do the search
      */
     public List<Elements> searchByType(String userId, String searchCriteria, SearchParameters searchParameters)
             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
@@ -413,7 +419,7 @@ public class AssetCatalogHandler {
         return results;
     }
 
-    /**\
+    /**
      *
      * @param userId           user identifier that issues the call
      * @param typeName         the assets type name to search for
@@ -428,7 +434,7 @@ public class AssetCatalogHandler {
      * @throws PagingErrorException                                                               - is thrown by an OMRS Connector when the caller has passed invalid paging attributes on a search call.
      * @throws InvalidParameterException                                                          - is thrown by the OMAG Service when a parameter is null or an invalid value.
      * @throws RepositoryErrorException                                                           - there is a problem communicating with the metadata repository.
-     * @throws EntityNotKnownException
+     * @throws EntityNotKnownException                                                            - is thrown when the entity is not found in the repositories
      * @throws PropertyServerException                                                            - reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
      * @throws UserNotAuthorizedException                                                         - is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
      */
@@ -456,7 +462,7 @@ public class AssetCatalogHandler {
         return createSearchResultList(result, methodName);
     }
 
-    /**\
+    /**
      *
      * @param userId           user identifier that issues the call
      * @param typeGUID         the assets type GUID to search for
@@ -471,7 +477,7 @@ public class AssetCatalogHandler {
      * @throws PagingErrorException                                                               - is thrown by an OMRS Connector when the caller has passed invalid paging attributes on a search call.
      * @throws InvalidParameterException                                                          - is thrown by the OMAG Service when a parameter is null or an invalid value.
      * @throws RepositoryErrorException                                                           - there is a problem communicating with the metadata repository.
-     * @throws EntityNotKnownException
+     * @throws EntityNotKnownException                                                            - is thrown when the entity is not found in the repositories
      * @throws PropertyServerException                                                            - reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
      * @throws UserNotAuthorizedException                                                         - is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
      */
@@ -500,16 +506,17 @@ public class AssetCatalogHandler {
     }
 
     /**
-         * @param userId            user identifier that issues the call
-         * @param entityGUID        the identifier of the entity
-         * @param entityTypeDefName the type name of the entity
-         * @return the context of the given entity
-         * @throws UserNotAuthorizedException - is thrown by the OCF when a userId passed on a request is not
-         *                                    authorized to perform the requested action.
-         * @throws PropertyServerException    - provides a checked exception for reporting errors when connecting to a
-         *                                    metadata repository to retrieve properties about the connection and/or connector.
-         * @throws InvalidParameterException  -  is thrown by the OMAS when a parameter is null or an invalid value.
-         */
+     * Returns a list of elements that define the context based on the type of the given asset.
+     * @param userId            user identifier that issues the call
+     * @param entityGUID        the identifier of the entity
+     * @param entityTypeDefName the type name of the entity
+     * @return the context of the given entity
+     * @throws UserNotAuthorizedException - is thrown by the OCF when a userId passed on a request is not
+     *                                    authorized to perform the requested action.
+     * @throws PropertyServerException    - provides a checked exception for reporting errors when connecting to a
+     *                                    metadata repository to retrieve properties about the connection and/or connector.
+     * @throws InvalidParameterException  -  is thrown by the OMAS when a parameter is null or an invalid value.
+     */
     public Elements buildContextByType(String userId,
                                        String entityGUID,
                                        String entityTypeDefName)

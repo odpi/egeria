@@ -29,5 +29,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 public class ClassificationListResponse extends AssetCatalogOMASAPIResponse {
 
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * The list of classifications
+     * -- GETTER --
+     * Returns the list of classifications
+     * @return the list of classifications
+     * -- SETTER --
+     * Set up the list of classifications
+     * @param classifications the list of classifications
+     */
     private List<Classification> classifications;
 }
