@@ -3,50 +3,67 @@
 
 package org.odpi.openmetadata.accessservices.assetowner.client;
 
-import org.odpi.openmetadata.accessservices.assetowner.api.*;
-import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.*;
-import org.odpi.openmetadata.accessservices.assetowner.properties.*;
-import org.odpi.openmetadata.accessservices.assetowner.rest.*;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ConnectionResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ConnectorTypeResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.accessservices.assetowner.api.AssetClassificationInterface;
+import org.odpi.openmetadata.accessservices.assetowner.api.AssetConnectionManagementInterface;
+import org.odpi.openmetadata.accessservices.assetowner.api.AssetDecommissioningInterface;
 import org.odpi.openmetadata.accessservices.assetowner.api.AssetKnowledgeInterface;
-import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
+import org.odpi.openmetadata.accessservices.assetowner.api.AssetOnboardingInterface;
+import org.odpi.openmetadata.accessservices.assetowner.api.AssetReviewInterface;
+import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.AssetElement;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ConnectionElement;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ConnectorTypeElement;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.EndpointElement;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.RelationshipElement;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaAttributeElement;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaTypeElement;
+import org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties;
+import org.odpi.openmetadata.accessservices.assetowner.properties.ConnectionProperties;
+import org.odpi.openmetadata.accessservices.assetowner.properties.EndpointProperties;
+import org.odpi.openmetadata.accessservices.assetowner.properties.RelationshipProperties;
+import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaAttributeProperties;
+import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.assetowner.properties.TemplateProperties;
+import org.odpi.openmetadata.accessservices.assetowner.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameListResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.StringMapResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * AssetOwner provides the generic client-side interface for the Asset Owner Open Metadata Access Service (OMAS).
  * There are other clients that provide specialized methods for specific types of Asset.
- *
+ * <br><br>
  * This client is initialized with the URL and name of the server that is running the Asset Owner OMAS.
  * This server is responsible for locating and managing the asset owner's definitions exchanged with this client.
  */
-public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowledgeInterface,
-                                                                    AssetOnboardingInterface,
-                                                                    AssetClassificationInterface,
-                                                                    AssetConnectionManagementInterface,
-                                                                    AssetReviewInterface,
-                                                                    AssetDecommissioningInterface
-
+public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeInterface,
+                                                                AssetOnboardingInterface,
+                                                                AssetClassificationInterface,
+                                                                AssetConnectionManagementInterface,
+                                                                AssetReviewInterface,
+                                                                AssetDecommissioningInterface
 {
-    protected AssetOwnerRESTClient restClient;               /* Initialized in constructor */
-
-    private static final String  serviceURLName = "asset-owner";
-    private static final String  defaultAssetType = "Asset";
-
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -61,9 +78,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
                       String   serverPlatformURLRoot,
                       AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, serviceURLName, auditLog);
-
-        this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog);
     }
 
 
@@ -78,9 +93,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
     public AssetOwner(String serverName,
                       String serverPlatformURLRoot) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, serviceURLName);
-
-        this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot);
     }
 
 
@@ -103,9 +116,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
                       String   password,
                       AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, serviceURLName, auditLog);
-
-        this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
 
 
@@ -125,9 +136,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
                       String userId,
                       String password) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, serviceURLName,  userId, password);
-
-        this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot,  userId, password);
     }
 
 
@@ -148,11 +157,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
                       int                  maxPageSize,
                       AuditLog             auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, serviceURLName, auditLog);
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-
-        this.restClient = restClient;
+        super(serverName, serverPlatformURLRoot, restClient, maxPageSize, auditLog);
     }
 
 
@@ -210,7 +215,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * Return the asset subtype names.
      *
      * @param userId calling user
-     * @return list of type names that are subtypes of asset
+     * @return map of type names that are subtypes of asset
      * @throws InvalidParameterException full path or userId is null
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
@@ -415,6 +420,288 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
                                         isMergeUpdate);
     }
 
+    /**
+     * Link two asset together.
+     * Use information from the relationship type definition to ensure the fromAssetGUID and toAssetGUID are the right way around.
+     *
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to create
+     * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
+     * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
+     * @param relationshipProperties unique identifier for this relationship
+     *
+     * @return unique identifier of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public String setupRelatedAsset(String                 userId,
+                                    String                 relationshipTypeName,
+                                    String                 fromAssetGUID,
+                                    String                 toAssetGUID,
+                                    RelationshipProperties relationshipProperties) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        final String methodName                 = "setupRelatedAsset";
+        final String fromAssetGUIDParameterName = "fromAssetGUID";
+        final String toAssetGUIDParameterName   = "toAssetGUID";
+        final String typeNameParameterName      = "relationshipTypeName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(fromAssetGUID, fromAssetGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(toAssetGUID, toAssetGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(relationshipTypeName, typeNameParameterName, methodName);
+
+        RelationshipRequestBody requestBody = new RelationshipRequestBody();
+
+        requestBody.setProperties(relationshipProperties);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/assets/relationships/{2}/from-asset/{3}/to-asset/{4}";
+
+        GUIDResponse results = restClient.callGUIDPostRESTCall(methodName,
+                                                               urlTemplate,
+                                                               requestBody,
+                                                               serverName,
+                                                               userId,
+                                                               relationshipTypeName,
+                                                               fromAssetGUID,
+                                                               toAssetGUID);
+
+        return results.getGUID();
+    }
+
+
+    /**
+     * Retrieve the relationship between two elements.
+     *
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to create
+     * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
+     * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public RelationshipElement getAssetRelationship(String  userId,
+                                                    String  relationshipTypeName,
+                                                    String  fromAssetGUID,
+                                                    String  toAssetGUID) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        final String methodName                 = "getAssetRelationship";
+        final String fromAssetGUIDParameterName = "fromAssetGUID";
+        final String toAssetGUIDParameterName   = "toAssetGUID";
+        final String typeNameParameterName      = "relationshipTypeName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(fromAssetGUID, fromAssetGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(toAssetGUID, toAssetGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(relationshipTypeName, typeNameParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/assets/relationships/{2}/from-asset/{3}/to-asset/{4}/retrieve";
+
+
+        RelationshipElementResponse restResult = restClient.callRelationshipPostRESTCall(methodName,
+                                                                                         urlTemplate,
+                                                                                         new EffectiveTimeQueryRequestBody(),
+                                                                                         serverName,
+                                                                                         userId,
+                                                                                         relationshipTypeName,
+                                                                                         fromAssetGUID,
+                                                                                         toAssetGUID);
+
+        return restResult.getElement();
+    }
+
+
+    /**
+     * Update relationship between two elements.
+     *
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to update
+     * @param relationshipGUID unique identifier of the relationship
+     * @param relationshipProperties description and/or purpose of the relationship
+     * @param isMergeUpdate should the new properties be merged with the existing properties, or replace them entirely
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void   updateAssetRelationship(String                 userId,
+                                          String                 relationshipTypeName,
+                                          String                 relationshipGUID,
+                                          boolean                isMergeUpdate,
+                                          RelationshipProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
+    {
+        final String methodName                    = "updateAssetRelationship";
+        final String relationshipGUIDParameterName = "relationshipGUID";
+        final String typeNameParameterName         = "relationshipTypeName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(relationshipGUID, relationshipGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(relationshipTypeName, typeNameParameterName, methodName);
+
+        RelationshipRequestBody requestBody = new RelationshipRequestBody();
+        requestBody.setProperties(relationshipProperties);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/assets/relationships/{2}/{3}/update?isMergeUpdate={4}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        relationshipTypeName,
+                                        relationshipGUID,
+                                        isMergeUpdate);
+    }
+
+
+    /**
+     * Remove the relationship between two elements.
+     *
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to delete
+     * @param relationshipGUID unique identifier of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void clearAssetRelationship(String  userId,
+                                       String  relationshipTypeName,
+                                       String  relationshipGUID) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        final String methodName                    = "clearAssetRelationship";
+        final String relationshipGUIDParameterName = "relationshipGUID";
+        final String typeNameParameterName         = "relationshipTypeName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(relationshipGUID, relationshipGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(relationshipTypeName, typeNameParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/assets/relationships/{2}/{3}/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        new EffectiveTimeQueryRequestBody(),
+                                        serverName,
+                                        userId,
+                                        relationshipTypeName,
+                                        relationshipGUID);
+    }
+
+
+    /**
+     * Retrieve the requested relationships linked from a specific element at end 2.
+     *
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to delete
+     * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
+     * @param startFrom start position for results
+     * @param pageSize     maximum number of results
+    *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<RelationshipElement> getRelatedAssetsAtEnd2(String  userId,
+                                                            String  relationshipTypeName,
+                                                            String  fromAssetGUID,
+                                                            int     startFrom,
+                                                            int     pageSize) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        final String methodName                 = "getRelatedAssetsAtEnd2";
+        final String fromAssetGUIDParameterName = "fromAssetGUID";
+        final String typeNameParameterName      = "relationshipTypeName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(fromAssetGUID, fromAssetGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(relationshipTypeName, typeNameParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/assets/relationships/{2}/from-asset/{3}/retrieve/end2?startFrom={4}&pageSize={5}";
+
+
+        RelationshipElementsResponse restResult = restClient.callRelationshipsPostRESTCall(methodName,
+                                                                                           urlTemplate,
+                                                                                           new EffectiveTimeQueryRequestBody(),
+                                                                                           serverName,
+                                                                                           userId,
+                                                                                           relationshipTypeName,
+                                                                                           fromAssetGUID,
+                                                                                           startFrom,
+                                                                                           pageSize);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
+     * Retrieve the relationships linked from a specific element at end 2 of the relationship.
+     *
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to delete
+     * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
+     * @param startFrom start position for results
+     * @param pageSize     maximum number of results
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<RelationshipElement> getRelatedAssetsAtEnd1(String  userId,
+                                                            String  relationshipTypeName,
+                                                            String  toAssetGUID,
+                                                            int     startFrom,
+                                                            int     pageSize) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        final String methodName               = "getRelatedAssetsAtEnd1";
+        final String toAssetGUIDParameterName = "toAssetGUID";
+        final String typeNameParameterName     = "relationshipTypeName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(toAssetGUID, toAssetGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(relationshipTypeName, typeNameParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/assets/relationships/{2}/to-asset/{3}/retrieve/end1?startFrom={4}&pageSize={5}";
+
+        RelationshipElementsResponse restResult = restClient.callRelationshipsPostRESTCall(methodName,
+                                                                                           urlTemplate,
+                                                                                           new EffectiveTimeQueryRequestBody(),
+                                                                                           serverName,
+                                                                                           userId,
+                                                                                           relationshipTypeName,
+                                                                                           toAssetGUID,
+                                                                                           startFrom,
+                                                                                           pageSize);
+
+        return restResult.getElementList();
+    }
+    
 
     /**
      * Stores the supplied schema details in the catalog and attaches it to the asset.  If another schema is currently
@@ -608,7 +895,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
 
-        restClient.callGUIDPostRESTCall(methodName,
+        restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         nullRequestBody,
                                         serverName,
@@ -617,11 +904,637 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
     }
 
 
+
+
+    /* =====================================================================================================================
+     * A schemaType describes the structure of a data asset, process or port
+     */
+
+    /**
+     * Create a new metadata element to represent a schema type.
+     *
+     * @param userId calling user
+     * @param schemaTypeProperties properties about the schema type to store
+     *
+     * @return unique identifier of the new schema type
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public String createSchemaType(String               userId,
+                                   SchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        final String methodName = "createSchemaType";
+
+        return this.createSchemaType(userId,
+                                     null,
+                                     schemaTypeProperties,
+                                     methodName);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a schema type.
+     *
+     * @param userId calling user
+     * @param anchorGUID unique identifier of the intended anchor of the schema type
+     * @param schemaTypeProperties properties about the schema type to store
+     *
+     * @return unique identifier of the new schema type
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public String createAnchoredSchemaType(String               userId,
+                                           String               anchorGUID,
+                                           SchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        final String methodName = "createAnchoredSchemaType";
+
+        return this.createSchemaType(userId,
+                                     anchorGUID,
+                                     schemaTypeProperties,
+                                     methodName);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a schema type.
+     *
+     * @param userId calling user
+     * @param anchorGUID unique identifier of the intended anchor of the schema type
+     * @param schemaTypeProperties properties about the schema type to store
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new schema type
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    private String createSchemaType(String                       userId,
+                                    String                       anchorGUID,
+                                    SchemaTypeProperties         schemaTypeProperties,
+                                    String                       methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        final String propertiesParameterName     = "schemaTypeProperties";
+        final String qualifiedNameParameterName  = "schemaTypeProperties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(schemaTypeProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(schemaTypeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-types?anchorGUID={2}";
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  schemaTypeProperties,
+                                                                  serverName,
+                                                                  userId,
+                                                                  anchorGUID);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
+     * Create a new metadata element to represent a schema type using an existing metadata element as a template.
+     *
+     * @param userId calling user
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     *
+     * @return unique identifier of the new schema type
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public String createSchemaTypeFromTemplate(String                       userId,
+                                               String                       templateGUID,
+                                               TemplateProperties           templateProperties) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
+    {
+        final String methodName                  = "createSchemaTypeFromTemplate";
+        final String templateGUIDParameterName   = "templateGUID";
+        final String propertiesParameterName     = "templateProperties";
+        final String qualifiedNameParameterName  = "templateProperties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        TemplateRequestBody requestBody = new TemplateRequestBody();
+        requestBody.setElementProperties(templateProperties);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-types/from-template/{2}";
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId,
+                                                                  templateGUID);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
+     * Update the metadata element representing a schema type.
+     *
+     * @param userId calling user
+     * @param schemaTypeGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param schemaTypeProperties new properties for the metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void updateSchemaType(String               userId,
+                                 String               schemaTypeGUID,
+                                 boolean              isMergeUpdate,
+                                 SchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String methodName                  = "updateSchemaType";
+        final String schemaTypeGUIDParameterName = "schemaTypeGUID";
+        final String propertiesParameterName     = "schemaTypeProperties";
+        final String qualifiedNameParameterName  = "schemaTypeProperties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaTypeGUID, schemaTypeGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(schemaTypeProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(schemaTypeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-types/{2}?isMergeUpdate={3}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        schemaTypeProperties,
+                                        serverName,
+                                        userId,
+                                        schemaTypeGUID,
+                                        isMergeUpdate);
+    }
+
+
+    /**
+     * Connect a schema type to a data asset, process or port.
+     *
+     * @param userId calling user
+     * @param schemaTypeGUID unique identifier of the schema type to connect
+     * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
+     * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
+     * @param properties properties for the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void setupSchemaTypeParent(String                 userId,
+                                      String                 schemaTypeGUID,
+                                      String                 parentElementGUID,
+                                      String                 parentElementTypeName,
+                                      RelationshipProperties properties) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        final String methodName                     = "setupSchemaTypeParent";
+        final String schemaTypeGUIDParameterName    = "schemaTypeGUID";
+        final String parentElementGUIDParameterName = "parentElementGUID";
+        final String parentElementTypeParameterName = "parentElementTypeName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaTypeGUID, schemaTypeGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(parentElementGUID, parentElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(parentElementTypeName, parentElementTypeParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/parents/{2}/{3}/schema-types/{4}";
+
+        RelationshipRequestBody requestBody = new RelationshipRequestBody();
+
+        requestBody.setProperties(properties);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        parentElementGUID,
+                                        parentElementTypeName,
+                                        schemaTypeGUID);
+    }
+
+
+    /**
+     * Remove the relationship between a schema type and its parent data asset, process or port.
+     *
+     * @param userId calling user
+     * @param schemaTypeGUID unique identifier of the schema type to connect
+     * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
+     * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void clearSchemaTypeParent(String  userId,
+                                      String  schemaTypeGUID,
+                                      String  parentElementGUID,
+                                      String  parentElementTypeName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        final String methodName                     = "clearSchemaTypeParent";
+        final String schemaTypeGUIDParameterName    = "schemaTypeGUID";
+        final String parentElementGUIDParameterName = "parentElementGUID";
+        final String parentElementTypeParameterName = "parentElementTypeName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaTypeGUID, schemaTypeGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(parentElementGUID, parentElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(parentElementTypeName, parentElementTypeParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/parents/{2}/{3}/schema-types/{4}/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        new EffectiveTimeQueryRequestBody(),
+                                        serverName,
+                                        userId,
+                                        parentElementGUID,
+                                        parentElementTypeName,
+                                        schemaTypeGUID);
+    }
+
+
+    /**
+     * Create a relationship between two schema elements.  The name of the desired relationship, and any properties
+     * are passed on the API.
+     *
+     * @param userId calling user
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param relationshipTypeName type of the relationship to create
+     * @param properties relationship properties
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void setupSchemaElementRelationship(String                 userId,
+                                               String                 endOneGUID,
+                                               String                 endTwoGUID,
+                                               String                 relationshipTypeName,
+                                               RelationshipProperties properties) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        final String methodName                        = "setupSchemaElementRelationship";
+        final String endOneGUIDParameterName           = "endOneGUID";
+        final String endTwoGUIDParameterName           = "endTwoGUID";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(endOneGUID, endOneGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(endTwoGUID, endTwoGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(relationshipTypeName, relationshipTypeNameParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-elements/{2}/relationships/{3}/schema-elements/{4}";
+
+        RelationshipRequestBody requestBody = new RelationshipRequestBody();
+
+        requestBody.setProperties(properties);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        endOneGUID,
+                                        relationshipTypeName,
+                                        endTwoGUID);
+    }
+
+
+    /**
+     * Remove a relationship between two schema elements.  The name of the desired relationship is passed on the API.
+     *
+     * @param userId calling user
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param relationshipTypeName type of the relationship to delete
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void clearSchemaElementRelationship(String  userId,
+                                               String  endOneGUID,
+                                               String  endTwoGUID,
+                                               String  relationshipTypeName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        final String methodName                        = "clearSchemaElementRelationship";
+        final String endOneGUIDParameterName           = "endOneGUID";
+        final String endTwoGUIDParameterName           = "endTwoGUID";
+        final String relationshipTypeNameParameterName = "relationshipTypeName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(endOneGUID, endOneGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(endTwoGUID, endTwoGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(relationshipTypeName, relationshipTypeNameParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-elements/{2}/relationships/{3}/schema-elements/{4}/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        new EffectiveTimeQueryRequestBody(),
+                                        serverName,
+                                        userId,
+                                        endOneGUID,
+                                        relationshipTypeName,
+                                        endTwoGUID);
+    }
+
+
+    /**
+     * Remove the metadata element representing a schema type.
+     *
+     * @param userId calling user
+     * @param schemaTypeGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void removeSchemaType(String  userId,
+                                 String  schemaTypeGUID) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
+    {
+        final String methodName                  = "removeSchemaType";
+        final String schemaTypeGUIDParameterName = "schemaTypeGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaTypeGUID, schemaTypeGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-types/{2}/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        new UpdateRequestBody(),
+                                        serverName,
+                                        userId,
+                                        schemaTypeGUID);
+    }
+
+
+    /**
+     * Retrieve the list of schema type metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<SchemaTypeElement> findSchemaType(String  userId,
+                                                  String  searchString,
+                                                  int     startFrom,
+                                                  int     pageSize) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        final String methodName                = "findSchemaType";
+        final String searchStringParameterName = "searchString";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+       
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-types/by-search-string?startFrom={2}&pageSize={3}";
+
+        SchemaTypeElementsResponse restResult = restClient.callSchemaTypesPostRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       requestBody,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       startFrom,
+                                                                                       validatedPageSize);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
+     * Return the schema type associated with a specific open metadata element (data asset, process or port).
+     *
+     * @param userId calling user
+     * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
+     * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
+     *
+     * @return metadata element describing the schema type associated with the requested parent element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public SchemaTypeElement getSchemaTypeForElement(String  userId,
+                                                     String  parentElementGUID,
+                                                     String  parentElementTypeName) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        final String methodName        = "getSchemaTypeForElement";
+        final String guidParameterName = "parentElementGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(parentElementGUID, guidParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/parents/{2}/{3}/schema-types/retrieve";
+
+        SchemaTypeElementResponse restResult = restClient.callSchemaTypePostRESTCall(methodName,
+                                                                                     urlTemplate,
+                                                                                     new EffectiveTimeQueryRequestBody(),
+                                                                                     serverName,
+                                                                                     userId,
+                                                                                     parentElementTypeName,
+                                                                                     parentElementGUID);
+
+        return restResult.getElement();
+    }
+
+
+    /**
+     * Retrieve the list of schema type metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<SchemaTypeElement>   getSchemaTypeByName(String  userId,
+                                                         String  name,
+                                                         int     startFrom,
+                                                         int     pageSize) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        final String methodName        = "getSchemaTypeByName";
+        final String nameParameterName = "name";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+ 
+        requestBody.setName(name);
+        requestBody.setNameParameterName(nameParameterName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-types/by-name?startFrom={2}&pageSize={3}";
+
+        SchemaTypeElementsResponse restResult = restClient.callSchemaTypesPostRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       requestBody,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       startFrom,
+                                                                                       validatedPageSize);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
+     * Retrieve the schema type metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param schemaTypeGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public SchemaTypeElement getSchemaTypeByGUID(String  userId,
+                                                 String  schemaTypeGUID) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        final String methodName = "getSchemaTypeByGUID";
+        final String guidParameterName = "schemaTypeGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaTypeGUID, guidParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-types/{2}/retrieve";
+
+        SchemaTypeElementResponse restResult = restClient.callSchemaTypePostRESTCall(methodName,
+                                                                                     urlTemplate,
+                                                                                     new EffectiveTimeQueryRequestBody(),
+                                                                                     serverName,
+                                                                                     userId,
+                                                                                     schemaTypeGUID);
+
+        return restResult.getElement();
+    }
+
+
+    /**
+     * Retrieve the header of the metadata element connected to a schema type.
+     *
+     * @param userId calling user
+     * @param schemaTypeGUID unique identifier of the requested metadata element
+     *
+     * @return header for parent element (data asset, process, port)
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public ElementHeader getSchemaTypeParent(String  userId,
+                                             String  schemaTypeGUID) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        final String methodName        = "getSchemaTypeParent";
+        final String guidParameterName = "schemaTypeGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaTypeGUID, guidParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/parents/schema-types/{2}/retrieve";
+
+        ElementHeaderResponse restResult = restClient.callElementHeaderPostRESTCall(methodName,
+                                                                                    urlTemplate,
+                                                                                    new EffectiveTimeQueryRequestBody(),
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    schemaTypeGUID);
+
+        return restResult.getElement();
+    }
+
+
+    /* ===============================================================================
+     * A schemaType typically contains many schema attributes, linked with relationships.
+     */
+
+
     /**
      * Adds attributes to a complex schema type like a relational table, avro schema or a structured document.
      * This method can be called repeatedly to add many attributes to a schema.
      *
-     * @param serverName name of the server instance to connect to
      * @param userId calling user
      * @param assetGUID unique identifier of the asset that the schema is to be attached to
      * @param parentGUID unique identifier of the schema element to anchor these attributes to.
@@ -632,8 +1545,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public void addSchemaAttributes(String                          serverName,
-                                    String                          userId,
+    public void addSchemaAttributes(String                          userId,
                                     String                          assetGUID,
                                     String                          parentGUID,
                                     List<SchemaAttributeProperties> schemaAttributes) throws InvalidParameterException,
@@ -644,6 +1556,8 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
         final String   assetGUIDParameter = "assetGUID";
         final String   parentGUIDParameter = "parentGUID";
         final String   schemaAttributesParameter = "schemaAttributes";
+        final String   schemaAttributeParameter = "schemaAttributes[x]";
+        final String   qualifiedNameParameter = "schemaAttribute[x].getQualifiedName()";
         final String   urlTemplate
                 = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/schemas/{3}/schema-attributes/list";
 
@@ -651,6 +1565,12 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(parentGUID, parentGUIDParameter, methodName);
         invalidParameterHandler.validateObject(schemaAttributes, schemaAttributesParameter, methodName);
+
+        for (SchemaAttributeProperties schemaAttributeProperties : schemaAttributes)
+        {
+            invalidParameterHandler.validateObject(schemaAttributeProperties, schemaAttributeParameter, methodName);
+            invalidParameterHandler.validateName(schemaAttributeProperties.getQualifiedName(), qualifiedNameParameter, methodName);
+        }
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -667,7 +1587,6 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * This method can be called repeatedly to add many attributes to a schema.  The GUID returned can be used to add
      * nested attributes.
      *
-     * @param serverName name of the server instance to connect to
      * @param userId calling user
      * @param assetGUID unique identifier of the asset that the schema is to be attached to
      * @param parentGUID unique identifier of the schema element to anchor these attributes to.
@@ -680,8 +1599,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public String addSchemaAttribute(String                    serverName,
-                                     String                    userId,
+    public String addSchemaAttribute(String                    userId,
                                      String                    assetGUID,
                                      String                    parentGUID,
                                      SchemaAttributeProperties schemaAttribute) throws InvalidParameterException,
@@ -713,6 +1631,381 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
         return restResult.getGUID();
     }
 
+
+    /**
+     * Create a new metadata element to represent a schema attribute using an existing metadata element as a template.
+     *
+     * @param userId calling user
+     * @param schemaElementGUID unique identifier of the schemaType or Schema Attribute where the schema attribute is connected to
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     *
+     * @return unique identifier of the new metadata element for the schema attribute
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public String createSchemaAttributeFromTemplate(String                       userId,
+                                                    String                       schemaElementGUID,
+                                                    String                       templateGUID,
+                                                    TemplateProperties           templateProperties) throws InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException
+    {
+        final String methodName                  = "createSchemaAttributeFromTemplate";
+        final String schemaElementGUIDParameterName = "schemaElementGUID";
+        final String templateGUIDParameterName   = "templateGUID";
+        final String propertiesParameterName     = "templateProperties";
+        final String qualifiedNameParameterName  = "templateProperties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaElementGUID, schemaElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        TemplateRequestBody requestBody = new TemplateRequestBody();
+        requestBody.setElementProperties(templateProperties);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-elements/{2}/schema-attributes/from-template/{3}";
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId,
+                                                                  schemaElementGUID,
+                                                                  templateGUID);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
+     * Update the properties of the metadata element representing a schema attribute.
+     *
+     * @param userId calling user
+     * @param schemaAttributeGUID unique identifier of the schema attribute to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param schemaAttributeProperties new properties for the schema attribute
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void updateSchemaAttribute(String                    userId,
+                                      String                    schemaAttributeGUID,
+                                      boolean                   isMergeUpdate,
+                                      SchemaAttributeProperties schemaAttributeProperties) throws InvalidParameterException, 
+                                                                                                  UserNotAuthorizedException, 
+                                                                                                  PropertyServerException
+    {
+        final String methodName                       = "updateSchemaAttribute";
+        final String schemaAttributeGUIDParameterName = "schemaAttributeGUID";
+        final String propertiesParameterName          = "schemaAttributeProperties";
+        final String qualifiedNameParameterName       = "schemaAttributeProperties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaAttributeGUID, schemaAttributeGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(schemaAttributeProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(schemaAttributeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/{2}?isMergeUpdate={3}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        schemaAttributeProperties,
+                                        serverName,
+                                        userId,
+                                        schemaAttributeGUID,
+                                        isMergeUpdate);
+    }
+
+
+    /**
+     * Classify the schema type (or attribute if type is embedded) to indicate that it is a calculated value.
+     *
+     * @param userId calling user
+     * @param schemaElementGUID unique identifier of the metadata element to update
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void setSchemaElementAsCalculatedValue(String  userId,
+                                                  String  schemaElementGUID,
+                                                  String  formula) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        final String methodName = "setSchemaElementAsCalculatedValue";
+        final String schemaElementGUIDParameterName = "schemaElementGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaElementGUID, schemaElementGUIDParameterName, methodName);
+
+        CalculatedValueClassificationRequestBody requestBody = new CalculatedValueClassificationRequestBody();
+        requestBody.setFormula(formula);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-elements/{2}/is-calculated-value";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        schemaElementGUID);
+    }
+
+
+    /**
+     * Remove the calculated value designation from the schema element.
+     *
+     * @param userId calling user
+     * @param schemaElementGUID unique identifier of the metadata element to update
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void clearSchemaElementAsCalculatedValue(String  userId,
+                                                    String  schemaElementGUID) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        final String methodName = "clearSchemaElementAsCalculatedValue";
+        final String schemaElementGUIDParameterName = "schemaElementGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaElementGUID, schemaElementGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-elements/{2}/is-calculated-value/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        new UpdateRequestBody(),
+                                        serverName,
+                                        userId,
+                                        schemaElementGUID);
+    }
+
+
+    /**
+     * Remove the metadata element representing a schema attribute.
+     *
+     * @param userId calling user
+     * @param schemaAttributeGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void removeSchemaAttribute(String  userId,
+                                      String  schemaAttributeGUID) throws InvalidParameterException, 
+                                                                          UserNotAuthorizedException, 
+                                                                          PropertyServerException
+    {
+        final String methodName                       = "removeSchemaAttribute";
+        final String schemaAttributeGUIDParameterName = "schemaAttributeGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaAttributeGUID, schemaAttributeGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/{2}/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        new UpdateRequestBody(),
+                                        serverName,
+                                        userId,
+                                        schemaAttributeGUID);
+    }
+
+
+    /**
+     * Retrieve the list of schema attribute metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<SchemaAttributeElement>   findSchemaAttributes(String  userId,
+                                                               String  searchString,
+                                                               int     startFrom,
+                                                               int     pageSize) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        final String methodName                = "findSchemaAttributes";
+        final String searchStringParameterName = "searchString";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+        
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/by-search-string?startFrom={2}&pageSize={3}";
+
+        SchemaAttributeElementsResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
+                                                                                                 urlTemplate,
+                                                                                                 requestBody,
+                                                                                                 serverName,
+                                                                                                 userId,
+                                                                                                 startFrom,
+                                                                                                 validatedPageSize);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
+     * Retrieve the list of schema attributes associated with a schema element.
+     *
+     * @param userId calling user
+     * @param parentSchemaElementGUID unique identifier of the schema element of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of associated metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<SchemaAttributeElement> getNestedSchemaAttributes(String  userId,
+                                                                  String  parentSchemaElementGUID,
+                                                                  int     startFrom,
+                                                                  int     pageSize) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        final String methodName        = "getNestedSchemaAttributes";
+        final String guidParameterName = "parentSchemaElementGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(parentSchemaElementGUID, guidParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-elements/{2}/schema-attributes/retrieve?startFrom={3}&pageSize={4}";
+
+        SchemaAttributeElementsResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
+                                                                                                 urlTemplate,
+                                                                                                 new EffectiveTimeQueryRequestBody(),
+                                                                                                 serverName,
+                                                                                                 userId,
+                                                                                                 parentSchemaElementGUID,
+                                                                                                 startFrom,
+                                                                                                 validatedPageSize);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
+     * Retrieve the list of schema attribute metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<SchemaAttributeElement>   getSchemaAttributesByName(String  userId,
+                                                                    String  name,
+                                                                    int     startFrom,
+                                                                    int     pageSize) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        final String methodName        = "getSchemaAttributesByName";
+        final String nameParameterName = "name";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+        
+        requestBody.setName(name);
+        requestBody.setNameParameterName(nameParameterName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/by-name?startFrom={2}&pageSize={3}";
+
+        SchemaAttributeElementsResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
+                                                                                                 urlTemplate,
+                                                                                                 requestBody,
+                                                                                                 serverName,
+                                                                                                 userId,
+                                                                                                 startFrom,
+                                                                                                 validatedPageSize);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
+     * Retrieve the schema attribute metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param schemaAttributeGUID unique identifier of the requested metadata element
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public SchemaAttributeElement getSchemaAttributeByGUID(String userId,
+                                                           String schemaAttributeGUID) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        final String methodName = "getSchemaAttributeByGUID";
+        final String guidParameterName = "schemaAttributeGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(schemaAttributeGUID, guidParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/{2}/retrieve";
+
+        SchemaAttributeElementResponse restResult = restClient.callSchemaAttributePostRESTCall(methodName,
+                                                                                               urlTemplate,
+                                                                                               new EffectiveTimeQueryRequestBody(),
+                                                                                               serverName,
+                                                                                               userId,
+                                                                                               schemaAttributeGUID);
+
+        return restResult.getElement();
+    }
 
     /**
      * Adds a connection to an asset.  Assets can have multiple connections attached.
@@ -2734,7 +4027,6 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
     /**
      * Deletes an asset and all of its associated elements such as schema, connections (unless they are linked to
      * another asset), discovery reports and associated feedback.
-     *
      * Given the depth of the delete request performed by this call, it should be used with care.
      *
      * @param userId calling user

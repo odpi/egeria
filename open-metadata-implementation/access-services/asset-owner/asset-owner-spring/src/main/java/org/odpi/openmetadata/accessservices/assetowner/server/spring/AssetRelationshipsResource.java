@@ -27,9 +27,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-owner/users/{userId}")
 
-@Tag(name="Governance Program OMAS",
-     description="The Governance Program OMAS provides APIs and events for tools and applications focused on defining a data strategy, planning support for a regulation and/or developing a governance program for the data landscape.",
-     externalDocs=@ExternalDocumentation(description="Governance Program Open Metadata Access Service (OMAS)",
+@Tag(name="Asset Owner OMAS",
+     description="The Asset Owner OMAS provides APIs and notifications for tools and applications supporting the work of " +
+                         "Asset Owners in protecting and enhancing their assets.",
+     externalDocs=@ExternalDocumentation(description="Asset Owner Open Metadata Access Service (OMAS)",
                                          url="https://egeria-project.org/services/omas/asset-owner/overview/"))
 
 public class AssetRelationshipsResource

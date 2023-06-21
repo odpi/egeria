@@ -721,8 +721,6 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         String relationshipTypeGUID = invalidParameterHandler.validateTypeName(relationshipTypeName, null, serviceName, methodName, repositoryHelper);
 
         InstanceProperties instanceProperties = null;
-        Date               effectiveFrom = new Date();
-        Date               effectiveTo = new Date();
 
         if (relationshipProperties != null)
         {
@@ -752,8 +750,8 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                      relationshipTypeGUID,
                                                      relationshipTypeName,
                                                      instanceProperties,
-                                                     effectiveFrom,
-                                                     effectiveTo,
+                                                     null,
+                                                     null,
                                                      effectiveTime,
                                                      methodName);
         }
@@ -774,8 +772,8 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                      relationshipTypeGUID,
                                                      relationshipTypeName,
                                                      instanceProperties,
-                                                     effectiveFrom,
-                                                     effectiveTo,
+                                                     null,
+                                                     null,
                                                      effectiveTime,
                                                      methodName);
         }
@@ -846,7 +844,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
 
 
     /**
-     * Concert an OMRS relationship into an Asset Manager's RelationshipElement.
+     * Convert an OMRS relationship into an Asset Manager's RelationshipElement.
      *
      * @param relationship retrieved relationship
      * @param methodName calling method

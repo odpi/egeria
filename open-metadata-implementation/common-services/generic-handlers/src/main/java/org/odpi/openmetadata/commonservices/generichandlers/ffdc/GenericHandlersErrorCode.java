@@ -106,6 +106,15 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
                                       "Either set up the caller to use the correct name or create a GovernanceActionProcess entity with the requested qualifiedName.  " +
                                       "Then retry the request once the definition is added."),
 
+    /**
+     * OMAG-GENERIC-HANDLERS-400-012 At least one of the properties supplied for a new relationship of type {0} are invalid.  The {1} exception was returned with error message: {2}
+     */
+    BAD_PARAMETER(400, "OMAG-GENERIC-HANDLERS-400-012",
+                  "At least one of the properties supplied for a new relationship of type {0} are invalid.  The {1} exception was returned with error message: {2}",
+                  "The system is unable to create the requested relationship because it can not parse the properties.",
+                  "Correct the caller's logic so that the properties passed are correctly formatted and retry the request."),
+
+
     ONLY_CREATOR_CAN_DELETE(403, "OMAG-GENERIC-HANDLERS-403-001",
             "The {0} method is unable to delete the requested relationship between {1} {2} and {3} {4} because it " +
                                     "was not created by the requesting user {5}",
@@ -233,7 +242,7 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
 
     ;
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
 
     /**

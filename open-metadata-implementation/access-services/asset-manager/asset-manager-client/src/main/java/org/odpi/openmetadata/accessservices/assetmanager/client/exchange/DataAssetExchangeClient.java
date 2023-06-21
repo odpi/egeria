@@ -596,6 +596,7 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
         requestBody.setAssetManagerGUID(assetManagerGUID);
         requestBody.setAssetManagerName(assetManagerName);
         requestBody.setProperties(relationshipProperties);
+        requestBody.setEffectiveTime(effectiveTime);
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/relationships/{2}/from-asset/{3}/to-asset/{4}?assetManagerIsHome={5}&forLineage={6}&forDuplicateProcessing={7}";
 
