@@ -94,7 +94,8 @@ implements <a href="AssetCatalogInterface.html" title="interface in org.odpi.ope
  Also, it can return the connection details for the asset metadata.
  The Asset Catalog OMAS includes:
  <ul>
- <li>Client-side  provides language-specific client packages to make it easier for data tools and applications to call the interface.</li>
+ <li>Client-side  provides language-specific client packages to make it easier for data tools and applications to call
+ the interface.</li>
  <li>OMAS Server calls to retrieve assets and information related to the assets.</li>
  </ul></div>
 </section>
@@ -126,7 +127,9 @@ implements <a href="AssetCatalogInterface.html" title="interface in org.odpi.ope
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password)</code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Instantiates a new Asset Catalog client.</div>
+</div>
 </div>
 </section>
 </li>
@@ -266,9 +269,15 @@ implements <a href="AssetCatalogInterface.html" title="interface in org.odpi.ope
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password)</span>
              throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
+<div class="block">Instantiates a new Asset Catalog client.</div>
 <dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - the server name</dd>
+<dd><code>serverPlatformURLRoot</code> - the server platform url root</dd>
+<dd><code>userId</code> - the user id</dd>
+<dd><code>password</code> - the password</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code></dd>
+<dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the invalid parameter exception</dd>
 </dl>
 </section>
 </li>
@@ -513,7 +522,6 @@ implements <a href="AssetCatalogInterface.html" title="interface in org.odpi.ope
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;type)</span>
                                              throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
-<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="AssetCatalogInterface.html#getSupportedTypes(java.lang.String,java.lang.String)">AssetCatalogInterface</a></code></span></div>
 <div class="block">Returns the list with supported types for search, including the sub-types supported</div>
 <dl class="notes">
 <dt>Specified by:</dt>

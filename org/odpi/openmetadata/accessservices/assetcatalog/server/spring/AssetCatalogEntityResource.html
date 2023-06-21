@@ -174,7 +174,9 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOutTopicConnection(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getOutTopicConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerId)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the out topic connection.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../model/rest/responses/AssetCatalogSupportedTypes.html" title="class in org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses">AssetCatalogSupportedTypes</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSupportedTypes(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getSupportedTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -237,7 +239,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Fetch asset's header, classification and properties</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>serverName</code> - unique identifier for requested server.</dd>
+<dd><code>serverName</code> - unique identifier for requested server</dd>
 <dd><code>userId</code> - the unique identifier for the user</dd>
 <dd><code>assetGUID</code> - the unique identifier for the asset</dd>
 <dd><code>assetType</code> - the type of the asset</dd>
@@ -352,9 +354,9 @@ loadScripts(document, 'script');</script>
 <dd><code>serverName</code> - unique identifier for requested server.</dd>
 <dd><code>userId</code> - the unique identifier for the user</dd>
 <dd><code>searchCriteria</code> - a string expression of the characteristics of the required assets</dd>
-<dd><code>searchParameters</code> - constrains to make the assets's search results more precise</dd>
+<dd><code>searchParameters</code> - constrains to make the assets' search results more precise</dd>
 <dt>Returns:</dt>
-<dd>list of properties used to narrow the search</dd>
+<dd>list of found assets</dd>
 </dl>
 </section>
 </li>
@@ -463,6 +465,15 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @PathVariable("callerId")
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerId)</span></div>
+<div class="block">Returns the out topic connection.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - the server name</dd>
+<dd><code>userId</code> - the user id</dd>
+<dd><code>callerId</code> - the caller id</dd>
+<dt>Returns:</dt>
+<dd>the out topic connection</dd>
+</dl>
 </section>
 </li>
 </ul>

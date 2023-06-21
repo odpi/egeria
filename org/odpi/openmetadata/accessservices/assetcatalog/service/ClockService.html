@@ -78,6 +78,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">ClockService</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<div class="block">A Clock service to get current time as date based on a java.time.Clock object.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -90,7 +91,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.time.Clock)" class="member-name-link">ClockService</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Clock.html" title="class or interface in java.time" class="external-link">Clock</a>&nbsp;clock)</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Instantiates a new Clock Service.</div>
+</div>
 </div>
 </section>
 </li>
@@ -107,7 +110,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNow()" class="member-name-link">getNow</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Gets the current time as Date.</div>
+</div>
 </div>
 </div>
 </div>
@@ -129,6 +134,11 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;(java.time.Clock)">
 <h3>ClockService</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ClockService</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Clock.html" title="class or interface in java.time" class="external-link">Clock</a>&nbsp;clock)</span></div>
+<div class="block">Instantiates a new Clock Service.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>clock</code> - a java clock providing access to the current instant, date and time using a time-zone</dd>
+</dl>
 </section>
 </li>
 </ul>
@@ -143,6 +153,11 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getNow()">
 <h3>getNow</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getNow</span>()</div>
+<div class="block">Gets the current time as Date.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the current time as Date.</dd>
+</dl>
 </section>
 </li>
 </ul>

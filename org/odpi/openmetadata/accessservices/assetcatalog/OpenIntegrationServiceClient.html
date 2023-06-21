@@ -78,7 +78,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OpenIntegrationServiceClient</span>
 <span class="extends-implements">extends <a href="../../frameworkservices/oif/client/OpenIntegrationServiceBase.html" title="class in org.odpi.openmetadata.frameworkservices.oif.client">OpenIntegrationServiceBase</a></span></div>
-<div class="block">OpenIntegrationServiceClient provides an interface to the open integration service.  This is part of the Open Integration Framework (OIF)
+<div class="block">OpenIntegrationServiceClient provides an interface to the open integration service. This is part of the Open Integration Framework (OIF)
  and provides an interface for understanding the work of the integration connectors that are synchronizing metadata.</div>
 </section>
 <section class="summary">
@@ -110,7 +110,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverUserId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPassword)</code></div>
 <div class="col-last odd-row-color">
-<div class="block">Create a new client that passes userId and password in each HTTP request.</div>
+<div class="block">Create a new client that passes userID and password in each HTTP request.</div>
 </div>
 </div>
 </section>
@@ -161,13 +161,13 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverUserId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPassword)</span>
                              throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
-<div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
- userId/password of the calling server.  The end user's userId is sent on each request.</div>
+<div class="block">Create a new client that passes userID and password in each HTTP request. This is the
+ userID/password of the calling server. The end user's userID is sent on each request.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST services</dd>
-<dd><code>serverUserId</code> - caller's userId embedded in all HTTP requests</dd>
+<dd><code>serverUserId</code> - caller's userID embedded in all HTTP requests</dd>
 <dd><code>serverPassword</code> - caller's password embedded in all HTTP requests</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any

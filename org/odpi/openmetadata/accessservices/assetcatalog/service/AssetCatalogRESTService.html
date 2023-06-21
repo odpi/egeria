@@ -132,7 +132,9 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&nbsp;startFrom,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&nbsp;limit)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the asset relationships.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../model/rest/responses/AssetCatalogResponse.html" title="class in org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses">AssetCatalogResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetUniverseByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getAssetUniverseByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -286,6 +288,19 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&nbsp;startFrom,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&nbsp;limit)</span></div>
+<div class="block">Returns the asset relationships.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - unique identifier for requested server</dd>
+<dd><code>userId</code> - the unique identifier for the user</dd>
+<dd><code>assetGUID</code> - the asset GUID</dd>
+<dd><code>assetTypeName</code> - the asset type name</dd>
+<dd><code>relationshipTypeName</code> - the relationship type name</dd>
+<dd><code>startFrom</code> - the offset</dd>
+<dd><code>limit</code> - page size to limit the number of the assets returned</dd>
+<dt>Returns:</dt>
+<dd>the asset relationships</dd>
+</dl>
 </section>
 </li>
 <li>

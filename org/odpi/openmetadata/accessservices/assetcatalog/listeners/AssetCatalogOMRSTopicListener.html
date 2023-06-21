@@ -84,8 +84,8 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">AssetCatalogOMRSTopicListener</span>
 <span class="extends-implements">extends <a href="../../../repositoryservices/connectors/omrstopic/OMRSTopicListenerBase.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.omrstopic">OMRSTopicListenerBase</a></span></div>
-<div class="block">AssetCatalogOMRSTopicListener received details of each OMRS event from the cohorts that the local server
- is connected to.  It passes indexing events to the publisher.</div>
+<div class="block">AssetCatalogOMRSTopicListener receives details of each OMRS event from the cohorts that the local server
+ is connected to. It passes indexing events to the publisher.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -114,7 +114,9 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedZones,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedTypesForSearch)</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Instantiates a new Asset catalog OMRS topic listener.</div>
+</div>
 </div>
 </section>
 </li>
@@ -165,6 +167,18 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedZones,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedTypesForSearch)</span></div>
+<div class="block">Instantiates a new Asset catalog OMRS topic listener.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serviceName</code> - the service name</dd>
+<dd><code>auditLog</code> - the audit log</dd>
+<dd><code>outTopicConnector</code> - the out topic connector</dd>
+<dd><code>repositoryHelper</code> - the repository helper</dd>
+<dd><code>repositoryValidator</code> - the repository validator</dd>
+<dd><code>serverName</code> - the server name</dd>
+<dd><code>supportedZones</code> - the supported zones</dd>
+<dd><code>supportedTypesForSearch</code> - the supported types for search</dd>
+</dl>
 </section>
 </li>
 </ul>

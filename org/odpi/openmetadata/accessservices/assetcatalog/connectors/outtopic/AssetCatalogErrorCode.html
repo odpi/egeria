@@ -86,7 +86,7 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="AssetCatalogErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetcatalog.connectors.outtopic">AssetCatalogErrorCode</a>&gt;
 implements <a href="../../../../frameworks/auditlog/messagesets/ExceptionMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageSet</a></span></div>
 <div class="block">The AssetCatalogErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
- the Asset Catalog OMAS Services.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
+ the Asset Catalog OMAS Services. It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
  <p>
  The 5 fields in the enum are:
  <ul>
@@ -122,20 +122,10 @@ implements <a href="../../../../frameworks/auditlog/messagesets/ExceptionMessage
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#NO_SCOPE_FOR_EXTERNAL_ID" class="member-name-link">NO_SCOPE_FOR_EXTERNAL_ID</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NULL_CONNECTOR_RETURNED" class="member-name-link">NULL_CONNECTOR_RETURNED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="#NULL_LISTENER" class="member-name-link">NULL_LISTENER</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#OMRS_NOT_INITIALIZED" class="member-name-link">OMRS_NOT_INITIALIZED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#UNABLE_TO_SEND_EVENT" class="member-name-link">UNABLE_TO_SEND_EVENT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_INITIALIZATION_EXCEPTION" class="member-name-link">UNEXPECTED_INITIALIZATION_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#WRONG_TYPE_OF_CONNECTOR" class="member-name-link">WRONG_TYPE_OF_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAS-ASSET-CATALOG-500-001 A null topic listener has been passed by the user.</div>
+</div>
 </div>
 </section>
 </li>
@@ -197,45 +187,10 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="NO_SCOPE_FOR_EXTERNAL_ID">
-<h3>NO_SCOPE_FOR_EXTERNAL_ID</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetCatalogErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetcatalog.connectors.outtopic">AssetCatalogErrorCode</a></span>&nbsp;<span class="element-name">NO_SCOPE_FOR_EXTERNAL_ID</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="OMRS_NOT_INITIALIZED">
-<h3>OMRS_NOT_INITIALIZED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetCatalogErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetcatalog.connectors.outtopic">AssetCatalogErrorCode</a></span>&nbsp;<span class="element-name">OMRS_NOT_INITIALIZED</span></div>
-</section>
-</li>
-<li>
 <section class="detail" id="NULL_LISTENER">
 <h3>NULL_LISTENER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetCatalogErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetcatalog.connectors.outtopic">AssetCatalogErrorCode</a></span>&nbsp;<span class="element-name">NULL_LISTENER</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="UNABLE_TO_SEND_EVENT">
-<h3>UNABLE_TO_SEND_EVENT</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetCatalogErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetcatalog.connectors.outtopic">AssetCatalogErrorCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_SEND_EVENT</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="UNEXPECTED_INITIALIZATION_EXCEPTION">
-<h3>UNEXPECTED_INITIALIZATION_EXCEPTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetCatalogErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetcatalog.connectors.outtopic">AssetCatalogErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_INITIALIZATION_EXCEPTION</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NULL_CONNECTOR_RETURNED">
-<h3>NULL_CONNECTOR_RETURNED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetCatalogErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetcatalog.connectors.outtopic">AssetCatalogErrorCode</a></span>&nbsp;<span class="element-name">NULL_CONNECTOR_RETURNED</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="WRONG_TYPE_OF_CONNECTOR">
-<h3>WRONG_TYPE_OF_CONNECTOR</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AssetCatalogErrorCode.html" title="enum class in org.odpi.openmetadata.accessservices.assetcatalog.connectors.outtopic">AssetCatalogErrorCode</a></span>&nbsp;<span class="element-name">WRONG_TYPE_OF_CONNECTOR</span></div>
+<div class="block">OMAS-ASSET-CATALOG-500-001 A null topic listener has been passed by the user.</div>
 </section>
 </li>
 </ul>

@@ -762,8 +762,8 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/accessservices/assetcatalog/model/AssetCatalogBean.html" title="class in org.odpi.openmetadata.accessservices.assetcatalog.model">AssetCatalogBean</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
-<div class="block">AssetCatalogBean object holds properties that are used for displaying details of an asset-catalog bean, plus the properties
- and classifications ans relationships.</div>
+<div class="block">AssetCatalogBean object holds properties that are used for displaying details of an asset-catalog bean,
+ plus the properties and classifications and relationships.</div>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/accessservices/assetcatalog/converters/AssetCatalogConverter.html" title="class in org.odpi.openmetadata.accessservices.assetcatalog.converters">AssetCatalogConverter</a>&lt;<a href="org/odpi/openmetadata/accessservices/assetcatalog/converters/AssetCatalogConverter.html" title="type parameter in AssetCatalogConverter">B</a>&gt;</div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
@@ -794,11 +794,14 @@ loadScripts(document, 'script');</script>
  set up a listener to support the receipt of inbound events from the Asset Catalog OMAS Out Topic.</div>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab1"><a href="org/odpi/openmetadata/accessservices/assetcatalog/api/AssetCatalogEventInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetcatalog.api">AssetCatalogEventInterface</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab1">&nbsp;</div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab1">
+<div class="block">AssetCatalogEventInterface is the interface that a client implements to
+ register a listener to receive the events from the Asset Catalog OMAS's out topic.</div>
+</div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab1"><a href="org/odpi/openmetadata/accessservices/assetcatalog/api/AssetCatalogEventListener.html" title="interface in org.odpi.openmetadata.accessservices.assetcatalog.api">AssetCatalogEventListener</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab1">
 <div class="block">AssetCatalogEventListener is the interface that a client implements to
- register to receive the events from the Asset Catalog OMAS's out topic.</div>
+ process the received events from the Asset Catalog OMAS's out topic.</div>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab5"><a href="org/odpi/openmetadata/accessservices/assetcatalog/exception/AssetCatalogException.html" title="class in org.odpi.openmetadata.accessservices.assetcatalog.exception">AssetCatalogException</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab5">
@@ -837,12 +840,12 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/accessservices/assetcatalog/listeners/AssetCatalogOMRSTopicListener.html" title="class in org.odpi.openmetadata.accessservices.assetcatalog.listeners">AssetCatalogOMRSTopicListener</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
-<div class="block">AssetCatalogOMRSTopicListener received details of each OMRS event from the cohorts that the local server
+<div class="block">AssetCatalogOMRSTopicListener receives details of each OMRS event from the cohorts that the local server
  is connected to.</div>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/accessservices/assetcatalog/connectors/outtopic/AssetCatalogOutTopicClientConnector.html" title="class in org.odpi.openmetadata.accessservices.assetcatalog.connectors.outtopic">AssetCatalogOutTopicClientConnector</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
-<div class="block">AssetCatalogOutTopicClientConnector is the java base class implementation of the
+<div class="block">AssetCatalogOutTopicClientConnector is the java base class implementation of
  the client side connector that receives events from the Asset Catalog OMAS's OutTopic.</div>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/accessservices/assetcatalog/connectors/outtopic/AssetCatalogOutTopicClientProvider.html" title="class in org.odpi.openmetadata.accessservices.assetcatalog.connectors.outtopic">AssetCatalogOutTopicClientProvider</a></div>
@@ -874,7 +877,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/accessservices/assetcatalog/publishers/AssetCatalogSearchPublisher.html" title="class in org.odpi.openmetadata.accessservices.assetcatalog.publishers">AssetCatalogSearchPublisher</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
-<div class="block">AssetCatalogSearchPublisher is publishing asset indexing events</div>
+<div class="block">AssetCatalogSearchPublisher is publishing asset indexing events.</div>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/accessservices/assetcatalog/model/rest/responses/AssetCatalogSupportedTypes.html" title="class in org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses">AssetCatalogSupportedTypes</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
@@ -2553,7 +2556,9 @@ loadScripts(document, 'script');</script>
  or without security</div>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/accessservices/assetcatalog/service/ClockService.html" title="class in org.odpi.openmetadata.accessservices.assetcatalog.service">ClockService</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="block">A Clock service to get current time as date based on a java.time.Clock object.</div>
+</div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/accessservices/assetlineage/util/ClockService.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.util">ClockService</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/accessservices/dataengine/server/service/ClockService.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.service">ClockService</a></div>
@@ -2900,7 +2905,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/accessservices/assetcatalog/handlers/CommonHandler.html" title="class in org.odpi.openmetadata.accessservices.assetcatalog.handlers">CommonHandler</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
-<div class="block">Common  Handler supports the lookup types and metadata collection.</div>
+<div class="block">Common Handler supports the lookup types and metadata collection.</div>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/accessservices/dataengine/server/mappers/CommonMapper.html" title="class in org.odpi.openmetadata.accessservices.dataengine.server.mappers">CommonMapper</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
@@ -6859,7 +6864,9 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/governanceservers/openlineage/requests/ElementHierarchyRequest.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.requests">ElementHierarchyRequest</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/accessservices/assetcatalog/model/ElementOrigin.html" title="class in org.odpi.openmetadata.accessservices.assetcatalog.model">ElementOrigin</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="block">The ElementOrigin object holds information about the origin of the retrieved element.</div>
+</div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementOrigin.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementOrigin</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">The ElementType bean provides details of the type information associated with a metadata element.</div>
@@ -6875,7 +6882,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/accessservices/assetcatalog/model/Elements.html" title="class in org.odpi.openmetadata.accessservices.assetcatalog.model">Elements</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
-<div class="block">AssetElement object is used to describe the elements returned by the search method</div>
+<div class="block">Elements object is used to describe the elements returned by the search method</div>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStatus</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab3">
@@ -18263,7 +18270,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/accessservices/assetcatalog/model/rest/body/SearchParameters.html" title="class in org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body">SearchParameters</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
-<div class="block">SearchParameters provides a structure to make the assets's search results more precise.</div>
+<div class="block">SearchParameters provides a structure to make the assets' search results more precise.</div>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/governanceaction/search/SearchProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">SearchProperties</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">

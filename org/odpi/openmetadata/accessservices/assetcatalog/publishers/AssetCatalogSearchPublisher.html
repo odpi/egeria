@@ -78,7 +78,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">AssetCatalogSearchPublisher</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">AssetCatalogSearchPublisher is publishing asset indexing events</div>
+<div class="block">AssetCatalogSearchPublisher is publishing asset indexing events.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -91,7 +91,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector)" class="member-name-link">AssetCatalogSearchPublisher</a><wbr>(<a href="../../../repositoryservices/connectors/openmetadatatopic/OpenMetadataTopicConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic">OpenMetadataTopicConnector</a>&nbsp;outTopicConnector)</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Instantiates a new AssetCatalogSearchPublisher object.</div>
+</div>
 </div>
 </section>
 </li>
@@ -109,7 +111,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishEvent(java.io.Serializable)" class="member-name-link">publishEvent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>&nbsp;event)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Publish an  event.</div>
+<div class="block">Publish an asset indexing event.</div>
 </div>
 </div>
 </div>
@@ -132,6 +134,11 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector)">
 <h3>AssetCatalogSearchPublisher</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">AssetCatalogSearchPublisher</span><wbr><span class="parameters">(<a href="../../../repositoryservices/connectors/openmetadatatopic/OpenMetadataTopicConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic">OpenMetadataTopicConnector</a>&nbsp;outTopicConnector)</span></div>
+<div class="block">Instantiates a new AssetCatalogSearchPublisher object.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>outTopicConnector</code> - the out topic connector</dd>
+</dl>
 </section>
 </li>
 </ul>
@@ -146,7 +153,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="publishEvent(java.io.Serializable)">
 <h3>publishEvent</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishEvent</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>&nbsp;event)</span></div>
-<div class="block">Publish an  event.</div>
+<div class="block">Publish an asset indexing event.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>event</code> - event to send</dd>

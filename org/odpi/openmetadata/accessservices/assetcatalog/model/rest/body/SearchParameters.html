@@ -83,7 +83,7 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">SearchParameters</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
 implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
-<div class="block">SearchParameters provides a structure to make the assets's search results more precise.</div>
+<div class="block">SearchParameters provides a structure to make the assets' search results more precise.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -138,7 +138,9 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExactMatch()" class="member-name-link">getExactMatch</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns whether the search should be performed taking into account and exact match criteria (true).</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFrom()" class="member-name-link">getFrom</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -190,7 +192,9 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setExactMatch(boolean)" class="member-name-link">setExactMatch</a><wbr>(boolean&nbsp;exactMatch)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Indicates whether the search should be performed  taking into account and exact match criteria (true)</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setFrom(java.lang.Integer)" class="member-name-link">setFrom</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&nbsp;from)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -365,6 +369,11 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="getExactMatch()">
 <h3>getExactMatch</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getExactMatch</span>()</div>
+<div class="block">Returns whether the search should be performed taking into account and exact match criteria (true).</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>false if it is performed an inexact match search and true otherwise</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -472,6 +481,11 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="setExactMatch(boolean)">
 <h3>setExactMatch</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setExactMatch</span><wbr><span class="parameters">(boolean&nbsp;exactMatch)</span></div>
+<div class="block">Indicates whether the search should be performed  taking into account and exact match criteria (true)</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>exactMatch</code> - boolean to set the exact match parameter for the search criteria</dd>
+</dl>
 </section>
 </li>
 <li>
