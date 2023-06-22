@@ -163,6 +163,8 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
     {
         super(serverName, serverPlatformURLRoot, serviceURLName, maxPageSize, auditLog);
 
+        invalidParameterHandler.validateObject(restClient, "this.restClient", "Asset Consumer client constructor");
+
         this.restClient = restClient;
     }
 

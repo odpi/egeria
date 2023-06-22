@@ -50,8 +50,6 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
                                                                 AssetReviewInterface,
                                                                 AssetDecommissioningInterface
 {
-    protected AssetOwnerRESTClient restClient;               /* Initialized in constructor */
-
     private static final String  serviceURLName = "asset-owner";
     private static final String  defaultAssetType = "Asset";
 
