@@ -650,9 +650,7 @@ public class AssetOwnerRESTServices
 
 
     /**
-<<<<<<< HEAD
      * Request that the asset handler creates a schema type and links it to the asset.
-=======
      * Update relationship between two elements.
      *
      * @param serverName name of the server to route the request to
@@ -751,7 +749,6 @@ public class AssetOwnerRESTServices
 
     /**
      * Remove the relationship between two elements.
->>>>>>> e7f4c006e0c08c0946db9575b54e91a1bebac6f2
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
@@ -2510,7 +2507,8 @@ public class AssetOwnerRESTServices
                                                           false,
                                                           false,
                                                           null,
-                                                          methodName));            }
+                                                          methodName));
+            }
         }
         catch (Exception error)
         {
