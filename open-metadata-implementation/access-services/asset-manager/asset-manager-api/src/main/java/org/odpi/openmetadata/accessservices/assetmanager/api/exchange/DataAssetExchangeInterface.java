@@ -18,9 +18,7 @@ import java.util.List;
 
 /**
  * DataAssetExchangeInterface provides methods to define data assets, their schemas and connections, along with supporting objects,
- * and lineage.
- *
- * The interface supports the following types of objects
+ * and lineage.  The interface supports the following types of objects
  *
  * <ul>
  *     <li>Assets - </li>
@@ -186,8 +184,8 @@ public interface DataAssetExchangeInterface extends SchemaExchangeInterface
                            Date    effectiveTime,
                            boolean forLineage,
                            boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                    UserNotAuthorizedException,
-                                                    PropertyServerException;
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException;
 
 
     /**
