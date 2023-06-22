@@ -117,7 +117,6 @@ org.odpi.openmetadata.accessservices.communityprofile.fvt.locations
 org.odpi.openmetadata.accessservices.communityprofile.fvt.metadatasources
 org.odpi.openmetadata.accessservices.communityprofile.fvt.profiles
 org.odpi.openmetadata.accessservices.communityprofile.fvt.validvalues
-org.odpi.openmetadata.accessservices.communityprofile.mappers
 org.odpi.openmetadata.accessservices.communityprofile.metadataelements
 org.odpi.openmetadata.accessservices.communityprofile.omrstopic
 org.odpi.openmetadata.accessservices.communityprofile.outtopic
@@ -877,6 +876,14 @@ org.odpi.openmetadata.viewservices.glossaryworkflow.ffdc
 org.odpi.openmetadata.viewservices.glossaryworkflow.rest
 org.odpi.openmetadata.viewservices.glossaryworkflow.server
 org.odpi.openmetadata.viewservices.glossaryworkflow.server.spring
+org.odpi.openmetadata.viewservices.myprofile.admin
+org.odpi.openmetadata.viewservices.myprofile.api
+org.odpi.openmetadata.viewservices.myprofile.ffdc
+org.odpi.openmetadata.viewservices.myprofile.metadataelements
+org.odpi.openmetadata.viewservices.myprofile.properties
+org.odpi.openmetadata.viewservices.myprofile.rest
+org.odpi.openmetadata.viewservices.myprofile.server
+org.odpi.openmetadata.viewservices.myprofile.server.spring
 org.odpi.openmetadata.viewservices.rex.admin
 org.odpi.openmetadata.viewservices.rex.api.ffdc
 org.odpi.openmetadata.viewservices.rex.api.properties

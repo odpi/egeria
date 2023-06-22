@@ -72,27 +72,18 @@ loadScripts(document, 'script');</script>
 <h1 title="Class CollectionMember" class="title">Class CollectionMember</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance"><a href="CollectionMemberHeader.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionMemberHeader</a>
 <div class="inheritance">org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionMember</div>
-</div>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">MetadataElement</a></code></dd>
+<dd><code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">MetadataElement</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">CollectionMember</span>
-<span class="extends-implements">extends <a href="CollectionMemberHeader.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">CollectionMemberHeader</a></span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
+implements <a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">MetadataElement</a></span></div>
 <div class="block">CollectionMember describes a member of a collection.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../serialized-form.html#org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionMember">Serialized Form</a></li>
-</ul>
-</dd>
-</dl>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -131,20 +122,50 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return comparison result based on the content of the properties.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">ReferenceableProperties</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProperties()" class="member-name-link">getProperties</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementHeader()" class="member-name-link">getElementHeader</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the element header associated with the properties.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">ReferenceableProperties</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProperties()" class="member-name-link">getProperties</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the properties of the element.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationshipHeader()" class="member-name-link">getRelationshipHeader</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the element header associated with the relationship.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/CollectionMembershipProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">CollectionMembershipProperties</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationshipProperties()" class="member-name-link">getRelationshipProperties</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return details of the relationship</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return hash code for this object</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setElementHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)" class="member-name-link">setElementHeader</a><wbr>(<a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a>&nbsp;elementHeader)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the element header associated with the properties.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProperties(org.odpi.openmetadata.accessservices.communityprofile.properties.ReferenceableProperties)" class="member-name-link">setProperties</a><wbr>(<a href="../properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">ReferenceableProperties</a>&nbsp;properties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the properties of the element.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRelationshipHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)" class="member-name-link">setRelationshipHeader</a><wbr>(<a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a>&nbsp;relationshipHeader)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the element header associated with the relationship.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRelationshipProperties(org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionMembershipProperties)" class="member-name-link">setRelationshipProperties</a><wbr>(<a href="../properties/CollectionMembershipProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">CollectionMembershipProperties</a>&nbsp;relationshipProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up relationship properties</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -154,9 +175,6 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 </div>
-<div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionMemberHeader">Methods inherited from class&nbsp;org.odpi.openmetadata.accessservices.communityprofile.metadataelements.<a href="CollectionMemberHeader.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">CollectionMemberHeader</a></h3>
-<code><a href="CollectionMemberHeader.html#getDateAddedToCollection()">getDateAddedToCollection</a>, <a href="CollectionMemberHeader.html#getElementHeader()">getElementHeader</a>, <a href="CollectionMemberHeader.html#getMembershipRationale()">getMembershipRationale</a>, <a href="CollectionMemberHeader.html#setDateAddedToCollection(java.util.Date)">setDateAddedToCollection</a>, <a href="CollectionMemberHeader.html#setElementHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">setElementHeader</a>, <a href="CollectionMemberHeader.html#setMembershipRationale(java.lang.String)">setMembershipRationale</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -198,6 +216,76 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="getRelationshipHeader()">
+<h3>getRelationshipHeader</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a></span>&nbsp;<span class="element-name">getRelationshipHeader</span>()</div>
+<div class="block">Return the element header associated with the relationship.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>element header object</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setRelationshipHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">
+<h3>setRelationshipHeader</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRelationshipHeader</span><wbr><span class="parameters">(<a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a>&nbsp;relationshipHeader)</span></div>
+<div class="block">Set up the element header associated with the relationship.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>relationshipHeader</code> - element header object</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getRelationshipProperties()">
+<h3>getRelationshipProperties</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/CollectionMembershipProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">CollectionMembershipProperties</a></span>&nbsp;<span class="element-name">getRelationshipProperties</span>()</div>
+<div class="block">Return details of the relationship</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>relationship properties</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setRelationshipProperties(org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionMembershipProperties)">
+<h3>setRelationshipProperties</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRelationshipProperties</span><wbr><span class="parameters">(<a href="../properties/CollectionMembershipProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">CollectionMembershipProperties</a>&nbsp;relationshipProperties)</span></div>
+<div class="block">Set up relationship properties</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>relationshipProperties</code> - relationship properties</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getElementHeader()">
+<h3>getElementHeader</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a></span>&nbsp;<span class="element-name">getElementHeader</span>()</div>
+<div class="block">Return the element header associated with the properties.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="MetadataElement.html#getElementHeader()">getElementHeader</a></code>&nbsp;in interface&nbsp;<code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">MetadataElement</a></code></dd>
+<dt>Returns:</dt>
+<dd>element header object</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setElementHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">
+<h3>setElementHeader</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setElementHeader</span><wbr><span class="parameters">(<a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a>&nbsp;elementHeader)</span></div>
+<div class="block">Set up the element header associated with the properties.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="MetadataElement.html#setElementHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">setElementHeader</a></code>&nbsp;in interface&nbsp;<code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">MetadataElement</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>elementHeader</code> - element header object</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="getProperties()">
 <h3>getProperties</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">ReferenceableProperties</a></span>&nbsp;<span class="element-name">getProperties</span>()</div>
@@ -226,7 +314,7 @@ loadScripts(document, 'script');</script>
 <div class="block">JSON-style toString</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="CollectionMemberHeader.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="CollectionMemberHeader.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">CollectionMemberHeader</a></code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
 <dt>Returns:</dt>
 <dd>return string containing the property names and values</dd>
 </dl>
@@ -239,7 +327,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return comparison result based on the content of the properties.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="CollectionMemberHeader.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="CollectionMemberHeader.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">CollectionMemberHeader</a></code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>objectToCompare</code> - test object</dd>
 <dt>Returns:</dt>
@@ -254,7 +342,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return hash code for this object</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="CollectionMemberHeader.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="CollectionMemberHeader.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">CollectionMemberHeader</a></code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
 <dt>Returns:</dt>
 <dd>int hash code</dd>
 </dl>

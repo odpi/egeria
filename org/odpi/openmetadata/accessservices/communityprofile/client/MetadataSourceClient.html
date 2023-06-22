@@ -45,7 +45,7 @@ loadScripts(document, 'script');</script>
 <ul class="sub-nav-list">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
 </ul>
@@ -72,16 +72,18 @@ loadScripts(document, 'script');</script>
 <h1 title="Class MetadataSourceClient" class="title">Class MetadataSourceClient</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance"><a href="CommunityProfileBaseClient.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">org.odpi.openmetadata.accessservices.communityprofile.client.CommunityProfileBaseClient</a>
 <div class="inheritance">org.odpi.openmetadata.accessservices.communityprofile.client.MetadataSourceClient</div>
+</div>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../api/MetadataSourceInterface.html" title="interface in org.odpi.openmetadata.accessservices.communityprofile.api">MetadataSourceInterface</a></code></dd>
+<dd><code><a href="../api/MetadataSourceInterface.html" title="interface in org.odpi.openmetadata.accessservices.communityprofile.api">MetadataSourceInterface</a></code>, <code><a href="../api/RelatedElementsManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.communityprofile.api">RelatedElementsManagementInterface</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">MetadataSourceClient</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
+<span class="extends-implements">extends <a href="CommunityProfileBaseClient.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">CommunityProfileBaseClient</a>
 implements <a href="../api/MetadataSourceInterface.html" title="interface in org.odpi.openmetadata.accessservices.communityprofile.api">MetadataSourceInterface</a></span></div>
 <div class="block">MetadataSourceClient is the client for setting up the SoftwareServerCapabilities that represent metadata sources
  that supply information relating to people and organizations.  It is used by the Organization Integrator OMIS
@@ -96,6 +98,15 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 </section>
 <section class="summary">
 <ul class="summary-list">
+<!-- =========== FIELD SUMMARY =========== -->
+<li>
+<section class="field-summary" id="field-summary">
+<h2>Field Summary</h2>
+<div class="inherited-list">
+<h3 id="fields-inherited-from-class-org.odpi.openmetadata.accessservices.communityprofile.client.CommunityProfileBaseClient">Fields inherited from class&nbsp;org.odpi.openmetadata.accessservices.communityprofile.client.<a href="CommunityProfileBaseClient.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">CommunityProfileBaseClient</a></h3>
+<code><a href="CommunityProfileBaseClient.html#baseURLTemplatePrefix">baseURLTemplatePrefix</a></code></div>
+</section>
+</li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <li>
 <section class="constructor-summary" id="constructor-summary">
@@ -162,7 +173,7 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataSourceGUID)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update classification of the metadata source that is providing a user access directory information
- such as the groups and access rights of a user Id.</div>
+ such as the groups and access rights of a userId.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addUserProfileManagerClassification(java.lang.String,java.lang.String)" class="member-name-link">addUserProfileManagerClassification</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -191,6 +202,9 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 </div>
 </div>
 </div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.accessservices.communityprofile.client.CommunityProfileBaseClient">Methods inherited from class&nbsp;org.odpi.openmetadata.accessservices.communityprofile.client.<a href="CommunityProfileBaseClient.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">CommunityProfileBaseClient</a></h3>
+<code><a href="CommunityProfileBaseClient.html#clearAssignmentScope(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearAssignmentScope</a>, <a href="CommunityProfileBaseClient.html#clearMoreInformation(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearMoreInformation</a>, <a href="CommunityProfileBaseClient.html#clearResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearResource</a>, <a href="CommunityProfileBaseClient.html#clearStakeholder(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearStakeholder</a>, <a href="CommunityProfileBaseClient.html#getAssignedActors(java.lang.String,java.lang.String,int,int)">getAssignedActors</a>, <a href="CommunityProfileBaseClient.html#getAssignedScopes(java.lang.String,java.lang.String,int,int)">getAssignedScopes</a>, <a href="CommunityProfileBaseClient.html#getDescriptiveElements(java.lang.String,java.lang.String,int,int)">getDescriptiveElements</a>, <a href="CommunityProfileBaseClient.html#getMoreInformation(java.lang.String,java.lang.String,int,int)">getMoreInformation</a>, <a href="CommunityProfileBaseClient.html#getResourceList(java.lang.String,java.lang.String,int,int)">getResourceList</a>, <a href="CommunityProfileBaseClient.html#getStakeholderCommissionedElements(java.lang.String,java.lang.String,int,int)">getStakeholderCommissionedElements</a>, <a href="CommunityProfileBaseClient.html#getStakeholders(java.lang.String,java.lang.String,int,int)">getStakeholders</a>, <a href="CommunityProfileBaseClient.html#getSupportedByResource(java.lang.String,java.lang.String,int,int)">getSupportedByResource</a>, <a href="CommunityProfileBaseClient.html#removeReferenceable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeReferenceable</a>, <a href="CommunityProfileBaseClient.html#setupAssignmentScope(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.AssignmentScopeProperties,java.lang.String)">setupAssignmentScope</a>, <a href="CommunityProfileBaseClient.html#setupMoreInformation(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.RelationshipProperties,java.lang.String)">setupMoreInformation</a>, <a href="CommunityProfileBaseClient.html#setupResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.ResourceListProperties,java.lang.String)">setupResource</a>, <a href="CommunityProfileBaseClient.html#setupStakeholder(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.StakeholderProperties,java.lang.String)">setupStakeholder</a>, <a href="CommunityProfileBaseClient.html#updateRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.RelationshipProperties,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String)">updateRelationship</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -418,7 +432,7 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Update classification of the metadata source that is providing a user access directory information
- such as the groups and access rights of a user Id.</div>
+ such as the groups and access rights of a userId.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../api/MetadataSourceInterface.html#addUserAccessDirectoryClassification(java.lang.String,java.lang.String)">addUserAccessDirectoryClassification</a></code>&nbsp;in interface&nbsp;<code><a href="../api/MetadataSourceInterface.html" title="interface in org.odpi.openmetadata.accessservices.communityprofile.api">MetadataSourceInterface</a></code></dd>

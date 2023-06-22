@@ -83,8 +83,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">GovernanceDefinitionStatus</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="GovernanceDefinitionStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.properties">GovernanceDefinitionStatus</a>&gt;
-implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="GovernanceDefinitionStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.properties">GovernanceDefinitionStatus</a>&gt;</span></div>
 <div class="block">GovernanceDefinitionStatus indicates whether the definition is complete and operational or in a state that means
  it is either under development or obsolete.
  <ul>
@@ -115,15 +114,25 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#ACTIVE" class="member-name-link">ACTIVE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Active - The governance definition is approved and in use.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#DEPRECATED" class="member-name-link">DEPRECATED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Deprecated - The governance definition has been superseded.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#DRAFT" class="member-name-link">DRAFT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Draft - The governance definition is still in development.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#OTHER" class="member-name-link">OTHER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Other - The governance definition in a locally defined state.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#PROPOSED" class="member-name-link">PROPOSED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Proposed - The governance definition is in review and not yet active.</div>
+</div>
 </div>
 </section>
 </li>
@@ -193,30 +202,35 @@ the order they are declared.</div>
 <section class="detail" id="DRAFT">
 <h3>DRAFT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceDefinitionStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.properties">GovernanceDefinitionStatus</a></span>&nbsp;<span class="element-name">DRAFT</span></div>
+<div class="block">Draft - The governance definition is still in development.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="PROPOSED">
 <h3>PROPOSED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceDefinitionStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.properties">GovernanceDefinitionStatus</a></span>&nbsp;<span class="element-name">PROPOSED</span></div>
+<div class="block">Proposed - The governance definition is in review and not yet active.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ACTIVE">
 <h3>ACTIVE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceDefinitionStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.properties">GovernanceDefinitionStatus</a></span>&nbsp;<span class="element-name">ACTIVE</span></div>
+<div class="block">Active - The governance definition is approved and in use.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DEPRECATED">
 <h3>DEPRECATED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceDefinitionStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.properties">GovernanceDefinitionStatus</a></span>&nbsp;<span class="element-name">DEPRECATED</span></div>
+<div class="block">Deprecated - The governance definition has been superseded.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OTHER">
 <h3>OTHER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceDefinitionStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetowner.properties">GovernanceDefinitionStatus</a></span>&nbsp;<span class="element-name">OTHER</span></div>
+<div class="block">Other - The governance definition in a locally defined state.</div>
 </section>
 </li>
 </ul>
