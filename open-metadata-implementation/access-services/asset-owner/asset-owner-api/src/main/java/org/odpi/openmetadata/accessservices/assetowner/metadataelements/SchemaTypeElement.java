@@ -24,6 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SchemaTypeElement implements MetadataElement
 {
+
     private SchemaTypeProperties                         schemaTypeProperties = null;
     private ElementHeader                                elementHeader        = null;
 

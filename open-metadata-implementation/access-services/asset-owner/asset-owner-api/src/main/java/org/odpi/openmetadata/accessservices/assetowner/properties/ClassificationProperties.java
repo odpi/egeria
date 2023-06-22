@@ -5,10 +5,7 @@ package org.odpi.openmetadata.accessservices.assetowner.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,17 +15,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * RelationshipProperties provides the base class for relationships items.  This provides extended properties with the ability to
+ * ClassificationProperties provides the base class for classifications items.  This provides extended properties with the ability to
  * set effectivity dates.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-
-public class ClassificationProperties implements Serializable
+public class ClassificationProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private Date                effectiveFrom      = null;
     private Date                effectiveTo        = null;
     private Map<String, Object> extendedProperties = null;
@@ -146,7 +140,7 @@ public class ClassificationProperties implements Serializable
     @Override
     public String toString()
     {
-        return "RelationshipProperties{" +
+        return "ClassificationProperties{" +
                        "effectiveFrom=" + effectiveFrom +
                        ", effectiveTo=" + effectiveTo +
                        ", extendedProperties=" + extendedProperties +
@@ -173,7 +167,8 @@ public class ClassificationProperties implements Serializable
         }
         ClassificationProperties that = (ClassificationProperties) objectToCompare;
         return Objects.equals(effectiveFrom, that.effectiveFrom) &&
-                       Objects.equals(effectiveTo, that.effectiveTo);
+                Objects.equals(effectiveTo, that.effectiveTo) &&
+                Objects.equals(extendedProperties, that.extendedProperties);
     }
 
 
@@ -185,6 +180,6 @@ public class ClassificationProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(effectiveFrom, effectiveTo);
+        return Objects.hash(effectiveFrom, effectiveTo, extendedProperties);
     }
 }

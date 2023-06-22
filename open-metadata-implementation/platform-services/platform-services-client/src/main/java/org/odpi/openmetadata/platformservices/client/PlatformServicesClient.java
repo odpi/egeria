@@ -8,11 +8,7 @@ import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerCo
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.PlatformSecurityRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
-import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -608,8 +604,7 @@ public class PlatformServicesClient
 
 
     /**
-     * Shutdown any active servers and unregister them from
-     * any cohorts.
+     * Shutdown the platform.
      *
      * @param userId  user that is issuing the request
      * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.

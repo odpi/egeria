@@ -25,8 +25,8 @@ public class PersonalRoleElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader          elementHeader = null;
-    private PersonalRoleProperties properties    = null;
+    private ElementHeader          elementHeader  = null;
+    private PersonalRoleProperties properties     = null;
     private RelatedElement         relatedElement = null;
 
 

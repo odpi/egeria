@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class ValidValueManagement extends CommunityProfileBaseClient implements ValidValueManagementInterface
 {
-    private static final String validValueURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/valid-values";
+    private static final String validValueURLTemplatePrefix = baseURLTemplatePrefix + "/valid-values";
 
 
     /**

@@ -27,7 +27,6 @@ import java.util.List;
 
 /**
  * LocationManager provides the API operations to create and maintain location definitions.
- *
  */
 public class LocationManagement extends CommunityProfileBaseClient implements LocationManagementInterface
 {
@@ -266,7 +265,7 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
      * @param userId       calling user
      * @param externalSourceGUID unique identifier of software capability representing the caller
      * @param externalSourceName unique name of software capability representing the caller
-     * @param locationGUID unique identifier of the metadata element to unclassify
+     * @param locationGUID unique identifier of the metadata element to declassify
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -323,7 +322,7 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
      * @param userId calling user
      * @param externalSourceGUID unique identifier of software capability representing the caller
      * @param externalSourceName unique name of software capability representing the caller
-     * @param locationGUID unique identifier of the metadata element to unclassify
+     * @param locationGUID unique identifier of the metadata element to declassify
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -381,7 +380,7 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
      * @param userId calling user
      * @param externalSourceGUID unique identifier of software capability representing the caller
      * @param externalSourceName unique name of software capability representing the caller
-     * @param locationGUID unique identifier of the metadata element to unclassify
+     * @param locationGUID unique identifier of the metadata element to declassify
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request

@@ -5,10 +5,7 @@ package org.odpi.openmetadata.accessservices.assetowner.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaAttributeProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaTypeProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.TemplateProperties;
+import org.odpi.openmetadata.accessservices.assetowner.properties.*;
 import org.odpi.openmetadata.accessservices.assetowner.rest.*;
 import org.odpi.openmetadata.accessservices.assetowner.server.AssetOwnerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
@@ -499,8 +496,6 @@ public class AssetOwnerResource
     {
         return restAPI.deleteAssetSchemaType(serverName, userId, assetGUID, requestBody);
     }
-
-
 
 
     /* =====================================================================================================================
@@ -1196,11 +1191,11 @@ public class AssetOwnerResource
      */
     @PostMapping(path = "/assets/{assetGUID}/meanings/{glossaryTermGUID}")
 
-    public VoidResponse  addSemanticAssignment(@PathVariable                  String          serverName,
-                                               @PathVariable                  String          userId,
-                                               @PathVariable                  String          assetGUID,
-                                               @PathVariable                  String          glossaryTermGUID,
-                                               @RequestBody(required = false) NullRequestBody requestBody)
+    public VoidResponse  addSemanticAssignment(@PathVariable                  String                       serverName,
+                                               @PathVariable                  String                       userId,
+                                               @PathVariable                  String                       assetGUID,
+                                               @PathVariable                  String                       glossaryTermGUID,
+                                               @RequestBody(required = false) SemanticAssignmentProperties requestBody)
     {
         return restAPI.addSemanticAssignment(serverName,
                                              userId,

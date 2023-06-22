@@ -24,11 +24,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeade
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GlossaryTermElement implements MetadataElement, Serializable
+public class GlossaryTermElement implements MetadataElement
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private ElementHeader                   elementHeader          = null;
     private List<MetadataCorrelationHeader> correlationHeaders     = null;
     private GlossaryTermProperties          glossaryTermProperties = null;
@@ -56,6 +53,7 @@ public class GlossaryTermElement implements MetadataElement, Serializable
             elementHeader = template.getElementHeader();
             correlationHeaders = template.getCorrelationHeaders();
             glossaryTermProperties = template.getGlossaryTermProperties();
+            relatedElement = template.getRelatedElement();
         }
     }
 
@@ -175,6 +173,7 @@ public class GlossaryTermElement implements MetadataElement, Serializable
                        "elementHeader=" + elementHeader +
                        ", correlationHeaders=" + correlationHeaders +
                        ", glossaryTermProperties=" + glossaryTermProperties +
+                       ", relatedElement=" + relatedElement +
                        '}';
     }
 
@@ -198,7 +197,8 @@ public class GlossaryTermElement implements MetadataElement, Serializable
         }
         GlossaryTermElement that = (GlossaryTermElement) objectToCompare;
         return Objects.equals(getElementHeader(), that.getElementHeader()) &&
-                       Objects.equals(getCorrelationHeaders(), that.getCorrelationHeaders()) &&
+                Objects.equals(getCorrelationHeaders(), that.getCorrelationHeaders()) &&
+                Objects.equals(getRelatedElement(), that.getRelatedElement()) &&
                        Objects.equals(getGlossaryTermProperties(), that.getGlossaryTermProperties());
     }
 
@@ -211,6 +211,6 @@ public class GlossaryTermElement implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, correlationHeaders, glossaryTermProperties);
+        return Objects.hash(super.hashCode(), elementHeader, correlationHeaders, glossaryTermProperties, relatedElement);
     }
 }

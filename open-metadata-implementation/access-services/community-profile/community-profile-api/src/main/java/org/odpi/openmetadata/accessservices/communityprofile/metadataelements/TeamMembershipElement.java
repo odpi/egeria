@@ -22,8 +22,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TeamMembershipElement extends PersonalRoleElement
 {
-    private static final long     serialVersionUID = 1L;
-
     private String      position       = null;
     private boolean     leadershipRole = false;
     private ElementStub team           = null;

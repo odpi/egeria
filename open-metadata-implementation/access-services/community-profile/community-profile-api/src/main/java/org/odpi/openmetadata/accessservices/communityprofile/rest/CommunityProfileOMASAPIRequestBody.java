@@ -14,20 +14,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = MyProfileRequestBody.class, name = "MyProfileRequestBody"),
-                @JsonSubTypes.Type(value = PersonalProfileRequestBody.class, name = "PersonalProfileRequestBody"),
-                @JsonSubTypes.Type(value = PersonalProfileValidatorRequestBody.class, name = "PersonalProfileValidatorRequestBody")
-        })
-public abstract class CommunityProfileOMASAPIRequestBody implements java.io.Serializable
+public abstract class CommunityProfileOMASAPIRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
-
     /**
      * Default constructor
      */

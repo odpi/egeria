@@ -3,15 +3,16 @@
 package org.odpi.openmetadata.accessservices.communityprofile.api;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionMember;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionOrder;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionMember;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionFolderProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionMembershipProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * The CollectionManagementInterface adds methods for managing collections that can be attached to communities
@@ -61,14 +62,59 @@ public interface CollectionManagementInterface
 
 
     /**
+     * Retrieve the list of collection metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<CollectionElement> findCollections(String userId,
+                                            String searchString,
+                                            int    startFrom,
+                                            int    pageSize) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException;
+
+
+    /**
+     * Retrieve the list of collection metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<CollectionElement> getCollectionsByName(String userId,
+                                                 String name,
+                                                 int    startFrom,
+                                                 int    pageSize) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException;
+
+
+
+    /**
      * Create a new generic collection.
      *
-     * @param userId                 userId of user making request.
-     * @param qualifiedName          unique name of the collection.
-     * @param displayName            short displayable name for the collection.
-     * @param description            description of the collection.
-     * @param collectionUse          description of how the collection is to be used.
-     * @param additionalProperties   additional arbitrary properties.
+     * @param userId     userId of user making request.
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
+     * @param properties description of the collection.
      *
      * @return unique identifier of the newly created Collection
      *
@@ -76,26 +122,21 @@ public interface CollectionManagementInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    String createCollection(String              userId,
-                            String              qualifiedName,
-                            String              displayName,
-                            String              description,
-                            String              collectionUse,
-                            Map<String, Object> additionalProperties) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException;
+    String createCollection(String               userId,
+                            String               externalSourceGUID,
+                            String               externalSourceName,
+                            CollectionProperties properties) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException;
 
 
     /**
      * Create a collection that acts like a folder with an order.
      *
      * @param userId                 userId of user making request.
-     * @param qualifiedName          unique name of the collection.
-     * @param displayName            short displayable name for the collection.
-     * @param description            description of the collection.
-     * @param collectionUse          description of how the collection will be used.
-     * @param collectionOrder        description of how the members in the collection should be organized.
-     * @param additionalProperties   additional arbitrary properties.
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
+     * @param properties             description of the collection.
      *
      * @return unique identifier of the newly created Collection
      *
@@ -103,91 +144,53 @@ public interface CollectionManagementInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    String createFolder(String              userId,
-                        String              qualifiedName,
-                        String              displayName,
-                        String              description,
-                        String              collectionUse,
-                        CollectionOrder     collectionOrder,
-                        Map<String, Object> additionalProperties) throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException;
+    String createFolderCollection(String                     userId,
+                                  String                     externalSourceGUID,
+                                  String                     externalSourceName,
+                                  CollectionFolderProperties properties) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException;
+
 
     /**
-     * Create a collection that acts like a set (this does not allow duplicate entries).
+     * Update the metadata element representing a collection.
      *
-     * @param userId                 userId of user making request.
-     * @param qualifiedName          unique name of the collection.
-     * @param displayName            short displayable name for the collection.
-     * @param description            description of the collection.
-     * @param collectionUse          description of how the collection will be used.
-     * @param additionalProperties   additional arbitrary properties.
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
+     * @param collectionGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param properties new properties for this element
      *
-     * @return unique identifier of the newly created Collection
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    String createSet(String              userId,
-                     String              qualifiedName,
-                     String              displayName,
-                     String              description,
-                     String              collectionUse,
-                     Map<String, Object> additionalProperties) throws InvalidParameterException,
-                                                                      PropertyServerException,
-                                                                      UserNotAuthorizedException;
+    void updateCollection(String               userId,
+                          String               externalSourceGUID,
+                          String               externalSourceName,
+                          String               collectionGUID,
+                          boolean              isMergeUpdate,
+                          CollectionProperties properties) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException;
 
 
     /**
-     * Connect an existing collection to an anchor point.
-     *
-     * @param userId          userId of user making request
-     * @param collectionGUID  unique identifier of the collection
-     * @param parentGUID      unique identifier of referenceable object that the collection should be attached to
-     * @param makeAnchor      like the lifecycle of the collection to that of the parent so that if the parent is deleted, so is the collection
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    void attachCollection(String  userId,
-                          String  collectionGUID,
-                          String  parentGUID,
-                          boolean makeAnchor) throws InvalidParameterException,
-                                                     PropertyServerException,
-                                                     UserNotAuthorizedException;
-
-
-    /**
-     * Detach an existing collection from an element.  If the collection is anchored to the element, it is deleted.
-     *
-     * @param userId          userId of user making request.
-     * @param collectionGUID  unique identifier of the collection.
-     * @param parentGUID      unique identifier of referenceable object that the collection should be attached to.
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    void detachCollection(String userId,
-                          String collectionGUID,
-                          String parentGUID) throws InvalidParameterException,
-                                                    PropertyServerException,
-                                                    UserNotAuthorizedException;
-
-
-    /**
-     * Delete a collection.  It is detected from all parent elements.  If members are anchored to the collection
+     * Delete a collection.  It is deleted from all parent elements.  If members are anchored to the collection
      * then they are also deleted.
      *
      * @param userId   userId of user making request.
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param collectionGUID  unique identifier of the collection.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    void deleteCollection(String userId,
+    void removeCollection(String userId,
+                          String externalSourceGUID,
+                          String externalSourceName,
                           String collectionGUID) throws InvalidParameterException,
                                                         PropertyServerException,
                                                         UserNotAuthorizedException;
@@ -215,28 +218,81 @@ public interface CollectionManagementInterface
                                                                         UserNotAuthorizedException;
 
 
+
     /**
-     * Add an element to a collection.
+     * Return details of the membership between a collection and a specific member of the collection.
      *
      * @param userId     userId of user making request.
      * @param collectionGUID  unique identifier of the collection.
+     * @param memberGUID  unique identifier of the element who is a member of the collection.
+     *
+     * @return list of asset details
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    CollectionMember getCollectionMember(String userId,
+                                         String collectionGUID,
+                                         String memberGUID) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException;
+
+
+    /**
+     * Return a list of collections that the supplied element is a member of.
+     *
+     * @param userId     userId of user making request.
+     * @param elementGUID  unique identifier of the collection.
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of asset details
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    List<CollectionElement> getElementsCollections(String userId,
+                                                   String elementGUID,
+                                                   int    startFrom,
+                                                   int    pageSize) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException;
+
+
+    /**
+     * Add an element to a collection (or update its membership properties).
+     *
+     * @param userId     userId of user making request.
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
+     * @param collectionGUID  unique identifier of the collection.
+     * @param properties         new properties
+     * @param isMergeUpdate      should the properties be merged with the existing properties or replace them?
      * @param elementGUID  unique identifier of the element.
      *
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws PropertyServerException there is a problem updating information in the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    void  addToCollection(String userId,
-                          String collectionGUID,
-                          String elementGUID) throws InvalidParameterException,
-                                                     PropertyServerException,
-                                                     UserNotAuthorizedException;
+    void  updateCollectionMembership(String                         userId,
+                                     String                         externalSourceGUID,
+                                     String                         externalSourceName,
+                                     String                         collectionGUID,
+                                     CollectionMembershipProperties properties,
+                                     boolean                        isMergeUpdate,
+                                     String                         elementGUID) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException;
 
 
     /**
      * Remove an element from a collection.
      *
      * @param userId     userId of user making request.
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param collectionGUID  unique identifier of the collection.
      * @param elementGUID  unique identifier of the element.
      *
@@ -245,6 +301,8 @@ public interface CollectionManagementInterface
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     void  removeFromCollection(String userId,
+                               String externalSourceGUID,
+                               String externalSourceName,
                                String collectionGUID,
                                String elementGUID) throws InvalidParameterException,
                                                           PropertyServerException,

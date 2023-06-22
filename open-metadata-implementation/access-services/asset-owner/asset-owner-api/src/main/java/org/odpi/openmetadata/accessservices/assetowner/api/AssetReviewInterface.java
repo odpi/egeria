@@ -4,12 +4,18 @@
 package org.odpi.openmetadata.accessservices.assetowner.api;
 
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.AssetElement;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.GlossaryTermElement;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.GovernanceDefinitionElement;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.RelatedElement;
+import org.odpi.openmetadata.accessservices.assetowner.properties.DataFieldQueryProperties;
+import org.odpi.openmetadata.accessservices.assetowner.properties.FindAssetOriginProperties;
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.RelationshipElement;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
@@ -283,4 +289,377 @@ public interface AssetReviewInterface
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException;
 
+
+    /**
+     * Return information about the elements classified with the DataField classification.
+     *
+     * @param userId calling user
+     * @param properties values to match on
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of element stubs
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    List<ElementStub> getDataFieldClassifiedElements(String                   userId,
+                                                     DataFieldQueryProperties properties,
+                                                     int                      startFrom,
+                                                     int                      pageSize) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException;
+
+
+    /**
+     * Return information about the elements classified with the confidence classification.
+     *
+     * @param userId calling user
+     * @param returnSpecificLevel should the results be filtered by levelIdentifier?
+     * @param levelIdentifier the identifier to filter by (if returnSpecificLevel=true)
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of element stubs
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    List<ElementStub> getConfidenceClassifiedElements(String  userId,
+                                                      boolean returnSpecificLevel,
+                                                      int     levelIdentifier,
+                                                      int     startFrom,
+                                                      int     pageSize) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException;
+
+
+    /**
+     * Return information about the elements classified with the criticality classification.
+     *
+     * @param userId calling user
+     * @param returnSpecificLevel should the results be filtered by levelIdentifier?
+     * @param levelIdentifier the identifier to filter by (if returnSpecificLevel=true)
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of element stubs
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    List<ElementStub> getCriticalityClassifiedElements(String  userId,
+                                                       boolean returnSpecificLevel,
+                                                       int     levelIdentifier,
+                                                       int     startFrom,
+                                                       int     pageSize) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException;
+
+
+    /**
+     * Return information about the elements classified with the confidentiality classification.
+     *
+     * @param userId calling user
+     * @param returnSpecificLevel should the results be filtered by levelIdentifier?
+     * @param levelIdentifier the identifier to filter by (if returnSpecificLevel=true)
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of element stubs
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    List<ElementStub> getConfidentialityClassifiedElements(String  userId,
+                                                           boolean returnSpecificLevel,
+                                                           int     levelIdentifier,
+                                                           int     startFrom,
+                                                           int     pageSize) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException;
+
+
+    /**
+     * Return information about the elements classified with the retention classification.
+     *
+     * @param userId calling user
+     * @param returnSpecificBasisIdentifier should the results be filtered by basisIdentifier?
+     * @param basisIdentifier the identifier to filter by (if returnSpecificBasisIdentifier=true)
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of element stubs
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    List<ElementStub> getRetentionClassifiedElements(String  userId,
+                                                     boolean returnSpecificBasisIdentifier,
+                                                     int     basisIdentifier,
+                                                     int     startFrom,
+                                                     int     pageSize) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException;
+
+
+    /**
+     * Return information about the contents of a subject area such as the glossaries, reference data sets and quality definitions.
+     *
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of element stubs
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    List<ElementStub> getSecurityTaggedElements(String  userId,
+                                                int     startFrom,
+                                                int     pageSize) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException;
+
+
+    /**
+     * Return information about the contents of a subject area such as the glossaries, reference data sets and quality definitions.
+     *
+     * @param userId calling user
+     * @param owner unique identifier for the owner - could be role, profile, userId
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of element stubs
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    List<ElementStub> getOwnersElements(String  userId,
+                                        String  owner,
+                                        int     startFrom,
+                                        int     pageSize) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException;
+
+
+    /**
+     * Return information about the assets from a specific origin.
+     *
+     * @param userId calling user
+     * @param properties values to search on - null means any value
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of the assets
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    List<AssetElement> getAssetsByOrigin(String                    userId,
+                                         FindAssetOriginProperties properties,
+                                         int                       startFrom,
+                                         int                       pageSize) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException;
+
+
+    /**
+     * Return information about the contents of a subject area such as the glossaries, reference data sets and quality definitions.
+     *
+     * @param userId calling user
+     * @param subjectAreaName unique identifier for the subject area
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of element stubs
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    List<ElementStub> getMembersOfSubjectArea(String  userId,
+                                              String  subjectAreaName,
+                                              int     startFrom,
+                                              int     pageSize,
+                                              Date    effectiveTime,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException;
+
+
+    /**
+     * Retrieve the glossary terms linked via a "SemanticAssignment" relationship to the requested element.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<GlossaryTermElement> getMeanings(String  userId,
+                                          String  elementGUID,
+                                          int     startFrom,
+                                          int     pageSize,
+                                          Date    effectiveTime,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException;
+
+
+    /**
+     * Retrieve the elements linked via a "SemanticAssignment" relationship to the requested glossary term.
+     *
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the glossary term that the returned elements are linked to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<RelatedElement> getSemanticAssignees(String  userId,
+                                              String  glossaryTermGUID,
+                                              int     startFrom,
+                                              int     pageSize,
+                                              Date    effectiveTime,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException;
+
+
+    /**
+     * Retrieve the governance definitions linked via a "GovernedBy" relationship to the requested element.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<GovernanceDefinitionElement> getGovernedByDefinitions(String  userId,
+                                                               String  elementGUID,
+                                                               int     startFrom,
+                                                               int     pageSize,
+                                                               Date    effectiveTime,
+                                                               boolean forLineage,
+                                                               boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException;
+
+
+    /**
+     * Retrieve the elements linked via a "GovernedBy" relationship to the requested governance definition.
+     *
+     * @param userId calling user
+     * @param governanceDefinitionGUID unique identifier of the governance definition that the returned elements are linked to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<RelatedElement> getGovernedElements(String  userId,
+                                             String  governanceDefinitionGUID,
+                                             int     startFrom,
+                                             int     pageSize,
+                                             Date    effectiveTime,
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException;
+
+
+    /**
+     * Retrieve the elements linked via a "SourceFrom" relationship to the requested element.
+     * The elements returned were used to create the requested element.  Typically only one element is returned.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<RelatedElement> getSourceElements(String  userId,
+                                           String  elementGUID,
+                                           int     startFrom,
+                                           int     pageSize,
+                                           Date    effectiveTime,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException;
+
+
+    /**
+     * Retrieve the elements linked via a "SourceFrom" relationship to the requested element.
+     * The elements returned were created using the requested element as a template.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element that the returned elements are linked to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<RelatedElement> getElementsSourceFrom(String  userId,
+                                               String  elementGUID,
+                                               int     startFrom,
+                                               int     pageSize,
+                                               Date    effectiveTime,
+                                               boolean forLineage,
+                                               boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException;
 }

@@ -16,8 +16,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class FolderProperties extends DataStoreProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     /**
      * Default constructor
      */

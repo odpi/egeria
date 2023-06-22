@@ -33,7 +33,7 @@ import java.util.List;
  */
 public class AssetOwnerBaseClient extends ConnectedAssetClientBase implements RelatedElementsManagementInterface
 {
-    protected AssetOwnerRESTClient restClient;               /* Initialized in constructor */
+    protected final AssetOwnerRESTClient restClient;               /* Initialized in constructor */
 
     protected static final String  serviceURLName = "asset-owner";
     protected static final String  defaultAssetType = "Asset";
@@ -121,6 +121,8 @@ public class AssetOwnerBaseClient extends ConnectedAssetClientBase implements Re
                                 String password) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, serviceURLName, userId, password);
+
+        this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -148,6 +150,8 @@ public class AssetOwnerBaseClient extends ConnectedAssetClientBase implements Re
         super(serverName, serverPlatformURLRoot, serviceURLName, userId, password, auditLog);
 
         invalidParameterHandler.setMaxPagingSize(maxPageSize);
+
+        this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
 
 
@@ -171,6 +175,8 @@ public class AssetOwnerBaseClient extends ConnectedAssetClientBase implements Re
                                 AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, serviceURLName, userId, password, auditLog);
+
+        this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
 
 
@@ -219,6 +225,7 @@ public class AssetOwnerBaseClient extends ConnectedAssetClientBase implements Re
         super(serverName, serverPlatformURLRoot, serviceURLName, auditLog);
 
         invalidParameterHandler.setMaxPagingSize(maxPageSize);
+        invalidParameterHandler.validateObject(restClient, "this.restClient", "Asset Owner client constructor");
 
         this.restClient = restClient;
     }

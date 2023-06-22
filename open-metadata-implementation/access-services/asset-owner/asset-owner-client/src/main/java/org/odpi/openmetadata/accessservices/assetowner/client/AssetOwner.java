@@ -3,27 +3,10 @@
 
 package org.odpi.openmetadata.accessservices.assetowner.client;
 
-import org.odpi.openmetadata.accessservices.assetowner.api.AssetClassificationInterface;
-import org.odpi.openmetadata.accessservices.assetowner.api.AssetConnectionManagementInterface;
-import org.odpi.openmetadata.accessservices.assetowner.api.AssetDecommissioningInterface;
-import org.odpi.openmetadata.accessservices.assetowner.api.AssetKnowledgeInterface;
-import org.odpi.openmetadata.accessservices.assetowner.api.AssetOnboardingInterface;
-import org.odpi.openmetadata.accessservices.assetowner.api.AssetReviewInterface;
+import org.odpi.openmetadata.accessservices.assetowner.api.*;
 import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.AssetElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ConnectionElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ConnectorTypeElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.EndpointElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.RelationshipElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaAttributeElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaTypeElement;
-import org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.ConnectionProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.EndpointProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.RelationshipProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaAttributeProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaTypeProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.TemplateProperties;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.*;
+import org.odpi.openmetadata.accessservices.assetowner.properties.*;
 import org.odpi.openmetadata.accessservices.assetowner.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameListResponse;
@@ -41,11 +24,13 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -61,9 +46,13 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
                                                                 AssetOnboardingInterface,
                                                                 AssetClassificationInterface,
                                                                 AssetConnectionManagementInterface,
+                                                                AssetCollectionInterface,
                                                                 AssetReviewInterface,
                                                                 AssetDecommissioningInterface
 {
+    private static final String  serviceURLName = "asset-owner";
+    private static final String  defaultAssetType = "Asset";
+
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -254,6 +243,8 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
      * @param qualifiedName unique name for the asset in the catalog
      * @param name resource name for the asset in the catalog
      * @param description resource description for the asset in the catalog
+     * @param additionalProperties optional properties
+     * @param extendedProperties properties defined for an asset subtype
      *
      * @return unique identifier (guid) of the asset
      *
@@ -2079,6 +2070,33 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
+        addSemanticAssignment(userId, assetGUID, glossaryTermGUID, assetElementGUID, null);
+    }
+
+
+    /**
+     * Create a semantic assignment relationship between a glossary term and an element (normally a schema attribute, data field or asset).
+     * This relationship indicates that the data associated with the element meaning matches the description in the glossary term.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param assetElementGUID unique identifier of the element that is being assigned to the glossary term
+     * @param glossaryTermGUID unique identifier of the glossary term that provides the meaning
+     * @param properties properties for relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void addSemanticAssignment(String                       userId,
+                                      String                       assetGUID,
+                                      String                       assetElementGUID,
+                                      String                       glossaryTermGUID,
+                                      SemanticAssignmentProperties properties) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
         final String   methodName = "addSemanticAssignment";
         final String   assetGUIDParameter = "assetGUID";
         final String   glossaryTermParameter = "glossaryTermGUID";
@@ -2091,11 +2109,11 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
 
         if (assetElementGUID == null)
         {
-            restClient.callVoidPostRESTCall(methodName, serverPlatformURLRoot + assetURLTemplate, nullRequestBody, serverName, userId, assetGUID, glossaryTermGUID);
+            restClient.callVoidPostRESTCall(methodName, serverPlatformURLRoot + assetURLTemplate, properties, serverName, userId, assetGUID, glossaryTermGUID);
         }
         else
         {
-            restClient.callVoidPostRESTCall(methodName, serverPlatformURLRoot + elementURLTemplate, nullRequestBody, serverName, userId, assetGUID, assetElementGUID, glossaryTermGUID);
+            restClient.callVoidPostRESTCall(methodName, serverPlatformURLRoot + elementURLTemplate, properties, serverName, userId, assetGUID, assetElementGUID, glossaryTermGUID);
         }
     }
 
@@ -2398,6 +2416,33 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
 
 
     /**
+     * Remove the ownership classification from an asset.
+     *
+     * @param userId      calling user
+     * @param assetGUID element where the classification needs to be removed.
+     * @throws InvalidParameterException  asset not known, null userId or guid
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public void removeAssetOwner(String userId,
+                                 String assetGUID) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
+    {
+        final String methodName = "removeAssetOwner";
+        final String assetGUIDParameter = "assetGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/owner/delete";
+
+        restClient.callVoidPostRESTCall(methodName, urlTemplate, nullRequestBody, serverName, userId, assetGUID);
+    }
+
+
+    /**
      * Add or replace the security tags for an asset or one of its elements.
      *
      * @param userId calling user
@@ -2457,11 +2502,11 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public void  removeSecurityTags(String                userId,
-                                    String                assetGUID,
-                                    String                assetElementGUID) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+    public void  removeSecurityTags(String userId,
+                                    String assetGUID,
+                                    String assetElementGUID) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
         final String   methodName = "removeSecurityTags";
         final String   assetGUIDParameter = "assetGUID";
@@ -2556,6 +2601,220 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
                                         serverName,
                                         userId,
                                         assetGUID);
+    }
+
+
+    /**
+     * Classify the element to indicate that it describes a data field and supply
+     * properties that describe the characteristics of the data values found within.
+     *
+     * @param userId      calling user
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param properties  descriptive properties for the data field
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void setElementAsDataField(String                    userId,
+                                      String                    elementGUID,
+                                      DataFieldValuesProperties properties) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+
+    }
+
+
+    /**
+     * Remove the data field designation from the element.
+     *
+     * @param userId      calling user
+     * @param elementGUID unique identifier of the metadata element to update
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void clearElementAsDataField(String userId, String elementGUID) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+
+    }
+
+
+    /**
+     * Classify/reclassify the element (typically an asset) to indicate the level of confidence that the organization
+     * has that the data is complete, accurate and up-to-date.  The level of confidence is expressed by the
+     * levelIdentifier property.
+     *
+     * @param userId      calling user
+     * @param elementGUID unique identifier of the metadata element to classify
+     * @param properties  details of the classification
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void setConfidenceClassification(String userId, String elementGUID, GovernanceClassificationProperties properties) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+
+    }
+
+    /**
+     * Remove the confidence classification from the element.  This normally occurs when the organization has lost track of the level of
+     * confidence to assign to the element.
+     *
+     * @param userId      calling user
+     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void clearConfidenceClassification(String userId, String elementGUID) throws InvalidParameterException, UserNotAuthorizedException,
+     PropertyServerException
+    {
+
+    }
+
+
+    /**
+     * Classify/reclassify the element (typically an asset) to indicate how critical the element (or associated resource)
+     * is to the organization.  The level of criticality is expressed by the levelIdentifier property.
+     *
+     * @param userId      calling user
+     * @param elementGUID unique identifier of the metadata element to classify
+     * @param properties  details of the classification
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void setCriticalityClassification(String userId, String elementGUID, GovernanceClassificationProperties properties) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+
+    }
+
+    /**
+     * Remove the criticality classification from the element.  This normally occurs when the organization has lost track of the level of
+     * criticality to assign to the element.
+     *
+     * @param userId      calling user
+     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void clearCriticalityClassification(String userId, String elementGUID) throws InvalidParameterException, UserNotAuthorizedException,
+     PropertyServerException
+    {
+
+    }
+
+    /**
+     * Classify/reclassify the element (typically a data field, schema attribute or glossary term) to indicate the level of confidentiality
+     * that any data associated with the element should be given.  If the classification is attached to a glossary term, the level
+     * of confidentiality is a suggestion for any element linked to the glossary term via the SemanticAssignment classification.
+     * The level of confidence is expressed by the levelIdentifier property.
+     *
+     * @param userId      calling user
+     * @param elementGUID unique identifier of the metadata element to classify
+     * @param properties  details of the classification
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void setConfidentialityClassification(String userId, String elementGUID, GovernanceClassificationProperties properties) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+
+    }
+
+    /**
+     * Remove the confidence classification from the element.  This normally occurs when the organization has lost track of the level of
+     * confidentiality to assign to the element.
+     *
+     * @param userId      calling user
+     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void clearConfidentialityClassification(String userId, String elementGUID) throws InvalidParameterException, UserNotAuthorizedException,
+     PropertyServerException
+    {
+
+    }
+
+    /**
+     * Classify/reclassify the element (typically an asset) to indicate how long the element (or associated resource)
+     * is to be retained by the organization.  The policy to apply to the element/resource is captured by the retentionBasis
+     * property.  The dates after which the element/resource is archived and then deleted are specified in the archiveAfter and deleteAfter
+     * properties respectively.
+     *
+     * @param userId      calling user
+     * @param elementGUID unique identifier of the metadata element to classify
+     * @param properties  details of the classification
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void setRetentionClassification(String userId, String elementGUID, RetentionClassificationProperties properties) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+
+    }
+
+    /**
+     * Remove the retention classification from the element.  This normally occurs when the organization has lost track of, or no longer needs to
+     * track the retention period to assign to the element.
+     *
+     * @param userId      calling user
+     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void clearRetentionClassification(String userId, String elementGUID) throws InvalidParameterException, UserNotAuthorizedException,
+     PropertyServerException
+    {
+
+    }
+
+    /**
+     * Link a governance definition to an element using the GovernedBy relationship.
+     *
+     * @param userId         calling user
+     * @param definitionGUID identifier of the governance definition to link
+     * @param elementGUID    unique identifier of the metadata element to link
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void addGovernanceDefinitionToElement(String userId, String definitionGUID, String elementGUID) throws InvalidParameterException,
+     UserNotAuthorizedException, PropertyServerException
+    {
+
+    }
+
+    /**
+     * Remove the GovernedBy relationship between a governance definition and an element.
+     *
+     * @param userId         calling user
+     * @param definitionGUID identifier of the governance definition to link
+     * @param elementGUID    unique identifier of the metadata element to update
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void removeGovernanceDefinitionFromElement(String userId, String definitionGUID, String elementGUID) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+
     }
 
 
@@ -4017,6 +4276,320 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
          return restResult.getAnnotations();
     }
 
+    /**
+     * Return information about the elements classified with the DataField classification.
+     *
+     * @param userId     calling user
+     * @param properties values to match on
+     * @param startFrom  paging start point
+     * @param pageSize   maximum results that can be returned
+     * @return list of element stubs
+     * @throws InvalidParameterException  qualifiedName or userId is null
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public List<ElementStub> getDataFieldClassifiedElements(String userId, DataFieldQueryProperties properties, int startFrom, int pageSize) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return null;
+    }
+
+    /**
+     * Return information about the elements classified with the confidence classification.
+     *
+     * @param userId              calling user
+     * @param returnSpecificLevel should the results be filtered by levelIdentifier?
+     * @param levelIdentifier     the identifier to filter by (if returnSpecificLevel=true)
+     * @param startFrom           paging start point
+     * @param pageSize            maximum results that can be returned
+     * @return list of element stubs
+     * @throws InvalidParameterException  qualifiedName or userId is null
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public List<ElementStub> getConfidenceClassifiedElements(String userId, boolean returnSpecificLevel, int levelIdentifier, int startFrom, int pageSize) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return null;
+    }
+
+    /**
+     * Return information about the elements classified with the criticality classification.
+     *
+     * @param userId              calling user
+     * @param returnSpecificLevel should the results be filtered by levelIdentifier?
+     * @param levelIdentifier     the identifier to filter by (if returnSpecificLevel=true)
+     * @param startFrom           paging start point
+     * @param pageSize            maximum results that can be returned
+     * @return list of element stubs
+     * @throws InvalidParameterException  qualifiedName or userId is null
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public List<ElementStub> getCriticalityClassifiedElements(String userId, boolean returnSpecificLevel, int levelIdentifier, int startFrom,
+     int pageSize) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return null;
+    }
+
+    /**
+     * Return information about the elements classified with the confidentiality classification.
+     *
+     * @param userId              calling user
+     * @param returnSpecificLevel should the results be filtered by levelIdentifier?
+     * @param levelIdentifier     the identifier to filter by (if returnSpecificLevel=true)
+     * @param startFrom           paging start point
+     * @param pageSize            maximum results that can be returned
+     * @return list of element stubs
+     * @throws InvalidParameterException  qualifiedName or userId is null
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public List<ElementStub> getConfidentialityClassifiedElements(String userId, boolean returnSpecificLevel, int levelIdentifier, int startFrom,
+     int pageSize) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return null;
+    }
+
+    /**
+     * Return information about the elements classified with the retention classification.
+     *
+     * @param userId                        calling user
+     * @param returnSpecificBasisIdentifier should the results be filtered by basisIdentifier?
+     * @param basisIdentifier               the identifier to filter by (if returnSpecificBasisIdentifier=true)
+     * @param startFrom                     paging start point
+     * @param pageSize                      maximum results that can be returned
+     * @return list of element stubs
+     * @throws InvalidParameterException  qualifiedName or userId is null
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public List<ElementStub> getRetentionClassifiedElements(String userId, boolean returnSpecificBasisIdentifier, int basisIdentifier,
+     int startFrom, int pageSize) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return null;
+    }
+
+    /**
+     * Return information about the contents of a subject area such as the glossaries, reference data sets and quality definitions.
+     *
+     * @param userId    calling user
+     * @param startFrom paging start point
+     * @param pageSize  maximum results that can be returned
+     * @return list of element stubs
+     * @throws InvalidParameterException  qualifiedName or userId is null
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public List<ElementStub> getSecurityTaggedElements(String userId, int startFrom, int pageSize) throws InvalidParameterException,
+                                                                                                          UserNotAuthorizedException, PropertyServerException
+    {
+        return null;
+    }
+
+    /**
+     * Return information about the contents of a subject area such as the glossaries, reference data sets and quality definitions.
+     *
+     * @param userId    calling user
+     * @param owner     unique identifier for the owner
+     * @param startFrom paging start point
+     * @param pageSize  maximum results that can be returned
+     * @return list of element stubs
+     * @throws InvalidParameterException  qualifiedName or userId is null
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public List<ElementStub> getOwnersElements(String userId, String owner, int startFrom, int pageSize) throws InvalidParameterException,
+     UserNotAuthorizedException, PropertyServerException
+    {
+        return null;
+    }
+
+
+    /**
+     * Return information about the assets from a specific origin.
+     *
+     * @param userId     calling user
+     * @param properties values to search on - null means any value
+     * @param startFrom  paging start point
+     * @param pageSize   maximum results that can be returned
+     * @return list of the assets
+     * @throws InvalidParameterException  qualifiedName or userId is null
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public List<AssetElement> getAssetsByOrigin(String userId, FindAssetOriginProperties properties, int startFrom, int pageSize) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return null;
+    }
+
+    /**
+     * Return information about the contents of a subject area such as the glossaries, reference data sets and quality definitions.
+     *
+     * @param userId                 calling user
+     * @param subjectAreaName        unique identifier for the subject area
+     * @param startFrom              paging start point
+     * @param pageSize               maximum results that can be returned
+     * @param effectiveTime          the time that the retrieved elements must be effective for
+     * @param forLineage             return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @return list of element stubs
+     * @throws InvalidParameterException  qualifiedName or userId is null
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public List<ElementStub> getMembersOfSubjectArea(String userId, String subjectAreaName, int startFrom, int pageSize, Date effectiveTime,
+     boolean forLineage, boolean forDuplicateProcessing) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return null;
+    }
+
+    /**
+     * Retrieve the glossary terms linked via a "SemanticAssignment" relationship to the requested element.
+     *
+     * @param userId                 calling user
+     * @param elementGUID            unique identifier of the element
+     * @param startFrom              index of the list to start from (0 for start)
+     * @param pageSize               maximum number of elements to return.
+     * @param effectiveTime          the time that the retrieved elements must be effective for
+     * @param forLineage             return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<GlossaryTermElement> getMeanings(String userId, String elementGUID, int startFrom, int pageSize, Date effectiveTime,
+     boolean forLineage, boolean forDuplicateProcessing) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return null;
+    }
+
+    /**
+     * Retrieve the elements linked via a "SemanticAssignment" relationship to the requested glossary term.
+     *
+     * @param userId                 calling user
+     * @param glossaryTermGUID       unique identifier of the glossary term that the returned elements are linked to
+     * @param startFrom              index of the list to start from (0 for start)
+     * @param pageSize               maximum number of elements to return.
+     * @param effectiveTime          the time that the retrieved elements must be effective for
+     * @param forLineage             return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<RelatedElement> getSemanticAssignees(String userId, String glossaryTermGUID, int startFrom, int pageSize, Date effectiveTime,
+     boolean forLineage, boolean forDuplicateProcessing) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return null;
+    }
+
+    /**
+     * Retrieve the governance definitions linked via a "GovernedBy" relationship to the requested element.
+     *
+     * @param userId                 calling user
+     * @param elementGUID            unique identifier of the element
+     * @param startFrom              index of the list to start from (0 for start)
+     * @param pageSize               maximum number of elements to return.
+     * @param effectiveTime          the time that the retrieved elements must be effective for
+     * @param forLineage             return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<GovernanceDefinitionElement> getGovernedByDefinitions(String userId, String elementGUID, int startFrom, int pageSize,
+     Date effectiveTime, boolean forLineage, boolean forDuplicateProcessing) throws InvalidParameterException, UserNotAuthorizedException,
+      PropertyServerException
+    {
+        return null;
+    }
+
+    /**
+     * Retrieve the elements linked via a "GovernedBy" relationship to the requested governance definition.
+     *
+     * @param userId                   calling user
+     * @param governanceDefinitionGUID unique identifier of the governance definition that the returned elements are linked to
+     * @param startFrom                index of the list to start from (0 for start)
+     * @param pageSize                 maximum number of elements to return.
+     * @param effectiveTime            the time that the retrieved elements must be effective for
+     * @param forLineage               return elements marked with the Memento classification?
+     * @param forDuplicateProcessing   do not merge elements marked as duplicates?
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<RelatedElement> getGovernedElements(String userId,
+                                                    String governanceDefinitionGUID,
+                                                    int startFrom,
+                                                    int pageSize,
+                                                    Date effectiveTime
+    , boolean forLineage, boolean forDuplicateProcessing) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return null;
+    }
+
+
+    /**
+     * Retrieve the elements linked via a "SourceFrom" relationship to the requested element.
+     * The elements returned were used to create the requested element.  Typically, only one element is returned.
+     *
+     * @param userId                 calling user
+     * @param elementGUID            unique identifier of the element
+     * @param startFrom              index of the list to start from (0 for start)
+     * @param pageSize               maximum number of elements to return.
+     * @param effectiveTime          the time that the retrieved elements must be effective for
+     * @param forLineage             return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<RelatedElement> getSourceElements(String userId, String elementGUID, int startFrom, int pageSize, Date effectiveTime,
+     boolean forLineage, boolean forDuplicateProcessing) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return null;
+    }
+
+    /**
+     * Retrieve the elements linked via a "SourceFrom" relationship to the requested element.
+     * The elements returned were created using the requested element as a template.
+     *
+     * @param userId                 calling user
+     * @param elementGUID            unique identifier of the element that the returned elements are linked to
+     * @param startFrom              index of the list to start from (0 for start)
+     * @param pageSize               maximum number of elements to return.
+     * @param effectiveTime          the time that the retrieved elements must be effective for
+     * @param forLineage             return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<RelatedElement> getElementsSourceFrom(String userId, String elementGUID, int startFrom, int pageSize, Date effectiveTime, boolean forLineage, boolean forDuplicateProcessing) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return null;
+    }
+
 
     /*
      * ==============================================
@@ -4055,5 +4628,295 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
                                         serverName,
                                         userId,
                                         assetGUID);
+    }
+
+
+    /*
+     * ==============================================
+     * AssetCollectionInterface
+     * ==============================================
+     */
+
+
+    /**
+     * Returns the list of collections that are linked off of the supplied element.
+     *
+     * @param userId     userId of user making request
+     * @param parentGUID unique identifier of referenceable object (typically a personal profile, project or
+     *                   community) that the collections hang off of.
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return
+     * @return a list of collections
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public List<CollectionElement> getCollections(String userId,
+                                                  String parentGUID,
+                                                  int    startFrom,
+                                                  int    pageSize) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
+        return null;
+    }
+
+
+    /**
+     * Return the properties of a specific collection.
+     *
+     * @param userId         userId of user making request.
+     * @param collectionGUID unique identifier of the required connection.
+     * @return collection properties
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public CollectionElement getCollection(String userId,
+                                           String collectionGUID) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        return null;
+    }
+
+
+    /**
+     * Retrieve the list of collection metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId       calling user
+     * @param searchString string to find in the properties
+     * @param startFrom    paging start point
+     * @param pageSize     maximum results that can be returned
+     * @return list of matching metadata elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<CollectionElement> findCollections(String userId,
+                                                   String searchString,
+                                                   int    startFrom,
+                                                   int    pageSize) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        return null;
+    }
+
+
+    /**
+     * Retrieve the list of collection metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId    calling user
+     * @param name      name to search for
+     * @param startFrom paging start point
+     * @param pageSize  maximum results that can be returned
+     * @return list of matching metadata elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<CollectionElement> getCollectionsByName(String userId,
+                                                        String name,
+                                                        int    startFrom,
+                                                        int    pageSize) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        return null;
+    }
+
+
+    /**
+     * Create a new generic collection.
+     *
+     * @param userId             userId of user making request.
+     * @param properties         description of the collection.
+     * @return unique identifier of the newly created Collection
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public String createCollection(String               userId,
+                                   CollectionProperties properties) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException
+    {
+        return null;
+    }
+
+
+    /**
+     * Create a collection that acts like a folder with an order.
+     *
+     * @param userId             userId of user making request.
+     * @param properties         description of the collection.
+     * @return unique identifier of the newly created Collection
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public String createFolderCollection(String                     userId,
+                                         CollectionFolderProperties properties) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
+    {
+        return null;
+    }
+
+    /**
+     * Update the metadata element representing a collection.
+     *
+     * @param userId             calling user
+     * @param collectionGUID     unique identifier of the metadata element to update
+     * @param isMergeUpdate      should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param properties         new properties for this element
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void updateCollection(String               userId,
+                                 String               collectionGUID,
+                                 boolean              isMergeUpdate,
+                                 CollectionProperties properties) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+
+    }
+
+
+    /**
+     * Delete a collection.  It is deleted from all parent elements.  If members are anchored to the collection
+     * then they are also deleted.
+     *
+     * @param userId             userId of user making request.
+     * @param collectionGUID     unique identifier of the collection.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public void removeCollection(String userId,
+                                 String collectionGUID) throws InvalidParameterException,
+                                                               PropertyServerException,
+                                                               UserNotAuthorizedException
+    {
+
+    }
+
+
+    /**
+     * Return a list of elements that are a member of a collection.
+     *
+     * @param userId         userId of user making request.
+     * @param collectionGUID unique identifier of the collection.
+     * @param startFrom      index of the list to start from (0 for start)
+     * @param pageSize       maximum number of elements to return.
+     * @return list of asset details
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public List<CollectionMember> getCollectionMembers(String userId, String collectionGUID, int startFrom, int pageSize) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
+    {
+        return null;
+    }
+
+    /**
+     * Return details of the membership between a collection and a specific member of the collection.
+     *
+     * @param userId         userId of user making request.
+     * @param collectionGUID unique identifier of the collection.
+     * @param memberGUID     unique identifier of the element who is a member of the collection.
+     * @return list of asset details
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public CollectionMember getCollectionMember(String userId, String collectionGUID, String memberGUID) throws InvalidParameterException,
+ PropertyServerException, UserNotAuthorizedException
+    {
+        return null;
+    }
+
+    /**
+     * Return a list of collections that the supplied element is a member of.
+     *
+     * @param userId      userId of user making request.
+     * @param elementGUID unique identifier of the collection.
+     * @param startFrom   index of the list to start from (0 for start)
+     * @param pageSize    maximum number of elements to return.
+     * @return list of asset details
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public List<CollectionElement> getElementsCollections(String userId,
+                                                          String elementGUID,
+                                                          int    startFrom,
+                                                          int    pageSize) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
+    {
+        return null;
+    }
+
+
+    /**
+     * Add an element to a collection (or update its membership properties).
+     *
+     * @param userId             userId of user making request.
+     * @param collectionGUID     unique identifier of the collection.
+     * @param properties         new properties
+     * @param isMergeUpdate      should the properties be merged with the existing properties or replace them?
+     * @param elementGUID        unique identifier of the element.
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem updating information in the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public void updateCollectionMembership(String                         userId,
+                                           String                         collectionGUID,
+                                           CollectionMembershipProperties properties,
+                                           boolean                        isMergeUpdate,
+                                           String                         elementGUID) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+
+    }
+
+
+    /**
+     * Remove an element from a collection.
+     *
+     * @param userId             userId of user making request.
+     * @param collectionGUID     unique identifier of the collection.
+     * @param elementGUID        unique identifier of the element.
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem updating information in the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public void removeFromCollection(String userId,
+                                     String collectionGUID,
+                                     String elementGUID) throws InvalidParameterException,
+                                                                PropertyServerException,
+                                                                UserNotAuthorizedException
+    {
+
     }
 }

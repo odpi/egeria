@@ -35,10 +35,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = CertificationProperties.class, name = "CertificationProperties"),
                 @JsonSubTypes.Type(value = ExternalReferenceLinkProperties.class, name = "ExternalReferenceLinkProperties"),
         })
-public class RelationshipProperties implements Serializable
+public class RelationshipProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private Date effectiveFrom = null;
     private Date effectiveTo   = null;
 
@@ -184,7 +182,8 @@ public class RelationshipProperties implements Serializable
         }
         RelationshipProperties that = (RelationshipProperties) objectToCompare;
         return Objects.equals(effectiveFrom, that.effectiveFrom) &&
-                       Objects.equals(effectiveTo, that.effectiveTo);
+                Objects.equals(effectiveTo, that.effectiveTo) &&
+                Objects.equals(extendedProperties, that.extendedProperties);
     }
 
 
@@ -196,6 +195,6 @@ public class RelationshipProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(effectiveFrom, effectiveTo);
+        return Objects.hash(effectiveFrom, effectiveTo, extendedProperties);
     }
 }

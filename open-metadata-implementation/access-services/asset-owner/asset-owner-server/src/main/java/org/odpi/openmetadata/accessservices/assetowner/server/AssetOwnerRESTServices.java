@@ -650,6 +650,7 @@ public class AssetOwnerRESTServices
 
 
     /**
+     * Request that the asset handler creates a schema type and links it to the asset.
      * Update relationship between two elements.
      *
      * @param serverName name of the server to route the request to
@@ -2506,7 +2507,8 @@ public class AssetOwnerRESTServices
                                                           false,
                                                           false,
                                                           null,
-                                                          methodName));            }
+                                                          methodName));
+            }
         }
         catch (Exception error)
         {
@@ -3597,12 +3599,11 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse  addSemanticAssignment(String          serverName,
-                                               String          userId,
-                                               String          assetGUID,
-                                               String          glossaryTermGUID,
-                                               NullRequestBody requestBody)
+    public VoidResponse  addSemanticAssignment(String                       serverName,
+                                               String                       userId,
+                                               String                       assetGUID,
+                                               String                       glossaryTermGUID,
+                                               SemanticAssignmentProperties requestBody)
     {
         final String   assetGUIDParameterName = "assetGUID";
         final String   glossaryTermGUIDParameterName = "glossaryTermGUID";
@@ -3618,19 +3619,68 @@ public class AssetOwnerRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-            handler.saveSemanticAssignment(userId,
-                                           null,
-                                           null,
-                                           assetGUID,
-                                           assetGUIDParameterName,
-                                           glossaryTermGUID,
-                                           glossaryTermGUIDParameterName,
-                                           null,
-                                           null,
-                                           false,
-                                           false,
-                                           new Date(),
-                                           methodName);
+            if (requestBody == null)
+            {
+                handler.saveSemanticAssignment(userId,
+                                               null,
+                                               null,
+                                               assetGUID,
+                                               assetGUIDParameterName,
+                                               glossaryTermGUID,
+                                               glossaryTermGUIDParameterName,
+                                               null,
+                                               null,
+                                               false,
+                                               false,
+                                               new Date(),
+                                               methodName);
+            }
+            else if (requestBody.getStatus() == null)
+            {
+                handler.saveSemanticAssignment(userId,
+                                               null,
+                                               null,
+                                               assetGUID,
+                                               assetGUIDParameterName,
+                                               glossaryTermGUID,
+                                               glossaryTermGUIDParameterName,
+                                               requestBody.getDescription(),
+                                               requestBody.getExpression(),
+                                               3,
+                                               requestBody.getConfidence(),
+                                               requestBody.getCreatedBy(),
+                                               requestBody.getSteward(),
+                                               requestBody.getSource(),
+                                               null,
+                                               null,
+                                               false,
+                                               false,
+                                               new Date(),
+                                               methodName);
+            }
+            else
+            {
+                handler.saveSemanticAssignment(userId,
+                                               null,
+                                               null,
+                                               assetGUID,
+                                               assetGUIDParameterName,
+                                               glossaryTermGUID,
+                                               glossaryTermGUIDParameterName,
+                                               requestBody.getDescription(),
+                                               requestBody.getExpression(),
+                                               requestBody.getStatus().getOpenTypeOrdinal(),
+                                               requestBody.getConfidence(),
+                                               requestBody.getCreatedBy(),
+                                               requestBody.getSteward(),
+                                               requestBody.getSource(),
+                                               null,
+                                               null,
+                                               false,
+                                               false,
+                                               new Date(),
+                                               methodName);
+            }
         }
         catch (Exception error)
         {

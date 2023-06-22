@@ -66,6 +66,14 @@ public enum ViewServiceDescription implements Serializable
                          "glossary-workflow",
                          "Create glossary terms and organize them into categories as part of a controlled workflow process. It supports the editing glossary and multiple states.",
                          "https://egeria-project.org/services/omvs/glossary-workflow/overview/"),
+
+    MY_PROFILE(807,
+                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                      "My Profile",
+                      "My Profile OMVS",
+                      "my-profile",
+                      "Manage information about the logged on user as well as their preferences.",
+                      "https://egeria-project.org/services/omvs/my-profile/overview/"),
     ;
 
     private static final long serialVersionUID = 1L;
@@ -192,7 +200,7 @@ public enum ViewServiceDescription implements Serializable
     /**
      * Return the URL for the wiki page describing this UI view.
      *
-     * @return String URL name for the wiki page
+     * @return String URL for the wiki page
      */
     public String getViewServiceWiki() {
         return viewServiceWiki;

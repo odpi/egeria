@@ -12,6 +12,10 @@ The Open Metadata View Services (OMVS) provide task oriented, domain-specific se
 
 The view services are as follows:
 
+* **[My Profile](my-profile)** - locate, retrieve and update information relating to the calling user's profile.
+
+  The My Profile OMVS is for user interfaces supporting a personalized experience.  A registered user is able to maintain information about themselves and their network as well as set up and use personalized collections of metadata elements.
+
 * **[Glossary Author](glossary-author)** - develop new glossary terms and categories.
 
   The Glossary Author OMVS is for user interfaces supporting the creating and editing of glossary content, such as glossary terms and categories.  The changes made are immediately visible to all users.

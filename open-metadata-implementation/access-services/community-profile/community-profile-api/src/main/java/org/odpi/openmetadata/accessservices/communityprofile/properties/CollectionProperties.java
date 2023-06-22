@@ -2,9 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.properties;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 
 import java.util.Objects;
 
@@ -17,14 +15,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = CollectionFolderProperties.class, name = "CollectionFolderProperties"),
+        })
 public class CollectionProperties extends ReferenceableProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String          name               = null;
     private String          description        = null;
-    private CollectionOrder collectionOrdering = null;
-    private String          orderPropertyName  = null;
 
 
     /**
@@ -49,8 +50,6 @@ public class CollectionProperties extends ReferenceableProperties
         {
             this.name = template.getName();
             this.description = template.getDescription();
-            this.collectionOrdering = template.getCollectionOrdering();
-            this.orderPropertyName = template.getOrderPropertyName();
         }
     }
 
@@ -100,50 +99,6 @@ public class CollectionProperties extends ReferenceableProperties
 
 
     /**
-     * Return the property to use to determine the order that assets are returned.
-     *
-     * @return CollectionOrder enum
-     */
-    public CollectionOrder getCollectionOrdering()
-    {
-        return collectionOrdering;
-    }
-
-
-    /**
-     * Set up the property to use to determine the order that assets are returned.
-     *
-     * @param collectionOrdering CollectionOrder enum
-     */
-    public void setCollectionOrdering(CollectionOrder collectionOrdering)
-    {
-        this.collectionOrdering = collectionOrdering;
-    }
-
-
-    /**
-     * Return the property name for CollectionOrder.OTHER.
-     *
-     * @return string property name
-     */
-    public String getOrderPropertyName()
-    {
-        return orderPropertyName;
-    }
-
-
-    /**
-     * Set up the property name for CollectionOrder.OTHER.
-     *
-     * @param orderPropertyName string property name
-     */
-    public void setOrderPropertyName(String orderPropertyName)
-    {
-        this.orderPropertyName = orderPropertyName;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -154,8 +109,6 @@ public class CollectionProperties extends ReferenceableProperties
         return "CollectionProperties{" +
                        "name='" + name + '\'' +
                        ", description='" + description + '\'' +
-                       ", collectionOrdering=" + collectionOrdering +
-                       ", orderPropertyName='" + orderPropertyName + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", effectiveFrom=" + getEffectiveFrom() +
@@ -189,10 +142,8 @@ public class CollectionProperties extends ReferenceableProperties
             return false;
         }
         CollectionProperties that = (CollectionProperties) objectToCompare;
-        return getCollectionOrdering() == that.getCollectionOrdering() &&
-                       Objects.equals(getName(), that.getName()) &&
-                       Objects.equals(getDescription(), that.getDescription()) &&
-                       Objects.equals(getOrderPropertyName(), that.getOrderPropertyName());
+        return Objects.equals(getName(), that.getName()) &&
+                       Objects.equals(getDescription(), that.getDescription());
     }
 
 
@@ -204,6 +155,6 @@ public class CollectionProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getName(), getDescription(), getCollectionOrdering(), getOrderPropertyName());
+        return Objects.hash(super.hashCode(), getName(), getDescription());
     }
 }
