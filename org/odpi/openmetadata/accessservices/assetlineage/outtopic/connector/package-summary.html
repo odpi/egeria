@@ -40,7 +40,7 @@ loadScripts(document, 'script');</script>
 <div>
 <ul class="sub-nav-list">
 <li>Package:&nbsp;</li>
-<li>Description&nbsp;|&nbsp;</li>
+<li><a href="#package-description">Description</a>&nbsp;|&nbsp;</li>
 <li><a href="#related-package-summary">Related Packages</a>&nbsp;|&nbsp;</li>
 <li><a href="#class-summary">Classes and Interfaces</a></li>
 </ul>
@@ -60,6 +60,16 @@ loadScripts(document, 'script');</script>
 </div>
 <hr>
 <div class="package-signature">package <span class="element-name">org.odpi.openmetadata.accessservices.assetlineage.outtopic.connector</span></div>
+<section class="package-description" id="package-description">
+<div class="block">This package provides the implementation for the client-side connector that receives events
+ from the Asset Lineage OMAS's OutTopic.
+
+ It includes the AssetLineageOutTopicClientConnector class, which handles the registration of event listeners
+ and processing of inbound events. The package also contains the AssetLineageOutTopicClientProvider class,
+ which serves as the connector provider for the AssetLineageOutTopicClientConnector.
+
+ Together, these classes enable the receipt and handling of events on the Asset Lineage OMAS OutTopic.</div>
+</section>
 <section class="summary">
 <ul class="summary-list">
 <li>
@@ -69,7 +79,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Package</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><a href="../package-summary.html">org.odpi.openmetadata.accessservices.assetlineage.outtopic</a></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Produces events on the Asset Lineage OMAS's out topic.</div>
+</div>
 </div>
 </div>
 </li>

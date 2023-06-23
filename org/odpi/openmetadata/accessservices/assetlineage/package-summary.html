@@ -44,7 +44,7 @@ loadScripts(document, 'script');</script>
 <div>
 <ul class="sub-nav-list">
 <li>Package:&nbsp;</li>
-<li>Description&nbsp;|&nbsp;</li>
+<li><a href="#package-description">Description</a>&nbsp;|&nbsp;</li>
 <li><a href="#related-package-summary">Related Packages</a>&nbsp;|&nbsp;</li>
 <li><a href="#class-summary">Classes and Interfaces</a></li>
 </ul>
@@ -64,6 +64,9 @@ loadScripts(document, 'script');</script>
 </div>
 <hr>
 <div class="package-signature">package <span class="element-name">org.odpi.openmetadata.accessservices.assetlineage</span></div>
+<section class="package-description" id="package-description">
+<div class="block">The Asset Lineage OMAS provides services to query the lineage of business terms and data assets.</div>
+</section>
 <section class="summary">
 <ul class="summary-list">
 <li>
@@ -73,27 +76,48 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Package</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><a href="admin/package-summary.html">org.odpi.openmetadata.accessservices.assetlineage.admin</a></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Provides the implementation of the admin classes that are called during server start up and shut down.</div>
+</div>
 <div class="col-first odd-row-color"><a href="auditlog/package-summary.html">org.odpi.openmetadata.accessservices.assetlineage.auditlog</a></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">The auditlog package provides the definition of any messages that are used for auditing the operation of the Asset Lineage.</div>
+</div>
 <div class="col-first even-row-color"><a href="converters/package-summary.html">org.odpi.openmetadata.accessservices.assetlineage.converters</a></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Provides the converters that take beans from the repository services (eg entities and relationships) and converts them into Asset Lineage OMAS beans to return to the caller.</div>
+</div>
 <div class="col-first odd-row-color"><a href="event/package-summary.html">org.odpi.openmetadata.accessservices.assetlineage.event</a></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Definitions of the different types of events that the Asset Lineage OMAS can publish.</div>
+</div>
 <div class="col-first even-row-color"><a href="ffdc/package-summary.html">org.odpi.openmetadata.accessservices.assetlineage.ffdc</a></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><a href="handlers/package-summary.html">org.odpi.openmetadata.accessservices.assetlineage.handlers</a></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">These handlers drive the interaction with the metadata repositories.</div>
+</div>
 <div class="col-first even-row-color"><a href="listeners/package-summary.html">org.odpi.openmetadata.accessservices.assetlineage.listeners</a></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Supports the processing of events from the repository services that notify this module of changes to the metadata
+ in the repository services.</div>
+</div>
 <div class="col-first odd-row-color"><a href="model/package-summary.html">org.odpi.openmetadata.accessservices.assetlineage.model</a></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">This package holds the classes needed to create and represent the lineage graph.</div>
+</div>
 <div class="col-first even-row-color"><a href="outtopic/package-summary.html">org.odpi.openmetadata.accessservices.assetlineage.outtopic</a></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Produces events on the Asset Lineage OMAS's out topic.</div>
+</div>
 <div class="col-first odd-row-color"><a href="server/package-summary.html">org.odpi.openmetadata.accessservices.assetlineage.server</a></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Provides the server side support for the REST API.</div>
+</div>
 <div class="col-first even-row-color"><a href="util/package-summary.html">org.odpi.openmetadata.accessservices.assetlineage.util</a></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Utility classes for writing out Asset Lineage</div>
+</div>
 </div>
 </div>
 </li>
