@@ -7,21 +7,16 @@ import org.odpi.openmetadata.adminservices.configuration.registration.CommonServ
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeListResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerPlatformInstanceMap;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.platformservices.properties.ServerStatus;
 import org.odpi.openmetadata.platformservices.rest.ServerListResponse;
 import org.odpi.openmetadata.platformservices.rest.ServerServicesListResponse;
 import org.odpi.openmetadata.platformservices.rest.ServerStatusResponse;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ServiceLoader;
 
 
 /**
@@ -405,11 +400,14 @@ public class OMAGServerPlatformActiveServices
         try
         {
             response.setServerName(serverName);
-            response.setServerType(serverInstanceMap.getServerType(userId, serverName, methodName));
-            response.setActive(serverInstanceMap.isServerActive(userId, serverName));
-            response.setServerStartTime(serverInstanceMap.getServerStartTime(userId, serverName));
-            response.setServerEndTime(serverInstanceMap.getServerEndTime(userId, serverName));
-            response.setServerHistory(serverInstanceMap.getServerHistory(userId, serverName));
+
+            ServerStatus serverStatus = serverInstanceMap.getServerStatus(userId, serverName, methodName);
+
+            response.setServerType(serverStatus.getServerType());
+            response.setActive(serverStatus.getIsActive());
+            response.setServerStartTime(serverStatus.getServerStartTime());
+            response.setServerEndTime(serverStatus.getServerEndTime());
+            response.setServerHistory(serverStatus.getServerHistory());
         }
         catch (Exception error)
         {
@@ -442,6 +440,37 @@ public class OMAGServerPlatformActiveServices
         {
             response.setServerName(serverName);
             response.setServerServicesList(serverInstanceMap.getActiveServiceListForServer(userId, serverName));
+        }
+        catch (Exception error)
+        {
+            exceptionHandler.captureExceptions(response, error, methodName, null);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Shutdown this OMAG Server Platform.
+     *
+     * @param userId name of the user making the request
+     * @return List of service names
+     */
+    public VoidResponse shutdownPlatform(String userId)
+    {
+        final String   methodName = "shutdownPlatform";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            OMAGServerPlatformInstanceMap.validateUserAsOperatorForPlatform(userId);
+
+            System.exit(0);
         }
         catch (Exception error)
         {

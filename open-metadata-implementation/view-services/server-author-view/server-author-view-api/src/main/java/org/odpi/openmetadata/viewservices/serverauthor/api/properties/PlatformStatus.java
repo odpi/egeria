@@ -12,11 +12,9 @@ public enum PlatformStatus {
     NOT_CONTACTABLE         (2,  "Not contactable",         "The platform is not contactable."),
     OTHER                   (99, "Other",                   "The platform has some other status.");
 
-    private static final long serialVersionUID = 1L;
-
-    private  int    ordinal;
-    private  String name;
-    private  String description;
+    private final int    ordinal;
+    private final String name;
+    private final String description;
 
 
     /**

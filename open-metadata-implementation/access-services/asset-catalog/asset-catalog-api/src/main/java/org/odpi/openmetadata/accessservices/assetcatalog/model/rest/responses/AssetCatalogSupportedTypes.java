@@ -30,5 +30,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 public class AssetCatalogSupportedTypes extends AssetCatalogOMASAPIResponse {
 
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * The list of supported types
+     * -- GETTER --
+     * Returns the list of supported types
+     * @return the list of supported types
+     * -- SETTER --
+     * Setup the list of supported types
+     * @param types the list of supported types
+     */
     private List<Type> types;
 }

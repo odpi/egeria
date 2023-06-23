@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -15,7 +13,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * SequencingOrder is used for search requests against a metadata collection.  It defines how the results should
  * to be ordered before they are returned.  This is particularly important when the results are to returned
  * over multiple pages since the caller does not have all the results at once to perform the sort themselves.
- *
  * The sequencing order values are:
  * <ul>
  *     <li>
@@ -50,15 +47,46 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum SequencingOrder implements Serializable
+public enum SequencingOrder
 {
+    /**
+     * Any order.
+     */
     ANY                  (0, "Any Order",                       "Any order."),
+
+    /**
+     * Order by GUID.
+     */
     GUID                 (1, "GUID",                            "Order by GUID."),
+
+    /**
+     * Order by creation date, most recently created first."
+     */
     CREATION_DATE_RECENT (2, "Creation Date (Recent First)",    "Order by creation date, most recently created first."),
+
+    /**
+     * Order by creation date, oldest first.
+     */
     CREATION_DATE_OLDEST (3, "Creation Date (Oldest First)",    "Order by creation date, oldest first."),
+
+    /**
+     * Order by last update date, most recently updated first."
+     */
     LAST_UPDATE_RECENT   (4, "Last Update Date (Recent First)", "Order by last update date, most recently updated first."),
+
+    /**
+     * Order by last update date, most recently updated last.
+     */
     LAST_UPDATE_OLDEST   (5, "Last Update Date (Oldest First)", "Order by last update date, most recently updated last."),
+
+    /**
+     * Order by property value, lowest value first.
+     */
     PROPERTY_ASCENDING   (6, "By property value (Ascending)",   "Order by property value, lowest value first."),
+
+    /**
+     * Order by property value, highest first.
+     */
     PROPERTY_DESCENDING  (7, "By property value (Descending)",  "Order by property value, highest first.");
 
     private static final long serialVersionUID = 1L;

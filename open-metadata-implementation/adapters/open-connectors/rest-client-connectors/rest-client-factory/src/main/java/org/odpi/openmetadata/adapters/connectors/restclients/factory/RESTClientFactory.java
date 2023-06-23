@@ -13,6 +13,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
 
+/**
+ * RESTClientFactory is used to create an ew REST client
+ */
 public class RESTClientFactory
 {
     private static final Logger log = LoggerFactory.getLogger(RESTClientFactory.class);

@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -17,18 +16,41 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum CriticalityLevel implements Serializable
+public enum CriticalityLevel
 {
+    /**
+     * There is no assessment of the criticality for this data.
+     */
     UNCLASSIFIED (0, 0, "Unclassified",
-                               "There is no assessment of the criticality of this data."),
+                               "There is no assessment of the criticality for this data."),
+
+    /**
+     * The data is of minor importance to the organization.
+     */
     MARGINAL     (1, 1, "Marginal",
                                "The data is of minor importance to the organization."),
+
+    /**
+     * The data is important to the running of the organization.
+     */
     IMPORTANT    (2, 2, "Important",
                                "The data is important to the running of the organization."),
+
+    /**
+     * The data is critical to the operation of the organization.
+     */
     CRITICAL     (3, 3, "Critical",
                                "The data is critical to the operation of the organization."),
+
+    /**
+     * The data is so important that its loss is catastrophic, putting the future of the organization in doubt.
+     */
     CATASTROPHIC (4, 4, "Catastrophic",
-                               "The data is so important that its loss is catastrophic putting the future of the organization in doubt."),
+                               "The data is so important that its loss is catastrophic, putting the future of the organization in doubt."),
+
+    /**
+     * Another criticality level.
+     */
     OTHER        (99, 99,"Other",
                                "Another criticality level.");
 
@@ -40,9 +62,6 @@ public enum CriticalityLevel implements Serializable
     private final int    ordinal;
     private final String name;
     private final String description;
-
-    private static final long     serialVersionUID = 1L;
-
 
     /**
      * Constructor to set up the instance of this enum.

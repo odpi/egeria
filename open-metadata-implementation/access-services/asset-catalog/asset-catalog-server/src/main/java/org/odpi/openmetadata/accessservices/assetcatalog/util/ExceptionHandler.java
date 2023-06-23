@@ -31,7 +31,7 @@ public class ExceptionHandler {
      * @param response AssetCatalogOMASAPIResponse
      * @param e        AssetCatalogException exception
      */
-    public void captureAssetCatalogExeption(AssetCatalogOMASAPIResponse response, AssetCatalogException e) {
+    public void captureAssetCatalogException(AssetCatalogOMASAPIResponse response, AssetCatalogException e) {
         response.setRelatedHTTPCode(e.getReportedHTTPCode());
         response.setExceptionClassName(e.getClass().getName());
         response.setExceptionErrorMessage(e.getReportedErrorMessage());

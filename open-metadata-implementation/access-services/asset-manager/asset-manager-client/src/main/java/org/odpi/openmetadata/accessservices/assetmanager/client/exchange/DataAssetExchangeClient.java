@@ -596,6 +596,7 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
         requestBody.setAssetManagerGUID(assetManagerGUID);
         requestBody.setAssetManagerName(assetManagerName);
         requestBody.setProperties(relationshipProperties);
+        requestBody.setEffectiveTime(effectiveTime);
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/relationships/{2}/from-asset/{3}/to-asset/{4}?assetManagerIsHome={5}&forLineage={6}&forDuplicateProcessing={7}";
 
@@ -792,7 +793,7 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
      * @param assetManagerName unique name of software server capability representing the caller
      * @param relationshipTypeName type name of relationship to delete
      * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
-     * @param startingFrom start position for results
+     * @param startFrom start position for results
      * @param pageSize     maximum number of results
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param forLineage return elements marked with the Memento classification?
@@ -810,7 +811,7 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
                                                             String  assetManagerName,
                                                             String  relationshipTypeName,
                                                             String  fromAssetGUID,
-                                                            int     startingFrom,
+                                                            int     startFrom,
                                                             int     pageSize,
                                                             Date    effectiveTime,
                                                             boolean forLineage,
@@ -836,7 +837,7 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
                                                                                            userId,
                                                                                            relationshipTypeName,
                                                                                            fromAssetGUID,
-                                                                                           startingFrom,
+                                                                                           startFrom,
                                                                                            pageSize,
                                                                                            forLineage,
                                                                                            forDuplicateProcessing);
@@ -853,7 +854,7 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
      * @param assetManagerName unique name of software server capability representing the caller
      * @param relationshipTypeName type name of relationship to delete
      * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
-     * @param startingFrom start position for results
+     * @param startFrom start position for results
      * @param pageSize     maximum number of results
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param forLineage return elements marked with the Memento classification?
@@ -871,7 +872,7 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
                                                             String  assetManagerName,
                                                             String  relationshipTypeName,
                                                             String  toAssetGUID,
-                                                            int     startingFrom,
+                                                            int     startFrom,
                                                             int     pageSize,
                                                             Date    effectiveTime,
                                                             boolean forLineage,
@@ -896,7 +897,7 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
                                                                                            userId,
                                                                                            relationshipTypeName,
                                                                                            toAssetGUID,
-                                                                                           startingFrom,
+                                                                                           startFrom,
                                                                                            pageSize,
                                                                                            forLineage,
                                                                                            forDuplicateProcessing);

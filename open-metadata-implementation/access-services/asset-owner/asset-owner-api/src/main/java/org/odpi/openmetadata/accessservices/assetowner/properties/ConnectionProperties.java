@@ -87,11 +87,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ConnectionProperties extends ReferenceableProperties
 {
-    private static final long     serialVersionUID = 1L;
-
-    /*
-     * Attributes of a connector
-     */
     private String              displayName             = null;
     private String              description             = null;
     private String              userId                  = null;

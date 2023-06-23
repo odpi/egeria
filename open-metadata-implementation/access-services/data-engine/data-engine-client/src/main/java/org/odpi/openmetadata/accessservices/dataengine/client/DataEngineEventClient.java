@@ -62,10 +62,18 @@ public class DataEngineEventClient implements DataEngineClient {
         this.topicConnector = dataEngineInTopicClientConnector;
     }
 
+    /**
+     * Gets the {@link org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic}
+     *
+     * @return deleteSemantic used by the client for deletes
+     */
     public DeleteSemantic getDeleteSemantic() {
         return deleteSemantic;
     }
 
+    /**
+     * Sets the {@link org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic} for the client
+     */
     public void setDeleteSemantic(DeleteSemantic deleteSemantic) {
         this.deleteSemantic = deleteSemantic;
     }
@@ -105,7 +113,7 @@ public class DataEngineEventClient implements DataEngineClient {
      */
     @Override
     public String createExternalDataEngine(String userId, Engine engine) throws InvalidParameterException,
-                                                                                                                    ConnectorCheckedException {
+            ConnectorCheckedException {
         DataEngineRegistrationEvent event = new DataEngineRegistrationEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
@@ -123,7 +131,7 @@ public class DataEngineEventClient implements DataEngineClient {
      */
     @Override
     public void deleteExternalDataEngine(String userId, String qualifiedName, String guid) throws InvalidParameterException,
-                                                                                                  ConnectorCheckedException {
+            ConnectorCheckedException {
         DeleteEvent event = getDeleteEvent(userId, qualifiedName, guid);
         event.setDataEngineEventType(DataEngineEventType.DELETE_DATA_ENGINE_EVENT);
 
@@ -169,8 +177,8 @@ public class DataEngineEventClient implements DataEngineClient {
      */
     @Override
     public String createOrUpdatePortImplementation(String userId, PortImplementation portImplementation, String processQualifiedName) throws
-                                                                                                                                      InvalidParameterException,
-                                                                                                                                      ConnectorCheckedException {
+            InvalidParameterException,
+            ConnectorCheckedException {
         PortImplementationEvent event = new PortImplementationEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
@@ -189,7 +197,7 @@ public class DataEngineEventClient implements DataEngineClient {
      */
     @Override
     public void deletePortImplementation(String userId, String qualifiedName, String guid) throws InvalidParameterException,
-                                                                                                  ConnectorCheckedException {
+            ConnectorCheckedException {
         DeleteEvent event = getDeleteEvent(userId, qualifiedName, guid);
         event.setDataEngineEventType(DataEngineEventType.DELETE_PORT_IMPLEMENTATION_EVENT);
 
@@ -277,7 +285,7 @@ public class DataEngineEventClient implements DataEngineClient {
      */
     @Override
     public String upsertDatabaseSchema(String userId, DatabaseSchema databaseSchema, String databaseQualifiedName) throws InvalidParameterException,
-                                                                                                                          ConnectorCheckedException {
+            ConnectorCheckedException {
         DatabaseSchemaEvent event = new DatabaseSchemaEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
@@ -296,8 +304,8 @@ public class DataEngineEventClient implements DataEngineClient {
      */
     @Override
     public String upsertRelationalTable(String userId, RelationalTable relationalTable, String databaseSchemaQualifiedName) throws
-                                                                                                                            InvalidParameterException,
-                                                                                                                            ConnectorCheckedException {
+            InvalidParameterException,
+            ConnectorCheckedException {
         RelationalTableEvent event = new RelationalTableEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
@@ -438,7 +446,7 @@ public class DataEngineEventClient implements DataEngineClient {
      */
     @Override
     public String upsertEventType(String userId, EventType eventType, String topicQualifiedName) throws InvalidParameterException,
-                                                                                                        ConnectorCheckedException {
+            ConnectorCheckedException {
         EventTypeEvent event = new EventTypeEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);

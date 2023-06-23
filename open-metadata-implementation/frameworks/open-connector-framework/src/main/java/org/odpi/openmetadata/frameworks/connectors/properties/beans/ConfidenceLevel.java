@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -17,20 +15,47 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum ConfidenceLevel implements Serializable
+public enum ConfidenceLevel
 {
+    /**
+     * There is no assessment of the confidence level for this data.
+     */
     UNCLASSIFIED  (0, 0, "Unclassified",
-                               "There is no assessment of the confidence level of this data."),
+                               "There is no assessment of the confidence level for this data."),
+
+    /**
+     * The data comes from an ad hoc process.
+     */
     AD_HOC        (1, 1, "Ad Hoc",
                                "The data comes from an ad hoc process."),
+
+    /**
+     * The data comes from a transactional system so it may have a narrow scope.
+     */
     TRANSACTIONAL (2, 2, "Transactional",
                                "The data comes from a transactional system so it may have a narrow scope."),
+
+    /**
+     * The data comes from an authoritative source. This is the best set of values.
+     */
     AUTHORITATIVE (3, 3, "Authoritative",
                                "The data comes from an authoritative source. This is the best set of values."),
+
+    /**
+     * The data is derived from other data through an analytical process.
+     */
     DERIVED       (4, 4, "Derived",
                                "The data is derived from other data through an analytical process."),
+
+    /**
+     * The data comes from an obsolete source and must no longer be used.
+     */
     OBSOLETE      (5, 5, "Obsolete",
                                "The data comes from an obsolete source and must no longer be used."),
+
+    /**
+     * Another classification assignment status.
+     */
     OTHER         (99, 99, "Other",
                                "Another classification assignment status.");
 
@@ -42,8 +67,6 @@ public enum ConfidenceLevel implements Serializable
     private final int    ordinal;
     private final String name;
     private final String description;
-
-    private static final long     serialVersionUID = 1L;
 
 
     /**

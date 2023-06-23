@@ -20,9 +20,9 @@ public enum CommonServicesDescription implements Serializable
                                       "Manages the synchronization, retrieval and maintenance of metadata stored in open metadata repositories",
                                       "https://egeria-project.org/services/omrs"),
 
-    ADMIN_OPERATIONAL_SERVICES       (181,
+    ADMINISTRATION_SERVICES         (181,
                                       ComponentDevelopmentStatus.STABLE,
-                                      "OMAG Server Operational Services",
+                                      "Administration Services",
                                       "admin-services",
                                       "Management of services active in an Open Metadata and governance server (OMAG Server)",
                                       "https://egeria-project.org/services/admin-services/overview"),
@@ -52,7 +52,7 @@ public enum CommonServicesDescription implements Serializable
                                       ComponentDevelopmentStatus.STABLE,
                                       "Platform Services",
                                       "platform-services",
-                                      "Provides information about the registered services and connectors available in an OMAG Server Platform.",
+                                      "Provides information about the registered services and connectors available in an OMAG Server Platform along with services to control and query information about the OMAG Servers running on the platform.",
                                       "https://egeria-project.org/services/platform-services/overview"),
 
     OIF_METADATA_MANAGEMENT          (186,
@@ -85,7 +85,7 @@ public enum CommonServicesDescription implements Serializable
         List<CommonServicesDescription> serviceDescriptionList = new ArrayList<>();
 
         serviceDescriptionList.add(CommonServicesDescription.REPOSITORY_SERVICES);
-        serviceDescriptionList.add(CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES);
+        serviceDescriptionList.add(CommonServicesDescription.ADMINISTRATION_SERVICES);
         serviceDescriptionList.add(CommonServicesDescription.OCF_METADATA_MANAGEMENT);
         serviceDescriptionList.add(CommonServicesDescription.GAF_METADATA_MANAGEMENT);
         serviceDescriptionList.add(CommonServicesDescription.OPEN_METADATA_SECURITY);

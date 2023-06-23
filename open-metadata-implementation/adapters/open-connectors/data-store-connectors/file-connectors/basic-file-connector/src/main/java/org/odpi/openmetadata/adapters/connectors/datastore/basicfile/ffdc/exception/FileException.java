@@ -15,8 +15,6 @@ import java.util.Objects;
  */
 public class FileException extends ConnectorCheckedException
 {
-    private static final long    serialVersionUID = 1L;
-
     private final String fileName;
 
 

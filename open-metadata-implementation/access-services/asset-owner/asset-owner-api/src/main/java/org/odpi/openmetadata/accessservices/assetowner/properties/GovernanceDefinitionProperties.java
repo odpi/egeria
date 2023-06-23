@@ -50,8 +50,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class GovernanceDefinitionProperties implements Serializable
 {
-    private static final long    serialVersionUID = 1L;
-
     private String                           documentIdentifier   = null;
     private Map<String, String>              additionalProperties = null;
 

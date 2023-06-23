@@ -35,7 +35,7 @@ public class OMAGServerAdminForEngineServices
     private static final String accessService  = AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceName();
 
     private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminForEngineServices.class),
-                                                                            CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
+                                                                            CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName());
     
 
     private final OMAGServerAdminStoreServices   configStore = new OMAGServerAdminStoreServices();

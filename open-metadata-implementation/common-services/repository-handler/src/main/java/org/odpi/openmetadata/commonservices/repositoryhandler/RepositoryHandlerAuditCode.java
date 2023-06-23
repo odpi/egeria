@@ -96,6 +96,18 @@ public enum RepositoryHandlerAuditCode implements AuditLogMessageSet
                           "The system is unable to process the request because none of the members of the connected cohort(s) support this function.",
                           "Add an Egeria native metadata repository to one of the connected cohorts.  This will provide the support that you need."),
 
+    ENTITY_DELETED("OMAG-REPOSITORY-HANDLER-0011",
+                  OMRSAuditLogRecordSeverity.INFO,
+                  "The Open Metadata Service has soft-deleted entity {0} of type {1} ({2}) during method {3}",
+                  "The entity has been put into DELETED status. If is no longer available for normal queries.",
+                  "No specific action is required.  This message is to highlight that the entity can no longer be retrieved until it is restored."),
+
+    RELATIONSHIP_DELETED("OMAG-REPOSITORY-HANDLER-0012",
+                        OMRSAuditLogRecordSeverity.INFO,
+                        "The Open Metadata Service has soft-deleted relationship {0} of type {1} ({2}) between entity {3} of type {4} ({5}) and entity {6} of type {7} ({8}) during method {9}",
+                        "The relationship has been put into DELETED status. If is no longer available for normal queries.",
+                        "No specific action is required.  This message is to highlight that the relationship can no longer be retrieved until it is restored."),
+
     ;
 
     private final String                     logMessageId;

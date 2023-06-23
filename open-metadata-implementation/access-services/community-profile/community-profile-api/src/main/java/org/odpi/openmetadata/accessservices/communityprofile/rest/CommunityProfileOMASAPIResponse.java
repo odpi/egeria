@@ -7,9 +7,6 @@ import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -21,20 +18,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
-@JsonSubTypes
-        ({
-                @JsonSubTypes.Type(value = PersonalProfileResponse.class,  name = "PersonalProfileResponse"),
-                @JsonSubTypes.Type(value = PersonalProfileListResponse.class,  name = "PersonalProfileListResponse"),
-                @JsonSubTypes.Type(value = AssetListResponse.class,  name = "AssetListResponse")
-        })
 public abstract class CommunityProfileOMASAPIResponse extends FFDCResponseBase
 {
-    private static final long    serialVersionUID = 1L;
-
-
     /**
      * Default constructor
      */

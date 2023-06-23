@@ -20,8 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PeerDuplicatesRequestBody extends StewardshipRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
     private String  metadataElement1GUID = null;
     private String  metadataElement2GUID = null;
     private boolean setKnownDuplicate    = true;

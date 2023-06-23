@@ -2,24 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
-
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonalRoleElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionOrder;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionProperties;
-
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
 
 
 /**
@@ -66,7 +58,7 @@ public class CollectionConverter<B> extends CommunityProfileOMASConverter<B>
 
             if (returnBean instanceof CollectionElement)
             {
-                CollectionElement    bean              = (CollectionElement) returnBean;
+                CollectionElement    bean                 = (CollectionElement) returnBean;
                 CollectionProperties collectionProperties = new CollectionProperties();
 
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
@@ -84,8 +76,6 @@ public class CollectionConverter<B> extends CommunityProfileOMASConverter<B>
                     collectionProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     collectionProperties.setName(this.removeName(instanceProperties));
                     collectionProperties.setDescription(this.removeDescription(instanceProperties));
-                    collectionProperties.setCollectionOrdering(this.removeCollectionOrderFromProperties(instanceProperties));
-                    collectionProperties.setOrderPropertyName(this.removeOrderPropertyName(instanceProperties));
                     collectionProperties.setEffectiveFrom(instanceProperties.getEffectiveFromTime());
                     collectionProperties.setEffectiveTo(instanceProperties.getEffectiveToTime());
 
@@ -141,87 +131,5 @@ public class CollectionConverter<B> extends CommunityProfileOMASConverter<B>
         }
 
         return returnBean;
-    }
-
-
-    /**
-     * Retrieve and delete the CollectionOrder enum property from the instance properties of an entity
-     *
-     * @param properties  entity properties
-     * @return CollectionOrder  enum value
-     */
-    private CollectionOrder removeCollectionOrderFromProperties(InstanceProperties   properties)
-    {
-        CollectionOrder collectionOrder = this.getCollectionOrderFromProperties(properties);
-
-        if (properties != null)
-        {
-            Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
-
-            if (instancePropertiesMap != null)
-            {
-                instancePropertiesMap.remove(OpenMetadataAPIMapper.ORDER_BY_PROPERTY_NAME);
-            }
-
-            properties.setInstanceProperties(instancePropertiesMap);
-        }
-
-        return collectionOrder;
-    }
-
-
-    /**
-     * Retrieve the CollectionOrder enum property from the instance properties of an entity
-     *
-     * @param properties  entity properties
-     * @return CollectionOrder  enum value
-     */
-    private CollectionOrder getCollectionOrderFromProperties(InstanceProperties   properties)
-    {
-        CollectionOrder collectionOrder = CollectionOrder.NAME;
-
-        if (properties != null)
-        {
-            Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
-
-            if (instancePropertiesMap != null)
-            {
-                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataAPIMapper.ORDER_PROPERTY_NAME_PROPERTY_NAME);
-
-                if (instancePropertyValue instanceof EnumPropertyValue)
-                {
-                    EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
-
-                    switch (enumPropertyValue.getOrdinal())
-                    {
-                        case 0:
-                            collectionOrder = CollectionOrder.NAME;
-                            break;
-
-                        case 1:
-                            collectionOrder = CollectionOrder.OWNER;
-                            break;
-
-                        case 2:
-                            collectionOrder = CollectionOrder.DATE_ADDED;
-                            break;
-
-                        case 3:
-                            collectionOrder = CollectionOrder.DATE_UPDATED;
-                            break;
-
-                        case 4:
-                            collectionOrder = CollectionOrder.DATE_CREATED;
-                            break;
-
-                        case 99:
-                            collectionOrder = CollectionOrder.OTHER;
-                            break;
-                    }
-                }
-            }
-        }
-
-        return collectionOrder;
     }
 }

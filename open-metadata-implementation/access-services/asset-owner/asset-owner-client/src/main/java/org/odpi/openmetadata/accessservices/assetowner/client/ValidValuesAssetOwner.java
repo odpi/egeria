@@ -118,11 +118,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
                                  int                  maxPageSize,
                                  AuditLog             auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, auditLog);
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-
-        this.restClient = restClient;
+        super(serverName, serverPlatformURLRoot, restClient, maxPageSize, auditLog);
     }
 
 

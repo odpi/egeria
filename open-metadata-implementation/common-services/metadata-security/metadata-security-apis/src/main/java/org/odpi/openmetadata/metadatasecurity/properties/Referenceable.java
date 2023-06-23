@@ -3,8 +3,6 @@
 
 package org.odpi.openmetadata.metadatasecurity.properties;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -12,11 +10,8 @@ import java.util.*;
  * type that has enough significance to be awarded a unique qualified name.
  * This bean is designed to convey the important properties needed to make a security decision relating to this object
  */
-public class Referenceable implements Serializable
+public class Referenceable
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private String                                  typeGUID             = null;
     private String                                  typeName             = null;
     private ReferenceableStatus                     status               = null;

@@ -28,9 +28,9 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
     private final ReferenceableHandler<RelatedElement>                   relatedElementHandler;
     private final SoftwareCapabilityHandler<MetadataSourceElement>       metadataSourceHandler;
     private final UserIdentityHandler<UserIdentityElement>               userIdentityHandler;
-    private final ActorProfileHandler<PersonalProfileUniverse>           personalProfileHandler;
     private final ActorProfileHandler<ActorProfileElement>               actorProfileHandler;
     private final PersonRoleHandler<PersonRoleElement>                   personRoleHandler;
+    private final CollectionHandler<CollectionElement>                   collectionHandler;
     private final CommunityHandler<CommunityElement>                     communityHandler;
     private final ContributionRecordHandler<ContributionRecordElement>   contributionRecordHandler;
     private final ContactDetailsHandler<ContactMethodElement>            contactDetailsHandler;
@@ -117,19 +117,6 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
                                                                          publishZones,
                                                                          auditLog);
 
-            this.personalProfileHandler = new ActorProfileHandler<>(new PersonalProfileConverter<>(repositoryHelper, serviceName,serverName),
-                                                                    PersonalProfileUniverse.class,
-                                                                    serviceName,
-                                                                    serverName,
-                                                                    invalidParameterHandler,
-                                                                    repositoryHandler,
-                                                                    repositoryHelper,
-                                                                    localServerUserId,
-                                                                    securityVerifier,
-                                                                    supportedZones,
-                                                                    defaultZones,
-                                                                    publishZones,
-                                                                    auditLog);
 
             this.actorProfileHandler = new ActorProfileHandler<>(new ActorProfileConverter<>(repositoryHelper, serviceName,serverName),
                                                                  ActorProfileElement.class,
@@ -147,6 +134,20 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
 
             this.personRoleHandler = new PersonRoleHandler<>(new PersonRoleConverter<>(repositoryHelper, serviceName,serverName),
                                                              PersonRoleElement.class,
+                                                             serviceName,
+                                                             serverName,
+                                                             invalidParameterHandler,
+                                                             repositoryHandler,
+                                                             repositoryHelper,
+                                                             localServerUserId,
+                                                             securityVerifier,
+                                                             supportedZones,
+                                                             defaultZones,
+                                                             publishZones,
+                                                             auditLog);
+
+            this.collectionHandler = new CollectionHandler<>(new CollectionConverter<>(repositoryHelper, serviceName,serverName),
+                                                             CollectionElement.class,
                                                              serviceName,
                                                              serverName,
                                                              invalidParameterHandler,
@@ -395,6 +396,22 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
      * @return handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
+    public CollectionHandler<CollectionElement> getCollectionHandler() throws PropertyServerException
+    {
+        final String methodName = "getCollectionHandler";
+
+        validateActiveRepository(methodName);
+
+        return collectionHandler;
+    }
+
+
+    /**
+     * Return the handler for community requests.
+     *
+     * @return handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
     public CommunityHandler<CommunityElement> getCommunityHandler() throws PropertyServerException
     {
         final String methodName = "getCommunityHandler";
@@ -402,22 +419,6 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return communityHandler;
-    }
-
-
-    /**
-     * Return the handler for personal profile requests.
-     *
-     * @return handler object
-     * @throws PropertyServerException the instance has not been initialized successfully
-     */
-    public ActorProfileHandler<PersonalProfileUniverse> getPersonalProfileHandler() throws PropertyServerException
-    {
-        final String methodName = "getPersonalProfileHandler";
-
-        validateActiveRepository(methodName);
-
-        return personalProfileHandler;
     }
 
 

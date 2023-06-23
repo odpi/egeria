@@ -17,15 +17,13 @@ import java.util.Map;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/view-services/server-author/users/{userId}/servers/{serverToBeConfiguredName}")
 
-@Tag(name="Administration Services - Server Configuration", description="The server configuration administration services support the configuration" +
-        " of the open metadata and governance services within an OMAG Server. This configuration determines which of the Open Metadata and " +
-        "Governance (OMAG) services are active.",
+@Tag(name="Server Author OMVS", description="The Server Author OMVS is for user interfaces supporting the creating and editing of OMAG Server Configuration Documents.",
         externalDocs=@ExternalDocumentation(description="Further information",
-                url="https://egeria-project.org/guides/admin/servers/"))
+                url="https://egeria-project.org/services/omvs/server-author/overview"))
 
 public class ConfigAccessServicesViewResource
 {
-    private ServerAuthorViewRESTServices adminAPI = new ServerAuthorViewRESTServices();
+    private final ServerAuthorViewRESTServices adminAPI = new ServerAuthorViewRESTServices();
 
 
 

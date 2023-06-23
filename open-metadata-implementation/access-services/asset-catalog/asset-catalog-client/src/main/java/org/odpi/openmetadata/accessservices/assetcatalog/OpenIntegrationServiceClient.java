@@ -6,7 +6,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworkservices.oif.client.OpenIntegrationServiceBase;
 
 /**
- * OpenIntegrationServiceClient provides an interface to the open integration service.  This is part of the Open Integration Framework (OIF)
+ * OpenIntegrationServiceClient provides an interface to the open integration service. This is part of the Open Integration Framework (OIF)
  * and provides an interface for understanding the work of the integration connectors that are synchronizing metadata.
  */
 public class OpenIntegrationServiceClient extends OpenIntegrationServiceBase
@@ -30,12 +30,12 @@ public class OpenIntegrationServiceClient extends OpenIntegrationServiceBase
 
 
     /**
-     * Create a new client that passes userId and password in each HTTP request.  This is the
-     * userId/password of the calling server.  The end user's userId is sent on each request.
+     * Create a new client that passes userID and password in each HTTP request. This is the
+     * userID/password of the calling server. The end user's userID is sent on each request.
      *
      * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
-     * @param serverUserId          caller's userId embedded in all HTTP requests
+     * @param serverUserId          caller's userID embedded in all HTTP requests
      * @param serverPassword        caller's password embedded in all HTTP requests
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any

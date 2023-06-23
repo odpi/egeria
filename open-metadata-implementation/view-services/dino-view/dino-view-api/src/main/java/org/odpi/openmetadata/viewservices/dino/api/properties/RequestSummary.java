@@ -17,8 +17,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RequestSummary {
 
-    private static final long    serialVersionUID = 1L;
-
     /*
      * A RequestSummary object captures the essence of a request and is passed back in response.
      * It is stored in the gen into which the response is stored.

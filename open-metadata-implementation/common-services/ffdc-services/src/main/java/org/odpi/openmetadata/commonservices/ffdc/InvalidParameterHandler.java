@@ -180,7 +180,6 @@ public class InvalidParameterHandler
      *
      * @throws InvalidParameterException the searchString is null
      */
-    @SuppressWarnings(value = "unused")
     public void validateSearchString(String searchString,
                                      String searchParameter,
                                      String methodName) throws InvalidParameterException
@@ -202,7 +201,7 @@ public class InvalidParameterHandler
 
             try
             {
-                boolean matchResult = testString.matches(searchString);
+                testString.matches(searchString);
             }
             catch (Exception error)
             {

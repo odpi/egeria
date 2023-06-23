@@ -23,11 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class EmbeddedConnectionRequestBody implements Serializable
 {
-    private static final long     serialVersionUID = 1L;
-
-    /*
-     * Attributes of an embedded connection
-     */
     protected int                 position           = 0;
     protected String              displayName        = null;
     protected Map<String, Object> arguments          = null;

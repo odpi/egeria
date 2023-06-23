@@ -24,7 +24,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = SchemaAttributeElement.class, name = "SchemaAttributeElement"),
-        @JsonSubTypes.Type(value = TabularColumnProperties.class, name = "TabularColumnProperties")
               })
 public class SchemaAttributeProperties extends SchemaElementProperties
 {

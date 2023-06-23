@@ -27,17 +27,9 @@ import java.util.List;
 /**
  * SecurityManagerClient is the client for explicitly managing the security groups.
  */
-public class SecurityGroupManagement implements SecurityGroupInterface
+public class SecurityGroupManagement extends CommunityProfileBaseClient implements SecurityGroupInterface
 {
-    private final String                     serverName;               /* Initialized in constructor */
-    private final String                     serverPlatformURLRoot;    /* Initialized in constructor */
-    private final CommunityProfileRESTClient restClient;               /* Initialized in constructor */
-
-    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     private final NullRequestBody         nullRequestBody         = new NullRequestBody();
-
-    private final String urlTemplatePrefix = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}";
-
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -50,13 +42,7 @@ public class SecurityGroupManagement implements SecurityGroupInterface
     public SecurityGroupManagement(String serverName,
                                    String serverPlatformURLRoot) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot);
     }
 
 
@@ -73,13 +59,7 @@ public class SecurityGroupManagement implements SecurityGroupInterface
                                    String   serverPlatformURLRoot,
                                    AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog);
     }
 
 
@@ -99,13 +79,7 @@ public class SecurityGroupManagement implements SecurityGroupInterface
                                    String userId,
                                    String password) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -127,13 +101,7 @@ public class SecurityGroupManagement implements SecurityGroupInterface
                                    String   password,
                                    AuditLog auditLog) throws  InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
 
 
@@ -152,14 +120,7 @@ public class SecurityGroupManagement implements SecurityGroupInterface
                                    CommunityProfileRESTClient restClient,
                                    int                        maxPageSize) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient = restClient;
+        super(serverName, serverPlatformURLRoot, restClient, maxPageSize);
     }
 
 
@@ -187,7 +148,7 @@ public class SecurityGroupManagement implements SecurityGroupInterface
                                                                                  PropertyServerException
     {
         final String   methodName = "createSecurityGroup";
-        final String   urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/security-groups";
+        final String   urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/security-groups";
 
         final String   docIdParameterName = "documentIdentifier";
         final String   titleParameterName = "title";
@@ -229,7 +190,7 @@ public class SecurityGroupManagement implements SecurityGroupInterface
                                                                                 PropertyServerException
     {
         final String methodName = "updateSecurityGroup";
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/security-groups/{2}/update?isMergeUpdate={3}";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/security-groups/{2}/update?isMergeUpdate={3}";
 
         final String guidParameterName = "securityGroupGUID";
         final String docIdParameterName = "documentIdentifier";
@@ -273,7 +234,7 @@ public class SecurityGroupManagement implements SecurityGroupInterface
                                                                       PropertyServerException
     {
         final String methodName = "deleteSecurityGroup";
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/security-groups/{2}/delete";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/security-groups/{2}/delete";
         final String guidParameterName = "securityGroupGUID";
 
         invalidParameterHandler.validateGUID(securityGroupGUID, guidParameterName, methodName);
@@ -311,7 +272,7 @@ public class SecurityGroupManagement implements SecurityGroupInterface
                                                                                                     PropertyServerException
     {
         final String   methodName = "getSecurityGroupsForDistinguishedName";
-        final String   urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/security-groups/for-distinguished-name/{2}?startFrom={3}&pageSize={4}";
+        final String   urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/security-groups/for-distinguished-name/{2}?startFrom={3}&pageSize={4}";
         final String   parameterName = "distinguishedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -354,7 +315,7 @@ public class SecurityGroupManagement implements SecurityGroupInterface
                                                                                         PropertyServerException
     {
         final String methodName = "getElementsGovernedBySecurityGroup";
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/security-groups/{2}/governed-by/elements?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/security-groups/{2}/governed-by/elements?startFrom={3}&pageSize={4}";
         final String guidParameterName = "securityGroupGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -397,7 +358,7 @@ public class SecurityGroupManagement implements SecurityGroupInterface
                                                                                  PropertyServerException
     {
         final String methodName = "findSecurityGroups";
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/security-groups/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/security-groups/by-search-string?startFrom={2}&pageSize={3}";
         final String searchStringParameterName = "searchString";
 
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
@@ -446,7 +407,7 @@ public class SecurityGroupManagement implements SecurityGroupInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(securityGroupGUID, securityGroupGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/{2}";
 
         SecurityGroupResponse restResult = restClient.callSecurityGroupGetRESTCall(methodName,
                                                                                   urlTemplate,

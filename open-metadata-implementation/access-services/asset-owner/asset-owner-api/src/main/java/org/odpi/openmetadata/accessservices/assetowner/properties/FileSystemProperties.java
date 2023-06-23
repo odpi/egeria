@@ -19,8 +19,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 public class FileSystemProperties extends SoftwareCapabilityProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String              format = null;
     private String              encryption = null;
 

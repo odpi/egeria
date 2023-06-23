@@ -4,6 +4,8 @@ package org.odpi.openmetadata.accessservices.assetmanager.fvt;
 
 import org.odpi.openmetadata.accessservices.assetmanager.fvt.clientconstructors.ClientConstructorTest;
 import org.odpi.openmetadata.accessservices.assetmanager.fvt.connections.CreateConnectionTest;
+import org.odpi.openmetadata.accessservices.assetmanager.fvt.dataassets.CreateDatabaseTest;
+import org.odpi.openmetadata.accessservices.assetmanager.fvt.dataassets.CreateSchemasTest;
 import org.odpi.openmetadata.accessservices.assetmanager.fvt.externalidentifiers.ManageExternalIdsTest;
 import org.odpi.openmetadata.accessservices.assetmanager.fvt.glossaries.CreateExchangeGlossaryTest;
 import org.odpi.openmetadata.accessservices.assetmanager.fvt.errorhandling.InvalidParameterTest;
@@ -101,6 +103,20 @@ public class AssetManagerOMASFVTSuite extends FVTSuiteBase
         results.printResults(serverName);
 
         results = CreateConnectionTest.performFVT(serverName, serverPlatformRootURL, userId);
+        if (! results.isSuccessful())
+        {
+            returnCode --;
+        }
+        results.printResults(serverName);
+
+        results = CreateDatabaseTest.performFVT(serverName, serverPlatformRootURL, userId);
+        if (! results.isSuccessful())
+        {
+            returnCode --;
+        }
+        results.printResults(serverName);
+
+        results = CreateSchemasTest.performFVT(serverName, serverPlatformRootURL, userId);
         if (! results.isSuccessful())
         {
             returnCode --;

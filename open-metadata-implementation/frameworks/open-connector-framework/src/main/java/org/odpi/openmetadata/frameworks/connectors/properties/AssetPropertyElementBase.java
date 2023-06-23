@@ -2,19 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
-import java.io.Serializable;
-import java.util.Objects;
-import java.util.UUID;
-
-
 /**
  * This property header implements any common mechanisms that all property objects need.
  */
-public abstract class AssetPropertyElementBase implements Serializable
+public abstract class AssetPropertyElementBase
 {
-    private static final long     serialVersionUID = 1L;
-
-
     /**
      * Typical Constructor
      */

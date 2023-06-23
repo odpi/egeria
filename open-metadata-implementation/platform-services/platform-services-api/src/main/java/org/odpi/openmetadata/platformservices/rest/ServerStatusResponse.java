@@ -21,8 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ServerStatusResponse extends FFDCResponseBase
 {
-    private static final long    serialVersionUID = 1L;
-
     private String                          serverName      = null;
     private String                          serverType      = null;
     private boolean                         isActive        = true;
@@ -52,6 +50,7 @@ public class ServerStatusResponse extends FFDCResponseBase
         if (template != null)
         {
             serverName = template.getServerName();
+            serverType = template.getServerType();
             isActive = template.isActive();
             serverStartTime = template.getServerStartTime();
             serverEndTime = template.getServerEndTime();
@@ -210,18 +209,24 @@ public class ServerStatusResponse extends FFDCResponseBase
     public String toString()
     {
         return "ServerStatusResponse{" +
-                "serverName='" + serverName + '\'' +
-                ", isActive=" + isActive +
-                ", serverStartTime=" + serverStartTime +
-                ", serverEndTime=" + serverEndTime +
-                ", serverHistory=" + serverHistory +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                ", exceptionProperties=" + getExceptionProperties() +
-                '}';
+                       "serverName='" + serverName + '\'' +
+                       ", serverType='" + serverType + '\'' +
+                       ", isActive=" + isActive +
+                       ", serverStartTime=" + serverStartTime +
+                       ", serverEndTime=" + serverEndTime +
+                       ", serverHistory=" + serverHistory +
+                       ", active=" + isActive() +
+                       ", exceptionClassName='" + getExceptionClassName() + '\'' +
+                       ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
+                       ", actionDescription='" + getActionDescription() + '\'' +
+                       ", relatedHTTPCode=" + getRelatedHTTPCode() +
+                       ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
+                       ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
+                       ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
+                       ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
+                       ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
+                       ", exceptionProperties=" + getExceptionProperties() +
+                       '}';
     }
 
 

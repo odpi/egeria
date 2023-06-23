@@ -29,6 +29,25 @@ public class Relationship extends Element implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * The start element for the relationship
+     * -- GETTER --
+     * Returns the start element for the relationship
+     * @return the start element for the relationship
+     * -- SETTER --
+     * Setup the start element for the relationship
+     * @param fromEntity the start element for the relationship
+     */
     private Element fromEntity;
+
+    /**
+     * The destination element for the relationship
+     * -- GETTER --
+     * Returns the destination element for the relationship
+     * @return the destination element for the relationship
+     * -- SETTER --
+     * Setup the destination element for the relationship
+     * @param toEntity the destination element for the relationship
+     */
     private Element toEntity;
 }

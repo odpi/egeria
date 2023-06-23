@@ -55,8 +55,8 @@ open-metadata-implementation/governance-servers/ @mandy-chessell
 open-metadata-implementation/governance-servers/data-engine-proxy-services/ @cmgrote @popa-raluca
 open-metadata-implementation/governance-servers/open-lineage-services/ @marius-patrascu @popa-raluca
 open-metadata-implementation/platform-services/ @mandy-chessell
-open-metadata-implementation/server-chassis/ @mandy-chessell
-open-metadata-implementation/server-chassis/server-chassis-spring/ @bogdan-sava @lpalashevski
+open-metadata-implementation/platform-chassis/ @mandy-chessell
+open-metadata-implementation/platform-chassis/platform-chassis-spring/ @bogdan-sava @lpalashevski
 open-metadata-implementation/user-interface/ui-chassis/ @bogdan-sava @marius-patrascu
 open-metadata-implementation/view-services/ @davidradl
 

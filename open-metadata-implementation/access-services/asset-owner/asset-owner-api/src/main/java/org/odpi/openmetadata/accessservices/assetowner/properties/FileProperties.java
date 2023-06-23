@@ -25,8 +25,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public class FileProperties extends DataStoreProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String   fileType = null;
 
 

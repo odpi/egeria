@@ -31,5 +31,14 @@ public class RelationshipResponse extends AssetCatalogOMASAPIResponse implements
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * The relationship
+     * -- GETTER --
+     * Returns the relationship
+     * @return the relationship
+     * -- SETTER --
+     * Set up the relationship
+     * @param relationship the relationship
+     */
     private Relationship relationship;
 }

@@ -220,6 +220,9 @@ public class OpenMetadataAPIMapper
     public static final String ORDER_BY_TYPE_ENUM_TYPE_GUID              = "1d412439-4272-4a7e-a940-1065f889fc56";
     public static final String ORDER_BY_TYPE_ENUM_TYPE_NAME              = "OrderBy";
 
+    public static final String MEMBERSHIP_STATUS_ENUM_TYPE_GUID          = "a3bdb2ac-c28e-4e5a-8ab7-76aa01038832";
+    public static final String MEMBERSHIP_STATUS_ENUM_TYPE_NAME          = "MembershipStatus";
+
     public static final String PROPERTY_FACET_TYPE_GUID                  = "6403a704-aad6-41c2-8e08-b9525c006f85";
     public static final String PROPERTY_FACET_TYPE_NAME                  = "PropertyFacet";
     /* Referenceable */
@@ -1286,6 +1289,7 @@ public class OpenMetadataAPIMapper
     public static final String TERM_ASSIGNMENT_STATUS_ENUM_TYPE_NAME             = "TermAssignmentStatus";
 
     public static final String EXPRESSION_PROPERTY_NAME                          = "expression";
+    public static final String USER_DEFINED_STATUS_PROPERTY_NAME                 = "userDefinedStatus";
     public static final String CONFIDENCE_PROPERTY_NAME                          = "confidence";
     public static final String STEWARD_PROPERTY_NAME                             = "steward";
     public static final String STEWARD_TYPE_NAME_PROPERTY_NAME                   = "stewardTypeName";

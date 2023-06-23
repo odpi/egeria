@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * AssetElement object is used to describe the elements returned by the search method
+ * Elements object is used to describe the elements returned by the search method
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -27,5 +27,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 public class Elements extends Element {
 
+    /**
+     * The list of item elements returned by the search method
+     * -- GETTER --
+     * Returns the list of item elements returned by the search method
+     * @return the list of item elements
+     * -- SETTER --
+     * Setup the list of item elements returned by the search method
+     * @param assetCatalogItemElements the list of item elements
+     */
     private List<AssetCatalogItemElement> assetCatalogItemElements;
 }

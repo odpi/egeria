@@ -3,14 +3,15 @@
 
 # Asset Catalog Open Metadata Access Service (OMAS) server-side implementation
 
-The Asset Catalog OMAS server supports the server side implementation of the access service.This includes the 
+The Asset Catalog OMAS server supports the server side implementation of the access service. This includes:
 
-* interaction with the [administration services](../../../admin-services) for
+* the interaction with the [administration services](../../../admin-services) for
     registration, configuration, initialization and termination of the access service.
-* interaction with the [repository services](../../../repository-services) to work with open metadata from the
+* the interaction with the [repository services](../../../repository-services) to work with open metadata from the
     [cohort](../../../repository-services/docs/open-metadata-repository-cohort.md).
-* audit log used to define the message content for the OMRS Audit Log.
-* service package that provides the server-side implementation of the Asset Catalog Open Metadata Assess Service (OMAS).
+* the OMRS Topic listener designed for receiving events from the cohorts that the local server is connected to.
+* the audit log used to define the message content for the OMRS Audit Log.
+* the service package that provides the server-side implementation of the Asset Catalog Open Metadata Assess Service (OMAS).
 These services provide the functionality to fetch asset's header, classification, properties and relationships.
   
   

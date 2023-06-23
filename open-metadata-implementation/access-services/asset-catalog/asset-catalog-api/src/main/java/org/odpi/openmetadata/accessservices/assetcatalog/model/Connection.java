@@ -31,12 +31,68 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class Connection implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * The secured properties of the connection
+     * -- GETTER --
+     * Return the connection's secured properties
+     * @return the connection's secured properties
+     * -- SETTER --
+     * Set up the secured properties of the connection
+     * @param securedProperties the connection's secured properties
+     */
     private Map<String, String> securedProperties = null;
+
+    /**
+     * The unique identifier of the connection
+     * -- GETTER --
+     * Return the connection unique identifier
+     * @return String - unique identifier of the connection
+     * -- SETTER --
+     * Set up the unique identifier of the connection
+     * @param guid of the connection
+     */
     private String guid;
+
+    /**
+     * The display name of the connection
+     * -- GETTER --
+     * Return the display name
+     * @return the display name of the connection
+     * -- SETTER --
+     * Set up the display name of the connection
+     * @param displayName the display name of the connection
+     */
     private String displayName;
+
+    /**
+     * The description of the connection
+     * -- GETTER --
+     * Return the description
+     * @return the description of the connection
+     * -- SETTER --
+     * Set up the description of the connection
+     * @param description the description of the connection
+     */
     private String description;
+
+    /**
+     * The qualified name of the connection
+     * -- GETTER --
+     * Return the qualified name
+     * @return the qualified name of the connection
+     * -- SETTER --
+     * Set up the qualified name of the connection
+     * @param qualifiedName the qualified name of the connection
+     */
     private String qualifiedName;
 
+    /**
+     * Instantiates a new Connection.
+     *
+     * @param guid          the unique identifier of the connection
+     * @param qualifiedName the qualified name of the connection
+     */
     public Connection(String guid, String qualifiedName) {
         this.guid = guid;
         this.qualifiedName = qualifiedName;

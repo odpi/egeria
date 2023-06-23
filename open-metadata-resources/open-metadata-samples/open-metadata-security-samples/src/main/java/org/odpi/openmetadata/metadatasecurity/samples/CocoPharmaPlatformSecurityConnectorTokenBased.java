@@ -26,8 +26,10 @@ import java.util.Map;
  *      "exp": {Epoch timestamp}
  *  }
  */
-public class CocoPharmaPlatformSecurityConnectorTokenBased extends OpenMetadataPlatformSecurityConnector {
-    private enum PlatformRoles {
+public class CocoPharmaPlatformSecurityConnectorTokenBased extends OpenMetadataPlatformSecurityConnector
+{
+    private enum PlatformRoles
+    {
         PLATFORM_ADMINISTRATOR,
         PLATFORM_OPERATOR,
         PLATFORM_INVESTIGATOR;
@@ -50,10 +52,12 @@ public class CocoPharmaPlatformSecurityConnectorTokenBased extends OpenMetadataP
      * @throws UserNotAuthorizedException the user is not authorized to access this platform
      */
     @Override
-    public void validateUserForNewServer(String userId) throws UserNotAuthorizedException {
+    public void validateUserForNewServer(String userId) throws UserNotAuthorizedException
+    {
         final String methodName = "validateUserForNewServer";
 
-        if (!isAllowedToPerformAction(userId, PlatformRoles.PLATFORM_ADMINISTRATOR)) {
+        if (!isAllowedToPerformAction(userId, PlatformRoles.PLATFORM_ADMINISTRATOR))
+        {
             super.throwUnauthorizedPlatformAccess(userId, methodName);
         }
     }
@@ -66,53 +70,64 @@ public class CocoPharmaPlatformSecurityConnectorTokenBased extends OpenMetadataP
      * @throws UserNotAuthorizedException the user is not authorized to issue operator commands to this platform
      */
     @Override
-    public void validateUserAsOperatorForPlatform(String userId) throws UserNotAuthorizedException {
+    public void validateUserAsOperatorForPlatform(String userId) throws UserNotAuthorizedException
+    {
         final String methodName = "validateUserAsOperatorForPlatform";
 
-        if (!isAllowedToPerformAction(userId, PlatformRoles.PLATFORM_OPERATOR)) {
+        if (!isAllowedToPerformAction(userId, PlatformRoles.PLATFORM_OPERATOR))
+        {
             super.throwUnauthorizedPlatformAccess(userId, methodName);
         }
     }
 
 
     /**
-     * Check that the calling user is authorized to issue operator requests to the OMAG Server Platform.
+     * Check that the calling user is authorized to issue diagnostic requests to the OMAG Server Platform.
      *
      * @param userId calling user
      * @throws UserNotAuthorizedException the user is not authorized to issue diagnostic commands to this platform
      */
     @Override
-    public void validateUserAsInvestigatorForPlatform(String userId) throws UserNotAuthorizedException {
+    public void validateUserAsInvestigatorForPlatform(String userId) throws UserNotAuthorizedException
+    {
         final String methodName = "validateUserAsInvestigatorForPlatform";
 
-        if (!isAllowedToPerformAction(userId, PlatformRoles.PLATFORM_INVESTIGATOR)) {
+        if (!isAllowedToPerformAction(userId, PlatformRoles.PLATFORM_INVESTIGATOR))
+        {
             super.throwUnauthorizedPlatformAccess(userId, methodName);
         }
     }
 
-    private List<String> getUserActionsFromToken(String userId) {
+    private List<String> getUserActionsFromToken(String userId)
+    {
         Map<String, String> headersMap = HttpHeadersThreadLocal.getHeadersThreadLocal().get();
-        if (headersMap != null && !headersMap.isEmpty()) {
+        if (headersMap != null && !headersMap.isEmpty())
+        {
 //            Jws<Claims> jwtClaims = Jwts.parserBuilder()
 //                    .setSigningKey(Keys.hmacShaKeyFor(secret))
 //                    .build().parseClaimsJws(headersMap.get("authorization"));
 //
 //            String username = jwtClaims.getBody().getSubject();
 //            List<String> actions = jwtClaims.getBody().get("actions", List.class);
-//            if (username.equals(userId) && actions != null && !actions.isEmpty()) {
+//            if (username.equals(userId) && actions != null && !actions.isEmpty())
+//            {
 //                log.info("User {} validated for issuing requests.", username);
 //                return actions;
 //            }
         }
+
         return null;
     }
 
-    private Boolean isAllowedToPerformAction(String userId, PlatformRoles role) {
+    private Boolean isAllowedToPerformAction(String userId, PlatformRoles role)
+    {
         List<String> userActions = getUserActionsFromToken(userId);
 
-        if (userActions != null && !userActions.isEmpty() && userActions.contains(role.getName())) {
+        if (userActions != null && !userActions.isEmpty() && userActions.contains(role.getName()))
+        {
             return true;
         }
+
         return false;
     }
 }

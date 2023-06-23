@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -18,13 +16,36 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum PropertyCategory implements Serializable
+public enum PropertyCategory
 {
+    /**
+     * Uninitialized PropertyValue object.
+     */
     UNKNOWN     (0, "<Unknown>", "Uninitialized PropertyValue object."),
+
+    /**
+     * A primitive type.
+     */
     PRIMITIVE   (1, "Primitive", "A primitive type."),
+
+    /**
+     * A pre-defined list of valid values.
+     */
     ENUM        (2, "Enum",      "A pre-defined list of valid values."),
+
+    /**
+     * A collection of related properties.
+     */
     STRUCT      (3, "Struct",    "A collection of related properties."),
+
+    /**
+     * A set of name->value pairs where all names are unique in the map.
+     */
     MAP         (4, "Map",       "A set of name->value pairs where all names are unique in the map."),
+
+    /**
+     * An ordered list of values, each with the same type.
+     */
     ARRAY       (5, "Array",     "An ordered list of values, each with the same type.");
 
     private static final long serialVersionUID = 1L;

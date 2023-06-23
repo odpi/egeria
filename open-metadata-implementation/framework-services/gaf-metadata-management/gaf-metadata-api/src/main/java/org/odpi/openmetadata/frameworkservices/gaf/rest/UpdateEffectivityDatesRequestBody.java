@@ -21,8 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateEffectivityDatesRequestBody extends UpdateRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
     private Date              effectiveFrom = null;
     private Date              effectiveTo   = null;
 

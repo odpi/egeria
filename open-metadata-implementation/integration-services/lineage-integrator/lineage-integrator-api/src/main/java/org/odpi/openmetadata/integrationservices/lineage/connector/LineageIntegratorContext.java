@@ -438,6 +438,163 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
     }
 
 
+
+
+    /**
+     * Link two asset together.
+     * Use information from the relationship type definition to ensure the fromAssetGUID and toAssetGUID are the right way around.
+     *
+     * @param assetManagerIsHome ensure that only the process manager can update this process
+     * @param relationshipTypeName type name of relationship to create
+     * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
+     * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
+     * @param relationshipProperties unique identifier for this relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     *
+     * @return unique identifier of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String setupRelatedDataAsset(boolean                assetManagerIsHome,
+                                        String                 relationshipTypeName,
+                                        String                 fromAssetGUID,
+                                        String                 toAssetGUID,
+                                        RelationshipProperties relationshipProperties,
+                                        Date                   effectiveTime) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        return dataAssetExchangeClient.setupRelatedDataAsset(userId, externalSourceGUID, externalSourceName, assetManagerIsHome, relationshipTypeName, fromAssetGUID, toAssetGUID, relationshipProperties, effectiveTime, forLineage, forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve the relationship between two elements.
+     *
+     * @param relationshipTypeName type name of relationship to create
+     * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
+     * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public RelationshipElement getAssetRelationship(String  relationshipTypeName,
+                                                    String  fromAssetGUID,
+                                                    String  toAssetGUID,
+                                                    Date    effectiveTime) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        return dataAssetExchangeClient.getAssetRelationship(userId, externalSourceGUID, externalSourceName, relationshipTypeName, fromAssetGUID, toAssetGUID, effectiveTime, forLineage, forDuplicateProcessing);
+    }
+
+
+    /**
+     * Update relationship between two elements.
+     *
+     * @param relationshipTypeName type name of relationship to update
+     * @param relationshipGUID unique identifier of the relationship
+     * @param relationshipProperties description and/or purpose of the relationship
+     * @param isMergeUpdate should the new properties be merged with the existing properties, or replace them entirely
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void   updateAssetRelationship(String                 relationshipTypeName,
+                                          String                 relationshipGUID,
+                                          boolean                isMergeUpdate,
+                                          RelationshipProperties relationshipProperties,
+                                          Date                   effectiveTime) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        dataAssetExchangeClient.updateAssetRelationship(userId, externalSourceGUID, externalSourceName, relationshipTypeName, relationshipGUID, isMergeUpdate, relationshipProperties, effectiveTime, forLineage, forDuplicateProcessing);
+    }
+
+
+    /**
+     * Remove the relationship between two elements.
+     *
+     * @param relationshipTypeName type name of relationship to delete
+     * @param relationshipGUID unique identifier of the relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearAssetRelationship(String  relationshipTypeName,
+                                       String  relationshipGUID,
+                                       Date    effectiveTime) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        dataAssetExchangeClient.clearAssetRelationship(userId, externalSourceGUID, externalSourceName, relationshipTypeName, relationshipGUID, effectiveTime, forLineage, forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve the requested relationships linked from a specific element at end 2.
+     *
+     * @param relationshipTypeName type name of relationship to delete
+     * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
+     * @param startFrom start position for results
+     * @param pageSize     maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<RelationshipElement> getRelatedAssetsAtEnd2(String  relationshipTypeName,
+                                                            String  fromAssetGUID,
+                                                            int     startFrom,
+                                                            int     pageSize,
+                                                            Date    effectiveTime) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        return dataAssetExchangeClient.getRelatedAssetsAtEnd2(userId, externalSourceGUID, externalSourceName, relationshipTypeName, fromAssetGUID, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve the relationships linked from a specific element at end 2 of the relationship.
+     *
+     * @param relationshipTypeName type name of relationship to delete
+     * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
+     * @param startFrom start position for results
+     * @param pageSize     maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<RelationshipElement> getRelatedAssetsAtEnd1(String  relationshipTypeName,
+                                                            String  toAssetGUID,
+                                                            int     startFrom,
+                                                            int     pageSize,
+                                                            Date    effectiveTime) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        return dataAssetExchangeClient.getRelatedAssetsAtEnd1(userId, externalSourceGUID, externalSourceName, relationshipTypeName, toAssetGUID, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
+    }
+
+
     /**
      * Retrieve the list of data asset metadata elements that contain the search string.
      * The search string is treated as a regular expression.
@@ -570,6 +727,31 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
                                                         forLineage,
                                                         forDuplicateProcessing,
                                                         schemaTypeProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a schema type.
+     *
+     * @param assetManagerIsHome ensure that only the asset manager can update this schema element
+     * @param anchorGUID unique identifier of the intended anchor of the schema type
+     * @param externalIdentifierProperties optional properties used to define an external identifier
+     * @param schemaTypeProperties properties about the schema type to store
+     *
+     * @return unique identifier of the new schema type
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createAnchoredSchemaType(boolean                      assetManagerIsHome,
+                                           String                       anchorGUID,
+                                           ExternalIdentifierProperties externalIdentifierProperties,
+                                           SchemaTypeProperties         schemaTypeProperties) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
+    {
+        return dataAssetExchangeClient.createAnchoredSchemaType(userId, externalSourceGUID, externalSourceName, assetManagerIsHome, anchorGUID, externalIdentifierProperties, forLineage, forDuplicateProcessing, schemaTypeProperties);
     }
 
 
@@ -1513,11 +1695,11 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
 
 
     /**
-     * Create a parent-child relationship between two processes.
+     * Create a parent-child relationship between two processes.  No longer use this method.  Use following method instead.
      *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param userId value from context used
+     * @param externalSourceGUID value from context used
+     * @param externalSourceName value from context used
      * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param parentProcessGUID unique identifier of the process in the external asset manager that is to be the parent process
      * @param childProcessGUID unique identifier of the process in the external asset manager that is to be the nested sub-process
@@ -1528,9 +1710,10 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Deprecated
     public void setupProcessParent(String                       userId,
-                                   String                       assetManagerGUID,
-                                   String                       assetManagerName,
+                                   String                       externalSourceGUID,
+                                   String                       externalSourceName,
                                    boolean                      assetManagerIsHome,
                                    String                       parentProcessGUID,
                                    String                       childProcessGUID,
@@ -1539,9 +1722,38 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
+        this.setupProcessParent(assetManagerIsHome,
+                                parentProcessGUID,
+                                childProcessGUID,
+                                containmentProperties,
+                                effectiveTime);
+    }
+
+
+    /**
+     * Create a parent-child relationship between two processes.
+     *
+     * @param assetManagerIsHome ensure that only the asset manager can update this asset
+     * @param parentProcessGUID unique identifier of the process in the external asset manager that is to be the parent process
+     * @param childProcessGUID unique identifier of the process in the external asset manager that is to be the nested sub-process
+     * @param containmentProperties describes the ownership of the sub-process
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupProcessParent(boolean                      assetManagerIsHome,
+                                   String                       parentProcessGUID,
+                                   String                       childProcessGUID,
+                                   ProcessContainmentProperties containmentProperties,
+                                   Date                         effectiveTime) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
         lineageExchangeClient.setupProcessParent(userId,
-                                                 assetManagerGUID,
-                                                 assetManagerName,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
                                                  assetManagerIsHome,
                                                  parentProcessGUID,
                                                  childProcessGUID,
@@ -1550,7 +1762,6 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
                                                  forLineage,
                                                  forDuplicateProcessing);
     }
-
 
     /**
      * Remove a parent-child relationship between two processes.

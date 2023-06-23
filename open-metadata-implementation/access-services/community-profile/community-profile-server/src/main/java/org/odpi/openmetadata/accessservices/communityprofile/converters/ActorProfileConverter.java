@@ -208,6 +208,7 @@ public class ActorProfileConverter<B> extends CommunityProfileOMASConverter<B>
 
                     if (relationships != null)
                     {
+                        List<ElementStub>            peers                = new ArrayList<>();
                         ElementStub                  superTeam            = null;
                         List<ElementStub>            subTeams             = new ArrayList<>();
                         List<ElementStub>            teamLeaders          = new ArrayList<>();
@@ -224,7 +225,15 @@ public class ActorProfileConverter<B> extends CommunityProfileOMASConverter<B>
                             {
                                 String relationshipTypeName = relationship.getType().getTypeDefName();
 
-                                if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_NAME))
+                                if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.PEER_RELATIONSHIP_TYPE_NAME))
+                                {
+                                    EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
+
+                                    ElementStub elementStub = super.getElementStub(beanClass, entityProxy, methodName);
+
+                                    peers.add(elementStub);
+                                }
+                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_NAME))
                                 {
                                     EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
 
@@ -330,6 +339,11 @@ public class ActorProfileConverter<B> extends CommunityProfileOMASConverter<B>
                         if (! subTeams.isEmpty())
                         {
                             bean.setSubTeams(subTeams);
+                        }
+
+                        if (! peers.isEmpty())
+                        {
+                            bean.setPeers(peers);
                         }
 
                         if (! teamLeaders.isEmpty())

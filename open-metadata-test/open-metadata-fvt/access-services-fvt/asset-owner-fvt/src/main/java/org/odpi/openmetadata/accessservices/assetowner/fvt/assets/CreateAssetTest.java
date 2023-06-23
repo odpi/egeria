@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.assetowner.client.AssetOwner;
 import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.PrimitiveSchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaTypeProperties;
 import org.odpi.openmetadata.accessservices.assetowner.properties.TemplateProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -682,14 +682,19 @@ public class CreateAssetTest
 
         try
         {
-            PrimitiveSchemaTypeProperties properties = new PrimitiveSchemaTypeProperties();
+            SchemaTypeProperties properties = new SchemaTypeProperties();
 
             properties.setQualifiedName(schemaTypeName);
             properties.setDisplayName(schemaTypeDisplayName);
             properties.setDescription(schemaTypeDescription);
-            properties.setDataType(schemaTypeType);
-            properties.setDefaultValue(schemaTypeDefaultValue);
             properties.setTypeName("PrimitiveSchemaType");
+
+            Map<String,Object> extendedProperties = new HashMap<>();
+
+            extendedProperties.put("dataType", schemaTypeType);
+            extendedProperties.put("defaultValue", schemaTypeDefaultValue);
+
+            properties.setExtendedProperties(extendedProperties);
 
             String schemaTypeGUID = client.addSchemaTypeToAsset(userId, assetGUID, properties);
 

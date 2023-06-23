@@ -18,9 +18,7 @@ import java.util.List;
 
 /**
  * DataAssetExchangeInterface provides methods to define data assets, their schemas and connections, along with supporting objects,
- * and lineage.
- *
- * The interface supports the following types of objects
+ * and lineage.  The interface supports the following types of objects
  *
  * <ul>
  *     <li>Assets - </li>
@@ -186,8 +184,8 @@ public interface DataAssetExchangeInterface extends SchemaExchangeInterface
                            Date    effectiveTime,
                            boolean forLineage,
                            boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                    UserNotAuthorizedException,
-                                                    PropertyServerException;
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException;
 
 
     /**
@@ -413,7 +411,7 @@ public interface DataAssetExchangeInterface extends SchemaExchangeInterface
      * @param assetManagerName unique name of software capability representing the caller
      * @param relationshipTypeName type name of relationship to delete
      * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
-     * @param startingFrom start position for results
+     * @param startFrom start position for results
      * @param pageSize     maximum number of results
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param forLineage return elements marked with the Memento classification?
@@ -430,7 +428,7 @@ public interface DataAssetExchangeInterface extends SchemaExchangeInterface
                                                      String  assetManagerName,
                                                      String  relationshipTypeName,
                                                      String  fromAssetGUID,
-                                                     int     startingFrom,
+                                                     int     startFrom,
                                                      int     pageSize,
                                                      Date    effectiveTime,
                                                      boolean forLineage,
@@ -447,7 +445,7 @@ public interface DataAssetExchangeInterface extends SchemaExchangeInterface
      * @param assetManagerName unique name of software capability representing the caller
      * @param relationshipTypeName type name of relationship to delete
      * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
-     * @param startingFrom start position for results
+     * @param startFrom start position for results
      * @param pageSize     maximum number of results
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param forLineage return elements marked with the Memento classification?
@@ -464,7 +462,7 @@ public interface DataAssetExchangeInterface extends SchemaExchangeInterface
                                                      String  assetManagerName,
                                                      String  relationshipTypeName,
                                                      String  toAssetGUID,
-                                                     int     startingFrom,
+                                                     int     startFrom,
                                                      int     pageSize,
                                                      Date    effectiveTime,
                                                      boolean forLineage,
