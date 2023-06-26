@@ -47,6 +47,7 @@ public class KafkaOpenMetadataTopicProvider extends OpenMetadataTopicProvider
     public static final String  consumerPropertyName = "consumer";
     public static final String  egeriaConsumerPropertyName = "egeria_kafka_consumer";
     public static final String  serverIdPropertyName = "local.server.id";
+    public static final String  sleepTimeProperty = "sleepTime";
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
@@ -84,6 +85,7 @@ public class KafkaOpenMetadataTopicProvider extends OpenMetadataTopicProvider
         recognizedPropertyNames.add(consumerPropertyName);
         recognizedPropertyNames.add(serverIdPropertyName);
         recognizedPropertyNames.add(sleepTimeProperty);
+        recognizedPropertyNames.add(OpenMetadataTopicProvider.EVENT_DIRECTION_PROPERTY_NAME);
 
         connectorType.setRecognizedConfigurationProperties(recognizedPropertyNames);
 

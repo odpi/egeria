@@ -96,10 +96,10 @@ public class DigitalArchitectureAdmin extends AccessServiceAdmin
                 Endpoint endpoint = outTopicEventBusConnection.getEndpoint();
 
                 AuditLog outTopicAuditLog = auditLog.createNewAuditLog(OMRSAuditingComponent.OMAS_OUT_TOPIC);
-                Connection serverSideOutTopicConnection = this.getOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
-                                                                                     AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceFullName(),
-                                                                                     DigitalArchitectureOutTopicServerProvider.class.getName(),
-                                                                                     auditLog);
+                Connection serverSideOutTopicConnection = this.getServerSideOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
+                                                                                               AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceFullName(),
+                                                                                               DigitalArchitectureOutTopicServerProvider.class.getName(),
+                                                                                               auditLog);
                 DigitalArchitectureOutTopicServerConnector outTopicServerConnector = super.getTopicConnector(serverSideOutTopicConnection,
                                                                                                              DigitalArchitectureOutTopicServerConnector.class,
                                                                                                              outTopicAuditLog,

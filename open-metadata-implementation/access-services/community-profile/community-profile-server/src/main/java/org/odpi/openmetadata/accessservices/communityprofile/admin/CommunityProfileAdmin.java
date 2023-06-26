@@ -119,10 +119,10 @@ public class CommunityProfileAdmin extends AccessServiceAdmin
                 Endpoint endpoint = outTopicEventBusConnection.getEndpoint();
 
                 AuditLog outTopicAuditLog = auditLog.createNewAuditLog(OMRSAuditingComponent.OMAS_OUT_TOPIC);
-                Connection serverSideOutTopicConnection = this.getOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
-                                                                                     AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName(),
-                                                                                     CommunityProfileOutTopicServerProvider.class.getName(),
-                                                                                     auditLog);
+                Connection serverSideOutTopicConnection = this.getServerSideOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
+                                                                                               AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName(),
+                                                                                               CommunityProfileOutTopicServerProvider.class.getName(),
+                                                                                               auditLog);
                 CommunityProfileOutTopicServerConnector outTopicServerConnector = super.getTopicConnector(serverSideOutTopicConnection,
                                                                                                           CommunityProfileOutTopicServerConnector.class,
                                                                                                           outTopicAuditLog,

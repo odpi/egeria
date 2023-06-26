@@ -211,7 +211,7 @@ public class DataEngineInstanceHandler extends OMASServiceInstanceHandler {
         DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null) {
-            return instance.getInTopicConnection();
+            return instance.getInTopicClientConnection(serverName);
         }
 
         return null;

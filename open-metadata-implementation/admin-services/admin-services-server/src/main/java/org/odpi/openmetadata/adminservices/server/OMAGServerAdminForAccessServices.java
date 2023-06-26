@@ -590,12 +590,14 @@ public class OMAGServerAdminForAccessServices
                                                                                eventBusConfig.getTopicURLRoot() + ".server." + serverName,
                                                                                registration.getAccessServiceInTopic(),
                                                                                localServerId,
+                                                                               null, // direction restricted at runtime
                                                                                eventBusConfig.getConfigurationProperties()));
             accessServiceConfig.setAccessServiceOutTopic(
                     connectorConfigurationFactory.getDefaultEventBusConnection(eventBusConfig.getConnectorProvider(),
                                                                                eventBusConfig.getTopicURLRoot() + ".server." + serverName,
                                                                                registration.getAccessServiceOutTopic(),
                                                                                localServerId,
+                                                                               null, // direction restricted at runtime
                                                                                eventBusConfig.getConfigurationProperties()));
         }
 
