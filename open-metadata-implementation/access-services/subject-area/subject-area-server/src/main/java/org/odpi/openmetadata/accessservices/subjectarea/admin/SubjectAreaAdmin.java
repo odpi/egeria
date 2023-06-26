@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.subjectarea.admin;
 
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaAuditCode;
-import org.odpi.openmetadata.accessservices.subjectarea.listener.SubjectAreaOMRSTopicListener;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.registration.AccessServiceAdmin;
@@ -59,29 +58,10 @@ public class SubjectAreaAdmin extends AccessServiceAdmin {
                                                             repositoryConnector.getMaxPageSize());
             this.serverName = instance.getServerName();
 
-            /*
-             * Only set up the listening and event publishing if requested in the config.
-             */
-            if (accessServiceConfig.getAccessServiceOutTopic() != null) {
-                SubjectAreaOMRSTopicListener omrsTopicListener;
-
-                omrsTopicListener = new SubjectAreaOMRSTopicListener(accessServiceConfig.getAccessServiceOutTopic(),
-                                                                     repositoryConnector.getRepositoryHelper(),
-                                                                     repositoryConnector.getRepositoryValidator(),
-                                                                     accessServiceConfig.getAccessServiceName(),
-                                                                     auditLog);
-                super.registerWithEnterpriseTopic(accessServiceConfig.getAccessServiceName(),
-                                                  serverName,
-                                                  omrsTopicConnector,
-                                                  omrsTopicListener,
-                                                  auditLog);
-            }
-
             auditLog.logMessage(actionDescription,
                                 SubjectAreaAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),
                                 accessServiceConfig.toString());
-        } catch (OMAGConfigurationErrorException error) {
-            throw error;
+
         } catch (Exception error) {
             auditLog.logException(actionDescription,
                                   SubjectAreaAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getClass().getName(), error.getMessage()),
