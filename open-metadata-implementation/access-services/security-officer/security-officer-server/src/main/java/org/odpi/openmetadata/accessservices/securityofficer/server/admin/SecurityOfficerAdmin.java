@@ -61,32 +61,45 @@ public class SecurityOfficerAdmin extends AccessServiceAdmin
             String accessServiceName = accessServiceConfigurationProperties.getAccessServiceName();
             List<String> supportedZones = super.extractSupportedZones(accessServiceConfigurationProperties.getAccessServiceOptions(),
                                                                       accessServiceName, auditLog);
-            Connection accessServiceOutTopic = accessServiceConfigurationProperties.getAccessServiceOutTopic();
-            OpenMetadataTopicConnector securityOfficerOutputTopic = initializeSecurityOfficerTopicConnector(accessServiceOutTopic);
-            SecurityOfficerEventProcessor securityOfficerEventProcessor = new SecurityOfficerEventProcessor(enterpriseOMRSRepositoryConnector,
-                                                                                                            accessServiceName);
 
-            OMRSRepositoryHelper repositoryHelper = enterpriseOMRSRepositoryConnector.getRepositoryHelper();
-            securityOfficerPublisher = new SecurityOfficerPublisher(securityOfficerEventProcessor, securityOfficerOutputTopic,
-                                                                    repositoryHelper, accessServiceName, auditLog);
-            this.instance = new SecurityOfficerInstance(enterpriseOMRSRepositoryConnector, supportedZones, auditLog, serverUserName,
-                                                                enterpriseOMRSRepositoryConnector.getMaxPageSize(),
-                                                                accessServiceOutTopic,
-                                                                securityOfficerPublisher);
+            Connection accessServiceOutTopic = accessServiceConfigurationProperties.getAccessServiceOutTopic();
+            this.instance = new SecurityOfficerInstance(enterpriseOMRSRepositoryConnector,
+                                                        supportedZones,
+                                                        auditLog,
+                                                        serverUserName,
+                                                        enterpriseOMRSRepositoryConnector.getMaxPageSize(),
+                                                        accessServiceOutTopic,
+                                                        securityOfficerPublisher);
             this.serverName = instance.getServerName();
-            this.registerWithEnterpriseTopic(AccessServiceDescription.SECURITY_OFFICER_OMAS.getAccessServiceFullName(),
-                                             serverName,
-                                             enterpriseOMRSTopicConnector,
-                                             new SecurityOfficerOMRSTopicListener(
-                                                     securityOfficerPublisher,
-                                                     repositoryHelper,
-                                                     enterpriseOMRSRepositoryConnector.getRepositoryValidator(),
-                                                     AccessServiceDescription.SECURITY_OFFICER_OMAS.getAccessServiceFullName(),
-                                                     serverName,
-                                                     serverUserName,
-                                                     supportedZones,
-                                                     auditLog),
-                                             auditLog);
+
+            if (accessServiceOutTopic != null)
+            {
+                OpenMetadataTopicConnector securityOfficerOutputTopic = initializeSecurityOfficerTopicConnector(accessServiceOutTopic);
+                SecurityOfficerEventProcessor securityOfficerEventProcessor = new SecurityOfficerEventProcessor(enterpriseOMRSRepositoryConnector,
+                                                                                                                accessServiceName);
+
+                OMRSRepositoryHelper repositoryHelper = enterpriseOMRSRepositoryConnector.getRepositoryHelper();
+                securityOfficerPublisher = new SecurityOfficerPublisher(securityOfficerEventProcessor,
+                                                                        securityOfficerOutputTopic,
+                                                                        repositoryHelper,
+                                                                        accessServiceName,
+                                                                        auditLog);
+
+
+                this.registerWithEnterpriseTopic(AccessServiceDescription.SECURITY_OFFICER_OMAS.getAccessServiceFullName(),
+                                                 serverName,
+                                                 enterpriseOMRSTopicConnector,
+                                                 new SecurityOfficerOMRSTopicListener(
+                                                         securityOfficerPublisher,
+                                                         repositoryHelper,
+                                                         enterpriseOMRSRepositoryConnector.getRepositoryValidator(),
+                                                         AccessServiceDescription.SECURITY_OFFICER_OMAS.getAccessServiceFullName(),
+                                                         serverName,
+                                                         serverUserName,
+                                                         supportedZones,
+                                                         auditLog),
+                                                 auditLog);
+            }
 
             auditLog.logMessage(actionDescription, SecurityOfficerAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName));
 

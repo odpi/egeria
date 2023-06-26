@@ -505,7 +505,7 @@ public class ConnectorConfigurationFactory
      *
      * @param connectorProviderClassName name of connector provider class that controls the type of connector used.
      * @param topicURLRoot  root URL of the topic - this is prepended to the topic name
-     * @param topicName  name of the topic
+     * @param topicName  name of the topic - if null it means that the connection should be null
      * @param serverId identifier of the server - used to pick up the right offset for the inbound messages.
      * @param configurationProperties  additional configuration properties for the connection
      * @return Connection object
@@ -516,11 +516,9 @@ public class ConnectorConfigurationFactory
                                                    String               serverId,
                                                    Map<String, Object>  configurationProperties)
     {
-        Endpoint endpoint = null;
-
         if (topicName != null)
         {
-            endpoint = new Endpoint();
+            Endpoint endpoint = new Endpoint();
 
             if (topicURLRoot == null)
             {
@@ -530,34 +528,38 @@ public class ConnectorConfigurationFactory
             {
                 endpoint.setAddress(topicURLRoot + "." + topicName);
             }
+
+
+            String connectorTypeJavaClassName = KAFKA_OPEN_METADATA_TOPIC_PROVIDER;
+
+            if ((connectorProviderClassName != null) && (connectorProviderClassName.length() > 0))
+            {
+                connectorTypeJavaClassName = connectorProviderClassName;
+            }
+
+            if (configurationProperties == null)
+            {
+                configurationProperties = new HashMap<>();
+            }
+
+            // the serverId is used to set the default topic.id (though this could be overridden in the consumer configuration)
+            // retrieve from the default if needed
+            if (StringUtils.isEmpty((String) configurationProperties.get("local.server.id")))
+            {
+                configurationProperties.put("local.server.id", serverId);
+            }
+
+            Connection connection = new Connection();
+
+            connection.setDisplayName("Kafka Event Bus Connection");
+            connection.setEndpoint(endpoint);
+            connection.setConnectorType(getConnectorType(connectorTypeJavaClassName));
+            connection.setConfigurationProperties(configurationProperties);
+
+            return connection;
         }
 
-        String connectorTypeJavaClassName = KAFKA_OPEN_METADATA_TOPIC_PROVIDER;
-
-        if ((connectorProviderClassName != null) && (connectorProviderClassName.length() > 0))
-        {
-            connectorTypeJavaClassName = connectorProviderClassName;
-        }
-
-        if (configurationProperties == null)
-        {
-            configurationProperties = new HashMap<>();
-        }
-
-        // the serverId is used to set the default topic.id (though this could be overriden in the consumer configuration)
-        // retrieve from the default if needed
-        if (StringUtils.isEmpty((String)configurationProperties.get("local.server.id"))) {
-            configurationProperties.put("local.server.id", serverId);
-        }
-
-        Connection connection = new Connection();
-
-        connection.setDisplayName("Kafka Event Bus Connection");
-        connection.setEndpoint(endpoint);
-        connection.setConnectorType(getConnectorType(connectorTypeJavaClassName));
-        connection.setConfigurationProperties(configurationProperties);
-
-        return connection;
+        return null;
     }
 
 

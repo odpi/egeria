@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetlineage.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.assetlineage.model.FindEntitiesParameters;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageRestServices;
@@ -21,7 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Date;
 import java.util.List;
 
-
+/**
+ * The AssetLineageResource class is a Spring REST controller that provides endpoints for querying and publishing asset lineage information.
+ * It is part of the Asset Lineage OMAS (Open Metadata Access Service) and allows users to interact with the asset lineage.
+ */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-lineage/users/{userId}/")
 
@@ -34,7 +38,7 @@ public class AssetLineageResource {
     private final AssetLineageRestServices restAPI = new AssetLineageRestServices();
 
     /**
-     * Scan the cohort based on the given entity type and publish the contexts for the found entities to the out topic
+     * Scan the cohort based on the given entity type and publish the contexts for the found entities to the out topic.
      *
      * @param serverName name of server instance to call
      * @param userId     the name of the calling user
@@ -52,6 +56,10 @@ public class AssetLineageResource {
      * @return a list of unique identifiers (guids) of the available entities with the given type provided as a response
      */
     @GetMapping(path = "/publish-entities/{entityType}")
+    @Operation(summary = "scanEntitiesByTypeAndPublish",
+               description = "Scan the cohort based on the given entity type and publish the contexts for the found entities to the out topic.",
+               externalDocs = @ExternalDocumentation(description = "Asset Lineage - Publish Entities",
+                                                     url = "https://egeria-project.org/services/omas/asset-lineage/overview/#publish-entities"))
     public GUIDListResponse publishEntities(@PathVariable String serverName,
                                             @PathVariable String userId,
                                             @PathVariable String entityType,
@@ -83,6 +91,10 @@ public class AssetLineageResource {
      * @return a list of unique identifiers (guids) of the available entity with the given type provided as a response
      */
     @GetMapping(path = "/publish-entity/{entityType}/{guid}")
+    @Operation(summary = "findEntityByGuidAndPublishContext",
+               description = "Find the entity by guid and publish the context for it.",
+               externalDocs = @ExternalDocumentation(description = "Asset Lineage - Publish Entity",
+                                                  url = "https://egeria-project.org/services/omas/asset-lineage/overview/#publish-entity"))
     public GUIDListResponse publishEntity(@PathVariable String serverName,
                                           @PathVariable String userId,
                                           @PathVariable String guid,
@@ -100,6 +112,10 @@ public class AssetLineageResource {
      * @return a list of unique identifiers (guids) of the available entities that exist in the published context
      */
     @GetMapping(path = "/publish-context/{entityType}/{guid}")
+    @Operation(summary = "findEntityByGuidAndPublishAssetContext",
+               description = "Find the entity by guid and publish the asset context for it. It applies for data tables and files.",
+               externalDocs = @ExternalDocumentation(description = "Asset Lineage - Publish Asset Context",
+                                                     url = "https://egeria-project.org/services/omas/asset-lineage/overview/#publish-context"))
     public GUIDListResponse publishAssetContext(@PathVariable String serverName,
                                             @PathVariable String userId,
                                             @PathVariable String guid,
@@ -120,7 +136,10 @@ public class AssetLineageResource {
      * PropertyServerException problem retrieving the discovery engine definition.
      */
     @GetMapping(path = "/topics/out-topic-connection/{callerId}")
-
+    @Operation(summary = "getOutTopicConnection",
+               description = "Return the connection object for the Asset Lineage's OMAS's out topic.",
+               externalDocs = @ExternalDocumentation(description = "Asset Lineage - Out Topic Connection",
+                                                     url = "https://egeria-project.org/services/omas/asset-lineage/overview/#out-topic-connection"))
     public ConnectionResponse getOutTopicConnection(@PathVariable String serverName,
                                                     @PathVariable String userId,
                                                     @PathVariable String callerId)

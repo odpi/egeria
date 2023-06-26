@@ -14,7 +14,6 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  *     <li>Log Message Id - to uniquely identify the message</li>
  *     <li>Severity - is this an event, decision, action, error or exception</li>
  *     <li>Log Message Text - includes placeholder to allow additional values to be captured</li>
- *     <li>Additional Information - further parameters and data relating to the audit message (optional)</li>
  *     <li>SystemAction - describes the result of the situation</li>
  *     <li>UserAction - describes how a user should correct the situation</li>
  * </ul>
