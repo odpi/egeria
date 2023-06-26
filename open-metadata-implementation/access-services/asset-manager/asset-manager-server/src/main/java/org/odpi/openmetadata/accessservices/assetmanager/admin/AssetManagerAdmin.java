@@ -9,18 +9,15 @@ import org.odpi.openmetadata.accessservices.assetmanager.listener.AssetManagerOM
 import org.odpi.openmetadata.accessservices.assetmanager.outtopic.AssetManagerOutTopicPublisher;
 import org.odpi.openmetadata.accessservices.assetmanager.server.AssetManagerServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
-import org.odpi.openmetadata.adminservices.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.adminservices.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
-import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-
 
 import java.util.List;
 
@@ -32,7 +29,6 @@ public class AssetManagerAdmin extends AccessServiceAdmin
 {
     private AuditLog                      auditLog         = null;
     private AssetManagerServicesInstance  instance         = null;
-    private OpenMetadataTopicConnector    inTopicConnector = null;
     private String                        serverName       = null;
     private AssetManagerOutTopicPublisher eventPublisher   = null;
 
@@ -163,20 +159,6 @@ public class AssetManagerAdmin extends AccessServiceAdmin
     public void shutdown()
     {
         final String actionDescription = "shutdown";
-
-        try
-        {
-            if (inTopicConnector != null)
-            {
-                inTopicConnector.disconnect();
-            }
-        }
-        catch (ConnectorCheckedException error)
-        {
-            auditLog.logException(actionDescription,
-                                  AssetManagerAuditCode.SERVICE_INSTANCE_TERMINATION_FAILURE.getMessageDefinition(serverName),
-                                  error);
-        }
 
         if (this.eventPublisher != null)
         {

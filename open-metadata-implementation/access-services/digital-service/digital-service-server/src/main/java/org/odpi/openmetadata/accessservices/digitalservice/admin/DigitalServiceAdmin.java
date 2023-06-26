@@ -80,27 +80,6 @@ public class DigitalServiceAdmin extends AccessServiceAdmin
                                                                accessServiceConfig.getAccessServiceOutTopic());
             this.serverName = instance.getServerName();
 
-            /*
-             * Only set up the listening and event publishing if requested in the config.
-             */
-            if (accessServiceConfig.getAccessServiceOutTopic() != null)
-            {
-                DigitalServiceOMRSTopicListener omrsTopicListener;
-
-                omrsTopicListener = new DigitalServiceOMRSTopicListener(accessServiceConfig.getAccessServiceOutTopic(),
-                                                                        repositoryConnector.getRepositoryHelper(),
-                                                                        repositoryConnector.getRepositoryValidator(),
-                                                                        accessServiceConfig.getAccessServiceName(),
-                                                                        supportedZones,
-                                                                        auditLog);
-
-                super.registerWithEnterpriseTopic(accessServiceConfig.getAccessServiceName(),
-                                                  serverName,
-                                                  omrsTopicConnector,
-                                                  omrsTopicListener,
-                                                  auditLog);
-            }
-
             auditLog.logMessage(actionDescription,
                                 DigitalServiceAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),
                                 accessServiceConfig.toString());
