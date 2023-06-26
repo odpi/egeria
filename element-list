@@ -383,8 +383,6 @@ org.odpi.openmetadata.accessservices.subjectarea.ffdc
 org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions
 org.odpi.openmetadata.accessservices.subjectarea.fvt
 org.odpi.openmetadata.accessservices.subjectarea.handlers
-org.odpi.openmetadata.accessservices.subjectarea.listener
-org.odpi.openmetadata.accessservices.subjectarea.outtopic
 org.odpi.openmetadata.accessservices.subjectarea.properties.classifications
 org.odpi.openmetadata.accessservices.subjectarea.properties.comment
 org.odpi.openmetadata.accessservices.subjectarea.properties.enums
