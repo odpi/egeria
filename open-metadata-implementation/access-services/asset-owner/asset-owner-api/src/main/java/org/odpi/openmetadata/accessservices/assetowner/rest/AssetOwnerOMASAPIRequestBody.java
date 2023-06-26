@@ -20,18 +20,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = ReferenceableRequestBody.class, name = "ReferenceableRequestBody"),
-        @JsonSubTypes.Type(value = SchemaAttributeRequestBody.class, name = "SchemaAttributeRequestBody"),
-        @JsonSubTypes.Type(value = SchemaAttributesRequestBody.class, name = "SchemaAttributesRequestBody"),
         @JsonSubTypes.Type(value = NewFileAssetRequestBody.class, name = "NewFileAssetRequestBody"),
         @JsonSubTypes.Type(value = NewFileSystemRequestBody.class, name = "NewFileSystemRequestBody"),
         @JsonSubTypes.Type(value = PathNameRequestBody.class, name = "PathNameRequestBody")
-
               })
-public abstract class AssetOwnerOMASAPIRequestBody implements java.io.Serializable
+public abstract class AssetOwnerOMASAPIRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
-
     /**
      * Default constructor
      */

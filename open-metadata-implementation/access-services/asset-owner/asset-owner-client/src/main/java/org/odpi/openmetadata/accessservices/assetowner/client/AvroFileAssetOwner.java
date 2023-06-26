@@ -116,11 +116,7 @@ public class AvroFileAssetOwner extends AssetOwner implements AssetOnboardingAvr
                               int                  maxPageSize,
                               AuditLog             auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, auditLog);
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-
-        this.restClient = restClient;
+        super(serverName, serverPlatformURLRoot, restClient, maxPageSize, auditLog);
     }
 
 

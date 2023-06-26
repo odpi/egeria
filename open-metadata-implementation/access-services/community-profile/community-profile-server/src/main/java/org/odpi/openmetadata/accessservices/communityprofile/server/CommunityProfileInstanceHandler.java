@@ -190,11 +190,11 @@ class CommunityProfileInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    CommunityHandler<CommunityElement> getCommunityHandler(String userId,
-                                                           String serverName,
-                                                           String serviceOperationName) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
+    CollectionHandler<CollectionElement> getCollectionHandler(String userId,
+                                                              String serverName,
+                                                              String serviceOperationName) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
     {
         CommunityProfileServicesInstance instance = (CommunityProfileServicesInstance)super.getServerServiceInstance(userId,
                                                                                                                      serverName,
@@ -202,7 +202,7 @@ class CommunityProfileInstanceHandler extends OMASServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getCommunityHandler();
+            return instance.getCollectionHandler();
         }
 
         return null;
@@ -220,11 +220,11 @@ class CommunityProfileInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    ActorProfileHandler<PersonalProfileUniverse> getPersonalProfileHandler(String userId,
-                                                                           String serverName,
-                                                                           String serviceOperationName) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    CommunityHandler<CommunityElement> getCommunityHandler(String userId,
+                                                           String serverName,
+                                                           String serviceOperationName) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
         CommunityProfileServicesInstance instance = (CommunityProfileServicesInstance)super.getServerServiceInstance(userId,
                                                                                                                      serverName,
@@ -232,7 +232,7 @@ class CommunityProfileInstanceHandler extends OMASServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getPersonalProfileHandler();
+            return instance.getCommunityHandler();
         }
 
         return null;
@@ -389,7 +389,6 @@ class CommunityProfileInstanceHandler extends OMASServiceInstanceHandler
 
         return null;
     }
-
 
 
     /**

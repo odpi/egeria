@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -26,15 +24,32 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum GovernanceDefinitionStatus implements Serializable
+public enum GovernanceDefinitionStatus
 {
+    /**
+     * Draft - The governance definition is still in development.
+     */
     DRAFT        (0,  "Draft",      "The governance definition is still in development."),
-    PROPOSED     (1,  "Proposed",   "The governance definition is in review and not yet active."),
-    ACTIVE       (2,  "Active",     "The governance definition is approved and in use."),
-    DEPRECATED   (3,  "Deprecated", "The governance definition has been superseded."),
-    OTHER        (99, "Other",      "The governance definition in a locally defined state.");
 
-    private static final long serialVersionUID = 1L;
+    /**
+     * Proposed - The governance definition is in review and not yet active.
+     */
+    PROPOSED     (1,  "Proposed",   "The governance definition is in review and not yet active."),
+
+    /**
+     * Active - The governance definition is approved and in use.
+     */
+    ACTIVE       (2,  "Active",     "The governance definition is approved and in use."),
+
+    /**
+     * Deprecated - The governance definition has been superseded.
+     */
+    DEPRECATED   (3,  "Deprecated", "The governance definition has been superseded."),
+
+    /**
+     * Other - The governance definition in a locally defined state.
+     */
+    OTHER        (99, "Other",      "The governance definition in a locally defined state.");
 
     private final int            ordinal;
     private final String         name;

@@ -32,6 +32,7 @@ public class ActorProfileElement implements Serializable, MetadataElement
     private List<ContactMethodElement>   contactMethods       = null;
     private ContributionRecordElement    contributionRecord   = null; /* Person only */
     private List<ElementStub>            personRoles          = null; /* Person only */
+    private List<ElementStub>            peers                = null; /* Person only */
     private List<ProfileLocationElement> locations            = null;
     private List<ProfileIdentityElement> userIdentities       = null;
     private ElementStub                  superTeam            = null; /* Team only */
@@ -64,6 +65,7 @@ public class ActorProfileElement implements Serializable, MetadataElement
             contactMethods = template.getContactMethods();
             contributionRecord = template.getContributionRecord();
             personRoles = template.getPersonRoles();
+            peers = template.getPeers();
             locations = template.getLocations();
             userIdentities = template.getUserIdentities();
             superTeam = template.getSuperTeam();
@@ -185,6 +187,27 @@ public class ActorProfileElement implements Serializable, MetadataElement
         this.personRoles = personRoles;
     }
 
+
+    /**
+     * Return the list of profile identifiers (GUIDs) for peers.
+     *
+     * @return list of stubs for linked elements
+     */
+    public List<ElementStub> getPeers()
+    {
+        return peers;
+    }
+
+
+    /**
+     * Set up the list of profile identifiers (GUIDs) for peers.
+     *
+     * @param peers list of stubs for linked elements
+     */
+    public void setPeers(List<ElementStub> peers)
+    {
+        this.peers = peers;
+    }
 
 
     /**
@@ -377,6 +400,7 @@ public class ActorProfileElement implements Serializable, MetadataElement
                        ", contactMethods=" + contactMethods +
                        ", contributionRecord=" + contributionRecord +
                        ", personRoles=" + personRoles +
+                       ", peers=" + peers +
                        ", locations=" + locations +
                        ", userIdentities=" + userIdentities +
                        ", superTeam=" + superTeam +
@@ -412,6 +436,7 @@ public class ActorProfileElement implements Serializable, MetadataElement
                        Objects.equals(contactMethods, that.contactMethods) &&
                        Objects.equals(contributionRecord, that.contributionRecord) &&
                        Objects.equals(personRoles, that.personRoles) &&
+                       Objects.equals(peers, that.peers) &&
                        Objects.equals(locations, that.locations) &&
                        Objects.equals(userIdentities, that.userIdentities) &&
                        Objects.equals(superTeam, that.superTeam) &&
@@ -432,6 +457,6 @@ public class ActorProfileElement implements Serializable, MetadataElement
     public int hashCode()
     {
         return Objects.hash(elementHeader, profileProperties, contactMethods, contributionRecord, userIdentities, superTeam, subTeams,
-                            teamLeaderRoles, personRoles, locations, teamMemberRoles, businessCapability,linkedInfrastructure);
+                            teamLeaderRoles, personRoles, peers, locations, teamMemberRoles, businessCapability,linkedInfrastructure);
     }
 }

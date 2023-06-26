@@ -10,12 +10,10 @@ import org.odpi.openmetadata.accessservices.communityprofile.properties.Relation
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 /**
  * RelatedElement contains the properties and header for a relationship retrieved from the metadata repository along with the stub
@@ -24,10 +22,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeade
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RelatedElement implements Serializable
+public class RelatedElement
 {
-    private static final long     serialVersionUID = 1L;
-
     private ElementHeader          relationshipHeader     = null;
     private RelationshipProperties relationshipProperties = null;
     private ElementStub            relatedElement         = null;
