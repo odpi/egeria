@@ -27,5 +27,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 public class AssetCatalogResponse extends AssetCatalogOMASAPIResponse {
 
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * The asset
+     * -- GETTER --
+     * Returns the description of an asset
+     * @return the asset
+     * -- SETTER --
+     * Setup the description of an asset
+     * @param assetCatalogBean the asset
+     */
     private AssetCatalogBean assetCatalogBean;
 }

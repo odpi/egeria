@@ -55,6 +55,26 @@ public class OMAGServerPlatformInstanceMap
 
 
     /**
+     * Check that the calling user is authorized to issue operator requests to the OMAG Server Platform.
+     *
+     * @param userId calling user
+     *
+     * @throws UserNotAuthorizedException the user is not authorized to issue operator commands to this platform
+     */
+    public static synchronized void  validateUserAsOperatorForPlatform(String   userId) throws UserNotAuthorizedException
+    {
+        try
+        {
+            OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+        }
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+        {
+            throw new UserNotAuthorizedException(error);
+        }
+    }
+
+
+    /**
      * Create a service description object.
      *
      * @param serviceId component identifier for the service

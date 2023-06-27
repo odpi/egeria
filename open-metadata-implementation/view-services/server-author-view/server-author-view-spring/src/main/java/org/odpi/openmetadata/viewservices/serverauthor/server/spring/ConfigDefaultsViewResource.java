@@ -17,22 +17,20 @@ import java.util.Map;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/view-services/server-author/users/{userId}/servers/{serverToBeConfiguredName}")
 
-@Tag(name="Administration Services - Server Configuration", description="The server configuration administration services support the configuration" +
-        " of the open metadata and governance services within an OMAG Server. This configuration determines which of the Open Metadata and " +
-        "Governance (OMAG) services are active.",
-        externalDocs=@ExternalDocumentation(description="Further information",
-                url="https://egeria-project.org/guides/admin/servers/"))
+@Tag(name="Server Author OMVS", description="The Server Author OMVS is for user interfaces supporting the creating and editing of OMAG Server Configuration Documents.",
+     externalDocs=@ExternalDocumentation(description="Further information",
+                                         url="https://egeria-project.org/services/omvs/server-author/overview"))
 
 public class ConfigDefaultsViewResource
 {
-    private ServerAuthorViewRESTServices adminAPI = new ServerAuthorViewRESTServices();
+    private final ServerAuthorViewRESTServices adminAPI = new ServerAuthorViewRESTServices();
 
     /**
      * Set up the default event bus for embedding in event-driven connector.   The resulting connector will
      * be used for example, in the OMRS Topic Connector for each cohort, the in and out topics for each Access Service and
      * possibly the local repository's event mapper.
-     *
-     * When the event bus is configured, it is used only on future configuration.  It does not effect
+     * <br><br>
+     * When the event bus is configured, it is used only on future configuration.  It does not affect
      * existing configuration.
      *
      * @param userId  user that is issuing the request.

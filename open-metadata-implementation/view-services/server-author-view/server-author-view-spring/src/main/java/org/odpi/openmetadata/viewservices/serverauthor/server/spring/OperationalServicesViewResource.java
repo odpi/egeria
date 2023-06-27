@@ -16,16 +16,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/view-services/server-author/users/{userId}/servers/{serverToBeConfiguredName}")
 
-@Tag(name="Administration Services - Operational",
-        description="The operational administration services support the management " +
-                "of OMAG Server instances.  This includes starting and stopping the servers as well as querying and changing their operational state.",
-        externalDocs=@ExternalDocumentation(description="Further information",
-                url="https://egeria-project.org/guides/operations/overview/#operating-an-omag-server"))
+@Tag(name="Server Author OMVS", description="The Server Author OMVS is for user interfaces supporting the creating and editing of OMAG Server Configuration Documents.",
+     externalDocs=@ExternalDocumentation(description="Further information",
+                                         url="https://egeria-project.org/services/omvs/server-author/overview"))
 
 
 public class OperationalServicesViewResource
 {
-    private ServerAuthorViewRESTServices operationalServices = new ServerAuthorViewRESTServices();
+    private final ServerAuthorViewRESTServices operationalServices = new ServerAuthorViewRESTServices();
 
     /*
      * ========================================================================================

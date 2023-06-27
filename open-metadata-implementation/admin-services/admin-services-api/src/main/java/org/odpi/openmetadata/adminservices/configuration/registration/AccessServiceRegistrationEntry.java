@@ -30,6 +30,10 @@ public class AccessServiceRegistrationEntry implements Serializable
     private ServiceOperationalStatus   accessServiceOperationalStatus;
     private String                     accessServiceAdminClassName;
 
+    private ServiceOperationalStatus   accessServiceInTopicStatus = ServiceOperationalStatus.NOT_IMPLEMENTED;
+    private ServiceOperationalStatus   accessServiceOutTopicStatus = ServiceOperationalStatus.NOT_IMPLEMENTED;
+
+
     /**
      * Complete Constructor
      *
@@ -40,6 +44,8 @@ public class AccessServiceRegistrationEntry implements Serializable
      * @param accessServiceURLMarker name of the part of the URL that is the name of the access service
      * @param accessServiceDescription short description for this access service
      * @param accessServiceWiki wiki page for the access service for this access service
+     * @param accessServiceInTopicStatus is the access service inTopic implemented, operational or disabled?
+     * @param accessServiceOutTopicStatus is the access service outTopic implemented, operational or disabled?
      * @param accessServiceOperationalStatus default initial operational status for the access service
      * @param accessServiceAdminClassName  name of AccessServiceAdmin implementation class for the access service
      */
@@ -50,6 +56,8 @@ public class AccessServiceRegistrationEntry implements Serializable
                                           String                     accessServiceURLMarker,
                                           String                     accessServiceDescription,
                                           String                     accessServiceWiki,
+                                          ServiceOperationalStatus   accessServiceInTopicStatus,
+                                          ServiceOperationalStatus   accessServiceOutTopicStatus,
                                           ServiceOperationalStatus   accessServiceOperationalStatus,
                                           String                     accessServiceAdminClassName)
     {
@@ -60,6 +68,8 @@ public class AccessServiceRegistrationEntry implements Serializable
         this.accessServiceURLMarker = accessServiceURLMarker;
         this.accessServiceDescription = accessServiceDescription;
         this.accessServiceWiki = accessServiceWiki;
+        this.accessServiceInTopicStatus = accessServiceInTopicStatus;
+        this.accessServiceOutTopicStatus = accessServiceOutTopicStatus;
         this.accessServiceOperationalStatus = accessServiceOperationalStatus;
         this.accessServiceAdminClassName = accessServiceAdminClassName;
     }
@@ -83,6 +93,8 @@ public class AccessServiceRegistrationEntry implements Serializable
              accessServiceDescription.getAccessServiceURLMarker(),
              accessServiceDescription.getAccessServiceDescription(),
              accessServiceDescription.getAccessServiceWiki(),
+             accessServiceDescription.getAccessServiceInTopicStatus(),
+             accessServiceDescription.getAccessServiceOutTopicStatus(),
              accessServiceOperationalStatus,
              accessServiceAdminClassName);
     }
@@ -299,24 +311,37 @@ public class AccessServiceRegistrationEntry implements Serializable
     }
 
 
+
     /**
-     * Return the InTopic name for the access service.
+     * Return the InTopic name for the access service.  Null means that the topic is either not implemented
+     * or not enabled.
      *
      * @return String topic name
      */
     public String getAccessServiceInTopic()
     {
-        return defaultTopicRoot + accessServiceURLMarker.replaceAll("-", "") + defaultInTopicLeaf;
+        if (accessServiceInTopicStatus == ServiceOperationalStatus.ENABLED)
+        {
+            return defaultTopicRoot + accessServiceURLMarker.replaceAll("-", "") + defaultInTopicLeaf;
+        }
+
+        return null;
     }
 
 
     /**
-     * Return the OutTopic name for the access service.
+     * Return the OutTopic name for the access service.  Null means that the topic is either not implemented
+     * or not enabled.
      *
      * @return String topic name
      */
     public String getAccessServiceOutTopic()
     {
-        return defaultTopicRoot + accessServiceURLMarker.replaceAll("-", "") + defaultOutTopicLeaf;
+        if (accessServiceOutTopicStatus == ServiceOperationalStatus.ENABLED)
+        {
+            return defaultTopicRoot + accessServiceURLMarker.replaceAll("-", "") + defaultOutTopicLeaf;
+        }
+
+        return null;
     }
 }

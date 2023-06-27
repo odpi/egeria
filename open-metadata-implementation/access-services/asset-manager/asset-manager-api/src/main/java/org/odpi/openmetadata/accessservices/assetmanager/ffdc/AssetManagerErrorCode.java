@@ -36,14 +36,6 @@ public enum AssetManagerErrorCode implements ExceptionMessageSet
             "Ensure that the asset manager's unique identifier is passed on the request and then retry it."),
 
     /**
-     * OMAS-ASSET-MANAGER-400-002 At least one of the properties supplied for a new relationship of type {0} are invalid.  The {1} exception was returned with error message: {2}
-     */
-    BAD_PARAMETER(400, "OMAS-ASSET-MANAGER-400-002",
-                  "At least one of the properties supplied for a new relationship of type {0} are invalid.  The {1} exception was returned with error message: {2}",
-                  "The system is unable to create the requested relationship because it can not parse the properties.",
-                  "Correct the caller's logic so that the properties passed are correctly formatted and retry the request."),
-
-    /**
      * OMAS-ASSET-MANAGER-404-001 The open metadata repository services are not initialized for the {0} operation
      */
     OMRS_NOT_INITIALIZED(404, "OMAS-ASSET-MANAGER-404-001",

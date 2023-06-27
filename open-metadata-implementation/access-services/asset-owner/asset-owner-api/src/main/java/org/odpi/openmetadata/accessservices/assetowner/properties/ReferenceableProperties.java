@@ -6,14 +6,13 @@ package org.odpi.openmetadata.accessservices.assetowner.properties;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ReferenceableElement;
 
-import java.io.Serializable;
 import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ReferenceableProperties provides a structure for passing a referenceables' properties over the Java API.
+ * ReferenceableProperties provides a structure for passing a referenceable element's properties over the Java API.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -30,13 +29,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = EndpointProperties.class, name = "EndpointProperties"),
                 @JsonSubTypes.Type(value = SchemaElementProperties.class, name = "SchemaElementProperties")
         })
-public class ReferenceableProperties implements Serializable
+public class ReferenceableProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String                      qualifiedName        = null;
     private Map<String, String>         additionalProperties = null;
 
+    private Date                        effectiveFrom        = null;
+    private Date                        effectiveTo          = null;
     private String                      typeName             = null;
     private Map<String, Object>         extendedProperties   = null;
 
@@ -46,47 +45,39 @@ public class ReferenceableProperties implements Serializable
      */
     public ReferenceableProperties()
     {
+        super();
     }
 
 
     /**
-     * Copy/clone constructor
+     * Copy/clone constructor.  Retrieve values from the supplied template
      *
-     * @param template object to copy
+     * @param template element to copy
      */
     public ReferenceableProperties(ReferenceableProperties template)
     {
         if (template != null)
         {
-            this.qualifiedName        = template.getQualifiedName();
-            this.additionalProperties = template.getAdditionalProperties();
-            this.typeName             = template.getTypeName();
-            this.extendedProperties   = template.getExtendedProperties();
+            qualifiedName        = template.getQualifiedName();
+            additionalProperties = template.getAdditionalProperties();
+
+            effectiveFrom        = template.getEffectiveFrom();
+            effectiveTo          = template.getEffectiveTo();
+
+            typeName             = template.getTypeName();
+            extendedProperties   = template.getExtendedProperties();
         }
     }
 
 
     /**
-     * Return the open metadata type name of this object - this is used to create a subtype of
-     * the referenceable.  Any properties associated with this subtype are passed as extended properties.
+     * Set up the fully qualified name.
      *
-     * @return string type name
+     * @param qualifiedName String name
      */
-    public String getTypeName()
+    public void setQualifiedName(String qualifiedName)
     {
-        return typeName;
-    }
-
-
-    /**
-     * Set up the open metadata type name of this object - this is used to create a subtype of
-     * the referenceable.  Any properties associated with this subtype are passed as extended properties.
-     *
-     * @param typeName string type name
-     */
-    public void setTypeName(String typeName)
-    {
-        this.typeName = typeName;
+        this.qualifiedName = qualifiedName;
     }
 
 
@@ -103,13 +94,13 @@ public class ReferenceableProperties implements Serializable
 
 
     /**
-     * Set up the fully qualified name.
+     * Set up additional properties.
      *
-     * @param qualifiedName String name
+     * @param additionalProperties Additional properties object
      */
-    public void setQualifiedName(String qualifiedName)
+    public void setAdditionalProperties(Map<String, String> additionalProperties)
     {
-        this.qualifiedName = qualifiedName;
+        this.additionalProperties = additionalProperties;
     }
 
 
@@ -136,21 +127,76 @@ public class ReferenceableProperties implements Serializable
 
 
     /**
-     * Set up additional properties.
+     * Return the date/time that this element is effective from (null means effective from the epoch).
      *
-     * @param additionalProperties Additional properties object
+     * @return date object
      */
-    public void setAdditionalProperties(Map<String, String> additionalProperties)
+    public Date getEffectiveFrom()
     {
-        this.additionalProperties = additionalProperties;
+        return effectiveFrom;
     }
 
 
     /**
-     * Return the properties that are defined for a subtype of referenceable but are not explicitly
-     * supported by the bean.
+     * Set up the date/time that this element is effective from (null means effective from the epoch).
      *
-     * @return map of properties
+     * @param effectiveFrom date object
+     */
+    public void setEffectiveFrom(Date effectiveFrom)
+    {
+        this.effectiveFrom = effectiveFrom;
+    }
+
+
+    /**
+     * Return the date/time that element is effective to (null means that it is effective indefinitely into the future).
+     *
+     * @return date object
+     */
+    public Date getEffectiveTo()
+    {
+        return effectiveTo;
+    }
+
+
+    /**
+     * Set the date/time that element is effective to (null means that it is effective indefinitely into the future).
+     *
+     * @param effectiveTo date object
+     */
+    public void setEffectiveTo(Date effectiveTo)
+    {
+        this.effectiveTo = effectiveTo;
+    }
+
+
+    /**
+     * Return the name of the open metadata type for this metadata element.
+     *
+     * @return string name
+     */
+    public String getTypeName()
+    {
+        return typeName;
+    }
+
+
+    /**
+     * Set up the name of the open metadata type for this element.
+     *
+     * @param typeName string name
+     */
+    public void setTypeName(String typeName)
+    {
+        this.typeName = typeName;
+    }
+
+
+    /**
+     * Return the properties that have been defined for a subtype of this object that are not supported explicitly
+     * by this bean.
+     *
+     * @return property map
      */
     public Map<String, Object> getExtendedProperties()
     {
@@ -170,10 +216,10 @@ public class ReferenceableProperties implements Serializable
 
 
     /**
-     * Set up the properties that are defined for a subtype of referenceable but are not explicitly
-     * supported by the bean.
+     * Set up the properties that have been defined for a subtype of this object that are not supported explicitly
+     * by this bean.
      *
-     * @param extendedProperties map of properties
+     * @param extendedProperties property map
      */
     public void setExtendedProperties(Map<String, Object> extendedProperties)
     {
@@ -181,28 +227,27 @@ public class ReferenceableProperties implements Serializable
     }
 
 
-
-
     /**
-     * JSON-style toString.
+     * Standard toString method.
      *
-     * @return list of properties and their values.
+     * @return print out of variables in a JSON-style
      */
     @Override
     public String toString()
     {
         return "ReferenceableProperties{" +
-                "qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", typeName='" + typeName + '\'' +
-                ", extendedProperties=" + extendedProperties +
-                '}';
+                       "qualifiedName='" + qualifiedName + '\'' +
+                       ", additionalProperties=" + additionalProperties +
+                       ", typeName='" + typeName + '\'' +
+                       ", extendedProperties=" + extendedProperties +
+                       '}';
     }
 
+
     /**
-     * Equals method that returns true if containing properties are the same.
+     * Compare the values of the supplied object with those stored in the current object.
      *
-     * @param objectToCompare object to compare
+     * @param objectToCompare supplied object
      * @return boolean result of comparison
      */
     @Override
@@ -218,19 +263,22 @@ public class ReferenceableProperties implements Serializable
         }
         ReferenceableProperties that = (ReferenceableProperties) objectToCompare;
         return Objects.equals(qualifiedName, that.qualifiedName) &&
-                Objects.equals(additionalProperties, that.additionalProperties) &&
-                Objects.equals(typeName, that.typeName) &&
-                Objects.equals(extendedProperties, that.extendedProperties);
+                       Objects.equals(additionalProperties, that.additionalProperties) &&
+                       Objects.equals(effectiveFrom, that.effectiveFrom) &&
+                       Objects.equals(effectiveTo, that.effectiveTo) &&
+                       Objects.equals(typeName, that.typeName) &&
+                       Objects.equals(extendedProperties, that.extendedProperties);
     }
 
+
     /**
-     * Return hash code for this object
+     * Return hash code based on properties.
      *
-     * @return int hash code
+     * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, additionalProperties, extendedProperties, typeName);
+        return Objects.hash(qualifiedName, additionalProperties, effectiveFrom, effectiveTo, typeName, extendedProperties);
     }
 }

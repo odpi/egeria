@@ -17,7 +17,6 @@ import org.odpi.openmetadata.accessservices.assetowner.rest.ExternalSourceReques
 import org.odpi.openmetadata.accessservices.assetowner.rest.ReferenceableRequestBody;
 import org.odpi.openmetadata.accessservices.assetowner.rest.RelatedElementListResponse;
 import org.odpi.openmetadata.accessservices.assetowner.rest.RelationshipRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -25,23 +24,44 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 
 import java.util.List;
 
 /**
  * AssetOwnerBaseClient supports the common properties and functions for the Community Profile OMAS.
  */
-public class AssetOwnerBaseClient implements RelatedElementsManagementInterface
+public class AssetOwnerBaseClient extends ConnectedAssetClientBase implements RelatedElementsManagementInterface
 {
-    final String serverName;               /* Initialized in constructor */
-    final String serverPlatformURLRoot;    /* Initialized in constructor */
+    protected final AssetOwnerRESTClient restClient;               /* Initialized in constructor */
 
-    final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    final AssetOwnerRESTClient    restClient;               /* Initialized in constructor */
+    protected static final String  serviceURLName = "asset-owner";
+    protected static final String  defaultAssetType = "Asset";
+    final protected String urlTemplatePrefix = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}";
 
     private static final String elementsURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/related-elements";
 
     protected NullRequestBody nullRequestBody = new NullRequestBody();
+
+    /**
+     * Create a new client with no authentication embedded in the HTTP request.
+     *
+     * @param serverName            name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param auditLog              logging destination
+     *
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     *                                   REST API calls.
+     */
+    public AssetOwnerBaseClient(String   serverName,
+                                String   serverPlatformURLRoot,
+                                AuditLog auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformURLRoot, serviceURLName, auditLog);
+
+        this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformURLRoot, auditLog);
+    }
+
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -59,14 +79,7 @@ public class AssetOwnerBaseClient implements RelatedElementsManagementInterface
                                 int      maxPageSize,
                                 AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
+        super(serverName, serverPlatformURLRoot, serviceURLName, maxPageSize, auditLog);
 
         this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformURLRoot, auditLog);
     }
@@ -84,12 +97,7 @@ public class AssetOwnerBaseClient implements RelatedElementsManagementInterface
     public AssetOwnerBaseClient(String serverName,
                                 String serverPlatformURLRoot) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        super(serverName, serverPlatformURLRoot, serviceURLName);
 
         this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformURLRoot);
     }
@@ -112,12 +120,7 @@ public class AssetOwnerBaseClient implements RelatedElementsManagementInterface
                                 String userId,
                                 String password) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        super(serverName, serverPlatformURLRoot, serviceURLName, userId, password);
 
         this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformURLRoot, userId, password);
     }
@@ -144,14 +147,34 @@ public class AssetOwnerBaseClient implements RelatedElementsManagementInterface
                                 int      maxPageSize,
                                 AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        super(serverName, serverPlatformURLRoot, serviceURLName, userId, password, auditLog);
 
         invalidParameterHandler.setMaxPagingSize(maxPageSize);
+
+        this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+    }
+
+
+    /**
+     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
+     *
+     * @param serverName            name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param userId                caller's userId embedded in all HTTP requests
+     * @param password              caller's userId embedded in all HTTP requests
+     * @param auditLog              logging destination
+     *
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     *                                   REST API calls.
+     */
+    public AssetOwnerBaseClient(String   serverName,
+                                String   serverPlatformURLRoot,
+                                String   userId,
+                                String   password,
+                                AuditLog auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformURLRoot, serviceURLName, userId, password, auditLog);
 
         this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
@@ -168,19 +191,41 @@ public class AssetOwnerBaseClient implements RelatedElementsManagementInterface
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
-    public AssetOwnerBaseClient(String                      serverName,
-                                String                      serverPlatformURLRoot,
+    public AssetOwnerBaseClient(String               serverName,
+                                String               serverPlatformURLRoot,
                                 AssetOwnerRESTClient restClient,
-                                int                         maxPageSize) throws InvalidParameterException
+                                int                  maxPageSize) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        super(serverName, serverPlatformURLRoot, serviceURLName);
 
         invalidParameterHandler.setMaxPagingSize(maxPageSize);
+
+        this.restClient = restClient;
+    }
+
+
+    /**
+     * Create a new client that is going to be used in an OMAG Server.
+     *
+     * @param serverName            name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param restClient            client that issues the REST API calls
+     * @param maxPageSize           maximum number of results supported by this server
+     * @param auditLog              logging destination
+     *
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     *                                   REST API calls.
+     */
+    public AssetOwnerBaseClient(String               serverName,
+                                String               serverPlatformURLRoot,
+                                AssetOwnerRESTClient restClient,
+                                int                  maxPageSize,
+                                AuditLog             auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformURLRoot, serviceURLName, auditLog);
+
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
+        invalidParameterHandler.validateObject(restClient, "this.restClient", "Asset Owner client constructor");
 
         this.restClient = restClient;
     }

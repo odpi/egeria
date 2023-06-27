@@ -25,12 +25,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ValidValuesRequestBody extends AssetOwnerOMASAPIRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
     private String                      typeName             = null;
     private List<ElementClassification> classifications      = null;
     private String                      qualifiedName        = null;
-    private List<MeaningProperties>     meanings             = null;
     private Map<String, String>         additionalProperties = null;
     private Map<String, Object>         extendedProperties   = null;
     private String                      displayName          = null;
@@ -64,15 +61,14 @@ public class ValidValuesRequestBody extends AssetOwnerOMASAPIRequestBody
             this.typeName = template.getTypeName();
             this.classifications = template.getClassifications();
             this.qualifiedName = template.getQualifiedName();
-            this.meanings = template.getMeanings();
             this.additionalProperties = template.getAdditionalProperties();
             this.extendedProperties = template.getExtendedProperties();
-            displayName = template.getDisplayName();
-            description = template.getDescription();
-            usage = template.getUsage();
-            scope = template.getScope();
-            preferredValue = template.getPreferredValue();
-            isDeprecated = template.getIsDeprecated();
+            this.displayName = template.getDisplayName();
+            this.description = template.getDescription();
+            this.usage = template.getUsage();
+            this.scope = template.getScope();
+            this.preferredValue = template.getPreferredValue();
+            this.isDeprecated = template.getIsDeprecated();
         }
     }
 
@@ -176,39 +172,6 @@ public class ValidValuesRequestBody extends AssetOwnerOMASAPIRequestBody
     public void setAdditionalProperties(Map<String, String> additionalProperties)
     {
         this.additionalProperties = additionalProperties;
-    }
-
-
-    /**
-     * Return the assigned meanings for this metadata entity.
-     *
-     * @return list of meanings
-     */
-    public List<MeaningProperties> getMeanings()
-    {
-        if (meanings == null)
-        {
-            return null;
-        }
-        else if (meanings.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(meanings);
-        }
-    }
-
-
-    /**
-     * Set up the assigned meanings for this metadata entity.
-     *
-     * @param meanings list of meanings
-     */
-    public void setMeanings(List<MeaningProperties> meanings)
-    {
-        this.meanings = meanings;
     }
 
 
@@ -393,7 +356,6 @@ public class ValidValuesRequestBody extends AssetOwnerOMASAPIRequestBody
                        "typeName='" + typeName + '\'' +
                        ", classifications=" + classifications +
                        ", qualifiedName='" + qualifiedName + '\'' +
-                       ", meanings=" + meanings +
                        ", additionalProperties=" + additionalProperties +
                        ", extendedProperties=" + extendedProperties +
                        ", displayName='" + displayName + '\'' +
@@ -402,12 +364,6 @@ public class ValidValuesRequestBody extends AssetOwnerOMASAPIRequestBody
                        ", scope='" + scope + '\'' +
                        ", preferredValue='" + preferredValue + '\'' +
                        ", isDeprecated=" + isDeprecated +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", classifications=" + getClassifications() +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", meanings=" + getMeanings() +
-                       ", extendedProperties=" + getExtendedProperties() +
                        '}';
     }
 
@@ -437,7 +393,6 @@ public class ValidValuesRequestBody extends AssetOwnerOMASAPIRequestBody
         return  Objects.equals(getTypeName(), that.getTypeName()) &&
                 Objects.equals(getClassifications(), that.getClassifications()) &&
                 Objects.equals(getQualifiedName(), that.getQualifiedName()) &&
-                Objects.equals(getMeanings(), that.getMeanings()) &&
                 Objects.equals(getAdditionalProperties(), that.getAdditionalProperties()) &&
                 Objects.equals(getExtendedProperties(), that.getExtendedProperties()) &&
                 Objects.equals(displayName, that.displayName) &&
@@ -457,7 +412,7 @@ public class ValidValuesRequestBody extends AssetOwnerOMASAPIRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getTypeName(), getClassifications(), getQualifiedName(), getMeanings(),
+        return Objects.hash(super.hashCode(), getTypeName(), getClassifications(), getQualifiedName(),
                             getAdditionalProperties(), getExtendedProperties(),
                             displayName, description, usage, scope, isDeprecated, preferredValue);
     }

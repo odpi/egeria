@@ -18,19 +18,32 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * DataItemSortOrder is used for schema attributes that may have multiple instances.
  */
-@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @ToString
 public enum DataItemSortOrder implements Serializable {
-    UNKNOWN(0, 99, "<Unknown>",  "The sort order is not specified."),
-    ASCENDING(1, 0, "Ascending",  "The attribute instances are organized so that the " +
+
+    /**
+     * The sort order is not specified
+     */
+    UNKNOWN(0, 99, "<Unknown>", "The sort order is not specified."),
+    /**
+     * The attribute instances are organized so that the smallest/lowest value is first and the rest of the instances follow in ascending order.
+     */
+    ASCENDING(1, 0, "Ascending", "The attribute instances are organized so that the " +
             "smallest/lowest value is first and the rest of the instances follow in " +
             "ascending order."),
+    /**
+     * The attribute instances are organized so that the smallest/lowest value is first and the rest of the instances follow in descending order.
+     */
     DESCENDING(2, 1, "Descending", "The attribute instances are organized so that the " +
             "largest/highest value is first and the rest of the instances follow in " +
             "descending order."),
-    UNSORTED(3, 99, "Unsorted",   "The instances of the schema attribute may appear in any order.");
+    /**
+     * TThe instances of the schema attribute may appear in any order.
+     */
+    UNSORTED(3, 99, "Unsorted", "The instances of the schema attribute may appear in any order.");
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
@@ -44,6 +57,7 @@ public enum DataItemSortOrder implements Serializable {
      * The code for this enum that comes from the Open Metadata Type that this enum represents
      * -- GETTER --
      * Return the code for this enum that comes from the Open Metadata Type that this enum represents.
+     *
      * @return int code number
      */
     @Getter
@@ -53,6 +67,7 @@ public enum DataItemSortOrder implements Serializable {
      * The code for this enum used for indexing based on the enum value
      * -- GETTER --
      * Return the code for this enum used for indexing based on the enum value.
+     *
      * @return int code number
      */
     @Getter
@@ -62,6 +77,7 @@ public enum DataItemSortOrder implements Serializable {
      * The default name for this enum type
      * -- GETTER --
      * Return the default name for this enum type.
+     *
      * @return String name
      */
     @Getter
@@ -71,6 +87,7 @@ public enum DataItemSortOrder implements Serializable {
      * The default description for this enum
      * -- GETTER --
      * Return the default description for this enum.
+     *
      * @return String description
      */
     @Getter
@@ -79,10 +96,10 @@ public enum DataItemSortOrder implements Serializable {
     /**
      * Constructor to set up the instance of this enum.
      *
-     * @param ordinal code number
+     * @param ordinal         code number
      * @param openTypeOrdinal code number from the equivalent Enum Type
-     * @param name default name
-     * @param description default description
+     * @param name            default name
+     * @param description     default description
      */
     DataItemSortOrder(int ordinal, int openTypeOrdinal, String name, String description) {
         this.ordinal = ordinal;
@@ -96,7 +113,9 @@ public enum DataItemSortOrder implements Serializable {
      *
      * @return string guid
      */
-    public String getOpenTypeGUID() { return ENUM_TYPE_GUID; }
+    public String getOpenTypeGUID() {
+        return ENUM_TYPE_GUID;
+    }
 
 
     /**
@@ -104,6 +123,8 @@ public enum DataItemSortOrder implements Serializable {
      *
      * @return string name
      */
-    public String getOpenTypeName() { return ENUM_TYPE_NAME; }
+    public String getOpenTypeName() {
+        return ENUM_TYPE_NAME;
+    }
 
 }

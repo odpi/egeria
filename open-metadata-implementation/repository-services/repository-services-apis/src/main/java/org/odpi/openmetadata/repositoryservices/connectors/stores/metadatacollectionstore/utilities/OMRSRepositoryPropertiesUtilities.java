@@ -727,6 +727,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @return map property value or null
      */
     @Override
+    @SuppressWarnings("unchecked")
     public Map<String, List<String>> getStringArrayStringMapFromProperty(String             sourceName,
                                                                          String             propertyName,
                                                                          InstanceProperties properties,

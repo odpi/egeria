@@ -19,13 +19,28 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum DataItemSortOrder implements Serializable
 {
+    /**
+     * Unknown - The sort order is not specified.
+     */
     UNKNOWN    (0, 99, "<Unknown>",  "The sort order is not specified."),
+
+    /**
+     * Ascending - The attribute instances are organized so that the smallest/lowest value is first and the rest of the instances follow in
+     * ascending order.
+     */
     ASCENDING  (1, 0, "Ascending",  "The attribute instances are organized so that the " +
-            "smallest/lowest value is first and the rest of the instances follow in " +
-            "ascending order."),
+            "smallest/lowest value is first and the rest of the instances follow in ascending order."),
+
+    /**
+     * Descending - The attribute instances are organized so that the largest/highest value is first and the rest of the instances follow in
+     * descending order.
+     */
     DESCENDING (2, 1, "Descending", "The attribute instances are organized so that the " +
-            "largest/highest value is first and the rest of the instances follow in " +
-            "descending order."),
+            "largest/highest value is first and the rest of the instances follow in descending order."),
+
+    /**
+     * Unsorted - The instances of the schema attribute may appear in any order.
+     */
     UNSORTED   (3, 99, "Unsorted",   "The instances of the schema attribute may appear in any order.");
 
 

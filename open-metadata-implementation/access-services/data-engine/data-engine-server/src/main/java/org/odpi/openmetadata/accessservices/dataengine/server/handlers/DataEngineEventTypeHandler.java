@@ -35,8 +35,7 @@ public class DataEngineEventTypeHandler {
     private final DataEngineCommonHandler dataEngineCommonHandler;
     private final DataEngineRegistrationHandler registrationHandler;
     private final DataEngineSchemaAttributeHandler dataEngineSchemaAttributeHandler;
-
-    public static final String EVENT_TYPE_GUID_PARAMETER_NAME = "eventTypeGUID";
+    protected static final String EVENT_TYPE_GUID_PARAMETER_NAME = "eventTypeGUID";
 
     /**
      * Construct the handler information needed to interact with the repository services
@@ -64,17 +63,15 @@ public class DataEngineEventTypeHandler {
      * @param eventType          the values of the event type
      * @param topicGUID          the unique identifier of the topic
      * @param externalSourceName the unique name of the external source
-     *
      * @return unique identifier of the event type in the repository
-     *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
     public String upsertEventType(String userId, EventType eventType, String topicGUID, String externalSourceName) throws
-                                                                                                                   InvalidParameterException,
-                                                                                                                   PropertyServerException,
-                                                                                                                   UserNotAuthorizedException {
+            InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException {
         final String methodName = "upsertEventType";
 
         validateParameters(userId, methodName, eventType.getQualifiedName(), eventType.getDisplayName());
@@ -98,7 +95,7 @@ public class DataEngineEventTypeHandler {
                     eventType.getQualifiedName(), eventType.getDisplayName(), eventType.getDescription(), eventType.getVersionNumber(),
                     eventType.getIsDeprecated(), eventType.getAuthor(), eventType.getUsage(), eventType.getEncodingStandard(),
                     eventType.getNamespace(), eventType.getAdditionalProperties(), EVENT_TYPE_TYPE_NAME, null,
-                    null, null, true,false, false, now, methodName);
+                    null, null, true, false, false, now, methodName);
         }
 
         List<Attribute> attributeList = eventType.getAttributeList();
@@ -120,7 +117,6 @@ public class DataEngineEventTypeHandler {
      * @param methodName    name of the calling method
      * @param qualifiedName the qualified name
      * @param displayName   the display name
-     *
      * @throws InvalidParameterException the bean properties are invalid
      */
     private void validateParameters(String userId, String methodName, String qualifiedName, String displayName) throws InvalidParameterException {
@@ -137,7 +133,6 @@ public class DataEngineEventTypeHandler {
      * @param qualifiedName      event type's qualified name
      * @param externalSourceName the external data engine name
      * @param deleteSemantic     the delete semantic
-     *
      * @throws InvalidParameterException     the bean properties are invalid
      * @throws UserNotAuthorizedException    user not authorized to issue this request
      * @throws PropertyServerException       problem accessing the property server
@@ -145,13 +140,13 @@ public class DataEngineEventTypeHandler {
      */
     public void removeEventType(String userId, String eventTypeGUID, String qualifiedName, String externalSourceName,
                                 DeleteSemantic deleteSemantic) throws FunctionNotSupportedException, InvalidParameterException,
-                                                                      PropertyServerException,
-                                                                      UserNotAuthorizedException {
+            PropertyServerException,
+            UserNotAuthorizedException {
         final String methodName = "removeEventType";
         dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         eventTypeHandler.removeEventType(userId, externalSourceGUID, externalSourceName, eventTypeGUID, EVENT_TYPE_GUID_PARAMETER_NAME, qualifiedName,
-              false, false, dataEngineCommonHandler.getNow(), methodName);
+                false, false, dataEngineCommonHandler.getNow(), methodName);
     }
 }

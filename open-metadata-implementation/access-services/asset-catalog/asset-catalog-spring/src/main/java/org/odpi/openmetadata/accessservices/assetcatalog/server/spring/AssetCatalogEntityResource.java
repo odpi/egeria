@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -33,23 +34,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name="Asset Catalog OMAS", description="The Asset Catalog OMAS provides services to search for data assets including data stores, event feeds, APIs, data sets.",
      externalDocs=@ExternalDocumentation(description="Asset Catalog Open Metadata Access Service (OMAS)",
-                                         url="https://egeria-project.org/services/omas/asset-catalog/overview/"))
-
+     url="https://egeria-project.org/services/omas/asset-catalog/overview/"))
 public class AssetCatalogEntityResource {
 
-    private AssetCatalogRESTService assetService = new AssetCatalogRESTService();
+    private final AssetCatalogRESTService assetService = new AssetCatalogRESTService();
 
     /**
      * Fetch asset's header, classification and properties
      *
-     * @param serverName unique identifier for requested server.
+     * @param serverName unique identifier for requested server
      * @param userId     the unique identifier for the user
      * @param assetGUID  the unique identifier for the asset
      * @param assetType  the type of the asset
      * @return the asset with its header and the list of associated classifications and specific properties
      */
-    @GetMapping(path = "/asset-details/{assetGUID}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/asset-details/{assetGUID}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "getAssetDetail", description = "Returns the asset",
+            externalDocs = @ExternalDocumentation(description = "Asset", url = "https://egeria-project.org/concepts/asset"))
     public AssetCatalogResponse getAssetDetail(@PathVariable("serverName") String serverName,
                                                @PathVariable("userId") String userId,
                                                @PathVariable("assetGUID") @NotBlank String assetGUID,
@@ -66,8 +67,10 @@ public class AssetCatalogEntityResource {
      * @param assetType  the asset type
      * @return the asset with its header and the list of associated classifications and relationship
      */
-    @GetMapping(path = "/asset-universe/{assetGUID}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/asset-universe/{assetGUID}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "getAssetUniverse", description = "Returns the asset universe, which means the asset details and the relationships it has",
+            externalDocs = @ExternalDocumentation(description = "Metadata Relationships",
+            url = "https://egeria-project.org/patterns/metadata-manager/categories-of-metadata/?h=relationships#metadata-relationships-and-classifications"))
     public AssetCatalogResponse getAssetUniverse(@PathVariable("serverName") String serverName,
                                                  @PathVariable("userId") String userId,
                                                  @PathVariable("assetGUID") @NotBlank String assetGUID,
@@ -87,8 +90,10 @@ public class AssetCatalogEntityResource {
      * @param pageSize         limit the number of the assets returned
      * @return list of relationships for the given asset
      */
-    @GetMapping(path = "/asset-relationships/{assetGUID}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/asset-relationships/{assetGUID}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "getAssetRelationships", description = "Returns the asset relationships",
+            externalDocs = @ExternalDocumentation(description = "Metadata Relationships",
+            url = "https://egeria-project.org/patterns/metadata-manager/categories-of-metadata/?h=relationships#metadata-relationships-and-classifications"))
     public RelationshipListResponse getAssetRelationships(@PathVariable("serverName") String serverName,
                                                           @PathVariable("userId") String userId,
                                                           @PathVariable("assetGUID") @NotBlank String assetGUID,
@@ -111,6 +116,9 @@ public class AssetCatalogEntityResource {
      */
     @GetMapping(path = "/asset-classifications/{assetGUID}",
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "getClassificationsForAsset", description = "Returns the classifications that exists on the asset",
+            externalDocs = @ExternalDocumentation(description = "Metadata Classifications",
+            url = "https://egeria-project.org/patterns/metadata-manager/categories-of-metadata/?h=relationships#metadata-relationships-and-classifications"))
     public ClassificationListResponse getClassificationsForAsset(@PathVariable("serverName") String serverName,
                                                                  @PathVariable("userId") String userId,
                                                                  @PathVariable("assetGUID") @NotBlank String assetGUID,
@@ -125,10 +133,14 @@ public class AssetCatalogEntityResource {
      * @param serverName       unique identifier for requested server.
      * @param userId           the unique identifier for the user
      * @param searchCriteria   a string expression of the characteristics of the required assets
-     * @param searchParameters constrains to make the assets's search results more precise
-     * @return list of properties used to narrow the search
+     * @param searchParameters constrains to make the assets' search results more precise
+     * @return list of found assets
      */
+
     @PostMapping(path = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "searchByType", description = "Returns a list of assets based on the given search criteria",
+            externalDocs = @ExternalDocumentation(description = "Search by type Javadoc",
+            url = "https://odpi.github.io/egeria/org/odpi/openmetadata/accessservices/assetcatalog/service/AssetCatalogRESTService.html#searchByType(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters)"))
     public AssetListResponse searchByType(@PathVariable("serverName") String serverName,
                                           @PathVariable("userId") String userId,
                                           @RequestParam("searchCriteria") @NotBlank String searchCriteria,
@@ -147,6 +159,9 @@ public class AssetCatalogEntityResource {
      */
     @GetMapping(path = "/assets-by-type-name/{typeName}",
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "getAssetsByTypeName", description = "Returns a list of assets based on the given search criteria, using the type name",
+            externalDocs = @ExternalDocumentation(description = "Search by type name Javadoc",
+            url = "https://odpi.github.io/egeria/org/odpi/openmetadata/accessservices/assetcatalog/service/AssetCatalogRESTService.html#searchByTypeName(java.lang.String,java.lang.String,java.lang.String)"))
     public AssetListResponse getAssetsByTypeName(@PathVariable("serverName") String serverName,
                                                  @PathVariable("userId") String userId,
                                                  @PathVariable("typeName") @NotBlank String typeName) {
@@ -163,6 +178,9 @@ public class AssetCatalogEntityResource {
      */
     @GetMapping(path = "/assets-by-type-guid/{typeGUID}",
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "getAssetsByTypeGUID", description = "Returns a list of assets based on the given search criteria, using the type GUID",
+            externalDocs = @ExternalDocumentation(description = "Search by type GUID Javadoc",
+            url = "https://odpi.github.io/egeria/org/odpi/openmetadata/accessservices/assetcatalog/service/AssetCatalogRESTService.html#searchByTypeGUID(java.lang.String,java.lang.String,java.lang.String)"))
 
     public AssetListResponse getAssetsByTypeGUID(@PathVariable("serverName") String serverName,
                                                  @PathVariable("userId") String userId,
@@ -182,6 +200,9 @@ public class AssetCatalogEntityResource {
      */
     @GetMapping(path = "/asset-context/{assetGUID}",
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "getAssetContext", description = "Returns the entities that are attached to the given one",
+            externalDocs = @ExternalDocumentation(description = "Get attached entities Javadoc",
+            url = "https://odpi.github.io/egeria/org/odpi/openmetadata/commonservices/generichandlers/OpenMetadataAPIGenericHandler.html#getAttachedFilteredEntities(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,boolean,java.util.Set,java.lang.String,int,boolean,boolean,int,boolean,boolean,java.util.Date,java.lang.String)"))
     public AssetResponse getAssetContext(@PathVariable("serverName") String serverName,
                                              @PathVariable("userId") String userId,
                                              @PathVariable("assetGUID") @NotBlank String assetGUID,
@@ -199,14 +220,28 @@ public class AssetCatalogEntityResource {
      */
     @GetMapping(path = "/supportedTypes",
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "getSupportedTypes", description = "Returns the Open Metadata Types that are supported by the Asset Catalog OMAS",
+            externalDocs = @ExternalDocumentation(description = "The open metadata type system",
+            url = "https://egeria-project.org/types/"))
     public AssetCatalogSupportedTypes getSupportedTypes(@PathVariable("serverName") String serverName,
                                                         @PathVariable("userId") String userId,
                                                         @RequestParam(name = "type", required = false) @Nullable String type) {
         return assetService.getSupportedTypes(serverName, userId, type);
     }
 
+    /**
+     * Returns the out topic connection.
+     *
+     * @param serverName the server name
+     * @param userId     the user id
+     * @param callerId   the caller id
+     * @return the out topic connection
+     */
     @GetMapping(path = "/topics/out-topic-connection/{callerId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "getOutTopicConnection", description = "Returns the OutTopic connection",
+            externalDocs = @ExternalDocumentation(description = "OMAS OutTopic",
+            url = "https://egeria-project.org/concepts/out-topic/"))
     public ConnectionResponse getOutTopicConnection(@PathVariable("serverName") String serverName,
                                                     @PathVariable("userId") String userId,
                                                     @PathVariable("callerId") String callerId) {

@@ -26,7 +26,7 @@ import java.util.List;
  */
 public class UserIdentityManagement extends CommunityProfileBaseClient implements UserIdentityManagementInterface
 {
-    private final String urlTemplatePrefix = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/user-identities";
+    private final String urlTemplatePrefix = baseURLTemplatePrefix + "/user-identities";
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.

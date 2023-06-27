@@ -5,10 +5,7 @@ package org.odpi.openmetadata.accessservices.assetowner.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaAttributeProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaTypeProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.TemplateProperties;
+import org.odpi.openmetadata.accessservices.assetowner.properties.*;
 import org.odpi.openmetadata.accessservices.assetowner.rest.*;
 import org.odpi.openmetadata.accessservices.assetowner.server.AssetOwnerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
@@ -23,8 +20,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-owner/users/{userId}")
 
-@Tag(name="Asset Owner OMAS", description="The Asset Owner OMAS provides APIs and notifications for tools and applications supporting the work of Asset Owners in protecting and enhancing their assets.\n" +
-        "\n", externalDocs=@ExternalDocumentation(description="Asset Owner Open Metadata Access Service (OMAS)",url="https://egeria-project.org/services/omas/asset-owner/overview/"))
+@Tag(name="Asset Owner OMAS",
+     description="The Asset Owner OMAS provides APIs and notifications for tools and applications supporting the work of " +
+                                                  "Asset Owners in protecting and enhancing their assets.",
+     externalDocs=@ExternalDocumentation(description="Asset Owner Open Metadata Access Service (OMAS)",
+                                         url="https://egeria-project.org/services/omas/asset-owner/overview/"))
 
 public class AssetOwnerResource
 {
@@ -167,6 +167,183 @@ public class AssetOwnerResource
     }
 
 
+
+
+    /**
+     * Link two asset together.
+     * Use information from the relationship type definition to ensure the fromAssetGUID and toAssetGUID are the right way around.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to create
+     * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
+     * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
+     * @param requestBody unique identifier for this relationship
+     *
+     * @return unique identifier of the relationship or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/assets/relationships/{relationshipTypeName}/from-asset/{fromAssetGUID}/to-asset/{toAssetGUID}")
+
+    public GUIDResponse setupRelatedAsset(@PathVariable String                  serverName,
+                                          @PathVariable String                  userId,
+                                          @PathVariable String                  relationshipTypeName,
+                                          @PathVariable String                  fromAssetGUID,
+                                          @PathVariable String                  toAssetGUID,
+                                          @RequestBody(required = false)
+                                                        RelationshipRequestBody requestBody)
+    {
+        return restAPI.setupRelatedAsset(serverName, userId, relationshipTypeName, fromAssetGUID, toAssetGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the relationship between two elements.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to create
+     * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
+     * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
+     * @param requestBody optional date for effective time of the query.  Null means any effective time
+     *
+     * @return unique identifier and properties of the relationship or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/assets/relationships/{relationshipTypeName}/from-asset/{fromAssetGUID}/to-asset/{toAssetGUID}/retrieve")
+
+    public RelationshipElementResponse getAssetRelationship(@PathVariable String                        serverName,
+                                                            @PathVariable String                        userId,
+                                                            @PathVariable String                        relationshipTypeName,
+                                                            @PathVariable String                        fromAssetGUID,
+                                                            @PathVariable String                        toAssetGUID,
+                                                            @RequestBody(required = false)  EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getAssetRelationship(serverName, userId, relationshipTypeName, fromAssetGUID, toAssetGUID, requestBody);
+    }
+
+
+    /**
+     * Update relationship between two elements.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to update
+     * @param relationshipGUID unique identifier of the relationship
+     * @param isMergeUpdate should the new properties be merged with the existing properties, or replace them entirely
+     * @param requestBody description and/or purpose of the relationship
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/assets/relationships/{relationshipTypeName}/{relationshipGUID}/update")
+
+    public VoidResponse updateAssetRelationship(@PathVariable String                  serverName,
+                                                @PathVariable String                  userId,
+                                                @PathVariable String                  relationshipTypeName,
+                                                @PathVariable String                  relationshipGUID,
+                                                @RequestParam boolean                 isMergeUpdate,
+                                                @RequestBody(required = false)
+                                                              RelationshipRequestBody requestBody)
+    {
+        return restAPI.updateAssetRelationship(serverName, userId, relationshipTypeName, relationshipGUID, isMergeUpdate, requestBody);
+    }
+
+
+    /**
+     * Remove the relationship between two elements.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to delete
+     * @param relationshipGUID unique identifier of the relationship
+     * @param requestBody external source ids
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/assets/relationships/{relationshipTypeName}/{relationshipGUID}/remove")
+
+    public VoidResponse clearAssetRelationship(@PathVariable String                        serverName,
+                                               @PathVariable String                        userId,
+                                               @PathVariable String                        relationshipTypeName,
+                                               @PathVariable String                        relationshipGUID,
+                                               @RequestBody(required = false)
+                                                             EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.clearAssetRelationship(serverName, userId, relationshipTypeName, relationshipGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the requested relationships linked from a specific element at end 2.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to delete
+     * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
+     * @param startFrom start position for results
+     * @param pageSize     maximum number of results
+     * @param requestBody effective time
+     *
+     * @return unique identifier and properties of the relationships or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/assets/relationships/{relationshipTypeName}/from-asset/{fromAssetGUID}/retrieve/end2")
+
+    public RelationshipElementsResponse getRelatedAssetsAtEnd2(@PathVariable String                        serverName,
+                                                               @PathVariable String                        userId,
+                                                               @PathVariable String                        relationshipTypeName,
+                                                               @PathVariable String                        fromAssetGUID,
+                                                               @RequestParam int                           startFrom,
+                                                               @RequestParam int                           pageSize,
+                                                               @RequestBody(required = false)  EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getRelatedAssetsAtEnd2(serverName, userId, relationshipTypeName, fromAssetGUID, startFrom, pageSize, requestBody);
+    }
+
+
+    /**
+     * Retrieve the relationships linked from a specific element at end 2 of the relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to delete
+     * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
+     * @param startFrom start position for results
+     * @param pageSize     maximum number of results
+     * @param requestBody the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @return unique identifier and properties of the relationships or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/assets/assets/relationships/{relationshipTypeName}/to-asset/{toAssetGUID}/retrieve/end1")
+
+    public RelationshipElementsResponse getRelatedAssetsAtEnd1(@PathVariable String                        serverName,
+                                                               @PathVariable String                        userId,
+                                                               @PathVariable String                        relationshipTypeName,
+                                                               @PathVariable String                        toAssetGUID,
+                                                               @RequestParam int                           startFrom,
+                                                               @RequestParam int                           pageSize,
+                                                               @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getRelatedAssetsAtEnd1(serverName, userId, relationshipTypeName, toAssetGUID, startFrom, pageSize, requestBody);
+    }
+
+
+
     /**
      * Stores the supplied schema details in the catalog and attaches it to the asset.  If another schema is currently
      * attached to the asset, it is unlinked and deleted.  If more attributes need to be added in addition to the
@@ -246,31 +423,6 @@ public class AssetOwnerResource
 
 
     /**
-     * Stores the supplied schema type in the catalog and attaches it to the asset.  If another schema is currently
-     * attached to the asset, it is unlinked and deleted.
-     *
-     * @param serverName name of the server instance to connect to
-     * @param userId calling user
-     * @param assetGUID unique identifier of the asset that the schema is to be attached to
-     * @param schemaType schema type to create and attach directly to the asset.
-     *
-     * @return guid of the new schema type or
-     * InvalidParameterException full path or userId is null, or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/assets/{assetGUID}/schemas/top-level-schema-type")
-    @Deprecated
-    public GUIDResponse   addSchemaTypeToAsset(@PathVariable String                serverName,
-                                               @PathVariable String                userId,
-                                               @PathVariable String                assetGUID,
-                                               @RequestBody  SchemaTypeRequestBody schemaType)
-    {
-        return restAPI.addSchemaTypeToAsset(serverName, userId, assetGUID, schemaType);
-    }
-
-
-    /**
      * Links the supplied schema type directly to the asset.  If this schema is either not found, or
      * already attached to an asset, then an error occurs.  If another schema is currently
      * attached to the asset, it is unlinked and deleted.
@@ -335,7 +487,7 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/assets/{assetGUID}/schemas/top-level-schema-type/delete")
+    @PostMapping(path = "/assets/{assetGUID}/schemas/delete")
 
     public VoidResponse  deleteAssetSchemaType(@PathVariable                  String          serverName,
                                                @PathVariable                  String          userId,
@@ -346,32 +498,363 @@ public class AssetOwnerResource
     }
 
 
-    /**
-     * Adds attributes to a complex schema type like a relational table, avro schema or a structured document.
-     * This method can be called repeatedly to add many attributes to a schema.
-     *
-     * @param serverName name of the server instance to connect to
-     * @param userId calling user
-     * @param assetGUID unique identifier of the asset that the schema is to be attached to
-     * @param parentGUID unique identifier of the schema element to anchor these attributes to.
-     * @param schemaAttributes list of schema attribute objects.
-     *
-     * @return list of unique identifiers for the new schema attributes returned in the same order as the supplied attribute or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
+    /* =====================================================================================================================
+     * A schemaType describes the structure of a data asset, process or port
      */
-    @PostMapping(path = "/assets/{assetGUID}/schemas/{parentGUID}/schema-attributes/list/deprecated")
 
-    public VoidResponse addSchemaAttributes(@PathVariable String                      serverName,
-                                            @PathVariable String                      userId,
-                                            @PathVariable String                      assetGUID,
-                                            @PathVariable String                      parentGUID,
-                                            @RequestBody  SchemaAttributesRequestBody schemaAttributes)
+    /**
+     * Create a new metadata element to represent a schema type.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param anchorGUID unique identifier of the intended anchor of the schema type
+     * @param requestBody properties about the schema type to store
+     *
+     * @return unique identifier of the new schema type
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/schema-types")
+
+    public GUIDResponse createSchemaType(@PathVariable String               serverName,
+                                         @PathVariable String               userId,
+                                         @RequestParam (required = false, defaultValue = "null")
+                                                       String               anchorGUID,
+                                         @RequestBody  SchemaTypeProperties requestBody)
     {
-        return restAPI.addSchemaAttributes(serverName, userId, assetGUID, parentGUID, schemaAttributes);
+        return restAPI.createSchemaType(serverName, userId, anchorGUID, requestBody);
     }
 
+
+    /**
+     * Create a new metadata element to represent a schema type using an existing metadata element as a template.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param requestBody properties that override the template
+     *
+     * @return unique identifier of the new schema type
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/schema-types/from-template/{templateGUID}")
+
+    public GUIDResponse createSchemaTypeFromTemplate(@PathVariable String              serverName,
+                                                     @PathVariable String              userId,
+                                                     @PathVariable String              templateGUID,
+                                                     @RequestBody  TemplateRequestBody requestBody)
+    {
+        return restAPI.createSchemaTypeFromTemplate(serverName, userId, templateGUID, requestBody);
+    }
+
+
+    /**
+     * Update the metadata element representing a schema type.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param schemaTypeGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param requestBody new properties for the metadata element
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/schema-types/{schemaTypeGUID}")
+
+    public VoidResponse updateSchemaType(@PathVariable String                serverName,
+                                         @PathVariable String                userId,
+                                         @PathVariable String                schemaTypeGUID,
+                                         @RequestParam boolean               isMergeUpdate,
+                                         @RequestBody  SchemaTypeProperties  requestBody)
+    {
+        return restAPI.updateSchemaType(serverName, userId, schemaTypeGUID, isMergeUpdate, requestBody);
+    }
+
+
+    /**
+     * Connect a schema type to a data asset, process or port.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param schemaTypeGUID unique identifier of the schema type to connect
+     * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
+     * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
+     * @param requestBody unique identifier/name of software server capability representing the caller
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/parents/{parentElementGUID}/{parentElementTypeName}/schema-types/{schemaTypeGUID}")
+
+    public VoidResponse setupSchemaTypeParent(@PathVariable String                        serverName,
+                                              @PathVariable String                        userId,
+                                              @PathVariable String                        parentElementGUID,
+                                              @PathVariable String                        parentElementTypeName,
+                                              @PathVariable String                        schemaTypeGUID,
+                                              @RequestBody  (required=false)
+                                                            RelationshipRequestBody       requestBody)
+    {
+        return restAPI.setupSchemaTypeParent(serverName, userId, parentElementGUID, parentElementTypeName, schemaTypeGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the relationship between a schema type and its parent data asset, process or port.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param schemaTypeGUID unique identifier of the schema type to connect
+     * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
+     * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
+     * @param requestBody unique identifier/name of software server capability representing the caller
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/parents/{parentElementGUID}/{parentElementTypeName}/schema-types/{schemaTypeGUID}/remove")
+
+    public VoidResponse clearSchemaTypeParent(@PathVariable String                        serverName,
+                                              @PathVariable String                        userId,
+                                              @PathVariable String                        parentElementGUID,
+                                              @PathVariable String                        parentElementTypeName,
+                                              @PathVariable String                        schemaTypeGUID,
+                                              @RequestBody  (required=false)
+                                                            EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.clearSchemaTypeParent(serverName, userId, parentElementGUID, parentElementTypeName, schemaTypeGUID, requestBody);
+    }
+
+
+
+
+    /**
+     * Create a relationship between two schema elements.  The name of the desired relationship, and any properties (including effectivity dates)
+     * are passed on the API.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param relationshipTypeName type of the relationship to create
+     * @param requestBody relationship properties
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/schema-elements/{endOneGUID}/relationships/{relationshipTypeName}/schema-elements/{endTwoGUID}")
+
+    public VoidResponse setupSchemaElementRelationship(@PathVariable String                         serverName,
+                                                       @PathVariable String                         userId,
+                                                       @PathVariable String                         endOneGUID,
+                                                       @PathVariable String                         relationshipTypeName,
+                                                       @PathVariable String                         endTwoGUID,
+                                                       @RequestBody  (required=false)
+                                                                     RelationshipRequestBody        requestBody)
+    {
+        return restAPI.setupSchemaElementRelationship(serverName, userId, endOneGUID, relationshipTypeName, endTwoGUID, requestBody);
+    }
+
+
+    /**
+     * Remove a relationship between two schema elements.  The name of the desired relationship is passed on the API.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param endOneGUID unique identifier of the schema element at end one of the relationship
+     * @param endTwoGUID unique identifier of the schema element at end two of the relationship
+     * @param relationshipTypeName type of the relationship to delete
+     * @param requestBody unique identifier/name of software server capability representing the caller
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/schema-elements/{endOneGUID}/relationships/{relationshipTypeName}/schema-elements/{endTwoGUID}/remove")
+
+    public VoidResponse clearSchemaElementRelationship(@PathVariable String                        serverName,
+                                                       @PathVariable String                        userId,
+                                                       @PathVariable String                        endOneGUID,
+                                                       @PathVariable String                        relationshipTypeName,
+                                                       @PathVariable String                        endTwoGUID,
+                                                       @RequestBody  (required=false)
+                                                                     EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.clearSchemaElementRelationship(serverName, userId, endOneGUID, relationshipTypeName, endTwoGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the metadata element representing a schema type.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param schemaTypeGUID unique identifier of the metadata element to remove
+     * @param requestBody unique identifier/name of software server capability representing the caller and external identifier of element
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/schema-types/{schemaTypeGUID}/remove")
+
+    public VoidResponse removeSchemaType(@PathVariable String            serverName,
+                                         @PathVariable String            userId,
+                                         @PathVariable String            schemaTypeGUID,
+                                         @RequestBody  (required=false)
+                                                       UpdateRequestBody requestBody)
+    {
+        return restAPI.removeSchemaType(serverName, userId, schemaTypeGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of schema type metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody string to find in the properties plus external identifiers
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/schema-types/by-search-string")
+
+    public SchemaTypeElementsResponse findSchemaType(@PathVariable String                  serverName,
+                                                     @PathVariable String                  userId,
+                                                     @RequestParam int                     startFrom,
+                                                     @RequestParam int                     pageSize,
+                                                     @RequestBody  SearchStringRequestBody requestBody)
+    {
+        return restAPI.findSchemaType(serverName, userId, startFrom, pageSize, requestBody);
+    }
+
+
+    /**
+     * Return the schema type associated with a specific open metadata element (data asset, process or port).
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
+     * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
+     * @param requestBody unique identifier/name of software server capability representing the caller
+     *
+     * @return metadata element describing the schema type associated with the requested parent element or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/parents/{parentElementTypeName}/{parentElementGUID}/schema-types/retrieve")
+
+    public SchemaTypeElementResponse getSchemaTypeForElement(@PathVariable String                        serverName,
+                                                             @PathVariable String                        userId,
+                                                             @PathVariable String                        parentElementGUID,
+                                                             @PathVariable String                        parentElementTypeName,
+                                                             @RequestBody(required = false)
+                                                                           EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getSchemaTypeForElement(serverName, userId, parentElementGUID, parentElementTypeName, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of schema type metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody name to search for plus identifiers
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/schema-types/by-name")
+
+    public SchemaTypeElementsResponse   getSchemaTypeByName(@PathVariable String          serverName,
+                                                            @PathVariable String          userId,
+                                                            @RequestParam int             startFrom,
+                                                            @RequestParam int             pageSize,
+                                                            @RequestBody  NameRequestBody requestBody)
+    {
+        return restAPI.getSchemaTypeByName(serverName, userId, startFrom, pageSize, requestBody);
+    }
+
+
+    /**
+     * Retrieve the schema type metadata element with the supplied unique identifier.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param schemaTypeGUID unique identifier of the requested metadata element
+     * @param requestBody unique identifier/name of software server capability representing the caller
+     *
+     * @return requested metadata element or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/schema-types/{schemaTypeGUID}/retrieve")
+
+    public SchemaTypeElementResponse getSchemaTypeByGUID(@PathVariable String                        serverName,
+                                                         @PathVariable String                        userId,
+                                                         @PathVariable String                        schemaTypeGUID,
+                                                         @RequestBody(required = false)
+                                                                       EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getSchemaTypeByGUID(serverName, userId, schemaTypeGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the header of the metadata element connected to a schema type.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param schemaTypeGUID unique identifier of the requested metadata element
+     * @param requestBody unique identifier/name of software server capability representing the caller
+     *
+     * @return header for parent element (data asset, process, port) or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/parents/schema-types/{schemaTypeGUID}/retrieve")
+
+    public ElementHeaderResponse getSchemaTypeParent(@PathVariable String                        serverName,
+                                                     @PathVariable String                        userId,
+                                                     @PathVariable String                        schemaTypeGUID,
+                                                     @RequestBody(required = false)
+                                                                   EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getSchemaTypeParent(serverName, userId, schemaTypeGUID, requestBody);
+    }
+
+
+    /* ===============================================================================
+     * A schemaType typically contains many schema attributes, linked with relationships.
+     */
 
 
     /**
@@ -417,45 +900,246 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/assets/{assetGUID}/schemas/{parentGUID}/schema-attributes/deprecated")
-    @Deprecated
-    public GUIDResponse addSchemaAttribute(@PathVariable String                     serverName,
-                                           @PathVariable String                     userId,
-                                           @PathVariable String                     assetGUID,
-                                           @PathVariable String                     parentGUID,
-                                           @RequestBody  SchemaAttributeRequestBody schemaAttribute)
-    {
-        return restAPI.addSchemaAttribute(serverName, userId, assetGUID, parentGUID, schemaAttribute);
-    }
-
-
-    /**
-     * Adds the attribute to a complex schema type like a relational table, avro schema or a structured document.
-     * This method can be called repeatedly to add many attributes to a schema.  The GUID returned can be used to add
-     * nested attributes.
-     *
-     * @param serverName name of the server instance to connect to
-     * @param userId calling user
-     * @param assetGUID unique identifier of the asset that the schema is to be attached to
-     * @param parentGUID unique identifier of the schema element to anchor these attributes to.
-     * @param schemaAttribute schema attribute object.
-     *
-     * @return list of unique identifiers for the new schema attributes returned in the same order as the supplied attribute or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
     @PostMapping(path = "/assets/{assetGUID}/schemas/{parentGUID}/schema-attributes")
 
     public GUIDResponse addSchemaAttribute(@PathVariable String                   serverName,
                                            @PathVariable String                   userId,
                                            @PathVariable String                   assetGUID,
                                            @PathVariable String                   parentGUID,
-                                           @RequestBody SchemaAttributeProperties schemaAttribute)
+                                           @RequestBody  SchemaAttributeProperties schemaAttribute)
     {
         return restAPI.addSchemaAttribute(serverName, userId, assetGUID, parentGUID, schemaAttribute);
     }
 
+
+    /**
+     * Create a new metadata element to represent a schema attribute using an existing metadata element as a template.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param schemaElementGUID unique identifier of the schemaType or Schema Attribute where the schema attribute is connected to
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param requestBody properties that override the template
+     *
+     * @return unique identifier of the new metadata element for the schema attribute or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/schema-elements/{schemaElementGUID}/schema-attributes/from-template/{templateGUID}")
+
+    public GUIDResponse createSchemaAttributeFromTemplate(@PathVariable String              serverName,
+                                                          @PathVariable String              userId,
+                                                          @PathVariable String              schemaElementGUID,
+                                                          @PathVariable String              templateGUID,
+                                                          @RequestBody  TemplateRequestBody requestBody)
+    {
+        return restAPI.createSchemaAttributeFromTemplate(serverName, userId, schemaElementGUID, templateGUID, requestBody);
+    }
+
+
+    /**
+     * Update the properties of the metadata element representing a schema attribute.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param schemaAttributeGUID unique identifier of the schema attribute to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param requestBody new properties for the schema attribute
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/schema-attributes/{schemaAttributeGUID}")
+
+    public VoidResponse updateSchemaAttribute(@PathVariable String                     serverName,
+                                              @PathVariable String                     userId,
+                                              @PathVariable String                     schemaAttributeGUID,
+                                              @RequestParam boolean                    isMergeUpdate,
+                                              @RequestBody  SchemaAttributeProperties  requestBody)
+    {
+        return restAPI.updateSchemaAttribute(serverName, userId, schemaAttributeGUID, isMergeUpdate, requestBody);
+    }
+
+
+    /**
+     * Classify the schema type (or attribute if type is embedded) to indicate that it is a calculated value.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param schemaElementGUID unique identifier of the metadata element to update
+     * @param requestBody unique identifier/name of software server capability representing the caller and external identifier of element
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/schema-elements/{schemaElementGUID}/is-calculated-value")
+
+    public VoidResponse setSchemaElementAsCalculatedValue(@PathVariable String                                   serverName,
+                                                          @PathVariable String                                   userId,
+                                                          @PathVariable String                                   schemaElementGUID,
+                                                          @RequestBody  CalculatedValueClassificationRequestBody requestBody)
+    {
+        return restAPI.setSchemaElementAsCalculatedValue(serverName, userId, schemaElementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the calculated value designation from the schema element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param schemaElementGUID unique identifier of the metadata element to update
+     * @param requestBody unique identifier/name of software server capability representing the caller and external identifier of element
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/schema-elements/{schemaElementGUID}/is-calculated-value/remove")
+
+    public VoidResponse clearSchemaElementAsCalculatedValue(@PathVariable String            serverName,
+                                                            @PathVariable String            userId,
+                                                            @PathVariable String            schemaElementGUID,
+                                                            @RequestBody  UpdateRequestBody requestBody)
+    {
+        return restAPI.clearSchemaElementAsCalculatedValue(serverName, userId, schemaElementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the metadata element representing a schema attribute.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param schemaAttributeGUID unique identifier of the metadata element to remove
+     * @param requestBody unique identifier/name of software server capability representing the caller and external identifier of element
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/schema-attributes/{schemaAttributeGUID}/remove")
+
+    public VoidResponse removeSchemaAttribute(@PathVariable String            serverName,
+                                              @PathVariable String            userId,
+                                              @PathVariable String            schemaAttributeGUID,
+                                              @RequestBody  UpdateRequestBody requestBody)
+    {
+        return restAPI.removeSchemaAttribute(serverName, userId, schemaAttributeGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of schema attribute metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody string to find in the properties plus external identifiers
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/schema-attributes/by-search-string")
+
+    public SchemaAttributeElementsResponse findSchemaAttributes(@PathVariable String                  serverName,
+                                                                @PathVariable String                  userId,
+                                                                @RequestParam int                     startFrom,
+                                                                @RequestParam int                     pageSize,
+                                                                @RequestBody  SearchStringRequestBody requestBody)
+    {
+        return restAPI.findSchemaAttributes(serverName, userId, startFrom, pageSize, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of schema attributes associated with a schema element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param parentSchemaElementGUID unique identifier of the schema element of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody unique identifier/name of software server capability representing the caller
+     *
+     * @return list of associated metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/schema-elements/{parentSchemaElementGUID}/schema-attributes/retrieve")
+
+    public SchemaAttributeElementsResponse getNestedAttributes(@PathVariable String                        serverName,
+                                                               @PathVariable String                        userId,
+                                                               @PathVariable String                        parentSchemaElementGUID,
+                                                               @RequestParam int                           startFrom,
+                                                               @RequestParam int                           pageSize,
+                                                               @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getNestedAttributes(serverName, userId, parentSchemaElementGUID, startFrom, pageSize, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of schema attribute metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody unique identifier/name of software server capability representing the caller
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/schema-attributes/by-name")
+
+    public SchemaAttributeElementsResponse getSchemaAttributesByName(@PathVariable String          serverName,
+                                                                     @PathVariable String          userId,
+                                                                     @RequestParam int             startFrom,
+                                                                     @RequestParam int             pageSize,
+                                                                     @RequestBody  NameRequestBody requestBody)
+    {
+        return restAPI.getSchemaAttributesByName(serverName, userId, startFrom, pageSize, requestBody);
+    }
+
+
+    /**
+     * Retrieve the schema attribute metadata element with the supplied unique identifier.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param schemaAttributeGUID unique identifier of the requested metadata element
+     * @param requestBody unique identifier/name of software server capability representing the caller
+     *
+     * @return matching metadata element or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/schema-attributes/{schemaAttributeGUID}/retrieve")
+
+    public SchemaAttributeElementResponse getSchemaAttributeByGUID(@PathVariable String                        serverName,
+                                                                   @PathVariable String                        userId,
+                                                                   @PathVariable String                        schemaAttributeGUID,
+                                                                   @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getSchemaAttributeByGUID(serverName, userId, schemaAttributeGUID, requestBody);
+    }
 
     /**
      * Adds a connection to an asset.  Assets can have multiple connections attached.
@@ -507,11 +1191,11 @@ public class AssetOwnerResource
      */
     @PostMapping(path = "/assets/{assetGUID}/meanings/{glossaryTermGUID}")
 
-    public VoidResponse  addSemanticAssignment(@PathVariable                  String          serverName,
-                                               @PathVariable                  String          userId,
-                                               @PathVariable                  String          assetGUID,
-                                               @PathVariable                  String          glossaryTermGUID,
-                                               @RequestBody(required = false) NullRequestBody requestBody)
+    public VoidResponse  addSemanticAssignment(@PathVariable                  String                       serverName,
+                                               @PathVariable                  String                       userId,
+                                               @PathVariable                  String                       assetGUID,
+                                               @PathVariable                  String                       glossaryTermGUID,
+                                               @RequestBody(required = false) SemanticAssignmentProperties requestBody)
     {
         return restAPI.addSemanticAssignment(serverName,
                                              userId,
@@ -1095,7 +1779,6 @@ public class AssetOwnerResource
     /**
      * Deletes an asset and all of its associated elements such as schema, connections (unless they are linked to
      * another asset), discovery reports and associated feedback.
-     *
      * Given the depth of the elements deleted by this call, it should be used with care.
      *
      * @param serverName name of the server instance to connect to

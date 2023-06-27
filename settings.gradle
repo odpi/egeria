@@ -238,6 +238,8 @@ include(':open-metadata-implementation:view-services:glossary-browser:glossary-b
 include(':open-metadata-implementation:view-services:glossary-browser:glossary-browser-spring')
 include(':open-metadata-implementation:view-services:glossary-workflow:glossary-workflow-server')
 include(':open-metadata-implementation:view-services:glossary-workflow:glossary-workflow-spring')
+include(':open-metadata-implementation:view-services:my-profile:my-profile-server')
+include(':open-metadata-implementation:view-services:my-profile:my-profile-spring')
 include(':open-metadata-implementation:view-services:server-author-view:server-author-view-api')
 include(':open-metadata-implementation:view-services:server-author-view:server-author-view-server')
 include(':open-metadata-implementation:view-services:server-author-view:server-author-view-spring')

@@ -65,9 +65,7 @@ public class DataEngineConnectionAndEndpointHandler {
     private static final String PROPER_CONNECTOR_TYPE_FOUND = "A proper ConnectorType for the asset type name [{}] was found: [{}].";
     private static final String EXISTING_ENDPOINT_NOT_FOUND = "Existing Endpoint [{}] for asset [{}] was not found and could not be updated.";
     private static final String ACCESS_INFORMATION = "Access information to connect to the actual asset: ";
-    public static final String CONNECTION_GUID_PARAMETER_NAME = "connectionGUID";
-
-
+    private static final String CONNECTION_GUID_PARAMETER_NAME = "connectionGUID";
     private final InvalidParameterHandler invalidParameterHandler;
     private final OMRSRepositoryHelper repositoryHelper;
     private final String serviceName;

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.dataengine.server.admin;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import org.odpi.openmetadata.accessservices.dataengine.connectors.intopic.DataEngineInTopicClientProvider;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.Collection;
@@ -22,7 +23,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.RelationalColumn;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.Topic;
-import org.odpi.openmetadata.accessservices.dataengine.server.converters.CollectionCoverter;
+import org.odpi.openmetadata.accessservices.dataengine.server.converters.CollectionConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.ConnectionConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.ConnectorTypeConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.DataFileConverter;
@@ -133,14 +134,6 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
 
     /**
      * -- GETTER --
-     * Returns the connection used in the client to create a connector that produces events on the input topic.
-     * @return connection object for client
-     */
-    @Getter
-    private final Connection inTopicConnection;
-
-    /**
-     * -- GETTER --
      * Returns the Data Engine file handler.
      * @return the Data Engine file handler
      */
@@ -221,9 +214,8 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
 
 
         super(description.getAccessServiceFullName(), repositoryConnector, supportedZones, defaultZones, null, auditLog,
-                localServerUserId, maxPageSize);
-
-        this.inTopicConnection = inTopicConnection;
+              localServerUserId, maxPageSize, DataEngineInTopicClientProvider.class.getName(), inTopicConnection,
+              null, null);
 
         if (repositoryHandler == null) {
             final String methodName = "new ServiceInstance";
@@ -237,7 +229,7 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
                 securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
 
         final OpenMetadataAPIGenericHandler<Collection> collectionOpenMetadataAPIGenericHandler =
-                new OpenMetadataAPIGenericHandler<>(new CollectionCoverter<>(repositoryHelper, serviceName, serverName), Collection.class,
+                new OpenMetadataAPIGenericHandler<>(new CollectionConverter<>(repositoryHelper, serviceName, serverName), Collection.class,
                         serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId,
                         securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
 

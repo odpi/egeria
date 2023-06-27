@@ -211,7 +211,7 @@
 			"response": []
 		},
 		{
-			"name": "Get registered governance services",
+			"name": "Get governance services",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -235,7 +235,7 @@
 			"response": []
 		},
 		{
-			"name": "Get registered common services",
+			"name": "Get common services",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -259,7 +259,7 @@
 			"response": []
 		},
 		{
-			"name": "Get all registered services",
+			"name": "Get all services",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -624,7 +624,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/connector-types/org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider",
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/connector-types/org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaPlatformSecurityProvider",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -632,10 +632,10 @@
 						"open-metadata",
 						"platform-services",
 						"users",
-						"{{user}}",
+						"{{adminUserId}}",
 						"server-platform",
 						"connector-types",
-						"org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider"
+						"org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaPlatformSecurityProvider"
 					]
 				},
 				"description": "Retrieve the list of services that have been requested inside of a specific server running on this OMAG Server Platform."

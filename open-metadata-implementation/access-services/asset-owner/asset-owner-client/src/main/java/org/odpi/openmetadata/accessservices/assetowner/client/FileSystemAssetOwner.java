@@ -116,11 +116,7 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
                                 int                  maxPageSize,
                                 AuditLog             auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, auditLog);
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-
-        this.restClient = restClient;
+        super(serverName, serverPlatformURLRoot, restClient, maxPageSize, auditLog);
     }
 
     /*

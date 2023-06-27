@@ -104,10 +104,10 @@ public class SecurityManagerAdmin extends AccessServiceAdmin
                 Endpoint endpoint = outTopicEventBusConnection.getEndpoint();
 
                 AuditLog outTopicAuditLog = auditLog.createNewAuditLog(OMRSAuditingComponent.OMAS_OUT_TOPIC);
-                Connection serverSideOutTopicConnection = this.getOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
-                                                                                     AccessServiceDescription.SECURITY_MANAGER_OMAS.getAccessServiceFullName(),
-                                                                                     SecurityManagerOutTopicServerProvider.class.getName(),
-                                                                                     auditLog);
+                Connection serverSideOutTopicConnection = this.getServerSideOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
+                                                                                               AccessServiceDescription.SECURITY_MANAGER_OMAS.getAccessServiceFullName(),
+                                                                                               SecurityManagerOutTopicServerProvider.class.getName(),
+                                                                                               auditLog);
                 SecurityManagerOutTopicServerConnector outTopicServerConnector = super.getTopicConnector(serverSideOutTopicConnection,
                                                                                                       SecurityManagerOutTopicServerConnector.class,
                                                                                                       outTopicAuditLog,

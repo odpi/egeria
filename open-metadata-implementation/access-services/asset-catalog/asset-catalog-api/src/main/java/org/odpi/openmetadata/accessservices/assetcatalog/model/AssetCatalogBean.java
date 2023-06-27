@@ -17,9 +17,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * AssetCatalogBean object holds properties that are used for displaying details of an asset-catalog bean, plus the properties
- * and classifications ans relationships.
- * Also the connection to asset is available in this object.
+ * AssetCatalogBean object holds properties that are used for displaying details of an asset-catalog bean,
+ * plus the properties and classifications and relationships.
+ * Also, the connection to asset is available in this object.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

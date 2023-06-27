@@ -5,7 +5,7 @@
 
 Create an event type, with the associated event schema attributes.
 More examples with all available properties for an event type can be found in the
-[sample collection](../../../docs/samples/collections/DataEngine-asset_endpoints.postman_collection.json)
+[sample collection](../../../docs/samples/collections/DataEngine-topics-lineage_examples.postman_collection.json)
 
 ```
 POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}/event-types

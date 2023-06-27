@@ -13,7 +13,9 @@ import org.odpi.openmetadata.accessservices.dataengine.model.ProcessingState;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-
+/**
+ * The processing state event of Data Engine OMAS.
+ */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -36,7 +38,6 @@ public class ProcessingStateEvent extends DataEngineEventHeader {
 
     /**
      * The processing state.
-     *
      * -- GETTER --
      * Return the processing state
      *

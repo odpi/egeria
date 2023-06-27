@@ -115,7 +115,6 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 public class DataEngineRESTServices {
 
     private static final Logger log = LoggerFactory.getLogger(DataEngineRESTServices.class);
-
     private static final String DEBUG_MESSAGE_METHOD_DETAILS = "Calling method {} for entity: {}";
     private static final String DEBUG_MESSAGE_METHOD_RETURN = "Returning from method: {} with response: {}";
     private static final String EXCEPTION_WHILE_ADDING_DATA_FLOW = "Exception while adding data flow {} : {}";
@@ -128,19 +127,17 @@ public class DataEngineRESTServices {
     private static final String PROCESS_HIERARCHY_ADDED_BETWEEN_CHILD_AND_PARENT_PROCESS =
             "Data Engine OMAS has added a relationship of type ProcessHierarchy between child process {} and parent process {}";
     private static final String CHILD_PROCESS = "childProcess";
-
-    public static final String DATABASE_SCHEMA_PARAMETER_NAME = "databaseSchema";
-    public static final String DATABASE_PARAMETER_NAME = "database";
-    public static final String RELATIONAL_TABLE_PARAMETER_NAME = "relationalTable";
-    public static final String SCHEMA = "Schema";
-    public static final String SCHEMA_SUFFIX = "::schema";
-    public static final String EXTERNAL_SOURCE_NAME_PARAMETER_NAME = "externalSourceName";
-    public static final String UPSERT_METHOD_CALLS_FOR = "Method {} will take longer. Inside it, upsert method will be called for: {} and/or {}";
-    public static final String TOPIC_PARAMETER_NAME = "topic";
-    public static final String PROCESSING_STATE = "processingState";
+    private static final String DATABASE_SCHEMA_PARAMETER_NAME = "databaseSchema";
+    private static final String DATABASE_PARAMETER_NAME = "database";
+    private static final String RELATIONAL_TABLE_PARAMETER_NAME = "relationalTable";
+    private static final String SCHEMA = "Schema";
+    private static final String SCHEMA_SUFFIX = "::schema";
+    private static final String EXTERNAL_SOURCE_NAME_PARAMETER_NAME = "externalSourceName";
+    private static final String UPSERT_METHOD_CALLS_FOR = "Method {} will take longer. Inside it, upsert method will be called for: {} and/or {}";
+    private static final String TOPIC_PARAMETER_NAME = "topic";
+    private static final String PROCESSING_STATE = "processingState";
     private static final String EVENT_TYPE_PARAMETER_NAME = "eventType";
     private static final String TOPIC_QUALIFIED_NAME_PARAMETER_NAME = "topicQualifiedName";
-
     private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
     private final DataEngineInstanceHandler instanceHandler = new DataEngineInstanceHandler();
 
@@ -550,6 +547,21 @@ public class DataEngineRESTServices {
         return response;
     }
 
+    /**
+     * Delete a process, with the associated port implementations and data flows
+     *
+     * @param serverName         name of server instance to call
+     * @param userId             the name of the calling user
+     * @param externalSourceName the unique name of the external source
+     * @param guid               the unique identifier of the process
+     * @param qualifiedName      the qualified name of the process
+     * @param deleteSemantic     the delete semantic
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws EntityNotDeletedException     the entity could not be deleted
+     */
     public void deleteProcess(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
                               DeleteSemantic deleteSemantic) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException,
             FunctionNotSupportedException, EntityNotDeletedException {
@@ -1464,6 +1476,16 @@ public class DataEngineRESTServices {
         dataEngineSchemaTypeHandler.removeSchemaType(userId, schemaTypeGUID.get(), externalSourceName, DeleteSemantic.SOFT);
     }
 
+    /**
+     * Update the process status
+     *
+     * @param userId             the name of the calling user
+     * @param serverName         name of server instance to call
+     * @param processGUID        the GUID of the process
+     * @param instanceStatus     the {@link org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus}
+     * @param externalSourceName the name of the external source
+     * @return void response
+     */
     public VoidResponse updateProcessStatus(String userId, String serverName, String processGUID, InstanceStatus instanceStatus,
                                             String externalSourceName) {
         final String methodName = "updateProcessStatus";

@@ -4,6 +4,10 @@
 package org.odpi.openmetadata.accessservices.assetowner.api;
 
 
+import org.odpi.openmetadata.accessservices.assetowner.properties.DataFieldValuesProperties;
+import org.odpi.openmetadata.accessservices.assetowner.properties.GovernanceClassificationProperties;
+import org.odpi.openmetadata.accessservices.assetowner.properties.RetentionClassificationProperties;
+import org.odpi.openmetadata.accessservices.assetowner.properties.SemanticAssignmentProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -39,6 +43,29 @@ public interface AssetClassificationInterface
                                 String    assetElementGUID) throws InvalidParameterException,
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException;
+
+
+    /**
+     * Create a semantic assignment relationship between a glossary term and an element (normally a schema attribute, data field or asset).
+     * This relationship indicates that the data associated with the element meaning matches the description in the glossary term.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of asset
+     * @param assetElementGUID unique identifier of the element that is being assigned to the glossary term
+     * @param glossaryTermGUID unique identifier of the glossary term that provides the meaning
+     * @param properties properties for relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void addSemanticAssignment(String                       userId,
+                               String                       assetGUID,
+                               String                       assetElementGUID,
+                               String                       glossaryTermGUID,
+                               SemanticAssignmentProperties properties) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException;
 
 
     /**
@@ -93,10 +120,10 @@ public interface AssetClassificationInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    void  removeAssetOrigin(String                userId,
-                            String                assetGUID) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException;
+    void  removeAssetOrigin(String userId,
+                            String assetGUID) throws InvalidParameterException,
+                                                     UserNotAuthorizedException,
+                                                     PropertyServerException;
 
 
     /**
@@ -191,6 +218,23 @@ public interface AssetClassificationInterface
                                                               PropertyServerException;
 
 
+
+    /**
+     * Remove the ownership classification from an asset.
+     *
+     * @param userId calling user
+     * @param assetGUID asset where the classification needs to be removed.
+     *
+     * @throws InvalidParameterException asset or element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    void removeAssetOwner(String  userId,
+                          String  assetGUID) throws InvalidParameterException,
+                                                    UserNotAuthorizedException,
+                                                    PropertyServerException;
+
+
     /**
      * Add or replace the security tags for an asset or one of its elements.
      *
@@ -228,11 +272,12 @@ public interface AssetClassificationInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    void  removeSecurityTags(String                userId,
-                             String                assetGUID,
-                             String                assetElementGUID) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException;
+    void  removeSecurityTags(String userId,
+                             String assetGUID,
+                             String assetElementGUID) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException;
+
 
     /**
      * Classify an asset as suitable to be used as a template for cataloguing assets of a similar types.
@@ -270,4 +315,224 @@ public interface AssetClassificationInterface
                                       String assetGUID) throws InvalidParameterException,
                                                                UserNotAuthorizedException,
                                                                PropertyServerException;
+
+
+    /**
+     * Classify the element to indicate that it describes a data field and supply
+     * properties that describe the characteristics of the data values found within.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param properties descriptive properties for the data field
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void setElementAsDataField(String                    userId,
+                               String                    elementGUID,
+                               DataFieldValuesProperties properties) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException;
+
+
+    /**
+     * Remove the data field designation from the element.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to update
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void clearElementAsDataField(String  userId,
+                                 String  elementGUID) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException;
+
+
+    /**
+     * Classify/reclassify the element (typically an asset) to indicate the level of confidence that the organization
+     * has that the data is complete, accurate and up-to-date.  The level of confidence is expressed by the
+     * levelIdentifier property.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to classify
+     * @param properties details of the classification
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void setConfidenceClassification(String                             userId,
+                                     String                             elementGUID,
+                                     GovernanceClassificationProperties properties) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException;
+
+
+    /**
+     * Remove the confidence classification from the element.  This normally occurs when the organization has lost track of the level of
+     * confidence to assign to the element.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to unclassify
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void clearConfidenceClassification(String  userId,
+                                       String  elementGUID) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException;
+
+
+    /**
+     * Classify/reclassify the element (typically an asset) to indicate how critical the element (or associated resource)
+     * is to the organization.  The level of criticality is expressed by the levelIdentifier property.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to classify
+     * @param properties details of the classification
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void setCriticalityClassification(String                             userId,
+                                      String                             elementGUID,
+                                      GovernanceClassificationProperties properties) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException;
+
+
+    /**
+     * Remove the criticality classification from the element.  This normally occurs when the organization has lost track of the level of
+     * criticality to assign to the element.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to unclassify
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void clearCriticalityClassification(String  userId,
+                                        String  elementGUID) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException;
+
+
+    /**
+     * Classify/reclassify the element (typically a data field, schema attribute or glossary term) to indicate the level of confidentiality
+     * that any data associated with the element should be given.  If the classification is attached to a glossary term, the level
+     * of confidentiality is a suggestion for any element linked to the glossary term via the SemanticAssignment classification.
+     * The level of confidence is expressed by the levelIdentifier property.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to classify
+     * @param properties details of the classification
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void setConfidentialityClassification(String                             userId,
+                                          String                             elementGUID,
+                                          GovernanceClassificationProperties properties) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException;
+
+
+    /**
+     * Remove the confidence classification from the element.  This normally occurs when the organization has lost track of the level of
+     * confidentiality to assign to the element.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to unclassify
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void clearConfidentialityClassification(String  userId,
+                                            String  elementGUID) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException;
+
+
+    /**
+     * Classify/reclassify the element (typically an asset) to indicate how long the element (or associated resource)
+     * is to be retained by the organization.  The policy to apply to the element/resource is captured by the retentionBasis
+     * property.  The dates after which the element/resource is archived and then deleted are specified in the archiveAfter and deleteAfter
+     * properties respectively.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to classify
+     * @param properties details of the classification
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void setRetentionClassification(String                            userId,
+                                    String                            elementGUID,
+                                    RetentionClassificationProperties properties) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException;
+
+
+    /**
+     * Remove the retention classification from the element.  This normally occurs when the organization has lost track of, or no longer needs to
+     * track the retention period to assign to the element.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the metadata element to unclassify
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void clearRetentionClassification(String  userId,
+                                      String  elementGUID) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException;
+
+
+    /**
+     * Link a governance definition to an element using the GovernedBy relationship.
+     *
+     * @param userId calling user
+     * @param definitionGUID identifier of the governance definition to link
+     * @param elementGUID unique identifier of the metadata element to link
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void addGovernanceDefinitionToElement(String  userId,
+                                          String  definitionGUID,
+                                          String  elementGUID) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException;
+
+
+    /**
+     * Remove the GovernedBy relationship between a governance definition and an element.
+     *
+     * @param userId calling user
+     * @param definitionGUID identifier of the governance definition to link
+     * @param elementGUID unique identifier of the metadata element to update
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void removeGovernanceDefinitionFromElement(String  userId,
+                                               String  definitionGUID,
+                                               String  elementGUID) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException;
 }

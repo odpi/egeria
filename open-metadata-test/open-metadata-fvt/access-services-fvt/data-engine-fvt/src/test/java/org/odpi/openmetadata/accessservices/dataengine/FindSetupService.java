@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.dataengine;
 
 import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineClient;
 import org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.Identifiers;
+import org.odpi.openmetadata.accessservices.dataengine.model.Identifiers;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;

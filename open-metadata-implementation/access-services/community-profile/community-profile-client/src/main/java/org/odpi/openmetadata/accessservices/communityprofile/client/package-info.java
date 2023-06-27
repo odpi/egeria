@@ -14,6 +14,9 @@
  *         OrganizationManagement - maintaining information about profiles, roles, contact details, contribution records.
  *     </li>
  *     <li>
+ *         CollectionManagement - supporting collections of elements.
+ *     </li>
+ *     <li>
  *         CommunityManagement - supporting communities of people collaborating across an organization.
  *     </li>
  *     <li>

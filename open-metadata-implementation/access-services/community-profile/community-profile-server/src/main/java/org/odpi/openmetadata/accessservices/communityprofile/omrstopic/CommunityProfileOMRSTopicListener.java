@@ -5,8 +5,8 @@ package org.odpi.openmetadata.accessservices.communityprofile.omrstopic;
 import org.odpi.openmetadata.accessservices.communityprofile.converters.CommunityProfileOMASConverter;
 import org.odpi.openmetadata.accessservices.communityprofile.events.CommunityProfileOutboundEventType;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileAuditCode;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ActorProfileElement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ContributionRecordElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonalProfileUniverse;
 import org.odpi.openmetadata.accessservices.communityprofile.outtopic.CommunityProfileOutTopicPublisher;
 import org.odpi.openmetadata.accessservices.communityprofile.server.CommunityProfileServicesInstance;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
@@ -103,14 +103,14 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
 
                 try
                 {
-                    PersonalProfileUniverse personalProfile = instance.getPersonalProfileHandler().getActorProfileForUser(serverUserId,
-                                                                                                                          contributingUserId,
-                                                                                                                          userParameterName,
-                                                                                                                          OpenMetadataAPIMapper.PERSON_TYPE_NAME,
-                                                                                                                          false,
-                                                                                                                          false,
-                                                                                                                          new Date(),
-                                                                                                                          methodName);
+                    ActorProfileElement personalProfile = instance.getActorProfileHandler().getActorProfileForUser(serverUserId,
+                                                                                                                   contributingUserId,
+                                                                                                                   userParameterName,
+                                                                                                                   OpenMetadataAPIMapper.PERSON_TYPE_NAME,
+                                                                                                                   false,
+                                                                                                                   false,
+                                                                                                                   new Date(),
+                                                                                                                   methodName);
 
                     if (personalProfile != null)
                     {

@@ -23,15 +23,11 @@ import java.util.List;
 
 /**
  * CommunityManagerClient supports the APIs to maintain communities and their related objects.
- *
  * It issues REST API calls to the Open Metadata Server running Community Profile OMAS that have a URL that begins:
- *
- * <i>serverPlatformURLRoot</i>/servers/{serverName}/open-metadata/access-services/community-profile/users/{userId}
- *
+ * <i>serverPlatformURLRoot</i>/servers/{serverName}/open-metadata/access-services/community-profile/users/{userId}/communities
  */
 public class CommunityManagement extends CommunityProfileBaseClient implements CommunityManagementInterface
 {
-    private static final String baseURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}";
     private static final String communityURLTemplatePrefix = baseURLTemplatePrefix + "/communities";
 
 
@@ -130,7 +126,7 @@ public class CommunityManagement extends CommunityProfileBaseClient implements C
 
 
     /* =====================================================================================================================
-     * A Community is the top level object for working with connectors
+     * A Community is a cross-organization group of people sharing knowledge, creating common artifacts and collaborating.
      */
 
     /**

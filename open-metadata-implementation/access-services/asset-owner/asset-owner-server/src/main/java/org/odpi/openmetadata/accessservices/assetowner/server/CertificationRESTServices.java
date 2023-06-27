@@ -308,17 +308,15 @@ public class CertificationRESTServices
         {
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof CertificationProperties)
+                if (requestBody.getProperties() instanceof CertificationProperties properties)
                 {
                     auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
                     CertificationHandler<CertificationTypeElement> handler = instanceHandler.getCertificationTypeHandler(userId, serverName, methodName);
 
-                    CertificationProperties properties = (CertificationProperties) requestBody.getProperties();
-
                     response.setGUID(handler.certifyElement(userId,
-                                                            requestBody.getExternalSourceGUID(),
-                                                            requestBody.getExternalSourceName(),
+                                                            null,
+                                                            null,
                                                             elementGUID,
                                                             elementGUIDParameterName,
                                                             OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
@@ -399,17 +397,15 @@ public class CertificationRESTServices
         {
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof CertificationProperties)
+                if (requestBody.getProperties() instanceof CertificationProperties properties)
                 {
                     auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
                     CertificationHandler<CertificationTypeElement> handler = instanceHandler.getCertificationTypeHandler(userId, serverName, methodName);
 
-                    CertificationProperties properties = (CertificationProperties) requestBody.getProperties();
-
                     handler.updateCertification(userId,
-                                                requestBody.getExternalSourceGUID(),
-                                                requestBody.getExternalSourceName(),
+                                                null,
+                                                null,
                                                 certificationGUID,
                                                 certificationGUIDParameterName,
                                                 properties.getCertificateId(),
@@ -486,30 +482,15 @@ public class CertificationRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             CertificationHandler<CertificationTypeElement> handler = instanceHandler.getCertificationTypeHandler(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                handler.decertifyElement(userId,
-                                         requestBody.getExternalSourceGUID(),
-                                         requestBody.getExternalSourceName(),
-                                         certificationGUID,
-                                         certificationGUIDParameterName,
-                                         false,
-                                         false,
-                                         new Date(),
-                                         methodName);
-            }
-            else
-            {
-                handler.decertifyElement(userId,
-                                         null,
-                                         null,
-                                         certificationGUID,
-                                         certificationGUIDParameterName,
-                                         false,
-                                         false,
-                                         new Date(),
-                                         methodName);
-            }
+            handler.decertifyElement(userId,
+                                     null,
+                                     null,
+                                     certificationGUID,
+                                     certificationGUIDParameterName,
+                                     false,
+                                     false,
+                                     new Date(),
+                                     methodName);
         }
         catch (Exception error)
         {

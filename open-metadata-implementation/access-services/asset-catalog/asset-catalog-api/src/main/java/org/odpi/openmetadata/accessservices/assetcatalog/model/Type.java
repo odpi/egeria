@@ -29,8 +29,47 @@ public class Type implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * The type name
+     * -- GETTER --
+     * Returns the type name
+     * @return the type name
+     * -- SETTER --
+     * Set up the type name
+     * @param name the type name
+     */
     private String name;
+
+    /**
+     * The description of the type
+     * -- GETTER --
+     * Returns the description of the type
+     * @return the description of the type
+     * -- SETTER --
+     * Set up the description of the type
+     * @param description the description of the type
+     */
     private String description;
+
+    /**
+     * The version of the type
+     * -- GETTER --
+     * Returns the version of the type
+     * @return the version of the type
+     * -- SETTER --
+     * Set up the version of the type
+     * @param version the version of the type
+     */
     private Long version;
+
+    /**
+     * The super type of the current type
+     * -- GETTER --
+     * Returns the super type of the current type
+     * @return the super type of the current type
+     * -- SETTER --
+     * Set up the super type of the current type
+     * @param superType the super type of the current type
+     */
     private String superType;
 }

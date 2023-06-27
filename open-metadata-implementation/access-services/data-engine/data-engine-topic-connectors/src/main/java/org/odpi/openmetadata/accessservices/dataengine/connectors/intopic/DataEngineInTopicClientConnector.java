@@ -17,10 +17,9 @@ import java.util.concurrent.CompletionException;
 
 /**
  * DataEngineInTopicClientConnector is the java implementation of the
- * the client side connector that send events to the Data Engine OMAS input topic.
+ * client side connector that send events to the Data Engine OMAS input topic.
  */
-public class DataEngineInTopicClientConnector extends OpenMetadataTopicSenderConnectorBase
-{
+public class DataEngineInTopicClientConnector extends OpenMetadataTopicSenderConnectorBase {
 
     private static final ObjectWriter OBJECT_WRITER = new ObjectMapper().writer();
 
@@ -31,48 +30,36 @@ public class DataEngineInTopicClientConnector extends OpenMetadataTopicSenderCon
      * @throws InvalidParameterException the event is null
      * @throws ConnectorCheckedException there is a problem with the embedded event bus connector(s)
      */
-    public void sendEvent(DataEngineEventHeader event) throws InvalidParameterException, ConnectorCheckedException
-    {
+    public void sendEvent(DataEngineEventHeader event) throws InvalidParameterException, ConnectorCheckedException {
         final String methodName = "sendEvent";
 
-        try
-        {
+        try {
 
             String eventString = OBJECT_WRITER.writeValueAsString(event);
             super.sendEvent(eventString).join();
 
-            if (super.auditLog != null)
-            {
+            if (super.auditLog != null) {
                 super.auditLog.logMessage(methodName,
-                                          DataEngineAuditCode.IN_TOPIC_EVENT_SENT.getMessageDefinition(event.getDataEngineEventType().getEventTypeName()),
-                                          eventString);
+                        DataEngineAuditCode.IN_TOPIC_EVENT_SENT.getMessageDefinition(event.getDataEngineEventType().getEventTypeName()),
+                        eventString);
             }
 
-        }
-        catch (CompletionException error)
-        {
-            if (error.getCause() instanceof ConnectorCheckedException)
-            {
+        } catch (CompletionException error) {
+            if (error.getCause() instanceof ConnectorCheckedException) {
                 throw (ConnectorCheckedException) error.getCause();
-            }
-            else if (error.getCause() instanceof InvalidParameterException)
-            {
+            } else if (error.getCause() instanceof InvalidParameterException) {
                 throw (InvalidParameterException) error.getCause();
             }
-        }
-        catch (InvalidParameterException | ConnectorCheckedException error)
-        {
+        } catch (InvalidParameterException | ConnectorCheckedException error) {
             throw error;
-        }
-        catch (Exception  error)
-        {
+        } catch (Exception error) {
             throw new ConnectorCheckedException(DataEngineErrorCode.UNABLE_TO_SEND_EVENT.getMessageDefinition(connectionName,
-                                                                                                              event.toString(),
-                                                                                                              error.getClass().getName(),
-                                                                                                              error.getMessage()),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                error);
+                    event.toString(),
+                    error.getClass().getName(),
+                    error.getMessage()),
+                    this.getClass().getName(),
+                    methodName,
+                    error);
         }
     }
 }

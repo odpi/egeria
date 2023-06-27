@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.properties;
 
-
 import com.fasterxml.jackson.annotation.*;
 
 import java.util.Objects;
@@ -21,8 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PersonRoleProperties extends PersonalRoleProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private boolean headCountLimitSet = false;
     private int     headCount         = 0;
 
