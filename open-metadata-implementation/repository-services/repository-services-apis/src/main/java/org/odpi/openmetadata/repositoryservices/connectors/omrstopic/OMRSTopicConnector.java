@@ -521,7 +521,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
                     {
                         this.processOMRSEvent((OMRSEventV1) finalEventBean, topicListener);
                     }
-                    catch (Throwable  error)
+                    catch (Exception  error)
                     {
                         log.debug("Unable to pass event to one of the topic listeners");
 

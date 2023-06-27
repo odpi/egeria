@@ -123,7 +123,7 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
                         }
                     }
                 }
-                catch (Throwable   error)
+                catch (Exception   error)
                 {
                     log.error("Bad exception from checkForEvents", error);
                 }

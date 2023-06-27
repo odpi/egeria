@@ -62,11 +62,7 @@ public class DataEngineAdmin extends AccessServiceAdmin {
                     accessServiceConfig.getAccessServiceName(), auditLog);
 
             instance = new DataEngineServicesInstance(repositoryConnector, supportedZones, defaultZones, auditLog, serverUserName,
-                    repositoryConnector.getMaxPageSize(),
-                    super.getOutTopicConnection(accessServiceConfig.getAccessServiceInTopic(),
-                            AccessServiceDescription.DATA_ENGINE_OMAS.getAccessServiceFullName(),
-                            DataEngineInTopicClientProvider.class.getName(),
-                            auditLog)); //TODO: using getOutTopicConnection temporary, we need getInTopicConnection... Check the correct way to create connection for the omas instance - using dedicated client provider class name (current impl.) or provided by the accessServiceConfig.getAccessServiceInTopic() (?)
+                    repositoryConnector.getMaxPageSize(), accessServiceConfig.getAccessServiceInTopic());
 
             serverName = instance.getServerName();
 

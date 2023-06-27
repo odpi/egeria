@@ -4,13 +4,11 @@ package org.odpi.openmetadata.repositoryservices.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 
 /**
  * The OMRSErrorCode is used to define first failure data capture (FFDC) for errors that occur within the OMRS
  * It is used in conjunction with all OMRS Exceptions, both Checked and Runtime (unchecked).
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>HTTP Error Code for translating between REST and JAVA. Typically the numbers used are:</li>
@@ -979,9 +977,9 @@ public enum OMRSErrorCode implements ExceptionMessageSet
     /**
      * The constructor for OMRSErrorCode expects to be passed one of the enumeration rows defined in
      * DiscoveryEngineServicesErrorCode above.   For example:
-     *
+     * <br><br>
      *     OMRSErrorCode   errorCode = OMRSErrorCode.UNKNOWN_ENDPOINT;
-     *
+     * <br><br>
      * This will expand out to the 5 parameters shown below.
      *
      * @param httpErrorCode   error code to use over REST calls

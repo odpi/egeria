@@ -87,10 +87,10 @@ public class StewardshipActionAdmin extends AccessServiceAdmin
                 Endpoint endpoint = outTopicEventBusConnection.getEndpoint();
 
                 AuditLog outTopicAuditLog = auditLog.createNewAuditLog(OMRSAuditingComponent.OMAS_OUT_TOPIC);
-                Connection serverSideOutTopicConnection = this.getOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
-                                                                                     AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceFullName(),
-                                                                                     StewardshipActionOutTopicServerProvider.class.getName(),
-                                                                                     auditLog);
+                Connection serverSideOutTopicConnection = this.getServerSideOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
+                                                                                               AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceFullName(),
+                                                                                               StewardshipActionOutTopicServerProvider.class.getName(),
+                                                                                               auditLog);
                 StewardshipActionOutTopicServerConnector outTopicServerConnector = super.getTopicConnector(serverSideOutTopicConnection,
                                                                                                            StewardshipActionOutTopicServerConnector.class,
                                                                                                            outTopicAuditLog,

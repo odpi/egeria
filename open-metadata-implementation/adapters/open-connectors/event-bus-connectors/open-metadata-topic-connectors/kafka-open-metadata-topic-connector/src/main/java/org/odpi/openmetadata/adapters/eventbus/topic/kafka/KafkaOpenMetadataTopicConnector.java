@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.IncomingEvent;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,6 +42,12 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     private final Properties producerProperties = new Properties();
     private final Properties consumerEgeriaProperties = new Properties();
     private final Properties consumerProperties = new Properties();
+
+    /*
+     * By default, events can flow both in and out of the connector.
+     */
+    private boolean outboundEventsEnabled = true; // Events flow out through the producer
+    private boolean inboundEventsEnabled  = true; // Events are received through the consumer
 
 
     private KafkaOpenMetadataEventConsumer consumer = null;
@@ -143,9 +150,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
      */
     private void initializeTopic()
     {
-        final String           actionDescription = "initialize";
-
-        super.initialize(connectorInstanceId, connectionProperties);
+        final String actionDescription = "initializeTopic";
 
         EndpointProperties endpoint = connectionProperties.getEndpoint();
         if (endpoint != null)
@@ -168,7 +173,8 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
                 serverId = (String) configurationProperties.get(KafkaOpenMetadataTopicProvider.serverIdPropertyName);
 
-                if (StringUtils.isEmpty((String)consumerProperties.get("group.id"))) {
+                if (StringUtils.isEmpty((String)consumerProperties.get("group.id")))
+                {
                     consumerProperties.put("group.id", serverId);
                 }
 
@@ -222,6 +228,19 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
             
             propertiesObject = configurationProperties.get(KafkaOpenMetadataTopicProvider.egeriaConsumerPropertyName);
             copyProperties(propertiesObject, consumerEgeriaProperties);
+
+            propertiesObject = configurationProperties.get(OpenMetadataTopicProvider.EVENT_DIRECTION_PROPERTY_NAME);
+            if (propertiesObject != null)
+            {
+                if (propertiesObject.equals(OpenMetadataTopicProvider.EVENT_DIRECTION_OUT_ONLY))
+                {
+                    inboundEventsEnabled = false;
+                }
+                else if ((propertiesObject.equals(OpenMetadataTopicProvider.EVENT_DIRECTION_IN_ONLY)))
+                {
+                    outboundEventsEnabled = false;
+                }
+            }
         }
         catch (Exception   error)
         {
@@ -267,7 +286,6 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     @Override
     public void start() throws ConnectorCheckedException
     {
-
         this.initializeTopic();
 
         KafkaStatusChecker kafkaStatus = new KafkaStatusChecker();
@@ -277,21 +295,45 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         *  reliant on list being specified in the same order
          * This will need changing for single direction connector
          */
-        boolean up = false;
-        if ( consumerProperties.getProperty("bootstrap.servers").equals(producerProperties.getProperty("bootstrap.servers")) ) {
-            up = kafkaStatus.waitForBrokers( producerProperties);
+        boolean up;
+
+        if (outboundEventsEnabled && inboundEventsEnabled)
+        {
+            /*
+             * Need both the consumer and producer brokers
+             */
+            if (consumerProperties.getProperty("bootstrap.servers").equals(producerProperties.getProperty("bootstrap.servers")) )
+            {
+                up = kafkaStatus.waitForBrokers(producerProperties);
+            }
+            else
+            {
+                up = kafkaStatus.waitForBrokers(producerProperties) && kafkaStatus.waitForBrokers(consumerProperties);
+            }
         }
-        else {
-            up = kafkaStatus.waitForBrokers( producerProperties) &&
-                    kafkaStatus.waitForBrokers(consumerProperties);
+        else if (outboundEventsEnabled)
+        {
+            /*
+             * Only sending outbound events so only care about the producer.
+             */
+            up = kafkaStatus.waitForBrokers(producerProperties);
+        }
+        else
+        {
+            /*
+             * Only receiving events so only care about the consumer.
+             */
+            up = kafkaStatus.waitForBrokers(consumerProperties);
         }
 
-        if (!up) {
+        if (!up)
+        {
             final String actionDescription = "waitForThisBroker";
             if (auditLog != null)
             {
                 auditLog.logMessage(actionDescription, KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_FAILED_INITIALIZING.getMessageDefinition(topicName));
             }
+
             throw new ConnectorCheckedException(KafkaOpenMetadataTopicConnectorErrorCode.ERROR_ATTEMPTING_KAFKA_INITIALIZATION.getMessageDefinition(kafkaStatus.getLastException().getClass().getName(),
                     topicName,
                     kafkaStatus.getLastException().getMessage()),
@@ -300,28 +342,36 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                     kafkaStatus.getLastException());
         }
 
-        initializeConsumerAndConsumerThread();
-        consumerExecutor = new KafkaConsumerExecutor();
-        consumerExecutor.execute(consumerThread);
+        if (inboundEventsEnabled)
+        {
+            initializeConsumerAndConsumerThread();
+            consumerExecutor = new KafkaConsumerExecutor();
+            consumerExecutor.execute(consumerThread);
+        }
 
-        initializeProducerAndProducerThread();
-        producerExecutor = new KafkaProducerExecutor();
-        producerExecutor.execute(producerThread);
+        if (outboundEventsEnabled)
+        {
+            initializeProducerAndProducerThread();
+            producerExecutor = new KafkaProducerExecutor();
+            producerExecutor.execute(producerThread);
+        }
 
         super.start();
     }
 
 
-    private void initializeConsumerAndConsumerThread() {
-
+    private void initializeConsumerAndConsumerThread()
+    {
+        log.info("Initializing the consumer thread");
         KafkaOpenMetadataEventConsumerConfiguration consumerConfig = new KafkaOpenMetadataEventConsumerConfiguration(consumerEgeriaProperties, auditLog);
         consumer = new KafkaOpenMetadataEventConsumer(topicName, serverId, consumerConfig, consumerProperties, this, auditLog);
         consumerThread = new Thread(consumer, threadHeader + "Consumer-" + topicName);
     }
 
 
-    private void initializeProducerAndProducerThread() {
-
+    private void initializeProducerAndProducerThread()
+    {
+        log.info("Initializing the producer thread");
         producer = new KafkaOpenMetadataEventProducer(topicName, serverId, producerProperties, auditLog);
         producerThread = new Thread(producer, threadHeader + "Producer-" + topicName);
     }
@@ -338,6 +388,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     {
         if (producer != null)
         {
+            log.debug("Sending event");
             producer.sendEvent(event);
         }
     }
@@ -390,11 +441,13 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         final String actionDescription = "disconnect";
 
 
-        if (consumer != null) {
+        if (consumer != null)
+        {
             consumer.safeCloseConsumer();
         }
 
-        if (producer != null) {
+        if (producer != null)
+        {
             producer.safeCloseProducer();
         }
 

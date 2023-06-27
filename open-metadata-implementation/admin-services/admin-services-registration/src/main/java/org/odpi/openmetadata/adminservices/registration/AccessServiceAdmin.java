@@ -7,7 +7,6 @@ import org.odpi.openmetadata.adminservices.configuration.properties.AccessServic
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
@@ -17,9 +16,11 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicProvider;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -31,8 +32,8 @@ import java.util.UUID;
  */
 public abstract class AccessServiceAdmin
 {
-    private static  int defaultKarmaPointThreshold = 500;
-    private static  int defaultKarmaPointInterval  = 0;
+    private static final int defaultKarmaPointThreshold = 500;
+    private static final int defaultKarmaPointInterval  = 0;
 
 
     /*
@@ -585,10 +586,10 @@ public abstract class AccessServiceAdmin
      * @return connector to access the topic
      * @throws OMAGConfigurationErrorException problem creating connector
      */
-    protected Connection getOutTopicConnection(Connection   outTopicEventBusConnection,
-                                               String       accessServiceFullName,
-                                               String       accessServiceConnectorProviderClassName,
-                                               AuditLog     auditLog) throws OMAGConfigurationErrorException
+    protected Connection getServerSideOutTopicConnection(Connection   outTopicEventBusConnection,
+                                                         String       accessServiceFullName,
+                                                         String       accessServiceConnectorProviderClassName,
+                                                         AuditLog     auditLog) throws OMAGConfigurationErrorException
     {
         final String methodName = "getOutTopicConnection";
         final String connectionDescription = "OMRS default cohort topic connection.";
@@ -613,6 +614,17 @@ public abstract class AccessServiceAdmin
                                                      accessServiceConnectorProviderClassName,
                                                      auditLog,
                                                      methodName));
+
+        /*
+         * Adjust event bus connector for outbound events only.
+         */
+        Map<String, Object> configurationProperties = outTopicEventBusConnection.getConfigurationProperties();
+        if (configurationProperties == null)
+        {
+            configurationProperties = new HashMap<>();
+        }
+        configurationProperties.put(OpenMetadataTopicProvider.EVENT_DIRECTION_PROPERTY_NAME, OpenMetadataTopicProvider.EVENT_DIRECTION_OUT_ONLY);
+        outTopicEventBusConnection.setConfigurationProperties(configurationProperties);
 
         /*
          * The event bus for this server is embedded in the out topic connection.

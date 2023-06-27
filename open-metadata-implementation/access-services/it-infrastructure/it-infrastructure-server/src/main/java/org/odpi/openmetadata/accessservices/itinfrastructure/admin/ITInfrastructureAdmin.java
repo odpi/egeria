@@ -100,10 +100,10 @@ public class ITInfrastructureAdmin extends AccessServiceAdmin
                 Endpoint endpoint = outTopicEventBusConnection.getEndpoint();
 
                 AuditLog outTopicAuditLog = auditLog.createNewAuditLog(OMRSAuditingComponent.OMAS_OUT_TOPIC);
-                Connection serverSideOutTopicConnection = this.getOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
-                                                                                     AccessServiceDescription.IT_INFRASTRUCTURE_OMAS.getAccessServiceFullName(),
-                                                                                     ITInfrastructureOutTopicServerProvider.class.getName(),
-                                                                                     auditLog);
+                Connection serverSideOutTopicConnection = this.getServerSideOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
+                                                                                               AccessServiceDescription.IT_INFRASTRUCTURE_OMAS.getAccessServiceFullName(),
+                                                                                               ITInfrastructureOutTopicServerProvider.class.getName(),
+                                                                                               auditLog);
                 ITInfrastructureOutTopicServerConnector outTopicServerConnector = super.getTopicConnector(serverSideOutTopicConnection,
                                                                                                           ITInfrastructureOutTopicServerConnector.class,
                                                                                                           outTopicAuditLog,
