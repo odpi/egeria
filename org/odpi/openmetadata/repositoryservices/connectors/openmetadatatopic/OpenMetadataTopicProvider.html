@@ -86,7 +86,8 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">OpenMetadataTopicProvider</span>
 <span class="extends-implements">extends <a href="../../../frameworks/connectors/ConnectorProviderBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorProviderBase</a></span></div>
-<div class="block">OMRSTopicProvider provides implementation of the connector provider for the OMRSTopicConnector.</div>
+<div class="block">OpenMetadataTopicProvider provides implementation of the connector provider for the OpenMetadataTopicConnector.  This connector provides
+ a generic interface for sending and receiving string-based events.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -99,9 +100,18 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>protected static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#sleepTimeProperty" class="member-name-link">sleepTimeProperty</a></code></div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#EVENT_DIRECTION_IN_ONLY" class="member-name-link">EVENT_DIRECTION_IN_ONLY</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#EVENT_DIRECTION_INOUT" class="member-name-link">EVENT_DIRECTION_INOUT</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#EVENT_DIRECTION_OUT_ONLY" class="member-name-link">EVENT_DIRECTION_OUT_ONLY</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#EVENT_DIRECTION_PROPERTY_NAME" class="member-name-link">EVENT_DIRECTION_PROPERTY_NAME</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../frameworks/connectors/ConnectorProviderBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorProviderBase</a></h3>
@@ -148,14 +158,56 @@ loadScripts(document, 'script');</script>
 <h2>Field Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="sleepTimeProperty">
-<h3>sleepTimeProperty</h3>
-<div class="member-signature"><span class="modifiers">protected static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">sleepTimeProperty</span></div>
+<section class="detail" id="EVENT_DIRECTION_PROPERTY_NAME">
+<h3>EVENT_DIRECTION_PROPERTY_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">EVENT_DIRECTION_PROPERTY_NAME</span></div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
 <ul class="see-list">
-<li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicProvider.sleepTimeProperty">Constant Field Values</a></li>
+<li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicProvider.EVENT_DIRECTION_PROPERTY_NAME">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="EVENT_DIRECTION_INOUT">
+<h3>EVENT_DIRECTION_INOUT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">EVENT_DIRECTION_INOUT</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicProvider.EVENT_DIRECTION_INOUT">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="EVENT_DIRECTION_OUT_ONLY">
+<h3>EVENT_DIRECTION_OUT_ONLY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">EVENT_DIRECTION_OUT_ONLY</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicProvider.EVENT_DIRECTION_OUT_ONLY">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="EVENT_DIRECTION_IN_ONLY">
+<h3>EVENT_DIRECTION_IN_ONLY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">EVENT_DIRECTION_IN_ONLY</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicProvider.EVENT_DIRECTION_IN_ONLY">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>
