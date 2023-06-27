@@ -10,7 +10,8 @@ updates:
     timezone: "Etc/UTC"
   open-pull-requests-limit: 100
   reviewers:
-  - planetf1
+  - mandy-chessell
+  - lpalashevski
   # Grouping of dependencies - useful to retain consistency & prevent build breaks
   groups:
     spring:
@@ -37,7 +38,8 @@ updates:
     timezone: "Etc/UTC"
   open-pull-requests-limit: 5
   reviewers:
-  - planetf1
+  - mandy-chessell
+  - lpalashevski
 - package-ecosystem: docker
   directory: "/open-metadata-resources/open-metadata-deployment/docker/configure"
   schedule:
@@ -46,7 +48,8 @@ updates:
     timezone: "Etc/UTC"
   open-pull-requests-limit: 5
   reviewers:
-  - planetf1
+  - mandy-chessell
+  - lpalashevski
 - package-ecosystem: "github-actions"
   directory: "/"
   schedule:
@@ -55,4 +58,5 @@ updates:
     timezone: "Etc/UTC"
   open-pull-requests-limit: 10
   reviewers:
-  - planetf1
+  - mandy-chessell
+  - lpalashevski
