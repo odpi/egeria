@@ -9,6 +9,7 @@ import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
+import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicProvider;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
@@ -34,10 +35,10 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
     protected List<String>            defaultZones;
     protected List<String>            publishZones;
 
-    private Connection   inTopicEventBusConnection;
-    private String       inTopicConnectorProviderName;
-    private Connection   outTopicEventBusConnection;
-    private String       outTopicConnectorProviderName;
+    private final Connection inTopicEventBusConnection;
+    private final String     inTopicConnectorProviderName;
+    private final Connection outTopicEventBusConnection;
+    private final String     outTopicConnectorProviderName;
 
     private static final String  serverIdPropertyName = "local.server.id";
 
@@ -97,6 +98,7 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
              null,
              null);
     }
+
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -347,13 +349,14 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
      * @param callerId unique identifier of the caller
      * @return connection object for client
      */
-    Connection getInTopicClientConnection(String  callerId) throws PropertyServerException
+    public Connection getInTopicClientConnection(String callerId) throws PropertyServerException
     {
         final String methodName = "getInTopicClientConnection";
 
         return this.getClientTopicConnection(callerId,
                                              inTopicEventBusConnection,
                                              inTopicConnectorProviderName,
+                                             OpenMetadataTopicProvider.EVENT_DIRECTION_OUT_ONLY,
                                              methodName);
     }
 
@@ -372,6 +375,7 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
         return this.getClientTopicConnection(callerId,
                                              outTopicEventBusConnection,
                                              outTopicConnectorProviderName,
+                                             OpenMetadataTopicProvider.EVENT_DIRECTION_IN_ONLY,
                                              methodName);
     }
 
@@ -383,12 +387,14 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
      * @param callerId unique identifier of the caller
      * @param topicEventBusConnection connection for the event bus pre-populated with the topic name
      * @param connectorProviderClassName Java class name of the connector provider for the client-side topic connector
+     * @param eventDirection should the event bus be restricted in the direction that events can flow?
      * @param methodName calling method so error messages show whether this was an in or an out topic problem.
      * @return connection object for client
      */
     private Connection getClientTopicConnection(String     callerId,
                                                 Connection topicEventBusConnection,
                                                 String     connectorProviderClassName,
+                                                String     eventDirection,
                                                 String     methodName) throws PropertyServerException
     {
         if ((topicEventBusConnection != null) && (connectorProviderClassName != null))
@@ -408,6 +414,7 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
             }
 
             configurationProperties.put(serverIdPropertyName, callerId);
+            configurationProperties.put(OpenMetadataTopicProvider.EVENT_DIRECTION_PROPERTY_NAME, eventDirection);
 
             newEventBusConnection.setConfigurationProperties(configurationProperties);
 

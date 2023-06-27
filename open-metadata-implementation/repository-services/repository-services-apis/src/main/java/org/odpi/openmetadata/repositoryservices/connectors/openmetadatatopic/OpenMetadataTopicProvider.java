@@ -7,11 +7,16 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 
 
 /**
- * OMRSTopicProvider provides implementation of the connector provider for the OMRSTopicConnector.
+ * OpenMetadataTopicProvider provides implementation of the connector provider for the OpenMetadataTopicConnector.  This connector provides
+ * a generic interface for sending and receiving string-based events.
  */
 public abstract class OpenMetadataTopicProvider extends ConnectorProviderBase
 {
-    protected static final String  sleepTimeProperty = "sleepTime";
+    public static final String EVENT_DIRECTION_PROPERTY_NAME = "eventDirection";
+    public static final String EVENT_DIRECTION_INOUT         = "inOut";
+    public static final String EVENT_DIRECTION_OUT_ONLY      = "outOnly";
+    public static final String  EVENT_DIRECTION_IN_ONLY  = "inOnly";
+
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific

@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConn
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
+import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicProvider;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreProviderBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -266,6 +267,7 @@ public class ConnectorConfigurationFactory
                                                                         topicURLRoot,
                                                                         topicName,
                                                                         serverId,
+                                                                        OpenMetadataTopicProvider.EVENT_DIRECTION_OUT_ONLY,
                                                                         eventBusConfigurationProperties));
 
         setSupportedAuditLogSeverities(supportedSeverities, connection);
@@ -470,6 +472,7 @@ public class ConnectorConfigurationFactory
      * @param topicURLRoot  root URL of the topic - this is prepended to the topic name
      * @param topicName  name of the topic
      * @param serverId identifier of the server - used to pick up the right offset for the inbound messages.
+     * @param eventDirection should the event bus be restricted in the direction that events can flow?
      * @param eventBusConfigurationProperties - additional properties for the event bus connection
      * @return List of EmbeddedConnection object
      */
@@ -479,6 +482,7 @@ public class ConnectorConfigurationFactory
                                                                    String              topicURLRoot,
                                                                    String              topicName,
                                                                    String              serverId,
+                                                                   String              eventDirection,
                                                                    Map<String, Object> eventBusConfigurationProperties)
     {
         EmbeddedConnection     embeddedConnection = new EmbeddedConnection();
@@ -486,6 +490,7 @@ public class ConnectorConfigurationFactory
                                                                                       topicURLRoot,
                                                                                       topicName,
                                                                                       serverId,
+                                                                                      eventDirection,
                                                                                       eventBusConfigurationProperties);
 
         embeddedConnection.setDisplayName(eventSource);
@@ -507,6 +512,7 @@ public class ConnectorConfigurationFactory
      * @param topicURLRoot  root URL of the topic - this is prepended to the topic name
      * @param topicName  name of the topic - if null it means that the connection should be null
      * @param serverId identifier of the server - used to pick up the right offset for the inbound messages.
+     * @param eventDirection should the event bus be restricted in the direction that events can flow?
      * @param configurationProperties  additional configuration properties for the connection
      * @return Connection object
      */
@@ -514,6 +520,7 @@ public class ConnectorConfigurationFactory
                                                    String               topicURLRoot,
                                                    String               topicName,
                                                    String               serverId,
+                                                   String               eventDirection,
                                                    Map<String, Object>  configurationProperties)
     {
         if (topicName != null)
@@ -542,8 +549,18 @@ public class ConnectorConfigurationFactory
                 configurationProperties = new HashMap<>();
             }
 
-            // the serverId is used to set the default topic.id (though this could be overridden in the consumer configuration)
-            // retrieve from the default if needed
+            if (eventDirection != null)
+            {
+                if (configurationProperties.get(OpenMetadataTopicProvider.EVENT_DIRECTION_PROPERTY_NAME) == null)
+                {
+                    configurationProperties.put(OpenMetadataTopicProvider.EVENT_DIRECTION_PROPERTY_NAME, eventDirection);
+                }
+            }
+
+            /*
+             * The serverId is used to set the default topic.id (though this could be overridden in the consumer configuration)
+             * retrieve from the default if needed.
+             */
             if (StringUtils.isEmpty((String) configurationProperties.get("local.server.id")))
             {
                 configurationProperties.put("local.server.id", serverId);
@@ -585,6 +602,7 @@ public class ConnectorConfigurationFactory
                                                                         localServerName,
                                                                         topicName,
                                                                         serverId,
+                                                                        OpenMetadataTopicProvider.EVENT_DIRECTION_INOUT,
                                                                         null));
 
         return connection;
@@ -623,6 +641,7 @@ public class ConnectorConfigurationFactory
                                                                         topicURLRoot,
                                                                         topicName,
                                                                         serverId,
+                                                                        OpenMetadataTopicProvider.EVENT_DIRECTION_OUT_ONLY,
                                                                         eventBusConfigurationProperties));
 
         return connection;
@@ -780,6 +799,7 @@ public class ConnectorConfigurationFactory
                                                                         topicURLRoot,
                                                                         topicName,
                                                                         consumerGroupId,
+                                                                        OpenMetadataTopicProvider.EVENT_DIRECTION_INOUT,
                                                                         eventBusConfigurationProperties));
 
         return connection;

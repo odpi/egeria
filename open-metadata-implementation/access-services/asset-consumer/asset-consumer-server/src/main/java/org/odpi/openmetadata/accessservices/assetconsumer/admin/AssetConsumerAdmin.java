@@ -83,10 +83,10 @@ public class AssetConsumerAdmin extends AccessServiceAdmin
                 Endpoint endpoint = outTopicEventBusConnection.getEndpoint();
 
                 AuditLog outTopicAuditLog = auditLog.createNewAuditLog(OMRSAuditingComponent.OMAS_OUT_TOPIC);
-                Connection serverSideOutTopicConnection = this.getOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
-                                                                                     AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceFullName(),
-                                                                                     AssetConsumerOutTopicServerProvider.class.getName(),
-                                                                                     auditLog);
+                Connection serverSideOutTopicConnection = this.getServerSideOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
+                                                                                               AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceFullName(),
+                                                                                               AssetConsumerOutTopicServerProvider.class.getName(),
+                                                                                               auditLog);
                 AssetConsumerOutTopicServerConnector outTopicServerConnector = super.getTopicConnector(serverSideOutTopicConnection,
                                                                                                           AssetConsumerOutTopicServerConnector.class,
                                                                                                           outTopicAuditLog,
