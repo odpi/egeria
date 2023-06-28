@@ -74,7 +74,7 @@ ext {
     // TODO: Version 9 now available
     luceneVersion = '8.11.2'
     openlineageVersion = '0.28.0'
-    ossVersion = '4.15.0'
+    ossVersion = '4.16.0'
     // TODO: Held as data engine breaks
     mockitoVersion = '4.11.0'
     plexusVersion = '3.5.1'
