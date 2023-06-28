@@ -11,12 +11,34 @@ plugins {
 
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter'
-    compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot'
+    implementation project(path: ':open-metadata-implementation:adapters:authentication-plugins:http-helper')
+    implementation project(path: ':open-metadata-implementation:adapters:authentication-plugins:http-helper')
+    implementation project(path: ':open-metadata-implementation:admin-services:admin-services-api')
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    implementation 'org.springframework.boot:spring-boot-autoconfigure'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework:spring-beans'
+    implementation 'org.springframework:spring-core'
+    implementation 'org.springframework:spring-context'
+    implementation 'org.apache.tomcat.embed:tomcat-embed-core'
+    implementation 'org.springframework.boot:spring-boot-starter-tomcat'
+    implementation 'jakarta.servlet:jakarta.servlet-api'
+    implementation 'org.slf4j:slf4j-api'
+    runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+    runtimeOnly 'ch.qos.logback:logback-classic'
+    runtimeOnly 'org.hibernate:hibernate-validator'
+
+    compileOnly project(':open-metadata-implementation:common-services:ffdc-services')
+    compileOnly 'io.swagger.core.v3:swagger-annotations-jakarta'
+
+    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
+    implementation project(':open-metadata-implementation:platform-services:platform-services-api')
+    implementation project(':open-metadata-implementation:platform-services:platform-services-server')
+
 }
 
 description = 'OMAG Server Chassis for Spring'
