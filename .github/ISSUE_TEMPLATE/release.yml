@@ -5,7 +5,9 @@ name: Release
 description: Track a new release
 title: "[RELEASE] Release x.y"
 labels: [release]
-assignees: planetf1
+assignees: 
+  - mandy-chessell
+  - lpalashevski
 
 body:
   - type: textarea

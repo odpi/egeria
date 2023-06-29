@@ -100,10 +100,10 @@ public class DataManagerAdmin extends AccessServiceAdmin
                 Endpoint endpoint = outTopicEventBusConnection.getEndpoint();
 
                 AuditLog outTopicAuditLog = auditLog.createNewAuditLog(OMRSAuditingComponent.OMAS_OUT_TOPIC);
-                Connection serverSideOutTopicConnection = this.getOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
-                                                                                     AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceFullName(),
-                                                                                     DataManagerOutTopicServerProvider.class.getName(),
-                                                                                     auditLog);
+                Connection serverSideOutTopicConnection = this.getServerSideOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
+                                                                                               AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceFullName(),
+                                                                                               DataManagerOutTopicServerProvider.class.getName(),
+                                                                                               auditLog);
                 DataManagerOutTopicServerConnector outTopicServerConnector = super.getTopicConnector(serverSideOutTopicConnection,
                                                                                                       DataManagerOutTopicServerConnector.class,
                                                                                                       outTopicAuditLog,

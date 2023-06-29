@@ -102,10 +102,10 @@ public class GovernanceEngineAdmin extends AccessServiceAdmin
                 Endpoint endpoint = outTopicEventBusConnection.getEndpoint();
 
                 AuditLog outTopicAuditLog = auditLog.createNewAuditLog(OMRSAuditingComponent.OMAS_OUT_TOPIC);
-                Connection serverSideOutTopicConnection = this.getOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
-                                                                                     AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceFullName(),
-                                                                                     GovernanceEngineOutTopicServerProvider.class.getName(),
-                                                                                     auditLog);
+                Connection serverSideOutTopicConnection = this.getServerSideOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
+                                                                                               AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceFullName(),
+                                                                                               GovernanceEngineOutTopicServerProvider.class.getName(),
+                                                                                               auditLog);
                 GovernanceEngineOutTopicServerConnector outTopicServerConnector = super.getTopicConnector(serverSideOutTopicConnection,
                                                                                                           GovernanceEngineOutTopicServerConnector.class,
                                                                                                           outTopicAuditLog,
