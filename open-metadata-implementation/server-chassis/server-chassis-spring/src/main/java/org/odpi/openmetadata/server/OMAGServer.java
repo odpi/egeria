@@ -31,7 +31,7 @@ import java.nio.file.Path;
         scanBasePackages = {"${scan.packages:org.odpi.openmetadata.*}"}
 )
 //TODO: Add java docs
-public class OMAGServer {
+    public class OMAGServer {
 
     private final Environment env;
     private static final Logger log = LoggerFactory.getLogger(OMAGServer.class);
