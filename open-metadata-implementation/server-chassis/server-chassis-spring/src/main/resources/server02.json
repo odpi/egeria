@@ -41,7 +41,7 @@
       "class": "AccessServiceConfig",
       "accessServiceId": 204,
       "accessServiceDevelopmentStatus": "IN_DEVELOPMENT",
-      "accessServiceAdminClass": "org.odpi.openmetadata.accessservices.assetmanager.admin.AssetManagerAdmin",
+      "accessServiceAdminClass": "org.odpi.openmetadata.accessservices.assetmanager.admin.AssetManagerAdmin2",
       "accessServiceName": "Asset Manager",
       "accessServiceFullName": "Asset Manager OMAS",
       "accessServiceURLMarker": "asset-manager",

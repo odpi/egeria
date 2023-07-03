@@ -33,6 +33,7 @@ dependencies {
     implementation project(':open-metadata-implementation:platform-services:platform-services-api')
     implementation project(':open-metadata-implementation:platform-services:platform-services-server')
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
+
     runtimeOnly project(':open-metadata-implementation:repository-services:repository-services-spring')
     runtimeOnly project(':open-metadata-implementation:access-services:asset-manager:asset-manager-spring')
     runtimeOnly project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-spring')
