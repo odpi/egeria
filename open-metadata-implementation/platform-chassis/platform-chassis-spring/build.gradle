@@ -37,9 +37,6 @@ dependencies {
     runtimeOnly 'org.springdoc:springdoc-openapi-starter-webmvc-ui'
     compileOnly 'io.swagger.core.v3:swagger-annotations-jakarta'
 
-    runtimeOnly 'org.odpi.egeria:egeria-connector-resource-jdbc:1.1'
-    runtimeOnly 'org.odpi.egeria:egeria-connector-integration-jdbc:1.1'
-
     // The following are only included at runtime for the full platform (ie adminChassisOnly is not set as a property)
     if (!project.hasProperty("adminChassisOnly")) {
         runtimeOnly project(':open-metadata-implementation:view-services:server-author-view:server-author-view-spring')
