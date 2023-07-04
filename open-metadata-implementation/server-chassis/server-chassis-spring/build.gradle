@@ -38,6 +38,13 @@ dependencies {
     runtimeOnly project(':open-metadata-implementation:access-services:asset-manager:asset-manager-spring')
     runtimeOnly project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-spring')
 
+    runtimeOnly project(':open-metadata-implementation:integration-services:database-integrator:database-integrator-server')
+    runtimeOnly project(':open-metadata-implementation:access-services:data-manager:data-manager-spring')
+    runtimeOnly 'org.odpi.egeria:egeria-connector-resource-jdbc:1.1'
+    runtimeOnly 'org.odpi.egeria:egeria-connector-integration-jdbc:1.1'
+    runtimeOnly 'com.oracle.database.jdbc:ojdbc10:19.19.0.0'
+
+
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testImplementation 'org.springframework.boot:spring-boot-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

@@ -65,6 +65,18 @@
           "SoftwareServerCapability"
         ]
       }
+    },
+    {
+      "class": "AccessServiceConfig",
+      "accessServiceId": 210,
+      "accessServiceDevelopmentStatus": "TECHNICAL_PREVIEW",
+      "accessServiceAdminClass": "org.odpi.openmetadata.accessservices.datamanager.admin.DataManagerAdmin",
+      "accessServiceName": "Data Manager",
+      "accessServiceFullName": "Data Manager OMAS",
+      "accessServiceURLMarker": "data-manager",
+      "accessServiceDescription": "Capture changes to the data stores and data set managed by a data manager such as a database server, content manager or file system.",
+      "accessServiceWiki": "https://egeria-project.org/services/omas/data-manager/overview/",
+      "accessServiceOperationalStatus": "ENABLED"
     }
   ],
   "repositoryServicesConfig": {
@@ -252,12 +264,5 @@
       },
       "enterpriseOMRSTopicProtocolVersion": "V1"
     }
-  },
-  "auditTrail": [
-    "Wed Jun 28 11:22:01 GMT 2023 admin updated configuration for the local repository.",
-    "Thu Jun 29 07:22:43 GMT 2023 admin updated configuration for access services.",
-    "Thu Jun 29 07:22:43 GMT 2023 admin updated configuration for enterprise repository services (used by access services).",
-    "Thu Jun 29 07:23:02 GMT 2023 admin updated configuration for access services.",
-    "Thu Jun 29 07:23:02 GMT 2023 admin updated configuration for enterprise repository services (used by access services)."
-  ]
+  }
 }

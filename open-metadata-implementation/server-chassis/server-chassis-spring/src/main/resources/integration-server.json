@@ -1,0 +1,136 @@
+{
+  "class": "OMAGServerConfig",
+  "versionId": "V2.0",
+  "localServerId": "0aac3308-bae9-43e9-8743-2cac4350fe3f",
+  "localServerName": "cocoIS1",
+  "localServerType": "Open Metadata and Governance Server",
+  "localServerURL": "https://localhost:9444",
+  "localServerUserId": "OMAGServer",
+  "maxPageSize": 1000,
+  "repositoryServicesConfig": {
+    "class": "RepositoryServicesConfig",
+    "auditLogConnections": [
+      {
+        "class": "Connection",
+        "headerVersion": 0,
+        "qualifiedName": "SLF4J- [<Unknown>, Information, Event, Decision, Action, Error, Exception, Security, Startup, Shutdown, Asset, Types, Cohort]",
+        "displayName": "SLF4J",
+        "connectorType": {
+          "class": "ConnectorType",
+          "headerVersion": 0,
+          "type": {
+            "typeId": "954421eb-33a6-462d-a8ca-b5709a1bd0d4",
+            "typeName": "ConnectorType",
+            "typeVersion": 1,
+            "typeDescription": "A set of properties describing a type of connector."
+          },
+          "guid": "e8303911-ba1c-4640-974e-c4d57ee1b310",
+          "qualifiedName": "Egeria:AuditLogDestinationConnector:SLF4J",
+          "displayName": "SLF4J Audit Log Destination Connector",
+          "description": "Connector supports logging of audit log messages to the slf4j logger ecosystem.",
+          "connectorProviderClassName": "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.slf4j.SLF4JAuditLogStoreProvider",
+          "connectorFrameworkName": "Open Connector Framework (OCF)",
+          "connectorInterfaceLanguage": "Java",
+          "connectorInterfaces": [
+            "org.odpi.openmetadata.frameworks.connectors.SecureConnectorExtension",
+            "org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStore"
+          ],
+          "recognizedConfigurationProperties": [
+            "supportedSeverities"
+          ]
+        },
+        "configurationProperties": {
+          "supportedSeverities": [
+            "<Unknown>",
+            "Information",
+            "Event",
+            "Decision",
+            "Action",
+            "Error",
+            "Exception",
+            "Security",
+            "Startup",
+            "Shutdown",
+            "Asset",
+            "Types",
+            "Cohort"
+          ]
+        }
+      }
+    ]
+  },
+  "integrationServicesConfig": [
+    {
+      "class": "IntegrationServiceConfig",
+      "integrationServiceId": 604,
+      "integrationServiceDevelopmentStatus": "TECHNICAL_PREVIEW",
+      "integrationServiceContextManagerClass": "org.odpi.openmetadata.integrationservices.database.contextmanager.DatabaseIntegratorContextManager",
+      "integrationServiceName": "Database Integrator",
+      "integrationServiceFullName": "Database Integrator OMIS",
+      "integrationServiceURLMarker": "database-integrator",
+      "integrationServiceDescription": "Extract metadata such as schema, tables and columns from database managers.",
+      "integrationServiceWiki": "https://egeria-project.org/services/omis/database-integrator/overview/",
+      "integrationServicePartnerOMAS": "Data Manager OMAS",
+      "defaultPermittedSynchronization": "FROM_THIRD_PARTY",
+      "integrationServiceOperationalStatus": "ENABLED",
+      "integrationConnectorConfigs": [
+        {
+          "class": "IntegrationConnectorConfig",
+          "connectorId": "5c0f9070-4748-4fb7-8ad3-732a19592fac",
+          "connectorName": "Generic-JDBC-Connector",
+          "connection": {
+            "class": "VirtualConnection",
+            "headerVersion": 0,
+            "connectorType": {
+              "class": "ConnectorType",
+              "headerVersion": 0,
+              "connectorProviderClassName": "org.odpi.openmetadata.adapters.connectors.integration.jdbc.JdbcIntegrationConnectorProvider"
+            },
+            "configurationProperties": {
+              "excludeViewNames": [],
+              "includeTableNames": [],
+              "excludeColumnNames": [],
+              "includeViewNames": [],
+              "includeColumnNames": [],
+              "catalog": "NORTHWIND",
+              "includeSchemaNames": [
+                "NORTHWIND"
+              ],
+              "excludeTableNames": [],
+              "excludeSchemaNames": []
+            },
+            "embeddedConnections": [
+              {
+                "class": "EmbeddedConnection",
+                "headerVersion": 0,
+                "position": 0,
+                "embeddedConnection": {
+                  "class": "Connection",
+                  "headerVersion": 0,
+                  "connectorType": {
+                    "class": "ConnectorType",
+                    "headerVersion": 0,
+                    "connectorProviderClassName": "org.odpi.openmetadata.adapters.connectors.resource.jdbc.JdbcConnectorProvider"
+                  },
+                  "endpoint": {
+                    "class": "Endpoint",
+                    "headerVersion": 0,
+                    "address": "jdbc:oracle:thin:@localhost:1521/my-db"
+                  },
+                  "userId": "user",
+                  "clearPassword": "pass"
+                }
+              }
+            ]
+          },
+          "metadataSourceQualifiedName": "my-db",
+          "refreshTimeInterval": 30,
+          "usesBlockingCalls": false,
+          "generateIntegrationReports": false
+        }
+      ],
+      "omagserverName": "cocoMDS1",
+      "omagserverPlatformRootURL": "https://localhost:9443"
+    }
+  ]
+}

@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.event.ApplicationFailedEvent;
@@ -22,6 +24,7 @@ import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -34,29 +37,33 @@ import java.util.List;
 //TODO: ADD JAVADOCS!!!
 public class OMAGServer {
     private final Environment env;
-    private static final Logger log = LoggerFactory.getLogger(OMAGServer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OMAGServer.class);
     private static final ObjectReader OBJECT_READER = new ObjectMapper().reader();
 
-    @Value("${strict.ssl:true}") // Default value is true
+    @Value("${strict.ssl:true}")
     Boolean strictSSL;
 
-    @Value("${startup.user:system}") // Default value is "system"
+    @Value("${server.ssl.enabled:true}")
+    Boolean serverSSL;
+
+    @Value("${startup.user:system}")
     String sysUser;
 
-    @Value("${omag.server.config.location}")
+    @Value("${omag.server.config}")
     Resource omagServerConfigLocation;
-    private final OMAGServerOperationalServices operationalServices = new OMAGServerOperationalServices();
-
+    private final OMAGServerOperationalServices operationalServices;
     private String serverName = null;
+    private OMAGServerConfig serverConfig = null;
 
 
     public OMAGServer(Environment env) {
         this.env = env;
+        this.operationalServices = new OMAGServerOperationalServices();
     }
 
     public static void main(String[] args) {
-                new SpringApplicationBuilder().sources(OMAGServer.class).run(args);
-//        new SpringApplicationBuilder().sources(OMAGServer.class).listeners(new ApplicationPreparedEventHandler(),new ApplicationContextInitializedEventHandler(), new ApplicationStartingEventHandler(), new ApplicationEnvironmentPreparedEventHandler()).run(args);
+        new SpringApplicationBuilder().sources(OMAGServer.class).run(args);
+//        new SpringApplicationBuilder().sources(OMAGServer.class).listeners(new ApplicationContextInitializedEventHandler(), new ApplicationStartedEventHandler()).run(args);
     }
 
     //TODO: This code is common for the platform and server spring boot applications - as such should be moved to common util class to avoid code duplication and potentially inconsistent behaviour.
@@ -64,15 +71,15 @@ public class OMAGServer {
     public InitializingBean getInitialize() {
         return () ->
         {
-            log.info("Working directory is: " + System.getProperty("user.dir"));
+            LOG.info("Working directory is: " + System.getProperty("user.dir"));
 
             if (!strictSSL) {
-                log.warn("Option strict.ssl is set to false! Invalid certificates will be accepted for connection!");
+                LOG.warn("Option strict.ssl is set to false! Invalid certificates will be accepted for connection!");
                 HttpHelper.noStrictSSL();
             }
 
-            if (System.getProperty("javax.net.ssl.trustStore") == null) {
-                log.warn("Java trust store 'javax.net.ssl.trustStore' is null - this is needed by Tomcat - using 'server.ssl.trust-store'");
+            if (serverSSL && System.getProperty("javax.net.ssl.trustStore") == null) {
+                LOG.warn("Java trust store 'javax.net.ssl.trustStore' is null - this is needed by Tomcat - using 'server.ssl.trust-store'");
 
                 /*
                  * load the 'javax.net.ssl.trustStore' and 'javax.net.ssl.trustStorePassword' from application.properties.
@@ -91,91 +98,86 @@ public class OMAGServer {
 
     @EventListener(ApplicationReadyEvent.class)
     private void onApplicationReadyEvent() {
-        log.debug(">> Application ready");
-        //TODO: application liveness state is TRUE
+        LOG.debug(">> Application ready");
     }
 
     @EventListener(ApplicationFailedEvent.class)
     private void onApplicationFailedEvent() {
-        log.debug(">> Application failed");
-        //TODO: application liveness state is FALSE (?) We need to investigate more this scenario.
+        LOG.debug(">> Application failed");
     }
 
     @EventListener(ContextClosedEvent.class)
     private void onContextClosedEvent() {
-        log.debug(">> Context closed");
+        LOG.debug(">> Context closed");
         if (serverName != null) {
-            log.info("Application stopped, deactivating server {}", serverName);
+            LOG.info("Application stopped, deactivating server {}", serverName);
             operationalServices.deactivateTemporarilyServerList(sysUser, List.of(serverName));
         }
     }
 
     @EventListener(WebServerInitializedEvent.class)
-    public void onWebServerInitialized() {
-        log.debug(">> WebServer initialized");
-        activateOMAGServerUsingPlatformServices();
+    public void onWebServerInitialized() throws Exception {
+        LOG.debug(">> WebServer initialized");
+        loadServerConfig();
     }
 
-    private void activateOMAGServerUsingPlatformServices() {
+    @Component
+    public class OMAGServerStartup implements ApplicationRunner {
+        @Override
+        public void run(ApplicationArguments args) throws Exception {
+            LOG.debug(">> Application runner");
+//            loadServerConfig();
+            activateOMAGServerUsingPlatformServices();
+        }
+    }
+
+    private void activateOMAGServerUsingPlatformServices() throws Exception {
 
         try {
-
-            log.info("Activating OMAGServer using platform services and configuration from location {}", omagServerConfigLocation.getFile());
-            OMAGServerConfig omagServerConfig = null;
-            if (omagServerConfigLocation != null) {
-                log.trace(Files.readString(Path.of(omagServerConfigLocation.getFile().getPath())));
-                omagServerConfig = OBJECT_READER.readValue(omagServerConfigLocation.getFile(), OMAGServerConfig.class);
-                serverName = omagServerConfig.getLocalServerName();
-                log.info("Successfully loaded configuration document for OMAG server {}", serverName);
-            }
-
-            if (omagServerConfig != null) {
-                SuccessMessageResponse response = operationalServices.activateWithSuppliedConfig(sysUser.trim(), omagServerConfig.getLocalServerName(), omagServerConfig);
+            if (serverConfig != null) {
+                LOG.info("Activating OMAG server with name {}", serverName);
+                SuccessMessageResponse response = operationalServices.activateWithSuppliedConfig(sysUser.trim(), serverConfig.getLocalServerName(), serverConfig);
                 if (response.getRelatedHTTPCode() == 200) {
-                    log.info("Successfully started OMAG server {}", omagServerConfig.getLocalServerName());
+                    LOG.info("Successfully started OMAG server {}", serverConfig.getLocalServerName());
                     //TODO: Readiness probe state TRUE
                 } else {
-                    log.info("OMAG server activation failure");
+                    LOG.info("OMAG server activation failure");
 //                    throw new RuntimeException(response.getExceptionErrorMessage());
                     //TODO: Readiness probe state FALSE
                 }
             } else {
-                log.info("OMAG server configuration is null, server cannot be activated");
-                //TODO: Initiate proper spring boot application shutdown sequence.
-                throw new RuntimeException("OMAG server configuration is null");
+                LOG.info("OMAG server configuration is null, server cannot be activated");
+                throw new Exception("OMAG server configuration is null");
             }
 
-        } catch (IOException e) {
-            log.error("Exception while trying to activate OMAG server", e);
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            LOG.error("Exception while trying to activate OMAG server", e);
+            throw new Exception(e);
         }
 
     }
-//    static class ApplicationPreparedEventHandler implements ApplicationListener<ApplicationPreparedEvent> {
-//        @Override
-//        public void onApplicationEvent(ApplicationPreparedEvent applicationPreparedEvent) {
-//            log.debug(">>> Application prepared");
-//        }
-//    }
+
+    private void loadServerConfig() throws IOException {
+        if (omagServerConfigLocation != null) {
+            LOG.info("Lading OMAG server configuration from location {}", omagServerConfigLocation.getFile());
+            LOG.trace(Files.readString(Path.of(omagServerConfigLocation.getFile().getPath())));
+            serverConfig = OBJECT_READER.readValue(omagServerConfigLocation.getFile(), OMAGServerConfig.class);
+            serverName = serverConfig.getLocalServerName();
+            LOG.info("Successfully loaded configuration document for OMAG server {}", serverName);
+        }
+    }
+
 //    static class ApplicationContextInitializedEventHandler implements ApplicationListener<ApplicationContextInitializedEvent> {
 //        @Override
 //        public void onApplicationEvent(ApplicationContextInitializedEvent applicationContextInitializedEvent) {
-//            log.debug(">>> Application context initialized");
+//            LOG.debug(">> Application context initialized");
 //        }
 //    }
 //
-//    static class ApplicationStartingEventHandler implements ApplicationListener<ApplicationStartingEvent> {
+//    static class ApplicationStartedEventHandler implements ApplicationListener<ApplicationStartedEvent> {
 //        @Override
-//        public void onApplicationEvent(ApplicationStartingEvent applicationStartingEvent) {
-//            log.debug(">>> Application starting");
-//        }
-//    }
-//
-//    static class ApplicationEnvironmentPreparedEventHandler implements ApplicationListener<ApplicationEnvironmentPreparedEvent> {
-//
-//        @Override
-//        public void onApplicationEvent(ApplicationEnvironmentPreparedEvent applicationEnvironmentPreparedEvent) {
-//            log.debug(">>> Application prepared");
+//        public void onApplicationEvent(ApplicationStartedEvent applicationStartedEvent) {
+//            LOG.debug(">> Application started");
 //        }
 //    }
 }

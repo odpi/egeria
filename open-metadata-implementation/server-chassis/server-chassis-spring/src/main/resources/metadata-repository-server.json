@@ -124,8 +124,5 @@
       "eventsToSaveRule": "ALL",
       "eventsToSendRule": "ALL"
     }
-  },
-  "auditTrail": [
-    "Wed Jun 28 11:22:01 GMT 2023 admin updated configuration for the local repository."
-  ]
+  }
 }
