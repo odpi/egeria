@@ -46,8 +46,10 @@ dependencies {
 
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'org.springframework:spring-test'
     testImplementation 'org.springframework.boot:spring-boot-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
 }
 
 description = 'OMAG Server Chassis for Spring'

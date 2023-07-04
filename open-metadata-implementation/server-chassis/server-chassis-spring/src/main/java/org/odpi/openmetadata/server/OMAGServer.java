@@ -18,7 +18,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.event.ApplicationFailedEvent;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.boot.web.context.WebServerInitializedEvent;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.context.ApplicationContextException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.EventListener;
@@ -63,7 +64,6 @@ public class OMAGServer {
 
     public static void main(String[] args) {
         new SpringApplicationBuilder().sources(OMAGServer.class).run(args);
-//        new SpringApplicationBuilder().sources(OMAGServer.class).listeners(new ApplicationContextInitializedEventHandler(), new ApplicationStartedEventHandler()).run(args);
     }
 
     //TODO: This code is common for the platform and server spring boot applications - as such should be moved to common util class to avoid code duplication and potentially inconsistent behaviour.
@@ -101,11 +101,16 @@ public class OMAGServer {
         LOG.debug(">> Application ready");
     }
 
+    @EventListener(ApplicationStartedEvent.class)
+    private void onApplicationStartedEvent() throws Exception{
+        LOG.debug(">> Application started");
+        loadServerConfig();
+    }
+
     @EventListener(ApplicationFailedEvent.class)
     private void onApplicationFailedEvent() {
         LOG.debug(">> Application failed");
     }
-
     @EventListener(ContextClosedEvent.class)
     private void onContextClosedEvent() {
         LOG.debug(">> Context closed");
@@ -115,25 +120,18 @@ public class OMAGServer {
         }
     }
 
-    @EventListener(WebServerInitializedEvent.class)
-    public void onWebServerInitialized() throws Exception {
-        LOG.debug(">> WebServer initialized");
-        loadServerConfig();
-    }
-
     @Component
     public class OMAGServerStartup implements ApplicationRunner {
         @Override
-        public void run(ApplicationArguments args) throws Exception {
+        public void run(ApplicationArguments args) {
             LOG.debug(">> Application runner");
 //            loadServerConfig();
             activateOMAGServerUsingPlatformServices();
         }
     }
 
-    private void activateOMAGServerUsingPlatformServices() throws Exception {
+    private void activateOMAGServerUsingPlatformServices() {
 
-        try {
             if (serverConfig != null) {
                 LOG.info("Activating OMAG server with name {}", serverName);
                 SuccessMessageResponse response = operationalServices.activateWithSuppliedConfig(sysUser.trim(), serverConfig.getLocalServerName(), serverConfig);
@@ -142,42 +140,29 @@ public class OMAGServer {
                     //TODO: Readiness probe state TRUE
                 } else {
                     LOG.info("OMAG server activation failure");
-//                    throw new RuntimeException(response.getExceptionErrorMessage());
+                    throw new ApplicationContextException(response.getExceptionErrorMessage());
                     //TODO: Readiness probe state FALSE
                 }
             } else {
                 LOG.info("OMAG server configuration is null, server cannot be activated");
-                throw new Exception("OMAG server configuration is null");
+                throw new ApplicationContextException("OMAG server configuration is null");
             }
+    }
 
+    private void loadServerConfig() {
+        try {
+            if (omagServerConfigLocation != null) {
+                LOG.info("Lading OMAG server configuration from location {}", omagServerConfigLocation.getFile());
+                LOG.trace(Files.readString(Path.of(omagServerConfigLocation.getFile().getPath())));
+                serverConfig = OBJECT_READER.readValue(omagServerConfigLocation.getFile(), OMAGServerConfig.class);
+                serverName = serverConfig.getLocalServerName();
+                LOG.info("Successfully loaded configuration document for OMAG server {}", serverName);
+            } else {
+                throw new ApplicationContextException("OMAG server configuration is null");
+            }
         } catch (Exception e) {
-            LOG.error("Exception while trying to activate OMAG server", e);
-            throw new Exception(e);
-        }
-
-    }
-
-    private void loadServerConfig() throws IOException {
-        if (omagServerConfigLocation != null) {
-            LOG.info("Lading OMAG server configuration from location {}", omagServerConfigLocation.getFile());
-            LOG.trace(Files.readString(Path.of(omagServerConfigLocation.getFile().getPath())));
-            serverConfig = OBJECT_READER.readValue(omagServerConfigLocation.getFile(), OMAGServerConfig.class);
-            serverName = serverConfig.getLocalServerName();
-            LOG.info("Successfully loaded configuration document for OMAG server {}", serverName);
+            LOG.error("Exception while loading OMAG server configuration", e);
+            throw new ApplicationContextException("Exception loading OMAG server configuration");
         }
     }
-
-//    static class ApplicationContextInitializedEventHandler implements ApplicationListener<ApplicationContextInitializedEvent> {
-//        @Override
-//        public void onApplicationEvent(ApplicationContextInitializedEvent applicationContextInitializedEvent) {
-//            LOG.debug(">> Application context initialized");
-//        }
-//    }
-//
-//    static class ApplicationStartedEventHandler implements ApplicationListener<ApplicationStartedEvent> {
-//        @Override
-//        public void onApplicationEvent(ApplicationStartedEvent applicationStartedEvent) {
-//            LOG.debug(">> Application started");
-//        }
-//    }
 }
