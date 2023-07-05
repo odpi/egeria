@@ -125,7 +125,6 @@ public class OMAGServer {
         @Override
         public void run(ApplicationArguments args) {
             LOG.debug(">> Application runner");
-//            loadServerConfig();
             activateOMAGServerUsingPlatformServices();
         }
     }
@@ -137,14 +136,22 @@ public class OMAGServer {
                 SuccessMessageResponse response = operationalServices.activateWithSuppliedConfig(sysUser.trim(), serverConfig.getLocalServerName(), serverConfig);
                 if (response.getRelatedHTTPCode() == 200) {
                     LOG.info("Successfully started OMAG server {}", serverConfig.getLocalServerName());
-                    //TODO: Readiness probe state TRUE
+                    //TODO: Mark the application state as ready
+                    // i.e. set application ready state to TRUE
                 } else {
-                    LOG.info("OMAG server activation failure");
-                    throw new ApplicationContextException(response.getExceptionErrorMessage());
-                    //TODO: Readiness probe state FALSE
+                    LOG.error("OMAG server activation failure");
+                    //TODO: OMAG system start-up error handling and application readiness probe
+                    // In most cases it is state caused by configuration problem and cannot be recovered at runtime
+                    // Two options:
+                    // 1) Propagate the error further i.e. Runtime/ApplicationContextException which will cause context to be closed and application shut DOWN
+                    // throw new ApplicationContextException(response.getExceptionErrorMessage());
+                    // 2) Do not propagate error, log the error message and set application ready state to FALSE
+                    // this will keep the application UP and the operator will have to manually change the configuration and restart the application/container
                 }
             } else {
                 LOG.info("OMAG server configuration is null, server cannot be activated");
+                //TODO: Confirm if this is desired behaviour
+                // This is clearly invalid application state since the OMAG system cannot start without configuration. Throwing error will close application context and shut the application DOWN.
                 throw new ApplicationContextException("OMAG server configuration is null");
             }
     }
@@ -158,10 +165,15 @@ public class OMAGServer {
                 serverName = serverConfig.getLocalServerName();
                 LOG.info("Successfully loaded configuration document for OMAG server {}", serverName);
             } else {
+                LOG.error("OMAG server config location provided is null");
+                //TODO: Confirm if this is desired behaviour (configuration is null)
+                // This is clearly invalid application state since the OMAG system cannot start without configuration. Throwing error will close application context and shut the application DOWN.
                 throw new ApplicationContextException("OMAG server configuration is null");
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             LOG.error("Exception while loading OMAG server configuration", e);
+            //TODO: Confirm if this is desired behaviour (configuration is null)
+            // Same as in the case above.
             throw new ApplicationContextException("Exception loading OMAG server configuration");
         }
     }
