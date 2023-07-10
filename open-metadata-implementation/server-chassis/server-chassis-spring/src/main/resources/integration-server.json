@@ -2,7 +2,7 @@
   "class": "OMAGServerConfig",
   "versionId": "V2.0",
   "localServerId": "0aac3308-bae9-43e9-8743-2cac4350fe3f",
-  "localServerName": "cocoIS1",
+  "localServerName": "cocoDIS1",
   "localServerType": "Open Metadata and Governance Server",
   "localServerURL": "https://localhost:9444",
   "localServerUserId": "OMAGServer",
