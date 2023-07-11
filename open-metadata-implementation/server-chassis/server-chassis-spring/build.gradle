@@ -24,6 +24,8 @@ dependencies {
     implementation 'jakarta.servlet:jakarta.servlet-api'
     implementation 'org.slf4j:slf4j-api'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'org.springframework.boot:spring-boot-actuator-autoconfigure:3.1.1'
+    implementation 'org.springframework.boot:spring-boot-actuator:3.1.1'
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
     runtimeOnly 'ch.qos.logback:logback-classic'
     runtimeOnly 'org.hibernate:hibernate-validator'
