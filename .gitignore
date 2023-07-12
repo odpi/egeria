@@ -165,3 +165,4 @@ THIRD_PARTY*.txt
 .gradle/
 build/
 *.gz
+*.tmp
