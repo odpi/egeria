@@ -25,8 +25,11 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  *     <li>UserAction - describes how a user should correct the error</li>
  * </ul>
  */
-public enum SearchIntegratorErrorCode implements ExceptionMessageSet {
-
+public enum SearchIntegratorErrorCode implements ExceptionMessageSet
+{
+    /**
+     * OMIS-SEARCH-INTEGRATOR-400-001 - Integration connector {0} is not of the correct type to run in the {1} integration service.  It must inherit from {2}
+     */
     INVALID_CONNECTOR(400, "OMIS-SEARCH-INTEGRATOR-400-001",
             "Integration connector {0} is not of the correct type to run in the {1} integration service.  It must inherit from {2}",
             "The integration service fails to start and this in turn causes the integration daemon to fail.",
@@ -34,6 +37,9 @@ public enum SearchIntegratorErrorCode implements ExceptionMessageSet {
                     "Either move it to an appropriate integration service or update the connector implementation " +
                     "to inherit from the correct class."),
 
+    /**
+     * OMIS-SEARCH-INTEGRATOR-500-001 - Integration connector {0} has a null context
+     */
     NULL_CONTEXT(400, "OMIS-SEARCH-INTEGRATOR-500-001",
             "Integration connector {0} has a null context",
             "The integration connector is running but does not have a context.  This is a timing issue in the integration daemon.",
@@ -42,7 +48,7 @@ public enum SearchIntegratorErrorCode implements ExceptionMessageSet {
     ;
 
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
 
     /**
@@ -54,12 +60,13 @@ public enum SearchIntegratorErrorCode implements ExceptionMessageSet {
      * This will expand out to the 5 parameters shown below.
      *
      * @param httpErrorCode  error code to use over REST calls
-     * @param errorMessageId unique Id for the message
+     * @param errorMessageId unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction     instructions for resolving the error
      */
-    SearchIntegratorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction) {
+    SearchIntegratorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
         this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
                 errorMessageId,
                 errorMessage,

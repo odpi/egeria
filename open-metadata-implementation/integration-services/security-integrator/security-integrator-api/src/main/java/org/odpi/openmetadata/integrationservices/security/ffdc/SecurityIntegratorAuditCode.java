@@ -9,7 +9,6 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 
 /**
  * The SecurityIntegratorAuditCode is used to define the message content for the OMRS Audit Log.
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>Log Message Id - to uniquely identify the message</li>
@@ -22,12 +21,18 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  */
 public enum SecurityIntegratorAuditCode implements AuditLogMessageSet
 {
+    /**
+     * OMIS-SECURITY-INTEGRATOR-0001 - The security integrator context manager is being initialized for calls to server {0} on platform {1}
+     */
     CONTEXT_INITIALIZING("OMIS-SECURITY-INTEGRATOR-0001",
                         OMRSAuditLogRecordSeverity.STARTUP,
                         "The security integrator context manager is being initialized for calls to server {0} on platform {1}",
                         "The Security Integrator OMIS is initializing its context manager.",
                         "Verify that the start up sequence goes on to initialize the context for each connector configured for this service."),
 
+    /**
+     * OMIS-SECURITY-INTEGRATOR-0002 - Creating context for integration connector {0} ({1}) connecting to third party technology {2} with permitted synchronization of {3} and service options of {4}
+     */
     CONNECTOR_CONTEXT_INITIALIZING("OMIS-SECURITY-INTEGRATOR-0002",
                                    OMRSAuditLogRecordSeverity.STARTUP,
                                    "Creating context for integration connector {0} ({1}) connecting to third party technology {2} with permitted synchronization of {3} and service options of {4}",
@@ -36,6 +41,9 @@ public enum SecurityIntegratorAuditCode implements AuditLogMessageSet
                                    "Verify that this connector is being started with the correct configuration."),
 
 
+    /**
+     * OMIS-SECURITY-INTEGRATOR-0003 - The context for connector {0} has its permitted synchronization set to {1}
+     */
     PERMITTED_SYNCHRONIZATION("OMIS-SECURITY-INTEGRATOR-0003",
              OMRSAuditLogRecordSeverity.STARTUP,
              "The context for connector {0} has its permitted synchronization set to {1}",
@@ -44,6 +52,9 @@ public enum SecurityIntegratorAuditCode implements AuditLogMessageSet
              "Check that this permitted synchronized value is as expected.  If it is not," +
                      "change the configuration for this connector and restart the integration daemon."),
 
+    /**
+     * OMIS-SECURITY-INTEGRATOR-0004 - The following exchange services are disabled in the context for connector {1}: {2}
+     */
     DISABLED_EXCHANGE_SERVICES("OMIS-SECURITY-INTEGRATOR-0004",
                                OMRSAuditLogRecordSeverity.STARTUP,
                                "The following exchange services are disabled in the context for connector {1}: {2}",
@@ -52,6 +63,9 @@ public enum SecurityIntegratorAuditCode implements AuditLogMessageSet
                                "Check that this value is as expected.  If it is not, " +
                                        "change the configuration for this connector and restart the integration daemon."),
 
+    /**
+     * OMIS-SECURITY-INTEGRATOR-0005 - Integration connector {0} has a null context
+     */
     NULL_CONTEXT("OMIS-SECURITY-INTEGRATOR-0005",
                  OMRSAuditLogRecordSeverity.ERROR,
                  "Integration connector {0} has a null context",
@@ -61,19 +75,19 @@ public enum SecurityIntegratorAuditCode implements AuditLogMessageSet
     ;
 
 
-    AuditLogMessageDefinition messageDefinition;
+    private final AuditLogMessageDefinition messageDefinition;
 
 
 
     /**
      * The constructor for SecurityIntegratorAuditCode expects to be passed one of the enumeration rows defined in
      * SecurityIntegratorAuditCode above.   For example:
-     *
+     * <br><br>
      *     SecurityIntegratorAuditCode   auditCode = SecurityIntegratorAuditCode.SERVER_SHUTDOWN;
-     *
+     * <br><br>
      * This will expand out to the 4 parameters shown below.
      *
-     * @param messageId - unique Id for the message
+     * @param messageId - unique id for the message
      * @param severity - severity of the message
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened

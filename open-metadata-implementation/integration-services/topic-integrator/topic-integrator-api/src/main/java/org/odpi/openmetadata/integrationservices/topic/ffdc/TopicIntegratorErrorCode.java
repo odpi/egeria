@@ -9,7 +9,6 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  * The TopicIntegratorErrorCode error code is used to define first failure data capture (FFDC) for errors that
  * occur when working with the Integration Services.  It is used in conjunction with all exceptions,
  * both Checked and Runtime (unchecked).
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>HTTP Error Code for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -19,7 +18,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  *         <li>404 - not found</li>
  *         <li>409 - data conflict errors - eg item already defined</li>
  *     </ul></li>
- *     <li>Error Message Id - to uniquely identify the message</li>
+ *     <li>Error Message Identifier - to uniquely identify the message</li>
  *     <li>Error Message Text - includes placeholder to allow additional values to be captured</li>
  *     <li>SystemAction - describes the result of the error</li>
  *     <li>UserAction - describes how a user should correct the error</li>
@@ -27,7 +26,9 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  */
 public enum TopicIntegratorErrorCode implements ExceptionMessageSet
 {
-
+    /**
+     * OMIS-TOPIC-INTEGRATOR-400-001 - Integration connector {0} is not of the correct type to run in the {1} integration service.  It must inherit from {2}
+     */
     INVALID_CONNECTOR(400,"OMIS-TOPIC-INTEGRATOR-400-001",
                   "Integration connector {0} is not of the correct type to run in the {1} integration service.  It must inherit from {2}",
                   "The integration service fails to start and this in turn causes the integration daemon to fail.",
@@ -35,6 +36,9 @@ public enum TopicIntegratorErrorCode implements ExceptionMessageSet
                               "Either move it to an appropriate integration service or update the connector implementation " +
                               "to inherit from the correct class."),
 
+    /**
+     * OMIS-TOPIC-INTEGRATOR-500-001 - Integration connector {0} has a null context
+     */
     NULL_CONTEXT(400,"OMIS-TOPIC-INTEGRATOR-500-001",
                  "Integration connector {0} has a null context",
                  "The integration connector is running but does not have a context.  This is a timing issue in the integration daemon.",
@@ -43,19 +47,19 @@ public enum TopicIntegratorErrorCode implements ExceptionMessageSet
     ;
 
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
 
     /**
      * The constructor for TopicIntegratorErrorCode expects to be passed one of the enumeration rows defined in
      * TopicIntegratorErrorCode above.   For example:
-     *
+     * <br><br>
      *     TopicIntegratorErrorCode   errorCode = TopicIntegratorErrorCode.UNKNOWN_ENDPOINT;
-     *
+     * <br><br>
      * This will expand out to the 5 parameters shown below.
      *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique Id for the message
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error

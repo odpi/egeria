@@ -58,6 +58,7 @@ public class SecurityIntegratorContext extends IntegrationContext
      *                                 null).
      * @param externalSourceGUID unique identifier of the software server capability for the asset manager
      * @param externalSourceName unique name of the software server capability for the asset manager
+     * @param maxPageSize max number of elements that can be returned on a query
      * @param auditLog logging destination
      */
     public SecurityIntegratorContext(String                       connectorId,
@@ -73,6 +74,7 @@ public class SecurityIntegratorContext extends IntegrationContext
                                      String                       integrationConnectorGUID,
                                      String                       externalSourceGUID,
                                      String                       externalSourceName,
+                                     int                          maxPageSize,
                                      AuditLog                     auditLog)
     {
         super(connectorId,
@@ -85,7 +87,8 @@ public class SecurityIntegratorContext extends IntegrationContext
               permittedSynchronization,
               externalSourceGUID,
               externalSourceName,
-              integrationConnectorGUID);
+              integrationConnectorGUID,
+              maxPageSize);
 
         this.securityManagerClient = securityManagerClient;
         this.eventClient = eventClient;

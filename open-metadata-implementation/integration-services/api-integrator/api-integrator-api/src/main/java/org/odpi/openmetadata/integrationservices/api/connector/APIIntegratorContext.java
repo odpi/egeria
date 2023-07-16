@@ -49,6 +49,7 @@ public class APIIntegratorContext extends IntegrationContext
      *                                 null).
      * @param externalSourceGUID unique identifier of the software server capability for the api manager
      * @param externalSourceName unique name of the software server capability for the api manager
+     * @param maxPageSize max number of elements that can be returned on a query
      */
     public APIIntegratorContext(String                       connectorId,
                                 String                       connectorName,
@@ -64,7 +65,8 @@ public class APIIntegratorContext extends IntegrationContext
                                 PermittedSynchronization     permittedSynchronization,
                                 String                       integrationConnectorGUID,
                                 String                       externalSourceGUID,
-                                String                       externalSourceName)
+                                String                       externalSourceName,
+                                int                          maxPageSize)
     {
         super(connectorId,
               connectorName,
@@ -76,7 +78,8 @@ public class APIIntegratorContext extends IntegrationContext
               permittedSynchronization,
               externalSourceGUID,
               externalSourceName,
-              integrationConnectorGUID);
+              integrationConnectorGUID,
+              maxPageSize);
 
         this.apiManagerClient        = apiManagerClient;
         this.connectionManagerClient = connectionManagerClient;
