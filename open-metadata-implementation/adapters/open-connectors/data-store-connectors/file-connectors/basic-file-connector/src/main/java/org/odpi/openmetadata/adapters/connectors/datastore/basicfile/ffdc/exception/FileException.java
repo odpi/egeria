@@ -15,6 +15,9 @@ import java.util.Objects;
  */
 public class FileException extends ConnectorCheckedException
 {
+    /**
+     * Name of file with error
+     */
     private final String fileName;
 
 

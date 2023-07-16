@@ -4,6 +4,9 @@ package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 
+/**
+ * RepositoryExecutorBase provides the common functions for all executors for a federated query.
+ */
 public abstract class RepositoryExecutorBase implements RepositoryExecutor
 {
     final String repositoryName = "Enterprise";

@@ -1406,7 +1406,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
     /**
      * An existing entity has changed home repository.  This action is taken for example, if a repository
      * becomes permanently unavailable, or if the user community updating this entity move to working
-     * from a different repository in the open metadata repository cluster.
+     * from a different repository in the open metadata repository cohort.
      *
      * @param sourceName                       name of the source of the event.  It may be the cohort name for incoming events or the
      *                                         local repository, or event mapper name.
@@ -1934,7 +1934,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
     /**
      * An existing relationship has changed home repository.  This action is taken for example, if a repository
      * becomes permanently unavailable, or if the user community updating this relationship move to working
-     * from a different repository in the open metadata repository cluster.
+     * from a different repository in the open metadata repository cohort.
      *
      * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
      *                                       local repository, or event mapper name.
