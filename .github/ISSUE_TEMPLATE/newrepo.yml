@@ -6,7 +6,8 @@ description: Request a new Repository
 title: "[REPOSITORY] New Repository"
 labels: [repo]
 assignees:
-  - planetf1
+  - lpalashevski
+  - mandy-chessell
 body:
   - type: markdown
     attributes:
