@@ -226,7 +226,7 @@
 							"response": []
 						},
 						{
-							"name": "Set local server user Id",
+							"name": "Set local server userId",
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -255,7 +255,7 @@
 										}
 									]
 								},
-								"description": "Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use)."
+								"description": "Set up the userId that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use)."
 							},
 							"response": []
 						},

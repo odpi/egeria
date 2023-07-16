@@ -568,7 +568,7 @@ public class OMAGServerAdminForAccessServices
      * @param accessServiceOptions options for the service
      * @param eventBusConfig details of the event bus
      * @param serverName name of this server
-     * @param localServerId unique Id for this server
+     * @param localServerId unique identifier for this server
      * @return newly created config object
      */
     private AccessServiceConfig  createAccessServiceConfig(AccessServiceRegistrationEntry registration,

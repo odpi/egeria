@@ -125,6 +125,7 @@ public class ConfigRepositoryServicesResource
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
+     * @param topicName name of topic
      * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
@@ -133,9 +134,11 @@ public class ConfigRepositoryServicesResource
     @PostMapping(path = "/audit-log-destinations/event-topic")
     public VoidResponse addEventTopicAuditLogDestination(@PathVariable String       userId,
                                                          @PathVariable String       serverName,
+                                                         @RequestParam (required = false)
+                                                                       String       topicName,
                                                          @RequestBody  List<String> supportedSeverities)
     {
-        return adminAPI.addEventTopicAuditLogDestination(userId, serverName, supportedSeverities);
+        return adminAPI.addEventTopicAuditLogDestination(userId, serverName, topicName, supportedSeverities);
     }
 
 
