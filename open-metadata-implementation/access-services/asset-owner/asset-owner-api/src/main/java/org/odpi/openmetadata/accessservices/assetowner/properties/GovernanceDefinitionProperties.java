@@ -23,12 +23,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * and governance program.  It includes many of the common fields:
  *
  * <ul>
- *     <li>Document Id</li>
+ *     <li>Document id</li>
  *     <li>Title</li>
  *     <li>Summary</li>
  *     <li>Description</li>
  *     <li>Scope</li>
- *     <li>Domain Identifier</li>
+ *     <li>Domain identifier</li>
  *     <li>Status</li>
  *     <li>Priority</li>
  *     <li>Implications</li>

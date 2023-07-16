@@ -5,19 +5,22 @@ package org.odpi.openmetadata.accessservices.governanceengine.connectors.outtopi
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import org.odpi.openmetadata.accessservices.governanceengine.events.WatchdogGovernanceServiceEvent;
 import org.odpi.openmetadata.accessservices.governanceengine.ffdc.GovernanceEngineAuditCode;
 import org.odpi.openmetadata.accessservices.governanceengine.events.GovernanceEngineEvent;
 import org.odpi.openmetadata.accessservices.governanceengine.ffdc.GovernanceEngineErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogMetadataElementEvent;
+import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogRelatedElementsEvent;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicSenderConnectorBase;
 
 import java.util.concurrent.CompletionException;
 
 
 /**
- * GovernanceEngineOutTopicServerConnector is the java implementation of the
- * the server side connector that send events to the Governance Engine OMAS's OutTopic.
+ * GovernanceEngineOutTopicServerConnector is the java implementation of
+ * the server-side connector that send events to the Governance Engine OMAS's OutTopic.
  */
 public class GovernanceEngineOutTopicServerConnector extends OpenMetadataTopicSenderConnectorBase
 {
@@ -42,9 +45,39 @@ public class GovernanceEngineOutTopicServerConnector extends OpenMetadataTopicSe
 
             if (super.auditLog != null)
             {
-                super.auditLog.logMessage(methodName,
-                                          GovernanceEngineAuditCode.OUT_TOPIC_EVENT.getMessageDefinition(event.getEventType().getEventTypeName()),
-                                          eventString);
+                if (event instanceof WatchdogGovernanceServiceEvent watchdogGovernanceServiceEvent)
+                {
+                    if (watchdogGovernanceServiceEvent.getWatchdogGovernanceEvent() instanceof WatchdogMetadataElementEvent watchdogMetadataElementEvent)
+                    {
+                        super.auditLog.logMessage(methodName,
+                                                  GovernanceEngineAuditCode.OUT_TOPIC_WATCHDOG_EVENT.getMessageDefinition(
+                                                          event.getEventType().getEventTypeName(),
+                                                          watchdogMetadataElementEvent.getMetadataElement().getElementGUID(),
+                                                          watchdogMetadataElementEvent.getMetadataElement().getType().getTypeName()),
+                                                  eventString);
+                    }
+                    else if (watchdogGovernanceServiceEvent.getWatchdogGovernanceEvent() instanceof WatchdogRelatedElementsEvent watchdogRelatedElementsEvent)
+                    {
+                        super.auditLog.logMessage(methodName,
+                                                  GovernanceEngineAuditCode.OUT_TOPIC_WATCHDOG_EVENT.getMessageDefinition(
+                                                          event.getEventType().getEventTypeName(),
+                                                          watchdogRelatedElementsEvent.getRelatedMetadataElements().getRelationshipGUID(),
+                                                          watchdogRelatedElementsEvent.getRelatedMetadataElements().getType().getTypeName()),
+                                                  eventString);
+                    }
+                    else
+                    {
+                        super.auditLog.logMessage(methodName,
+                                                  GovernanceEngineAuditCode.OUT_TOPIC_EVENT.getMessageDefinition(event.getEventType().getEventTypeName()),
+                                                  eventString);
+                    }
+                }
+                else
+                {
+                    super.auditLog.logMessage(methodName,
+                                              GovernanceEngineAuditCode.OUT_TOPIC_EVENT.getMessageDefinition(event.getEventType().getEventTypeName()),
+                                              eventString);
+                }
             }
         }
         catch (CompletionException error)

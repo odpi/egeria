@@ -174,13 +174,22 @@ public enum GovernanceEngineAuditCode implements AuditLogMessageSet
                             "Check that each connected governance server receives this event and updates its configuration if " +
                             "the change affects their operation."),
 
-    ASSET_AUDIT_LOG("OMAS-GOVERNANCE-ENGINE-0020",
+    OUT_TOPIC_WATCHDOG_EVENT("OMAS-GOVERNANCE-ENGINE-0020",
+                    OMRSAuditLogRecordSeverity.EVENT,
+                    "The Governance Engine Open Metadata Access Service (OMAS) has sent a watch dog event of type {0} for instance {1} of type {2}",
+                    "The access service sends out configuration notifications to ensure connected governance servers have the most up to-date " +
+                            "configuration.  This message is to create a record of the events that are being published.",
+                    "This event indicates that the configuration for a governance engine, or governance service has changed.  " +
+                            "Check that each connected governance server receives this event and updates its configuration if " +
+                            "the change affects their operation."),
+
+    ASSET_AUDIT_LOG("OMAS-GOVERNANCE-ENGINE-0021",
                     OMRSAuditLogRecordSeverity.INFO,
                     "Log message for asset {0} from governance service {1}: {2}",
                     "A governance service has logged a message about an asset.",
                     "Review the message to ensure no action is required."),
 
-    SKIPPING_INSTANCE("OMAS-GOVERNANCE-ENGINE-0021",
+    SKIPPING_INSTANCE("OMAS-GOVERNANCE-ENGINE-0022",
                            OMRSAuditLogRecordSeverity.INFO,
                            "The Governance Engine Open Metadata Access Service (OMAS) is ignoring event from {0} of type {1} for instance {2} because it does not have access to all the information for the instance. Error message is: {3}",
                            "The event could not be processed because additional information, such as the anchor entity, is not available to this server.  " +
