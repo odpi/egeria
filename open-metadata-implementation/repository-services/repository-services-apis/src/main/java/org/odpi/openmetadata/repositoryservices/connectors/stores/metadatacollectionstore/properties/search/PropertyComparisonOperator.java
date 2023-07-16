@@ -14,7 +14,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * PropertyComparisonOperator is used for search requests against a metadata collection.  It defines how the properties
  * should be compared to find a matching result.
- *
  * The property comparison operator values are:
  * <ul>
  *     <li>
@@ -55,15 +54,54 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum PropertyComparisonOperator implements Serializable
 {
+    /**
+     * Equal to
+     */
     EQ        (0, "Equal to",              "Equal to."),
+
+    /**
+     * Not equal to
+     */
     NEQ       (1, "Not equal to",          "Not equal to."),
+
+    /**
+     * Less than
+     */
     LT        (2, "Less than",             "Less than."),
+
+    /**
+     * Less than or equal
+     */
     LTE       (3, "Less than or equal",    "Less than or equal to."),
+
+    /**
+     * Greater than
+     */
     GT        (4, "Greater than",          "Greater than."),
+
+    /**
+     * Greater than or equal
+     */
     GTE       (5, "Greater than or equal", "Greater than or equal to."),
+
+    /**
+     * In list
+     */
     IN        (6, "In list",               "Has a value of at least one in the provided list of values."),
+
+    /**
+     * Is null
+     */
     IS_NULL   (7, "Is null",               "Has no value."),
+
+    /**
+     * Is not null - ie has any non-null value
+     */
     NOT_NULL  (8, "Is not null",           "Has any non-null value."),
+
+    /**
+     * Has a value that matches the provided regular expression (strings only).
+     */
     LIKE      (9, "Like",                  "Has a value that matches the provided regular expression (strings only).");
 
     private static final long serialVersionUID = 1L;

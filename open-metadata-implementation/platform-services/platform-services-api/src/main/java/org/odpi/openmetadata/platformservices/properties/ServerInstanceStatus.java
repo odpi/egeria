@@ -17,10 +17,29 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public enum ServerInstanceStatus
 {
-    UNKNOWN     (0,   "Unknown",  "The state of the server is unknown.  This is equivalent to a null value"),
+    /**
+     * Unknown - The state of the server is unknown.  This is equivalent to a null value.
+     */
+    UNKNOWN     (0,   "Unknown",  "The state of the server is unknown.  This is equivalent to a null value."),
+
+    /**
+     * Starting - The server is starting.
+     */
     STARTING    (1,   "Starting", "The server is starting."),
+
+    /**
+     * Running - The server has completed start up and is running.
+     */
     RUNNING     (2,   "Running",  "The server has completed start up and is running."),
-    STOPPING    (3,   "Stopping", "The server has received a request to shutdown."),
+
+    /**
+     * Stopping - The server has received a request to shut down.
+     */
+    STOPPING    (3,   "Stopping", "The server has received a request to shut down."),
+
+    /**
+     * Inactive - The server is not running.
+     */
     INACTIVE    (99,  "Inactive", "The server is not running.");
 
     private final int    ordinal;

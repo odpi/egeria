@@ -21,7 +21,7 @@ import java.util.Arrays;
  *         <li>404 - not found</li>
  *         <li>409 - data conflict errors - eg item already defined</li>
  *     </ul></li>
- *     <li>Error Message Id - to uniquely identify the message</li>
+ *     <li>Error Message Identifier - to uniquely identify the message</li>
  *     <li>Error Message Text - includes placeholder to allow additional values to be captured</li>
  *     <li>SystemAction - describes the result of the error</li>
  *     <li>UserAction - describes how a consumer should correct the error</li>
@@ -29,14 +29,25 @@ import java.util.Arrays;
  */
 public enum RESTClientConnectorErrorCode
 {
+    /**
+     * CLIENT-SIDE-REST-API-CONNECTOR-503-001 - A null response was received from REST API call {0} to server {1}
+     */
     NULL_RESPONSE_FROM_API(503, "CLIENT-SIDE-REST-API-CONNECTOR-503-001 ",
             "A null response was received from REST API call {0} to server {1}",
             "The system has issued a call to an open metadata access service REST API in a remote server and has received a null response.",
             "Look for errors in the remote server's audit log and console to understand and correct the source of the error."),
+
+    /**
+     * CLIENT-SIDE-REST-API-CONNECTOR-503-002 - A client-side exception {0} was received by method {1} from API call {2} to server {3} on platform {4}.  The error message was {5}
+     */
     CLIENT_SIDE_REST_API_ERROR(503, "CLIENT-SIDE-REST-API-CONNECTOR-503-002 ",
             "A client-side exception {0} was received by method {1} from API call {2} to server {3} on platform {4}.  The error message was {5}",
             "The client has issued a call to the open metadata access service REST API in a remote server and has received an exception from the local client libraries.",
             "Review the error message to determine the cause of the error.  Check that the server is running an the URL is correct. Look for errors in the local server's console to understand and correct the cause of the error. Then rerun the request"),
+
+    /**
+     * CLIENT-SIDE-REST-API-CONNECTOR-503-003 - A {0} exception was received from REST API call {1} to server {2}: error message was: {3}
+     */
     EXCEPTION_RESPONSE_FROM_API(503, "CLIENT-SIDE-REST-API-CONNECTOR-503-003 ",
             "A {0} exception was received from REST API call {1} to server {2}: error message was: {3}",
             "The system has issued a call to an open metadata access service REST API in a remote server and has received an exception response.",
@@ -62,7 +73,7 @@ public enum RESTClientConnectorErrorCode
      * This will expand out to the 5 parameters shown below.
      *
      * @param newHTTPErrorCode - error code to use over REST calls
-     * @param newErrorMessageId - unique Id for the message
+     * @param newErrorMessageId - unique identifier for the message
      * @param newErrorMessage - text for the message
      * @param newSystemAction - description of the action taken by the system when the error condition happened
      * @param newUserAction - instructions for resolving the error
@@ -77,6 +88,11 @@ public enum RESTClientConnectorErrorCode
     }
 
 
+    /**
+     * Return the HTTP code.
+     *
+     * @return int
+     */
     public int getHTTPErrorCode()
     {
         return httpErrorCode;

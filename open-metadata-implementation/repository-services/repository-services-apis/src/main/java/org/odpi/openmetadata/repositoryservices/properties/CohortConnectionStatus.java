@@ -43,23 +43,50 @@ import java.io.Serializable;
  */
 public enum CohortConnectionStatus implements Serializable
 {
+    /**
+     * NotInitialized - The local components for communicating with the cohort are not initialized.
+     */
     NOT_INITIALIZED      (0, "NotInitialized",     "The local components for communicating with the cohort are not initialized."),
+
+    /**
+     * Initializing - The local components for communicating with the cohort are initializing.
+     */
     INITIALIZING         (1, "Initializing",       "The local components for communicating with the cohort are initializing."),
-    NEW                  (2, "New",                "The local components for communicating with the cohort are initialized " +
+
+    /**
+     * New - The local components for communicating with the cohort are initialized, but they have not exchanged messages with the other members of cohort.
+     */
+    NEW                  (2, "New",                "The local components for communicating with the cohort are initialized, " +
                                                            "but they have not exchanged messages with the other members of cohort."),
+
+    /**
+     * ConfigurationError - There is an error in the configuration and connection is not possible.
+     */
     CONFIGURATION_ERROR  (3, "ConfigurationError", "There is an error in the configuration and connection is not possible."),
+
+    /**
+     * Connected - The server is connected to the metadata highway for this cohort and messages are being exchanged with other members of the cohort.
+     */
     CONNECTED            (4, "Connected",          "The server is connected to the metadata highway for this cohort and messages " +
                                                            "are being exchanged with other members of the cohort."),
+
+    /**
+     * Initializing - The local components for communicating with the cohort are disconnecting.
+     */
     DISCONNECTING        (5, "Initializing",       "The local components for communicating with the cohort are disconnecting."),
+
+    /**
+     * Disconnected - The server is disconnected from the metadata highway for this cohort.  This may be because the local server is shutting down or the configuration is being adjusted.
+     */
     DISCONNECTED         (6, "Disconnected",       "The server is disconnected from the metadata highway for this cohort.  This may be because the " +
                                                            "local server is shutting down or the configuration is being adjusted.");
 
 
     private static final long    serialVersionUID = 1L;
 
-    private int    statusCode;
-    private String statusName;
-    private String statusDescription;
+    private final int    statusCode;
+    private final String statusName;
+    private final String statusDescription;
 
 
     /**

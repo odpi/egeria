@@ -21,10 +21,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum OpenMetadataArchiveType implements Serializable
 {
+    /**
+     * Content Pack - A collection of metadata elements that define a standard or support a specific use case.
+     */
     CONTENT_PACK    (1, "ContentPack",
                         "A collection of metadata elements that define a standard or support a specific use case."),
+
+    /**
+     * Metadata Export - A collection of metadata elements that have been extracted from a specific open metadata repository to load into another.
+     */
     METADATA_EXPORT (2, "MetadataExport",
                         "A collection of metadata elements that have been extracted from a specific open metadata repository to load into another."),
+
+    /**
+     * Repository Back-up - A collection of metadata elements that have been extracted from a specific open metadata repository to server as a back-up.
+     */
     REPOSITORY_BACKUP (3, "RepositoryBackup",
                      "A collection of metadata elements that have been extracted from a specific open metadata repository to server as a back up.");
 

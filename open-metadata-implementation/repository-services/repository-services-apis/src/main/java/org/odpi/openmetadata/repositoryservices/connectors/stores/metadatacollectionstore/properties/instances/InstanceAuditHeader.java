@@ -90,6 +90,9 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
 {
     private static final long    serialVersionUID = 1L;
 
+    /**
+     * Version of the header used in this release
+     */
     public static final long CURRENT_AUDIT_HEADER_VERSION = 1;
 
     /*

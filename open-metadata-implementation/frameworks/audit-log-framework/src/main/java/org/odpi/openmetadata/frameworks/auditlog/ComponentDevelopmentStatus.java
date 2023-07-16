@@ -7,11 +7,30 @@ package org.odpi.openmetadata.frameworks.auditlog;
  */
 public enum ComponentDevelopmentStatus
 {
-    IN_DEVELOPMENT    (0,  "In Development",    "This component is still being built.  Some features may work but it is still subject to change."),
-    TECHNICAL_PREVIEW (1,  "Technical Preview", "This component is complete and can be used.  However some features may change based on the feedback from early adopters."),
+    /**
+     * In Development - This component is still being built.  Some features may work, but it is still subject to change.
+     */
+    IN_DEVELOPMENT    (0,  "In Development",    "This component is still being built.  Some features may work, but it is still subject to change."),
+
+    /**
+     * Technical Preview - This component is complete and can be used.  However, some features may change based on the feedback from early adopters.
+     */
+    TECHNICAL_PREVIEW (1,  "Technical Preview", "This component is complete and can be used.  However, some features may change based on the feedback from early adopters."),
+
+    /**
+     * Stable - This component is complete and can be used.  Any updates will be added in a backward compatible manner.
+     */
     STABLE            (2,  "Stable",            "This component is complete and can be used.  Any updates will be added in a backward compatible manner."),
+
+    /**
+     * Sample - This component is supplied as a sample.  It can be used 'as is' or may be modified as desired.
+     */
     SAMPLE            (3,  "Sample",            "This component is supplied as a sample.  It can be used 'as is' or may be modified as desired."),
-    DEPRECATED        (99, "Deprecated",        "This component is deprecated an may be removed in a later release.");
+
+    /**
+     * Deprecated - This component is deprecated and may be removed in a later release.
+     */
+    DEPRECATED        (99, "Deprecated",        "This component is deprecated and may be removed in a later release.");
 
     private final int    ordinal;
     private final String name;

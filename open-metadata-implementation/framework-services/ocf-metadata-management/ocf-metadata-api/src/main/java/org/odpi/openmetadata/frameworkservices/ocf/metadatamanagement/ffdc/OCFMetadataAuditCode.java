@@ -9,10 +9,9 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 
 /**
  * The OCFMetadataAuditCode is used to define the message content for the OMRS Audit Log.
- *
  * The 5 fields in the enum are:
  * <ul>
- *     <li>Log Message Id - to uniquely identify the message</li>
+ *     <li>Log Message Identifier - to uniquely identify the message</li>
  *     <li>Severity - is this an event, decision, action, error or exception</li>
  *     <li>Log Message Text - includes placeholder to allow additional values to be captured</li>
  *     <li>Additional Information - further parameters and data relating to the audit message (optional)</li>
@@ -22,6 +21,9 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  */
 public enum OCFMetadataAuditCode implements AuditLogMessageSet
 {
+    /**
+     * CONNECTED-ASSET-SERVICES-0001 - The Open Connector Framework (OCF) Metadata Management Service is initializing the connected asset services in a new server instance
+     */
     SERVICE_INITIALIZING("CONNECTED-ASSET-SERVICES-0001",
              OMRSAuditLogRecordSeverity.STARTUP,
              "The Open Connector Framework (OCF) Metadata Management Service is initializing the connected asset services in a new server instance",
@@ -29,18 +31,27 @@ public enum OCFMetadataAuditCode implements AuditLogMessageSet
                                  "for OCF Connectors.",
              "No action is required.  This is part of the normal operation of the service."),
 
+    /**
+     * CONNECTED-ASSET-SERVICES-0003 - The Open Connector Framework (OCF) Metadata Management Service has initialized a new instance for server {0}
+     */
     SERVICE_INITIALIZED("CONNECTED-ASSET-SERVICES-0003",
              OMRSAuditLogRecordSeverity.STARTUP,
              "The Open Connector Framework (OCF) Metadata Management Service has initialized a new instance for server {0}",
              "The service has completed initialization of a new server instance.",
              "Verify that the service has started correctly."),
 
+    /**
+     * CONNECTED-ASSET-SERVICES-0004 - The Open Connector Framework (OCF) Metadata Management Service is shutting down its instance of the connected asset services for server {0}
+     */
     SERVICE_SHUTDOWN("CONNECTED-ASSET-SERVICES-0004",
              OMRSAuditLogRecordSeverity.SHUTDOWN,
              "The Open Connector Framework (OCF) Metadata Management Service is shutting down its instance of the connected asset services for server {0}",
              "The local administrator has requested shut down of a server instance.",
              "No action is required if the server is shutting down."),
 
+    /**
+     * CONNECTED-ASSET-SERVICES-0005 - he Open Connector Framework (OCF) Metadata Management Service is unable to initialize a new instance of the connected asset services; error message is {0}
+     */
     SERVICE_INSTANCE_FAILURE("CONNECTED-ASSET-SERVICES-0005",
             OMRSAuditLogRecordSeverity.ERROR,
             "The Open Connector Framework (OCF) Metadata Management Service is unable to initialize a new instance of the connected asset services; error message is {0}",
@@ -54,9 +65,9 @@ public enum OCFMetadataAuditCode implements AuditLogMessageSet
     /**
      * The constructor for OCFMetadataAuditCode expects to be passed one of the enumeration rows defined in
      * OCFMetadataAuditCode above.   For example:
-     *
+     * <br><br>
      *     OCFMetadataAuditCode   auditCode = OCFMetadataAuditCode.SERVER_NOT_AVAILABLE;
-     *
+     * <br><br>
      * This will expand out to the 4 parameters shown below.
      *
      * @param messageId - unique id for the message

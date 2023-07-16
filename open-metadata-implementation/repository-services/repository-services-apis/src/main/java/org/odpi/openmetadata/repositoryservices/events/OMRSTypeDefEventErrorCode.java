@@ -13,12 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * OMRSTypeDefEventErrorCode defines the list of error codes that are used to record errors in the TypeDef
- * synchronization process that is used by the repository connectors within the open metadata repository cluster.
- * <ul>
- *     <li>
- *         NOT_IN_USE: There has been no error detected and so the error code is not in use.
- *     </li>
- * </ul>
+ * synchronization process that is used by the repository connectors within the open metadata repository cohort.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

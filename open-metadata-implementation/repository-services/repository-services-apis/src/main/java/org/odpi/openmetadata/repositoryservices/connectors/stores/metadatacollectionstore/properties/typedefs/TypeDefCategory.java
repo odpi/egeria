@@ -19,16 +19,31 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum TypeDefCategory implements Serializable
 {
-    UNKNOWN_DEF        (0, "<Unknown>",         "Uninitialized TypeDef object."),
+    /**
+     * Unknown - Uninitialized TypeDef object.
+     */
+    UNKNOWN_DEF        (0, "Unknown",           "Uninitialized TypeDef object."),
+
+    /**
+     * ClassificationDef - A description of a specific characteristic or grouping for entities.
+     */
     CLASSIFICATION_DEF (5, "ClassificationDef", "A description of a specific characteristic or grouping for entities."),
+
+    /**
+     * EntityDef - An object or concept of interest.
+     */
     ENTITY_DEF         (6, "EntityDef",         "An object or concept of interest."),
+
+    /**
+     * RelationshipDef - A link between two entities.
+     */
     RELATIONSHIP_DEF   (8, "RelationshipDef",   "A link between two entities.");
 
     private static final long serialVersionUID = 1L;
 
-    private int            typeCode;
-    private String         typeName;
-    private String         typeDescription;
+    private final int            typeCode;
+    private final String         typeName;
+    private final String         typeDescription;
 
 
     /**

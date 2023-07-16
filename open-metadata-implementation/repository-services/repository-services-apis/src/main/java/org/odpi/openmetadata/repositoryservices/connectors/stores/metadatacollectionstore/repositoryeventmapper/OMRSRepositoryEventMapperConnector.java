@@ -187,7 +187,7 @@ public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase i
      *
      * @param repositoryEventProcessor listener responsible for distributing notifications of local
      *                                changes to metadata types and instances to the rest of the
-     *                                open metadata repository cluster.
+     *                                open metadata repository cohort.
      */
     @Override
     public void setRepositoryEventProcessor(OMRSRepositoryEventProcessor repositoryEventProcessor)

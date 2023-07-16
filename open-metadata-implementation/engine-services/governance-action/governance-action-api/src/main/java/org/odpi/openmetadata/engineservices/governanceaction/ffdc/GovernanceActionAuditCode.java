@@ -12,7 +12,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  *
  * The 5 fields in the enum are:
  * <ul>
- *     <li>Log Message Id - to uniquely identify the message</li>
+ *     <li>Log Message Identifier - to uniquely identify the message</li>
  *     <li>Severity - is this an event, decision, action, error or exception</li>
  *     <li>Log Message Text - includes placeholder to allow additional values to be captured</li>
  *     <li>Additional Information - further parameters and data relating to the audit message (optional)</li>
@@ -199,7 +199,7 @@ public enum GovernanceActionAuditCode implements AuditLogMessageSet
      *
      * This will expand out to the 4 parameters shown below.
      *
-     * @param messageId - unique Id for the message
+     * @param messageId - unique identifier for the message
      * @param severity - severity of the message
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened

@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * can be connected to an entity instance.:
  * <ul>
  *     <li>
- *         UNKNOWN: uninitialized cardinality
+ *         UNKNOWN: uninitialized cardinality.
  *     </li>
  *     <li>
  *         AT_MOST_ONE: means there can be zero or one instances of this relationship connected
@@ -24,8 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     </li>
  *     <li>
  *         ANY_NUMBER: means there can be none, one or many instances of this relationship connected
- *                      to an instance of the EntityDef.
- *                      This relationship is often written as 0..* or * in UML.
+ *                      to an instance of the EntityDef. This relationship is often written as 0..* or * in UML.
  *     </li>
  * </ul>
  */
@@ -34,15 +33,26 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum RelationshipEndCardinality implements Serializable
 {
-    UNKNOWN      (0, "<Unknown>",    "Unknown or uninitialized cardinality"),
-    AT_MOST_ONE  (1, "At Most One",  "0..1 for zero or one instances. 0..1."),
+    /**
+     * Unknown or uninitialized cardinality.
+     */
+    UNKNOWN      (0, "Unknown",      "Unknown or uninitialized cardinality"),
+
+    /**
+     * At Most One (0..1 for zero or one instances).
+     */
+    AT_MOST_ONE  (1, "At Most One",  "0..1 for zero or one instances."),
+
+    /**
+     * Any Number (0..* or * for any number of instances).
+     */
     ANY_NUMBER   (2, "Any Number",   "0..* or * for any number of instances");
 
     private static final long serialVersionUID = 1L;
 
-    private int     ordinal;
-    private String  name;
-    private String  description;
+    private final int     ordinal;
+    private final String  name;
+    private final String  description;
 
 
     /**

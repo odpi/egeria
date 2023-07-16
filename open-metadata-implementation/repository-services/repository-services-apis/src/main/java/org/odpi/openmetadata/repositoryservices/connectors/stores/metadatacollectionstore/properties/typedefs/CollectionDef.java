@@ -98,6 +98,12 @@ public class CollectionDef extends AttributeTypeDef
      */
     public CollectionDefCategory getCollectionDefCategory() { return collectionDefCategory; }
 
+
+    /**
+     * Set up the elements category.
+     *
+     * @param collectionDefCategory value to use
+     */
     public void setCollectionDefCategory(CollectionDefCategory collectionDefCategory)
     {
         this.collectionDefCategory = collectionDefCategory;

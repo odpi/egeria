@@ -299,7 +299,7 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
      * Using the supplied instances, return a new instance of the Connection bean. It may be a Connection or a VirtualConnection.
      *
      * @param beanClass class name for the bean
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     * @param primaryEntity entity that is the root of the collection of entities that make up the
      *                      content of the bean
      * @param supplementaryEntities entities connected to the primary entity by the relationships
      * @param relationships relationships linking the entities
@@ -354,7 +354,7 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
      * relationships to assemble the virtual connection accurately.
      *
      * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     * @param primaryEntity entity that is the root of the collection of entities that make up the
      *                      content of the bean
      * @param supplementaryEntities entities connected to the primary entity by the relationships
      * @param relationships relationships linking the entities
@@ -474,7 +474,7 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
      * though this is technically an error.
      *
      * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     * @param primaryEntity entity that is the root of the collection of entities that make up the
      *                      content of the bean
      * @param supplementaryEntities entities connected to the primary entity by the relationships
      * @param relationships relationships linking the entities

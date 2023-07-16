@@ -348,6 +348,7 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
      *
      * @param callerId unique identifier of the caller
      * @return connection object for client
+     * @throws PropertyServerException problem connecting to event bus
      */
     public Connection getInTopicClientConnection(String callerId) throws PropertyServerException
     {
@@ -400,7 +401,7 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
         if ((topicEventBusConnection != null) && (connectorProviderClassName != null))
         {
             /*
-             * The caller Id needs to be inserted into the configuration properties of the event bus connection.  This is used
+             * The caller Identifier needs to be inserted into the configuration properties of the event bus connection.  This is used
              * to identify the caller to the event bus so it knows which events the caller has seen already. (It effectively controls
              * the cursor for the caller for the events on the topic.)
              */

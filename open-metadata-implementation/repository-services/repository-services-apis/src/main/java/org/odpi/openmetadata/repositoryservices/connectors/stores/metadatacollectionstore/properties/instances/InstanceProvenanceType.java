@@ -25,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     <li>
  *         EXPORT_ARCHIVE: the element was created from an export archive.
  *         The metadata collection id for the element is the metadata collection id of the originating server.
- *         If the originating server later joins the cohort with the same metadata collection Id then these
+ *         If the originating server later joins the cohort with the same metadata collection id then these
  *         elements will be refreshed from the originating server's current repository.
  *     </li>
  *     <li>
@@ -62,21 +62,55 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum InstanceProvenanceType implements Serializable
 {
-    UNKNOWN                 (0, "<Unknown>",               "Unknown provenance"),
+    /**
+     * Unknown - Unknown provenance.
+     */
+    UNKNOWN                 (0, "Unknown",                 "Unknown provenance."),
+
+    /**
+     * Local to cohort - The instance is being maintained within one of the local cohort members.
+     * The metadata collection id is for one of the repositories in the cohort.
+     * This metadata collection id identifies the home repository for this element.
+     */
     LOCAL_COHORT            (1, "Local to cohort",         "The instance is being maintained within one of the local cohort members. " +
                                                                           "The metadata collection id is for one of the repositories in the cohort. " +
-                                                                          "This metadata collection id identifies the home repository for this element. "),
+                                                                          "This metadata collection id identifies the home repository for this element."),
+
+    /**
+     * Export Archive - The instance was created from an export archive.
+     * The metadata collection id for the element is the metadata collection id of the originating server.
+     * If the originating server later joins the cohort with the same metadata collection id
+     * then these elements will be refreshed from the originating server's current repository.
+     */
     EXPORT_ARCHIVE          (2, "Export Archive",          "The instance was created from an export archive. " +
                                                                           "The metadata collection id for the element is the metadata collection id of the originating server. " +
-                                                                          "If the originating server later joins the cohort with the same metadata collection Id " +
+                                                                          "If the originating server later joins the cohort with the same metadata collection id " +
                                                                           "then these elements will be refreshed from the originating server's current repository."),
+
+    /**
+     * Content Pack - The instance comes from an open metadata content pack. The metadata collection id of the elements is set to the GUID of the pack.
+     */
     CONTENT_PACK            (3, "Content Pack",            "The instance comes from an open metadata content pack. " +
                                                                           "The metadata collection id of the elements is set to the GUID of the pack."),
+
+    /**
+     * Deregistered Repository - The instance comes from a metadata repository that used to be a member of the one of the local repository's cohorts,
+     * but it has been deregistered. The metadata collection id remains the same.
+     * If the repository rejoins the cohort then these elements can be refreshed from the rejoining repository.
+     */
     DEREGISTERED_REPOSITORY (4, "Deregistered Repository", "The instance comes from a metadata repository that " +
-                                                                          "used to be a member of the one of the local repository's cohorts but it has been deregistered. " +
+                                                                          "used to be a member of the one of the local repository's cohorts, but it has been deregistered. " +
                                                                           "The metadata collection id remains the same. If the repository rejoins the cohort " +
                                                                           "then these elements can be refreshed from the rejoining repository."),
+
+    /**
+     * Configuration - The instance is part of a service's configuration.  The metadata collection id is null.
+     */
     CONFIGURATION           (5, "Configuration",           "The instance is part of a service's configuration.  The metadata collection id is null."),
+
+    /**
+     * External Source - The instance is maintained by an external technology.  The metadata collection id is the guid of the technology's descriptive entity.
+     */
     EXTERNAL_SOURCE         (6, "External Source",         "The instance is maintained by an external technology.  The metadata collection id is the guid of the technology's descriptive entity.");
 
     private static final long serialVersionUID = 1L;

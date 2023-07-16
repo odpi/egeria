@@ -9,7 +9,7 @@ of a [connector](connector.md).
 ## Inside a Connection
 
 A Connection contains properties about the specific use of the connector, such as
-user Id and password, or parameters that control the scope or resources that should be
+user Identifier and password, or parameters that control the scope or resources that should be
 made available to the connector.
 It links to an optional **Endpoint** and/or **ConnectorType** object.  
 

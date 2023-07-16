@@ -9,10 +9,9 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 
 /**
  * The OMAGCommonAuditCode is used to define the message content for the OMRS Audit Log.
- *
  * The 5 fields in the enum are:
  * <ul>
- *     <li>Log Message Id - to uniquely identify the message</li>
+ *     <li>Log Message Identifier - to uniquely identify the message</li>
  *     <li>Severity - is this an event, decision, action, error or exception</li>
  *     <li>Log Message Text - includes placeholder to allow additional values to be captured</li>
  *     <li>Additional Information - further parameters and data relating to the audit message (optional)</li>
@@ -22,12 +21,19 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  */
 public enum OMAGCommonAuditCode implements AuditLogMessageSet
 {
+    /**
+     * OMAG-COMMON-0001 - The Open Metadata Service has generated an unexpected {0} exception during method {1}.  The message was: {2}
+     */
     UNEXPECTED_EXCEPTION("OMAG-COMMON-0001",
              OMRSAuditLogRecordSeverity.EXCEPTION,
              "The Open Metadata Service has generated an unexpected {0} exception during method {1}.  The message was: {2}",
              "The request returns a PropertyServerException.",
              "This is probably a logic error. Review the stack trace to identify where the error " +
                                  "occurred and work to resolve the cause."),
+
+    /**
+     * OMAG-COMMON-0002 - A client-side exception was received from API call {0} to OMAG Server {1} at {2}.  The error message was {3}
+     */
     CLIENT_SIDE_REST_API_ERROR( "OMAG-COMMON-0002",
              OMRSAuditLogRecordSeverity.ERROR,
              "A client-side exception was received from API call {0} to OMAG Server {1} at {2}.  The error message was {3}",
@@ -35,22 +41,22 @@ public enum OMAGCommonAuditCode implements AuditLogMessageSet
              "Look for errors in the local server's console to understand and correct the source of the error.")
     ;
 
-    private String                     logMessageId;
-    private OMRSAuditLogRecordSeverity severity;
-    private String                     logMessage;
-    private String                     systemAction;
-    private String                     userAction;
+    private final String                     logMessageId;
+    private final OMRSAuditLogRecordSeverity severity;
+    private final String                     logMessage;
+    private final String                     systemAction;
+    private final String                     userAction;
 
 
     /**
      * The constructor for OMAGCommonAuditCode expects to be passed one of the enumeration rows defined in
-     * AssetConsumerAuditCode above.   For example:
-     *
+     * OMAGCommonAuditCode above.   For example:
+     * <br><br>
      *     OMAGCommonAuditCode   auditCode = OMAGCommonAuditCode.SERVER_NOT_AVAILABLE;
-     *
+     * <br><br>
      * This will expand out to the 4 parameters shown below.
      *
-     * @param messageId - unique Id for the message
+     * @param messageId - unique identifier for the message
      * @param severity - severity of the message
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
