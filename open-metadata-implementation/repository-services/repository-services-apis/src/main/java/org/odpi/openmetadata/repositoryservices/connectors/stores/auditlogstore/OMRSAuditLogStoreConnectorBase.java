@@ -286,14 +286,14 @@ public abstract class OMRSAuditLogStoreConnectorBase extends ConnectorBase imple
      * @return JSON string
      * @throws InvalidParameterException unable to convert the log record.
      */
-    protected String getJSONLogRecord(OMRSAuditLogRecord   logRecord,
-                                      String               methodName) throws InvalidParameterException
+    protected String getJSONLogRecord(AuditLogRecord   logRecord,
+                                      String           methodName) throws InvalidParameterException
     {
         final String parameterName = "logRecord";
 
         try
         {
-            return OBJECT_WRITER.writeValueAsString(logRecord);
+            return OBJECT_WRITER.writeValueAsString(new AuditLogRecord(logRecord));
         }
         catch (Exception  exc)
         {

@@ -1,0 +1,34 @@
+<mxfile host="Electron" modified="2023-07-15T14:33:12.839Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.5.0 Chrome/112.0.5615.204 Electron/24.5.1 Safari/537.36" etag="lGTQQJWzpejyOMF1J0mO" version="21.5.0" type="device">
+  <diagram name="4000 - Machine Learning" id="E7OlI3xNNOOTIq73CvQG">
+    <mxGraphModel dx="1194" dy="775" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="j13zGsTKhd5fi-iCGpmj-1" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;&amp;lt;&amp;lt;enumeration&amp;gt;&amp;gt;&lt;br&gt;&lt;/span&gt;ml-model-deployment-status" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fillColor=#cdeb8b;strokeColor=#36393d;" vertex="1" parent="1">
+          <mxGeometry x="170" y="50" width="200" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="j13zGsTKhd5fi-iCGpmj-3" value="unknown=0&lt;br&gt;deploying=1&lt;br&gt;deployed=2&lt;br&gt;stopping=3&lt;br&gt;stopped=4" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="j13zGsTKhd5fi-iCGpmj-1">
+          <mxGeometry x="10" y="50" width="90" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="j13zGsTKhd5fi-iCGpmj-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;endArrow=block;endFill=0;endSize=17;" edge="1" parent="1" source="j13zGsTKhd5fi-iCGpmj-4" target="j13zGsTKhd5fi-iCGpmj-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="j13zGsTKhd5fi-iCGpmj-4" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;&amp;lt;&amp;lt;entity&amp;gt;&amp;gt;&lt;br&gt;&lt;/span&gt;ml-project" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fillColor=#cdeb8b;strokeColor=#36393d;" vertex="1" parent="1">
+          <mxGeometry x="170" y="370" width="200" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="j13zGsTKhd5fi-iCGpmj-5" value="metadata : map&amp;lt;string, string&amp;gt;&lt;br&gt;createTime : date&lt;br&gt;modifiedTime : date&lt;br&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="j13zGsTKhd5fi-iCGpmj-4">
+          <mxGeometry x="5" y="45" width="190" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="j13zGsTKhd5fi-iCGpmj-6" value="&amp;lt;&amp;lt;entity&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;DataSet&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" vertex="1" parent="1">
+          <mxGeometry x="195" y="280" width="150" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="j13zGsTKhd5fi-iCGpmj-8" value="The deployment status of a ML model build" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="400" y="50" width="250" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="j13zGsTKhd5fi-iCGpmj-9" value="Represent a ML Project that contains source code and related resources." style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="380" y="370" width="410" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

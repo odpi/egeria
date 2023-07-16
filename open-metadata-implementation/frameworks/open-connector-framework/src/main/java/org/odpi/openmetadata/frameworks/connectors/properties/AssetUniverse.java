@@ -93,10 +93,17 @@ public class AssetUniverse extends AssetDetail
         this.relatedAssets = relatedAssets;
     }
 
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param assetBean bean to seed new asset detail
+     */
     public AssetUniverse(Asset assetBean)
     {
         super(assetBean);
     }
+
 
     /**
      * Copy/clone Constructor note this is a deep copy

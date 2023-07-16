@@ -8,7 +8,6 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 /**
  * The OpenLineageIntegrationConnectorErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  * the Kafka monitor integration connector.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>HTTP Error Code - for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -18,7 +17,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  *         <li>404 - not found</li>
  *         <li>409 - data conflict errors - eg item already defined</li>
  *     </ul></li>
- *     <li>Error Message Id - to uniquely identify the message</li>
+ *     <li>Error Message Identifier - to uniquely identify the message</li>
  *     <li>Error Message Text - includes placeholder to allow additional values to be captured</li>
  *     <li>SystemAction - describes the result of the error</li>
  *     <li>UserAction - describes how a consumer should correct the error</li>
@@ -26,32 +25,37 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  */
 public enum OpenLineageIntegrationConnectorErrorCode implements ExceptionMessageSet
 {
+    /**
+     * OPEN-LINEAGE-INTEGRATION-CONNECTOR-500-001 - The {0} integration connector received an unexpected {1} exception in method {2} when working with open lineage events; the error message was: {3}
+     */
     UNEXPECTED_EXCEPTION(500, "OPEN-LINEAGE-INTEGRATION-CONNECTOR-500-001",
              "The {0} integration connector received an unexpected {1} exception in method {2} when working with open lineage events; the error message was: {3}",
              "The connector is unable to process one or more lineage events.",
              "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
+    /**
+     * OPEN-LINEAGE-INTEGRATION-CONNECTOR-500-002 - The {0} integration connector received a null raw open lineage event in method {1} when working with open lineage events
+     */
     NO_RAW_EVENT(500, "OPEN-LINEAGE-INTEGRATION-CONNECTOR-500-002",
-                         "The {0} integration connector received an null raw open lineage event in method {1} when working with open lineage events",
+                         "The {0} integration connector received a null raw open lineage event in method {1} when working with open lineage events",
                          "The connector is unable to process an open lineage events because it has no content.",
                          "Validate the set up and source of the events and retry the request once it is resolved."),
     ;
 
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
 
     /**
      * The constructor for OpenLineageIntegrationConnectorErrorCode expects to be passed one of the enumeration rows defined in
      * OpenLineageIntegrationConnectorErrorCode above.   For example:
-     *
+     * <br><br>
      *     OpenLineageIntegrationConnectorErrorCode   errorCode = OpenLineageIntegrationConnectorErrorCode.ERROR_SENDING_EVENT;
-     *
+     * <br><br>
      * This will expand out to the 5 parameters shown below.
      *
-     *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique Id for the message
+     * @param errorMessageId   unique identifier for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error

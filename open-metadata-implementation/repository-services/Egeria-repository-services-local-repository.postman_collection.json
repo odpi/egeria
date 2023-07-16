@@ -1,42 +1,42 @@
 {
 	"info": {
-		"_postman_id": "5945c22c-6e82-4501-b87a-c72592b78097",
+		"_postman_id": "e67ac706-db8e-4544-b192-b609dee7c799",
 		"name": "Egeria-repository-services-local-repository",
-		"description": "This collection highlights some of the REST API calls support by a local repository found either in a metadata server or a repository proxy.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Get metadata collection id",
+			"name": "get metadata collection Id",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/metadata-collection-id",
+					"raw": "http://localhost:8080/servers/cocoMDS1/open-metadata/repository-services/users/{{adminUserId}}/metadata-collection-id",
+					"protocol": "http",
 					"host": [
-						"{{baseURL}}"
+						"localhost"
 					],
+					"port": "8080",
 					"path": [
 						"servers",
-						"{{server}}",
+						"cocoMDS1",
 						"open-metadata",
 						"repository-services",
 						"users",
-						"{{user}}",
+						"{{adminUserId}}",
 						"metadata-collection-id"
 					]
-				},
-				"description": "Return the unique identifer of the collection of metadata originating from this repository."
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "Find type definitions by name",
+			"name": "Get types",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/types/by-name?name=Asset",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/types/all",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -48,88 +48,121 @@
 						"users",
 						"{{user}}",
 						"types",
-						"by-name"
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Entity Detail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/instances/entity/{{guid}}",
+					"host": [
+						"{{baseURL}}"
 					],
-					"query": [
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"repository-services",
+						"users",
+						"{{user}}",
+						"instances",
+						"entity",
+						"{{guid}}"
+					]
+				},
+				"description": "The getEntityDetails requests returns a repository services instance of category **entity**.  An entity describes a node in the graph of metadata.  An asset is stored in the repository as an entity.  This query is set up to retrieve one of the assets created in the main exercise.  Notice that the entity includes information about the type of entity and the audit header information that shows the home repository."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Entity Detail (federated query)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/enterprise/instances/entity/{{guid}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"repository-services",
+						"users",
+						"{{user}}",
+						"enterprise",
+						"instances",
+						"entity",
+						"{{guid}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get Entity",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/open-metadata/repository-services/users/julesk/instances/entity/fd7d41e7-70f5-42ec-86d3-88683e599494",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"open-metadata",
+								"repository-services",
+								"users",
+								"julesk",
+								"instances",
+								"entity",
+								"fd7d41e7-70f5-42ec-86d3-88683e599494"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
 						{
-							"key": "name",
-							"value": "Asset"
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 11 Sep 2018 13:06:11 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
 						}
-					]
-				},
-				"description": "Return the definitions of types with a matching name to the request."
-			},
-			"response": []
+					],
+					"cookie": [],
+					"body": "{\"class\":\"EntityDetailResponse\",\"relatedHTTPCode\":200,\"entity\":{\"class\":\"EntityDetail\",\"type\":{\"class\":\"InstanceType\",\"typeDefCategory\":\"ENTITY_DEF\",\"typeDefGUID\":\"578a3510-9ad3-45fe-8ada-e4e9572c37c8\",\"typeDefName\":\"GovernanceOfficer\",\"typeDefVersion\":1,\"typeDefDescription\":\"Person responsible for a governance domain.\",\"typeDefSuperTypes\":[{\"guid\":\"a32316b8-dc8c-48c5-b12b-71c1b2a080bf\",\"name\":\"Referenceable\"}],\"validInstanceProperties\":[\"qualifiedName\",\"additionalProperties\",\"title\",\"scope\",\"domain\"]},\"createdBy\":\"julesk\",\"createTime\":\"2018-09-11T13:01:20.139+0000\",\"version\":1,\"instanceProvenanceType\":\"LOCAL_COHORT\",\"metadataCollectionId\":\"87b06ffe-9db2-4ef5-ba6e-8127480cf30d\",\"guid\":\"fd7d41e7-70f5-42ec-86d3-88683e599494\",\"instanceURL\":\"http://localhost:8080/instances/entity/fd7d41e7-70f5-42ec-86d3-88683e599494\",\"properties\":{\"class\":\"InstanceProperties\",\"instanceProperties\":{\"title\":{\"class\":\"PrimitivePropertyValue\",\"instancePropertyCategory\":\"PRIMITIVE\",\"primitiveDefCategory\":\"OM_PRIMITIVE_TYPE_STRING\",\"primitiveValue\":\"Chief Data Officer (CDO)\"},\"qualifiedName\":{\"class\":\"PrimitivePropertyValue\",\"instancePropertyCategory\":\"PRIMITIVE\",\"primitiveDefCategory\":\"OM_PRIMITIVE_TYPE_STRING\",\"primitiveValue\":\"EXEC-CDO\"},\"domain\":{\"class\":\"EnumPropertyValue\",\"instancePropertyCategory\":\"ENUM\",\"ordinal\":1,\"symbolicName\":\"Data\",\"description\":\"The data (information) governance domain.\"}},\"propertyNames\":[\"qualifiedName\",\"domain\",\"title\"],\"propertyCount\":3},\"status\":\"ACTIVE\"}}"
+				}
+			]
 		},
 		{
-			"name": "Get entity by GUID",
+			"name": "Get Relationship",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/instances/entity/put-guid-value-here",
-					"host": [
-						"{{baseURL}}"
-					],
-					"path": [
-						"servers",
-						"{{server}}",
-						"open-metadata",
-						"repository-services",
-						"users",
-						"{{user}}",
-						"instances",
-						"entity",
-						"put-guid-value-here"
-					]
-				},
-				"description": "Return the entity instance with the requested unique identifer.  Replace the `put-guid-value-here` placeholder with the real GUID of the instance."
-			},
-			"response": []
-		},
-		{
-			"name": "Get relationships connected to entity",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"class\" : \"TypeLimitedFindRequest\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/instances/entity/put-guid-value-here/relationships",
-					"host": [
-						"{{baseURL}}"
-					],
-					"path": [
-						"servers",
-						"{{server}}",
-						"open-metadata",
-						"repository-services",
-						"users",
-						"{{user}}",
-						"instances",
-						"entity",
-						"put-guid-value-here",
-						"relationships"
-					]
-				},
-				"description": "Return the list of relationships connected to the entity instance with the requested unique identifer.  Replace the `put-guid-value-here` placeholder with the real GUID of the instance."
-			},
-			"response": []
-		},
-		{
-			"name": "Get relationship by GUID",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/instances/relationship/put-guid-value-here",
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/instances/relationship/{{guid}}",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -142,13 +175,141 @@
 						"{{user}}",
 						"instances",
 						"relationship",
-						"put-guid-value-here"
+						"{{guid}}"
 					]
 				},
-				"description": "Return the relationship instance with the requested unique identifer.  Replace the `put-guid-value-here` placeholder with the real GUID of the instance."
+				"description": "The getEntityDetails requests returns a repository services instance of category **entity**.  An entity describes a node in the graph of metadata.  An asset is stored in the repository as an entity.  This query is set up to retrieve one of the assets created in the main exercise.  Notice that the entity includes information about the type of entity and the audit header information that shows the home repository."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Relationships For Entity (federated query)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"class\" : \"TypeLimitedFindRequest\",\n    \"offset\" : 0,\n    \"pageSize\" : 0\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/enterprise/instances/entity/{{guid}}/relationships",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"repository-services",
+						"users",
+						"{{user}}",
+						"enterprise",
+						"instances",
+						"entity",
+						"{{guid}}",
+						"relationships"
+					]
+				},
+				"description": "The getEntityDetails requests returns a repository services instance of category **entity**.  An entity describes a node in the graph of metadata.  An asset is stored in the repository as an entity.  This query is set up to retrieve one of the assets created in the main exercise.  Notice that the entity includes information about the type of entity and the audit header information that shows the home repository."
+			},
+			"response": []
+		},
+		{
+			"name": "Get TypeDef By Name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/types/typedef/name/Asset",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"repository-services",
+						"users",
+						"{{user}}",
+						"types",
+						"typedef",
+						"name",
+						"Asset"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get AttributeTypeDef By Name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/types/attribute-typedef/name/GovernanceActionStatus",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"repository-services",
+						"users",
+						"{{user}}",
+						"types",
+						"attribute-typedef",
+						"name",
+						"GovernanceActionStatus"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find Entities By Property Value",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"class\" : \"EntityPropertyFindRequest\",\n    \"offset\" : 0,\n    \"pageSize\" : 100\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/instances/entities/by-property-value?searchCriteria=.*cust.*",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"repository-services",
+						"users",
+						"{{user}}",
+						"instances",
+						"entities",
+						"by-property-value"
+					],
+					"query": [
+						{
+							"key": "searchCriteria",
+							"value": ".*cust.*"
+						}
+					]
+				}
 			},
 			"response": []
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }

@@ -40,7 +40,17 @@ public class ApacheAtlasIntegrationProvider extends IntegrationConnectorProvider
     private static final Class<?> connectorClass       = ApacheAtlasIntegrationConnector.class;
 
 
-    static final String GLOSSARY_QUALIFIED_NAME_CONFIGURATION_PROPERTY = "glossaryQualifiedName";
+    /**
+     * The configuration property name used to supply the qualified name of an Egeria glossary to synchronize with
+     * Apache Atlas.  If this value is null, all Egeria originated glossaries are copied to Apache Atlas.
+     */
+    static final String EGERIA_GLOSSARY_QUALIFIED_NAME_CONFIGURATION_PROPERTY = "egeriaGlossaryQualifiedName";
+
+    /**
+     * The configuration property name used to supply the name of the Atlas Glossary to copy into the open metadata
+     * ecosystem.  If this value is null, all Apache Atlas originated glossaries are copied into the open metadata ecosystem.
+     */
+    static final String ATLAS_GLOSSARY_NAME_CONFIGURATION_PROPERTY            = "atlasGlossaryName";
 
     /**
      * Constructor used to initialize the ConnectorProvider with the Java class name of the specific
@@ -66,7 +76,8 @@ public class ApacheAtlasIntegrationProvider extends IntegrationConnectorProvider
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         List<String> recognizedConfigurationProperties = new ArrayList<>();
-        recognizedConfigurationProperties.add(GLOSSARY_QUALIFIED_NAME_CONFIGURATION_PROPERTY);
+        recognizedConfigurationProperties.add(EGERIA_GLOSSARY_QUALIFIED_NAME_CONFIGURATION_PROPERTY);
+        recognizedConfigurationProperties.add(ATLAS_GLOSSARY_NAME_CONFIGURATION_PROPERTY);
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
 
         super.connectorTypeBean = connectorType;

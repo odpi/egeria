@@ -168,7 +168,7 @@ public class OMRSAuditLog extends AuditLog
      * Log details of an unexpected exception detected by the open metadata modules.  These exceptions typically mean that the local
      * server is not configured correctly, or there is a logic error in the code.  When exceptions are logged, it is
      * important that they are investigated and the cause corrected since the local repository is not able to operate
-     * as a proper peer in the metadata repository cluster whilst these conditions persist.
+     * as a proper peer in the open metadata repository cohort whilst these conditions persist.
      *
      * @param actionDescription description of the activity in progress when the error occurred
      * @param logMessageId id for the type of exception caught

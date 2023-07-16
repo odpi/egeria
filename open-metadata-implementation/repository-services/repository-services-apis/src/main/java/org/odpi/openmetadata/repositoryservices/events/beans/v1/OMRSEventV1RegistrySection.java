@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEventType;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -22,6 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OMRSEventV1RegistrySection implements Serializable
 {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private OMRSRegistryEventType registryEventType      = null;
@@ -30,53 +32,96 @@ public class OMRSEventV1RegistrySection implements Serializable
     private Connection            remoteConnection       = null;
 
 
+    /**
+     * Default constructor
+     */
     public OMRSEventV1RegistrySection()
     {
     }
 
 
+    /**
+     * Return the reason for the event.
+     *
+     * @return enum
+     */
     public OMRSRegistryEventType getRegistryEventType()
     {
         return registryEventType;
     }
 
 
+    /**
+     * Set up the reason for the event.
+     *
+     * @param registryEventType enum
+     */
     public void setRegistryEventType(OMRSRegistryEventType registryEventType)
     {
         this.registryEventType = registryEventType;
     }
 
 
+    /**
+     * Return the timestamp for the registration.
+     *
+     * @return date/time
+     */
     public Date getRegistrationTimestamp()
     {
         return registrationTimestamp;
     }
 
 
+    /**
+     * Set up the timestamp for the registration.
+     *
+     * @param registrationTimestamp date/time
+     */
     public void setRegistrationTimestamp(Date registrationTimestamp)
     {
         this.registrationTimestamp = registrationTimestamp;
     }
 
 
+    /**
+     * Return the optional metadata collection name.
+     *
+     * @return name
+     */
     public String getMetadataCollectionName()
     {
         return metadataCollectionName;
     }
 
 
+    /**
+     * Set up the optional metadata collection name.
+     *
+     * @param metadataCollectionName name
+     */
     public void setMetadataCollectionName(String metadataCollectionName)
     {
         this.metadataCollectionName = metadataCollectionName;
     }
 
 
+    /**
+     * Return the connection used to call the remote repository.
+     *
+     * @return connection
+     */
     public Connection getRemoteConnection()
     {
         return remoteConnection;
     }
 
 
+    /**
+     * Set up the connection used to call the remote repository.
+     *
+     * @param remoteConnection connection
+     */
     public void setRemoteConnection(Connection remoteConnection)
     {
         this.remoteConnection = remoteConnection;

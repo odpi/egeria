@@ -65,6 +65,7 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
      * @param externalSourceGUID unique identifier of the software server capability for the asset manager
      * @param externalSourceName unique name of the software server capability for the asset manager
      * @param integrationServiceName name of this service
+     * @param maxPageSize max number of elements that can be returned on a query
      * @param auditLog logging destination
      */
     public LineageIntegratorContext(String                       connectorId,
@@ -84,6 +85,7 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
                                     String                       externalSourceGUID,
                                     String                       externalSourceName,
                                     String                       integrationServiceName,
+                                    int                          maxPageSize,
                                     AuditLog                     auditLog)
     {
         super(connectorId,
@@ -96,7 +98,8 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
               permittedSynchronization,
               externalSourceGUID,
               externalSourceName,
-              integrationConnectorGUID);
+              integrationConnectorGUID,
+              maxPageSize);
 
         this.openLineageListenerManager = openLineageListenerManager;
         this.dataAssetExchangeClient    = dataAssetExchangeClient;
@@ -3183,6 +3186,7 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
      * Classify the element with the Memento classification to indicate that it has been logically deleted for by lineage requests.
      *
      * @param elementGUID unique identifier of the metadata element to update
+     * @param elementExternalIdentifier external identifier (optional)
      * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -3210,6 +3214,7 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
      * Remove the memento designation from the element.
      *
      * @param elementGUID unique identifier of the metadata element to update
+     * @param elementExternalIdentifier external identifier (optional)
      * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid

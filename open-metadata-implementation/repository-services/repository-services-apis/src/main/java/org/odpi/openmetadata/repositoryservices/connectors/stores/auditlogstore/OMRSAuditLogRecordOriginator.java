@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
@@ -22,12 +23,28 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OMRSAuditLogRecordOriginator implements Serializable
 {
+    @Serial
     private static final long    serialVersionUID = 1L;
 
-    public static String SERVER_NAME_PROPERTY            = "Server Name";
-    public static String SERVER_TYPE_PROPERTY            = "Server Type";
-    public static String ORGANIZATION_NAME_PROPERTY      = "Organization Name";
-    public static String METADATA_COLLECTION_ID_PROPERTY = "Metadata Collection Id";
+    /**
+     * Property name for server name
+     */
+    public static String SERVER_NAME_PROPERTY            = "serverName";
+
+    /**
+     * Property name for server type
+     */
+    public static String SERVER_TYPE_PROPERTY            = "serverType";
+
+    /**
+     * Property name for Organization
+     */
+    public static String ORGANIZATION_NAME_PROPERTY      = "organizationName";
+
+    /**
+     * Property name for metadata collection id
+     */
+    public static String METADATA_COLLECTION_ID_PROPERTY = "metadataCollectionId";
 
     private String                   serverName           = null;
     private String                   serverType           = null;

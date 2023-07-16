@@ -36,21 +36,64 @@ import java.util.List;
  */
 public class CatalogIntegratorContext extends IntegrationContext
 {
+    /**
+     * Service for creating connector instances.
+     */
     public final static String connectorFactoryServiceName          = "ConnectorFactoryExchangeService";
+
+    /**
+     * Service for working with feedback elements.
+     */
     public final static String collaborationExchangeServiceName     = "CollaborationExchangeService";
+
+    /**
+     * Service for building and maintaining connections, connector types and endpoints.
+     */
     public final static String connectionExchangeServiceName        = "ConnectionExchangeService";
+
+    /**
+     * Service for working with data stores, data sets, data feeds and APIs.
+     */
     public final static String dataAssetExchangeServiceName         = "DataAssetExchangeService";
+
+    /**
+     * Services for maintaining links to external references.
+     */
     public final static String externalReferenceExchangeServiceName = "ExternalReferenceExchangeService";
+
+    /**
+     * Service for maintaining glossaries and their contents
+     */
     public final static String glossaryExchangeServiceName          = "GlossaryExchangeService";
+
+    /**
+     * Service for maintaining governance definitions such as policies and rules.
+     */
     public final static String governanceExchangeServiceName        = "GovernanceExchangeService";
+
+    /**
+     * Service for maintaining models of infrastructure.
+     */
     public final static String infrastructureExchangeServiceName    = "InfrastructureExchangeService";
+
+    /**
+     * Service for maintaining lineage relationships.
+     */
     public final static String lineageExchangeServiceName           = "LineageExchangeService";
+
+    /**
+     * Service for handing actions for stewards.
+     */
     public final static String stewardshipExchangeServiceName       = "StewardshipExchangeService";
+
+    /**
+     * Service for maintaining reference data (valid values).
+     */
     public final static String validValuesExchangeServiceName       = "ValidValuesExchangeService";
 
 
-    private final ExternalAssetManagerClient assetManagerClient;
-    private final AssetManagerEventClient    eventClient;
+    private final ExternalAssetManagerClient       assetManagerClient;
+    private final AssetManagerEventClient          eventClient;
     private final ConnectorFactoryService          connectorFactoryService;
     private final CollaborationExchangeService     collaborationExchangeService;
     private final ConnectionExchangeService        connectionExchangeService;
@@ -78,6 +121,7 @@ public class CatalogIntegratorContext extends IntegrationContext
     private boolean governanceExchangeActive        = true;
     private boolean validValuesExchangeActive       = true;
 
+    private boolean listenerRegistered = false;
 
     /**
      * Create a new context for a connector.
@@ -109,6 +153,7 @@ public class CatalogIntegratorContext extends IntegrationContext
      *                                 null).
      * @param disabledExchangeServices option from the integration service's configuration
      * @param integrationServiceName name of this service
+     * @param maxPageSize max number of elements that can be returned on a query
      * @param auditLog logging destination
      */
     public CatalogIntegratorContext(String                          connectorId,
@@ -137,6 +182,7 @@ public class CatalogIntegratorContext extends IntegrationContext
                                     String                          assetManagerName,
                                     String                          integrationServiceName,
                                     List<String>                    disabledExchangeServices,
+                                    int                             maxPageSize,
                                     AuditLog                        auditLog)
     {
         super(connectorId,
@@ -149,7 +195,8 @@ public class CatalogIntegratorContext extends IntegrationContext
               permittedSynchronization,
               assetManagerGUID,
               assetManagerName,
-              integrationConnectorGUID);
+              integrationConnectorGUID,
+              maxPageSize);
 
         final String methodName = "CatalogIntegratorContext";
 
@@ -323,13 +370,24 @@ public class CatalogIntegratorContext extends IntegrationContext
 
 
     /* ========================================================
-     * Returning the asset manager name from the configuration
+     * Returning the asset manager from the configuration.  This identifies the origin of the elements created by this
+     * connector (or other connectors using the same metadataSourceQualifiedName).
      */
 
 
     /**
-     * Return the qualified name of the asset manager that is supplied in the configuration
-     * document.
+     * Return the unique identifier for the asset manager element with a qualifiedName matching the assetManagerName.
+     *
+     * @return string guid
+     */
+    public String getAssetManagerGUID()
+    {
+        return assetManagerGUID;
+    }
+
+
+    /**
+     * Return the qualified name of the asset manager that is supplied in the configuration as metadataSourceQualifiedName.
      *
      * @return string name
      */
@@ -364,6 +422,18 @@ public class CatalogIntegratorContext extends IntegrationContext
                                                                             UserNotAuthorizedException
     {
         eventClient.registerListener(userId, listener);
+        this.listenerRegistered = true;
+    }
+
+
+    /**
+     * Return a flag indicating whether a listener has been registered or not.
+     *
+     * @return true means the listener has been successfully registered
+     */
+    public boolean isListenerRegistered()
+    {
+        return listenerRegistered;
     }
 
 

@@ -19,22 +19,53 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum LatestChangeTarget implements Serializable
 {
+    /**
+     * A property in the anchor entity has changed.
+     */
     ENTITY_PROPERTY           (0, 0, "EntityProperty",
                                "A property in the anchor entity has changed."),
+
+    /**
+     * A classification attached to the anchor entity has changed.
+     */
     ENTITY_CLASSIFICATION     (1, 1, "EntityClassification",
                                "A classification attached to the anchor entity has changed."),
+
+    /**
+     * A relationship linking the anchor entity to an attachment has changed.
+     */
     ENTITY_RELATIONSHIP       (2, 2, "EntityRelationship",
                                "A relationship linking the anchor entity to an attachment has changed."),
+
+    /**
+     * An entity attached either directly or indirectly to the anchor entity has changed.
+     */
     ATTACHMENT                (3, 3, "Attachment",
                                "An entity attached either directly or indirectly to the anchor entity has changed."),
+
+    /**
+     * A property in an entity attached either directly or indirectly to the anchor entity has changed.
+     */
     ATTACHMENT_PROPERTY       (4, 4, "AttachmentProperty",
                                "A property in an entity attached either directly or indirectly to the anchor entity has changed."),
+
+    /**
+     * A classification attached to an entity that is, in turn, attached either directly or indirectly to the anchor entity has changed.
+     */
     ATTACHMENT_CLASSIFICATION (5, 5, "AttachmentClassification",
                                "A classification attached to an entity that is, in turn, attached either directly or indirectly to " +
                                          "the anchor entity has changed."),
+
+    /**
+     * A relationship linking to an entity that is, in turn, attached either directly or indirectly to the anchor entity has changed.
+     */
     ATTACHMENT_RELATIONSHIP   (6, 6, "AttachmentRelationship",
                                "A relationship linking to an entity that is, in turn, attached either directly or indirectly to " +
                                       "the anchor entity has changed."),
+
+    /**
+     * Another type of change.
+     */
     OTHER                     (99, 99,  "Other",
                                "Another type of change.");
 

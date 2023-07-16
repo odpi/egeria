@@ -44,7 +44,7 @@ import java.util.UUID;
  * <ul>
  *     <li>
  *         OMRSConnectionConsumer is the interface for passing connections to the OMRSEnterpriseConnectorManager.
- *         New connections are validated by creating a test connector and the combination of the metadata collection Id
+ *         New connections are validated by creating a test connector and the combination of the metadata collection id
  *         and connection are stored.  An instance of the connector is passed to each of the registered
  *         connector consumers.
  *     </li>
@@ -503,7 +503,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
         }
 
         /*
-         * Use the list of metadata collection Ids to call removeRemoteConnection().  This will manage the
+         * Use the list of metadata collection ids to call removeRemoteConnection().  This will manage the
          * removal of the remote connectors from the connector consumers if it is uniquely registered in this
          * cohort.
          */
@@ -518,11 +518,11 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
      * Register the supplied connector consumer with the connector manager.  During the registration
      * request, the connector manager will pass the connector to the local repository and
      * the connectors to all currently registered remote repositories.  Once successfully registered
-     * the connector manager will call the connector consumer each time the repositories in the
-     * metadata repository cluster changes.
+     * the connector manager will call the connector consumer each time the repositories in the open
+     * metadata repository cohort changes.
      *
      * @param connectorConsumer OMRSConnectorConsumer interested in details of the connectors to
-     *                           all repositories registered in the metadata repository cluster.
+     *                           all repositories registered in the open metadata repository cohort.
      * @return String identifier for the connectorConsumer used for the call to unregister.
      */
     public synchronized String registerConnectorConsumer(OMRSConnectorConsumer connectorConsumer)
@@ -583,7 +583,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
 
     /**
      * Unregister a connector consumer from the connector manager, so it is no longer informed of
-     * changes to the metadata repository cluster.
+     * changes to the open metadata repository cohort.
      *
      * @param connectorConsumerId String identifier of the connector consumer returned on the
      *                             registerConnectorConsumer.
@@ -710,7 +710,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
 
     /**
      * RegisteredConnector holds the information about connecting to a repository in the open metadata repository
-     * cluster.
+     * cohort.
      */
     private static class RegisteredConnector
     {

@@ -8,12 +8,14 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.reports.IntegrationReportWriter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +40,8 @@ public class IntegrationContext
     private   final IntegrationGovernanceContext integrationGovernanceContext;
     protected final IntegrationReportWriter      integrationReportWriter;
 
+    protected final int maxPageSize;
+
 
     /**
      * Constructor handles standard values for all integration contexts.
@@ -53,6 +57,7 @@ public class IntegrationContext
      * @param externalSourceGUID unique identifier of the software server capability for the source of metadata
      * @param externalSourceName unique name of the software server capability for the source of metadata
      * @param integrationConnectorGUID unique identifier of the integration connector entity (maybe null)
+     * @param maxPageSize max number of elements that can be returned on a query
      */
     public IntegrationContext(String                       connectorId,
                               String                       connectorName,
@@ -64,7 +69,8 @@ public class IntegrationContext
                               PermittedSynchronization     permittedSynchronization,
                               String                       externalSourceGUID,
                               String                       externalSourceName,
-                              String                       integrationConnectorGUID)
+                              String                       integrationConnectorGUID,
+                              int                          maxPageSize)
     {
         this.openIntegrationClient        = openIntegrationClient;
         this.openMetadataStoreClient      = openMetadataStoreClient;
@@ -73,6 +79,7 @@ public class IntegrationContext
         this.externalSourceGUID           = externalSourceGUID;
         this.externalSourceName           = externalSourceName;
         this.integrationConnectorGUID     = integrationConnectorGUID;
+        this.maxPageSize                  = maxPageSize;
 
         if (generateIntegrationReport)
         {
@@ -348,5 +355,57 @@ public class IntegrationContext
         }
 
         return null;
+    }
+
+
+    /* ==============================================================
+     * Controlling paging
+     */
+
+    /**
+     * Returns the server configuration for the maximum number of elements that can be returned on a request.  It is used to control
+     * paging.
+     *
+     * @return integer
+     */
+    public int getMaxPageSize()
+    {
+        return maxPageSize;
+    }
+
+
+    /* =============================
+     * Working with types
+     */
+
+
+    /**
+     * Understand the type of element.  It checks the type and super types.
+     *
+     * @param elementHeader element to validate
+     * @param typeName type to test
+     * @return boolean flag
+     */
+    public boolean isTypeOf(ElementHeader  elementHeader,
+                            String         typeName)
+    {
+        ElementType elementType = elementHeader.getType();
+        if (elementType != null)
+        {
+            List<String> elementTypeNames = new ArrayList<>();
+
+            elementTypeNames.add(elementType.getTypeName());
+            if (elementType.getSuperTypeNames() != null)
+            {
+                elementTypeNames.addAll(elementType.getSuperTypeNames());
+            }
+
+            if (elementTypeNames.contains(typeName))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

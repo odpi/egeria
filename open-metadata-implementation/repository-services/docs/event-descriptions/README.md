@@ -30,7 +30,7 @@ Every event has a:
 
 * Timestamp - indicating the time the event was created.
 * Originator - details of the server that originated the message. 
-  * The **[metadata collection Id](../metadata-collection-id.md)** is the unique identifier for an open metadata repository's metadata collection.
+  * The **[metadata collection id](../metadata-collection-id.md)** is the unique identifier for an open metadata repository's metadata collection.
   The only time this is not set is when a message is sent from a server that does not have a
   local metadata repository configured.
   * The server name, type and organization are optional descriptive fields used in audit logging and problem determination.

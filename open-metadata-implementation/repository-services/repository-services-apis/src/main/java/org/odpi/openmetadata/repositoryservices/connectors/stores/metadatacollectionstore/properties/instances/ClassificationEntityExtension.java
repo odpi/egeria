@@ -16,6 +16,9 @@ public class ClassificationEntityExtension extends InstanceElementHeader
     private Classification   classification = null;
     private EntityProxy      entityToClassify = null;
 
+    /**
+     * Version of the header used in this release
+     */
     public static final long CURRENT_CLASSIFICATION_EXT_HEADER_VERSION = 1;
 
 

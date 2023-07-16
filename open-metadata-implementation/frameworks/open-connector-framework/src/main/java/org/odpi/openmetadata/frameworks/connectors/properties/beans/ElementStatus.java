@@ -41,22 +41,89 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum ElementStatus implements Serializable
 {
+    /**
+     * Unknown instance status.
+     */
     UNKNOWN                 (0,  "<Unknown>",               "Unknown instance status."),
+
+    /**
+     * The content is incomplete.
+     */
     DRAFT                   (1,  "Draft",                   "The content is incomplete."),
+
+    /**
+     * The content is ready for review.
+     */
     PREPARED                (2,  "Prepared",                "The content is ready for review."),
+
+    /**
+     * The content is in review.
+     */
     PROPOSED                (3,  "Proposed",                "The content is in review."),
+
+    /**
+     * The content is approved.
+     */
     APPROVED                (4,  "Approved",                "The content is approved."),
+
+    /**
+     * The request or proposal is rejected.
+     */
     REJECTED                (5,  "Rejected",                "The request or proposal is rejected."),
+
+    /**
+     * The request or proposal is approved for development.
+     */
     APPROVED_CONCEPT        (6,  "Approved concept",        "The request or proposal is approved for development."),
+
+    /**
+     * The instance is being developed.
+     */
     UNDER_DEVELOPMENT       (7,  "Under development",       "The instance is being developed."),
+
+    /**
+     * The development of the instance is complete.
+     */
     DEVELOPMENT_COMPLETE    (8,  "Development complete",    "The development of the instance is complete."),
+
+    /**
+     * The instance is approved for deployment.
+     */
     APPROVED_FOR_DEPLOYMENT (9,  "Approved for deployment", "The instance is approved for deployment."),
+
+    /**
+     * The instance is deployed in standby mode.
+     */
     STANDBY                 (10, "StandBy",                 "The instance is deployed in standby mode."),
+
+    /**
+     * The instance is approved and in use.
+     */
     ACTIVE                  (15, "Active",                  "The instance is approved and in use."),
+
+    /**
+     * The instance is not in use due to failure.
+     */
     FAILED                  (20, "Failed",                  "The instance is not in use due to failure."),
+
+    /**
+     * The instance is shutdown or disabled.
+     */
     DISABLED                (21, "Disabled",                "The instance is shutdown or disabled."),
+
+    /**
+     * The activity associated with the instance is complete.
+     */
     COMPLETE                (22, "Complete",                "The activity associated with the instance is complete."),
+
+    /**
+     * The instance is out of date and should not be used.
+     */
     DEPRECATED              (30, "Deprecated",              "The instance is out of date and should not be used."),
+
+    /**
+     * The instance is in a locally defined state.
+     */
     OTHER                   (50, "Other",                   "The instance is in a locally defined state.");
 
     private static final long serialVersionUID = 1L;

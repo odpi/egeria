@@ -242,6 +242,7 @@ public class ConnectorConfigurationFactory
      * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
      * @param eventBusConnectorProviderClassName name of connector provider class that controls the type of connector used.
      * @param topicURLRoot  root URL of the topic - this is prepended to the topic name
+     * @param suppliedTopicName topicName from  the caller
      * @param serverId identifier of the server - used to pick up the right offset for the inbound messages.
      * @param eventBusConfigurationProperties - additional properties for the event bus connection
      * @return OCF Connection used to create the event topic audit logger
@@ -250,11 +251,17 @@ public class ConnectorConfigurationFactory
                                                       List<String>        supportedSeverities,
                                                       String              eventBusConnectorProviderClassName,
                                                       String              topicURLRoot,
+                                                      String              suppliedTopicName,
                                                       String              serverId,
                                                       Map<String, Object> eventBusConfigurationProperties)
     {
         final String destinationName = "EventTopic";
         String topicName = defaultTopicRootName + localServerName + ".auditlog";
+
+        if (suppliedTopicName != null)
+        {
+            topicName = suppliedTopicName;
+        }
 
         VirtualConnection connection = new VirtualConnection();
 

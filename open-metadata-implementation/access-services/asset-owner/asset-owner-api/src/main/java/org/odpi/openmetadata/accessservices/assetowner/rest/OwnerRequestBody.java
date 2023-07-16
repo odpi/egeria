@@ -82,7 +82,7 @@ public class OwnerRequestBody extends AssetOwnerOMASAPIRequestBody
 
 
     /**
-     * Return the owner Id.
+     * Return the owner identifier.
      * 
      * @return string identifier
      */

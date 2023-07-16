@@ -30,7 +30,7 @@ public class ExceptionMessageDefinition extends MessageDefinition
      * the additional value for the exception.
      *
      * @param httpErrorCode the HTTP code that describes the nature of the error
-     * @param messageId unique Id for the message
+     * @param messageId unique identifier for the message
      * @param messageTemplate text for the message
      * @param systemAction description of the action taken by the system when the condition happened
      * @param userAction instructions for resolving the situation, if any

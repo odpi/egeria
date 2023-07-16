@@ -153,7 +153,6 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
     /**
      * Create a new metadata element to represent a glossary using an existing metadata element as a template.
      * The template defines additional classifications and relationships that should be added to the new glossary.
-     *
      * All categories and terms are linked to a single glossary.  They are owned by this glossary and if the
      * glossary is used as a template, any linked terms and categories are created as well.
      *
@@ -892,6 +891,91 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                           supportedZones,
                                           effectiveTime,
                                           methodName);
+    }
 
+
+    /**
+     * Retrieve the glossary metadata element for the requested category.
+     *
+     * @param userId calling user
+     * @param glossaryCategoryGUID unique identifier of the requested metadata element
+     * @param guidParameterName parameter name of glossaryCategoryGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime           the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public B getGlossaryForCategory(String  userId,
+                                    String  glossaryCategoryGUID,
+                                    String  guidParameterName,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    Date    effectiveTime,
+                                    String  methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        return this.getAttachedElement(userId,
+                                       glossaryCategoryGUID,
+                                       guidParameterName,
+                                       OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                       OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_GUID,
+                                       OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_NAME,
+                                       OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                       1,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       supportedZones,
+                                       effectiveTime,
+                                       methodName);
+    }
+
+
+    /**
+     * Retrieve the glossary metadata element for the requested term.
+     *
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the requested metadata element
+     * @param guidParameterName parameter name of glossaryTermGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime           the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public B getGlossaryForTerm(String  userId,
+                                String  glossaryTermGUID,
+                                String  guidParameterName,
+                                boolean forLineage,
+                                boolean forDuplicateProcessing,
+                                Date    effectiveTime,
+                                String  methodName) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+    {
+        return this.getAttachedElement(userId,
+                                       glossaryTermGUID,
+                                       guidParameterName,
+                                       OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                       OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
+                                       OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_NAME,
+                                       OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                       1,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       supportedZones,
+                                       effectiveTime,
+                                       methodName);
     }
 }

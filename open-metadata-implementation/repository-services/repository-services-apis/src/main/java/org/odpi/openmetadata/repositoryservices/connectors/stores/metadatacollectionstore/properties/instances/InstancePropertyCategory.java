@@ -20,18 +20,41 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum InstancePropertyCategory implements Serializable
 {
-    UNKNOWN     (0, "<Unknown>", "Uninitialized InstancePropertyValue object."),
+    /**
+     * Unknown - Uninitialized InstancePropertyValue object.
+     */
+    UNKNOWN     (0, "Unknown",   "Uninitialized InstancePropertyValue object."),
+
+    /**
+     * Primitive - A primitive type.
+     */
     PRIMITIVE   (1, "Primitive", "A primitive type."),
+
+    /**
+     * Enum - A pre-defined list of valid values.
+     */
     ENUM        (2, "Enum",      "A pre-defined list of valid values."),
+
+    /**
+     * Struct - A collection of related properties.
+     */
     STRUCT      (3, "Struct",    "A collection of related properties."),
+
+    /**
+     * Map - A set of name->value pairs where all names are unique in the map.
+     */
     MAP         (4, "Map",       "A set of name->value pairs where all names are unique in the map."),
+
+    /**
+     * Array - An ordered list of values, each with the same type.
+     */
     ARRAY       (5, "Array",     "An ordered list of values, each with the same type.");
 
     private static final long serialVersionUID = 1L;
 
-    private int            typeCode;
-    private String         typeName;
-    private String         typeDescription;
+    private final int            typeCode;
+    private final String         typeName;
+    private final String         typeDescription;
 
 
     /**

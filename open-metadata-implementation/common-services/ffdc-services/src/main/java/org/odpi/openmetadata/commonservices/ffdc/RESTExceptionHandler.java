@@ -20,7 +20,6 @@ import java.util.Map;
 /**
  * RESTExceptionHandler converts standard exceptions to REST responses.  These responses ensure exception objects
  * (with their stack traces) are not serialized over REST APIs.
- *
  * This class does use developer logging (SLF4J) for components that are not mature enough to have implemented
  * FFDC.  For mature components, this logging is superfluous.
  */

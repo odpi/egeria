@@ -15,6 +15,9 @@ import java.util.Objects;
  */
 public class NoConnectedAssetException extends OCFCheckedExceptionBase
 {
+    /**
+     * Unique identifier of the connection
+     */
     private String connectionGUID;
 
 

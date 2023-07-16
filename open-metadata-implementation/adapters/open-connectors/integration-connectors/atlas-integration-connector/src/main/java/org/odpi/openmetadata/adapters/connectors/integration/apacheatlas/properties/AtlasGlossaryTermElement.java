@@ -6,25 +6,29 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.List;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * AtlasGlossaryTermProperties describes an Apache Atlas glossary term used to call Apache Atlas.
+ * AtlasGlossaryTermElement describes an Apache Atlas glossary term used to call Apache Atlas.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class AtlasGlossaryTermProperties extends AtlasGlossaryMemberBaseProperties
+public class AtlasGlossaryTermElement extends AtlasGlossaryMemberBaseProperties
 {
-    private String abbreviation = null;
-    private String usage        = null;
+    private String                           abbreviation    = null;
+    private String                           usage           = null;
+    private List<AtlasClassification>        classifications = null;
+    private List<AtlasRelatedCategoryHeader> categories      = null;
 
 
     /**
      * Standard constructor
      */
-    public AtlasGlossaryTermProperties()
+    public AtlasGlossaryTermElement()
     {
     }
 
@@ -34,7 +38,7 @@ public class AtlasGlossaryTermProperties extends AtlasGlossaryMemberBaseProperti
      *
      * @param template object to copy
      */
-    public AtlasGlossaryTermProperties(AtlasGlossaryTermProperties template)
+    public AtlasGlossaryTermElement(AtlasGlossaryTermElement template)
     {
         super(template);
 
@@ -42,6 +46,8 @@ public class AtlasGlossaryTermProperties extends AtlasGlossaryMemberBaseProperti
         {
             abbreviation = template.getAbbreviation();
             usage = template.getUsage();
+            classifications = template.getClassifications();
+            categories = template.getCategories();
         }
     }
 
@@ -70,10 +76,35 @@ public class AtlasGlossaryTermProperties extends AtlasGlossaryMemberBaseProperti
     }
 
 
+    public List<AtlasClassification> getClassifications()
+    {
+        return classifications;
+    }
+
+
+    public void setClassifications(
+            List<AtlasClassification> classifications)
+    {
+        this.classifications = classifications;
+    }
+
+
+    public List<AtlasRelatedCategoryHeader> getCategories()
+    {
+        return categories;
+    }
+
+
+    public void setCategories(List<AtlasRelatedCategoryHeader> categories)
+    {
+        this.categories = categories;
+    }
+
+
     @Override
     public String toString()
     {
-        return "AtlasGlossaryTermProperties{" +
+        return "AtlasGlossaryTermElement{" +
                        "abbreviation='" + abbreviation + '\'' +
                        ", usage='" + usage + '\'' +
                        ", anchor=" + getAnchor() +

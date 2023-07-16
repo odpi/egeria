@@ -9,6 +9,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 
+import java.io.Serial;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Objects;
@@ -26,7 +27,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PrimitivePropertyValue extends InstancePropertyValue
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private  PrimitiveDefCategory   primitiveDefCategory = null;
     private  Object                 primitiveValue = null;
@@ -175,7 +177,7 @@ public class PrimitivePropertyValue extends InstancePropertyValue
         {
             return true;
         }
-        if (! (objectToCompare instanceof PrimitivePropertyValue))
+        if (! (objectToCompare instanceof PrimitivePropertyValue that))
         {
             return false;
         }
@@ -183,8 +185,6 @@ public class PrimitivePropertyValue extends InstancePropertyValue
         {
             return false;
         }
-
-        PrimitivePropertyValue that = (PrimitivePropertyValue) objectToCompare;
 
         if (primitiveDefCategory != that.primitiveDefCategory)
         {
@@ -244,9 +244,8 @@ public class PrimitivePropertyValue extends InstancePropertyValue
                      * Integer. The following conversion repatriates it to Long.
                      */
 
-                    if (primitiveValue instanceof Integer)
+                    if (primitiveValue instanceof Integer castValue)
                     {
-                        Integer castValue = (Integer)primitiveValue;
                         return castValue.longValue();
                     }
                     else
@@ -280,7 +279,7 @@ public class PrimitivePropertyValue extends InstancePropertyValue
                 {
                     Integer    castValue = (Integer)primitiveValue;
 
-                    return new Byte(castValue.toString());
+                    return  Byte.valueOf(castValue.toString());
                 }
                 else if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_CHAR)
                 {
@@ -292,19 +291,19 @@ public class PrimitivePropertyValue extends InstancePropertyValue
                 {
                     Double    castValue = (Double)primitiveValue;
 
-                    return new Float(castValue);
+                    return  Float.valueOf(String.valueOf(castValue));
                 }
                 else if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG)
                 {
                     Integer    castValue = (Integer)primitiveValue;
 
-                    return new Long(castValue);
+                    return Long.valueOf(castValue);
                 }
                 else if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_SHORT)
                 {
                     Integer    castValue = (Integer)primitiveValue;
 
-                    return new Short(castValue.toString());
+                    return Short.valueOf(castValue.toString());
                 }
                 else
                 {

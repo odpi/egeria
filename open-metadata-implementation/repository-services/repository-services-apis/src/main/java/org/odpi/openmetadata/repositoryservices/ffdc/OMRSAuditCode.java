@@ -704,7 +704,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                                                         "with the same metadata collection id. " +
                                                         "There is a chance of metadata integrity issues since " +
                                                         "a metadata instance can be updated in two places.",
-                                                      "It is necessary to update the local metadata collection Id to remove the conflict."),
+                                                      "It is necessary to update the local metadata collection id to remove the conflict."),
 
     /**
      * OMRS-AUDIT-0108 - Two servers in cohort {0} are using the same metadata collection identifier {1}
@@ -717,7 +717,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                                                         "with the same metadata collection id. " +
                                                         "There is a chance of metadata integrity issues since " +
                                                         "a metadata instance can be updated in two places.",
-                                                "Update the local metadata collection Id to remove the conflict."),
+                                                "Update the local metadata collection id to remove the conflict."),
 
     /**
      * OMRS-AUDIT-0109 - Registration error occurred in cohort {0} because remote server {1} that hosts metadata collection {2} is unable to use
@@ -778,7 +778,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                                                         "local server because the remote server {1} is using a metadata " +
                                                         "collection id {2} that is not unique in the cohort",
                                                 "The remote server will not exchange metadata with this local server.",
-                                                "It is necessary to update the metadata collection Id for this server to remove the conflict " +
+                                                "It is necessary to update the metadata collection id for this server to remove the conflict " +
                                                         "before the remote server will exchange metadata with this server."),
 
     /**

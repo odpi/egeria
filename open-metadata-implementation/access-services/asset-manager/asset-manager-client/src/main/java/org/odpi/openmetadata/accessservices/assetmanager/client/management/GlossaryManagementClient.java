@@ -644,7 +644,7 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
      * Retrieve the glossary metadata element with the supplied unique identifier.
      *
      * @param userId calling user
-     * @param glossaryGUID unique identifier of the requested metadata element
+     * @param glossaryCategoryGUID unique identifier of the requested metadata element
      * @param effectiveTime           the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -657,14 +657,71 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
      */
     @Override
     public GlossaryElement getGlossaryByGUID(String  userId,
-                                             String  glossaryGUID,
+                                             String glossaryCategoryGUID,
                                              Date    effectiveTime,
                                              boolean forLineage,
                                              boolean forDuplicateProcessing) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        return client.getGlossaryByGUID(userId, null, null, glossaryGUID, effectiveTime, forLineage, forDuplicateProcessing);
+        return client.getGlossaryByGUID(userId, null, null, glossaryCategoryGUID, effectiveTime, forLineage, forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve the glossary metadata element for the requested category.
+     *
+     * @param userId calling user
+     * @param glossaryCategoryGUID unique identifier of the requested metadata element
+     * @param effectiveTime           the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public GlossaryElement getGlossaryForCategory(String  userId,
+                                                  String  glossaryCategoryGUID,
+                                                  Date    effectiveTime,
+                                                  boolean forLineage,
+                                                  boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        return client.getGlossaryForCategory(userId, null, null, glossaryCategoryGUID, effectiveTime, forLineage, forDuplicateProcessing);
+    }
+
+
+
+    /**
+     * Retrieve the glossary metadata element for the requested term.
+     *
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the requested metadata element
+     * @param effectiveTime           the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public GlossaryElement getGlossaryForTerm(String  userId,
+                                              String  glossaryTermGUID,
+                                              Date    effectiveTime,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        return client.getGlossaryForTerm(userId, null, null, glossaryTermGUID, effectiveTime, forLineage, forDuplicateProcessing);
     }
 
 
@@ -909,6 +966,38 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
                                                                                                            PropertyServerException
     {
         return client.getCategoriesForGlossary(userId, null, null, glossaryGUID, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
+    }
+
+
+    /**
+     * Return the list of categories associated with a glossary term.
+     *
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the glossary term to query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of metadata elements describing the categories associated with the requested term
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<GlossaryCategoryElement>   getCategoriesForTerm(String  userId,
+                                                                String  glossaryTermGUID,
+                                                                int     startFrom,
+                                                                int     pageSize,
+                                                                Date    effectiveTime,
+                                                                boolean forLineage,
+                                                                boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
+    {
+        return client.getCategoriesForTerm(userId, null, null, glossaryTermGUID, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
     }
 
 

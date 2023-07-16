@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -15,8 +14,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the map of job facets in the open lineage standard spec
- * https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.
+ * This class represents the map of job facets in the
+ * <a href="https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json">open lineage standard spec</a>.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -37,36 +36,66 @@ public class OpenLineageJobFacets
     }
 
 
+    /**
+     * Return the source code location.
+     *
+     * @return facet
+     */
     public OpenLineageSourceCodeLocationJobFacet getSourceCodeLocation()
     {
         return sourceCodeLocation;
     }
 
 
+    /**
+     * Set up the source code location.
+     *
+     * @param sourceCodeLocation facet
+     */
     public void setSourceCodeLocation(OpenLineageSourceCodeLocationJobFacet sourceCodeLocation)
     {
         this.sourceCodeLocation = sourceCodeLocation;
     }
 
 
+    /**
+     * Return the SQL command facet
+     *
+     * @return facet
+     */
     public OpenLineageSQLJobFacet getSql()
     {
         return sql;
     }
 
 
+    /**
+     * Set up the SQL command facet
+     *
+     * @param sql facet
+     */
     public void setSql(OpenLineageSQLJobFacet sql)
     {
         this.sql = sql;
     }
 
 
+    /**
+     * Return the documentation
+     *
+     * @return facet
+     */
     public OpenLineageDocumentationJobFacet getDocumentation()
     {
         return documentation;
     }
 
 
+    /**
+     * Set up the documentation.
+     *
+     * @param documentation facet
+     */
     public void setDocumentation(OpenLineageDocumentationJobFacet documentation)
     {
         this.documentation = documentation;

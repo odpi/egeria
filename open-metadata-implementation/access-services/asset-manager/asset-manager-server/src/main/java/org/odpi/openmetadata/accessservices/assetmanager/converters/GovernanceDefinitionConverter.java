@@ -149,7 +149,7 @@ public class GovernanceDefinitionConverter<B> extends AssetManagerOMASConverter<
      * an Annotation or DataField bean which combine knowledge from the entity and its linked relationships.
      *
      * @param beanClass name of the class to create
-     * @param primaryEntity entity that is the root of the cluster of entities that make up the
+     * @param primaryEntity entity that is the root of the collection of entities that make up the
      *                      content of the bean
      * @param relationships relationships linking the entities
      * @param methodName calling method

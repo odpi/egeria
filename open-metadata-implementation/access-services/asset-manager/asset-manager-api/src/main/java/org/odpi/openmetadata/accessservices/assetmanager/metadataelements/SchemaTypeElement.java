@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.DerivedSchemaTypeQueryTargetProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 

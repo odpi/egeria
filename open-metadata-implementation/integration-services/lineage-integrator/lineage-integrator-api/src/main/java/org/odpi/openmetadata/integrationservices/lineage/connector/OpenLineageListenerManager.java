@@ -5,6 +5,9 @@ package org.odpi.openmetadata.integrationservices.lineage.connector;
 
 import org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent;
 
+/**
+ * Interface that supports the connector registering an listener for the open lineage events.
+ */
 public interface OpenLineageListenerManager
 {
     /**

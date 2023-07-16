@@ -172,7 +172,7 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        if ((results != null) && (assetManagerGUID != null))
+        if (results != null)
         {
             for (MetadataElement element : results)
             {

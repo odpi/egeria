@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.io.Serial;
 import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -25,6 +26,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class ElementControlHeader extends PropertyBase
 {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     /*
      * Common header for first class elements from a metadata repository
      */

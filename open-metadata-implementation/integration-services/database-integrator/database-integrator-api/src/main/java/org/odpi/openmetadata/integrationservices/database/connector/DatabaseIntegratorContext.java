@@ -51,6 +51,7 @@ public class DatabaseIntegratorContext extends IntegrationContext
      *                                 null).
      * @param externalSourceGUID unique identifier of the software server capability for the database manager
      * @param externalSourceName unique name of the software server capability for the database manager
+     * @param maxPageSize max number of elements that can be returned on a query
      */
     public DatabaseIntegratorContext(String                       connectorId,
                                      String                       connectorName,
@@ -66,7 +67,8 @@ public class DatabaseIntegratorContext extends IntegrationContext
                                      PermittedSynchronization     permittedSynchronization,
                                      String                       integrationConnectorGUID,
                                      String                       externalSourceGUID,
-                                     String                       externalSourceName)
+                                     String                       externalSourceName,
+                                     int                          maxPageSize)
     {
         super(connectorId,
               connectorName,
@@ -78,7 +80,8 @@ public class DatabaseIntegratorContext extends IntegrationContext
               permittedSynchronization,
               externalSourceGUID,
               externalSourceName,
-              integrationConnectorGUID);
+              integrationConnectorGUID,
+              maxPageSize);
 
         this.databaseManagerClient   = databaseManagerClient;
         this.eventClient             = eventClient;

@@ -15,7 +15,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * HistorySequencingOrder is used for retrieval of history against a metadata collection.  It defines how the results
  * should be ordered before they are returned.  This is particularly important when the results are to returned
  * over multiple pages since the caller does not have all the results at once to perform the sort themselves.
- *
  * The sequencing order values are:
  * <ul>
  *     <li>
@@ -33,7 +32,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum HistorySequencingOrder implements Serializable
 {
+    /**
+     * Forwards - Chronological order (oldest first).
+     */
     FORWARDS             (0, "Forwards",  "Chronological order (oldest first)."),
+
+    /**
+     * Backwards - Reverse chronological order (newest first).
+     */
     BACKWARDS            (1, "Backwards", "Reverse chronological order (newest first).");
 
     private static final long serialVersionUID = 1L;
