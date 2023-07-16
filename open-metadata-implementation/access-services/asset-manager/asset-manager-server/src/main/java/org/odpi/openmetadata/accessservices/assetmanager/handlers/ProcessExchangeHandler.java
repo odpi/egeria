@@ -138,7 +138,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        if ((results != null) && (assetManagerGUID != null))
+        if (results != null)
         {
             for (ProcessElement element : results)
             {

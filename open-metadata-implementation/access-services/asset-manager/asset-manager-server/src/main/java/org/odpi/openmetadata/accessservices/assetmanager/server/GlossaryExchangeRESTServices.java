@@ -26,6 +26,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
+
 
 /**
  * GlossaryExchangeRESTServices is the server-side implementation of the Asset Manager OMAS's
@@ -1178,6 +1180,144 @@ public class GlossaryExchangeRESTServices
     }
 
 
+    /**
+     * Retrieve the glossary metadata element for the requested category.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryCategoryGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody asset manager identifiers
+     *
+     * @return matching metadata element or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GlossaryElementResponse getGlossaryForCategory(String                        serverName,
+                                                          String                        userId,
+                                                          String                        glossaryCategoryGUID,
+                                                          boolean                       forLineage,
+                                                          boolean                       forDuplicateProcessing,
+                                                          EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName = "getGlossaryForCategory";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GlossaryElementResponse response = new GlossaryElementResponse();
+        AuditLog                auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElement(handler.getGlossaryForCategory(userId,
+                                                                   requestBody.getAssetManagerGUID(),
+                                                                   requestBody.getAssetManagerName(),
+                                                                   glossaryCategoryGUID,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   requestBody.getEffectiveTime(),
+                                                                   methodName));
+            }
+            else
+            {
+                response.setElement(handler.getGlossaryForCategory(userId,
+                                                                   null,
+                                                                   null,
+                                                                   glossaryCategoryGUID,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   null,
+                                                                   methodName));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the glossary metadata element for the requested term.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody asset manager identifiers
+     *
+     * @return matching metadata element or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GlossaryElementResponse getGlossaryForTerm(String                        serverName,
+                                                      String                        userId,
+                                                      String                        glossaryTermGUID,
+                                                      boolean                       forLineage,
+                                                      boolean                       forDuplicateProcessing,
+                                                      EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName = "getGlossaryForTerm";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GlossaryElementResponse response = new GlossaryElementResponse();
+        AuditLog                auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElement(handler.getGlossaryForTerm(userId,
+                                                               requestBody.getAssetManagerGUID(),
+                                                               requestBody.getAssetManagerName(),
+                                                               glossaryTermGUID,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               requestBody.getEffectiveTime(),
+                                                               methodName));
+            }
+            else
+            {
+                response.setElement(handler.getGlossaryForTerm(userId,
+                                                               null,
+                                                               null,
+                                                               glossaryTermGUID,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               null,
+                                                               methodName));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
 
     /* =====================================================================================================================
      * A glossary may host one or more glossary categories depending on its capability
@@ -1763,6 +1903,83 @@ public class GlossaryExchangeRESTServices
                                                                          forDuplicateProcessing,
                                                                          null,
                                                                          methodName));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return the list of categories associated with a glossary term.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryTermGUID unique identifier of the glossary term to query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody asset manager identifiers
+     *
+     * @return list of metadata elements describing the categories associated with the requested term or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GlossaryCategoryElementsResponse getCategoriesForTerm(String                        serverName,
+                                                                 String                        userId,
+                                                                 String                        glossaryTermGUID,
+                                                                 int                           startFrom,
+                                                                 int                           pageSize,
+                                                                 boolean                       forLineage,
+                                                                 boolean                       forDuplicateProcessing,
+                                                                 EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName = "getCategoriesForTerm";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GlossaryCategoryElementsResponse response = new GlossaryCategoryElementsResponse();
+        AuditLog                 auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElementList(handler.getCategoriesForTerm(userId,
+                                                                     requestBody.getAssetManagerGUID(),
+                                                                     requestBody.getAssetManagerName(),
+                                                                     glossaryTermGUID,
+                                                                     startFrom,
+                                                                     pageSize,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     requestBody.getEffectiveTime(),
+                                                                     methodName));
+            }
+            else
+            {
+                response.setElementList(handler.getCategoriesForTerm(userId,
+                                                                     null,
+                                                                     null,
+                                                                     glossaryTermGUID,
+                                                                     startFrom,
+                                                                     pageSize,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     null,
+                                                                     methodName));
             }
         }
         catch (Exception error)
@@ -2573,13 +2790,12 @@ public class GlossaryExchangeRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 if (requestBody.getProperties() instanceof GlossaryTermCategorization properties)
                 {
-                    GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
-
                     handler.setupTermCategory(userId,
                                               requestBody.getAssetManagerGUID(),
                                               requestBody.getAssetManagerName(),
@@ -2593,12 +2809,30 @@ public class GlossaryExchangeRESTServices
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(GlossaryTermCategorization.class.getName(), methodName);
+                    handler.setupTermCategory(userId,
+                                              requestBody.getAssetManagerGUID(),
+                                              requestBody.getAssetManagerName(),
+                                              glossaryCategoryGUID,
+                                              glossaryTermGUID,
+                                              null,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              requestBody.getEffectiveTime(),
+                                              methodName);
                 }
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.setupTermCategory(userId,
+                                          null,
+                                          null,
+                                          glossaryCategoryGUID,
+                                          glossaryTermGUID,
+                                          null,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          new Date(),
+                                          methodName);
             }
         }
         catch (Exception error)
@@ -2758,13 +2992,12 @@ public class GlossaryExchangeRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
                 if (requestBody.getProperties() instanceof GlossaryTermRelationship properties)
                 {
-                    GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
-
                     handler.setupTermRelationship(userId,
                                                   requestBody.getAssetManagerGUID(),
                                                   requestBody.getAssetManagerName(),
@@ -2779,12 +3012,32 @@ public class GlossaryExchangeRESTServices
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(GlossaryTermRelationship.class.getName(), methodName);
+                    handler.setupTermRelationship(userId,
+                                                  requestBody.getAssetManagerGUID(),
+                                                  requestBody.getAssetManagerName(),
+                                                  glossaryTermOneGUID,
+                                                  relationshipTypeName,
+                                                  glossaryTermTwoGUID,
+                                                  null,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
+                                                  requestBody.getEffectiveTime(),
+                                                  methodName);
                 }
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.setupTermRelationship(userId,
+                                              null,
+                                              null,
+                                              glossaryTermOneGUID,
+                                              relationshipTypeName,
+                                              glossaryTermTwoGUID,
+                                              null,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              new Date(),
+                                              methodName);
             }
         }
         catch (Exception error)

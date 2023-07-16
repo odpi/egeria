@@ -171,7 +171,6 @@ public class GlossaryExchangeService
     /**
      * Create a new metadata element to represent a glossary using an existing metadata element as a template.
      * The template defines additional classifications and relationships that should be added to the new glossary.
-     *
      * All categories and terms are linked to a single glossary.  They are owned by this glossary and if the
      * glossary is deleted, any linked terms and categories are deleted as well.
      *
@@ -389,7 +388,6 @@ public class GlossaryExchangeService
      * Classify a glossary to declare that it has no two GlossaryTerm definitions with
      * the same name.  This means there is only one definition for each term.  Typically, the terms are also of a similar
      * level of granularity and are limited to a specific scope of use.
-     *
      * Canonical vocabularies are used to semantically classify assets in an unambiguous way.
      *
      * @param glossaryGUID unique identifier of the metadata element to remove
@@ -559,6 +557,48 @@ public class GlossaryExchangeService
     }
 
 
+    /**
+     * Retrieve the glossary metadata element for the requested category.
+     *
+     * @param glossaryCategoryGUID unique identifier of the requested metadata element
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GlossaryElement getGlossaryForCategory(String glossaryCategoryGUID,
+                                                  Date   effectiveTime) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        return glossaryManagerClient.getGlossaryForCategory(userId, assetManagerGUID, assetManagerName, glossaryCategoryGUID, effectiveTime, forLineage, forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve the glossary metadata element for the requested term.
+     *
+     * @param glossaryTermGUID unique identifier of the requested metadata element
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GlossaryElement getGlossaryForTerm(String glossaryTermGUID,
+                                              Date   effectiveTime) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        return glossaryManagerClient.getGlossaryForTerm(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, effectiveTime, forLineage, forDuplicateProcessing);
+    }
+
+
     /* =====================================================================================================================
      * A glossary may host one or more glossary categories depending on its capability
      */
@@ -694,7 +734,15 @@ public class GlossaryExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            glossaryManagerClient.updateGlossaryCategory(userId, assetManagerGUID, assetManagerName, glossaryCategoryGUID, glossaryCategoryExternalIdentifier, isMergeUpdate, glossaryCategoryProperties, effectiveTime, forLineage,
+            glossaryManagerClient.updateGlossaryCategory(userId,
+                                                         assetManagerGUID,
+                                                         assetManagerName,
+                                                         glossaryCategoryGUID,
+                                                         glossaryCategoryExternalIdentifier,
+                                                         isMergeUpdate,
+                                                         glossaryCategoryProperties,
+                                                         effectiveTime,
+                                                         forLineage,
                                                          forDuplicateProcessing);
         }
         else
@@ -731,7 +779,13 @@ public class GlossaryExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            glossaryManagerClient.setupCategoryParent(userId, assetManagerGUID, assetManagerName, glossaryParentCategoryGUID, glossaryChildCategoryGUID, effectiveTime, forLineage,
+            glossaryManagerClient.setupCategoryParent(userId,
+                                                      assetManagerGUID,
+                                                      assetManagerName,
+                                                      glossaryParentCategoryGUID,
+                                                      glossaryChildCategoryGUID,
+                                                      effectiveTime,
+                                                      forLineage,
                                                       forDuplicateProcessing);
         }
         else
@@ -768,7 +822,13 @@ public class GlossaryExchangeService
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            glossaryManagerClient.clearCategoryParent(userId, assetManagerGUID, assetManagerName, glossaryParentCategoryGUID, glossaryChildCategoryGUID, effectiveTime, forLineage,
+            glossaryManagerClient.clearCategoryParent(userId,
+                                                      assetManagerGUID,
+                                                      assetManagerName,
+                                                      glossaryParentCategoryGUID,
+                                                      glossaryChildCategoryGUID,
+                                                      effectiveTime,
+                                                      forLineage,
                                                       forDuplicateProcessing);
         }
         else
@@ -925,6 +985,38 @@ public class GlossaryExchangeService
                                                               forDuplicateProcessing);
     }
 
+    /**
+     * Return the list of categories associated with a glossary term.
+     *
+     * @param glossaryTermGUID unique identifier of the glossary term to query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     *
+     * @return list of metadata elements describing the categories associated with the requested term
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<GlossaryCategoryElement>   getCategoriesForTerm(String glossaryTermGUID,
+                                                                int    startFrom,
+                                                                int    pageSize,
+                                                                Date   effectiveTime) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        return glossaryManagerClient.getCategoriesForTerm(userId,
+                                                          assetManagerGUID,
+                                                          assetManagerName,
+                                                          glossaryTermGUID,
+                                                          startFrom,
+                                                          pageSize,
+                                                          effectiveTime,
+                                                          forLineage,
+                                                          forDuplicateProcessing);
+    }
+
 
     /**
      * Retrieve the list of glossary category metadata elements with a matching qualified or display name.
@@ -1028,9 +1120,6 @@ public class GlossaryExchangeService
     /**
      * Retrieve the glossary category metadata element with the supplied unique identifier.
      *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryCategoryGUID unique identifier of the requested metadata element
      * @param effectiveTime the time that the retrieved elements must be effective for
      *
@@ -1040,10 +1129,7 @@ public class GlossaryExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GlossaryCategoryElement getGlossaryCategoryParent(String userId,
-                                                             String assetManagerGUID,
-                                                             String assetManagerName,
-                                                             String glossaryCategoryGUID,
+    public GlossaryCategoryElement getGlossaryCategoryParent(String glossaryCategoryGUID,
                                                              Date   effectiveTime) throws InvalidParameterException,
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
@@ -1061,9 +1147,6 @@ public class GlossaryExchangeService
     /**
      * Retrieve the glossary category metadata element with the supplied unique identifier.
      *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryCategoryGUID unique identifier of the requested metadata element
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -1075,10 +1158,7 @@ public class GlossaryExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<GlossaryCategoryElement> getGlossarySubCategories(String userId,
-                                                                  String assetManagerGUID,
-                                                                  String assetManagerName,
-                                                                  String glossaryCategoryGUID,
+    public List<GlossaryCategoryElement> getGlossarySubCategories(String glossaryCategoryGUID,
                                                                   int    startFrom,
                                                                   int    pageSize,
                                                                   Date   effectiveTime) throws InvalidParameterException, 
