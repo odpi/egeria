@@ -10,43 +10,57 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * AtlasGlossaryAnchorElement describes the relationship between a glossary and one of its terms/categories.
+ * AtlasRelatedTermHeader describes the relationship between a glossary and one of its categories.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class AtlasGlossaryAnchorElement
+public class AtlasRelatedCategoryHeader
 {
-    private String glossaryGuid = null;
-    private String relationGuid = null;
-   private String  displayText = null;
+    private String categoryGuid       = null;
+    private String parentCategoryGuid = null;
+    private String relationGuid       = null;
+    private String displayText        = null; // name in properties
 
 
-    public AtlasGlossaryAnchorElement()
+    public AtlasRelatedCategoryHeader()
     {
     }
 
 
-    public AtlasGlossaryAnchorElement(AtlasGlossaryAnchorElement template)
+    public AtlasRelatedCategoryHeader(AtlasRelatedCategoryHeader template)
     {
         if (template != null)
         {
-            glossaryGuid = template.getGlossaryGuid();
+            categoryGuid = template.getCategoryGuid();
+            parentCategoryGuid = template.getParentCategoryGuid();
             relationGuid = template.getRelationGuid();
             displayText = template.getDisplayText();
         }
     }
 
 
-    public String getGlossaryGuid()
+    public String getCategoryGuid()
     {
-        return glossaryGuid;
+        return categoryGuid;
     }
 
 
-    public void setGlossaryGuid(String glossaryGuid)
+    public void setCategoryGuid(String categoryGuid)
     {
-        this.glossaryGuid = glossaryGuid;
+        this.categoryGuid = categoryGuid;
+    }
+
+
+    public String getParentCategoryGuid()
+    {
+        return parentCategoryGuid;
+    }
+
+
+    public void setParentCategoryGuid(String parentCategoryGuid)
+    {
+        this.parentCategoryGuid = parentCategoryGuid;
     }
 
 
@@ -77,8 +91,9 @@ public class AtlasGlossaryAnchorElement
     @Override
     public String toString()
     {
-        return "AtlasRelatedTermHeader{" +
-                       "termGuid='" + glossaryGuid + '\'' +
+        return "AtlasRelatedCategoryHeader{" +
+                       "categoryGuid='" + categoryGuid + '\'' +
+                       ", parentCategoryGuid='" + parentCategoryGuid + '\'' +
                        ", relationGuid='" + relationGuid + '\'' +
                        ", displayText='" + displayText + '\'' +
                        '}';

@@ -12,30 +12,32 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * AtlasGlossaryElement describes an Apache Atlas glossary and its terms/categories retrieved from Apache Atlas.
+ * AtlasGlossaryElement describes an Apache Atlas glossary category and its related terms/categories retrieved from Apache Atlas.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class AtlasGlossaryElement extends AtlasGlossaryProperties
+public class AtlasGlossaryCategoryElement extends AtlasGlossaryMemberBaseProperties
 {
-    private List<AtlasRelatedTermHeader>     terms      = null;
-    private List<AtlasRelatedCategoryHeader> categories = null;
+    private AtlasRelatedCategoryHeader       parentCategory     = null;
+    private List<AtlasRelatedCategoryHeader> childrenCategories = null;
+    private List<AtlasRelatedTermHeader>     terms              = null;
 
 
-    public AtlasGlossaryElement()
+    public AtlasGlossaryCategoryElement()
     {
     }
 
 
-    public AtlasGlossaryElement(AtlasGlossaryElement template)
+    public AtlasGlossaryCategoryElement(AtlasGlossaryCategoryElement template)
     {
         super(template);
 
         if (template != null)
         {
             terms = template.getTerms();
-            categories = template.getCategories();
+            parentCategory = template.getParentCategory();
+            childrenCategories = template.getChildrenCategories();
         }
     }
 
@@ -52,26 +54,38 @@ public class AtlasGlossaryElement extends AtlasGlossaryProperties
     }
 
 
-    public List<AtlasRelatedCategoryHeader> getCategories()
+    public AtlasRelatedCategoryHeader getParentCategory()
     {
-        return categories;
+        return parentCategory;
     }
 
 
-    public void setCategories(List<AtlasRelatedCategoryHeader> categories)
+    public void setParentCategory(AtlasRelatedCategoryHeader parentCategory)
     {
-        this.categories = categories;
+        this.parentCategory = parentCategory;
+    }
+
+
+    public List<AtlasRelatedCategoryHeader> getChildrenCategories()
+    {
+        return childrenCategories;
+    }
+
+
+    public void setChildrenCategories(List<AtlasRelatedCategoryHeader> childrenCategories)
+    {
+        this.childrenCategories = childrenCategories;
     }
 
 
     @Override
     public String toString()
     {
-        return "AtlasGlossaryElement{" +
-                       "terms=" + terms +
-                       ", categories=" + categories +
-                       ", language='" + getLanguage() + '\'' +
-                       ", usage='" + getUsage() + '\'' +
+        return "AtlasGlossaryCategoryElement{" +
+                       "parentCategory=" + parentCategory +
+                       ", childrenCategories=" + childrenCategories +
+                       ", terms=" + terms +
+                       ", anchor=" + getAnchor() +
                        ", guid='" + getGuid() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", name='" + getName() + '\'' +
