@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @Configuration
 public class ObjectMapperConfiguration {
-    public static final String PREFIX = "[[object mapper configuration]]";
+    public static final String PREFIX = "Object mapper configuration started.";
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     public static ObjectMapper newObjectMapper(Jackson2ObjectMapperBuilder builder) {

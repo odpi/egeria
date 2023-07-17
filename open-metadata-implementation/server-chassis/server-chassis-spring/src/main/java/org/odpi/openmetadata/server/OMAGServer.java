@@ -36,7 +36,6 @@ import java.util.List;
 //TODO: ADD JAVADOCS!!!
 public class OMAGServer {
 
-    public static final String OMAG_SERVER = "[omag-server]-";
     private static final Logger LOG = LoggerFactory.getLogger(OMAGServer.class);
     private final OMAGServerOperationalServices operationalServices;
 
@@ -71,23 +70,23 @@ public class OMAGServer {
 
     @EventListener(ApplicationReadyEvent.class)
     private void onApplicationReadyEvent() {
-        LOG.debug("{}{}-[accepting traffic]", OMAG_SERVER, serverName);
+        LOG.info("{} is accepting traffic.", serverName);
     }
 
     @EventListener(ApplicationStartedEvent.class)
     private void onApplicationStartedEvent() throws Exception {
-        LOG.debug("{}[started]", OMAG_SERVER);
+        LOG.debug("Application started.");
         loadServerConfig();
     }
 
     @EventListener(ApplicationFailedEvent.class)
     private void onApplicationFailedEvent() {
-        LOG.debug("{}[failed]", OMAG_SERVER);
+        LOG.debug("Application failed.");
     }
 
     @EventListener(ContextClosedEvent.class)
     private void onContextClosedEvent() {
-        LOG.debug("{}[stopped]", OMAG_SERVER);
+        LOG.debug("Application stopped.");
 
         if (serverName != null) {
             LOG.info("Application stopped, deactivating server {}", serverName);
@@ -97,29 +96,29 @@ public class OMAGServer {
 
     private void activateOMAGServerUsingPlatformServices() {
 
-        LOG.info("{}[activation]-[started] [for name] :: {}", OMAG_SERVER, serverName);
+        LOG.info("Activation started for {}", serverName);
 
         if (serverConfig == null) {
-            LOG.info("{}[activation]-[failed] [cause] :: configuration is null.", OMAG_SERVER);
-            throw new ApplicationContextException("[omag-server activation]-[failed] [cause] :: configuration is null.");
+            LOG.info("Activation failed, the cause is that configuration is null.");
+            throw new ApplicationContextException("Activation failed the cause is that configuration is null.");
 
        /*     TODO: Confirm if this is desired behaviour
              This is clearly invalid application state since the OMAG system cannot start
              without configuration. Throwing error will close application context and shut the application DOWN.*/
         }
 
-        LOG.info("{}[activation]-[started] [request sent for server name] :: {}", OMAG_SERVER, serverName);
+        LOG.info("Activation started, request sent for server {}", serverName);
 
         SuccessMessageResponse response = operationalServices
                 .activateWithSuppliedConfig(sysUser.trim(), serverConfig.getLocalServerName(), serverConfig);
 
         if (response == null) {
-            LOG.info("{}[activation]-[failed] [cause] :: response is null.", OMAG_SERVER);
-            throw new ApplicationContextException("[omag-server activation]-[failed] [cause] :: response is null.");
+            LOG.info("Activation has failed. The cause is that response is null.");
+            throw new ApplicationContextException("Activation has failed. The cause is that response is null.");
         }
 
         if (response.getRelatedHTTPCode() != 200) {
-            LOG.error("{}[activation]-[failed] [cause] :: response code is {}.", OMAG_SERVER, response.getRelatedHTTPCode());
+            LOG.error("Activation failed with response code {}.", response.getRelatedHTTPCode());
             return;
 
 /*            TODO: OMAG system start-up error handling and application readiness probe
@@ -133,7 +132,7 @@ public class OMAGServer {
         }
 
         if (response.getRelatedHTTPCode() == 200) {
-            LOG.info("{}[activation]-[success] [started server for name] :: {}", OMAG_SERVER, serverConfig.getLocalServerName());
+            LOG.info("Activation succeeded for {} server.", serverConfig.getLocalServerName());
             //TODO: Mark the application state as ready
             // i.e. set application ready state to TRUE
         }
@@ -144,25 +143,25 @@ public class OMAGServer {
 
 
         if (omagServerConfigLocation == null) {
-            LOG.info("{}[config]-[failed] [cause] :: file is null", OMAG_SERVER);
+            LOG.info("Configuration failed, the cause is that configuration is null.");
             //TODO: Confirm if this is desired behaviour (configuration is null)
             // This is clearly invalid application state since the OMAG system cannot start without configuration.
             // Throwing error will close application context and shut the application DOWN.
-            throw new ApplicationContextException(String.format("{}-[config]-[failed] [cause] :: file is null", OMAG_SERVER));
+            throw new ApplicationContextException("Configuration failed, the cause is that configuration is null.");
         }
         try {
-            LOG.info("{}[config]-[started] [location] :: {}", OMAG_SERVER, omagServerConfigLocation.getFile());
-            LOG.trace("{}[config]-[started] [path] :: {}", OMAG_SERVER, Files.readString(Path.of(omagServerConfigLocation.getFile().getPath())));
+            LOG.info("Configuration from file: {} is being parsed.", omagServerConfigLocation.getFile());
+            LOG.trace("Configuration from path: {} is being parsed.", Files.readString(Path.of(omagServerConfigLocation.getFile().getPath())));
             serverConfig = objectMapper.reader().readValue(omagServerConfigLocation.getFile(), OMAGServerConfig.class);
             serverName = serverConfig.getLocalServerName();
-            LOG.info("{}[config]-[success] [loaded configuration document for OMAG server name] :: {}", OMAG_SERVER, serverName);
+            LOG.info("Configuration loading  from document for OMAG server {} succeded", serverName);
 
         } catch (IOException e) {
-            LOG.error("{}[config]-[failed] [Exception while loading OMAG server configuration] [cause] :: {}", OMAG_SERVER, e.getMessage());
+            LOG.error("Failed loading OMAG server configuration with exception message : {}", e.getMessage());
             //TODO: Confirm if this is desired behaviour (configuration is null)
             // Same as in the case above.
             throw new ApplicationContextException(
-                    String.format("{}[config]-[failed] [Exception while loading OMAG server configuration] [cause] :: {}", OMAG_SERVER, e.getMessage()));
+                    String.format("Failed loading OMAG server configuration with exception message : {}", e.getMessage()));
         }
     }
 
@@ -170,7 +169,7 @@ public class OMAGServer {
     public class OMAGServerStartup implements ApplicationRunner {
         @Override
         public void run(ApplicationArguments args) {
-            LOG.debug("{}[run] Application runner", OMAG_SERVER);
+            LOG.debug("Application running.");
             activateOMAGServerUsingPlatformServices();
         }
     }

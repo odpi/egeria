@@ -11,7 +11,7 @@ import org.springframework.core.env.Environment;
 
 @Configuration
 public class InitializingBeanConfig {
-    public static final String PREFIX = "[[ssl config]]";
+    public static final String PREFIX = "SSL configuration started";
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     public static final String OPTION_STRICT_SSL_IS_SET_TO_FALSE_INVALID_CERTIFICATES_WILL_BE_ACCEPTED_FOR_CONNECTION =

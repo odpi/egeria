@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.server.actuator;
 
 import org.json.JSONArray;
@@ -38,7 +40,6 @@ public class ActuatorEndpointsTest {
 
     @LocalManagementPort
     int managementPort;
-    private MockMvc mockMvc;
 
     @Test
     public void testMetricsActuator() throws JSONException {
