@@ -30,10 +30,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+/**
+ * OMAGServer provides the main program for the OMAG Server spring-boot based starter application.
+ */
 @SpringBootApplication(
         scanBasePackages = {"org.odpi.openmetadata"}
 )
-//TODO: ADD JAVADOCS!!!
 public class OMAGServer {
 
     private static final Logger LOG = LoggerFactory.getLogger(OMAGServer.class);
@@ -50,7 +52,10 @@ public class OMAGServer {
     private String serverName = null;
     private OMAGServerConfig serverConfig = null;
 
-
+    /**
+     * Default constructor.
+     * Creates instance of OMAG operational services.
+     */
     public OMAGServer() {
         this.operationalServices = new OMAGServerOperationalServices();
     }
@@ -67,23 +72,38 @@ public class OMAGServer {
                 .sources(OMAGServer.class).run(args);
     }
 
-
+    /**
+     * Handling Spring Boot ApplicationReadyEvent
+     */
     @EventListener(ApplicationReadyEvent.class)
     private void onApplicationReadyEvent() {
         LOG.info("{} is accepting traffic.", serverName);
     }
 
+    /**
+     * Handling Spring Boot ApplicationStartedEvent
+     * This handler calls the method for OMAGServerConfig loading.
+     *
+     * @link loadServerConfig
+     */
     @EventListener(ApplicationStartedEvent.class)
     private void onApplicationStartedEvent() throws Exception {
         LOG.debug("Application started.");
         loadServerConfig();
     }
 
+    /**
+     * Handling Spring Boot ApplicationFailedEvent
+     */
     @EventListener(ApplicationFailedEvent.class)
     private void onApplicationFailedEvent() {
         LOG.debug("Application failed.");
     }
 
+    /**
+     * Handling Spring Boot ContextClosedEvent
+     * This handler provides a way to hook to the standard Spring Boot application shut-down event and call OMAG operational services to deactivate the OMAG server instance.
+     */
     @EventListener(ContextClosedEvent.class)
     private void onContextClosedEvent() {
         LOG.debug("Application stopped.");
@@ -94,6 +114,10 @@ public class OMAGServer {
         }
     }
 
+    /**
+     * This method activates single OMAGServer instance with supplied OMAGServerConfig document.
+     * Depending on the outcome of activation call, it will change the application availability state.
+     */
     private void activateOMAGServerUsingPlatformServices() {
 
         LOG.info("Activation started for {}", serverName);
@@ -139,6 +163,10 @@ public class OMAGServer {
 
     }
 
+    /**
+     * This method loads the OMAGServerConfig document from location provided by 'omag.server.config' application property defined as spring Resource.
+     * @see org.springframework.core.io.Resource
+     */
     private void loadServerConfig() {
 
 
@@ -165,6 +193,10 @@ public class OMAGServer {
         }
     }
 
+    /**
+     * Application Runner implementation class.
+     * The purpose of this class is to provide a standard way to run the OMAG server activation task, separate from the main application tread.
+     */
     @Component
     public class OMAGServerStartup implements ApplicationRunner {
         @Override

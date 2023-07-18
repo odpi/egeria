@@ -14,6 +14,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 
+/**
+ * This class provides configuration for Application Availability support components.
+ */
 @Configuration(proxyBeanMethods = false)
 @AutoConfigureAfter(ApplicationAvailabilityAutoConfiguration.class)
 public class AvailabilityProbesAutoConfiguration {

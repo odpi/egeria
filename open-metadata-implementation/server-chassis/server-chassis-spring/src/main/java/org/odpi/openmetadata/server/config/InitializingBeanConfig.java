@@ -11,6 +11,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
+/**
+ * This class provides configuration bean for customizing the SSL environment used by java.net.ssl and Tomcat server ssl.
+ */
 @Configuration
 public class InitializingBeanConfig {
     public static final String PREFIX = "SSL configuration started";
