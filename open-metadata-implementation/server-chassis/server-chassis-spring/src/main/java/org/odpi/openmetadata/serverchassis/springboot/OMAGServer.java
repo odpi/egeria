@@ -41,8 +41,8 @@ public class OMAGServer {
     private static final Logger LOG = LoggerFactory.getLogger(OMAGServer.class);
     private final OMAGServerOperationalServices operationalServices;
 
-    @Value("${startup.user:system}")
-    String sysUser;
+    @Value("${omag.server.user:system}")
+    String omagServerUser;
 
     @Value("${omag.server.config}")
     Resource omagServerConfigLocation;
@@ -110,7 +110,7 @@ public class OMAGServer {
 
         if (serverName != null) {
             LOG.info("Application stopped, deactivating server {}", serverName);
-            operationalServices.deactivateTemporarilyServerList(sysUser, List.of(serverName));
+            operationalServices.deactivateTemporarilyServerList(omagServerUser, List.of(serverName));
         }
     }
 
@@ -134,7 +134,7 @@ public class OMAGServer {
         LOG.info("Activation started, request sent for server {}", serverName);
 
         SuccessMessageResponse response = operationalServices
-                .activateWithSuppliedConfig(sysUser.trim(), serverConfig.getLocalServerName(), serverConfig);
+                .activateWithSuppliedConfig(omagServerUser.trim(), serverConfig.getLocalServerName(), serverConfig);
 
         if (response == null) {
             LOG.info("Activation has failed. The cause is that response is null.");
