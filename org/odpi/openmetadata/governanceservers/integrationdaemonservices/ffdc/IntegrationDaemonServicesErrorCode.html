@@ -88,7 +88,6 @@ implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet
 <div class="block">The IntegrationDaemonServicesErrorCode error code is used to define first failure data capture (FFDC) for errors that
  occur when working with the Integration Daemon Services.  It is used in conjunction with all exceptions,
  both Checked and Runtime (unchecked).
-
  The 5 fields in the enum are:
  <ul>
      <li>HTTP Error Code for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -124,49 +123,81 @@ implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#INTEGRATION_DAEMON_INSTANCE_FAILURE" class="member-name-link">INTEGRATION_DAEMON_INSTANCE_FAILURE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-008 - The integration daemon services are unable to initialize a new instance of integration daemon {0}; error message is {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#INTEGRATION_GROUP_NOT_INITIALIZED" class="member-name-link">INTEGRATION_GROUP_NOT_INITIALIZED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-033 - Integration daemon {0} is unable to process connectors from integration group {1} because it is
+ unable to retrieve its configuration from the metadata access server</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#INVALID_CONTEXT_MANAGER" class="member-name-link">INVALID_CONTEXT_MANAGER</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-006 - The integration service {0} has been configured with a context manager class of {1} which can not be
+ used by the class loader.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NO_CONFIG_DOC" class="member-name-link">NO_CONFIG_DOC</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-001 - Integration daemon {0} has been passed a null configuration document section for the integration daemon services</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NO_INTEGRATION_CONNECTORS_CONFIGURED" class="member-name-link">NO_INTEGRATION_CONNECTORS_CONFIGURED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NO_INTEGRATION_DAEMON_CLIENT" class="member-name-link">NO_INTEGRATION_DAEMON_CLIENT</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NO_INTEGRATION_DAEMONS_STARTED" class="member-name-link">NO_INTEGRATION_DAEMONS_STARTED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-007 - Integration daemon {0} is not configured with any integration connectors</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NO_INTEGRATION_GROUPS" class="member-name-link">NO_INTEGRATION_GROUPS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-035 - No integration groups are running in the integration daemon {0}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NO_INTEGRATION_SERVICES" class="member-name-link">NO_INTEGRATION_SERVICES</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-500-001 - No integration services are running in the integration daemon</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NO_OMAS_SERVER_NAME" class="member-name-link">NO_OMAS_SERVER_NAME</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-004 - Integration service {0} is not configured with the name for the server running the {1}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NO_OMAS_SERVER_URL" class="member-name-link">NO_OMAS_SERVER_URL</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-003 - Integration service {0} is not configured with the platform URL root for the {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NO_PERMITTED_SYNCHRONIZATION" class="member-name-link">NO_PERMITTED_SYNCHRONIZATION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-012 - The integration service {0} in integration daemon {1} does not have a default permitted synchronization value set</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_CONTEXT_MANAGER" class="member-name-link">NULL_CONTEXT_MANAGER</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-500-002 - The integration service {0} has been registered with this platform with a null context manager class</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NULL_SERVICE_CONFIG_VALUE" class="member-name-link">NULL_SERVICE_CONFIG_VALUE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-011 - The {0} configuration property for integration service {1} in integration daemon {2} is null</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#SERVICE_INSTANCE_FAILURE" class="member-name-link">SERVICE_INSTANCE_FAILURE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-009 - The integration daemon services are unable to initialize a new instance of integration daemon {0};
+ error message is {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNKNOWN_CONNECTOR_NAME" class="member-name-link">UNKNOWN_CONNECTOR_NAME</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-031 - Integration connector named {0} is not running in the integration daemon {1}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNKNOWN_GROUP_NAME" class="member-name-link">UNKNOWN_GROUP_NAME</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#UNKNOWN_INTEGRATION_DAEMON_CONFIG" class="member-name-link">UNKNOWN_INTEGRATION_DAEMON_CONFIG</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#UNKNOWN_INTEGRATION_DAEMON_CONFIG_AT_STARTUP" class="member-name-link">UNKNOWN_INTEGRATION_DAEMON_CONFIG_AT_STARTUP</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-034 - Integration group named {0} is not running in the integration daemon {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNKNOWN_INTEGRATION_GROUP_CONFIG" class="member-name-link">UNKNOWN_INTEGRATION_GROUP_CONFIG</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-032 - Properties for integration group called {0} have not been returned by open metadata server {1}
+ to the integration daemon services in server {2}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNKNOWN_INTEGRATION_SERVICE" class="member-name-link">UNKNOWN_INTEGRATION_SERVICE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-030 - Integration service with URL marker {0} is not registered in the integration daemon {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNRECOGNIZED_SERVICE" class="member-name-link">UNRECOGNIZED_SERVICE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-010 - The integration service URL marker {0} is not recognized.</div>
+</div>
 </div>
 </section>
 </li>
@@ -231,132 +262,130 @@ the order they are declared.</div>
 <section class="detail" id="NO_CONFIG_DOC">
 <h3>NO_CONFIG_DOC</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">NO_CONFIG_DOC</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-001 - Integration daemon {0} has been passed a null configuration document section for the integration daemon services</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_OMAS_SERVER_URL">
 <h3>NO_OMAS_SERVER_URL</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">NO_OMAS_SERVER_URL</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-003 - Integration service {0} is not configured with the platform URL root for the {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_OMAS_SERVER_NAME">
 <h3>NO_OMAS_SERVER_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">NO_OMAS_SERVER_NAME</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-004 - Integration service {0} is not configured with the name for the server running the {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_CONTEXT_MANAGER">
 <h3>INVALID_CONTEXT_MANAGER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">INVALID_CONTEXT_MANAGER</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-006 - The integration service {0} has been configured with a context manager class of {1} which can not be
+ used by the class loader.  The {2} exception was returned with message {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_INTEGRATION_CONNECTORS_CONFIGURED">
 <h3>NO_INTEGRATION_CONNECTORS_CONFIGURED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">NO_INTEGRATION_CONNECTORS_CONFIGURED</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-007 - Integration daemon {0} is not configured with any integration connectors</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INTEGRATION_DAEMON_INSTANCE_FAILURE">
 <h3>INTEGRATION_DAEMON_INSTANCE_FAILURE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">INTEGRATION_DAEMON_INSTANCE_FAILURE</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-008 - The integration daemon services are unable to initialize a new instance of integration daemon {0}; error message is {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVICE_INSTANCE_FAILURE">
 <h3>SERVICE_INSTANCE_FAILURE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">SERVICE_INSTANCE_FAILURE</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-009 - The integration daemon services are unable to initialize a new instance of integration daemon {0};
+ error message is {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNRECOGNIZED_SERVICE">
 <h3>UNRECOGNIZED_SERVICE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">UNRECOGNIZED_SERVICE</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-010 - The integration service URL marker {0} is not recognized.  Valid service URL markers are: {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_SERVICE_CONFIG_VALUE">
 <h3>NULL_SERVICE_CONFIG_VALUE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">NULL_SERVICE_CONFIG_VALUE</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-011 - The {0} configuration property for integration service {1} in integration daemon {2} is null</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_PERMITTED_SYNCHRONIZATION">
 <h3>NO_PERMITTED_SYNCHRONIZATION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">NO_PERMITTED_SYNCHRONIZATION</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="UNKNOWN_INTEGRATION_DAEMON_CONFIG_AT_STARTUP">
-<h3>UNKNOWN_INTEGRATION_DAEMON_CONFIG_AT_STARTUP</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_INTEGRATION_DAEMON_CONFIG_AT_STARTUP</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_INTEGRATION_DAEMONS_STARTED">
-<h3>NO_INTEGRATION_DAEMONS_STARTED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">NO_INTEGRATION_DAEMONS_STARTED</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_INTEGRATION_DAEMON_CLIENT">
-<h3>NO_INTEGRATION_DAEMON_CLIENT</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">NO_INTEGRATION_DAEMON_CLIENT</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="UNKNOWN_INTEGRATION_DAEMON_CONFIG">
-<h3>UNKNOWN_INTEGRATION_DAEMON_CONFIG</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_INTEGRATION_DAEMON_CONFIG</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-012 - The integration service {0} in integration daemon {1} does not have a default permitted synchronization value set</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNKNOWN_INTEGRATION_SERVICE">
 <h3>UNKNOWN_INTEGRATION_SERVICE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_INTEGRATION_SERVICE</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-030 - Integration service with URL marker {0} is not registered in the integration daemon {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNKNOWN_CONNECTOR_NAME">
 <h3>UNKNOWN_CONNECTOR_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_CONNECTOR_NAME</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-031 - Integration connector named {0} is not running in the integration daemon {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNKNOWN_INTEGRATION_GROUP_CONFIG">
 <h3>UNKNOWN_INTEGRATION_GROUP_CONFIG</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_INTEGRATION_GROUP_CONFIG</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-032 - Properties for integration group called {0} have not been returned by open metadata server {1}
+ to the integration daemon services in server {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INTEGRATION_GROUP_NOT_INITIALIZED">
 <h3>INTEGRATION_GROUP_NOT_INITIALIZED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">INTEGRATION_GROUP_NOT_INITIALIZED</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-033 - Integration daemon {0} is unable to process connectors from integration group {1} because it is
+ unable to retrieve its configuration from the metadata access server</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNKNOWN_GROUP_NAME">
 <h3>UNKNOWN_GROUP_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_GROUP_NAME</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-034 - Integration group named {0} is not running in the integration daemon {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_INTEGRATION_GROUPS">
 <h3>NO_INTEGRATION_GROUPS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">NO_INTEGRATION_GROUPS</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-400-035 - No integration groups are running in the integration daemon {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_INTEGRATION_SERVICES">
 <h3>NO_INTEGRATION_SERVICES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">NO_INTEGRATION_SERVICES</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-500-001 - No integration services are running in the integration daemon</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_CONTEXT_MANAGER">
 <h3>NULL_CONTEXT_MANAGER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesErrorCode</a></span>&nbsp;<span class="element-name">NULL_CONTEXT_MANAGER</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-500-002 - The integration service {0} has been registered with this platform with a null context manager class</div>
 </section>
 </li>
 </ul>

@@ -89,7 +89,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
  can be connected to an entity instance.:
  <ul>
      <li>
-         UNKNOWN: uninitialized cardinality
+         UNKNOWN: uninitialized cardinality.
      </li>
      <li>
          AT_MOST_ONE: means there can be zero or one instances of this relationship connected
@@ -97,8 +97,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
      </li>
      <li>
          ANY_NUMBER: means there can be none, one or many instances of this relationship connected
-                      to an instance of the EntityDef.
-                      This relationship is often written as 0..* or * in UML.
+                      to an instance of the EntityDef. This relationship is often written as 0..* or * in UML.
      </li>
  </ul></div>
 </section>
@@ -122,11 +121,17 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#ANY_NUMBER" class="member-name-link">ANY_NUMBER</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Any Number (0..* or * for any number of instances).</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#AT_MOST_ONE" class="member-name-link">AT_MOST_ONE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">At Most One (0..1 for zero or one instances).</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNKNOWN" class="member-name-link">UNKNOWN</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Unknown or uninitialized cardinality.</div>
+</div>
 </div>
 </section>
 </li>
@@ -196,18 +201,21 @@ the order they are declared.</div>
 <section class="detail" id="UNKNOWN">
 <h3>UNKNOWN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationshipEndCardinality.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">RelationshipEndCardinality</a></span>&nbsp;<span class="element-name">UNKNOWN</span></div>
+<div class="block">Unknown or uninitialized cardinality.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="AT_MOST_ONE">
 <h3>AT_MOST_ONE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationshipEndCardinality.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">RelationshipEndCardinality</a></span>&nbsp;<span class="element-name">AT_MOST_ONE</span></div>
+<div class="block">At Most One (0..1 for zero or one instances).</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ANY_NUMBER">
 <h3>ANY_NUMBER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RelationshipEndCardinality.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">RelationshipEndCardinality</a></span>&nbsp;<span class="element-name">ANY_NUMBER</span></div>
+<div class="block">Any Number (0..* or * for any number of instances).</div>
 </section>
 </li>
 </ul>

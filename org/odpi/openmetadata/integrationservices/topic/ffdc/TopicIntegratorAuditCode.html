@@ -86,10 +86,9 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="TopicIntegratorAuditCode.html" title="enum class in org.odpi.openmetadata.integrationservices.topic.ffdc">TopicIntegratorAuditCode</a>&gt;
 implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageSet</a></span></div>
 <div class="block">The TopicIntegratorAuditCode is used to define the message content for the OMRS Audit Log.
-
  The 5 fields in the enum are:
  <ul>
-     <li>Log Message Id - to uniquely identify the message</li>
+     <li>Log Message Identifier - to uniquely identify the message</li>
      <li>Severity - is this an event, decision, action, error or exception</li>
      <li>Log Message Text - includes placeholder to allow additional values to be captured</li>
      <li>Additional Information - further parameters and data relating to the audit message (optional)</li>
@@ -117,11 +116,17 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#CONNECTOR_CONTEXT_INITIALIZING" class="member-name-link">CONNECTOR_CONTEXT_INITIALIZING</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMIS-TOPIC-INTEGRATOR-0002 - Creating context for integration connector {0} ({1}) connecting to third party technology {2} with permitted synchronization of {3} and service options of {4}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#CONTEXT_INITIALIZING" class="member-name-link">CONTEXT_INITIALIZING</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMIS-TOPIC-INTEGRATOR-0001 - The topic integrator context manager is being initialized for calls to server {0} on platform {1}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_CONTEXT" class="member-name-link">NULL_CONTEXT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMIS-TOPIC-INTEGRATOR-0003 - Integration connector {0} has a null context</div>
+</div>
 </div>
 </section>
 </li>
@@ -186,18 +191,21 @@ the order they are declared.</div>
 <section class="detail" id="CONTEXT_INITIALIZING">
 <h3>CONTEXT_INITIALIZING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TopicIntegratorAuditCode.html" title="enum class in org.odpi.openmetadata.integrationservices.topic.ffdc">TopicIntegratorAuditCode</a></span>&nbsp;<span class="element-name">CONTEXT_INITIALIZING</span></div>
+<div class="block">OMIS-TOPIC-INTEGRATOR-0001 - The topic integrator context manager is being initialized for calls to server {0} on platform {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONNECTOR_CONTEXT_INITIALIZING">
 <h3>CONNECTOR_CONTEXT_INITIALIZING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TopicIntegratorAuditCode.html" title="enum class in org.odpi.openmetadata.integrationservices.topic.ffdc">TopicIntegratorAuditCode</a></span>&nbsp;<span class="element-name">CONNECTOR_CONTEXT_INITIALIZING</span></div>
+<div class="block">OMIS-TOPIC-INTEGRATOR-0002 - Creating context for integration connector {0} ({1}) connecting to third party technology {2} with permitted synchronization of {3} and service options of {4}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_CONTEXT">
 <h3>NULL_CONTEXT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TopicIntegratorAuditCode.html" title="enum class in org.odpi.openmetadata.integrationservices.topic.ffdc">TopicIntegratorAuditCode</a></span>&nbsp;<span class="element-name">NULL_CONTEXT</span></div>
+<div class="block">OMIS-TOPIC-INTEGRATOR-0003 - Integration connector {0} has a null context</div>
 </section>
 </li>
 </ul>

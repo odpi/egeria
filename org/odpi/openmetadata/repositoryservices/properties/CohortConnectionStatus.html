@@ -140,19 +140,33 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#CONFIGURATION_ERROR" class="member-name-link">CONFIGURATION_ERROR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">ConfigurationError - There is an error in the configuration and connection is not possible.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#CONNECTED" class="member-name-link">CONNECTED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Connected - The server is connected to the metadata highway for this cohort and messages are being exchanged with other members of the cohort.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#DISCONNECTED" class="member-name-link">DISCONNECTED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Disconnected - The server is disconnected from the metadata highway for this cohort.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#DISCONNECTING" class="member-name-link">DISCONNECTING</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Initializing - The local components for communicating with the cohort are disconnecting.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#INITIALIZING" class="member-name-link">INITIALIZING</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Initializing - The local components for communicating with the cohort are initializing.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NEW" class="member-name-link">NEW</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">New - The local components for communicating with the cohort are initialized, but they have not exchanged messages with the other members of cohort.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NOT_INITIALIZED" class="member-name-link">NOT_INITIALIZED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">NotInitialized - The local components for communicating with the cohort are not initialized.</div>
+</div>
 </div>
 </section>
 </li>
@@ -217,42 +231,49 @@ the order they are declared.</div>
 <section class="detail" id="NOT_INITIALIZED">
 <h3>NOT_INITIALIZED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CohortConnectionStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.properties">CohortConnectionStatus</a></span>&nbsp;<span class="element-name">NOT_INITIALIZED</span></div>
+<div class="block">NotInitialized - The local components for communicating with the cohort are not initialized.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INITIALIZING">
 <h3>INITIALIZING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CohortConnectionStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.properties">CohortConnectionStatus</a></span>&nbsp;<span class="element-name">INITIALIZING</span></div>
+<div class="block">Initializing - The local components for communicating with the cohort are initializing.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NEW">
 <h3>NEW</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CohortConnectionStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.properties">CohortConnectionStatus</a></span>&nbsp;<span class="element-name">NEW</span></div>
+<div class="block">New - The local components for communicating with the cohort are initialized, but they have not exchanged messages with the other members of cohort.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONFIGURATION_ERROR">
 <h3>CONFIGURATION_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CohortConnectionStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.properties">CohortConnectionStatus</a></span>&nbsp;<span class="element-name">CONFIGURATION_ERROR</span></div>
+<div class="block">ConfigurationError - There is an error in the configuration and connection is not possible.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONNECTED">
 <h3>CONNECTED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CohortConnectionStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.properties">CohortConnectionStatus</a></span>&nbsp;<span class="element-name">CONNECTED</span></div>
+<div class="block">Connected - The server is connected to the metadata highway for this cohort and messages are being exchanged with other members of the cohort.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DISCONNECTING">
 <h3>DISCONNECTING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CohortConnectionStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.properties">CohortConnectionStatus</a></span>&nbsp;<span class="element-name">DISCONNECTING</span></div>
+<div class="block">Initializing - The local components for communicating with the cohort are disconnecting.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DISCONNECTED">
 <h3>DISCONNECTED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CohortConnectionStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.properties">CohortConnectionStatus</a></span>&nbsp;<span class="element-name">DISCONNECTED</span></div>
+<div class="block">Disconnected - The server is disconnected from the metadata highway for this cohort.  This may be because the local server is shutting down or the configuration is being adjusted.</div>
 </section>
 </li>
 </ul>

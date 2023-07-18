@@ -133,8 +133,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the console (stdout) audit log destination for the server.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addEventTopicAuditLogDestination(java.lang.String,java.lang.String,java.util.List)" class="member-name-link">addEventTopicAuditLogDestination</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addEventTopicAuditLogDestination(java.lang.String,java.lang.String,java.lang.String,java.util.List)" class="member-name-link">addEventTopicAuditLogDestination</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;topicName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedSeverities)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the File based audit log destination for the server.</div>
@@ -701,8 +702,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the default event bus for embedding in event-driven connector.   The resulting connector will
  be used in the OMRS Topic Connector for each cohort, the in and out topics for each Access Service and
  the local repositories event mapper.
-
- When the event bus is configured, it is used only on future configuration.  It does not effect
+ When the event bus is configured, it is used only on future configuration.  It does not affect
  existing configuration.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -766,9 +766,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the root URL for this server that is used to construct full URL paths to calls for
  this server's REST interfaces that is used by other members of the cohorts that this server
  connects to.
-
  The default value is "localhost:9443".
-
  ServerURLRoot is used during the configuration of the local repository.  If called
  after the local repository is configured, it has no effect.</div>
 <dl class="notes">
@@ -792,9 +790,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the root URL for this server that is used to construct full URL paths to calls for
  this server's REST interfaces that is used by other members of the cohorts that this server
  connects to.
-
  The default value is "localhost:9443".
-
  ServerURLRoot is used during the configuration of the local repository.  If called
  after the local repository is configured, it has no effect.</div>
 <dl class="notes">
@@ -887,16 +883,18 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="addEventTopicAuditLogDestination(java.lang.String,java.lang.String,java.util.List)">
+<section class="detail" id="addEventTopicAuditLogDestination(java.lang.String,java.lang.String,java.lang.String,java.util.List)">
 <h3>addEventTopicAuditLogDestination</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">addEventTopicAuditLogDestination</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;topicName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedSeverities)</span></div>
 <div class="block">Set up the File based audit log destination for the server.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
+<dd><code>topicName</code> - name of topic</dd>
 <dd><code>supportedSeverities</code> - list of severities that should be logged to this destination (empty list means all)</dd>
 <dt>Returns:</dt>
 <dd>void response or
@@ -1239,7 +1237,7 @@ loadScripts(document, 'script');</script>
 <dd>string response or
  OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
  OMAGInvalidParameterException invalid serverName or cohortName parameter.
- OMAGConfigurationErrorException the cohort is not setup, or set up in an non-standard way.</dd>
+ OMAGConfigurationErrorException the cohort is not setup, or set up in a non-standard way.</dd>
 </dl>
 </section>
 </li>
@@ -1260,7 +1258,7 @@ loadScripts(document, 'script');</script>
 <dd>list of topics response or
  OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
  OMAGInvalidParameterException invalid serverName or cohortName parameter.
- OMAGConfigurationErrorException the cohort is not setup, or set up in an non-standard way.</dd>
+ OMAGConfigurationErrorException the cohort is not setup, or set up in a non-standard way.</dd>
 </dl>
 </section>
 </li>
@@ -1284,7 +1282,7 @@ loadScripts(document, 'script');</script>
 <dd>void response or
  OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
  OMAGInvalidParameterException invalid serverName or cohortName parameter.
- OMAGConfigurationErrorException the cohort is not setup, or set up in an non-standard way.</dd>
+ OMAGConfigurationErrorException the cohort is not setup, or set up in a non-standard way.</dd>
 </dl>
 </section>
 </li>
@@ -1308,7 +1306,7 @@ loadScripts(document, 'script');</script>
 <dd>void response or
  OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
  OMAGInvalidParameterException invalid serverName or cohortName parameter.
- OMAGConfigurationErrorException the cohort is not setup, or set up in an non-standard way.</dd>
+ OMAGConfigurationErrorException the cohort is not setup, or set up in a non-standard way.</dd>
 </dl>
 </section>
 </li>
@@ -1332,7 +1330,7 @@ loadScripts(document, 'script');</script>
 <dd>void response or
  OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
  OMAGInvalidParameterException invalid serverName or cohortName parameter.
- OMAGConfigurationErrorException the cohort is not setup, or set up in an non-standard way.</dd>
+ OMAGConfigurationErrorException the cohort is not setup, or set up in a non-standard way.</dd>
 </dl>
 </section>
 </li>
@@ -1356,7 +1354,7 @@ loadScripts(document, 'script');</script>
 <dd>void response or
  OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
  OMAGInvalidParameterException invalid serverName or cohortName parameter.
- OMAGConfigurationErrorException the cohort is not setup, or set up in an non-standard way.</dd>
+ OMAGConfigurationErrorException the cohort is not setup, or set up in a non-standard way.</dd>
 </dl>
 </section>
 </li>

@@ -87,7 +87,6 @@ loadScripts(document, 'script');</script>
 implements <a href="../../../../frameworks/auditlog/messagesets/ExceptionMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageSet</a></span></div>
 <div class="block">The OMAGOCFErrorCode is used to define first failure data capture (FFDC) for errors that occur when
  working with OCF Beans.
-
  The 5 fields in the enum are:
  <ul>
      <li>HTTP Error Code - for translating between REST and JAVA   Typically the numbers used are:</li>
@@ -97,7 +96,7 @@ implements <a href="../../../../frameworks/auditlog/messagesets/ExceptionMessage
          <li>404 - not found</li>
          <li>409 - data conflict errors - eg item already defined</li>
      </ul></li>
-     <li>Error Message Id - to uniquely identify the message</li>
+     <li>Error Message Identifier - to uniquely identify the message</li>
      <li>Error Message Text - includes placeholder to allow additional values to be captured</li>
      <li>SystemAction - describes the result of the error</li>
      <li>UserAction - describes how a consumer should correct the error</li>
@@ -123,23 +122,44 @@ implements <a href="../../../../frameworks/auditlog/messagesets/ExceptionMessage
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#BAD_CLASSIFICATION_PROPERTIES" class="member-name-link">BAD_CLASSIFICATION_PROPERTIES</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">CONNECTED-ASSET-SERVICES-400-004 - Service {0} is unable to process the properties supplied with classification {1}.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#BAD_INTEGRATOR_NAME" class="member-name-link">BAD_INTEGRATOR_NAME</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">CONNECTED-ASSET-SERVICES-400-006 - Service {0} is unable to process the properties supplied to method {1} because the unique name {2}
+ given for the requested owner does not match the unique name of {3} returned in software server capability {4}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#INTEGRATOR_NOT_RETURNED" class="member-name-link">INTEGRATOR_NOT_RETURNED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">CONNECTED-ASSET-SERVICES-400-005 - Service {0} is unable to process the properties supplied to method {1} because the
+ requested owner {2} ({3}) is not a recognized software server capability.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NO_ASSET_PROPERTIES" class="member-name-link">NO_ASSET_PROPERTIES</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">CONNECTED-ASSET-SERVICES-400-002 - The request for the properties of asset {0} failed with the following message returned: {1}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_CLASSIFICATION_NAME" class="member-name-link">NULL_CLASSIFICATION_NAME</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">CONNECTED-ASSET-SERVICES-400-003 - Service {0} is unable to process one of the classifications supplied on the {1} call because the classification name is null</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NULL_CONNECTION_PARAMETER" class="member-name-link">NULL_CONNECTION_PARAMETER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">CONNECTED-ASSET-SERVICES-400-001 - The connection value passed on the {0} parameter of the {1} operation is null</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_CONNECTOR_RETURNED" class="member-name-link">NULL_CONNECTOR_RETURNED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">CONNECTED-ASSET-SERVICES-500-001 - The requested connector for connection named {0} has not been created.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#OMRS_NOT_INITIALIZED" class="member-name-link">OMRS_NOT_INITIALIZED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">CONNECTED-ASSET-SERVICES-404-001 - The open metadata repository services are not initialized for the {0} operation</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#WRONG_TYPE_OF_CONNECTOR" class="member-name-link">WRONG_TYPE_OF_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">CONNECTED-ASSET-SERVICES-500-002 - The connector generated from the connection named {0} return by the {1} service running
+ in OMAG Server {2} at {3} is not of the required type.</div>
+</div>
 </div>
 </section>
 </li>
@@ -199,54 +219,67 @@ the order they are declared.</div>
 <section class="detail" id="NULL_CONNECTION_PARAMETER">
 <h3>NULL_CONNECTION_PARAMETER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGOCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.ffdc">OMAGOCFErrorCode</a></span>&nbsp;<span class="element-name">NULL_CONNECTION_PARAMETER</span></div>
+<div class="block">CONNECTED-ASSET-SERVICES-400-001 - The connection value passed on the {0} parameter of the {1} operation is null</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_ASSET_PROPERTIES">
 <h3>NO_ASSET_PROPERTIES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGOCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.ffdc">OMAGOCFErrorCode</a></span>&nbsp;<span class="element-name">NO_ASSET_PROPERTIES</span></div>
+<div class="block">CONNECTED-ASSET-SERVICES-400-002 - The request for the properties of asset {0} failed with the following message returned: {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_CLASSIFICATION_NAME">
 <h3>NULL_CLASSIFICATION_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGOCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.ffdc">OMAGOCFErrorCode</a></span>&nbsp;<span class="element-name">NULL_CLASSIFICATION_NAME</span></div>
+<div class="block">CONNECTED-ASSET-SERVICES-400-003 - Service {0} is unable to process one of the classifications supplied on the {1} call because the classification name is null</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BAD_CLASSIFICATION_PROPERTIES">
 <h3>BAD_CLASSIFICATION_PROPERTIES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGOCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.ffdc">OMAGOCFErrorCode</a></span>&nbsp;<span class="element-name">BAD_CLASSIFICATION_PROPERTIES</span></div>
+<div class="block">CONNECTED-ASSET-SERVICES-400-004 - Service {0} is unable to process the properties supplied with classification {1}.  The associated error message was: {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INTEGRATOR_NOT_RETURNED">
 <h3>INTEGRATOR_NOT_RETURNED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGOCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.ffdc">OMAGOCFErrorCode</a></span>&nbsp;<span class="element-name">INTEGRATOR_NOT_RETURNED</span></div>
+<div class="block">CONNECTED-ASSET-SERVICES-400-005 - Service {0} is unable to process the properties supplied to method {1} because the
+ requested owner {2} ({3}) is not a recognized software server capability.  The associated error message is: {4}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BAD_INTEGRATOR_NAME">
 <h3>BAD_INTEGRATOR_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGOCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.ffdc">OMAGOCFErrorCode</a></span>&nbsp;<span class="element-name">BAD_INTEGRATOR_NAME</span></div>
+<div class="block">CONNECTED-ASSET-SERVICES-400-006 - Service {0} is unable to process the properties supplied to method {1} because the unique name {2}
+ given for the requested owner does not match the unique name of {3} returned in software server capability {4}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OMRS_NOT_INITIALIZED">
 <h3>OMRS_NOT_INITIALIZED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGOCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.ffdc">OMAGOCFErrorCode</a></span>&nbsp;<span class="element-name">OMRS_NOT_INITIALIZED</span></div>
+<div class="block">CONNECTED-ASSET-SERVICES-404-001 - The open metadata repository services are not initialized for the {0} operation</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_CONNECTOR_RETURNED">
 <h3>NULL_CONNECTOR_RETURNED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGOCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.ffdc">OMAGOCFErrorCode</a></span>&nbsp;<span class="element-name">NULL_CONNECTOR_RETURNED</span></div>
+<div class="block">CONNECTED-ASSET-SERVICES-500-001 - The requested connector for connection named {0} has not been created.
+ The connection was provided by the {1} service running in OMAG Server {2} at {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="WRONG_TYPE_OF_CONNECTOR">
 <h3>WRONG_TYPE_OF_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGOCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.ffdc">OMAGOCFErrorCode</a></span>&nbsp;<span class="element-name">WRONG_TYPE_OF_CONNECTOR</span></div>
+<div class="block">CONNECTED-ASSET-SERVICES-500-002 - The connector generated from the connection named {0} return by the {1} service running
+ in OMAG Server {2} at {3} is not of the required type. It should be an instance of {4}</div>
 </section>
 </li>
 </ul>

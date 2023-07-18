@@ -102,7 +102,7 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#unregisterConnectorConsumer(java.lang.String)" class="member-name-link">unregisterConnectorConsumer</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorConsumerId)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Unregister a connector consumer from the connector manager so it is no longer informed of
- changes to the metadata repository cluster.</div>
+ changes to the open metadata repository cohort.</div>
 </div>
 </div>
 </div>
@@ -126,11 +126,11 @@ loadScripts(document, 'script');</script>
  request, the connector manager will pass the connector to the local repository and
  the connectors to all currently registered remote repositories.  Once successfully registered
  the connector manager will call the connector consumer each time the repositories in the
- metadata repository cluster changes.</div>
+ metadata repository cohort changes.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>connectorConsumer</code> - OMRSConnectorConsumer interested in details of the connectors to
-                           all repositories registered in the metadata repository cluster.</dd>
+                           all repositories registered in the metadata repository cohort.</dd>
 <dt>Returns:</dt>
 <dd>String identifier for the connectorConsumer used for the call to unregister().</dd>
 </dl>
@@ -141,7 +141,7 @@ loadScripts(document, 'script');</script>
 <h3>unregisterConnectorConsumer</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">unregisterConnectorConsumer</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorConsumerId)</span></div>
 <div class="block">Unregister a connector consumer from the connector manager so it is no longer informed of
- changes to the metadata repository cluster.</div>
+ changes to the open metadata repository cohort.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>connectorConsumerId</code> - String identifier of the connector consumer returned on the

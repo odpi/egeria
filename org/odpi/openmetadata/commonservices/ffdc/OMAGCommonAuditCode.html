@@ -86,10 +86,9 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="OMAGCommonAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonAuditCode</a>&gt;
 implements <a href="../../frameworks/auditlog/messagesets/AuditLogMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageSet</a></span></div>
 <div class="block">The OMAGCommonAuditCode is used to define the message content for the OMRS Audit Log.
-
  The 5 fields in the enum are:
  <ul>
-     <li>Log Message Id - to uniquely identify the message</li>
+     <li>Log Message Identifier - to uniquely identify the message</li>
      <li>Severity - is this an event, decision, action, error or exception</li>
      <li>Log Message Text - includes placeholder to allow additional values to be captured</li>
      <li>Additional Information - further parameters and data relating to the audit message (optional)</li>
@@ -117,9 +116,13 @@ implements <a href="../../frameworks/auditlog/messagesets/AuditLogMessageSet.htm
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#CLIENT_SIDE_REST_API_ERROR" class="member-name-link">CLIENT_SIDE_REST_API_ERROR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-COMMON-0002 - A client-side exception was received from API call {0} to OMAG Server {1} at {2}.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-COMMON-0001 - The Open Metadata Service has generated an unexpected {0} exception during method {1}.</div>
+</div>
 </div>
 </section>
 </li>
@@ -184,12 +187,14 @@ the order they are declared.</div>
 <section class="detail" id="UNEXPECTED_EXCEPTION">
 <h3>UNEXPECTED_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonAuditCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXCEPTION</span></div>
+<div class="block">OMAG-COMMON-0001 - The Open Metadata Service has generated an unexpected {0} exception during method {1}.  The message was: {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CLIENT_SIDE_REST_API_ERROR">
 <h3>CLIENT_SIDE_REST_API_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonAuditCode</a></span>&nbsp;<span class="element-name">CLIENT_SIDE_REST_API_ERROR</span></div>
+<div class="block">OMAG-COMMON-0002 - A client-side exception was received from API call {0} to OMAG Server {1} at {2}.  The error message was {3}</div>
 </section>
 </li>
 </ul>

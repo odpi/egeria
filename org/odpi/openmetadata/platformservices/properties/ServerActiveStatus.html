@@ -83,8 +83,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">ServerActiveStatus</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="ServerActiveStatus.html" title="enum class in org.odpi.openmetadata.platformservices.properties">ServerActiveStatus</a>&gt;
-implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="ServerActiveStatus.html" title="enum class in org.odpi.openmetadata.platformservices.properties">ServerActiveStatus</a>&gt;</span></div>
 <div class="block">Server active status defines the state of the server (or a service) on a single platform.</div>
 </section>
 <section class="summary">
@@ -107,15 +106,25 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#INACTIVE" class="member-name-link">INACTIVE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Inactive - The server is not running.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#RUNNING" class="member-name-link">RUNNING</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Running - The server has completed start up and is running.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#STARTING" class="member-name-link">STARTING</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Starting - The server is starting.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#STOPPING" class="member-name-link">STOPPING</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Stopping - The server has received a request to shut down.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNKNOWN" class="member-name-link">UNKNOWN</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Unknown - The state of the server is unknown.</div>
+</div>
 </div>
 </section>
 </li>
@@ -185,30 +194,35 @@ the order they are declared.</div>
 <section class="detail" id="UNKNOWN">
 <h3>UNKNOWN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ServerActiveStatus.html" title="enum class in org.odpi.openmetadata.platformservices.properties">ServerActiveStatus</a></span>&nbsp;<span class="element-name">UNKNOWN</span></div>
+<div class="block">Unknown - The state of the server is unknown.  This is equivalent to a null value.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="STARTING">
 <h3>STARTING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ServerActiveStatus.html" title="enum class in org.odpi.openmetadata.platformservices.properties">ServerActiveStatus</a></span>&nbsp;<span class="element-name">STARTING</span></div>
+<div class="block">Starting - The server is starting.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="RUNNING">
 <h3>RUNNING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ServerActiveStatus.html" title="enum class in org.odpi.openmetadata.platformservices.properties">ServerActiveStatus</a></span>&nbsp;<span class="element-name">RUNNING</span></div>
+<div class="block">Running - The server has completed start up and is running.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="STOPPING">
 <h3>STOPPING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ServerActiveStatus.html" title="enum class in org.odpi.openmetadata.platformservices.properties">ServerActiveStatus</a></span>&nbsp;<span class="element-name">STOPPING</span></div>
+<div class="block">Stopping - The server has received a request to shut down.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INACTIVE">
 <h3>INACTIVE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ServerActiveStatus.html" title="enum class in org.odpi.openmetadata.platformservices.properties">ServerActiveStatus</a></span>&nbsp;<span class="element-name">INACTIVE</span></div>
+<div class="block">Inactive - The server is not running.</div>
 </section>
 </li>
 </ul>

@@ -107,21 +107,37 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#ATTACHMENT" class="member-name-link">ATTACHMENT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">An entity attached either directly or indirectly to the anchor entity has changed.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#ATTACHMENT_CLASSIFICATION" class="member-name-link">ATTACHMENT_CLASSIFICATION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">A classification attached to an entity that is, in turn, attached either directly or indirectly to the anchor entity has changed.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#ATTACHMENT_PROPERTY" class="member-name-link">ATTACHMENT_PROPERTY</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">A property in an entity attached either directly or indirectly to the anchor entity has changed.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#ATTACHMENT_RELATIONSHIP" class="member-name-link">ATTACHMENT_RELATIONSHIP</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">A relationship linking to an entity that is, in turn, attached either directly or indirectly to the anchor entity has changed.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#ENTITY_CLASSIFICATION" class="member-name-link">ENTITY_CLASSIFICATION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">A classification attached to the anchor entity has changed.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#ENTITY_PROPERTY" class="member-name-link">ENTITY_PROPERTY</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">A property in the anchor entity has changed.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#ENTITY_RELATIONSHIP" class="member-name-link">ENTITY_RELATIONSHIP</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">A relationship linking the anchor entity to an attachment has changed.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#OTHER" class="member-name-link">OTHER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Another type of change.</div>
+</div>
 </div>
 </section>
 </li>
@@ -206,48 +222,56 @@ the order they are declared.</div>
 <section class="detail" id="ENTITY_PROPERTY">
 <h3>ENTITY_PROPERTY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LatestChangeTarget.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">LatestChangeTarget</a></span>&nbsp;<span class="element-name">ENTITY_PROPERTY</span></div>
+<div class="block">A property in the anchor entity has changed.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ENTITY_CLASSIFICATION">
 <h3>ENTITY_CLASSIFICATION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LatestChangeTarget.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">LatestChangeTarget</a></span>&nbsp;<span class="element-name">ENTITY_CLASSIFICATION</span></div>
+<div class="block">A classification attached to the anchor entity has changed.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ENTITY_RELATIONSHIP">
 <h3>ENTITY_RELATIONSHIP</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LatestChangeTarget.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">LatestChangeTarget</a></span>&nbsp;<span class="element-name">ENTITY_RELATIONSHIP</span></div>
+<div class="block">A relationship linking the anchor entity to an attachment has changed.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ATTACHMENT">
 <h3>ATTACHMENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LatestChangeTarget.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">LatestChangeTarget</a></span>&nbsp;<span class="element-name">ATTACHMENT</span></div>
+<div class="block">An entity attached either directly or indirectly to the anchor entity has changed.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ATTACHMENT_PROPERTY">
 <h3>ATTACHMENT_PROPERTY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LatestChangeTarget.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">LatestChangeTarget</a></span>&nbsp;<span class="element-name">ATTACHMENT_PROPERTY</span></div>
+<div class="block">A property in an entity attached either directly or indirectly to the anchor entity has changed.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ATTACHMENT_CLASSIFICATION">
 <h3>ATTACHMENT_CLASSIFICATION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LatestChangeTarget.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">LatestChangeTarget</a></span>&nbsp;<span class="element-name">ATTACHMENT_CLASSIFICATION</span></div>
+<div class="block">A classification attached to an entity that is, in turn, attached either directly or indirectly to the anchor entity has changed.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ATTACHMENT_RELATIONSHIP">
 <h3>ATTACHMENT_RELATIONSHIP</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LatestChangeTarget.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">LatestChangeTarget</a></span>&nbsp;<span class="element-name">ATTACHMENT_RELATIONSHIP</span></div>
+<div class="block">A relationship linking to an entity that is, in turn, attached either directly or indirectly to the anchor entity has changed.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OTHER">
 <h3>OTHER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LatestChangeTarget.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">LatestChangeTarget</a></span>&nbsp;<span class="element-name">OTHER</span></div>
+<div class="block">Another type of change.</div>
 </section>
 </li>
 </ul>

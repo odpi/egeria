@@ -108,21 +108,37 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#AGGREGATE_KEY" class="member-name-link">AGGREGATE_KEY</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Key formed by combining keys from multiple systems.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#CALLERS_KEY" class="member-name-link">CALLERS_KEY</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Key from another system can bey used if system name provided.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#LOCAL_KEY" class="member-name-link">LOCAL_KEY</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Unique key allocated and used within the scope of a single system.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#MIRROR_KEY" class="member-name-link">MIRROR_KEY</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Key value copied from another system.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NATURAL_KEY" class="member-name-link">NATURAL_KEY</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Key derived from an attribute of the entity, such as email address, passport number.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#OTHER" class="member-name-link">OTHER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Another key pattern.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#RECYCLED_KEY" class="member-name-link">RECYCLED_KEY</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Key allocated and used within the scope of a single system that is periodically reused for different records.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#STABLE_KEY" class="member-name-link">STABLE_KEY</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Key value will remain active even if records are merged.</div>
+</div>
 </div>
 </section>
 </li>
@@ -207,48 +223,56 @@ the order they are declared.</div>
 <section class="detail" id="LOCAL_KEY">
 <h3>LOCAL_KEY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="KeyPattern.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">KeyPattern</a></span>&nbsp;<span class="element-name">LOCAL_KEY</span></div>
+<div class="block">Unique key allocated and used within the scope of a single system.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="RECYCLED_KEY">
 <h3>RECYCLED_KEY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="KeyPattern.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">KeyPattern</a></span>&nbsp;<span class="element-name">RECYCLED_KEY</span></div>
+<div class="block">Key allocated and used within the scope of a single system that is periodically reused for different records.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NATURAL_KEY">
 <h3>NATURAL_KEY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="KeyPattern.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">KeyPattern</a></span>&nbsp;<span class="element-name">NATURAL_KEY</span></div>
+<div class="block">Key derived from an attribute of the entity, such as email address, passport number.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="MIRROR_KEY">
 <h3>MIRROR_KEY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="KeyPattern.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">KeyPattern</a></span>&nbsp;<span class="element-name">MIRROR_KEY</span></div>
+<div class="block">Key value copied from another system.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="AGGREGATE_KEY">
 <h3>AGGREGATE_KEY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="KeyPattern.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">KeyPattern</a></span>&nbsp;<span class="element-name">AGGREGATE_KEY</span></div>
+<div class="block">Key formed by combining keys from multiple systems.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CALLERS_KEY">
 <h3>CALLERS_KEY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="KeyPattern.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">KeyPattern</a></span>&nbsp;<span class="element-name">CALLERS_KEY</span></div>
+<div class="block">Key from another system can bey used if system name provided.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="STABLE_KEY">
 <h3>STABLE_KEY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="KeyPattern.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">KeyPattern</a></span>&nbsp;<span class="element-name">STABLE_KEY</span></div>
+<div class="block">Key value will remain active even if records are merged.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OTHER">
 <h3>OTHER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="KeyPattern.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">KeyPattern</a></span>&nbsp;<span class="element-name">OTHER</span></div>
+<div class="block">Another key pattern.</div>
 </section>
 </li>
 </ul>

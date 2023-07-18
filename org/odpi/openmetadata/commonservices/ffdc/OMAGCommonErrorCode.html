@@ -87,7 +87,6 @@ loadScripts(document, 'script');</script>
 implements <a href="../../frameworks/auditlog/messagesets/ExceptionMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageSet</a></span></div>
 <div class="block">The OMAGCommonErrorCode is used to define first failure data capture (FFDC) for common errors.  It belongs to the FFDC Services module
  and should not be used by other modules.
-
  The 5 fields in the enum are:
  <ul>
      <li>HTTP Error Code - for translating between REST and JAVA.   Typically the numbers used are:</li>
@@ -98,7 +97,7 @@ implements <a href="../../frameworks/auditlog/messagesets/ExceptionMessageSet.ht
          <li>404 - not found</li>
          <li>409 - data conflict errors - eg item already defined</li>
      </ul></li>
-     <li>Error Message Id - to uniquely identify the message</li>
+     <li>Error Message Identifier - to uniquely identify the message</li>
      <li>Error Message Text - includes placeholder to allow additional values to be captured</li>
      <li>SystemAction - describes the result of the error</li>
      <li>UserAction - describes how a consumer should correct the error</li>
@@ -124,73 +123,143 @@ implements <a href="../../frameworks/auditlog/messagesets/ExceptionMessageSet.ht
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#BAD_SUB_TYPE_NAME" class="member-name-link">BAD_SUB_TYPE_NAME</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-COMMON-400-019 - The type name {0} passed on method {1} of service {2} is not a sub-type of {3}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#CANNOT_DELETE_ELEMENT_IN_USE" class="member-name-link">CANNOT_DELETE_ELEMENT_IN_USE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-COMMON-400-023 - Method {0} of service {1} is unable to delete {2} identified by {3} because it is still in use.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#CLIENT_SIDE_REST_API_ERROR" class="member-name-link">CLIENT_SIDE_REST_API_ERROR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-COMMON-503-001 - A client-side exception was received from API call {0} to OMAG Server {1} at {2}.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#INSTANCE_WRONG_TYPE_FOR_GUID" class="member-name-link">INSTANCE_WRONG_TYPE_FOR_GUID</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-COMMON-404-001 - The {0} method has retrieved an instance for unique identifier (guid) {1} which is of type {2} rather than type {3}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#INVALID_PROPERTIES_OBJECT" class="member-name-link">INVALID_PROPERTIES_OBJECT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-COMMON-400-029 - The properties object passed on the {0} operation is either null or not of the correct {1} class</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#INVALID_SEARCH_STRING" class="member-name-link">INVALID_SEARCH_STRING</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-COMMON-400-028 - The search string passed on the {0} parameter of the {1} operation is invalid and results in a {2} exception when executed.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#MAX_PAGE_SIZE" class="member-name-link">MAX_PAGE_SIZE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-COMMON-400-010 - The number of records to return, {0}, passed on the {1} parameter of the {2} operation, is greater than the allowable maximum of {3}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#METHOD_NOT_IMPLEMENTED" class="member-name-link">METHOD_NOT_IMPLEMENTED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-COMMON-500-001 - Method {0} called by user {1} to OMAG Server {2} is not implemented in service {3}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NEGATIVE_PAGE_SIZE" class="member-name-link">NEGATIVE_PAGE_SIZE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-COMMON-400-009 - The page size {0} for the results, passed on the {1} parameter of the {2} operation, is negative</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NEGATIVE_START_FROM" class="member-name-link">NEGATIVE_START_FROM</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-COMMON-400-008 - The starting point for the results {0}, passed on the {1} parameter of the {2} operation, is negative</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NO_REQUEST_BODY" class="member-name-link">NO_REQUEST_BODY</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-COMMON-400-017 - An request by user {0} to method {1} on server {2} had no request body</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NO_REQUEST_BODY_FOR_CLASS" class="member-name-link">NO_REQUEST_BODY_FOR_CLASS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-COMMON-400-030 - A request by user {0} to method {1} on server {2} had no request body.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NOT_ANCHOR_ELEMENT" class="member-name-link">NOT_ANCHOR_ELEMENT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-COMMON-400-027 - The {0} element {1} is expected to be an anchor entity but is in fact anchored to {2}.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NOT_IN_THE_ZONE" class="member-name-link">NOT_IN_THE_ZONE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-COMMON-400-020 - Asset {0} is not recognized by the {1} service</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_ARRAY_PARAMETER" class="member-name-link">NULL_ARRAY_PARAMETER</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-COMMON-400-007 - The array value passed on the {0} parameter of the {1} operation is null or empty</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NULL_CONNECTION_PARAMETER" class="member-name-link">NULL_CONNECTION_PARAMETER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-COMMON-400-011 - The connection object passed on the {0} parameter of the {1} operation is null</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_CONNECTOR_TYPE_PARAMETER" class="member-name-link">NULL_CONNECTOR_TYPE_PARAMETER</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-COMMON-400-024 - The connection object passed on the {0} parameter of the {1} operation has a null connector type</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NULL_ENUM" class="member-name-link">NULL_ENUM</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-COMMON-400-012 - The enumeration value passed on the {0} parameter of the {1} operation is null</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_GUID" class="member-name-link">NULL_GUID</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-COMMON-400-005 - The unique identifier (guid) passed on the {0} parameter of the {1} operation is null</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NULL_LOCAL_SERVER_NAME" class="member-name-link">NULL_LOCAL_SERVER_NAME</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-COMMON-400-014 - OMAG server has been called with a null local server name</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_NAME" class="member-name-link">NULL_NAME</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-COMMON-400-006 - The name passed on the {0} parameter of the {1} operation is null</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NULL_OBJECT" class="member-name-link">NULL_OBJECT</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-COMMON-400-015 - The object passed on the {0} parameter of the {1} operation is null</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_SEARCH_STRING" class="member-name-link">NULL_SEARCH_STRING</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-COMMON-400-022 - The search string passed on the {0} parameter of the {1} operation is null</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NULL_TEXT" class="member-name-link">NULL_TEXT</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-COMMON-400-013 - The text field value passed on the {0} parameter of the {1} operation is null</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_USER_ID" class="member-name-link">NULL_USER_ID</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-COMMON-400-004 - The user identifier (user id) passed on the {0} operation is null</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#SERVER_NAME_NOT_SPECIFIED" class="member-name-link">SERVER_NAME_NOT_SPECIFIED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-COMMON-400-003 - The OMAG Server name is null</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#SERVER_URL_MALFORMED" class="member-name-link">SERVER_URL_MALFORMED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-COMMON-400-002 - The OMAS Server URL {0} is not in a recognized format</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#SERVER_URL_NOT_SPECIFIED" class="member-name-link">SERVER_URL_NOT_SPECIFIED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAGCommonAuditCode - The OMAG Server Platform URL is null</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-COMMON-400-016 - An unexpected {0} exception was caught by {1}; error message was {2}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNIQUE_NAME_ALREADY_IN_USE" class="member-name-link">UNIQUE_NAME_ALREADY_IN_USE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-COMMON-409-001 - Method {0} of service {1} is not able to create an instance of type {2} because parameter name {3} is
+ defined as a unique property and value {4} is not available for use</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNKNOWN_ELEMENT" class="member-name-link">UNKNOWN_ELEMENT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-COMMON-400-021 - The identifier {0} of the {1} passed by {2} to method {3} of service {4} is not recognized by the {5} server</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNRECOGNIZED_TYPE_NAME" class="member-name-link">UNRECOGNIZED_TYPE_NAME</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-COMMON-400-018 - The type name {0} passed on method {1} of service {2} is not recognized</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#WRONG_ANCHOR_GUID" class="member-name-link">WRONG_ANCHOR_GUID</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-COMMON-400-026 - The {0} element {1} is expected to be anchored to {2} but is in fact anchored to {3}.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#WRONG_METADATA_COLLECTION_FOR_UPDATE" class="member-name-link">WRONG_METADATA_COLLECTION_FOR_UPDATE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMAG-COMMON-400-025 - Method {0} of service {1} is not able to update instance {2} of type {3} as part of {4} metadata collection named {5}
+ (GUID {6}) because this instance actually belongs to {7} metadata collection name {8} (GUID {9})</div>
+</div>
 </div>
 </section>
 </li>
@@ -255,204 +324,240 @@ the order they are declared.</div>
 <section class="detail" id="SERVER_URL_NOT_SPECIFIED">
 <h3>SERVER_URL_NOT_SPECIFIED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">SERVER_URL_NOT_SPECIFIED</span></div>
+<div class="block">OMAGCommonAuditCode - The OMAG Server Platform URL is null</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVER_URL_MALFORMED">
 <h3>SERVER_URL_MALFORMED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">SERVER_URL_MALFORMED</span></div>
+<div class="block">OMAG-COMMON-400-002 - The OMAS Server URL {0} is not in a recognized format</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVER_NAME_NOT_SPECIFIED">
 <h3>SERVER_NAME_NOT_SPECIFIED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">SERVER_NAME_NOT_SPECIFIED</span></div>
+<div class="block">OMAG-COMMON-400-003 - The OMAG Server name is null</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_USER_ID">
 <h3>NULL_USER_ID</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">NULL_USER_ID</span></div>
+<div class="block">OMAG-COMMON-400-004 - The user identifier (user id) passed on the {0} operation is null</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_GUID">
 <h3>NULL_GUID</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">NULL_GUID</span></div>
+<div class="block">OMAG-COMMON-400-005 - The unique identifier (guid) passed on the {0} parameter of the {1} operation is null</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_NAME">
 <h3>NULL_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">NULL_NAME</span></div>
+<div class="block">OMAG-COMMON-400-006 - The name passed on the {0} parameter of the {1} operation is null</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_ARRAY_PARAMETER">
 <h3>NULL_ARRAY_PARAMETER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">NULL_ARRAY_PARAMETER</span></div>
+<div class="block">OMAG-COMMON-400-007 - The array value passed on the {0} parameter of the {1} operation is null or empty</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NEGATIVE_START_FROM">
 <h3>NEGATIVE_START_FROM</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">NEGATIVE_START_FROM</span></div>
+<div class="block">OMAG-COMMON-400-008 - The starting point for the results {0}, passed on the {1} parameter of the {2} operation, is negative</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NEGATIVE_PAGE_SIZE">
 <h3>NEGATIVE_PAGE_SIZE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">NEGATIVE_PAGE_SIZE</span></div>
+<div class="block">OMAG-COMMON-400-009 - The page size {0} for the results, passed on the {1} parameter of the {2} operation, is negative</div>
 </section>
 </li>
 <li>
 <section class="detail" id="MAX_PAGE_SIZE">
 <h3>MAX_PAGE_SIZE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">MAX_PAGE_SIZE</span></div>
+<div class="block">OMAG-COMMON-400-010 - The number of records to return, {0}, passed on the {1} parameter of the {2} operation, is greater than the allowable maximum of {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_CONNECTION_PARAMETER">
 <h3>NULL_CONNECTION_PARAMETER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">NULL_CONNECTION_PARAMETER</span></div>
+<div class="block">OMAG-COMMON-400-011 - The connection object passed on the {0} parameter of the {1} operation is null</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_ENUM">
 <h3>NULL_ENUM</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">NULL_ENUM</span></div>
+<div class="block">OMAG-COMMON-400-012 - The enumeration value passed on the {0} parameter of the {1} operation is null</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_TEXT">
 <h3>NULL_TEXT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">NULL_TEXT</span></div>
+<div class="block">OMAG-COMMON-400-013 - The text field value passed on the {0} parameter of the {1} operation is null</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_LOCAL_SERVER_NAME">
 <h3>NULL_LOCAL_SERVER_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">NULL_LOCAL_SERVER_NAME</span></div>
+<div class="block">OMAG-COMMON-400-014 - OMAG server has been called with a null local server name</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_OBJECT">
 <h3>NULL_OBJECT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">NULL_OBJECT</span></div>
+<div class="block">OMAG-COMMON-400-015 - The object passed on the {0} parameter of the {1} operation is null</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNEXPECTED_EXCEPTION">
 <h3>UNEXPECTED_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXCEPTION</span></div>
+<div class="block">OMAG-COMMON-400-016 - An unexpected {0} exception was caught by {1}; error message was {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_REQUEST_BODY">
 <h3>NO_REQUEST_BODY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">NO_REQUEST_BODY</span></div>
+<div class="block">OMAG-COMMON-400-017 - An request by user {0} to method {1} on server {2} had no request body</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNRECOGNIZED_TYPE_NAME">
 <h3>UNRECOGNIZED_TYPE_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">UNRECOGNIZED_TYPE_NAME</span></div>
+<div class="block">OMAG-COMMON-400-018 - The type name {0} passed on method {1} of service {2} is not recognized</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BAD_SUB_TYPE_NAME">
 <h3>BAD_SUB_TYPE_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">BAD_SUB_TYPE_NAME</span></div>
+<div class="block">OMAG-COMMON-400-019 - The type name {0} passed on method {1} of service {2} is not a sub-type of {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NOT_IN_THE_ZONE">
 <h3>NOT_IN_THE_ZONE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">NOT_IN_THE_ZONE</span></div>
+<div class="block">OMAG-COMMON-400-020 - Asset {0} is not recognized by the {1} service</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNKNOWN_ELEMENT">
 <h3>UNKNOWN_ELEMENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_ELEMENT</span></div>
+<div class="block">OMAG-COMMON-400-021 - The identifier {0} of the {1} passed by {2} to method {3} of service {4} is not recognized by the {5} server</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_SEARCH_STRING">
 <h3>NULL_SEARCH_STRING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">NULL_SEARCH_STRING</span></div>
+<div class="block">OMAG-COMMON-400-022 - The search string passed on the {0} parameter of the {1} operation is null</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CANNOT_DELETE_ELEMENT_IN_USE">
 <h3>CANNOT_DELETE_ELEMENT_IN_USE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">CANNOT_DELETE_ELEMENT_IN_USE</span></div>
+<div class="block">OMAG-COMMON-400-023 - Method {0} of service {1} is unable to delete {2} identified by {3} because it is still in use.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_CONNECTOR_TYPE_PARAMETER">
 <h3>NULL_CONNECTOR_TYPE_PARAMETER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">NULL_CONNECTOR_TYPE_PARAMETER</span></div>
+<div class="block">OMAG-COMMON-400-024 - The connection object passed on the {0} parameter of the {1} operation has a null connector type</div>
 </section>
 </li>
 <li>
 <section class="detail" id="WRONG_METADATA_COLLECTION_FOR_UPDATE">
 <h3>WRONG_METADATA_COLLECTION_FOR_UPDATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">WRONG_METADATA_COLLECTION_FOR_UPDATE</span></div>
+<div class="block">OMAG-COMMON-400-025 - Method {0} of service {1} is not able to update instance {2} of type {3} as part of {4} metadata collection named {5}
+ (GUID {6}) because this instance actually belongs to {7} metadata collection name {8} (GUID {9})</div>
 </section>
 </li>
 <li>
 <section class="detail" id="WRONG_ANCHOR_GUID">
 <h3>WRONG_ANCHOR_GUID</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">WRONG_ANCHOR_GUID</span></div>
+<div class="block">OMAG-COMMON-400-026 - The {0} element {1} is expected to be anchored to {2} but is in fact anchored to {3}. Method {4} is unable to proceed</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NOT_ANCHOR_ELEMENT">
 <h3>NOT_ANCHOR_ELEMENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">NOT_ANCHOR_ELEMENT</span></div>
+<div class="block">OMAG-COMMON-400-027 - The {0} element {1} is expected to be an anchor entity but is in fact anchored to {2}. Method {3} is unable to proceed</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_SEARCH_STRING">
 <h3>INVALID_SEARCH_STRING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">INVALID_SEARCH_STRING</span></div>
+<div class="block">OMAG-COMMON-400-028 - The search string passed on the {0} parameter of the {1} operation is invalid and results in a {2} exception when executed.  The error message is {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_PROPERTIES_OBJECT">
 <h3>INVALID_PROPERTIES_OBJECT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">INVALID_PROPERTIES_OBJECT</span></div>
+<div class="block">OMAG-COMMON-400-029 - The properties object passed on the {0} operation is either null or not of the correct {1} class</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_REQUEST_BODY_FOR_CLASS">
 <h3>NO_REQUEST_BODY_FOR_CLASS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">NO_REQUEST_BODY_FOR_CLASS</span></div>
+<div class="block">OMAG-COMMON-400-030 - A request by user {0} to method {1} on server {2} had no request body.  Add a request body of type {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INSTANCE_WRONG_TYPE_FOR_GUID">
 <h3>INSTANCE_WRONG_TYPE_FOR_GUID</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">INSTANCE_WRONG_TYPE_FOR_GUID</span></div>
+<div class="block">OMAG-COMMON-404-001 - The {0} method has retrieved an instance for unique identifier (guid) {1} which is of type {2} rather than type {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNIQUE_NAME_ALREADY_IN_USE">
 <h3>UNIQUE_NAME_ALREADY_IN_USE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">UNIQUE_NAME_ALREADY_IN_USE</span></div>
+<div class="block">OMAG-COMMON-409-001 - Method {0} of service {1} is not able to create an instance of type {2} because parameter name {3} is
+ defined as a unique property and value {4} is not available for use</div>
 </section>
 </li>
 <li>
 <section class="detail" id="METHOD_NOT_IMPLEMENTED">
 <h3>METHOD_NOT_IMPLEMENTED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">METHOD_NOT_IMPLEMENTED</span></div>
+<div class="block">OMAG-COMMON-500-001 - Method {0} called by user {1} to OMAG Server {2} is not implemented in service {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CLIENT_SIDE_REST_API_ERROR">
 <h3>CLIENT_SIDE_REST_API_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">CLIENT_SIDE_REST_API_ERROR</span></div>
+<div class="block">OMAG-COMMON-503-001 - A client-side exception was received from API call {0} to OMAG Server {1} at {2}.  The error message was {3}</div>
 </section>
 </li>
 </ul>

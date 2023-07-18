@@ -107,21 +107,37 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#CONTRACT_LIFETIME" class="member-name-link">CONTRACT_LIFETIME</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">The data is needed for the lifetime of the referenced contract.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#OTHER" class="member-name-link">OTHER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Another basis for determining the retention requirement.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#PROJECT_LIFETIME" class="member-name-link">PROJECT_LIFETIME</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">The data is needed for the lifetime of the referenced project.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#REGULATED_LIFETIME" class="member-name-link">REGULATED_LIFETIME</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">The retention period for the data is defined by the referenced regulation.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#TEAM_LIFETIME" class="member-name-link">TEAM_LIFETIME</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">The data is needed for the lifetime of the referenced team.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#TEMPORARY" class="member-name-link">TEMPORARY</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">This data is temporary.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#TIMEBOXED_LIFETIME" class="member-name-link">TIMEBOXED_LIFETIME</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">The data is needed for the specified time.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNCLASSIFIED" class="member-name-link">UNCLASSIFIED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">There is no assessment of the retention requirements for this data.</div>
+</div>
 </div>
 </section>
 </li>
@@ -206,48 +222,56 @@ the order they are declared.</div>
 <section class="detail" id="UNCLASSIFIED">
 <h3>UNCLASSIFIED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RetentionBasis.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">RetentionBasis</a></span>&nbsp;<span class="element-name">UNCLASSIFIED</span></div>
+<div class="block">There is no assessment of the retention requirements for this data.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="TEMPORARY">
 <h3>TEMPORARY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RetentionBasis.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">RetentionBasis</a></span>&nbsp;<span class="element-name">TEMPORARY</span></div>
+<div class="block">This data is temporary. There are no formal retention requirements.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="PROJECT_LIFETIME">
 <h3>PROJECT_LIFETIME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RetentionBasis.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">RetentionBasis</a></span>&nbsp;<span class="element-name">PROJECT_LIFETIME</span></div>
+<div class="block">The data is needed for the lifetime of the referenced project.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="TEAM_LIFETIME">
 <h3>TEAM_LIFETIME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RetentionBasis.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">RetentionBasis</a></span>&nbsp;<span class="element-name">TEAM_LIFETIME</span></div>
+<div class="block">The data is needed for the lifetime of the referenced team.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONTRACT_LIFETIME">
 <h3>CONTRACT_LIFETIME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RetentionBasis.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">RetentionBasis</a></span>&nbsp;<span class="element-name">CONTRACT_LIFETIME</span></div>
+<div class="block">The data is needed for the lifetime of the referenced contract.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="REGULATED_LIFETIME">
 <h3>REGULATED_LIFETIME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RetentionBasis.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">RetentionBasis</a></span>&nbsp;<span class="element-name">REGULATED_LIFETIME</span></div>
+<div class="block">The retention period for the data is defined by the referenced regulation.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="TIMEBOXED_LIFETIME">
 <h3>TIMEBOXED_LIFETIME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RetentionBasis.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">RetentionBasis</a></span>&nbsp;<span class="element-name">TIMEBOXED_LIFETIME</span></div>
+<div class="block">The data is needed for the specified time.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OTHER">
 <h3>OTHER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RetentionBasis.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">RetentionBasis</a></span>&nbsp;<span class="element-name">OTHER</span></div>
+<div class="block">Another basis for determining the retention requirement.</div>
 </section>
 </li>
 </ul>

@@ -86,7 +86,6 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a>&gt;
 implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageSet</a></span></div>
 <div class="block">The IntegrationDaemonServicesAuditCode is used to define the message content for the OMRS Audit Log.
-
  The 5 fields in the enum are:
  <ul>
      <li>Log Message Id - to uniquely identify the message</li>
@@ -117,101 +116,203 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#BAD_INTEGRATION_CONNECTION" class="member-name-link">BAD_INTEGRATION_CONNECTION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0009 - A new integration connector named {0} failed to initialize in integration service {1}.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#CLEARING_ALL_INTEGRATION_CONNECTOR_CONFIG" class="member-name-link">CLEARING_ALL_INTEGRATION_CONNECTOR_CONFIG</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0051 - All integration connector configuration is being refreshed for integration group {0}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#CONFIG_ERROR" class="member-name-link">CONFIG_ERROR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0037 - The integration service {0} method {1} has returned with a {2} exception containing message {3} when attempting to create and initialize a connector</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#CONFIGURATION_LISTENER_REGISTERED" class="member-name-link">CONFIGURATION_LISTENER_REGISTERED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0019 - The integration daemon services has registered the configuration listener for server {0}.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#CONNECTOR_CHANGE_FAILED" class="member-name-link">CONNECTOR_CHANGE_FAILED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0054 - Failed to process a change to integration connector {0}.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#CONNECTOR_ERROR" class="member-name-link">CONNECTOR_ERROR</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0031 - The integration connector {0} method {1} has returned with a {2} exception containing message {3}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#CONNECTOR_FAILED" class="member-name-link">CONNECTOR_FAILED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0032 - The integration connector {0} method {1} has not been called because it previously
+ returned with a {2} exception containing message {4}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#CONNECTOR_SHUTDOWN_FAILURE" class="member-name-link">CONNECTOR_SHUTDOWN_FAILURE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0023 - The integration connector {0} reported an error on disconnect.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#CONNECTOR_SHUTTING_DOWN" class="member-name-link">CONNECTOR_SHUTTING_DOWN</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0022 - The integration connector {0} is shutting down</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#CONNECTOR_THREAD_STARTING" class="member-name-link">CONNECTOR_THREAD_STARTING</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0030 - The dedicated thread for integration connector {0} has started in integration daemon {1}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#CONNECTOR_THREAD_TERMINATING" class="member-name-link">CONNECTOR_THREAD_TERMINATING</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0035 - The dedicated thread for integration connector {0} is terminating in integration daemon {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#DAEMON_CONNECTOR_CONFIG_PROPS_CLEARED" class="member-name-link">DAEMON_CONNECTOR_CONFIG_PROPS_CLEARED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0016 - User {0} has cleared all the configuration properties for the integration connector {1} in integration daemon {2}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#DAEMON_CONNECTOR_CONFIG_PROPS_UPDATE" class="member-name-link">DAEMON_CONNECTOR_CONFIG_PROPS_UPDATE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0015 - User {0} has updated the following configuration properties for the integration connector {1} in integration daemon {2}: {3}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#DAEMON_CONNECTOR_FIRST_REFRESH" class="member-name-link">DAEMON_CONNECTOR_FIRST_REFRESH</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0041 - The integration daemon thread is refreshing integration connector {0} for the first time in the {1} integration daemon instance</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#DAEMON_CONNECTOR_REFRESH" class="member-name-link">DAEMON_CONNECTOR_REFRESH</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0042 - The integration daemon thread is refreshing integration connector {0} in integration daemon {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#DAEMON_CONNECTOR_REFRESH_COMPLETE" class="member-name-link">DAEMON_CONNECTOR_REFRESH_COMPLETE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0043 - The integration connector {0} in integration daemon {1} has completed refresh processing in {2} millisecond(s)</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#DAEMON_THREAD_CONNECTOR_ERROR" class="member-name-link">DAEMON_THREAD_CONNECTOR_ERROR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0045 - The integration daemon thread for integration daemon {0} caught a {1} exception from an integration connector containing message {2}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#DAEMON_THREAD_STARTING" class="member-name-link">DAEMON_THREAD_STARTING</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0040 - The integration daemon thread for integration daemon {0} has started</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#DAEMON_THREAD_TERMINATING" class="member-name-link">DAEMON_THREAD_TERMINATING</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0044 - The integration daemon thread for integration daemon {0} is shutting down</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#ENGAGE_RETURNED" class="member-name-link">ENGAGE_RETURNED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0034 - The integration connector {0} has returned from the "engage()" method in integration daemon {1}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#FINISHED_ALL_INTEGRATION_CONNECTOR_CONFIG" class="member-name-link">FINISHED_ALL_INTEGRATION_CONNECTOR_CONFIG</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0056 - Refresh of all integration connector configuration has being completed for integration group {0}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#GROUP_CHANGE_FAILED" class="member-name-link">GROUP_CHANGE_FAILED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0053 - Failed to process a change to integration group {0}.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#GROUP_SHUTDOWN" class="member-name-link">GROUP_SHUTDOWN</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0052 - The integration group {0} in server {1} is shutting down</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#INITIALIZE_ERROR" class="member-name-link">INITIALIZE_ERROR</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0036 - The integration service {0} method {1} has returned with a {2} exception containing message {3} when attempting to connect to the associated metadata access server</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#INTEGRATION_CONNECTOR_INITIALIZING" class="member-name-link">INTEGRATION_CONNECTOR_INITIALIZING</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0008 - A new integration connector named {0} is initializing in integration service {1} running in integration daemon {2}, permitted synchronization is: {3}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#INTEGRATION_CONNECTOR_SHUTDOWN" class="member-name-link">INTEGRATION_CONNECTOR_SHUTDOWN</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0024 - The integration connector {0} in integration service {1} has shutdown.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#INTEGRATION_GROUP_NO_CONFIG" class="member-name-link">INTEGRATION_GROUP_NO_CONFIG</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0028 - Failed to refresh configuration for integration group {0}.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#INTEGRATION_SERVICE_INITIALIZED" class="member-name-link">INTEGRATION_SERVICE_INITIALIZED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0011 - The {0} integration service has completed its initialization in integration daemon {1}.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#INTEGRATION_SERVICE_INITIALIZING" class="member-name-link">INTEGRATION_SERVICE_INITIALIZING</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0002 - The {0} is initializing in server {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#INTEGRATION_SERVICE_SHUTDOWN" class="member-name-link">INTEGRATION_SERVICE_SHUTDOWN</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0025 - The integration service {0} in integration daemon {1} has completed shutdown</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#INVALID_CONTEXT_MANAGER" class="member-name-link">INVALID_CONTEXT_MANAGER</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0006 - The integration service {0} has been configured with a context manager class of {1}
+ which can not be used by the class loader.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NO_CONFIGURATION_LISTENER" class="member-name-link">NO_CONFIGURATION_LISTENER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0027 - The integration daemon services are unable to retrieve the connection for the configuration
+ listener for server {0} from metadata server {1}.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NO_INTEGRATION_CONNECTORS" class="member-name-link">NO_INTEGRATION_CONNECTORS</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0007 - The {0} integration service is configured without any integration connectors</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NO_INTEGRATION_GROUPS_CONFIGURED" class="member-name-link">NO_INTEGRATION_GROUPS_CONFIGURED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0018 - Integration daemon {0} is not configured with any integration groups</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NO_INTEGRATION_SERVICES_CONFIGURED" class="member-name-link">NO_INTEGRATION_SERVICES_CONFIGURED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0017 - Integration daemon {0} is not configured with any integration services</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NO_OMAS_SERVER_NAME" class="member-name-link">NO_OMAS_SERVER_NAME</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0004 - Integration service {0} is not configured with the name for the server running its partner OMAS {1}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NO_OMAS_SERVER_URL" class="member-name-link">NO_OMAS_SERVER_URL</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0003 - Integration service {0} is not configured with the platform URL root for its partner OMAS {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NO_PERMITTED_SYNCHRONIZATION" class="member-name-link">NO_PERMITTED_SYNCHRONIZATION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0014 - The integration service {0} does not have a default permitted synchronization value set.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NOT_INTEGRATION_CONNECTOR" class="member-name-link">NOT_INTEGRATION_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0010 - The connection for integration connector named {0} created a connector of class {1}
+ which does not implement the correct {2} interface</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NULL_CONTEXT_MANAGER" class="member-name-link">NULL_CONTEXT_MANAGER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0005 - The integration service {0} has been configured with a null context manager class in integration daemon {1}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#SERVER_INITIALIZED" class="member-name-link">SERVER_INITIALIZED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0013 - The integration daemon {0} has initialized</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#SERVER_INITIALIZING" class="member-name-link">SERVER_INITIALIZING</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0001 - The integration daemon services are initializing in server {0}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#SERVER_NOT_AUTHORIZED" class="member-name-link">SERVER_NOT_AUTHORIZED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0050 - Integration service {0} is not authorized to call its partner OMAS running in integration daemon {1} on OMAG Server Platform {2} with userId {3}.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#SERVER_SHUTDOWN" class="member-name-link">SERVER_SHUTDOWN</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0026 - The integration daemon {0} has completed shutdown</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#SERVER_SHUTTING_DOWN" class="member-name-link">SERVER_SHUTTING_DOWN</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0020 - The integration daemon {0} is shutting down</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#SERVICE_INSTANCE_FAILURE" class="member-name-link">SERVICE_INSTANCE_FAILURE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0012 - The integration daemon services are unable to initialize a new instance of integration daemon {0};
+ error message is {1}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#SERVICE_SHUTTING_DOWN" class="member-name-link">SERVICE_SHUTTING_DOWN</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0021 - The integration service {0} in integration daemon {1} is shutting down</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNKNOWN_CONNECTOR_INTERFACE" class="member-name-link">UNKNOWN_CONNECTOR_INTERFACE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0055 - Failed to start up integration connector {0} because its interface does not match to an integration
+ service connector interface that is supported by this server</div>
+</div>
 </div>
 </section>
 </li>
@@ -276,288 +377,344 @@ the order they are declared.</div>
 <section class="detail" id="SERVER_INITIALIZING">
 <h3>SERVER_INITIALIZING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">SERVER_INITIALIZING</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0001 - The integration daemon services are initializing in server {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INTEGRATION_SERVICE_INITIALIZING">
 <h3>INTEGRATION_SERVICE_INITIALIZING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">INTEGRATION_SERVICE_INITIALIZING</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0002 - The {0} is initializing in server {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_OMAS_SERVER_URL">
 <h3>NO_OMAS_SERVER_URL</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">NO_OMAS_SERVER_URL</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0003 - Integration service {0} is not configured with the platform URL root for its partner OMAS {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_OMAS_SERVER_NAME">
 <h3>NO_OMAS_SERVER_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">NO_OMAS_SERVER_NAME</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0004 - Integration service {0} is not configured with the name for the server running its partner OMAS {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_CONTEXT_MANAGER">
 <h3>NULL_CONTEXT_MANAGER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">NULL_CONTEXT_MANAGER</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0005 - The integration service {0} has been configured with a null context manager class in integration daemon {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_CONTEXT_MANAGER">
 <h3>INVALID_CONTEXT_MANAGER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">INVALID_CONTEXT_MANAGER</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0006 - The integration service {0} has been configured with a context manager class of {1}
+ which can not be used by the class loader.  The {2} exception was returned with message {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_INTEGRATION_CONNECTORS">
 <h3>NO_INTEGRATION_CONNECTORS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">NO_INTEGRATION_CONNECTORS</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0007 - The {0} integration service is configured without any integration connectors</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INTEGRATION_CONNECTOR_INITIALIZING">
 <h3>INTEGRATION_CONNECTOR_INITIALIZING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">INTEGRATION_CONNECTOR_INITIALIZING</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0008 - A new integration connector named {0} is initializing in integration service {1} running in integration daemon {2}, permitted synchronization is: {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BAD_INTEGRATION_CONNECTION">
 <h3>BAD_INTEGRATION_CONNECTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">BAD_INTEGRATION_CONNECTION</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0009 - A new integration connector named {0} failed to initialize in integration service {1}.
+ The exception returned was {2} with a message of {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NOT_INTEGRATION_CONNECTOR">
 <h3>NOT_INTEGRATION_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">NOT_INTEGRATION_CONNECTOR</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0010 - The connection for integration connector named {0} created a connector of class {1}
+ which does not implement the correct {2} interface</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INTEGRATION_SERVICE_INITIALIZED">
 <h3>INTEGRATION_SERVICE_INITIALIZED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">INTEGRATION_SERVICE_INITIALIZED</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0011 - The {0} integration service has completed its initialization in integration daemon {1}.
+ It is running {2} integration connector(s)</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVICE_INSTANCE_FAILURE">
 <h3>SERVICE_INSTANCE_FAILURE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_INSTANCE_FAILURE</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0012 - The integration daemon services are unable to initialize a new instance of integration daemon {0};
+ error message is {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVER_INITIALIZED">
 <h3>SERVER_INITIALIZED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">SERVER_INITIALIZED</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0013 - The integration daemon {0} has initialized</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_PERMITTED_SYNCHRONIZATION">
 <h3>NO_PERMITTED_SYNCHRONIZATION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">NO_PERMITTED_SYNCHRONIZATION</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0014 - The integration service {0} does not have a default permitted synchronization value set.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DAEMON_CONNECTOR_CONFIG_PROPS_UPDATE">
 <h3>DAEMON_CONNECTOR_CONFIG_PROPS_UPDATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">DAEMON_CONNECTOR_CONFIG_PROPS_UPDATE</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0015 - User {0} has updated the following configuration properties for the integration connector {1} in integration daemon {2}: {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DAEMON_CONNECTOR_CONFIG_PROPS_CLEARED">
 <h3>DAEMON_CONNECTOR_CONFIG_PROPS_CLEARED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">DAEMON_CONNECTOR_CONFIG_PROPS_CLEARED</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0016 - User {0} has cleared all the configuration properties for the integration connector {1} in integration daemon {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_INTEGRATION_SERVICES_CONFIGURED">
 <h3>NO_INTEGRATION_SERVICES_CONFIGURED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">NO_INTEGRATION_SERVICES_CONFIGURED</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0017 - Integration daemon {0} is not configured with any integration services</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_INTEGRATION_GROUPS_CONFIGURED">
 <h3>NO_INTEGRATION_GROUPS_CONFIGURED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">NO_INTEGRATION_GROUPS_CONFIGURED</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0018 - Integration daemon {0} is not configured with any integration groups</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONFIGURATION_LISTENER_REGISTERED">
 <h3>CONFIGURATION_LISTENER_REGISTERED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">CONFIGURATION_LISTENER_REGISTERED</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0019 - The integration daemon services has registered the configuration listener for server {0}.  It will receive configuration updates from metadata server {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVER_SHUTTING_DOWN">
 <h3>SERVER_SHUTTING_DOWN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">SERVER_SHUTTING_DOWN</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0020 - The integration daemon {0} is shutting down</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVICE_SHUTTING_DOWN">
 <h3>SERVICE_SHUTTING_DOWN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_SHUTTING_DOWN</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0021 - The integration service {0} in integration daemon {1} is shutting down</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONNECTOR_SHUTTING_DOWN">
 <h3>CONNECTOR_SHUTTING_DOWN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">CONNECTOR_SHUTTING_DOWN</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0022 - The integration connector {0} is shutting down</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONNECTOR_SHUTDOWN_FAILURE">
 <h3>CONNECTOR_SHUTDOWN_FAILURE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">CONNECTOR_SHUTDOWN_FAILURE</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0023 - The integration connector {0} reported an error on disconnect.  The exception was {1} with message {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INTEGRATION_CONNECTOR_SHUTDOWN">
 <h3>INTEGRATION_CONNECTOR_SHUTDOWN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">INTEGRATION_CONNECTOR_SHUTDOWN</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0024 - The integration connector {0} in integration service {1} has shutdown.  Statistics recorded were: {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INTEGRATION_SERVICE_SHUTDOWN">
 <h3>INTEGRATION_SERVICE_SHUTDOWN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">INTEGRATION_SERVICE_SHUTDOWN</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0025 - The integration service {0} in integration daemon {1} has completed shutdown</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVER_SHUTDOWN">
 <h3>SERVER_SHUTDOWN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">SERVER_SHUTDOWN</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0026 - The integration daemon {0} has completed shutdown</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_CONFIGURATION_LISTENER">
 <h3>NO_CONFIGURATION_LISTENER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">NO_CONFIGURATION_LISTENER</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0027 - The integration daemon services are unable to retrieve the connection for the configuration
+ listener for server {0} from metadata server {1}. Exception returned was {2} with error message {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INTEGRATION_GROUP_NO_CONFIG">
 <h3>INTEGRATION_GROUP_NO_CONFIG</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">INTEGRATION_GROUP_NO_CONFIG</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0028 - Failed to refresh configuration for integration group {0}.  The exception was {1} with error message {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONNECTOR_THREAD_STARTING">
 <h3>CONNECTOR_THREAD_STARTING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">CONNECTOR_THREAD_STARTING</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0030 - The dedicated thread for integration connector {0} has started in integration daemon {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONNECTOR_ERROR">
 <h3>CONNECTOR_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">CONNECTOR_ERROR</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0031 - The integration connector {0} method {1} has returned with a {2} exception containing message {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONNECTOR_FAILED">
 <h3>CONNECTOR_FAILED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">CONNECTOR_FAILED</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0032 - The integration connector {0} method {1} has not been called because it previously
+ returned with a {2} exception containing message {4}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ENGAGE_RETURNED">
 <h3>ENGAGE_RETURNED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">ENGAGE_RETURNED</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0034 - The integration connector {0} has returned from the "engage()" method in integration daemon {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONNECTOR_THREAD_TERMINATING">
 <h3>CONNECTOR_THREAD_TERMINATING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">CONNECTOR_THREAD_TERMINATING</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0035 - The dedicated thread for integration connector {0} is terminating in integration daemon {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INITIALIZE_ERROR">
 <h3>INITIALIZE_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">INITIALIZE_ERROR</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0036 - The integration service {0} method {1} has returned with a {2} exception containing message {3} when attempting to connect to the associated metadata access server</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONFIG_ERROR">
 <h3>CONFIG_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">CONFIG_ERROR</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0037 - The integration service {0} method {1} has returned with a {2} exception containing message {3} when attempting to create and initialize a connector</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DAEMON_THREAD_STARTING">
 <h3>DAEMON_THREAD_STARTING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">DAEMON_THREAD_STARTING</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0040 - The integration daemon thread for integration daemon {0} has started</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DAEMON_CONNECTOR_FIRST_REFRESH">
 <h3>DAEMON_CONNECTOR_FIRST_REFRESH</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">DAEMON_CONNECTOR_FIRST_REFRESH</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0041 - The integration daemon thread is refreshing integration connector {0} for the first time in the {1} integration daemon instance</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DAEMON_CONNECTOR_REFRESH">
 <h3>DAEMON_CONNECTOR_REFRESH</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">DAEMON_CONNECTOR_REFRESH</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0042 - The integration daemon thread is refreshing integration connector {0} in integration daemon {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DAEMON_CONNECTOR_REFRESH_COMPLETE">
 <h3>DAEMON_CONNECTOR_REFRESH_COMPLETE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">DAEMON_CONNECTOR_REFRESH_COMPLETE</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0043 - The integration connector {0} in integration daemon {1} has completed refresh processing in {2} millisecond(s)</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DAEMON_THREAD_TERMINATING">
 <h3>DAEMON_THREAD_TERMINATING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">DAEMON_THREAD_TERMINATING</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0044 - The integration daemon thread for integration daemon {0} is shutting down</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DAEMON_THREAD_CONNECTOR_ERROR">
 <h3>DAEMON_THREAD_CONNECTOR_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">DAEMON_THREAD_CONNECTOR_ERROR</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0045 - The integration daemon thread for integration daemon {0} caught a {1} exception from an integration connector containing message {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVER_NOT_AUTHORIZED">
 <h3>SERVER_NOT_AUTHORIZED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">SERVER_NOT_AUTHORIZED</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0050 - Integration service {0} is not authorized to call its partner OMAS running in integration daemon {1} on OMAG Server Platform {2} with userId {3}.  The error message was: {4}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CLEARING_ALL_INTEGRATION_CONNECTOR_CONFIG">
 <h3>CLEARING_ALL_INTEGRATION_CONNECTOR_CONFIG</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">CLEARING_ALL_INTEGRATION_CONNECTOR_CONFIG</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0051 - All integration connector configuration is being refreshed for integration group {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="GROUP_SHUTDOWN">
 <h3>GROUP_SHUTDOWN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">GROUP_SHUTDOWN</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0052 - The integration group {0} in server {1} is shutting down</div>
 </section>
 </li>
 <li>
 <section class="detail" id="GROUP_CHANGE_FAILED">
 <h3>GROUP_CHANGE_FAILED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">GROUP_CHANGE_FAILED</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0053 - Failed to process a change to integration group {0}.  The exception was {1} with error message {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONNECTOR_CHANGE_FAILED">
 <h3>CONNECTOR_CHANGE_FAILED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">CONNECTOR_CHANGE_FAILED</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0054 - Failed to process a change to integration connector {0}.  The exception was {1} with error message {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNKNOWN_CONNECTOR_INTERFACE">
 <h3>UNKNOWN_CONNECTOR_INTERFACE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">UNKNOWN_CONNECTOR_INTERFACE</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0055 - Failed to start up integration connector {0} because its interface does not match to an integration
+ service connector interface that is supported by this server</div>
 </section>
 </li>
 <li>
 <section class="detail" id="FINISHED_ALL_INTEGRATION_CONNECTOR_CONFIG">
 <h3>FINISHED_ALL_INTEGRATION_CONNECTOR_CONFIG</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">FINISHED_ALL_INTEGRATION_CONNECTOR_CONFIG</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0056 - Refresh of all integration connector configuration has being completed for integration group {0}</div>
 </section>
 </li>
 </ul>

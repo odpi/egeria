@@ -87,7 +87,6 @@ loadScripts(document, 'script');</script>
 implements <a href="../../auditlog/messagesets/ExceptionMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageSet</a></span></div>
 <div class="block">The OCF error code is used to define first failure data capture (FFDC) for errors that occur when working with
  OCF Connectors.  It is used in conjunction with all OCF Exceptions, both Checked and Runtime (unchecked).
-
  The 5 fields in the enum are:
  <ul>
      <li>HTTP Error Code for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -97,7 +96,7 @@ implements <a href="../../auditlog/messagesets/ExceptionMessageSet.html" title="
          <li>404 - not found</li>
          <li>409 - data conflict errors - eg item already defined</li>
      </ul></li>
-     <li>Error Message Id - to uniquely identify the message</li>
+     <li>Error Message Identifier - to uniquely identify the message</li>
      <li>Error Message Text - includes placeholder to allow additional values to be captured</li>
      <li>SystemAction - describes the result of the error</li>
      <li>UserAction - describes how a user should correct the error</li>
@@ -123,77 +122,149 @@ implements <a href="../../auditlog/messagesets/ExceptionMessageSet.html" title="
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#ALREADY_COUNTER_NAME" class="member-name-link">ALREADY_COUNTER_NAME</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OCF-STATISTICS-400-001 - The {0} is already in use as a counter statistic and can not be used by the {1} method to {2}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#ALREADY_PROPERTY_NAME" class="member-name-link">ALREADY_PROPERTY_NAME</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OCF-STATISTICS-400-002 - The {0} is already in use as a property statistic and can not be used by the {1} method to {2}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#ALREADY_TIMESTAMP_NAME" class="member-name-link">ALREADY_TIMESTAMP_NAME</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OCF-STATISTICS-400-003 - The {0} is already in use as a timestamp statistic and can not be used by the {1} method to {2}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#CAUGHT_EXCEPTION" class="member-name-link">CAUGHT_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#CAUGHT_EXCEPTION_WITHMSG" class="member-name-link">CAUGHT_EXCEPTION_WITHMSG</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OCF-CONNECTION-500-001 - OCF method detected an unexpected exception</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#CAUGHT_EXCEPTION_WITH_MSG" class="member-name-link">CAUGHT_EXCEPTION_WITH_MSG</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OCF-CONNECTION-500-002 - OCF method {0} detected an unexpected exception, message was {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#INCOMPLETE_CONNECTOR" class="member-name-link">INCOMPLETE_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OCF-CONNECTOR-500-009 - Unable to load Connector Java class {0}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#INTERNAL_ERROR" class="member-name-link">INTERNAL_ERROR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OCF-CONNECTION-500-005 - Internal error in OCF method {0}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#INVALID_CONNECTOR" class="member-name-link">INVALID_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OCF-CONNECTION-500-010 - Invalid Connector class {0} for connector {1}; resulting exception {2} produced message {3}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#INVALID_CONNECTOR_PROVIDER" class="member-name-link">INVALID_CONNECTOR_PROVIDER</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OCF-CONNECTION-400-008 - Connector Provider class {0} passed in connection {1} resulted in a {2} exception with error message of {3}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#INVALID_PROPERTY_NAMES" class="member-name-link">INVALID_PROPERTY_NAMES</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OCF-PROPERTIES-400-012 - Non-string property names stored in entity {0} of type {1}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#INVALID_VIRTUAL_CONNECTION" class="member-name-link">INVALID_VIRTUAL_CONNECTION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OCF-PROPERTIES-400-019 - Virtual connection {0} has no embedded connections</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#MALFORMED_ENDPOINT" class="member-name-link">MALFORMED_ENDPOINT</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OCF-CONNECTION-400-010 - The endpoint attribute {0} in connection {1} is set to "{2}" which is invalid</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NO_ITERATOR" class="member-name-link">NO_ITERATOR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OCF-PROPERTIES-400-015 - No type-specific iterator for {0} paging iterator</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NO_MORE_ELEMENTS" class="member-name-link">NO_MORE_ELEMENTS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OCF-PROPERTIES-400-014 - No more elements in {0} iterator</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NOT_CONNECTOR" class="member-name-link">NOT_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OCF-CONNECTOR-500-008 - Java class {0} for connector named {1} does not implement the Connector interface</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NOT_CONNECTOR_PROVIDER" class="member-name-link">NOT_CONNECTOR_PROVIDER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OCF-CONNECTION-400-006 - Class {0} passed in connection {1} is not a Connector Provider</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NOT_IMPLEMENTED" class="member-name-link">NOT_IMPLEMENTED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OCF-CONNECTION-500-003 - OCF method {0} not yet implemented</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NOT_VIRTUAL_CONNECTOR" class="member-name-link">NOT_VIRTUAL_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OCF-CONNECTOR-500-012 - Java class {0} is not a VirtualConnector and so can not support VirtualConnection {1}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_CLASSIFICATION_NAME" class="member-name-link">NULL_CLASSIFICATION_NAME</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OCF-PROPERTIES-400-016 - No classification name for entity {0} of type {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NULL_CONNECTION" class="member-name-link">NULL_CONNECTION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OCF-CONNECTION-400-001 - Null connection object passed on request for new connector instance</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_CONNECTOR" class="member-name-link">NULL_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OCF-CONNECTION-500-011 - Connector Provider {0} returned a null connector instance for connection {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NULL_CONNECTOR_CLASS" class="member-name-link">NULL_CONNECTOR_CLASS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OCF-CONNECTOR-500-006 - The class name for the connector is not set up</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_CONNECTOR_PROVIDER" class="member-name-link">NULL_CONNECTOR_PROVIDER</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OCF-CONNECTION-400-004 - Null Connector Provider passed in connection {0}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NULL_CONNECTOR_TYPE" class="member-name-link">NULL_CONNECTOR_TYPE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OCF-CONNECTION-400-003 - Null connectorType property passed in connection {0}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_ENDPOINT_IN_CONNECTION" class="member-name-link">NULL_ENDPOINT_IN_CONNECTION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OCF-CONNECTION-400-009 - Null endpoint detected in connection {0}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NULL_PROPERTY_NAME" class="member-name-link">NULL_PROPERTY_NAME</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OCF-PROPERTIES-400-011 - Null property name passed to entity {0} of type {1}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_SECURED_PROPERTY_NAME" class="member-name-link">NULL_SECURED_PROPERTY_NAME</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OCF-PROPERTIES-400-013 - Null securedProperty name passed to connection {0}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NULL_TAG_NAME" class="member-name-link">NULL_TAG_NAME</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OCF-PROPERTIES-400-017 - No tag name for entity {0} of type {1}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#PROPERTIES_NOT_AVAILABLE" class="member-name-link">PROPERTIES_NOT_AVAILABLE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OCF-PROPERTIES-404-002 - Exception with error message "{0}" was returned to object {1} resulted from a request for connected asset properties</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNABLE_TO_REMOVE" class="member-name-link">UNABLE_TO_REMOVE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OCF-PROPERTIES-400-018 - Unable to remove element through iterator {0}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNKNOWN_CONNECTOR" class="member-name-link">UNKNOWN_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OCF-CONNECTOR-500-007 - Unknown Connector Java class {0} for Connector {1}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNKNOWN_CONNECTOR_PROVIDER" class="member-name-link">UNKNOWN_CONNECTOR_PROVIDER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OCF-CONNECTION-400-005 - Unknown Connector Provider class {0} passed in connection {1}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNKNOWN_ENDPOINT" class="member-name-link">UNKNOWN_ENDPOINT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OCF-CONNECTOR-404-001 - Endpoint {0} in connection {1} for connector instance {2} is either unknown or unavailable</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNKNOWN_ERROR" class="member-name-link">UNKNOWN_ERROR</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OCF-CONNECTION-500-004 - Connection error detected</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNKNOWN_SCHEMA_TYPE" class="member-name-link">UNKNOWN_SCHEMA_TYPE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OCF-PROPERTIES-404-003 - {0} retrieved a schema attribute of type {1} which does not have an associated schema type.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNNAMED_CONNECTION" class="member-name-link">UNNAMED_CONNECTION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OCF-CONNECTION-400-002 - Unnamed connection object passed to requested action {0}</div>
+</div>
 </div>
 </section>
 </li>
@@ -283,216 +354,252 @@ the order they are declared.</div>
 <section class="detail" id="NULL_CONNECTION">
 <h3>NULL_CONNECTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">NULL_CONNECTION</span></div>
+<div class="block">OCF-CONNECTION-400-001 - Null connection object passed on request for new connector instance</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNNAMED_CONNECTION">
 <h3>UNNAMED_CONNECTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">UNNAMED_CONNECTION</span></div>
+<div class="block">OCF-CONNECTION-400-002 - Unnamed connection object passed to requested action {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_CONNECTOR_TYPE">
 <h3>NULL_CONNECTOR_TYPE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">NULL_CONNECTOR_TYPE</span></div>
+<div class="block">OCF-CONNECTION-400-003 - Null connectorType property passed in connection {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_CONNECTOR_PROVIDER">
 <h3>NULL_CONNECTOR_PROVIDER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">NULL_CONNECTOR_PROVIDER</span></div>
+<div class="block">OCF-CONNECTION-400-004 - Null Connector Provider passed in connection {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNKNOWN_CONNECTOR_PROVIDER">
 <h3>UNKNOWN_CONNECTOR_PROVIDER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_CONNECTOR_PROVIDER</span></div>
+<div class="block">OCF-CONNECTION-400-005 - Unknown Connector Provider class {0} passed in connection {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NOT_CONNECTOR_PROVIDER">
 <h3>NOT_CONNECTOR_PROVIDER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">NOT_CONNECTOR_PROVIDER</span></div>
+<div class="block">OCF-CONNECTION-400-006 - Class {0} passed in connection {1} is not a Connector Provider</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_CONNECTOR_PROVIDER">
 <h3>INVALID_CONNECTOR_PROVIDER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">INVALID_CONNECTOR_PROVIDER</span></div>
+<div class="block">OCF-CONNECTION-400-008 - Connector Provider class {0} passed in connection {1} resulted in a {2} exception with error message of {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_ENDPOINT_IN_CONNECTION">
 <h3>NULL_ENDPOINT_IN_CONNECTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">NULL_ENDPOINT_IN_CONNECTION</span></div>
+<div class="block">OCF-CONNECTION-400-009 - Null endpoint detected in connection {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="MALFORMED_ENDPOINT">
 <h3>MALFORMED_ENDPOINT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">MALFORMED_ENDPOINT</span></div>
+<div class="block">OCF-CONNECTION-400-010 - The endpoint attribute {0} in connection {1} is set to "{2}" which is invalid</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_PROPERTY_NAME">
 <h3>NULL_PROPERTY_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">NULL_PROPERTY_NAME</span></div>
+<div class="block">OCF-PROPERTIES-400-011 - Null property name passed to entity {0} of type {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_PROPERTY_NAMES">
 <h3>INVALID_PROPERTY_NAMES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">INVALID_PROPERTY_NAMES</span></div>
+<div class="block">OCF-PROPERTIES-400-012 - Non-string property names stored in entity {0} of type {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_SECURED_PROPERTY_NAME">
 <h3>NULL_SECURED_PROPERTY_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">NULL_SECURED_PROPERTY_NAME</span></div>
+<div class="block">OCF-PROPERTIES-400-013 - Null securedProperty name passed to connection {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_MORE_ELEMENTS">
 <h3>NO_MORE_ELEMENTS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">NO_MORE_ELEMENTS</span></div>
+<div class="block">OCF-PROPERTIES-400-014 - No more elements in {0} iterator</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_ITERATOR">
 <h3>NO_ITERATOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">NO_ITERATOR</span></div>
+<div class="block">OCF-PROPERTIES-400-015 - No type-specific iterator for {0} paging iterator</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_CLASSIFICATION_NAME">
 <h3>NULL_CLASSIFICATION_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">NULL_CLASSIFICATION_NAME</span></div>
+<div class="block">OCF-PROPERTIES-400-016 - No classification name for entity {0} of type {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_TAG_NAME">
 <h3>NULL_TAG_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">NULL_TAG_NAME</span></div>
+<div class="block">OCF-PROPERTIES-400-017 - No tag name for entity {0} of type {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNABLE_TO_REMOVE">
 <h3>UNABLE_TO_REMOVE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_REMOVE</span></div>
+<div class="block">OCF-PROPERTIES-400-018 - Unable to remove element through iterator {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_VIRTUAL_CONNECTION">
 <h3>INVALID_VIRTUAL_CONNECTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">INVALID_VIRTUAL_CONNECTION</span></div>
+<div class="block">OCF-PROPERTIES-400-019 - Virtual connection {0} has no embedded connections</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ALREADY_COUNTER_NAME">
 <h3>ALREADY_COUNTER_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">ALREADY_COUNTER_NAME</span></div>
+<div class="block">OCF-STATISTICS-400-001 - The {0} is already in use as a counter statistic and can not be used by the {1} method to {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ALREADY_PROPERTY_NAME">
 <h3>ALREADY_PROPERTY_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">ALREADY_PROPERTY_NAME</span></div>
+<div class="block">OCF-STATISTICS-400-002 - The {0} is already in use as a property statistic and can not be used by the {1} method to {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ALREADY_TIMESTAMP_NAME">
 <h3>ALREADY_TIMESTAMP_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">ALREADY_TIMESTAMP_NAME</span></div>
+<div class="block">OCF-STATISTICS-400-003 - The {0} is already in use as a timestamp statistic and can not be used by the {1} method to {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNKNOWN_ENDPOINT">
 <h3>UNKNOWN_ENDPOINT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_ENDPOINT</span></div>
+<div class="block">OCF-CONNECTOR-404-001 - Endpoint {0} in connection {1} for connector instance {2} is either unknown or unavailable</div>
 </section>
 </li>
 <li>
 <section class="detail" id="PROPERTIES_NOT_AVAILABLE">
 <h3>PROPERTIES_NOT_AVAILABLE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">PROPERTIES_NOT_AVAILABLE</span></div>
+<div class="block">OCF-PROPERTIES-404-002 - Exception with error message "{0}" was returned to object {1} resulted from a request for connected asset properties</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNKNOWN_SCHEMA_TYPE">
 <h3>UNKNOWN_SCHEMA_TYPE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_SCHEMA_TYPE</span></div>
+<div class="block">OCF-PROPERTIES-404-003 - {0} retrieved a schema attribute of type {1} which does not have an associated schema type.  The schema attribute is from metadata collection {2} ({3})</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CAUGHT_EXCEPTION">
 <h3>CAUGHT_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">CAUGHT_EXCEPTION</span></div>
+<div class="block">OCF-CONNECTION-500-001 - OCF method detected an unexpected exception</div>
 </section>
 </li>
 <li>
-<section class="detail" id="CAUGHT_EXCEPTION_WITHMSG">
-<h3>CAUGHT_EXCEPTION_WITHMSG</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">CAUGHT_EXCEPTION_WITHMSG</span></div>
+<section class="detail" id="CAUGHT_EXCEPTION_WITH_MSG">
+<h3>CAUGHT_EXCEPTION_WITH_MSG</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">CAUGHT_EXCEPTION_WITH_MSG</span></div>
+<div class="block">OCF-CONNECTION-500-002 - OCF method {0} detected an unexpected exception, message was {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NOT_IMPLEMENTED">
 <h3>NOT_IMPLEMENTED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">NOT_IMPLEMENTED</span></div>
+<div class="block">OCF-CONNECTION-500-003 - OCF method {0} not yet implemented</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNKNOWN_ERROR">
 <h3>UNKNOWN_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_ERROR</span></div>
+<div class="block">OCF-CONNECTION-500-004 - Connection error detected</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INTERNAL_ERROR">
 <h3>INTERNAL_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">INTERNAL_ERROR</span></div>
+<div class="block">OCF-CONNECTION-500-005 - Internal error in OCF method {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_CONNECTOR_CLASS">
 <h3>NULL_CONNECTOR_CLASS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">NULL_CONNECTOR_CLASS</span></div>
+<div class="block">OCF-CONNECTOR-500-006 - The class name for the connector is not set up</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNKNOWN_CONNECTOR">
 <h3>UNKNOWN_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_CONNECTOR</span></div>
+<div class="block">OCF-CONNECTOR-500-007 - Unknown Connector Java class {0} for Connector {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NOT_CONNECTOR">
 <h3>NOT_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">NOT_CONNECTOR</span></div>
+<div class="block">OCF-CONNECTOR-500-008 - Java class {0} for connector named {1} does not implement the Connector interface</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INCOMPLETE_CONNECTOR">
 <h3>INCOMPLETE_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">INCOMPLETE_CONNECTOR</span></div>
+<div class="block">OCF-CONNECTOR-500-009 - Unable to load Connector Java class {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_CONNECTOR">
 <h3>INVALID_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">INVALID_CONNECTOR</span></div>
+<div class="block">OCF-CONNECTION-500-010 - Invalid Connector class {0} for connector {1}; resulting exception {2} produced message {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_CONNECTOR">
 <h3>NULL_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">NULL_CONNECTOR</span></div>
+<div class="block">OCF-CONNECTION-500-011 - Connector Provider {0} returned a null connector instance for connection {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NOT_VIRTUAL_CONNECTOR">
 <h3>NOT_VIRTUAL_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">NOT_VIRTUAL_CONNECTOR</span></div>
+<div class="block">OCF-CONNECTOR-500-012 - Java class {0} is not a VirtualConnector and so can not support VirtualConnection {1}</div>
 </section>
 </li>
 </ul>

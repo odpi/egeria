@@ -817,6 +817,7 @@ org.odpi.openmetadata.samples.archiveutilities
 org.odpi.openmetadata.samples.governanceengine
 org.odpi.openmetadata.samples.governanceengine.discoveryservices
 org.odpi.openmetadata.serverchassis.springboot
+org.odpi.openmetadata.serverchassis.springboot.config
 org.odpi.openmetadata.test.unittest.utilities
 org.odpi.openmetadata.userinterface.uichassis.springboot
 org.odpi.openmetadata.userinterface.uichassis.springboot.api

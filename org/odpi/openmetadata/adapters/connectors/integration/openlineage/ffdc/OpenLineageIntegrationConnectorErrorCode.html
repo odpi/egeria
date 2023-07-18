@@ -87,7 +87,6 @@ loadScripts(document, 'script');</script>
 implements <a href="../../../../../frameworks/auditlog/messagesets/ExceptionMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageSet</a></span></div>
 <div class="block">The OpenLineageIntegrationConnectorErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  the Kafka monitor integration connector.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
-
  The 5 fields in the enum are:
  <ul>
      <li>HTTP Error Code - for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -97,7 +96,7 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/ExceptionMess
          <li>404 - not found</li>
          <li>409 - data conflict errors - eg item already defined</li>
      </ul></li>
-     <li>Error Message Id - to uniquely identify the message</li>
+     <li>Error Message Identifier - to uniquely identify the message</li>
      <li>Error Message Text - includes placeholder to allow additional values to be captured</li>
      <li>SystemAction - describes the result of the error</li>
      <li>UserAction - describes how a consumer should correct the error</li>
@@ -123,9 +122,13 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/ExceptionMess
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#NO_RAW_EVENT" class="member-name-link">NO_RAW_EVENT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-500-002 - The {0} integration connector received a null raw open lineage event in method {1} when working with open lineage events</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-500-001 - The {0} integration connector received an unexpected {1} exception in method {2} when working with open lineage events; the error message was: {3}</div>
+</div>
 </div>
 </section>
 </li>
@@ -190,12 +193,14 @@ the order they are declared.</div>
 <section class="detail" id="UNEXPECTED_EXCEPTION">
 <h3>UNEXPECTED_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenLineageIntegrationConnectorErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc">OpenLineageIntegrationConnectorErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXCEPTION</span></div>
+<div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-500-001 - The {0} integration connector received an unexpected {1} exception in method {2} when working with open lineage events; the error message was: {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NO_RAW_EVENT">
 <h3>NO_RAW_EVENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenLineageIntegrationConnectorErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc">OpenLineageIntegrationConnectorErrorCode</a></span>&nbsp;<span class="element-name">NO_RAW_EVENT</span></div>
+<div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-500-002 - The {0} integration connector received a null raw open lineage event in method {1} when working with open lineage events</div>
 </section>
 </li>
 </ul>

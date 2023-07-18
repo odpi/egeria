@@ -40,7 +40,7 @@ loadScripts(document, 'script');</script>
 <div>
 <ul class="sub-nav-list">
 <li>Package:&nbsp;</li>
-<li>Description&nbsp;|&nbsp;</li>
+<li><a href="#package-description">Description</a>&nbsp;|&nbsp;</li>
 <li><a href="#related-package-summary">Related Packages</a>&nbsp;|&nbsp;</li>
 <li><a href="#class-summary">Classes and Interfaces</a></li>
 </ul>
@@ -60,6 +60,18 @@ loadScripts(document, 'script');</script>
 </div>
 <hr>
 <div class="package-signature">package <span class="element-name">org.odpi.openmetadata.adminservices.registration</span></div>
+<section class="package-description" id="package-description">
+<div class="block">The registration package provides the definitions and interfaces to describe each of the Open Metadata
+ Access Services and View Services and enable them to register with the admin services.  The admin services then
+ call the registered access services at start up and shutdown of a server instance if it is
+ configured in the server instance's configuration document.
+
+ AccessServiceAdmin is the API that each access service implements. It is called to initialize and shutdown
+ the access service.
+
+ ViewServiceAdmin is the API that each view service implements. It is called to initialize and shutdown
+ the view service.</div>
+</section>
 <section class="summary">
 <ul class="summary-list">
 <li>

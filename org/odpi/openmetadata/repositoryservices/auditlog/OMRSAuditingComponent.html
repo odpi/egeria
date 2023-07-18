@@ -85,7 +85,7 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">OMRSAuditingComponent</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a>&gt;
 implements <a href="../../frameworks/auditlog/ComponentDescription.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">ComponentDescription</a></span></div>
-<div class="block">OMRSAuditingComponent provides identifying and background information about the components writing log records
+<div class="block">OMRSAuditingComponent provides identifying and background information about the many of the core components writing log records
  to the OMRS Audit log.  This is to help a consumer understand the OMRS Audit Log records.</div>
 </section>
 <section class="summary">
@@ -108,71 +108,142 @@ implements <a href="../../frameworks/auditlog/ComponentDescription.html" title="
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#ARCHIVE_MANAGER" class="member-name-link">ARCHIVE_MANAGER</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Archive Manager - Supports the platform services for the Open Metadata Repository Services (OMRS).</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#ARCHIVE_STORE_CONNECTOR" class="member-name-link">ARCHIVE_STORE_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Open Metadata Archive Store Connector - Reads and writes open metadata types and instances to an open metadata archive.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#AUDIT_LOG" class="member-name-link">AUDIT_LOG</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Audit Log - Reads and writes records to the Open Metadata Repository Services (OMRS) audit log.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#COHORT_MANAGER" class="member-name-link">COHORT_MANAGER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Cohort Manager - Manages the initialization and shutdown of the server's connectivity to a cohort.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#COHORT_REGISTRY" class="member-name-link">COHORT_REGISTRY</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Cohort Registry - Manages the registration requests send and received from this local repository.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#ENTERPRISE_CONNECTOR_MANAGER" class="member-name-link">ENTERPRISE_CONNECTOR_MANAGER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Enterprise Connector Manager - Manages the list of open metadata repositories that the Enterprise OMRS Repository Connector
+ should call to retrieve an enterprise view of the metadata collections supported by these repositories.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#ENTERPRISE_REPOSITORY_CONNECTOR" class="member-name-link">ENTERPRISE_REPOSITORY_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Enterprise Repository Connector - Supports enterprise access to the list of open metadata repositories registered with the OMRS Enterprise Connector Manager.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#ENTERPRISE_TOPIC_LISTENER" class="member-name-link">ENTERPRISE_TOPIC_LISTENER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Enterprise Topic Listener - Receives events from the open metadata repository cohorts that this server is registered with and distributes
+ them to the Open Metadata Access Services (OMASs).</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#EVENT_LISTENER" class="member-name-link">EVENT_LISTENER</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Event Listener - Manages the receipt of incoming OMRS events.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#EVENT_PUBLISHER" class="member-name-link">EVENT_PUBLISHER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Event Publisher - Manages the publishing of events that this repository sends to the OMRS topic.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#GOVERNANCE_ACTION_SERVICE_CONNECTOR" class="member-name-link">GOVERNANCE_ACTION_SERVICE_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Governance Action Service Connector - A connector that coordinates governance of digital resources and metadata.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#INSTANCE_EVENT_PROCESSOR" class="member-name-link">INSTANCE_EVENT_PROCESSOR</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Local Inbound Instance Event Processor - Supports the loading of reference metadata into the local repository that has come from other
+ members of the local server's cohorts and open metadata archives.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#INTEGRATION_CONNECTOR" class="member-name-link">INTEGRATION_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Integration Connector - Connector that manages metadata exchange with a third-party technology.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#LOCAL_REPOSITORY_CONNECTOR" class="member-name-link">LOCAL_REPOSITORY_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Local Repository Connector - Supports access to metadata stored in the local server's repository and ensures repository events are generated when metadata changes in the local repository.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#LOCAL_REPOSITORY_EVENT_MAPPER" class="member-name-link">LOCAL_REPOSITORY_EVENT_MAPPER</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Local Repository Event Mapper Connector - Provides access to an event bus to process events from a specific local repository.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#METADATA_HIGHWAY_MANAGER" class="member-name-link">METADATA_HIGHWAY_MANAGER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Metadata Highway Manager - Manages the initialization and shutdown of the components that connector to each of the cohorts that the local server is a member of.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#OMAS_IN_TOPIC" class="member-name-link">OMAS_IN_TOPIC</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Open Metadata Access Service (OMAS) In Topic - Receives events from external servers and tools directed at a specific access service.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#OMAS_OUT_TOPIC" class="member-name-link">OMAS_OUT_TOPIC</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Open Metadata Access Service (OMAS) Out Topic - Publishes events from a specific access service.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#OMRS_TOPIC_CONNECTOR" class="member-name-link">OMRS_TOPIC_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMRS Topic Connector - Provides access to the OMRS Topic that is used to exchange events between members of a cohort,
+ or to notify Open Metadata Access Services (OMASs) of changes to metadata in the enterprise.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#OPEN_DISCOVERY_SERVICE_CONNECTOR" class="member-name-link">OPEN_DISCOVERY_SERVICE_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Open Discovery Service Connector - A connector that analyzing the contents of a digital resource.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#OPEN_METADATA_TOPIC_CONNECTOR" class="member-name-link">OPEN_METADATA_TOPIC_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Open Metadata Topic Connector - Provides access to an event bus to exchange events with participants in the open metadata ecosystem.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#OPERATIONAL_SERVICES" class="member-name-link">OPERATIONAL_SERVICES</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Operational Services - Supports the administration services for the Open Metadata Repository Services (OMRS).</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#PLATFORM_SECURITY_CONNECTOR" class="member-name-link">PLATFORM_SECURITY_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Platform Metadata Security Connector - Connector that manages authorization requests to the OMAG Server Platform.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#REGISTRY_STORE" class="member-name-link">REGISTRY_STORE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Registry Store - Stores information about the repositories registered in the open metadata repository cohort.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#REMOTE_REPOSITORY_CONNECTOR" class="member-name-link">REMOTE_REPOSITORY_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Cohort Member Client Open Metadata Repository Connector - Provides access to open metadata located in a remote repository for remote members of a cohort.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#REPOSITORY_CONNECTOR" class="member-name-link">REPOSITORY_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMRS Repository Connector - Maps open metadata calls to a metadata repository.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#REPOSITORY_CONTENT_MANAGER" class="member-name-link">REPOSITORY_CONTENT_MANAGER</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Repository Content Manager - Supports an in-memory cache for open metadata type definitions (TypeDefs) used for verifying TypeDefs in use
+ in other open metadata repositories and for constructing new metadata instances.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#REPOSITORY_EVENT_MANAGER" class="member-name-link">REPOSITORY_EVENT_MANAGER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Repository Event Manager - Distribute repository events (TypeDefs, Entity and Instance events) between internal OMRS components within a server.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#REPOSITORY_GOVERNANCE_SERVICE_CONNECTOR" class="member-name-link">REPOSITORY_GOVERNANCE_SERVICE_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Repository Governance Service Connector - A connector that dynamically governs the activity of the open metadata repositories.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#REST_REPOSITORY_CONNECTOR" class="member-name-link">REST_REPOSITORY_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">REST Repository Connector - Supports an OMRS Repository Connector for calling the OMRS Repository REST API in a remote open metadata repository.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#REST_SERVICES" class="member-name-link">REST_SERVICES</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Repository REST Services - Provides the server-side support of the OMRS Repository Services REST API.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#SERVER_SECURITY_CONNECTOR" class="member-name-link">SERVER_SECURITY_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Server Metadata Security Connector - Connector that manages authorization requests to the OMAG Server.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNKNOWN" class="member-name-link">UNKNOWN</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Unknown - Uninitialized component name</div>
+</div>
 </div>
 </section>
 </li>
@@ -252,198 +323,236 @@ the order they are declared.</div>
 <section class="detail" id="UNKNOWN">
 <h3>UNKNOWN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">UNKNOWN</span></div>
+<div class="block">Unknown - Uninitialized component name</div>
 </section>
 </li>
 <li>
 <section class="detail" id="AUDIT_LOG">
 <h3>AUDIT_LOG</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">AUDIT_LOG</span></div>
+<div class="block">Audit Log - Reads and writes records to the Open Metadata Repository Services (OMRS) audit log.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OPERATIONAL_SERVICES">
 <h3>OPERATIONAL_SERVICES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">OPERATIONAL_SERVICES</span></div>
+<div class="block">Operational Services - Supports the administration services for the Open Metadata Repository Services (OMRS).</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ARCHIVE_MANAGER">
 <h3>ARCHIVE_MANAGER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">ARCHIVE_MANAGER</span></div>
+<div class="block">Archive Manager - Supports the platform services for the Open Metadata Repository Services (OMRS).</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ENTERPRISE_CONNECTOR_MANAGER">
 <h3>ENTERPRISE_CONNECTOR_MANAGER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">ENTERPRISE_CONNECTOR_MANAGER</span></div>
+<div class="block">Enterprise Connector Manager - Manages the list of open metadata repositories that the Enterprise OMRS Repository Connector
+ should call to retrieve an enterprise view of the metadata collections supported by these repositories.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ENTERPRISE_REPOSITORY_CONNECTOR">
 <h3>ENTERPRISE_REPOSITORY_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">ENTERPRISE_REPOSITORY_CONNECTOR</span></div>
+<div class="block">Enterprise Repository Connector - Supports enterprise access to the list of open metadata repositories registered with the OMRS Enterprise Connector Manager.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="LOCAL_REPOSITORY_CONNECTOR">
 <h3>LOCAL_REPOSITORY_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">LOCAL_REPOSITORY_CONNECTOR</span></div>
+<div class="block">Local Repository Connector - Supports access to metadata stored in the local server's repository and ensures repository events are generated when metadata changes in the local repository.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="REPOSITORY_CONTENT_MANAGER">
 <h3>REPOSITORY_CONTENT_MANAGER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">REPOSITORY_CONTENT_MANAGER</span></div>
+<div class="block">Repository Content Manager - Supports an in-memory cache for open metadata type definitions (TypeDefs) used for verifying TypeDefs in use
+ in other open metadata repositories and for constructing new metadata instances.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INSTANCE_EVENT_PROCESSOR">
 <h3>INSTANCE_EVENT_PROCESSOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">INSTANCE_EVENT_PROCESSOR</span></div>
+<div class="block">Local Inbound Instance Event Processor - Supports the loading of reference metadata into the local repository that has come from other
+ members of the local server's cohorts and open metadata archives.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="REPOSITORY_EVENT_MANAGER">
 <h3>REPOSITORY_EVENT_MANAGER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">REPOSITORY_EVENT_MANAGER</span></div>
+<div class="block">Repository Event Manager - Distribute repository events (TypeDefs, Entity and Instance events) between internal OMRS components within a server.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="REST_SERVICES">
 <h3>REST_SERVICES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">REST_SERVICES</span></div>
+<div class="block">Repository REST Services - Provides the server-side support of the OMRS Repository Services REST API.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="REST_REPOSITORY_CONNECTOR">
 <h3>REST_REPOSITORY_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">REST_REPOSITORY_CONNECTOR</span></div>
+<div class="block">REST Repository Connector - Supports an OMRS Repository Connector for calling the OMRS Repository REST API in a remote open metadata repository.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="METADATA_HIGHWAY_MANAGER">
 <h3>METADATA_HIGHWAY_MANAGER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">METADATA_HIGHWAY_MANAGER</span></div>
+<div class="block">Metadata Highway Manager - Manages the initialization and shutdown of the components that connector to each of the cohorts that the local server is a member of.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="COHORT_MANAGER">
 <h3>COHORT_MANAGER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">COHORT_MANAGER</span></div>
+<div class="block">Cohort Manager - Manages the initialization and shutdown of the server's connectivity to a cohort.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="COHORT_REGISTRY">
 <h3>COHORT_REGISTRY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">COHORT_REGISTRY</span></div>
+<div class="block">Cohort Registry - Manages the registration requests send and received from this local repository.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="REGISTRY_STORE">
 <h3>REGISTRY_STORE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">REGISTRY_STORE</span></div>
+<div class="block">Registry Store - Stores information about the repositories registered in the open metadata repository cohort.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="EVENT_PUBLISHER">
 <h3>EVENT_PUBLISHER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">EVENT_PUBLISHER</span></div>
+<div class="block">Event Publisher - Manages the publishing of events that this repository sends to the OMRS topic.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="EVENT_LISTENER">
 <h3>EVENT_LISTENER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">EVENT_LISTENER</span></div>
+<div class="block">Event Listener - Manages the receipt of incoming OMRS events.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OMRS_TOPIC_CONNECTOR">
 <h3>OMRS_TOPIC_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">OMRS_TOPIC_CONNECTOR</span></div>
+<div class="block">OMRS Topic Connector - Provides access to the OMRS Topic that is used to exchange events between members of a cohort,
+ or to notify Open Metadata Access Services (OMASs) of changes to metadata in the enterprise.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OPEN_METADATA_TOPIC_CONNECTOR">
 <h3>OPEN_METADATA_TOPIC_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">OPEN_METADATA_TOPIC_CONNECTOR</span></div>
+<div class="block">Open Metadata Topic Connector - Provides access to an event bus to exchange events with participants in the open metadata ecosystem.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="LOCAL_REPOSITORY_EVENT_MAPPER">
 <h3>LOCAL_REPOSITORY_EVENT_MAPPER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">LOCAL_REPOSITORY_EVENT_MAPPER</span></div>
+<div class="block">Local Repository Event Mapper Connector - Provides access to an event bus to process events from a specific local repository.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ARCHIVE_STORE_CONNECTOR">
 <h3>ARCHIVE_STORE_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">ARCHIVE_STORE_CONNECTOR</span></div>
+<div class="block">Open Metadata Archive Store Connector - Reads and writes open metadata types and instances to an open metadata archive.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="REMOTE_REPOSITORY_CONNECTOR">
 <h3>REMOTE_REPOSITORY_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">REMOTE_REPOSITORY_CONNECTOR</span></div>
+<div class="block">Cohort Member Client Open Metadata Repository Connector - Provides access to open metadata located in a remote repository for remote members of a cohort.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OMAS_OUT_TOPIC">
 <h3>OMAS_OUT_TOPIC</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">OMAS_OUT_TOPIC</span></div>
+<div class="block">Open Metadata Access Service (OMAS) Out Topic - Publishes events from a specific access service.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OMAS_IN_TOPIC">
 <h3>OMAS_IN_TOPIC</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">OMAS_IN_TOPIC</span></div>
+<div class="block">Open Metadata Access Service (OMAS) In Topic - Receives events from external servers and tools directed at a specific access service.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ENTERPRISE_TOPIC_LISTENER">
 <h3>ENTERPRISE_TOPIC_LISTENER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">ENTERPRISE_TOPIC_LISTENER</span></div>
+<div class="block">Enterprise Topic Listener - Receives events from the open metadata repository cohorts that this server is registered with and distributes
+ them to the Open Metadata Access Services (OMASs).</div>
 </section>
 </li>
 <li>
 <section class="detail" id="REPOSITORY_CONNECTOR">
 <h3>REPOSITORY_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">REPOSITORY_CONNECTOR</span></div>
+<div class="block">OMRS Repository Connector - Maps open metadata calls to a metadata repository.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OPEN_DISCOVERY_SERVICE_CONNECTOR">
 <h3>OPEN_DISCOVERY_SERVICE_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">OPEN_DISCOVERY_SERVICE_CONNECTOR</span></div>
+<div class="block">Open Discovery Service Connector - A connector that analyzing the contents of a digital resource.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="GOVERNANCE_ACTION_SERVICE_CONNECTOR">
 <h3>GOVERNANCE_ACTION_SERVICE_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">GOVERNANCE_ACTION_SERVICE_CONNECTOR</span></div>
+<div class="block">Governance Action Service Connector - A connector that coordinates governance of digital resources and metadata.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="REPOSITORY_GOVERNANCE_SERVICE_CONNECTOR">
 <h3>REPOSITORY_GOVERNANCE_SERVICE_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">REPOSITORY_GOVERNANCE_SERVICE_CONNECTOR</span></div>
+<div class="block">Repository Governance Service Connector - A connector that dynamically governs the activity of the open metadata repositories.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INTEGRATION_CONNECTOR">
 <h3>INTEGRATION_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">INTEGRATION_CONNECTOR</span></div>
+<div class="block">Integration Connector - Connector that manages metadata exchange with a third-party technology.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="PLATFORM_SECURITY_CONNECTOR">
 <h3>PLATFORM_SECURITY_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">PLATFORM_SECURITY_CONNECTOR</span></div>
+<div class="block">Platform Metadata Security Connector - Connector that manages authorization requests to the OMAG Server Platform.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVER_SECURITY_CONNECTOR">
 <h3>SERVER_SECURITY_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditingComponent.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a></span>&nbsp;<span class="element-name">SERVER_SECURITY_CONNECTOR</span></div>
+<div class="block">Server Metadata Security Connector - Connector that manages authorization requests to the OMAG Server.</div>
 </section>
 </li>
 </ul>

@@ -108,31 +108,59 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#BAD_REMOTE_CONNECTION" class="member-name-link">BAD_REMOTE_CONNECTION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Unusable Remote Connection to Repository - The remote connection send by one of the member of the cohort is resulting in errors
+ when it is used to create an OMRS Connector to the repository.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#CONFLICTING_ATTRIBUTE_TYPEDEFS" class="member-name-link">CONFLICTING_ATTRIBUTE_TYPEDEFS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Conflicting AttributeTypeDefs - There are conflicting attribute type definitions (AttributeTypeDefs) detected between two
+ repositories in the open metadata repository cohort.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#CONFLICTING_COLLECTION_ID" class="member-name-link">CONFLICTING_COLLECTION_ID</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Conflicting metadata collection id - Remote server/repository is using the same metadata collection id as the local server.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#CONFLICTING_INSTANCES" class="member-name-link">CONFLICTING_INSTANCES</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Conflicting Instances - There are two metadata instances that have the same unique identifier (guid) but have different types.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#CONFLICTING_TYPE" class="member-name-link">CONFLICTING_TYPE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Conflicting Type Version - An instance can not be processed because there is a mismatch in the type definition (TypeDef) version.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#CONFLICTING_TYPEDEFS" class="member-name-link">CONFLICTING_TYPEDEFS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Conflicting TypeDefs - There are conflicting type definitions (TypeDefs) detected between two repositories in the open metadata repository cohort.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#INVALID_EVENT_FORMAT" class="member-name-link">INVALID_EVENT_FORMAT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Invalid event format - The event does not have a recognized format.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#INVALID_INSTANCE_EVENT" class="member-name-link">INVALID_INSTANCE_EVENT</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Invalid instance event format - The event does not have a recognized format.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#INVALID_REGISTRY_EVENT" class="member-name-link">INVALID_REGISTRY_EVENT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Invalid registry event format - The event does not have a recognized format.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#INVALID_TYPEDEF_EVENT" class="member-name-link">INVALID_TYPEDEF_EVENT</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Invalid typedef event format - The event does not have a recognized format.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NOT_IN_USE" class="member-name-link">NOT_IN_USE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">No Error - There has been no error detected and so the error code is not in use.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#TYPEDEF_PATCH_MISMATCH" class="member-name-link">TYPEDEF_PATCH_MISMATCH</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">TypeDefPatchMismatch - There are different versions of a TypeDef in use in the cohort.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNKNOWN_ERROR_CODE" class="member-name-link">UNKNOWN_ERROR_CODE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Unknown Error Code - Unrecognized error code from incoming event.</div>
+</div>
 </div>
 </section>
 </li>
@@ -150,7 +178,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the default description for the enum, used when there is not natural
+<div class="block">Return the default description for the enum, used when there is no natural
  language resource bundle available.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
@@ -161,7 +189,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOrdinal()" class="member-name-link">getOrdinal</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the identifier for the enum, used for indexing arrays etc with the enum.</div>
+<div class="block">Return the identifier for the enum, used for indexing arrays etc.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -203,78 +231,93 @@ the order they are declared.</div>
 <section class="detail" id="NOT_IN_USE">
 <h3>NOT_IN_USE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSEventErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSEventErrorCode</a></span>&nbsp;<span class="element-name">NOT_IN_USE</span></div>
+<div class="block">No Error - There has been no error detected and so the error code is not in use.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_EVENT_FORMAT">
 <h3>INVALID_EVENT_FORMAT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSEventErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSEventErrorCode</a></span>&nbsp;<span class="element-name">INVALID_EVENT_FORMAT</span></div>
+<div class="block">Invalid event format - The event does not have a recognized format.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_REGISTRY_EVENT">
 <h3>INVALID_REGISTRY_EVENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSEventErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSEventErrorCode</a></span>&nbsp;<span class="element-name">INVALID_REGISTRY_EVENT</span></div>
+<div class="block">Invalid registry event format - The event does not have a recognized format.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_TYPEDEF_EVENT">
 <h3>INVALID_TYPEDEF_EVENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSEventErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSEventErrorCode</a></span>&nbsp;<span class="element-name">INVALID_TYPEDEF_EVENT</span></div>
+<div class="block">Invalid typedef event format - The event does not have a recognized format.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INVALID_INSTANCE_EVENT">
 <h3>INVALID_INSTANCE_EVENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSEventErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSEventErrorCode</a></span>&nbsp;<span class="element-name">INVALID_INSTANCE_EVENT</span></div>
+<div class="block">Invalid instance event format - The event does not have a recognized format.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONFLICTING_COLLECTION_ID">
 <h3>CONFLICTING_COLLECTION_ID</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSEventErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSEventErrorCode</a></span>&nbsp;<span class="element-name">CONFLICTING_COLLECTION_ID</span></div>
+<div class="block">Conflicting metadata collection id - Remote server/repository is using the same metadata collection id as the local server.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BAD_REMOTE_CONNECTION">
 <h3>BAD_REMOTE_CONNECTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSEventErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSEventErrorCode</a></span>&nbsp;<span class="element-name">BAD_REMOTE_CONNECTION</span></div>
+<div class="block">Unusable Remote Connection to Repository - The remote connection send by one of the member of the cohort is resulting in errors
+ when it is used to create an OMRS Connector to the repository.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONFLICTING_TYPEDEFS">
 <h3>CONFLICTING_TYPEDEFS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSEventErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSEventErrorCode</a></span>&nbsp;<span class="element-name">CONFLICTING_TYPEDEFS</span></div>
+<div class="block">Conflicting TypeDefs - There are conflicting type definitions (TypeDefs) detected between two repositories in the open metadata repository cohort.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONFLICTING_ATTRIBUTE_TYPEDEFS">
 <h3>CONFLICTING_ATTRIBUTE_TYPEDEFS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSEventErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSEventErrorCode</a></span>&nbsp;<span class="element-name">CONFLICTING_ATTRIBUTE_TYPEDEFS</span></div>
+<div class="block">Conflicting AttributeTypeDefs - There are conflicting attribute type definitions (AttributeTypeDefs) detected between two
+ repositories in the open metadata repository cohort.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="TYPEDEF_PATCH_MISMATCH">
 <h3>TYPEDEF_PATCH_MISMATCH</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSEventErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSEventErrorCode</a></span>&nbsp;<span class="element-name">TYPEDEF_PATCH_MISMATCH</span></div>
+<div class="block">TypeDefPatchMismatch - There are different versions of a TypeDef in use in the cohort.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONFLICTING_INSTANCES">
 <h3>CONFLICTING_INSTANCES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSEventErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSEventErrorCode</a></span>&nbsp;<span class="element-name">CONFLICTING_INSTANCES</span></div>
+<div class="block">Conflicting Instances - There are two metadata instances that have the same unique identifier (guid) but have different types.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONFLICTING_TYPE">
 <h3>CONFLICTING_TYPE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSEventErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSEventErrorCode</a></span>&nbsp;<span class="element-name">CONFLICTING_TYPE</span></div>
+<div class="block">Conflicting Type Version - An instance can not be processed because there is a mismatch in the type definition (TypeDef) version.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNKNOWN_ERROR_CODE">
 <h3>UNKNOWN_ERROR_CODE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSEventErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSEventErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_ERROR_CODE</span></div>
+<div class="block">Unknown Error Code - Unrecognized error code from incoming event.</div>
 </section>
 </li>
 </ul>
@@ -320,7 +363,7 @@ not permitted.)</div>
 <section class="detail" id="getOrdinal()">
 <h3>getOrdinal</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getOrdinal</span>()</div>
-<div class="block">Return the identifier for the enum, used for indexing arrays etc with the enum.</div>
+<div class="block">Return the identifier for the enum, used for indexing arrays etc. with the enum.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>int identifier</dd>
@@ -342,7 +385,7 @@ not permitted.)</div>
 <section class="detail" id="getDescription()">
 <h3>getDescription</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDescription</span>()</div>
-<div class="block">Return the default description for the enum, used when there is not natural
+<div class="block">Return the default description for the enum, used when there is no natural
  language resource bundle available.</div>
 <dl class="notes">
 <dt>Returns:</dt>

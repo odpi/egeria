@@ -87,7 +87,6 @@ loadScripts(document, 'script');</script>
 implements <a href="../../../../../frameworks/auditlog/messagesets/ExceptionMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageSet</a></span></div>
 <div class="block">The ApacheAtlasErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  the Kafka monitor integration connector.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
-
  The 5 fields in the enum are:
  <ul>
      <li>HTTP Error Code - for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -97,7 +96,7 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/ExceptionMess
          <li>404 - not found</li>
          <li>409 - data conflict errors - eg item already defined</li>
      </ul></li>
-     <li>Error Message Id - to uniquely identify the message</li>
+     <li>Error Message Identifier - to uniquely identify the message</li>
      <li>Error Message Text - includes placeholder to allow additional values to be captured</li>
      <li>SystemAction - describes the result of the error</li>
      <li>UserAction - describes how a consumer should correct the error</li>
@@ -122,12 +121,34 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/ExceptionMess
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#CLIENT_SIDE_REST_API_ERROR" class="member-name-link">CLIENT_SIDE_REST_API_ERROR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#CATEGORY_ALREADY_EXISTS" class="member-name-link">CATEGORY_ALREADY_EXISTS</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-400-004 - Glossary category {0} already exists in Apache Atlas</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#CLIENT_SIDE_REST_API_ERROR" class="member-name-link">CLIENT_SIDE_REST_API_ERROR</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-503-001 - A client-side exception {0} was received from API call {1} to URL {2}.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NULL_ASSET_MANAGER" class="member-name-link">NULL_ASSET_MANAGER</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-400-003 - Integration connector {0} has been configured without a metadataSourceQualifiedName value</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NULL_URL" class="member-name-link">NULL_URL</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-400-001 - Integration connector {0} has been configured without the URL to Apache Atlas</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NULL_USER" class="member-name-link">NULL_USER</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-400-002 - Integration connector {0} has been configured with either a null userId or password for connecting to Apache Atlas</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#TERM_ALREADY_EXISTS" class="member-name-link">TERM_ALREADY_EXISTS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-400-005 - Glossary term {0} already exists in Apache Atlas</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-500-001 - The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
+</div>
 </div>
 </section>
 </li>
@@ -189,21 +210,52 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="UNEXPECTED_EXCEPTION">
-<h3>UNEXPECTED_EXCEPTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ApacheAtlasErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ffdc">ApacheAtlasErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXCEPTION</span></div>
-</section>
-</li>
-<li>
 <section class="detail" id="NULL_URL">
 <h3>NULL_URL</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ApacheAtlasErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ffdc">ApacheAtlasErrorCode</a></span>&nbsp;<span class="element-name">NULL_URL</span></div>
+<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-400-001 - Integration connector {0} has been configured without the URL to Apache Atlas</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NULL_USER">
+<h3>NULL_USER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ApacheAtlasErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ffdc">ApacheAtlasErrorCode</a></span>&nbsp;<span class="element-name">NULL_USER</span></div>
+<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-400-002 - Integration connector {0} has been configured with either a null userId or password for connecting to Apache Atlas</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NULL_ASSET_MANAGER">
+<h3>NULL_ASSET_MANAGER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ApacheAtlasErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ffdc">ApacheAtlasErrorCode</a></span>&nbsp;<span class="element-name">NULL_ASSET_MANAGER</span></div>
+<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-400-003 - Integration connector {0} has been configured without a metadataSourceQualifiedName value</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CATEGORY_ALREADY_EXISTS">
+<h3>CATEGORY_ALREADY_EXISTS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ApacheAtlasErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ffdc">ApacheAtlasErrorCode</a></span>&nbsp;<span class="element-name">CATEGORY_ALREADY_EXISTS</span></div>
+<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-400-004 - Glossary category {0} already exists in Apache Atlas</div>
+</section>
+</li>
+<li>
+<section class="detail" id="TERM_ALREADY_EXISTS">
+<h3>TERM_ALREADY_EXISTS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ApacheAtlasErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ffdc">ApacheAtlasErrorCode</a></span>&nbsp;<span class="element-name">TERM_ALREADY_EXISTS</span></div>
+<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-400-005 - Glossary term {0} already exists in Apache Atlas</div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNEXPECTED_EXCEPTION">
+<h3>UNEXPECTED_EXCEPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ApacheAtlasErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ffdc">ApacheAtlasErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXCEPTION</span></div>
+<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-500-001 - The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CLIENT_SIDE_REST_API_ERROR">
 <h3>CLIENT_SIDE_REST_API_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ApacheAtlasErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ffdc">ApacheAtlasErrorCode</a></span>&nbsp;<span class="element-name">CLIENT_SIDE_REST_API_ERROR</span></div>
+<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-503-001 - A client-side exception {0} was received from API call {1} to URL {2}.  The error message was {3}</div>
 </section>
 </li>
 </ul>

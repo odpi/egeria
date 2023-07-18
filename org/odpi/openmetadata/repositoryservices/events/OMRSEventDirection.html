@@ -107,11 +107,17 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#INBOUND" class="member-name-link">INBOUND</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Inbound Event - Event from a remote member of the open metadata repository cohort.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#OUTBOUND" class="member-name-link">OUTBOUND</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Outbound Event - Event from local server to other members of the open metadata repository cohort.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNKNOWN" class="member-name-link">UNKNOWN</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Unknown - Uninitialized event direction.</div>
+</div>
 </div>
 </section>
 </li>
@@ -129,7 +135,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the default description for the enum, used when there is not natural
+<div class="block">Return the default description for the enum, used when there is no natural
  language resource bundle available.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
@@ -140,7 +146,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOrdinal()" class="member-name-link">getOrdinal</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the identifier for the enum, used for indexing arrays etc with the enum.</div>
+<div class="block">Return the identifier for the enum, used for indexing arrays etc.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -182,18 +188,21 @@ the order they are declared.</div>
 <section class="detail" id="UNKNOWN">
 <h3>UNKNOWN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSEventDirection.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSEventDirection</a></span>&nbsp;<span class="element-name">UNKNOWN</span></div>
+<div class="block">Unknown - Uninitialized event direction.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="INBOUND">
 <h3>INBOUND</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSEventDirection.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSEventDirection</a></span>&nbsp;<span class="element-name">INBOUND</span></div>
+<div class="block">Inbound Event - Event from a remote member of the open metadata repository cohort.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OUTBOUND">
 <h3>OUTBOUND</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSEventDirection.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSEventDirection</a></span>&nbsp;<span class="element-name">OUTBOUND</span></div>
+<div class="block">Outbound Event - Event from local server to other members of the open metadata repository cohort.</div>
 </section>
 </li>
 </ul>
@@ -239,7 +248,7 @@ not permitted.)</div>
 <section class="detail" id="getOrdinal()">
 <h3>getOrdinal</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getOrdinal</span>()</div>
-<div class="block">Return the identifier for the enum, used for indexing arrays etc with the enum.</div>
+<div class="block">Return the identifier for the enum, used for indexing arrays etc. with the enum.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>int identifier</dd>
@@ -261,7 +270,7 @@ not permitted.)</div>
 <section class="detail" id="getDescription()">
 <h3>getDescription</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDescription</span>()</div>
-<div class="block">Return the default description for the enum, used when there is not natural
+<div class="block">Return the default description for the enum, used when there is no natural
  language resource bundle available.</div>
 <dl class="notes">
 <dt>Returns:</dt>

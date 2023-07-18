@@ -86,27 +86,7 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="OMRSTypeDefEventType.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSTypeDefEventType</a>&gt;
 implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
 <div class="block">OMRSTypeDefEventType defines the different types of TypeDef events in the open metadata repository services
- protocol:
- <ul>
-     <li>
-         UNKNOWN_TYPEDEF_EVENT: the event is not recognized by this local server, probably because it is back-level
-         from other servers in the cluster.  It is logged in the audit log and then ignored.  The metadata exchange
-         protocol should evolve so that new message types can be ignored by back-level servers without damage
-         to the cluster's integrity.
-     </li>
-     <li>
-         NEW_TYPEDEF: A new TypeDef has been defined.
-     </li>
-     <li>
-         UPDATED_TYPEDEF: An existing TypeDef has been updated.
-     </li>
-     <li>
-         DELETED_TYPEDEF_EVENT: An existing TypeDef has been deleted.
-     </li>
-     <li>
-         RE_IDENTIFIED_TYPEDEF_EVENT: the guid has been changed for a TypeDef.
-     </li>
- </ul></div>
+ protocol:</div>
 </section>
 <section class="summary">
 <ul class="summary-list">

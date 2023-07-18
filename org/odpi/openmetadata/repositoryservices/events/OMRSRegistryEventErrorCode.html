@@ -86,19 +86,7 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="OMRSRegistryEventErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSRegistryEventErrorCode</a>&gt;
 implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
 <div class="block">OMRSRegistryEventErrorCode defines the list of error codes that are used to record errors in the registration
- process that is used by the cluster registries when managing the membership of the open metadata repository cluster.
- <ul>
-     <li>
-         NOT_IN_USE: There has been no error detected and so the error code is not in use.
-     </li>
-     <li>
-         CONFLICTING_REPOSITORY_ID: Remote server/repository is using the same metadata collection id as the local server.
-     </li>
-     <li>
-         CONFLICTING_TYPEDEFS: There are conflicting type definitions (TypeDefs) detected between two repositories
-         in the open metadata repository cluster.
-     </li>
- </ul></div>
+ process that is used by the cohort registries when managing the membership of the open metadata repository cohort.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -120,13 +108,22 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#BAD_REMOTE_CONNECTION" class="member-name-link">BAD_REMOTE_CONNECTION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Unusable Remote Connection to Repository - The remote connection send by one of the member of the cohort is resulting in errors
+ when it is used to create an OMRS Connector to the repository.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#CONFLICTING_COLLECTION_ID" class="member-name-link">CONFLICTING_COLLECTION_ID</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Conflicting metadata collection id - Remote server/repository is using the same metadata collection id as the local server.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NOT_IN_USE" class="member-name-link">NOT_IN_USE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">No Error - There has been no error detected and so the error code is not in use.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNKNOWN_ERROR_CODE" class="member-name-link">UNKNOWN_ERROR_CODE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Unknown Error Code - Unrecognized error code from incoming event.</div>
+</div>
 </div>
 </section>
 </li>
@@ -144,7 +141,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the default description for the enum, used when there is not natural
+<div class="block">Return the default description for the enum, used when there is no natural
  language resource bundle available.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OMRSEventErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSEventErrorCode</a></code></div>
@@ -160,7 +157,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOrdinal()" class="member-name-link">getOrdinal</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the identifier for the enum, used for indexing arrays etc with the enum.</div>
+<div class="block">Return the identifier for the enum, used for indexing arrays etc.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -202,24 +199,29 @@ the order they are declared.</div>
 <section class="detail" id="NOT_IN_USE">
 <h3>NOT_IN_USE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSRegistryEventErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSRegistryEventErrorCode</a></span>&nbsp;<span class="element-name">NOT_IN_USE</span></div>
+<div class="block">No Error - There has been no error detected and so the error code is not in use.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONFLICTING_COLLECTION_ID">
 <h3>CONFLICTING_COLLECTION_ID</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSRegistryEventErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSRegistryEventErrorCode</a></span>&nbsp;<span class="element-name">CONFLICTING_COLLECTION_ID</span></div>
+<div class="block">Conflicting metadata collection id - Remote server/repository is using the same metadata collection id as the local server.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BAD_REMOTE_CONNECTION">
 <h3>BAD_REMOTE_CONNECTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSRegistryEventErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSRegistryEventErrorCode</a></span>&nbsp;<span class="element-name">BAD_REMOTE_CONNECTION</span></div>
+<div class="block">Unusable Remote Connection to Repository - The remote connection send by one of the member of the cohort is resulting in errors
+ when it is used to create an OMRS Connector to the repository.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNKNOWN_ERROR_CODE">
 <h3>UNKNOWN_ERROR_CODE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSRegistryEventErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSRegistryEventErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_ERROR_CODE</span></div>
+<div class="block">Unknown Error Code - Unrecognized error code from incoming event.</div>
 </section>
 </li>
 </ul>
@@ -265,7 +267,7 @@ not permitted.)</div>
 <section class="detail" id="getOrdinal()">
 <h3>getOrdinal</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getOrdinal</span>()</div>
-<div class="block">Return the identifier for the enum, used for indexing arrays etc with the enum.</div>
+<div class="block">Return the identifier for the enum, used for indexing arrays etc. with the enum.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>int identifier</dd>
@@ -287,7 +289,7 @@ not permitted.)</div>
 <section class="detail" id="getDescription()">
 <h3>getDescription</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDescription</span>()</div>
-<div class="block">Return the default description for the enum, used when there is not natural
+<div class="block">Return the default description for the enum, used when there is no natural
  language resource bundle available.</div>
 <dl class="notes">
 <dt>Returns:</dt>

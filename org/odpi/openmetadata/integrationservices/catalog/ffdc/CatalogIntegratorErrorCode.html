@@ -88,7 +88,6 @@ implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet
 <div class="block">The CatalogIntegratorErrorCode error code is used to define first failure data capture (FFDC) for errors that
  occur when working with the Integration Services.  It is used in conjunction with all exceptions,
  both Checked and Runtime (unchecked).
-
  The 5 fields in the enum are:
  <ul>
      <li>HTTP Error Code for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -124,15 +123,25 @@ implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#BAD_CONFIG_PROPERTIES" class="member-name-link">BAD_CONFIG_PROPERTIES</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMIS-CATALOG-INTEGRATOR-400-004 - The {0} Open Metadata Integration Service (OMIS) has been passed an invalid value of {1} in the {2} property.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#DISABLED_EXCHANGE_SERVICE" class="member-name-link">DISABLED_EXCHANGE_SERVICE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMIS-CATALOG-INTEGRATOR-400-002 - The {0} has been disabled by the configuration for the {1} integration service</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#INVALID_CONNECTOR" class="member-name-link">INVALID_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMIS-CATALOG-INTEGRATOR-400-001 - Integration connector {0} is not of the correct type to run in the {1} integration service.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NOT_PERMITTED_SYNCHRONIZATION" class="member-name-link">NOT_PERMITTED_SYNCHRONIZATION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">OMIS-CATALOG-INTEGRATOR-400-003 - The permitted synchronization direction of {0} does not allow connector {1} to issue {2} requests on behalf of asset manager {3}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_CONTEXT" class="member-name-link">NULL_CONTEXT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">OMIS-CATALOG-INTEGRATOR-500-001 - Integration connector {0} has a null context</div>
+</div>
 </div>
 </section>
 </li>
@@ -197,30 +206,35 @@ the order they are declared.</div>
 <section class="detail" id="INVALID_CONNECTOR">
 <h3>INVALID_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CatalogIntegratorErrorCode.html" title="enum class in org.odpi.openmetadata.integrationservices.catalog.ffdc">CatalogIntegratorErrorCode</a></span>&nbsp;<span class="element-name">INVALID_CONNECTOR</span></div>
+<div class="block">OMIS-CATALOG-INTEGRATOR-400-001 - Integration connector {0} is not of the correct type to run in the {1} integration service.  It must inherit from {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DISABLED_EXCHANGE_SERVICE">
 <h3>DISABLED_EXCHANGE_SERVICE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CatalogIntegratorErrorCode.html" title="enum class in org.odpi.openmetadata.integrationservices.catalog.ffdc">CatalogIntegratorErrorCode</a></span>&nbsp;<span class="element-name">DISABLED_EXCHANGE_SERVICE</span></div>
+<div class="block">OMIS-CATALOG-INTEGRATOR-400-002 - The {0} has been disabled by the configuration for the {1} integration service</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NOT_PERMITTED_SYNCHRONIZATION">
 <h3>NOT_PERMITTED_SYNCHRONIZATION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CatalogIntegratorErrorCode.html" title="enum class in org.odpi.openmetadata.integrationservices.catalog.ffdc">CatalogIntegratorErrorCode</a></span>&nbsp;<span class="element-name">NOT_PERMITTED_SYNCHRONIZATION</span></div>
+<div class="block">OMIS-CATALOG-INTEGRATOR-400-003 - The permitted synchronization direction of {0} does not allow connector {1} to issue {2} requests on behalf of asset manager {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BAD_CONFIG_PROPERTIES">
 <h3>BAD_CONFIG_PROPERTIES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CatalogIntegratorErrorCode.html" title="enum class in org.odpi.openmetadata.integrationservices.catalog.ffdc">CatalogIntegratorErrorCode</a></span>&nbsp;<span class="element-name">BAD_CONFIG_PROPERTIES</span></div>
+<div class="block">OMIS-CATALOG-INTEGRATOR-400-004 - The {0} Open Metadata Integration Service (OMIS) has been passed an invalid value of {1} in the {2} property.  The resulting exception of {3} included the following message: {4}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NULL_CONTEXT">
 <h3>NULL_CONTEXT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CatalogIntegratorErrorCode.html" title="enum class in org.odpi.openmetadata.integrationservices.catalog.ffdc">CatalogIntegratorErrorCode</a></span>&nbsp;<span class="element-name">NULL_CONTEXT</span></div>
+<div class="block">OMIS-CATALOG-INTEGRATOR-500-001 - Integration connector {0} has a null context</div>
 </section>
 </li>
 </ul>

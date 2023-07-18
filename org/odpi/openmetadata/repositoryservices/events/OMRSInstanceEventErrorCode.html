@@ -86,12 +86,7 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="OMRSInstanceEventErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSInstanceEventErrorCode</a>&gt;
 implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
 <div class="block">OMRSInstanceEventErrorCode defines the list of error codes that are used to record errors in the metadata
- instance replication process that is used by the repository connectors within the open metadata repository cluster.
- <ul>
-     <li>
-         NOT_IN_USE: There has been no error detected and so the error code is not in use.
-     </li>
- </ul></div>
+ instance replication process that is used by the repository connectors within the open metadata repository cohort.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -113,13 +108,21 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#CONFLICTING_INSTANCES" class="member-name-link">CONFLICTING_INSTANCES</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Conflicting Instances - There are two metadata instances that have the same unique identifier (guid) but have different types.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#CONFLICTING_TYPE" class="member-name-link">CONFLICTING_TYPE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Conflicting Type Version - An instance can not be processed because there is a mismatch in the type definition (TypeDef) version.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NOT_IN_USE" class="member-name-link">NOT_IN_USE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">No Error - There has been no error detected and so the error code is not in use.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNKNOWN_ERROR_CODE" class="member-name-link">UNKNOWN_ERROR_CODE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Unknown Error Code - Unrecognized error code from incoming event.</div>
+</div>
 </div>
 </section>
 </li>
@@ -137,7 +140,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the default description for the enum, used when there is not natural
+<div class="block">Return the default description for the enum, used when there is no natural
  language resource bundle available.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OMRSEventErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSEventErrorCode</a></code></div>
@@ -153,7 +156,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOrdinal()" class="member-name-link">getOrdinal</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the identifier for the enum, used for indexing arrays etc with the enum.</div>
+<div class="block">Return the identifier for the enum, used for indexing arrays etc.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -195,24 +198,28 @@ the order they are declared.</div>
 <section class="detail" id="NOT_IN_USE">
 <h3>NOT_IN_USE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSInstanceEventErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSInstanceEventErrorCode</a></span>&nbsp;<span class="element-name">NOT_IN_USE</span></div>
+<div class="block">No Error - There has been no error detected and so the error code is not in use.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONFLICTING_INSTANCES">
 <h3>CONFLICTING_INSTANCES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSInstanceEventErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSInstanceEventErrorCode</a></span>&nbsp;<span class="element-name">CONFLICTING_INSTANCES</span></div>
+<div class="block">Conflicting Instances - There are two metadata instances that have the same unique identifier (guid) but have different types.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONFLICTING_TYPE">
 <h3>CONFLICTING_TYPE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSInstanceEventErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSInstanceEventErrorCode</a></span>&nbsp;<span class="element-name">CONFLICTING_TYPE</span></div>
+<div class="block">Conflicting Type Version - An instance can not be processed because there is a mismatch in the type definition (TypeDef) version.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNKNOWN_ERROR_CODE">
 <h3>UNKNOWN_ERROR_CODE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSInstanceEventErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.events">OMRSInstanceEventErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_ERROR_CODE</span></div>
+<div class="block">Unknown Error Code - Unrecognized error code from incoming event.</div>
 </section>
 </li>
 </ul>
@@ -258,7 +265,7 @@ not permitted.)</div>
 <section class="detail" id="getOrdinal()">
 <h3>getOrdinal</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getOrdinal</span>()</div>
-<div class="block">Return the identifier for the enum, used for indexing arrays etc with the enum.</div>
+<div class="block">Return the identifier for the enum, used for indexing arrays etc. with the enum.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>int identifier</dd>
@@ -280,7 +287,7 @@ not permitted.)</div>
 <section class="detail" id="getDescription()">
 <h3>getDescription</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDescription</span>()</div>
-<div class="block">Return the default description for the enum, used when there is not natural
+<div class="block">Return the default description for the enum, used when there is no natural
  language resource bundle available.</div>
 <dl class="notes">
 <dt>Returns:</dt>

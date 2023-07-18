@@ -88,7 +88,6 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="block">SequencingOrder is used for search requests against a metadata collection.  It defines how the results should
  to be ordered before they are returned.  This is particularly important when the results are to returned
  over multiple pages since the caller does not have all the results at once to perform the sort themselves.
-
  The sequencing order values are:
  <ul>
      <li>
@@ -140,21 +139,37 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#ANY" class="member-name-link">ANY</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Any Order</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#CREATION_DATE_OLDEST" class="member-name-link">CREATION_DATE_OLDEST</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Order by creation date, oldest first.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#CREATION_DATE_RECENT" class="member-name-link">CREATION_DATE_RECENT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Order by creation date, most recently created first.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#GUID" class="member-name-link">GUID</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Order by ascending GUID.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#LAST_UPDATE_OLDEST" class="member-name-link">LAST_UPDATE_OLDEST</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Order by last update date, most recently updated last.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#LAST_UPDATE_RECENT" class="member-name-link">LAST_UPDATE_RECENT</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Order by last update date, most recently updated first.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#PROPERTY_ASCENDING" class="member-name-link">PROPERTY_ASCENDING</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Order by property value, lowest value first.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#PROPERTY_DESCENDING" class="member-name-link">PROPERTY_DESCENDING</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Order by property value, highest first.</div>
+</div>
 </div>
 </section>
 </li>
@@ -224,48 +239,56 @@ the order they are declared.</div>
 <section class="detail" id="ANY">
 <h3>ANY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SequencingOrder.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">SequencingOrder</a></span>&nbsp;<span class="element-name">ANY</span></div>
+<div class="block">Any Order</div>
 </section>
 </li>
 <li>
 <section class="detail" id="GUID">
 <h3>GUID</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SequencingOrder.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">SequencingOrder</a></span>&nbsp;<span class="element-name">GUID</span></div>
+<div class="block">Order by ascending GUID.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CREATION_DATE_RECENT">
 <h3>CREATION_DATE_RECENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SequencingOrder.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">SequencingOrder</a></span>&nbsp;<span class="element-name">CREATION_DATE_RECENT</span></div>
+<div class="block">Order by creation date, most recently created first.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CREATION_DATE_OLDEST">
 <h3>CREATION_DATE_OLDEST</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SequencingOrder.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">SequencingOrder</a></span>&nbsp;<span class="element-name">CREATION_DATE_OLDEST</span></div>
+<div class="block">Order by creation date, oldest first.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="LAST_UPDATE_RECENT">
 <h3>LAST_UPDATE_RECENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SequencingOrder.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">SequencingOrder</a></span>&nbsp;<span class="element-name">LAST_UPDATE_RECENT</span></div>
+<div class="block">Order by last update date, most recently updated first.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="LAST_UPDATE_OLDEST">
 <h3>LAST_UPDATE_OLDEST</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SequencingOrder.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">SequencingOrder</a></span>&nbsp;<span class="element-name">LAST_UPDATE_OLDEST</span></div>
+<div class="block">Order by last update date, most recently updated last.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="PROPERTY_ASCENDING">
 <h3>PROPERTY_ASCENDING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SequencingOrder.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">SequencingOrder</a></span>&nbsp;<span class="element-name">PROPERTY_ASCENDING</span></div>
+<div class="block">Order by property value, lowest value first.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="PROPERTY_DESCENDING">
 <h3>PROPERTY_DESCENDING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SequencingOrder.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">SequencingOrder</a></span>&nbsp;<span class="element-name">PROPERTY_DESCENDING</span></div>
+<div class="block">Order by property value, highest first.</div>
 </section>
 </li>
 </ul>

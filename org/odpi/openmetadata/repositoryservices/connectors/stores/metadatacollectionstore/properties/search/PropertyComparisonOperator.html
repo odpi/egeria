@@ -87,7 +87,6 @@ loadScripts(document, 'script');</script>
 implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
 <div class="block">PropertyComparisonOperator is used for search requests against a metadata collection.  It defines how the properties
  should be compared to find a matching result.
-
  The property comparison operator values are:
  <ul>
      <li>
@@ -143,25 +142,45 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#EQ" class="member-name-link">EQ</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Equal to</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#GT" class="member-name-link">GT</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Greater than</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#GTE" class="member-name-link">GTE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Greater than or equal</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#IN" class="member-name-link">IN</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">In list</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#IS_NULL" class="member-name-link">IS_NULL</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Is null</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#LIKE" class="member-name-link">LIKE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Has a value that matches the provided regular expression (strings only).</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#LT" class="member-name-link">LT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Less than</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#LTE" class="member-name-link">LTE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Less than or equal</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NEQ" class="member-name-link">NEQ</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Not equal to</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NOT_NULL" class="member-name-link">NOT_NULL</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Is not null - ie has any non-null value</div>
+</div>
 </div>
 </section>
 </li>
@@ -231,60 +250,70 @@ the order they are declared.</div>
 <section class="detail" id="EQ">
 <h3>EQ</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">PropertyComparisonOperator</a></span>&nbsp;<span class="element-name">EQ</span></div>
+<div class="block">Equal to</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NEQ">
 <h3>NEQ</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">PropertyComparisonOperator</a></span>&nbsp;<span class="element-name">NEQ</span></div>
+<div class="block">Not equal to</div>
 </section>
 </li>
 <li>
 <section class="detail" id="LT">
 <h3>LT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">PropertyComparisonOperator</a></span>&nbsp;<span class="element-name">LT</span></div>
+<div class="block">Less than</div>
 </section>
 </li>
 <li>
 <section class="detail" id="LTE">
 <h3>LTE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">PropertyComparisonOperator</a></span>&nbsp;<span class="element-name">LTE</span></div>
+<div class="block">Less than or equal</div>
 </section>
 </li>
 <li>
 <section class="detail" id="GT">
 <h3>GT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">PropertyComparisonOperator</a></span>&nbsp;<span class="element-name">GT</span></div>
+<div class="block">Greater than</div>
 </section>
 </li>
 <li>
 <section class="detail" id="GTE">
 <h3>GTE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">PropertyComparisonOperator</a></span>&nbsp;<span class="element-name">GTE</span></div>
+<div class="block">Greater than or equal</div>
 </section>
 </li>
 <li>
 <section class="detail" id="IN">
 <h3>IN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">PropertyComparisonOperator</a></span>&nbsp;<span class="element-name">IN</span></div>
+<div class="block">In list</div>
 </section>
 </li>
 <li>
 <section class="detail" id="IS_NULL">
 <h3>IS_NULL</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">PropertyComparisonOperator</a></span>&nbsp;<span class="element-name">IS_NULL</span></div>
+<div class="block">Is null</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NOT_NULL">
 <h3>NOT_NULL</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">PropertyComparisonOperator</a></span>&nbsp;<span class="element-name">NOT_NULL</span></div>
+<div class="block">Is not null - ie has any non-null value</div>
 </section>
 </li>
 <li>
 <section class="detail" id="LIKE">
 <h3>LIKE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">PropertyComparisonOperator</a></span>&nbsp;<span class="element-name">LIKE</span></div>
+<div class="block">Has a value that matches the provided regular expression (strings only).</div>
 </section>
 </li>
 </ul>

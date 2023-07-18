@@ -87,7 +87,7 @@ loadScripts(document, 'script');</script>
 implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
 <div class="block">This enum defines the list of open metadata collection types.  These types are generic types that need to
  be configured with specific primitive types before they can be used as an attribute type.
-
+ <br><br>
  The enum includes a code value, a string name for the type (used in self describing structures such as JSON or XML)
  and the name of the Java Class that supports this type.</div>
 </section>
@@ -111,13 +111,21 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#OM_COLLECTION_ARRAY" class="member-name-link">OM_COLLECTION_ARRAY</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">An array of values of the same type.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#OM_COLLECTION_MAP" class="member-name-link">OM_COLLECTION_MAP</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">A map from values of one type to another.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#OM_COLLECTION_STRUCT" class="member-name-link">OM_COLLECTION_STRUCT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">A record with a variety of values.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#OM_COLLECTION_UNKNOWN" class="member-name-link">OM_COLLECTION_UNKNOWN</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Unknown collection type</div>
+</div>
 </div>
 </section>
 </li>
@@ -192,24 +200,28 @@ the order they are declared.</div>
 <section class="detail" id="OM_COLLECTION_UNKNOWN">
 <h3>OM_COLLECTION_UNKNOWN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CollectionDefCategory.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">CollectionDefCategory</a></span>&nbsp;<span class="element-name">OM_COLLECTION_UNKNOWN</span></div>
+<div class="block">Unknown collection type</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OM_COLLECTION_MAP">
 <h3>OM_COLLECTION_MAP</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CollectionDefCategory.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">CollectionDefCategory</a></span>&nbsp;<span class="element-name">OM_COLLECTION_MAP</span></div>
+<div class="block">A map from values of one type to another.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OM_COLLECTION_ARRAY">
 <h3>OM_COLLECTION_ARRAY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CollectionDefCategory.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">CollectionDefCategory</a></span>&nbsp;<span class="element-name">OM_COLLECTION_ARRAY</span></div>
+<div class="block">An array of values of the same type.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="OM_COLLECTION_STRUCT">
 <h3>OM_COLLECTION_STRUCT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CollectionDefCategory.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">CollectionDefCategory</a></span>&nbsp;<span class="element-name">OM_COLLECTION_STRUCT</span></div>
+<div class="block">A record with a variety of values.</div>
 </section>
 </li>
 </ul>

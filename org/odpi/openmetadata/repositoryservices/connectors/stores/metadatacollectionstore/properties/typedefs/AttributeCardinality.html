@@ -85,7 +85,7 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">AttributeCardinality</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="AttributeCardinality.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeCardinality</a>&gt;
 implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
-<div class="block">AttributeCardinality is used on a association from one TypeDef to another.  It defines how many instances the "linked to" TypeDef
+<div class="block">AttributeCardinality is used on an association from one TypeDef to another.  It defines how many instances the "linked to" TypeDef
  are permitted to be connected to the "linked from" TypeDef:
  <ul>
      <li>
@@ -139,19 +139,33 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#ANY_NUMBER_ORDERED" class="member-name-link">ANY_NUMBER_ORDERED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">0..* for any number of instances (stored in a specific order).</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#ANY_NUMBER_UNORDERED" class="member-name-link">ANY_NUMBER_UNORDERED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">0..* for any number of instances (stored in any order).</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#AT_LEAST_ONE_ORDERED" class="member-name-link">AT_LEAST_ONE_ORDERED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">1..* for one or more instances (stored in specific order).</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#AT_LEAST_ONE_UNORDERED" class="member-name-link">AT_LEAST_ONE_UNORDERED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">1..* for one or more instances (stored in any order).</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#AT_MOST_ONE" class="member-name-link">AT_MOST_ONE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">0..1 for zero or one instances.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#ONE_ONLY" class="member-name-link">ONE_ONLY</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">1 for one instance, no more and no less.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNKNOWN" class="member-name-link">UNKNOWN</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Unknown or uninitialized cardinality.</div>
+</div>
 </div>
 </section>
 </li>
@@ -221,42 +235,49 @@ the order they are declared.</div>
 <section class="detail" id="UNKNOWN">
 <h3>UNKNOWN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AttributeCardinality.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeCardinality</a></span>&nbsp;<span class="element-name">UNKNOWN</span></div>
+<div class="block">Unknown or uninitialized cardinality.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="AT_MOST_ONE">
 <h3>AT_MOST_ONE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AttributeCardinality.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeCardinality</a></span>&nbsp;<span class="element-name">AT_MOST_ONE</span></div>
+<div class="block">0..1 for zero or one instances. 0..1.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ONE_ONLY">
 <h3>ONE_ONLY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AttributeCardinality.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeCardinality</a></span>&nbsp;<span class="element-name">ONE_ONLY</span></div>
+<div class="block">1 for one instance, no more and no less.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="AT_LEAST_ONE_ORDERED">
 <h3>AT_LEAST_ONE_ORDERED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AttributeCardinality.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeCardinality</a></span>&nbsp;<span class="element-name">AT_LEAST_ONE_ORDERED</span></div>
+<div class="block">1..* for one or more instances (stored in specific order).</div>
 </section>
 </li>
 <li>
 <section class="detail" id="AT_LEAST_ONE_UNORDERED">
 <h3>AT_LEAST_ONE_UNORDERED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AttributeCardinality.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeCardinality</a></span>&nbsp;<span class="element-name">AT_LEAST_ONE_UNORDERED</span></div>
+<div class="block">1..* for one or more instances (stored in any order).</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ANY_NUMBER_ORDERED">
 <h3>ANY_NUMBER_ORDERED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AttributeCardinality.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeCardinality</a></span>&nbsp;<span class="element-name">ANY_NUMBER_ORDERED</span></div>
+<div class="block">0..* for any number of instances (stored in a specific order).</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ANY_NUMBER_UNORDERED">
 <h3>ANY_NUMBER_UNORDERED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AttributeCardinality.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeCardinality</a></span>&nbsp;<span class="element-name">ANY_NUMBER_UNORDERED</span></div>
+<div class="block">0..* for any number of instances (stored in any order).</div>
 </section>
 </li>
 </ul>

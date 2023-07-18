@@ -96,7 +96,7 @@ loadScripts(document, 'script');</script>
          <li>404 - not found</li>
          <li>409 - data conflict errors - eg item already defined</li>
      </ul></li>
-     <li>Error Message Id - to uniquely identify the message</li>
+     <li>Error Message Identifier - to uniquely identify the message</li>
      <li>Error Message Text - includes placeholder to allow additional values to be captured</li>
      <li>SystemAction - describes the result of the error</li>
      <li>UserAction - describes how a consumer should correct the error</li>
@@ -122,11 +122,17 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#CLIENT_SIDE_REST_API_ERROR" class="member-name-link">CLIENT_SIDE_REST_API_ERROR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">CLIENT-SIDE-REST-API-CONNECTOR-503-002 - A client-side exception {0} was received by method {1} from API call {2} to server {3} on platform {4}.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#EXCEPTION_RESPONSE_FROM_API" class="member-name-link">EXCEPTION_RESPONSE_FROM_API</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">CLIENT-SIDE-REST-API-CONNECTOR-503-003 - A {0} exception was received from REST API call {1} to server {2}: error message was: {3}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_RESPONSE_FROM_API" class="member-name-link">NULL_RESPONSE_FROM_API</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">CLIENT-SIDE-REST-API-CONNECTOR-503-001 - A null response was received from REST API call {0} to server {1}</div>
+</div>
 </div>
 </section>
 </li>
@@ -153,7 +159,9 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHTTPErrorCode()" class="member-name-link">getHTTPErrorCode</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the HTTP code.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSystemAction()" class="member-name-link">getSystemAction</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -210,18 +218,21 @@ the order they are declared.</div>
 <section class="detail" id="NULL_RESPONSE_FROM_API">
 <h3>NULL_RESPONSE_FROM_API</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RESTClientConnectorErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.restclients.ffdc">RESTClientConnectorErrorCode</a></span>&nbsp;<span class="element-name">NULL_RESPONSE_FROM_API</span></div>
+<div class="block">CLIENT-SIDE-REST-API-CONNECTOR-503-001 - A null response was received from REST API call {0} to server {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CLIENT_SIDE_REST_API_ERROR">
 <h3>CLIENT_SIDE_REST_API_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RESTClientConnectorErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.restclients.ffdc">RESTClientConnectorErrorCode</a></span>&nbsp;<span class="element-name">CLIENT_SIDE_REST_API_ERROR</span></div>
+<div class="block">CLIENT-SIDE-REST-API-CONNECTOR-503-002 - A client-side exception {0} was received by method {1} from API call {2} to server {3} on platform {4}.  The error message was {5}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="EXCEPTION_RESPONSE_FROM_API">
 <h3>EXCEPTION_RESPONSE_FROM_API</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RESTClientConnectorErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.restclients.ffdc">RESTClientConnectorErrorCode</a></span>&nbsp;<span class="element-name">EXCEPTION_RESPONSE_FROM_API</span></div>
+<div class="block">CLIENT-SIDE-REST-API-CONNECTOR-503-003 - A {0} exception was received from REST API call {1} to server {2}: error message was: {3}</div>
 </section>
 </li>
 </ul>
@@ -267,6 +278,11 @@ not permitted.)</div>
 <section class="detail" id="getHTTPErrorCode()">
 <h3>getHTTPErrorCode</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getHTTPErrorCode</span>()</div>
+<div class="block">Return the HTTP code.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>int</dd>
+</dl>
 </section>
 </li>
 <li>

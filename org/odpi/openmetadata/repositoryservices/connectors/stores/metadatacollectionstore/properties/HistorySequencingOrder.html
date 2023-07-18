@@ -88,7 +88,6 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="block">HistorySequencingOrder is used for retrieval of history against a metadata collection.  It defines how the results
  should be ordered before they are returned.  This is particularly important when the results are to returned
  over multiple pages since the caller does not have all the results at once to perform the sort themselves.
-
  The sequencing order values are:
  <ul>
      <li>
@@ -121,9 +120,13 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#BACKWARDS" class="member-name-link">BACKWARDS</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Backwards - Reverse chronological order (newest first).</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#FORWARDS" class="member-name-link">FORWARDS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Forwards - Chronological order (oldest first).</div>
+</div>
 </div>
 </section>
 </li>
@@ -193,12 +196,14 @@ the order they are declared.</div>
 <section class="detail" id="FORWARDS">
 <h3>FORWARDS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="HistorySequencingOrder.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">HistorySequencingOrder</a></span>&nbsp;<span class="element-name">FORWARDS</span></div>
+<div class="block">Forwards - Chronological order (oldest first).</div>
 </section>
 </li>
 <li>
 <section class="detail" id="BACKWARDS">
 <h3>BACKWARDS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="HistorySequencingOrder.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">HistorySequencingOrder</a></span>&nbsp;<span class="element-name">BACKWARDS</span></div>
+<div class="block">Backwards - Reverse chronological order (newest first).</div>
 </section>
 </li>
 </ul>

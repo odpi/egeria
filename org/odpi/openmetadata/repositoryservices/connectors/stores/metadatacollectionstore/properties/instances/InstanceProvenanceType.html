@@ -98,7 +98,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
      <li>
          EXPORT_ARCHIVE: the element was created from an export archive.
          The metadata collection id for the element is the metadata collection id of the originating server.
-         If the originating server later joins the cohort with the same metadata collection Id then these
+         If the originating server later joins the cohort with the same metadata collection id then these
          elements will be refreshed from the originating server's current repository.
      </li>
      <li>
@@ -150,19 +150,34 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#CONFIGURATION" class="member-name-link">CONFIGURATION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Configuration - The instance is part of a service's configuration.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#CONTENT_PACK" class="member-name-link">CONTENT_PACK</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Content Pack - The instance comes from an open metadata content pack.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#DEREGISTERED_REPOSITORY" class="member-name-link">DEREGISTERED_REPOSITORY</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Deregistered Repository - The instance comes from a metadata repository that used to be a member of the one of the local repository's cohorts,
+ but it has been deregistered.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#EXPORT_ARCHIVE" class="member-name-link">EXPORT_ARCHIVE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Export Archive - The instance was created from an export archive.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#EXTERNAL_SOURCE" class="member-name-link">EXTERNAL_SOURCE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">External Source - The instance is maintained by an external technology.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#LOCAL_COHORT" class="member-name-link">LOCAL_COHORT</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Local to cohort - The instance is being maintained within one of the local cohort members.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNKNOWN" class="member-name-link">UNKNOWN</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Unknown - Unknown provenance.</div>
+</div>
 </div>
 </section>
 </li>
@@ -232,42 +247,56 @@ the order they are declared.</div>
 <section class="detail" id="UNKNOWN">
 <h3>UNKNOWN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="InstanceProvenanceType.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProvenanceType</a></span>&nbsp;<span class="element-name">UNKNOWN</span></div>
+<div class="block">Unknown - Unknown provenance.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="LOCAL_COHORT">
 <h3>LOCAL_COHORT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="InstanceProvenanceType.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProvenanceType</a></span>&nbsp;<span class="element-name">LOCAL_COHORT</span></div>
+<div class="block">Local to cohort - The instance is being maintained within one of the local cohort members.
+ The metadata collection id is for one of the repositories in the cohort.
+ This metadata collection id identifies the home repository for this element.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="EXPORT_ARCHIVE">
 <h3>EXPORT_ARCHIVE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="InstanceProvenanceType.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProvenanceType</a></span>&nbsp;<span class="element-name">EXPORT_ARCHIVE</span></div>
+<div class="block">Export Archive - The instance was created from an export archive.
+ The metadata collection id for the element is the metadata collection id of the originating server.
+ If the originating server later joins the cohort with the same metadata collection id
+ then these elements will be refreshed from the originating server's current repository.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONTENT_PACK">
 <h3>CONTENT_PACK</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="InstanceProvenanceType.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProvenanceType</a></span>&nbsp;<span class="element-name">CONTENT_PACK</span></div>
+<div class="block">Content Pack - The instance comes from an open metadata content pack. The metadata collection id of the elements is set to the GUID of the pack.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DEREGISTERED_REPOSITORY">
 <h3>DEREGISTERED_REPOSITORY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="InstanceProvenanceType.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProvenanceType</a></span>&nbsp;<span class="element-name">DEREGISTERED_REPOSITORY</span></div>
+<div class="block">Deregistered Repository - The instance comes from a metadata repository that used to be a member of the one of the local repository's cohorts,
+ but it has been deregistered. The metadata collection id remains the same.
+ If the repository rejoins the cohort then these elements can be refreshed from the rejoining repository.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONFIGURATION">
 <h3>CONFIGURATION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="InstanceProvenanceType.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProvenanceType</a></span>&nbsp;<span class="element-name">CONFIGURATION</span></div>
+<div class="block">Configuration - The instance is part of a service's configuration.  The metadata collection id is null.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="EXTERNAL_SOURCE">
 <h3>EXTERNAL_SOURCE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="InstanceProvenanceType.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProvenanceType</a></span>&nbsp;<span class="element-name">EXTERNAL_SOURCE</span></div>
+<div class="block">External Source - The instance is maintained by an external technology.  The metadata collection id is the guid of the technology's descriptive entity.</div>
 </section>
 </li>
 </ul>
