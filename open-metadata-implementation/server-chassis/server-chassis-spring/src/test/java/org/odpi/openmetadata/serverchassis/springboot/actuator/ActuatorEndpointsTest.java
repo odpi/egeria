@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.server.actuator;
+package org.odpi.openmetadata.serverchassis.springboot.actuator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
