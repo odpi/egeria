@@ -15,7 +15,7 @@ import org.springframework.core.env.Environment;
  * This class provides configuration bean for customizing the SSL environment used by java.net.ssl and Tomcat server ssl.
  */
 @Configuration
-public class InitializingBeanConfig {
+public class SSLEnvironmentConfiguration {
     public static final String PREFIX = "SSL configuration started";
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
@@ -34,7 +34,7 @@ public class InitializingBeanConfig {
     @Value("${server.ssl.enabled:true}")
     Boolean serverSSL;
 
-    public InitializingBeanConfig(Environment env) {
+    public SSLEnvironmentConfiguration(Environment env) {
         this.env = env;
     }
 

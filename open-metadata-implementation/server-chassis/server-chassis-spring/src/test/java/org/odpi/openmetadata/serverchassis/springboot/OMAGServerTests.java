@@ -4,7 +4,7 @@ package org.odpi.openmetadata.serverchassis.springboot;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.odpi.openmetadata.serverchassis.springboot.config.InitializingBeanConfig;
+import org.odpi.openmetadata.serverchassis.springboot.config.SSLEnvironmentConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,14 +12,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-@AutoConfigureAfter(InitializingBeanConfig.class)
+@AutoConfigureAfter(SSLEnvironmentConfiguration.class)
 class OMAGServerTests {
 
     @Autowired
     ObjectMapper objectMapper;
 
     @Autowired
-    InitializingBeanConfig initializingBeanConfig;
+    SSLEnvironmentConfiguration initializingBeanConfig;
 
     @Test
     void contextLoads() {
