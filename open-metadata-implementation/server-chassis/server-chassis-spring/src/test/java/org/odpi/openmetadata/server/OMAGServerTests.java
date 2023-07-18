@@ -4,7 +4,7 @@ package org.odpi.openmetadata.server;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.odpi.openmetadata.server.config.InitializingBeanConfig;
+import org.odpi.openmetadata.serverchassis.springboot.config.InitializingBeanConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.test.context.SpringBootTest;

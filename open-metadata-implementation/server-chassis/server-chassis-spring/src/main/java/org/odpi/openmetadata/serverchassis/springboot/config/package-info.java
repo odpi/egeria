@@ -4,4 +4,4 @@
 /**
  *  This package contains classes relevant for spring configuration bootstrapping.
  */
-package org.odpi.openmetadata.server.config;
+package org.odpi.openmetadata.serverchassis.springboot.config;

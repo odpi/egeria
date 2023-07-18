@@ -4,4 +4,4 @@
 /**
  *  This package contains classes relevant for OMAG server spring boot based starter application.
  */
-package org.odpi.openmetadata.server;
+package org.odpi.openmetadata.serverchassis.springboot;

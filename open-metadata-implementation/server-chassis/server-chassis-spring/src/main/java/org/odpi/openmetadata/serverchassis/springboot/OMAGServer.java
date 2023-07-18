@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.server;
+package org.odpi.openmetadata.serverchassis.springboot;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
@@ -182,7 +182,7 @@ public class OMAGServer {
             LOG.trace("Configuration from path: {} is being parsed.", Files.readString(Path.of(omagServerConfigLocation.getFile().getPath())));
             serverConfig = objectMapper.reader().readValue(omagServerConfigLocation.getFile(), OMAGServerConfig.class);
             serverName = serverConfig.getLocalServerName();
-            LOG.info("Configuration loading  from document for OMAG server {} succeded", serverName);
+            LOG.info("Configuration loading  from document for OMAG server {} succeeded", serverName);
 
         } catch (IOException e) {
             LOG.error("Failed loading OMAG server configuration with exception message : {}", e.getMessage());
