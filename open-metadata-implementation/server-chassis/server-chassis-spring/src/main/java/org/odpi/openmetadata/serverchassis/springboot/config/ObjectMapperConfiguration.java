@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.server.config;
+package org.odpi.openmetadata.serverchassis.springboot.config;
 
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -16,6 +16,9 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
+/**
+ * This class provides configuration bean for customizing Jackson object mapper singleton instance configuration.
+ */
 @Configuration
 public class ObjectMapperConfiguration {
     public static final String PREFIX = "Object mapper configuration started.";
