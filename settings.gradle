@@ -15,8 +15,8 @@ pluginManagement {
         gradlePluginPortal()
     }
     plugins {
-        id "io.freefair.aggregate-javadoc" version "8.1.0"
-        id "io.freefair.lombok" version "8.0.1"
+        id "io.freefair.aggregate-javadoc" version "6.6.3"
+        id "io.freefair.lombok" version "8.1.0"
         // Checks for unnecessary dependencies
         id("com.autonomousapps.dependency-analysis") version "1.20.0"
         // helps resolve log implementation clashes
