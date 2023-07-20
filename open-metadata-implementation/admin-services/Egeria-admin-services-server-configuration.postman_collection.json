@@ -3,7 +3,8 @@
 		"_postman_id": "01b3f712-8bbb-474b-ad42-ab66fff58f9a",
 		"name": "Egeria-admin-services-server-configuration",
 		"description": "Requests for configuring an OMAG Server",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28623075"
 	},
 	"item": [
 		{
@@ -15,7 +16,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/configuration",
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/configuration",
 							"host": [
 								"{{baseURL}}"
 							],
@@ -23,7 +24,7 @@
 								"open-metadata",
 								"admin-services",
 								"users",
-								"{{user}}",
+								"{{adminUserId}}",
 								"servers",
 								"{{server}}",
 								"configuration"
@@ -39,7 +40,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/server-type-classification",
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/server-type-classification",
 							"host": [
 								"{{baseURL}}"
 							],
@@ -47,7 +48,7 @@
 								"open-metadata",
 								"admin-services",
 								"users",
-								"{{user}}",
+								"{{adminUserId}}",
 								"servers",
 								"{{server}}",
 								"server-type-classification"
@@ -72,7 +73,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/configuration",
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/configuration",
 							"host": [
 								"{{baseURL}}"
 							],
@@ -80,7 +81,7 @@
 								"open-metadata",
 								"admin-services",
 								"users",
-								"{{user}}",
+								"{{adminUserId}}",
 								"servers",
 								"{{server}}",
 								"configuration"
@@ -96,7 +97,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/configuration",
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/configuration",
 							"host": [
 								"{{baseURL}}"
 							],
@@ -104,7 +105,7 @@
 								"open-metadata",
 								"admin-services",
 								"users",
-								"{{user}}",
+								"{{adminUserId}}",
 								"servers",
 								"{{server}}",
 								"configuration"
@@ -129,7 +130,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/configuration/deploy",
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/configuration/deploy",
 							"host": [
 								"{{baseURL}}"
 							],
@@ -137,7 +138,7 @@
 								"open-metadata",
 								"admin-services",
 								"users",
-								"{{user}}",
+								"{{adminUserId}}",
 								"servers",
 								"{{server}}",
 								"configuration",
@@ -167,7 +168,7 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/server-type?typeName=OMAG Server",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/server-type?typeName=OMAG Server",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -175,7 +176,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"server-type"
@@ -201,7 +202,7 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/organization-name?name={{organization_name}}",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/organization-name?name={{organization_name}}",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -209,7 +210,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"organization-name"
@@ -226,7 +227,7 @@
 							"response": []
 						},
 						{
-							"name": "Set local server userId",
+							"name": "Set local server user Id",
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -235,7 +236,7 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/server-user-id?id={{server-user}}",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/server-user-id?id={{server-user}}",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -243,7 +244,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"server-user-id"
@@ -255,7 +256,7 @@
 										}
 									]
 								},
-								"description": "Set up the userId that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use)."
+								"description": "Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use)."
 							},
 							"response": []
 						},
@@ -269,7 +270,7 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/server-user-password?password={{server-password}}",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/server-user-password?password={{server-password}}",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -277,7 +278,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"server-user-password"
@@ -303,7 +304,7 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/max-page-size?limit={{max_page_size}}",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/max-page-size?limit={{max_page_size}}",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -311,7 +312,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"max-page-size"
@@ -333,7 +334,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/security/connection",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/security/connection",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -341,7 +342,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"security",
@@ -367,7 +368,7 @@
 									"raw": "{\n    \"class\": \"Connection\",\n    \"connectorType\": {\n        \"class\": \"ConnectorType\",\n        \"connectorProviderClassName\": \"org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaServerSecurityProvider\"\n    }\n}"
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/security/connection",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/security/connection",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -375,7 +376,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"security",
@@ -396,7 +397,7 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/security/connection",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/security/connection",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -404,7 +405,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"security",
@@ -421,7 +422,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/audit-log-destinations",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/audit-log-destinations",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -429,7 +430,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"audit-log-destinations"
@@ -445,7 +446,7 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/audit-log-destinations/default",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/audit-log-destinations/default",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -453,7 +454,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"audit-log-destinations",
@@ -479,7 +480,41 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/audit-log-destinations/files",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/audit-log-destinations/files",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{adminUserId}}",
+										"servers",
+										"{{server}}",
+										"audit-log-destinations",
+										"files"
+									]
+								},
+								"description": "Add the file audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.\n\nThe server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured."
+							},
+							"response": []
+						},
+						{
+							"name": "Add file audit log destination (for Error and Exception)",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\"Error\", \"Exception\"]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/atlas-exchange/audit-log-destinations/files",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -489,7 +524,7 @@
 										"users",
 										"{{user}}",
 										"servers",
-										"{{server}}",
+										"atlas-exchange",
 										"audit-log-destinations",
 										"files"
 									]
@@ -513,7 +548,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/audit-log-destinations/event-topic",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/audit-log-destinations/event-topic",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -521,7 +556,41 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
+										"servers",
+										"{{server}}",
+										"audit-log-destinations",
+										"event-topic"
+									]
+								},
+								"description": "Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.\n\nThe server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured."
+							},
+							"response": []
+						},
+						{
+							"name": "Add SLF4J audit log destination",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/audit-log-destinations/event-topic",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"audit-log-destinations",
@@ -547,7 +616,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/audit-log-destinations/console",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/audit-log-destinations/console",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -555,7 +624,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"audit-log-destinations",
@@ -572,7 +641,7 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/audit-log-destinations/connection",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/audit-log-destinations/connection",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -580,7 +649,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"audit-log-destinations",
@@ -597,7 +666,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/audit-log-destinations",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/audit-log-destinations",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -605,7 +674,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"audit-log-destinations"
@@ -632,7 +701,7 @@
 									"raw": "{\n\"producer\":\n{\n\"bootstrap.servers\":\"{{kafkaep}}\"\n},\n\"consumer\":\n{\n\"bootstrap.servers\":\"{{kafkaep}}\"\n}\n}"
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/event-bus",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/event-bus",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -640,7 +709,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"event-bus"
@@ -651,7 +720,115 @@
 							"response": []
 						}
 					],
-					"description": "This folder has the configuration commands that are common for all types of OMAG Server.\n\nThis is the link to their documentation: https://odpi.github.io/egeria-docs/guides/admin/servers/"
+					"description": "This folder has the configuration commands that are common for all types of OMAG Server.\n\nThis is the link to their documentation https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/configuring-omag-server-basic-properties.html"
+				},
+				{
+					"name": "Configuring defaults for the Event Bus",
+					"item": [
+						{
+							"name": "Get event bus defaults",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"producer\": {\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    },\n    \"consumer\":{\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/event-bus",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{adminUserId}}",
+										"servers",
+										"{{server}}",
+										"event-bus"
+									]
+								},
+								"description": "Retrieve the common properties needed to call your event bus.\nThese defaults will be incorporated into any future configuration that includes an event bus topic."
+							},
+							"response": []
+						},
+						{
+							"name": "Set up event bus defaults",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"producer\": {\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    },\n    \"consumer\":{\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/event-bus",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{adminUserId}}",
+										"servers",
+										"{{server}}",
+										"event-bus"
+									]
+								},
+								"description": "Set up the common properties needed to call your event bus.  These properties are passed in the request body.\nThis request just sets up the defaults that will be incorporated into any future configuration that includes an event bus topic."
+							},
+							"response": []
+						},
+						{
+							"name": "Delete event bus defaults",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"producer\": {\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    },\n    \"consumer\":{\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/event-bus",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{adminUserId}}",
+										"servers",
+										"{{server}}",
+										"event-bus"
+									]
+								},
+								"description": "Remove the event bus details from the server's configuration document."
+							},
+							"response": []
+						}
+					],
+					"description": "These values need to be set up first when configuring a server that is either a cohort member, using topics on the access services, or using the topic audit log destination. This is the link to the documentation:\n\n- [https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/configuring-event-bus.html]()"
 				},
 				{
 					"name": "Configuration for Cohort Members",
@@ -674,7 +851,7 @@
 											}
 										},
 										"url": {
-											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/server-url-root-for-caller",
+											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/server-url-root-for-caller",
 											"host": [
 												"{{baseURL}}"
 											],
@@ -682,7 +859,7 @@
 												"open-metadata",
 												"admin-services",
 												"users",
-												"{{user}}",
+												"{{adminUserId}}",
 												"servers",
 												"{{server}}",
 												"server-url-root-for-caller"
@@ -691,111 +868,9 @@
 										"description": "Update the URL root that other servers that are also members any open metadata repository cohort that the server belongs to should use to make calls to this local server. This value is sent when the server registers with the cohort.  If the server is not going to join a cohort then this value is not needed.\n\nThis value should be set to the URL of the OMAG Server Platform where the server will run.  If the server is deployed to many servers in an HA cluster configuration, it should be set to a DNS name that will disperse requests across the server cluster."
 									},
 									"response": []
-								},
-								{
-									"name": "Get event bus defaults",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"method": "GET",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"producer\": {\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    },\n    \"consumer\":{\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    }\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/event-bus",
-											"host": [
-												"{{baseURL}}"
-											],
-											"path": [
-												"open-metadata",
-												"admin-services",
-												"users",
-												"{{user}}",
-												"servers",
-												"{{server}}",
-												"event-bus"
-											]
-										},
-										"description": "Retrieve the common properties needed to call your event bus.\nThese defaults will be incorporated into any future configuration that includes an event bus topic."
-									},
-									"response": []
-								},
-								{
-									"name": "Set up event bus defaults",
-									"request": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"producer\": {\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    },\n    \"consumer\":{\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    }\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/event-bus",
-											"host": [
-												"{{baseURL}}"
-											],
-											"path": [
-												"open-metadata",
-												"admin-services",
-												"users",
-												"{{user}}",
-												"servers",
-												"{{server}}",
-												"event-bus"
-											]
-										},
-										"description": "Set up the common properties needed to call your event bus.  These properties are passed in the request body.\nThis request just sets up the defaults that will be incorporated into any future configuration that includes an event bus topic."
-									},
-									"response": []
-								},
-								{
-									"name": "Delete event bus defaults",
-									"request": {
-										"method": "DELETE",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"producer\": {\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    },\n    \"consumer\":{\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    }\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/event-bus",
-											"host": [
-												"{{baseURL}}"
-											],
-											"path": [
-												"open-metadata",
-												"admin-services",
-												"users",
-												"{{user}}",
-												"servers",
-												"{{server}}",
-												"event-bus"
-											]
-										},
-										"description": "Remove the event bus details from the server's configuration document."
-									},
-									"response": []
 								}
 							],
-							"description": "These values need to be set up first when configuring a cohort member.  These are the links to the documentation: https://odpi.github.io/egeria-docs/guides/admin/servers/"
+							"description": "The local server URL root needs to be set up first when configuring a cohort member. This is the link to the documentation:\n\n- [https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/configuring-local-server-url.html]()"
 						},
 						{
 							"name": "Configuration for Metadata Access Points",
@@ -813,7 +888,7 @@
 													"raw": ""
 												},
 												"url": {
-													"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/local-repository/mode/in-memory-repository",
+													"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/mode/in-memory-repository",
 													"host": [
 														"{{baseURL}}"
 													],
@@ -821,12 +896,42 @@
 														"open-metadata",
 														"admin-services",
 														"users",
-														"{{user}}",
+														"{{adminUserId}}",
 														"servers",
 														"{{server}}",
 														"local-repository",
 														"mode",
 														"in-memory-repository"
+													]
+												},
+												"description": "Set up the local reposiotry to use the in-memory implementation."
+											},
+											"response": []
+										},
+										{
+											"name": "Enable the read-only repository",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": ""
+												},
+												"url": {
+													"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/mode/read-only-repository",
+													"host": [
+														"{{baseURL}}"
+													],
+													"path": [
+														"open-metadata",
+														"admin-services",
+														"users",
+														"{{adminUserId}}",
+														"servers",
+														"{{server}}",
+														"local-repository",
+														"mode",
+														"read-only-repository"
 													]
 												},
 												"description": "Set up the local reposiotry to use the in-memory implementation."
@@ -843,7 +948,7 @@
 													"raw": ""
 												},
 												"url": {
-													"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/local-repository/mode/local-graph-repository",
+													"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/mode/local-graph-repository",
 													"host": [
 														"{{baseURL}}"
 													],
@@ -851,7 +956,42 @@
 														"open-metadata",
 														"admin-services",
 														"users",
-														"{{user}}",
+														"{{adminUserId}}",
+														"servers",
+														"{{server}}",
+														"local-repository",
+														"mode",
+														"local-graph-repository"
+													]
+												},
+												"description": "Set the local reposiotry to use the JanusGraph implementation.  It will store your repository in a file under the home of your OMAG Server Platform."
+											},
+											"response": []
+										},
+										{
+											"name": "Enable the graph repository with hbase and elastic search",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"storage.backend\" : \"hbase\",\n    \"storage.hostname\" : \"wolfsonnet.me\",\n    \"storage.port\" : \"2181\",\n    \"storage.hbase.table\" : \"DMPSERVER1\",\n    \"index.search.backend\" : \"elasticsearch\",\n    \"index.search.hostname\" : \"wolfsonnet.me\",\n    \"index.search.elasticsearch.client-only\" : \"true\",\n    \"cache.db-cache\" : \"true\",\n    \"cache.db-cache-clean-wait\" : \"20\",\n    \"cache.db-cache-time\" : \"180000\",\n    \"cache.db-cache-size\" : \"0.5\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/mode/local-graph-repository",
+													"host": [
+														"{{baseURL}}"
+													],
+													"path": [
+														"open-metadata",
+														"admin-services",
+														"users",
+														"{{adminUserId}}",
 														"servers",
 														"{{server}}",
 														"local-repository",
@@ -869,7 +1009,7 @@
 												"method": "GET",
 												"header": [],
 												"url": {
-													"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/local-repository/metadata-collection-id",
+													"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/metadata-collection-id",
 													"host": [
 														"{{baseURL}}"
 													],
@@ -877,7 +1017,7 @@
 														"open-metadata",
 														"admin-services",
 														"users",
-														"{{user}}",
+														"{{adminUserId}}",
 														"servers",
 														"{{server}}",
 														"local-repository",
@@ -894,7 +1034,7 @@
 												"method": "POST",
 												"header": [],
 												"url": {
-													"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/local-repository/metadata-collection-name/{{mc_name}}",
+													"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/metadata-collection-name/{{mc_name}}",
 													"host": [
 														"{{baseURL}}"
 													],
@@ -902,12 +1042,41 @@
 														"open-metadata",
 														"admin-services",
 														"users",
-														"{{user}}",
+														"{{adminUserId}}",
 														"servers",
 														"{{server}}",
 														"local-repository",
 														"metadata-collection-name",
 														"{{mc_name}}"
+													]
+												},
+												"description": "Set up a human friendly name for the collection of metadata that originates from this metadata server. This name is used in events and messages to help people diagnose problems in the cohort."
+											},
+											"response": []
+										},
+										{
+											"name": "Set local metadata collection id",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "New metadata collection id"
+												},
+												"url": {
+													"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/metadata-collection-id",
+													"host": [
+														"{{baseURL}}"
+													],
+													"path": [
+														"open-metadata",
+														"admin-services",
+														"users",
+														"{{adminUserId}}",
+														"servers",
+														"{{server}}",
+														"local-repository",
+														"metadata-collection-id"
 													]
 												},
 												"description": "Set up a human friendly name for the collection of metadata that originates from this metadata server. This name is used in events and messages to help people diagnose problems in the cohort."
@@ -924,7 +1093,7 @@
 													"raw": ""
 												},
 												"url": {
-													"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/local-repository",
+													"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository",
 													"host": [
 														"{{baseURL}}"
 													],
@@ -932,7 +1101,7 @@
 														"open-metadata",
 														"admin-services",
 														"users",
-														"{{user}}",
+														"{{adminUserId}}",
 														"servers",
 														"{{server}}",
 														"local-repository"
@@ -949,10 +1118,10 @@
 												"header": [],
 												"body": {
 													"mode": "raw",
-													"raw": "content-packs/OpenConnectorsArchive.json"
+													"raw": "content-packs/DataStoreConnectorTypes.json"
 												},
 												"url": {
-													"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/open-metadata-archives/file",
+													"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/open-metadata-archives/file",
 													"host": [
 														"{{baseURL}}"
 													],
@@ -960,7 +1129,7 @@
 														"open-metadata",
 														"admin-services",
 														"users",
-														"{{user}}",
+														"{{adminUserId}}",
 														"servers",
 														"{{server}}",
 														"open-metadata-archives",
@@ -977,7 +1146,7 @@
 												"method": "DELETE",
 												"header": [],
 												"url": {
-													"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/open-metadata-archives",
+													"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/open-metadata-archives",
 													"host": [
 														"{{baseURL}}"
 													],
@@ -985,7 +1154,7 @@
 														"open-metadata",
 														"admin-services",
 														"users",
-														"{{user}}",
+														"{{adminUserId}}",
 														"servers",
 														"{{server}}",
 														"open-metadata-archives"
@@ -999,36 +1168,12 @@
 									"description": "These are the specialized requests for metadata servers."
 								},
 								{
-									"name": "Get registered access services",
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/registered-services/access-services",
-											"host": [
-												"{{baseURL}}"
-											],
-											"path": [
-												"open-metadata",
-												"platform-services",
-												"users",
-												"{{user}}",
-												"server-platform",
-												"registered-services",
-												"access-services"
-											]
-										},
-										"description": "This call is used return a list of registered Open Metadata Access Services for the platform."
-									},
-									"response": []
-								},
-								{
 									"name": "Get names of configured access services",
 									"request": {
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/access-services",
+											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services",
 											"host": [
 												"{{baseURL}}"
 											],
@@ -1036,7 +1181,7 @@
 												"open-metadata",
 												"admin-services",
 												"users",
-												"{{user}}",
+												"{{adminUserId}}",
 												"servers",
 												"{{server}}",
 												"access-services"
@@ -1059,7 +1204,7 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/access-services/configuration",
+											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/configuration",
 											"host": [
 												"{{baseURL}}"
 											],
@@ -1067,7 +1212,7 @@
 												"open-metadata",
 												"admin-services",
 												"users",
-												"{{user}}",
+												"{{adminUserId}}",
 												"servers",
 												"{{server}}",
 												"access-services",
@@ -1091,7 +1236,7 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/access-services/{{access_service}}",
+											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/{{access_service}}",
 											"host": [
 												"{{baseURL}}"
 											],
@@ -1099,7 +1244,7 @@
 												"open-metadata",
 												"admin-services",
 												"users",
-												"{{user}}",
+												"{{adminUserId}}",
 												"servers",
 												"{{server}}",
 												"access-services",
@@ -1107,35 +1252,6 @@
 											]
 										},
 										"description": "Retrieve the configuration information for a specific Open Metadata Access Services (OMAS) configured for this server."
-									},
-									"response": []
-								},
-								{
-									"name": "Enable a specific access service",
-									"request": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
-										"url": {
-											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/access-services/{{access_service}}",
-											"host": [
-												"{{baseURL}}"
-											],
-											"path": [
-												"open-metadata",
-												"admin-services",
-												"users",
-												"{{user}}",
-												"servers",
-												"{{server}}",
-												"access-services",
-												"{{access_service}}"
-											]
-										},
-										"description": "Turn on a specific registered Open Metadata Access Services (OMAS).\n\nChange the value of the {{access-service}} variable in the environment to be the URL version of the name.  Typically this is done by taking the access service name, dropping \"OMAS\", change to lower-case and link two words with a dash \"-\".  For example, Asset Owner OMAS, would have a url name of asset-owner."
 									},
 									"response": []
 								},
@@ -1149,7 +1265,7 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/access-services",
+											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services",
 											"host": [
 												"{{baseURL}}"
 											],
@@ -1157,10 +1273,39 @@
 												"open-metadata",
 												"admin-services",
 												"users",
-												"{{user}}",
+												"{{adminUserId}}",
 												"servers",
 												"{{server}}",
 												"access-services"
+											]
+										},
+										"description": "Turn on all of the registered Open Metadata Access Services (OMAS)"
+									},
+									"response": []
+								},
+								{
+									"name": "Enable all of the access services with no topics",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/no-topics",
+											"host": [
+												"{{baseURL}}"
+											],
+											"path": [
+												"open-metadata",
+												"admin-services",
+												"users",
+												"{{adminUserId}}",
+												"servers",
+												"{{server}}",
+												"access-services",
+												"no-topics"
 											]
 										},
 										"description": "Turn on all of the registered Open Metadata Access Services (OMAS)"
@@ -1182,7 +1327,7 @@
 											}
 										},
 										"url": {
-											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/access-services/configuration",
+											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/configuration",
 											"host": [
 												"{{baseURL}}"
 											],
@@ -1190,7 +1335,7 @@
 												"open-metadata",
 												"admin-services",
 												"users",
-												"{{user}}",
+												"{{adminUserId}}",
 												"servers",
 												"{{server}}",
 												"access-services",
@@ -1211,7 +1356,7 @@
 											"raw": "cp.stewardshipaction.intopic"
 										},
 										"url": {
-											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/access-services/{{access_service}}/topic-names/in-topic",
+											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/{{access_service}}/topic-names/in-topic",
 											"host": [
 												"{{baseURL}}"
 											],
@@ -1219,7 +1364,7 @@
 												"open-metadata",
 												"admin-services",
 												"users",
-												"{{user}}",
+												"{{adminUserId}}",
 												"servers",
 												"{{server}}",
 												"access-services",
@@ -1242,7 +1387,7 @@
 											"raw": "cp.stewardshipaction.outtopic"
 										},
 										"url": {
-											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/access-services/{{access_service}}/topic-names/out-topic",
+											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/{{access_service}}/topic-names/out-topic",
 											"host": [
 												"{{baseURL}}"
 											],
@@ -1250,7 +1395,7 @@
 												"open-metadata",
 												"admin-services",
 												"users",
-												"{{user}}",
+												"{{adminUserId}}",
 												"servers",
 												"{{server}}",
 												"access-services",
@@ -1269,7 +1414,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/access-services/topic-names",
+											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/topic-names",
 											"host": [
 												"{{baseURL}}"
 											],
@@ -1277,7 +1422,7 @@
 												"open-metadata",
 												"admin-services",
 												"users",
-												"{{user}}",
+												"{{adminUserId}}",
 												"servers",
 												"{{server}}",
 												"access-services",
@@ -1294,7 +1439,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/access-services/{{access_service}}/topic-names",
+											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/{{access_service}}/topic-names",
 											"host": [
 												"{{baseURL}}"
 											],
@@ -1302,7 +1447,7 @@
 												"open-metadata",
 												"admin-services",
 												"users",
-												"{{user}}",
+												"{{adminUserId}}",
 												"servers",
 												"{{server}}",
 												"access-services",
@@ -1324,7 +1469,7 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/access-services",
+											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services",
 											"host": [
 												"{{baseURL}}"
 											],
@@ -1332,7 +1477,7 @@
 												"open-metadata",
 												"admin-services",
 												"users",
-												"{{user}}",
+												"{{adminUserId}}",
 												"servers",
 												"{{server}}",
 												"access-services"
@@ -1352,7 +1497,7 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/access-services/{{access_service}}",
+											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/{{access_service}}",
 											"host": [
 												"{{baseURL}}"
 											],
@@ -1360,7 +1505,7 @@
 												"open-metadata",
 												"admin-services",
 												"users",
-												"{{user}}",
+												"{{adminUserId}}",
 												"servers",
 												"{{server}}",
 												"access-services",
@@ -1407,7 +1552,7 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/local-repository/mode/repository-proxy/details?connectorProvider=org.odpi.openmetadata.adapters.igc.repositoryconnector.IGCOMRSRepositoryConnectorProvider             ",
+											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/mode/repository-proxy/details?connectorProvider=org.odpi.openmetadata.adapters.igc.repositoryconnector.IGCOMRSRepositoryConnectorProvider             ",
 											"host": [
 												"{{baseURL}}"
 											],
@@ -1415,7 +1560,7 @@
 												"open-metadata",
 												"admin-services",
 												"users",
-												"{{user}}",
+												"{{adminUserId}}",
 												"servers",
 												"{{server}}",
 												"local-repository",
@@ -1444,7 +1589,7 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/local-repository/event-mapper-details?connectorProvider=org.odpi.openmetadata.adapters.igc.eventmapper.IGCEventMapperProvider&eventSource=infosphereEvent",
+											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/event-mapper-details?connectorProvider=org.odpi.openmetadata.adapters.igc.eventmapper.IGCEventMapperProvider&eventSource=infosphereEvent",
 											"host": [
 												"{{baseURL}}"
 											],
@@ -1452,7 +1597,7 @@
 												"open-metadata",
 												"admin-services",
 												"users",
-												"{{user}}",
+												"{{adminUserId}}",
 												"servers",
 												"{{server}}",
 												"local-repository",
@@ -1483,7 +1628,7 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/local-repository",
+											"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository",
 											"host": [
 												"{{baseURL}}"
 											],
@@ -1491,7 +1636,7 @@
 												"open-metadata",
 												"admin-services",
 												"users",
-												"{{user}}",
+												"{{adminUserId}}",
 												"servers",
 												"{{server}}",
 												"local-repository"
@@ -1514,7 +1659,7 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/cohorts/{{cohort}}",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/cohorts/{{cohort}}",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -1522,7 +1667,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"cohorts",
@@ -1543,7 +1688,7 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/cohorts/{{cohort}}/topic-structure/DEDICATED_TOPICS",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/cohorts/{{cohort}}/topic-structure/DEDICATED_TOPICS",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -1551,7 +1696,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"cohorts",
@@ -1577,7 +1722,7 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/cohorts/{{cohort}}",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/cohorts/{{cohort}}",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -1585,7 +1730,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"cohorts",
@@ -1618,7 +1763,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/cohorts/{{cohort}}/topic-name-override",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/cohorts/{{cohort}}/topic-name-override",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -1626,7 +1771,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"cohorts",
@@ -1660,7 +1805,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/cohorts/{{cohort}}/topic-name-override/registration",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/cohorts/{{cohort}}/topic-name-override/registration",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -1668,7 +1813,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"cohorts",
@@ -1703,7 +1848,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/cohorts/{{cohort}}/topic-name-override/types",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/cohorts/{{cohort}}/topic-name-override/types",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -1711,7 +1856,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"cohorts",
@@ -1746,7 +1891,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/cohorts/{{cohort}}/topic-name-override/instances",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/cohorts/{{cohort}}/topic-name-override/instances",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -1754,7 +1899,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"cohorts",
@@ -1773,7 +1918,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/cohorts/{{cohort}}/topic-name",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/cohorts/{{cohort}}/topic-name",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -1781,7 +1926,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"cohorts",
@@ -1799,7 +1944,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/cohorts/{{cohort}}/dedicated-topic-names",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/cohorts/{{cohort}}/dedicated-topic-names",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -1807,7 +1952,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"cohorts",
@@ -1829,7 +1974,7 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/cohorts/{{cohort}}",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/cohorts/{{cohort}}",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -1837,7 +1982,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"cohorts",
@@ -1875,36 +2020,12 @@
 					"name": "Configuration for Engine Host Servers",
 					"item": [
 						{
-							"name": "Get registered engine services",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/registered-services/engine-services",
-									"host": [
-										"{{baseURL}}"
-									],
-									"path": [
-										"open-metadata",
-										"platform-services",
-										"users",
-										"{{user}}",
-										"server-platform",
-										"registered-services",
-										"engine-services"
-									]
-								},
-								"description": "This call is used return a list of registered Open Metadata Engine Services for the platform."
-							},
-							"response": []
-						},
-						{
 							"name": "Get names of configured engine services",
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/engine-services",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/engine-services",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -1912,7 +2033,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"engine-services"
@@ -1928,7 +2049,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/engine-services",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/engine-services",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -1936,7 +2057,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"engine-services"
@@ -1952,7 +2073,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/engine-services/asset-analysis/configuration",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/engine-services/asset-analysis/configuration",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -1960,7 +2081,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"engine-services",
@@ -1987,7 +2108,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/engine-services/asset-analysis",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/engine-services/asset-analysis",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -1995,7 +2116,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"engine-services",
@@ -2013,36 +2134,12 @@
 					"name": "Configuration for Integration Daemons",
 					"item": [
 						{
-							"name": "Get registered integration services",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/registered-services/integration-services",
-									"host": [
-										"{{baseURL}}"
-									],
-									"path": [
-										"open-metadata",
-										"platform-services",
-										"users",
-										"{{user}}",
-										"server-platform",
-										"registered-services",
-										"integration-services"
-									]
-								},
-								"description": "This call is used return a list of registered Open Metadata Integration Services for the platform."
-							},
-							"response": []
-						},
-						{
 							"name": "Get names of configured integration services",
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/integration-services",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/integration-services",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -2050,7 +2147,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"integration-services"
@@ -2066,7 +2163,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/integration-services",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/integration-services",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -2074,7 +2171,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"integration-services"
@@ -2090,7 +2187,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/engine-services/asset-analysis/configuration",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/engine-services/asset-analysis/configuration",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -2098,7 +2195,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"engine-services",
@@ -2111,7 +2208,109 @@
 							"response": []
 						},
 						{
-							"name": "Configure integration daemon server with an integration service",
+							"name": "Configure  the Topic integration service",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"class\": \"IntegrationServiceRequestBody\",\n    \"omagserverPlatformRootURL\": \"{{baseURL}}\",\n    \"omagserverName\" : \"{{mdrServerName}}\",\n    \"integrationConnectorConfigs\" : [ \n        {\n             \"class\": \"IntegrationConnectorConfig\",\n             \"connectorName\" : \"TopicMonitor\",             \n             \"connectorUserId\" : \"monitorDL01npa\",         \n             \"connection\" : \n             { \n                 \"class\" : \"Connection\",\n                 \"qualifiedName\" : \"TopicMonitorConnection\",\n                 \"connectorType\" : \n                 {\n                     \"class\" : \"ConnectorType\",\n                     \"connectorProviderClassName\" : \"org.odpi.openmetadata.adapters.connectors.integration.kafka.KafkaMonitorIntegrationProvider\"\n                 },\n                 \"endpoint\" :\n                 {\n                     \"class\" : \"Endpoint\",\n                     \"address\" : \"{{kafkaep}}\"\n                 }\n             },               \n             \"metadataSourceQualifiedName\" : \"cocoKafkaBroker\",\n             \"refreshTimeInterval\" : \"60\", \n             \"usesBlockingCalls\" : \"false\",\n             \"permittedSynchronization\" : \"FROM_THIRD_PARTY\"\n        } ] \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/integration-services/topic-integrator",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{adminUserId}}",
+										"servers",
+										"{{server}}",
+										"integration-services",
+										"topic-integrator"
+									]
+								},
+								"description": "Add details of the metadata server to call and the connectors to run."
+							},
+							"response": []
+						},
+						{
+							"name": "Configure  the API integration service",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"class\": \"IntegrationServiceRequestBody\",\n    \"omagserverPlatformRootURL\": \"{{baseURL}}\",\n    \"omagserverName\" : \"cocoMDSx\",\n    \"integrationConnectorConfigs\" : [ \n        {\n             \"class\": \"IntegrationConnectorConfig\",\n             \"connectorName\" : \"APIMonitor\",             \n             \"connectorUserId\" : \"monitorDL01npa\",         \n             \"connection\" : \n             { \n                 \"class\" : \"Connection\",\n                 \"qualifiedName\" : \"APIMonitorConnection\",\n                 \"connectorType\" : \n                 {\n                     \"class\" : \"ConnectorType\",\n                     \"connectorProviderClassName\" : \"org.odpi.openmetadata.adapters.connectors.integration.openapis.OpenAPIMonitorIntegrationProvider\"\n                 },\n                 \"endpoint\" :\n                 {\n                     \"class\" : \"Endpoint\",\n                     \"address\" : \"{{baseURL}}\"\n                 }\n             },               \n             \"metadataSourceQualifiedName\" : \"cocoOMAGServerPlatform\",\n             \"refreshTimeInterval\" : \"60\", \n             \"usesBlockingCalls\" : \"false\",\n             \"permittedSynchronization\" : \"FROM_THIRD_PARTY\"\n        } ] \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/integration-services/api-integrator",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{adminUserId}}",
+										"servers",
+										"{{server}}",
+										"integration-services",
+										"api-integrator"
+									]
+								},
+								"description": "Add details of the metadata server to call and the connectors to run."
+							},
+							"response": []
+						},
+						{
+							"name": "Configure  the Files integration service",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"class\": \"IntegrationServiceRequestBody\",\n    \"omagserverPlatformRootURL\": \"{{baseURL}}\",\n    \"omagserverName\" : \"cocoMDSx\",\n    \"integrationConnectorConfigs\" : [ \n        {\n             \"class\": \"IntegrationConnectorConfig\",\n             \"connectorName\" : \"FilesMonitor\",             \n             \"connectorUserId\" : \"erinoverview\",         \n             \"connection\" : \n             { \n                 \"class\" : \"Connection\",\n                 \"qualifiedName\" : \"FilesMonitorConnection\",\n                 \"connectorType\" : \n                 {\n                     \"class\" : \"ConnectorType\",\n                     \"connectorProviderClassName\" : \"org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider\"\n                 },\n                 \"endpoint\" :\n                 {\n                     \"class\" : \"Endpoint\",\n                     \"address\" : \"sample-data\"\n                 }\n             },               \n             \"metadataSourceQualifiedName\" : \"cocoDataLake\",\n             \"refreshTimeInterval\" : \"60\", \n             \"usesBlockingCalls\" : \"false\",\n             \"permittedSynchronization\" : \"FROM_THIRD_PARTY\"\n        } ] \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/integration-services/files-integrator",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{adminUserId}}",
+										"servers",
+										"{{server}}",
+										"integration-services",
+										"files-integrator"
+									]
+								},
+								"description": "Add details of the metadata server to call and the connectors to run."
+							},
+							"response": []
+						},
+						{
+							"name": "Configure the Database integration service",
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -2125,7 +2324,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/integration-services/database-integrator",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/integration-services/database-integrator",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -2133,7 +2332,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"integration-services",
@@ -2143,9 +2342,43 @@
 								"description": "Add details of the metadata server to call and the connectors to run."
 							},
 							"response": []
+						},
+						{
+							"name": "Configure the Catalog integration service",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"class\": \"IntegrationServiceRequestBody\",\n    \"omagserverPlatformRootURL\": \"{{baseURL}}\",\n    \"omagserverName\" : \"{{mdrServerName}}\",\n    \"integrationConnectorConfigs\" : [ \n        {\n             \"class\": \"IntegrationConnectorConfig\",\n             \"connectorName\" : \"AtlasIntegrator\",             \n             \"connectorUserId\" : \"atlasIntegratornpa\",         \n             \"connection\" : \n             { \n                 \"class\" : \"Connection\",\n                 \"connectorType\" : \n                 {\n                     \"class\" : \"ConnectorType\",\n                     \"connectorProviderClassName\" : \"org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasIntegrationProvider\"\n                 },\n                 \"endpoint\" :\n                 {\n                     \"class\" : \"Endpoint\",\n                     \"address\" : \"{{atlas_host}}:{{atlas_port}}\"\n                 }\n             },               \n             \"metadataSourceQualifiedName\" : \"ApacheAtlasDL01\",\n             \"refreshTimeInterval\" : \"5\", \n             \"usesBlockingCalls\" : \"false\",\n             \"permittedSynchronization\" : \"BOTH_DIRECTIONS\"\n        } ] \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/integration-services/catalog-integrator",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"open-metadata",
+										"admin-services",
+										"users",
+										"{{adminUserId}}",
+										"servers",
+										"{{server}}",
+										"integration-services",
+										"catalog-integrator"
+									]
+								},
+								"description": "Add details of the metadata server to call and the connectors to run."
+							},
+							"response": []
 						}
 					],
-					"description": "An Integration Daemon is an OMAG Server that hosts integration services.  Each integration service hosts one or more integration connectors.\n\nThe Integration daemon is configured in two stages:\n* Add the audit log configuration\n* Add the list of Connections for the integration connectors for each of the integration services that are to run in the integration connector.\n\nDetails on configuring integration daemons can be found here: https://odpi.github.io/egeria-docs/guides/admin/servers/"
+					"description": "An Integration Daemon is an OMAG Server that hosts integration services.  Each integration service hosts one or more integration connectors.\n\nThe Integration daemon is configured in two stages:\n* Add the audit log configuration\n* Add the list of Connections for the integration connectors for each of the integration services that are to run in the integration connector.\n\nDetails on configuring integration daemons can be found here:\nhttps://egeria.odpi.org/open-metadata-implementation/admin-services/docs/concepts/integration-daemon.html"
 				},
 				{
 					"name": "Configuring View Servers",
@@ -2163,10 +2396,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"class\":\"IntegrationViewServiceConfig\",\n    \"viewServiceAdminClass\":\"org.odpi.openmetadata.viewservices.rex.admin.RexViewAdmin\",\n    \"viewServiceFullName\":\"RepositoryExplorer\",\n    \"viewServiceOperationalStatus\":\"ENABLED\",\n    \"resourceEndpoints\" : [\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Platform\",\n            \"platformName\"       : \"myOMAGPlatform1\",\n            \"platformRootURL\"    : \"myPlatformRootURL1\",\n            \"description\"        : \"myOMAGPlatform1 description\"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Platform\",\n            \"platformName\"       : \"myOMAGPlatform2\",\n            \"platformRootURL\"    : \"myPlatformRootURL2\",\n            \"description\"        : \"myOMAGPlatform2 description\"\n        },       \n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"myServerInstanceName1\",\n            \"serverName\"         : \"myServerName1\",\n            \"platformName\"       : \"myOMAGPlatform1\",\n            \"description\"        : \"myServerName1 description \"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"myServerInstanceName2\",\n            \"serverName\"         : \"myServerName2\",\n            \"platformName\"       : \"myOMAGPlatform1\",\n            \"description\"        : \"myServerName2 description \"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"myServerInstanceName3\",\n            \"serverName\"         : \"myServerName3\",\n            \"platformName\"       : \"myOMAGPlatform2\",\n            \"description\"        : \"myServerName3 description \"\n        }\n    ]\n}"
+									"raw": "{\n    \"class\":\"IntegrationViewServiceConfig\",\n    \"viewServiceAdminClass\":\"org.odpi.openmetadata.viewservices.rex.admin.RexViewAdmin\",\n    \"viewServiceFullName\":\"RepositoryExplorer\",\n    \"viewServiceOperationalStatus\":\"ENABLED\",\n    \"resourceEndpoints\" : [\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Platform\",\n            \"platformName\"       : \"Platform9443\",\n            \"platformRootURL\"    : \"https://localhost:9443\",\n            \"description\"        : \"Platform for event, data and API catalogs\"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Platform\",\n            \"platformName\"       : \"Platform9444\",\n            \"platformRootURL\"    : \"https://localhost:9444\",\n            \"description\"        : \"Platform for governance catalog and view server\"\n        },       \n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"eventcatalog\",\n            \"serverName\"         : \"eventcatalog\",\n            \"platformName\"       : \"Platform9443\",\n            \"description\"        : \"Simple Event Catalog\"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"apicatalog\",\n            \"serverName\"         : \"apicatalog\",\n            \"platformName\"       : \"Platform9443\",\n            \"description\"        : \"Simple API Catalog\"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"datacatalog\",\n            \"serverName\"         : \"datacatalog\",\n            \"platformName\"       : \"Platform9443\",\n            \"description\"        : \"Simple Data Catalog\"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"governancecatalog\",\n            \"serverName\"         : \"governancecatalog\",\n            \"platformName\"       : \"Platform9444\",\n            \"description\"        : \"Simple Governance Catalog\"\n        }\n    ]\n}"
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/view-services/rex",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simpleview/view-services/rex",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -2174,9 +2407,9 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
-										"{{server}}",
+										"simpleview",
 										"view-services",
 										"rex"
 									]
@@ -2198,10 +2431,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"class\":\"IntegrationViewServiceConfig\",\n    \"viewServiceAdminClass\":\"org.odpi.openmetadata.viewservices.rex.admin.TexViewAdmin\",\n    \"viewServiceFullName\":\"TypeExplorer\",\n    \"viewServiceOperationalStatus\":\"ENABLED\",\n    \"resourceEndpoints\" : [\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Platform\",\n            \"platformName\"       : \"myOMAGPlatform1\",\n            \"platformRootURL\"    : \"myPlatformRootURL1\",\n            \"description\"        : \"myOMAGPlatform1 description\"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Platform\",\n            \"platformName\"       : \"myOMAGPlatform2\",\n            \"platformRootURL\"    : \"myPlatformRootURL2\",\n            \"description\"        : \"myOMAGPlatform2 description\"\n        },       \n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"myServerInstanceName1\",\n            \"serverName\"         : \"myServerName1\",\n            \"platformName\"       : \"myOMAGPlatform1\",\n            \"description\"        : \"myServerName1 description \"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"myServerInstanceName2\",\n            \"serverName\"         : \"myServerName2\",\n            \"platformName\"       : \"myOMAGPlatform1\",\n            \"description\"        : \"myServerName2 description \"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"myServerInstanceName3\",\n            \"serverName\"         : \"myServerName3\",\n            \"platformName\"       : \"myOMAGPlatform2\",\n            \"description\"        : \"myServerName3 description \"\n        }\n    ]\n}"
+									"raw": "{\n    \"class\":\"IntegrationViewServiceConfig\",\n    \"viewServiceAdminClass\":\"org.odpi.openmetadata.viewservices.rex.admin.TexViewAdmin\",\n    \"viewServiceFullName\":\"TypeExplorer\",\n    \"viewServiceOperationalStatus\":\"ENABLED\",\n    \"resourceEndpoints\" : [\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Platform\",\n            \"platformName\"       : \"Platform9443\",\n            \"platformRootURL\"    : \"https://localhost:9443\",\n            \"description\"        : \"Platform for event, data and API catalogs\"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Platform\",\n            \"platformName\"       : \"Platform9444\",\n            \"platformRootURL\"    : \"https://localhost:9444\",\n            \"description\"        : \"Platform for governance catalog and view server\"\n        },       \n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"eventcatalog\",\n            \"serverName\"         : \"eventcatalog\",\n            \"platformName\"       : \"Platform9443\",\n            \"description\"        : \"Simple Event Catalog\"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"apicatalog\",\n            \"serverName\"         : \"apicatalog\",\n            \"platformName\"       : \"Platform9443\",\n            \"description\"        : \"Simple API Catalog\"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"datacatalog\",\n            \"serverName\"         : \"datacatalog\",\n            \"platformName\"       : \"Platform9443\",\n            \"description\"        : \"Simple Data Catalog\"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"governancecatalog\",\n            \"serverName\"         : \"governancecatalog\",\n            \"platformName\"       : \"Platform9444\",\n            \"description\"        : \"Simple Governance Catalog\"\n        }\n    ]\n}"
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/view-services/tex",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simpleview/view-services/tex",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -2209,9 +2442,9 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
-										"{{server}}",
+										"simpleview",
 										"view-services",
 										"tex"
 									]
@@ -2236,7 +2469,7 @@
 									"raw": "{\n    \"class\":\"IntegrationViewServiceConfig\",\n    \"viewServiceAdminClass\":\"org.odpi.openmetadata.viewservices.dino.admin.DinoViewAdmin\",\n    \"viewServiceFullName\":\"Dino\",\n    \"viewServiceOperationalStatus\":\"ENABLED\",\n    \"resourceEndpoints\" : [\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Platform\",\n            \"platformName\"       : \"myOMAGPlatform1\",\n            \"platformRootURL\"    : \"myPlatformRootURL1\",\n            \"description\"        : \"myOMAGPlatform1 description\"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Platform\",\n            \"platformName\"       : \"myOMAGPlatform2\",\n            \"platformRootURL\"    : \"myPlatformRootURL2\",\n            \"description\"        : \"myOMAGPlatform2 description\"\n        },       \n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"myServerInstanceName1\",\n            \"serverName\"         : \"myServerName1\",\n            \"platformName\"       : \"myOMAGPlatform1\",\n            \"description\"        : \"myServerName1 description \"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"myServerInstanceName2\",\n            \"serverName\"         : \"myServerName2\",\n            \"platformName\"       : \"myOMAGPlatform1\",\n            \"description\"        : \"myServerName2 description \"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Server\",\n            \"serverInstanceName\" : \"myServerInstanceName3\",\n            \"serverName\"         : \"myServerName3\",\n            \"platformName\"       : \"myOMAGPlatform2\",\n            \"description\"        : \"myServerName3 description \"\n        }\n    ]\n}"
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/view-services/dino",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/view-services/dino",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -2244,7 +2477,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"view-services",
@@ -2271,7 +2504,7 @@
 									"raw": "{\n    \"class\":\"IntegrationViewServiceConfig\",\n    \"viewServiceAdminClass\":\"org.odpi.openmetadata.viewservices.serverauthor.admin.ServerAuthorViewAdmin\",\n    \"viewFullServiceName\":\"ServerAuthor\",\n    \"viewServiceOperationalStatus\":\"ENABLED\",\n    \"omagserverPlatformRootURL\":\"myPlatformRootURL1\",\n    \"resourceEndpoints\" : [\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Platform\",\n            \"platformName\"       : \"myOMAGPlatform1\",\n            \"platformRootURL\"    : \"myPlatformRootURL1\",\n            \"description\"        : \"myOMAGPlatform1 description\"\n        },\n        {\n            \"class\"              : \"ResourceEndpointConfig\",\n            \"resourceCategory\"   : \"Platform\",\n            \"platformName\"       : \"myOMAGPlatform2\",\n            \"platformRootURL\"    : \"myPlatformRootURL2\",\n            \"description\"        : \"myOMAGPlatform2 description\"\n        }\n    ]\n}"
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/view-services/server-author",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/view-services/server-author",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -2279,7 +2512,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"view-services",
@@ -2306,7 +2539,7 @@
 									"raw": "      { \n         \"class\":\"ViewServiceConfig\",\n         \"omagserverName\":\"myMetadataAccessPoint\",\n         \"omagserverPlatformRootURL\":\"myPlatformRootURL1\"\n      }"
 								},
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/view-services/glossary-author",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/view-services/glossary-author",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -2314,7 +2547,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"view-services",
@@ -2331,7 +2564,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/registered-services/view-services",
+									"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/registered-services/view-services",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -2339,7 +2572,7 @@
 										"open-metadata",
 										"platform-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"server-platform",
 										"registered-services",
 										"view-services"
@@ -2355,7 +2588,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/view-services",
+									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/view-services",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -2363,7 +2596,7 @@
 										"open-metadata",
 										"admin-services",
 										"users",
-										"{{user}}",
+										"{{adminUserId}}",
 										"servers",
 										"{{server}}",
 										"view-services"
