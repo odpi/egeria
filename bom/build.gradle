@@ -41,7 +41,7 @@ ext {
     gremlinVersion = '3.5.6'
     // TODO: Version 4 under new package name. 3.0.13 is held to be compat with gradle tests (fvt)
     groovyVersion = '3.0.15'
-    guavaVersion = '32.1.1-jre'
+    guavaVersion = '31.1-jre'
     hamcrestVersion = '2.2'
     hdrhistogramVersion = '2.1.12'
     hibernatevalidatorVersion = '8.0.1.Final'
@@ -101,7 +101,7 @@ ext {
     thriftVersion = '0.18.1'
     springwebVersion = '6.0.6'
     tinkVersion = '1.9.0'
-    tomcatVersion = '10.1.8'
+    tomcatVersion = '10.1.10'
     validationVersion = '2.0.1.Final'
     gsonVersion = '2.10.1'
     antVersion = '1.10.13'
