@@ -5,25 +5,29 @@
 
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.1.1'
-    id 'io.spring.dependency-management' version '1.1.0'
+    id 'org.springframework.boot'
 }
 
 
 dependencies {
 
+    implementation 'org.springframework:spring-core'
+    implementation 'org.springframework:spring-beans'
+    implementation 'org.springframework:spring-context'
+    implementation 'org.springframework:spring-web'
     implementation 'org.springframework.boot:spring-boot'
     implementation 'org.springframework.boot:spring-boot-autoconfigure'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework:spring-beans'
-    implementation 'org.springframework:spring-core'
-    implementation 'org.springframework:spring-context'
+    implementation 'org.springframework.boot:spring-boot-actuator-autoconfigure'
+    implementation 'org.springframework.boot:spring-boot-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-tomcat'
     implementation 'jakarta.servlet:jakarta.servlet-api'
     implementation 'org.slf4j:slf4j-api'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
     runtimeOnly 'ch.qos.logback:logback-classic'
     runtimeOnly 'org.hibernate:hibernate-validator'
@@ -31,7 +35,6 @@ dependencies {
 
     compileOnly project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
-    /* Current server operation support depends on platform-services */
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation project(':open-metadata-implementation:platform-services:platform-services-api')
     implementation project(':open-metadata-implementation:platform-services:platform-services-server')
@@ -39,19 +42,25 @@ dependencies {
     /* IN DEVELOPMENT */
 
     /* Pulling dependencies for some fo the sub-systems enabling 'Metadata Access Store' services  */
+
     runtimeOnly project(':open-metadata-implementation:repository-services:repository-services-spring')
     runtimeOnly project(':open-metadata-implementation:access-services:asset-manager:asset-manager-spring')
     runtimeOnly project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-spring')
+
     /* Pulling dependencies for some fo the sub-systems enabling 'Integration Daemon' services to test Database Integrator via JDBC integration connector */
-    runtimeOnly project(':open-metadata-implementation:integration-services:database-integrator:database-integrator-server')
-    runtimeOnly project(':open-metadata-implementation:access-services:data-manager:data-manager-spring')
-    runtimeOnly 'org.odpi.egeria:egeria-connector-resource-jdbc:1.1'
-    runtimeOnly 'org.odpi.egeria:egeria-connector-integration-jdbc:1.1'
-    runtimeOnly 'com.oracle.database.jdbc:ojdbc10:19.19.0.0'
+
+//    runtimeOnly project(':open-metadata-implementation:integration-services:database-integrator:database-integrator-server')
+//    runtimeOnly project(':open-metadata-implementation:access-services:data-manager:data-manager-spring')
+//    runtimeOnly 'org.odpi.egeria:egeria-connector-resource-jdbc:1.1'
+//    runtimeOnly 'org.odpi.egeria:egeria-connector-integration-jdbc:1.1'
+//    runtimeOnly 'com.oracle.database.jdbc:ojdbc10:19.19.0.0'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testImplementation 'org.springframework.boot:spring-boot-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'com.vaadin.external.google:android-json:0.0.20131108.vaadin1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params'
+    testImplementation 'org.springframework:spring-test'
 
 }
 
