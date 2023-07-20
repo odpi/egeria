@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "6fc6f203-3c8e-4a63-8a02-3c0921ac5060",
+		"_postman_id": "c31fb507-8ec7-4bba-8cd9-19a84f2ea42e",
 		"name": "Egeria-admin-services-platform-configuration",
 		"description": "Requests for configuring an OMAG Server",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28623075"
 	},
 	"item": [
 		{
@@ -12,7 +13,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/stores/connection",
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/stores/connection",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -20,7 +21,7 @@
 						"open-metadata",
 						"admin-services",
 						"users",
-						"{{user}}",
+						"{{adminUserId}}",
 						"stores",
 						"connection"
 					]
@@ -44,7 +45,7 @@
 					"raw": "{\n    \"class\": \"Connection\",\n    \"connectorType\": {\n        \"class\": \"ConnectorType\",\n        \"connectorProviderClassName\": \"org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile.EncryptedFileBasedServerConfigStoreProvider\"\n    },\n    \"endpoint\": {\n        \"class\": \"Endpoint\",\n        \"address\": \"omag.server.{0}.config\"\n    }\n}"
 				},
 				"url": {
-					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/stores/connection",
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/stores/connection",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -52,7 +53,7 @@
 						"open-metadata",
 						"admin-services",
 						"users",
-						"{{user}}",
+						"{{adminUserId}}",
 						"stores",
 						"connection"
 					]
@@ -71,7 +72,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/stores/connection",
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/stores/connection",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -79,7 +80,7 @@
 						"open-metadata",
 						"admin-services",
 						"users",
-						"{{user}}",
+						"{{adminUserId}}",
 						"stores",
 						"connection"
 					]
@@ -87,92 +88,6 @@
 				"description": "Remove the currently configured Configuration Document Store Connection.  The default Configuration Document Store will be used for future configuration.  This stores the configuration in a file in plain text."
 			},
 			"response": []
-		},
-		{
-			"name": "Get Platform Security Connection",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/platform/security/connection",
-					"host": [
-						"{{baseURL}}"
-					],
-					"path": [
-						"open-metadata",
-						"admin-services",
-						"users",
-						"{{user}}",
-						"platform",
-						"security",
-						"connection"
-					]
-				},
-				"description": "Retrieve the Connection object used to create the connector that verifies the authorization of users calling the platform and admin services."
-			},
-			"response": []
-		},
-		{
-			"name": "Set Platform Security Connection",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"class\": \"PlatformSecurityRequestBody\",\n    \"urlRoot\": \"{{baseURL}}\",\n    \"platformSecurityConnection\" : {\n\t    \"class\": \"Connection\",\n\t    \"connectorType\": {\n\t        \"class\": \"ConnectorType\",\n\t        \"connectorProviderClassName\": \"org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaPlatformSecurityProvider\"\n\t    }\n    }\n}"
-				},
-				"url": {
-					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/platform/security/connection",
-					"host": [
-						"{{baseURL}}"
-					],
-					"path": [
-						"open-metadata",
-						"admin-services",
-						"users",
-						"{{user}}",
-						"platform",
-						"security",
-						"connection"
-					]
-				},
-				"description": "Set up the connection for the platform security connector.  This connector verifies the authorization of any user calling the platform or admin services.  This call is preconfigured to set up the sample platform security connector.  This allows only the Coco Pharmaceuticals IT administrator, `garygeeke`, to issue platform calls.\n\n\nOnce you have set up this security connector in your OMAG Server Platform, the default user `me` in the `Egeria` environment will no longer be authorized to issue REST calls to the server (try some of the requests that were \"working\" earlier to verify this).  To switch the user to one that the OMAG Server Platform will accept, click on the eye symbol (top right), then click on `edit` and change the current value of `user` to `garygeeke`."
-			},
-			"response": []
-		},
-		{
-			"name": "Delete Platform Security Connection",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/platform/security/connection",
-					"host": [
-						"{{baseURL}}"
-					],
-					"path": [
-						"open-metadata",
-						"admin-services",
-						"users",
-						"{{user}}",
-						"platform",
-						"security",
-						"connection"
-					]
-				},
-				"description": "Remove the currently configured Platform Security Connection.  This means that no security checks will be performed by the OMAG Server Platform."
-			},
-			"response": []
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
