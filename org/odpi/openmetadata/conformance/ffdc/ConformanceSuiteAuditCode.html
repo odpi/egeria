@@ -5,7 +5,7 @@
 <title>ConformanceSuiteAuditCode (egeria 4.3-SNAPSHOT API)</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="description" content="declaration: package: org.odpi.openmetadata.conformance.auditlog, enum: ConformanceSuiteAuditCode">
+<meta name="description" content="declaration: package: org.odpi.openmetadata.conformance.ffdc, enum: ConformanceSuiteAuditCode">
 <meta name="generator" content="javadoc/ClassWriterImpl">
 <link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
 <link rel="stylesheet" type="text/css" href="../../../../../script-dir/jquery-ui.min.css" title="Style">
@@ -68,27 +68,27 @@ loadScripts(document, 'script');</script>
 <main role="main">
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">org.odpi.openmetadata.conformance.auditlog</a></div>
+<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">org.odpi.openmetadata.conformance.ffdc</a></div>
 <h1 title="Enum Class ConformanceSuiteAuditCode" class="title">Enum Class ConformanceSuiteAuditCode</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">java.lang.Enum</a>&lt;<a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a>&gt;
-<div class="inheritance">org.odpi.openmetadata.conformance.auditlog.ConformanceSuiteAuditCode</div>
+<div class="inheritance"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">java.lang.Enum</a>&lt;<a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a>&gt;
+<div class="inheritance">org.odpi.openmetadata.conformance.ffdc.ConformanceSuiteAuditCode</div>
 </div>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a></code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a></code>, <code><a href="../../frameworks/auditlog/messagesets/AuditLogMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageSet</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">ConformanceSuiteAuditCode</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a>&gt;</span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a>&gt;
+implements <a href="../../frameworks/auditlog/messagesets/AuditLogMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageSet</a></span></div>
 <div class="block">The ConformanceSuiteAuditCode is used to define the message content for the OMRS Audit Log.
-
  The 5 fields in the enum are:
  <ul>
-     <li>Log Message Id - to uniquely identify the message</li>
+     <li>Log Message id - to uniquely identify the message</li>
      <li>Severity - is this an event, decision, action, error or exception</li>
      <li>Log Message Text - includes placeholder to allow additional values to be captured</li>
      <li>Additional Information - further parameters and data relating to the audit message (optional)</li>
@@ -171,38 +171,27 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFormattedLogMessage(java.lang.String...)" class="member-name-link">getFormattedLogMessage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;params)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../frameworks/auditlog/messagesets/AuditLogMessageDefinition.html" title="class in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageDefinition</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMessageDefinition()" class="member-name-link">getMessageDefinition</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the log message with the placeholders filled out with the supplied parameters.</div>
+<div class="block">Retrieve a message definition object for logging.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLogMessageId()" class="member-name-link">getLogMessageId</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../frameworks/auditlog/messagesets/AuditLogMessageDefinition.html" title="class in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageDefinition</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMessageDefinition(java.lang.String...)" class="member-name-link">getMessageDefinition</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;params)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the unique identifier for the error message.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../repositoryservices/auditlog/OMRSAuditLogRecordSeverity.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditLogRecordSeverity</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSeverity()" class="member-name-link">getSeverity</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the severity of the audit log record.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSystemAction()" class="member-name-link">getSystemAction</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns a description of the action taken by the system when the condition that caused this exception was
- detected.</div>
+<div class="block">Retrieve a message definition object for logging.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUserAction()" class="member-name-link">getUserAction</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns instructions of how to resolve the issue reported in this exception.</div>
+<div class="block">JSON-style toString</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a>[]</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a>[]</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns an array containing the constants of this enum class, in
@@ -213,7 +202,7 @@ the order they are declared.</div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Enum">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a></h3>
-<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#compareTo(E)" title="class or interface in java.lang" class="external-link">compareTo</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#describeConstable()" title="class or interface in java.lang" class="external-link">describeConstable</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#getDeclaringClass()" title="class or interface in java.lang" class="external-link">getDeclaringClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#name()" title="class or interface in java.lang" class="external-link">name</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#ordinal()" title="class or interface in java.lang" class="external-link">ordinal</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#valueOf(java.lang.Class,java.lang.String)" title="class or interface in java.lang" class="external-link">valueOf</a></code></div>
+<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#compareTo(E)" title="class or interface in java.lang" class="external-link">compareTo</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#describeConstable()" title="class or interface in java.lang" class="external-link">describeConstable</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#getDeclaringClass()" title="class or interface in java.lang" class="external-link">getDeclaringClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#name()" title="class or interface in java.lang" class="external-link">name</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#ordinal()" title="class or interface in java.lang" class="external-link">ordinal</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#valueOf(java.lang.Class,java.lang.String)" title="class or interface in java.lang" class="external-link">valueOf</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -231,127 +220,127 @@ the order they are declared.</div>
 <li>
 <section class="detail" id="SERVICE_INITIALIZING">
 <h3>SERVICE_INITIALIZING</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_INITIALIZING</span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_INITIALIZING</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC">
 <h3>SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC</span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVICE_INITIALIZED">
 <h3>SERVICE_INITIALIZED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_INITIALIZED</span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_INITIALIZED</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVICE_SHUTDOWN">
 <h3>SERVICE_SHUTDOWN</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_SHUTDOWN</span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_SHUTDOWN</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="SERVICE_INSTANCE_FAILURE">
 <h3>SERVICE_INSTANCE_FAILURE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_INSTANCE_FAILURE</span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_INSTANCE_FAILURE</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="WORKBENCH_INITIALIZING">
 <h3>WORKBENCH_INITIALIZING</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">WORKBENCH_INITIALIZING</span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">WORKBENCH_INITIALIZING</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="WORKBENCH_INITIALIZED">
 <h3>WORKBENCH_INITIALIZED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">WORKBENCH_INITIALIZED</span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">WORKBENCH_INITIALIZED</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="WORKBENCH_WAITING_TO_START">
 <h3>WORKBENCH_WAITING_TO_START</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">WORKBENCH_WAITING_TO_START</span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">WORKBENCH_WAITING_TO_START</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="WORKBENCH_FAILURE">
 <h3>WORKBENCH_FAILURE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">WORKBENCH_FAILURE</span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">WORKBENCH_FAILURE</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="WORKBENCH_COMPLETED">
 <h3>WORKBENCH_COMPLETED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">WORKBENCH_COMPLETED</span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">WORKBENCH_COMPLETED</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="WORKBENCH_SYNC_COMPLETED">
 <h3>WORKBENCH_SYNC_COMPLETED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">WORKBENCH_SYNC_COMPLETED</span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">WORKBENCH_SYNC_COMPLETED</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="TEST_CASE_INITIALIZING">
 <h3>TEST_CASE_INITIALIZING</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">TEST_CASE_INITIALIZING</span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">TEST_CASE_INITIALIZING</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="TEST_CASE_COMPLETED">
 <h3>TEST_CASE_COMPLETED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">TEST_CASE_COMPLETED</span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">TEST_CASE_COMPLETED</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="TEST_CASE_COMPLETED_SUCCESSFULLY">
 <h3>TEST_CASE_COMPLETED_SUCCESSFULLY</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">TEST_CASE_COMPLETED_SUCCESSFULLY</span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">TEST_CASE_COMPLETED_SUCCESSFULLY</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="LOCAL_CONNECTOR_IN_COHORT">
 <h3>LOCAL_CONNECTOR_IN_COHORT</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">LOCAL_CONNECTOR_IN_COHORT</span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">LOCAL_CONNECTOR_IN_COHORT</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="TUT_CONNECTED_TO_COHORT">
 <h3>TUT_CONNECTED_TO_COHORT</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">TUT_CONNECTED_TO_COHORT</span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">TUT_CONNECTED_TO_COHORT</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="ANOTHER_CONNECTED_TO_COHORT">
 <h3>ANOTHER_CONNECTED_TO_COHORT</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">ANOTHER_CONNECTED_TO_COHORT</span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">ANOTHER_CONNECTED_TO_COHORT</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="TUT_LEFT_COHORT">
 <h3>TUT_LEFT_COHORT</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">TUT_LEFT_COHORT</span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">TUT_LEFT_COHORT</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="ANOTHER_LEFT_COHORT">
 <h3>ANOTHER_LEFT_COHORT</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">ANOTHER_LEFT_COHORT</span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">ANOTHER_LEFT_COHORT</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="TEST_EXECUTION_WAITING">
 <h3>TEST_EXECUTION_WAITING</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">TEST_EXECUTION_WAITING</span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">TEST_EXECUTION_WAITING</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="POLLING_OVERFLOW">
 <h3>POLLING_OVERFLOW</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">POLLING_OVERFLOW</span></div>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">POLLING_OVERFLOW</span></div>
 </section>
 </li>
 </ul>
@@ -365,7 +354,7 @@ the order they are declared.</div>
 <li>
 <section class="detail" id="values()">
 <h3>values</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a>[]</span>&nbsp;<span class="element-name">values</span>()</div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a>[]</span>&nbsp;<span class="element-name">values</span>()</div>
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 <dl class="notes">
@@ -377,7 +366,7 @@ the order they are declared.</div>
 <li>
 <section class="detail" id="valueOf(java.lang.String)">
 <h3>valueOf</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.auditlog">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">valueOf</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</span></div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a></span>&nbsp;<span class="element-name">valueOf</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</span></div>
 <div class="block">Returns the enum constant of this class with the specified name.
 The string must match <i>exactly</i> an identifier used to declare an
 enum constant in this class.  (Extraneous whitespace characters are 
@@ -394,60 +383,43 @@ not permitted.)</div>
 </section>
 </li>
 <li>
-<section class="detail" id="getLogMessageId()">
-<h3>getLogMessageId</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getLogMessageId</span>()</div>
-<div class="block">Returns the unique identifier for the error message.</div>
+<section class="detail" id="getMessageDefinition()">
+<h3>getMessageDefinition</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../frameworks/auditlog/messagesets/AuditLogMessageDefinition.html" title="class in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageDefinition</a></span>&nbsp;<span class="element-name">getMessageDefinition</span>()</div>
+<div class="block">Retrieve a message definition object for logging.  This method is used when there are no message inserts.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../frameworks/auditlog/messagesets/AuditLogMessageSet.html#getMessageDefinition()">getMessageDefinition</a></code>&nbsp;in interface&nbsp;<code><a href="../../frameworks/auditlog/messagesets/AuditLogMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageSet</a></code></dd>
 <dt>Returns:</dt>
-<dd>logMessageId</dd>
+<dd>message definition object.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getSeverity()">
-<h3>getSeverity</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../repositoryservices/auditlog/OMRSAuditLogRecordSeverity.html" title="enum class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditLogRecordSeverity</a></span>&nbsp;<span class="element-name">getSeverity</span>()</div>
-<div class="block">Return the severity of the audit log record.</div>
+<section class="detail" id="getMessageDefinition(java.lang.String...)">
+<h3>getMessageDefinition</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../frameworks/auditlog/messagesets/AuditLogMessageDefinition.html" title="class in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageDefinition</a></span>&nbsp;<span class="element-name">getMessageDefinition</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;params)</span></div>
+<div class="block">Retrieve a message definition object for logging.  This method is used when there are values to be inserted into the message.</div>
 <dl class="notes">
-<dt>Returns:</dt>
-<dd>OMRSAuditLogRecordSeverity enum</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getFormattedLogMessage(java.lang.String...)">
-<h3>getFormattedLogMessage</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getFormattedLogMessage</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;params)</span></div>
-<div class="block">Returns the log message with the placeholders filled out with the supplied parameters.</div>
-<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../frameworks/auditlog/messagesets/AuditLogMessageSet.html#getMessageDefinition(java.lang.String...)">getMessageDefinition</a></code>&nbsp;in interface&nbsp;<code><a href="../../frameworks/auditlog/messagesets/AuditLogMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageSet</a></code></dd>
 <dt>Parameters:</dt>
-<dd><code>params</code> - - strings that plug into the placeholders in the logMessage</dd>
+<dd><code>params</code> - array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.</dd>
 <dt>Returns:</dt>
-<dd>logMessage (formatted with supplied parameters)</dd>
+<dd>message definition object.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getSystemAction()">
-<h3>getSystemAction</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSystemAction</span>()</div>
-<div class="block">Returns a description of the action taken by the system when the condition that caused this exception was
- detected.</div>
+<section class="detail" id="toString()">
+<h3>toString</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
+<div class="block">JSON-style toString</div>
 <dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html#toString()" title="class or interface in java.lang" class="external-link">toString</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a>&gt;</code></dd>
 <dt>Returns:</dt>
-<dd>systemAction String</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getUserAction()">
-<h3>getUserAction</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getUserAction</span>()</div>
-<div class="block">Returns instructions of how to resolve the issue reported in this exception.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>userAction String</dd>
+<dd>string of property names and values for this enum</dd>
 </dl>
 </section>
 </li>

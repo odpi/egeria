@@ -82,6 +82,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">TestGetTypeDefGallery</span>
 <span class="extends-implements">extends <a href="../RepositoryConformanceTestCase.html" title="class in org.odpi.openmetadata.conformance.tests.repository">RepositoryConformanceTestCase</a></span></div>
+<div class="block">Discover the types supported by the system under test.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -100,7 +101,7 @@ loadScripts(document, 'script');</script>
 <h2>Field Summary</h2>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceTestCase">Fields inherited from class&nbsp;org.odpi.openmetadata.conformance.tests.repository.<a href="../RepositoryConformanceTestCase.html" title="class in org.odpi.openmetadata.conformance.tests.repository">RepositoryConformanceTestCase</a></h3>
-<code><a href="../RepositoryConformanceTestCase.html#cohortRepositoryConnector">cohortRepositoryConnector</a>, <a href="../RepositoryConformanceTestCase.html#repositoryConformanceWorkPad">repositoryConformanceWorkPad</a></code></div>
+<code><a href="../RepositoryConformanceTestCase.html#cohortRepositoryConnector">cohortRepositoryConnector</a></code></div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.conformance.beans.OpenMetadataTestCase">Fields inherited from class&nbsp;org.odpi.openmetadata.conformance.beans.<a href="../../../beans/OpenMetadataTestCase.html" title="class in org.odpi.openmetadata.conformance.beans">OpenMetadataTestCase</a></h3>
 <code><a href="../../../beans/OpenMetadataTestCase.html#defaultProfileId">defaultProfileId</a>, <a href="../../../beans/OpenMetadataTestCase.html#defaultRequirementId">defaultRequirementId</a>, <a href="../../../beans/OpenMetadataTestCase.html#discoveredProperties">discoveredProperties</a>, <a href="../../../beans/OpenMetadataTestCase.html#exceptionBean">exceptionBean</a>, <a href="../../../beans/OpenMetadataTestCase.html#notSupportedAssertions">notSupportedAssertions</a>, <a href="../../../beans/OpenMetadataTestCase.html#successfulAssertions">successfulAssertions</a>, <a href="../../../beans/OpenMetadataTestCase.html#successMessage">successMessage</a>, <a href="../../../beans/OpenMetadataTestCase.html#testCaseDescriptionURL">testCaseDescriptionURL</a>, <a href="../../../beans/OpenMetadataTestCase.html#unsuccessfulAssertions">unsuccessfulAssertions</a>, <a href="../../../beans/OpenMetadataTestCase.html#workPad">workPad</a></code></div>
@@ -132,15 +133,35 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/AttributeTypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeTypeDef</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAttributeTypeDefs()" class="member-name-link">getAttributeTypeDefs</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAllTypeDefs()" class="member-name-link">getAllTypeDefs</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of retrieved type definitions used to guide the testing of types.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/AttributeTypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeTypeDef</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAttributeTypeDefs()" class="member-name-link">getAttributeTypeDefs</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of retrieved attribute type definitions.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeDefs()" class="member-name-link">getTypeDefs</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/ClassificationDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">ClassificationDef</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getClassificationDefs()" class="member-name-link">getClassificationDefs</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of classification definitions returned by the repository.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/EntityDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">EntityDef</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEntityDefs()" class="member-name-link">getEntityDefs</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the list of retrieved type definitions.</div>
+<div class="block">Return the list of entity definitions returned by the repository.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getInstanceTestTypeDefs()" class="member-name-link">getInstanceTestTypeDefs</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of retrieved type definitions used to guide the testing of instances.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/RelationshipDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">RelationshipDef</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationshipDefs()" class="member-name-link">getRelationshipDefs</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of relationship definitions returned by the repository.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#run()" class="member-name-link">run</a>()</code></div>
@@ -215,13 +236,57 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getTypeDefs()">
-<h3>getTypeDefs</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&gt;</span>&nbsp;<span class="element-name">getTypeDefs</span>()</div>
-<div class="block">Return the list of retrieved type definitions.</div>
+<section class="detail" id="getAllTypeDefs()">
+<h3>getAllTypeDefs</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&gt;</span>&nbsp;<span class="element-name">getAllTypeDefs</span>()</div>
+<div class="block">Return the list of retrieved type definitions used to guide the testing of types.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list of TypeDefs</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getInstanceTestTypeDefs()">
+<h3>getInstanceTestTypeDefs</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&gt;</span>&nbsp;<span class="element-name">getInstanceTestTypeDefs</span>()</div>
+<div class="block">Return the list of retrieved type definitions used to guide the testing of instances.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of TypeDefs</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getEntityDefs()">
+<h3>getEntityDefs</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/EntityDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">EntityDef</a>&gt;</span>&nbsp;<span class="element-name">getEntityDefs</span>()</div>
+<div class="block">Return the list of entity definitions returned by the repository.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>map of EntityDef name to EntityDefs</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getRelationshipDefs()">
+<h3>getRelationshipDefs</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/RelationshipDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">RelationshipDef</a>&gt;</span>&nbsp;<span class="element-name">getRelationshipDefs</span>()</div>
+<div class="block">Return the list of relationship definitions returned by the repository.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of RelationshipDefs</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getClassificationDefs()">
+<h3>getClassificationDefs</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/ClassificationDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">ClassificationDef</a>&gt;</span>&nbsp;<span class="element-name">getClassificationDefs</span>()</div>
+<div class="block">Return the list of classification definitions returned by the repository.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of classifications</dd>
 </dl>
 </section>
 </li>

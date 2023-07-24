@@ -503,7 +503,6 @@ org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders
 org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters
 org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers
 org.odpi.openmetadata.commonservices.repositoryhandler
-org.odpi.openmetadata.conformance.auditlog
 org.odpi.openmetadata.conformance.beans
 org.odpi.openmetadata.conformance.client
 org.odpi.openmetadata.conformance.ffdc
