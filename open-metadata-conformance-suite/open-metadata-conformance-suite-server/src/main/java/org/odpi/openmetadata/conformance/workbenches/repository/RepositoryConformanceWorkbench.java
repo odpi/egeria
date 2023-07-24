@@ -2,14 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.conformance.workbenches.repository;
 
-import org.odpi.openmetadata.conformance.auditlog.ConformanceSuiteAuditCode;
+import org.odpi.openmetadata.conformance.ffdc.ConformanceSuiteAuditCode;
 import org.odpi.openmetadata.conformance.beans.OpenMetadataTestCase;
 import org.odpi.openmetadata.conformance.tests.repository.connector.TestMetadataCollectionId;
 import org.odpi.openmetadata.conformance.tests.repository.connector.TestRepositoryServerIds;
 import org.odpi.openmetadata.conformance.tests.repository.instances.*;
 import org.odpi.openmetadata.conformance.tests.repository.types.*;
 import org.odpi.openmetadata.conformance.workbenches.OpenMetadataConformanceWorkbench;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -54,16 +54,10 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
 
         this.workPad = workPad;
 
-        OMRSAuditLog auditLog = workPad.getAuditLog();
+        AuditLog auditLog = workPad.getAuditLog();
 
-        ConformanceSuiteAuditCode auditCode = ConformanceSuiteAuditCode.WORKBENCH_INITIALIZING;
-        auditLog.logRecord(methodName,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(workbenchId, workbenchDocumentationURL),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(methodName,
+                            ConformanceSuiteAuditCode.WORKBENCH_INITIALIZING.getMessageDefinition(workbenchId, workbenchDocumentationURL));
     }
 
 
@@ -96,7 +90,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
             List<TestSupportedTypeDef> typeDefTestCases = new ArrayList<>();
 
             List<AttributeTypeDef> attributeTypeDefs = typeDefGalleryTestCase.getAttributeTypeDefs();
-            List<TypeDef> typeDefs = typeDefGalleryTestCase.getTypeDefs();
+            List<TypeDef> typeDefs = typeDefGalleryTestCase.getAllTypeDefs();
 
             if (attributeTypeDefs != null)
             {
@@ -142,8 +136,8 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
             /*
              * Retrieve the attribute type definitions by category.
              */
-            TestFindAttributeTypeDefsByCategory
-                    testFindAttributeTypeDefsByCategory = new TestFindAttributeTypeDefsByCategory(workPad, attributeTypeDefs);
+            TestFindAttributeTypeDefsByCategory testFindAttributeTypeDefsByCategory = new TestFindAttributeTypeDefsByCategory(workPad,
+                                                                                                                              attributeTypeDefs);
 
             testFindAttributeTypeDefsByCategory.executeTest();
 
@@ -190,9 +184,9 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
             List<TestSupportedEntitySearch> entitySearchTestCases = new ArrayList<>();
             List<TestSupportedRelationshipSearch> relationshipSearchTestCases = new ArrayList<>();
 
-            Map<String, EntityDef> entityDefs = testFindTypeDefsByCategory.getEntityDefs();
-            List<RelationshipDef> relationshipDefs = testFindTypeDefsByCategory.getRelationshipDefs();
-            List<ClassificationDef> classificationDefs = testFindTypeDefsByCategory.getClassificationDefs();
+            Map<String, EntityDef> entityDefs = typeDefGalleryTestCase.getEntityDefs();
+            List<RelationshipDef> relationshipDefs = typeDefGalleryTestCase.getRelationshipDefs();
+            List<ClassificationDef> classificationDefs = typeDefGalleryTestCase.getClassificationDefs();
 
             /*
              * Resolve the entity inheritance tree to list all subtypes of each entity type.
@@ -519,17 +513,10 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
         if (workPad != null)
         {
             long retryCount = 0;
-            OMRSAuditLog auditLog = workPad.getAuditLog();
-            ConformanceSuiteAuditCode auditCode;
+            AuditLog auditLog = workPad.getAuditLog();
 
-            auditCode = ConformanceSuiteAuditCode.WORKBENCH_INITIALIZED;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(workPad.getWorkbenchId()),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(methodName,
+                                ConformanceSuiteAuditCode.WORKBENCH_INITIALIZED.getMessageDefinition(workPad.getWorkbenchId()));
 
             while (super.isRunning() && (workPad.getTutRepositoryConnector() == null))
             {
@@ -546,15 +533,8 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                     {
                         if (retryCount == 0)
                         {
-                            auditCode = ConformanceSuiteAuditCode.WORKBENCH_WAITING_TO_START;
-                            auditLog.logRecord(methodName,
-                                               auditCode.getLogMessageId(),
-                                               auditCode.getSeverity(),
-                                               auditCode.getFormattedLogMessage(workPad.getWorkbenchId(),
-                                                                                workPad.getTutServerName()),
-                                               null,
-                                               auditCode.getSystemAction(),
-                                               auditCode.getUserAction());
+                            auditLog.logMessage(methodName,
+                                                ConformanceSuiteAuditCode.WORKBENCH_WAITING_TO_START.getMessageDefinition(workPad.getWorkbenchId(), workPad.getTutServerName()));
                         }
                         retryCount++;
                     }
@@ -571,15 +551,9 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                     stopRunning();
                     log.error(String.format("Unexpected error: %s", error.getMessage()), error);
 
-                    auditCode = ConformanceSuiteAuditCode.WORKBENCH_FAILURE;
-                    auditLog.logRecord(methodName,
-                                       auditCode.getLogMessageId(),
-                                       auditCode.getSeverity(),
-                                       auditCode.getFormattedLogMessage(workPad.getWorkbenchId(),
-                                                                        error.getMessage()),
-                                       error.toString(),
-                                       auditCode.getSystemAction(),
-                                       auditCode.getUserAction());
+                    auditLog.logMessage(methodName,
+                                       ConformanceSuiteAuditCode.WORKBENCH_FAILURE.getMessageDefinition(workPad.getWorkbenchId(), error.getMessage()),
+                                       error.toString());
                 }
             }
 
@@ -590,14 +564,8 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
 
             workPad.setWorkbenchComplete();
 
-            auditCode = ConformanceSuiteAuditCode.WORKBENCH_SYNC_COMPLETED;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(workPad.getWorkbenchId()),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(methodName,
+                                ConformanceSuiteAuditCode.WORKBENCH_SYNC_COMPLETED.getMessageDefinition(workPad.getWorkbenchId()));
         }
     }
 }

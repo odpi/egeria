@@ -11,24 +11,47 @@ import java.io.Serializable;
  */
 public enum OpenMetadataConformanceTestEvidenceType implements Serializable
 {
+    /**
+     * Unknown - No data available at this time.
+     */
     NO_DATA_AVAILABLE      (0, "Unknown",
-                               "No data available at this time."),
+                            "No data available at this time."),
+
+    /**
+     * The test case condition is true.
+     */
     SUCCESSFUL_ASSERTION   (0, "Successful assertion",
-                               "The test case condition is true."),
+                            "The test case condition is true."),
+
+    /**
+     * The test case condition is false.
+     */
     UNSUCCESSFUL_ASSERTION (1, "Unsuccessful assertion",
-                               "The test case condition is false."),
+                            "The test case condition is false."),
+
+    /**
+     * The test case has discovered a property.
+     */
     DISCOVERED_PROPERTY    (2, "Discovered property",
-                               "The test case has discovered a property."),
+                            "The test case has discovered a property."),
+
+    /**
+     * The test case reports a correct response for a non-supported function.
+     */
     NOT_SUPPORTED_FUNCTION (3, "Not supported function",
-                               "The test case reports a correct response for a non supported function."),
+                            "The test case reports a correct response for a non-supported function."),
+
+    /**
+     * An exception occurred where it should not.
+     */
     UNEXPECTED_EXCEPTION   (4, "Unexpected exception",
-                               "An exception occurred where it should not.");
+                            "An exception occurred where it should not.");
 
     private static final long serialVersionUID = 1L;
 
-    private int                ordinal;
-    private String             name;
-    private String             description;
+    private final int    ordinal;
+    private final String name;
+    private final String description;
 
 
     /**

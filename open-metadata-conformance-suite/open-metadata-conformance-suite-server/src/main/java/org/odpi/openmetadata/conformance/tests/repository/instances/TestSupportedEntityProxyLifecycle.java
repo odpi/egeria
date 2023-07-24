@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.conformance.tests.repository.instances;
 
-import org.odpi.openmetadata.conformance.auditlog.ConformanceSuiteAuditCode;
+import org.odpi.openmetadata.conformance.ffdc.ConformanceSuiteAuditCode;
 import org.odpi.openmetadata.conformance.ffdc.exception.AssertionFailureException;
 import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceTestCase;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
@@ -353,27 +353,26 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
          * Retrieve the ref copy from the TUT - if it does not exist, assert that ref copies are not a discovered property
          * Have to be prepared to wait until event has propagated and TUT has created a reference copy of the entity.
          */
-        try {
+        try
+        {
             Integer remainingCount = this.pollCount;
-            while (entity1Ref == null && remainingCount > 0) {
+            while (entity1Ref == null && remainingCount > 0)
+            {
 
                 entity1Ref = metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), entity1.getGUID());
                 Thread.sleep(this.pollPeriod);
                 remainingCount--;
 
             }
-            if (entity1Ref == null && remainingCount == 0) {
-                ConformanceSuiteAuditCode overflow = ConformanceSuiteAuditCode.POLLING_OVERFLOW;
+            if (entity1Ref == null && remainingCount == 0)
+            {
                 workPad.getAuditLog()
-                        .logRecord(assertion2,
-                                overflow.getLogMessageId(),
-                                overflow.getSeverity(),
-                                overflow.getFormattedLogMessage(pollCount.toString(), pollPeriod.toString()),
-                                null,
-                                overflow.getSystemAction(),
-                                overflow.getUserAction());
+                        .logMessage(assertion2,
+                                    ConformanceSuiteAuditCode.POLLING_OVERFLOW.getMessageDefinition(pollCount.toString(), pollPeriod.toString()));
             }
-        } catch (Exception exc) {
+        }
+        catch (Exception exc)
+        {
             /*
              * We are not expecting any exceptions from this method call. Log and fail the test.
              */
@@ -394,7 +393,8 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
          * This test needs to eliminate the reference copy - so that a proxy of E1 can be created at the TUT.
          */
 
-        if (entity1Ref != null) {
+        if (entity1Ref != null)
+        {
 
             /*
              * If we retrieved the reference copy of the entity - we must purge it.
@@ -402,11 +402,14 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
              * If there is no reference copy it may be because the TUT does not support ref copies - that's OK, we can continue with the test of proxy support
              */
 
-            try {
+            try
+            {
 
                 metadataCollection.purgeEntityReferenceCopy(workPad.getLocalServerUserId(), entity1Ref);
 
-            } catch (Exception exc) {
+            }
+            catch (Exception exc)
+            {
                 /*
                  * We are not expecting any other exceptions from this method call. Log and fail the test.
                  */
@@ -556,15 +559,9 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
 
             if (entity2Ref == null && remainingCount == 0)
             {
-                ConformanceSuiteAuditCode overflow = ConformanceSuiteAuditCode.POLLING_OVERFLOW;
                 workPad.getAuditLog()
-                        .logRecord(assertion2,
-                                overflow.getLogMessageId(),
-                                overflow.getSeverity(),
-                                overflow.getFormattedLogMessage(pollCount.toString(), pollPeriod.toString()),
-                                null,
-                                overflow.getSystemAction(),
-                                overflow.getUserAction());
+                        .logMessage(assertion2,
+                                   ConformanceSuiteAuditCode.POLLING_OVERFLOW.getMessageDefinition(pollCount.toString(), pollPeriod.toString()));
             }
         }
         catch (Exception exc)
@@ -1327,15 +1324,9 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
 
             if (entity1Ref == null && remainingCount == 0)
             {
-                ConformanceSuiteAuditCode overflow = ConformanceSuiteAuditCode.POLLING_OVERFLOW;
                 workPad.getAuditLog()
-                        .logRecord(assertion8,
-                                overflow.getLogMessageId(),
-                                overflow.getSeverity(),
-                                overflow.getFormattedLogMessage(pollCount.toString(), pollPeriod.toString()),
-                                null,
-                                overflow.getSystemAction(),
-                                overflow.getUserAction());
+                        .logMessage(assertion8,
+                                    ConformanceSuiteAuditCode.POLLING_OVERFLOW.getMessageDefinition(pollCount.toString(), pollPeriod.toString()));
             }
         }
         catch (Exception exc)

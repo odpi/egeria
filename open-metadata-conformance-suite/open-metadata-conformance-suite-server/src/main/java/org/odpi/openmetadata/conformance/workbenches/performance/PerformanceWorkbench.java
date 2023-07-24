@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.conformance.workbenches.performance;
 
-import org.odpi.openmetadata.conformance.auditlog.ConformanceSuiteAuditCode;
+import org.odpi.openmetadata.conformance.ffdc.ConformanceSuiteAuditCode;
 import org.odpi.openmetadata.conformance.tests.performance.classify.TestEntityClassification;
 import org.odpi.openmetadata.conformance.tests.performance.classify.TestEntityDeclassification;
 import org.odpi.openmetadata.conformance.tests.performance.create.TestEntityCreation;
@@ -31,7 +31,7 @@ import org.odpi.openmetadata.conformance.tests.performance.update.TestClassifica
 import org.odpi.openmetadata.conformance.tests.performance.update.TestEntityUpdate;
 import org.odpi.openmetadata.conformance.tests.performance.update.TestRelationshipUpdate;
 import org.odpi.openmetadata.conformance.workbenches.OpenMetadataConformanceWorkbench;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.slf4j.Logger;
@@ -59,24 +59,19 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
     public PerformanceWorkbench(PerformanceWorkPad workPad)
     {
         super(workPad.getWorkbenchId(),
-                workPad.getWorkbenchName(),
-                workPad.getWorkbenchVersionNumber(),
-                workPad.getWorkbenchDocURL());
+              workPad.getWorkbenchName(),
+              workPad.getWorkbenchVersionNumber(),
+              workPad.getWorkbenchDocURL());
 
         final String  methodName = "performanceWorkbenchThread.constructor";
 
         this.workPad = workPad;
 
-        OMRSAuditLog auditLog   = workPad.getAuditLog();
+        AuditLog auditLog = workPad.getAuditLog();
 
-        ConformanceSuiteAuditCode auditCode = ConformanceSuiteAuditCode.WORKBENCH_INITIALIZING;
-        auditLog.logRecord(methodName,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(workbenchId, workbenchDocumentationURL),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
+        auditLog.logMessage(methodName,
+                            ConformanceSuiteAuditCode.WORKBENCH_INITIALIZING.getMessageDefinition(workbenchId,
+                                                                                                  workbenchDocumentationURL));
     }
 
     /**
@@ -126,13 +121,8 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 testEntityCreation.executeTest();
             }
 
-            workPad.getAuditLog().logRecord(methodName,
-                    waiting.getLogMessageId(),
-                    waiting.getSeverity(),
-                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                    null,
-                    waiting.getSystemAction(),
-                    waiting.getUserAction());
+            workPad.getAuditLog().logMessage(methodName,
+                                             waiting.getMessageDefinition("" + workPad.getWaitBetweenScenarios()));
             Thread.sleep(workPad.getWaitBetweenScenarios() * 1000L);
         }
 
@@ -155,13 +145,8 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 testRelationshipCreation.executeTest();
             }
 
-            workPad.getAuditLog().logRecord(methodName,
-                    waiting.getLogMessageId(),
-                    waiting.getSeverity(),
-                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                    null,
-                    waiting.getSystemAction(),
-                    waiting.getUserAction());
+            workPad.getAuditLog().logMessage(methodName,
+                    waiting.getMessageDefinition("" + workPad.getWaitBetweenScenarios()));
             Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
@@ -184,13 +169,8 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 testEntityClassification.executeTest();
             }
 
-            workPad.getAuditLog().logRecord(methodName,
-                    waiting.getLogMessageId(),
-                    waiting.getSeverity(),
-                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                    null,
-                    waiting.getSystemAction(),
-                    waiting.getUserAction());
+            workPad.getAuditLog().logMessage(methodName,
+                                             waiting.getMessageDefinition("" + workPad.getWaitBetweenScenarios()));
             Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
@@ -216,13 +196,8 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 testEntityUpdate.executeTest();
             }
 
-            workPad.getAuditLog().logRecord(methodName,
-                    waiting.getLogMessageId(),
-                    waiting.getSeverity(),
-                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                    null,
-                    waiting.getSystemAction(),
-                    waiting.getUserAction());
+            workPad.getAuditLog().logMessage(methodName,
+                    waiting.getMessageDefinition("" + workPad.getWaitBetweenScenarios()));
             Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
@@ -235,13 +210,8 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 testRelationshipUpdate.executeTest();
             }
 
-            workPad.getAuditLog().logRecord(methodName,
-                    waiting.getLogMessageId(),
-                    waiting.getSeverity(),
-                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                    null,
-                    waiting.getSystemAction(),
-                    waiting.getUserAction());
+            workPad.getAuditLog().logMessage(methodName,
+                    waiting.getMessageDefinition("" + workPad.getWaitBetweenScenarios()));
             Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
@@ -254,13 +224,8 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 testClassificationUpdate.executeTest();
             }
 
-            workPad.getAuditLog().logRecord(methodName,
-                    waiting.getLogMessageId(),
-                    waiting.getSeverity(),
-                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                    null,
-                    waiting.getSystemAction(),
-                    waiting.getUserAction());
+            workPad.getAuditLog().logMessage(methodName,
+                    waiting.getMessageDefinition("" + workPad.getWaitBetweenScenarios()));
             Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
@@ -276,13 +241,8 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 testEntityUndo.executeTest();
             }
 
-            workPad.getAuditLog().logRecord(methodName,
-                    waiting.getLogMessageId(),
-                    waiting.getSeverity(),
-                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                    null,
-                    waiting.getSystemAction(),
-                    waiting.getUserAction());
+            workPad.getAuditLog().logMessage(methodName,
+                    waiting.getMessageDefinition("" + workPad.getWaitBetweenScenarios()));
             Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
@@ -295,13 +255,8 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 testRelationshipUndo.executeTest();
             }
 
-            workPad.getAuditLog().logRecord(methodName,
-                    waiting.getLogMessageId(),
-                    waiting.getSeverity(),
-                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                    null,
-                    waiting.getSystemAction(),
-                    waiting.getUserAction());
+            workPad.getAuditLog().logMessage(methodName,
+                    waiting.getMessageDefinition("" + workPad.getWaitBetweenScenarios()));
             Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
@@ -379,13 +334,8 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 testEntityReHome.executeTest();
             }
 
-            workPad.getAuditLog().logRecord(methodName,
-                    waiting.getLogMessageId(),
-                    waiting.getSeverity(),
-                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                    null,
-                    waiting.getSystemAction(),
-                    waiting.getUserAction());
+            workPad.getAuditLog().logMessage(methodName,
+                    waiting.getMessageDefinition("" + workPad.getWaitBetweenScenarios()));
             Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
@@ -398,13 +348,8 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 testRelationshipReHome.executeTest();
             }
 
-            workPad.getAuditLog().logRecord(methodName,
-                    waiting.getLogMessageId(),
-                    waiting.getSeverity(),
-                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                    null,
-                    waiting.getSystemAction(),
-                    waiting.getUserAction());
+            workPad.getAuditLog().logMessage(methodName,
+                    waiting.getMessageDefinition("" + workPad.getWaitBetweenScenarios()));
             Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
@@ -417,13 +362,8 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 testEntityDeclassification.executeTest();
             }
 
-            workPad.getAuditLog().logRecord(methodName,
-                    waiting.getLogMessageId(),
-                    waiting.getSeverity(),
-                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                    null,
-                    waiting.getSystemAction(),
-                    waiting.getUserAction());
+            workPad.getAuditLog().logMessage(methodName,
+                    waiting.getMessageDefinition("" + workPad.getWaitBetweenScenarios()));
             Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
@@ -438,13 +378,8 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 nullProperties.executeTest();
             }
 
-            workPad.getAuditLog().logRecord(methodName,
-                    waiting.getLogMessageId(),
-                    waiting.getSeverity(),
-                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                    null,
-                    waiting.getSystemAction(),
-                    waiting.getUserAction());
+            workPad.getAuditLog().logMessage(methodName,
+                    waiting.getMessageDefinition("" + workPad.getWaitBetweenScenarios()));
             Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
 
             // 23b. re-type to subtype
@@ -454,13 +389,8 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 retypeSub.executeTest();
             }
 
-            workPad.getAuditLog().logRecord(methodName,
-                    waiting.getLogMessageId(),
-                    waiting.getSeverity(),
-                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                    null,
-                    waiting.getSystemAction(),
-                    waiting.getUserAction());
+            workPad.getAuditLog().logMessage(methodName,
+                    waiting.getMessageDefinition("" + workPad.getWaitBetweenScenarios()));
             Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
 
             // 23c. re-type to supertype
@@ -470,13 +400,8 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 retypeSuper.executeTest();
             }
 
-            workPad.getAuditLog().logRecord(methodName,
-                    waiting.getLogMessageId(),
-                    waiting.getSeverity(),
-                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                    null,
-                    waiting.getSystemAction(),
-                    waiting.getUserAction());
+            workPad.getAuditLog().logMessage(methodName,
+                    waiting.getMessageDefinition("" + workPad.getWaitBetweenScenarios()));
             Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
 
         }
@@ -490,13 +415,8 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 testRelationshipRetype.executeTest();
             }
 
-            workPad.getAuditLog().logRecord(methodName,
-                    waiting.getLogMessageId(),
-                    waiting.getSeverity(),
-                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                    null,
-                    waiting.getSystemAction(),
-                    waiting.getUserAction());
+            workPad.getAuditLog().logMessage(methodName,
+                    waiting.getMessageDefinition("" + workPad.getWaitBetweenScenarios()));
             Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
@@ -509,13 +429,8 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 testEntityReIdentify.executeTest();
             }
 
-            workPad.getAuditLog().logRecord(methodName,
-                    waiting.getLogMessageId(),
-                    waiting.getSeverity(),
-                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                    null,
-                    waiting.getSystemAction(),
-                    waiting.getUserAction());
+            workPad.getAuditLog().logMessage(methodName,
+                    waiting.getMessageDefinition("" + workPad.getWaitBetweenScenarios()));
             Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
@@ -528,13 +443,8 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 testRelationshipReIdentify.executeTest();
             }
 
-            workPad.getAuditLog().logRecord(methodName,
-                    waiting.getLogMessageId(),
-                    waiting.getSeverity(),
-                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                    null,
-                    waiting.getSystemAction(),
-                    waiting.getUserAction());
+            workPad.getAuditLog().logMessage(methodName,
+                    waiting.getMessageDefinition("" + workPad.getWaitBetweenScenarios()));
             Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
@@ -547,13 +457,8 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 testRelationshipDelete.executeTest();
             }
 
-            workPad.getAuditLog().logRecord(methodName,
-                    waiting.getLogMessageId(),
-                    waiting.getSeverity(),
-                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                    null,
-                    waiting.getSystemAction(),
-                    waiting.getUserAction());
+            workPad.getAuditLog().logMessage(methodName,
+                    waiting.getMessageDefinition("" + workPad.getWaitBetweenScenarios()));
             Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
@@ -566,13 +471,8 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 testEntityDelete.executeTest();
             }
 
-            workPad.getAuditLog().logRecord(methodName,
-                    waiting.getLogMessageId(),
-                    waiting.getSeverity(),
-                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                    null,
-                    waiting.getSystemAction(),
-                    waiting.getUserAction());
+            workPad.getAuditLog().logMessage(methodName,
+                    waiting.getMessageDefinition("" + workPad.getWaitBetweenScenarios()));
             Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
@@ -585,13 +485,8 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 testEntityRestore.executeTest();
             }
 
-            workPad.getAuditLog().logRecord(methodName,
-                    waiting.getLogMessageId(),
-                    waiting.getSeverity(),
-                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                    null,
-                    waiting.getSystemAction(),
-                    waiting.getUserAction());
+            workPad.getAuditLog().logMessage(methodName,
+                    waiting.getMessageDefinition("" + workPad.getWaitBetweenScenarios()));
             Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
@@ -604,13 +499,8 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 testRelationshipRestore.executeTest();
             }
 
-            workPad.getAuditLog().logRecord(methodName,
-                    waiting.getLogMessageId(),
-                    waiting.getSeverity(),
-                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                    null,
-                    waiting.getSystemAction(),
-                    waiting.getUserAction());
+            workPad.getAuditLog().logMessage(methodName,
+                    waiting.getMessageDefinition("" + workPad.getWaitBetweenScenarios()));
             Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
         }
 
@@ -625,13 +515,8 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 testRelationshipPurge.executeTest();
             }
 
-            workPad.getAuditLog().logRecord(methodName,
-                    waiting.getLogMessageId(),
-                    waiting.getSeverity(),
-                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                    null,
-                    waiting.getSystemAction(),
-                    waiting.getUserAction());
+            workPad.getAuditLog().logMessage(methodName,
+                    waiting.getMessageDefinition("" + workPad.getWaitBetweenScenarios()));
             Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
 
             // 31b. purge relationships
@@ -654,13 +539,8 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 testEntityPurge.executeTest();
             }
 
-            workPad.getAuditLog().logRecord(methodName,
-                    waiting.getLogMessageId(),
-                    waiting.getSeverity(),
-                    waiting.getFormattedLogMessage("" + workPad.getWaitBetweenScenarios()),
-                    null,
-                    waiting.getSystemAction(),
-                    waiting.getUserAction());
+            workPad.getAuditLog().logMessage(methodName,
+                    waiting.getMessageDefinition("" + workPad.getWaitBetweenScenarios()));
             Thread.sleep(workPad.getWaitBetweenScenarios() * 1000);
 
             // 32b. purge entities
@@ -689,17 +569,10 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
         if (workPad != null)
         {
             long retryCount = 0;
-            OMRSAuditLog auditLog = workPad.getAuditLog();
-            ConformanceSuiteAuditCode auditCode;
+            AuditLog auditLog = workPad.getAuditLog();
 
-            auditCode = ConformanceSuiteAuditCode.WORKBENCH_INITIALIZED;
-            auditLog.logRecord(methodName,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(workPad.getWorkbenchId()),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+            auditLog.logMessage(methodName,
+                                ConformanceSuiteAuditCode.WORKBENCH_INITIALIZED.getMessageDefinition(workPad.getWorkbenchId()));
 
             while (super.isRunning() && (workPad.getTutRepositoryConnector() == null))
             {
@@ -716,15 +589,8 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                     {
                         if (retryCount == 0)
                         {
-                            auditCode = ConformanceSuiteAuditCode.WORKBENCH_WAITING_TO_START;
-                            auditLog.logRecord(methodName,
-                                    auditCode.getLogMessageId(),
-                                    auditCode.getSeverity(),
-                                    auditCode.getFormattedLogMessage(workPad.getWorkbenchId(),
-                                            workPad.getTutServerName()),
-                                    null,
-                                    auditCode.getSystemAction(),
-                                    auditCode.getUserAction());
+                            auditLog.logMessage(methodName,
+                                                ConformanceSuiteAuditCode.WORKBENCH_WAITING_TO_START.getMessageDefinition(workPad.getWorkbenchId(), workPad.getTutServerName()));
                         }
                         retryCount++;
                     }
@@ -741,15 +607,9 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                     stopRunning();
                     log.error("Unexpected error.", error);
 
-                    auditCode = ConformanceSuiteAuditCode.WORKBENCH_FAILURE;
-                    auditLog.logRecord(methodName,
-                            auditCode.getLogMessageId(),
-                            auditCode.getSeverity(),
-                            auditCode.getFormattedLogMessage(workPad.getWorkbenchId(),
-                                    error.getMessage()),
-                            error.toString(),
-                            auditCode.getSystemAction(),
-                            auditCode.getUserAction());
+                    auditLog.logMessage(methodName,
+                                        ConformanceSuiteAuditCode.WORKBENCH_FAILURE.getMessageDefinition(workPad.getWorkbenchId(), error.getMessage()),
+                                        error.toString());
                 }
             }
 
@@ -763,29 +623,18 @@ public class PerformanceWorkbench extends OpenMetadataConformanceWorkbench
                 {
                     log.error("Unexpected error.", error);
                     stopRunning();
-                    auditCode = ConformanceSuiteAuditCode.WORKBENCH_FAILURE;
-                    auditLog.logRecord(methodName,
-                            auditCode.getLogMessageId(),
-                            auditCode.getSeverity(),
-                            auditCode.getFormattedLogMessage(workPad.getWorkbenchId(),
-                                    error.getMessage()),
-                            error.toString(),
-                            auditCode.getSystemAction(),
-                            auditCode.getUserAction());
-                }
 
+                    auditLog.logMessage(methodName,
+                                        ConformanceSuiteAuditCode.WORKBENCH_FAILURE.getMessageDefinition(workPad.getWorkbenchId(),
+                                                                                                         error.getMessage()),
+                                        error.toString());
+                }
             }
 
             workPad.setWorkbenchComplete();
 
-            auditCode = ConformanceSuiteAuditCode.WORKBENCH_SYNC_COMPLETED;
-            auditLog.logRecord(methodName,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(workPad.getWorkbenchId()),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+            auditLog.logMessage(methodName,
+                                ConformanceSuiteAuditCode.WORKBENCH_SYNC_COMPLETED.getMessageDefinition(workPad.getWorkbenchId()));
         }
     }
 }

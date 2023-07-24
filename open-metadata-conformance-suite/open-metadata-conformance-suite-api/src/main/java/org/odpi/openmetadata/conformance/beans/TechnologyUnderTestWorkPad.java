@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.conformance.beans;
 
 import org.odpi.openmetadata.conformance.ffdc.ConformanceSuiteErrorCode;
-import org.odpi.openmetadata.conformance.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,14 +12,13 @@ import java.util.List;
 /**
  * TechnologyUnderTestWorkPad is the class used to aggregate information about a technology (typically a metadata
  * repository) that is being tested by the ODPi Egeria Conformance Suite.
- *
  * It is responsible for accumulating the results from the different test workbenches as they probe the REST API
  * and validate the events being published by the technology under test (TUT).
  */
 public class TechnologyUnderTestWorkPad
 {
-    private OpenMetadataConformanceTestLabResults         testLabResults = new OpenMetadataConformanceTestLabResults();
-    private List<OpenMetadataConformanceWorkbenchWorkPad> workbenchWorkPads;
+    private final OpenMetadataConformanceTestLabResults         testLabResults = new OpenMetadataConformanceTestLabResults();
+    private final List<OpenMetadataConformanceWorkbenchWorkPad> workbenchWorkPads;
 
 
     /**
@@ -105,16 +104,10 @@ public class TechnologyUnderTestWorkPad
         /*
          * None of the workbenches know about this profile name.
          */
-        ConformanceSuiteErrorCode errorCode    = ConformanceSuiteErrorCode.UNKNOWN_PROFILE_NAME;
-        String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(profileName);
-
-        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                this.getClass().getName(),
-                methodName,
-                errorMessage,
-                errorCode.getSystemAction(),
-                errorCode.getUserAction(),
-                parameterName);
+        throw new InvalidParameterException(ConformanceSuiteErrorCode.UNKNOWN_PROFILE_NAME.getMessageDefinition(profileName),
+                                            this.getClass().getName(),
+                                            methodName,
+                                            parameterName);
     }
 
 
@@ -154,15 +147,9 @@ public class TechnologyUnderTestWorkPad
         /*
          * None of the workbenches know about this test case.
          */
-        ConformanceSuiteErrorCode errorCode    = ConformanceSuiteErrorCode.UNKNOWN_TEST_CASE_ID;
-        String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(testCaseId);
-
-        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+        throw new InvalidParameterException(ConformanceSuiteErrorCode.UNKNOWN_TEST_CASE_ID.getMessageDefinition(testCaseId),
                                             this.getClass().getName(),
                                             methodName,
-                                            errorMessage,
-                                            errorCode.getSystemAction(),
-                                            errorCode.getUserAction(),
                                             parameterName);
     }
 
@@ -230,15 +217,9 @@ public class TechnologyUnderTestWorkPad
             }
         }
 
-        ConformanceSuiteErrorCode errorCode    = ConformanceSuiteErrorCode.UNKNOWN_WORKBENCH_ID;
-        String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(workbenchId);
-
-        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+        throw new InvalidParameterException(ConformanceSuiteErrorCode.UNKNOWN_WORKBENCH_ID.getMessageDefinition(workbenchId),
                                             this.getClass().getName(),
                                             methodName,
-                                            errorMessage,
-                                            errorCode.getSystemAction(),
-                                            errorCode.getUserAction(),
                                             parameterName);
     }
 
@@ -268,16 +249,10 @@ public class TechnologyUnderTestWorkPad
             }
         }
 
-        ConformanceSuiteErrorCode errorCode    = ConformanceSuiteErrorCode.UNKNOWN_WORKBENCH_ID;
-        String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(workbenchId);
-
-        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                this.getClass().getName(),
-                methodName,
-                errorMessage,
-                errorCode.getSystemAction(),
-                errorCode.getUserAction(),
-                parameterName);
+        throw new InvalidParameterException(ConformanceSuiteErrorCode.UNKNOWN_WORKBENCH_ID.getMessageDefinition(workbenchId),
+                                            this.getClass().getName(),
+                                            methodName,
+                                            parameterName);
     }
 
 

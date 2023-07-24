@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serial;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -21,10 +23,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RepositoryConformanceWorkbenchConfig extends AdminServicesConfigHeader
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-    private String   tutRepositoryServerName = null;
-    private int      maxSearchResults = 50;
+    private String       tutRepositoryServerName = null;
+    private int          maxSearchResults        = 50;
+    private List<String> testEntityTypes         = null;
 
 
     /**
@@ -96,6 +100,32 @@ public class RepositoryConformanceWorkbenchConfig extends AdminServicesConfigHea
     public void setMaxSearchResults(int maxSearchResults)
     {
         this.maxSearchResults = maxSearchResults;
+    }
+
+
+    /**
+     * Return the list of entity types to test.  If the value is null then all known entities will be used.
+     * The names of the entities are used to drive the spawning of tests since the repository workbench aims to test
+     * each permutation of types.
+     *
+     * @return list of entity type names
+     */
+    public List<String> getTestEntityTypes()
+    {
+        return testEntityTypes;
+    }
+
+
+    /**
+     * Return the list of entity types to test.  If the value is null then all known entities will be used.
+     * The names of the entities are used to drive the spawning of tests since the repository workbench aims to test
+     * each permutation of types.
+     *
+     * @param testEntityTypes list of entity type names (or null to test all types)
+     */
+    public void setTestEntityTypes(List<String> testEntityTypes)
+    {
+        this.testEntityTypes = testEntityTypes;
     }
 
 
