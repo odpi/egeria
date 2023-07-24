@@ -23,7 +23,6 @@ import java.util.Map;
  * IntegrationContext is the base class for the integration context provided to the integration connector to provide access to open metadata
  * services.  Each integration service specializes this class to provide the method appropriate for the particular type of technology it
  * is supporting.
- *
  * This base class supports the common methods available to all types of integration connectors.
  */
 public class IntegrationContext
@@ -42,6 +41,7 @@ public class IntegrationContext
 
     protected final int maxPageSize;
 
+    private boolean isRefreshInProgress = false;
 
     /**
      * Constructor handles standard values for all integration contexts.
@@ -323,6 +323,29 @@ public class IntegrationContext
         }
     }
 
+
+    /**
+     * Return whether there is a refresh in progress.  This method is used in processEvent() to enable to connector to ignore
+     * events while it is running refresh() since many of the events are caused by the refresh process.  Using this flag
+     * prevents the connector from processing the same elements multiple times.
+     *
+     * @return boolean flag
+     */
+    public boolean isRefreshInProgress()
+    {
+        return isRefreshInProgress;
+    }
+
+
+    /**
+     * Set up whether the refresh is in progress or not.
+     *
+     * @param refreshInProgress boolean flag
+     */
+    void setRefreshInProgress(boolean refreshInProgress)
+    {
+        isRefreshInProgress = refreshInProgress;
+    }
 
 
     /**
