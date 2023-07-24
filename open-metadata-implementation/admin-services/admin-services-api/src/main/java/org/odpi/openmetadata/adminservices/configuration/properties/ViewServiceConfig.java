@@ -11,6 +11,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOpe
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistrationEntry;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 
+import java.io.Serial;
 import java.util.Map;
 import java.util.Objects;
 
@@ -33,7 +34,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public class ViewServiceConfig extends OMAGServerClientConfig
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private int                            viewServiceId                = 0;
     private ComponentDevelopmentStatus     viewServiceDevelopmentStatus = null;
